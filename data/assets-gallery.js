@@ -15,7 +15,7 @@
     }
   };
   const atomTypes=['Pb','Sn','Fe','Cu','Ag','Au','Hg'];
-  const atomNotes=['Outer construction is too simple','Material depth and highlights are missing','Symbol scale and type treatment need comparison'];
+  const atomNotes=['Layered rim, recessed core and material highlight added in v0.2','Compare exact outer silhouette and fastener placement with the production sheet','Confirm symbol typeface, weight, scale and material-specific hue'];
   const entries=[
     ...atomTypes.map(element=>({group:'Atoms',name:element,status:'draft',reference:'atoms',notes:atomNotes,scene:{width:420,height:250,board,atoms:[{element,q:2,r:1}]}})),
     {group:'Mechanisms',name:'Arm — length 1',status:'draft',reference:'parts',notes:['Pivot assembly needs canonical layered construction','Arm body and grabber geometry are placeholders','Metal shading is too flat'],scene:{width:420,height:250,board,arms:[{q:1,r:1,length:1,rotation:0}]}},
