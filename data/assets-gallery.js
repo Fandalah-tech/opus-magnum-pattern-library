@@ -1,21 +1,11 @@
 (() => {
   const board={cols:5,rows:3,size:38,offsetX:62,offsetY:58};
   const references={
-    atoms:{
-      title:'Atom layout — production reference',
-      image:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/48f7201e-226e-4949-a318-348c4ca2d34c/atom_layout_B_1200.png',
-      page:'https://www.kylesteed.net/opus-magnum',
-      credit:'Kyle Steed · Opus Magnum production art'
-    },
-    parts:{
-      title:'Parts layout — production reference',
-      image:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/63013d2b-70b4-4d59-88bb-56a94203e11a/parts_layout_withFrame_1200.png',
-      page:'https://www.kylesteed.net/opus-magnum',
-      credit:'Kyle Steed · Opus Magnum production art'
-    }
+    atoms:{title:'Atom layout — production reference',image:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/48f7201e-226e-4949-a318-348c4ca2d34c/atom_layout_B_1200.png',page:'https://www.kylesteed.net/opus-magnum',credit:'Kyle Steed · Opus Magnum production art'},
+    parts:{title:'Parts layout — production reference',image:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/63013d2b-70b4-4d59-88bb-56a94203e11a/parts_layout_withFrame_1200.png',page:'https://www.kylesteed.net/opus-magnum',credit:'Kyle Steed · Opus Magnum production art'}
   };
   const atomTypes=['Pb','Sn','Fe','Cu','Ag','Au','Hg'];
-  const atomNotes=['Layered rim, recessed core and material highlight added in v0.2','Compare exact outer silhouette and fastener placement with the production sheet','Confirm symbol typeface, weight, scale and material-specific hue'];
+  const atomNotes=['Layered rim, recessed core and material highlight added in v0.2','Compare exact outer silhouette and fastener placement with the production sheet','Confirm alchemical symbol weight, scale and material-specific hue'];
   const entries=[
     ...atomTypes.map(element=>({group:'Atoms',name:element,status:'draft',reference:'atoms',notes:atomNotes,scene:{width:420,height:250,board,atoms:[{element,q:2,r:1}]}})),
     {group:'Mechanisms',name:'Arm — length 1',status:'draft',reference:'parts',notes:['Pivot assembly needs canonical layered construction','Arm body and grabber geometry are placeholders','Metal shading is too flat'],scene:{width:420,height:250,board,arms:[{q:1,r:1,length:1,rotation:0}]}},
@@ -26,34 +16,34 @@
     {group:'Tracks',name:'Straight Track',status:'draft',reference:'parts',notes:['Rail construction and nodes need canonical geometry','Current dashed line is not visually faithful'],scene:{width:420,height:250,board,tracks:[{q1:0,r1:1,q2:3,r2:1}]}},
     {group:'Board',name:'Hexagonal board background',status:'draft',reference:'parts',notes:['Hex borders are too prominent','Surface lacks material depth and vignette','Spacing and perspective require comparison'],scene:{width:420,height:250,board}}
   ];
-  function referenceCard(ref){
-    const section=document.createElement('article');
-    section.className='reference-sheet';
-    section.innerHTML=`<a href="${ref.page}" target="_blank" rel="noopener noreferrer"><img src="${ref.image}" alt="${ref.title}" loading="lazy"></a><div><p class="eyebrow">PRIMARY REFERENCE</p><h3>${ref.title}</h3><small>${ref.credit}. Displayed for comparison only; not packaged with OpusJS.</small></div>`;
-    return section;
+  function referenceCard(ref){const section=document.createElement('article');section.className='reference-sheet';section.innerHTML=`<a href="${ref.page}" target="_blank" rel="noopener noreferrer"><img src="${ref.image}" alt="${ref.title}" loading="lazy"></a><div><p class="eyebrow">PRIMARY REFERENCE</p><h3>${ref.title}</h3><small>${ref.credit}. Displayed for comparison only; not packaged with OpusJS.</small></div>`;return section;}
+  function fidelityPreview(item,ref){
+    const render=window.OpusJS.render({...item.scene,label:item.name});
+    return `<div class="asset-preview fidelity-preview" data-mode="render" style="--overlay-opacity:.5"><div class="fidelity-stage"><img class="fidelity-reference" src="${ref.image}" alt="" loading="lazy"><div class="fidelity-render">${render}</div></div><span class="preview-label">RECONSTRUCTION</span><div class="fidelity-controls" role="group" aria-label="Fidelity comparison mode"><button data-fidelity="reference">Reference</button><button data-fidelity="overlay">Overlay</button><button data-fidelity="difference">Difference</button><button class="active" data-fidelity="render">Reconstruction</button><label>Opacity <input data-fidelity-opacity type="range" min="0" max="100" value="50"></label></div></div>`;
   }
-  window.OpusAssetGallery={
-    entries,references,
-    render(container,query=''){
-      const q=query.trim().toLowerCase();
-      const visible=entries.filter(x=>!q||`${x.group} ${x.name} ${x.status} ${x.notes.join(' ')}`.toLowerCase().includes(q));
-      const fragment=document.createDocumentFragment();
-      const shownRefs=[...new Set(visible.map(x=>x.reference))];
-      if(shownRefs.length){
-        const refs=document.createElement('section');refs.className='reference-sheets';
-        shownRefs.forEach(key=>refs.appendChild(referenceCard(references[key])));
-        fragment.appendChild(refs);
-      }
-      const grid=document.createElement('section');grid.className='asset-comparison-grid';
-      visible.forEach(item=>{
-        const article=document.createElement('article');
-        article.className='asset-card';
-        const ref=references[item.reference];
-        article.innerHTML=`<div class="asset-preview"><span class="preview-label">OPUSJS RENDER</span>${window.OpusJS.render({...item.scene,label:item.name})}</div><div class="asset-caption"><div class="asset-heading"><div><p class="eyebrow">${item.group}</p><h3>${item.name}</h3></div><span class="asset-status status-${item.status}">${item.status}</span></div><a class="asset-reference-link" href="${ref.page}" target="_blank" rel="noopener noreferrer">Reference: ${ref.title}</a><h4>Validation notes</h4><ul>${item.notes.map(note=>`<li>${note}</li>`).join('')}</ul><small>OpusJS v${window.OpusJS.version}</small></div>`;
-        grid.appendChild(article);
+  function bindFidelity(container){
+    container.querySelectorAll('.fidelity-preview').forEach(preview=>{
+      preview.querySelectorAll('[data-fidelity]').forEach(button=>button.addEventListener('click',()=>{
+        const mode=button.dataset.fidelity;preview.dataset.mode=mode;
+        preview.querySelectorAll('[data-fidelity]').forEach(x=>x.classList.toggle('active',x===button));
+        const labels={reference:'REFERENCE',overlay:'OVERLAY 50%',difference:'DIFFERENCE',render:'RECONSTRUCTION'};
+        preview.querySelector('.preview-label').textContent=labels[mode];
+      }));
+      preview.querySelector('[data-fidelity-opacity]').addEventListener('input',event=>{
+        const value=Number(event.target.value)/100;preview.style.setProperty('--overlay-opacity',value);
+        if(preview.dataset.mode==='overlay')preview.querySelector('.preview-label').textContent=`OVERLAY ${event.target.value}%`;
       });
-      fragment.appendChild(grid);container.replaceChildren(fragment);
-      return visible.length;
-    }
-  };
+    });
+  }
+  window.OpusAssetGallery={entries,references,render(container,query=''){
+    const q=query.trim().toLowerCase();
+    const visible=entries.filter(x=>!q||`${x.group} ${x.name} ${x.status} ${x.notes.join(' ')}`.toLowerCase().includes(q));
+    const fragment=document.createDocumentFragment();
+    const shownRefs=[...new Set(visible.map(x=>x.reference))];
+    if(shownRefs.length){const refs=document.createElement('section');refs.className='reference-sheets';shownRefs.forEach(key=>refs.appendChild(referenceCard(references[key])));fragment.appendChild(refs);}
+    const intro=document.createElement('aside');intro.className='fidelity-intro';intro.innerHTML='<p class="eyebrow">FIDELITY MODE · V0.1</p><strong>Compare each OpusJS reconstruction against its production sheet.</strong><span>Overlay and Difference are calibration tools. Exact crop and alignment metadata will be refined per asset before validation.</span>';fragment.appendChild(intro);
+    const grid=document.createElement('section');grid.className='asset-comparison-grid';
+    visible.forEach(item=>{const article=document.createElement('article');article.className='asset-card';const ref=references[item.reference];article.innerHTML=`${fidelityPreview(item,ref)}<div class="asset-caption"><div class="asset-heading"><div><p class="eyebrow">${item.group}</p><h3>${item.name}</h3></div><span class="asset-status status-${item.status}">${item.status}</span></div><a class="asset-reference-link" href="${ref.page}" target="_blank" rel="noopener noreferrer">Reference: ${ref.title}</a><h4>Validation notes</h4><ul>${item.notes.map(note=>`<li>${note}</li>`).join('')}</ul><small>OpusJS v${window.OpusJS.version}</small></div>`;grid.appendChild(article);});
+    fragment.appendChild(grid);container.replaceChildren(fragment);bindFidelity(container);return visible.length;
+  }};
 })();
