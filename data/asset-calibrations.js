@@ -1,14 +1,14 @@
 window.OpusAssetCalibrations={
   version:1,
   source:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/48f7201e-226e-4949-a318-348c4ca2d34c/atom_layout_B_1200.png',
-  calibrationStatus:'provisional-lower-row-v0-2',
+  calibrationStatus:'provisional-lower-row-v0-3-background-position-corrected',
   assets:{
-    'atom-Pb':{x:5,y:84,zoom:500},
-    'atom-Sn':{x:24,y:84,zoom:500},
-    'atom-Fe':{x:41,y:84,zoom:500},
-    'atom-Cu':{x:59,y:84,zoom:500},
-    'atom-Ag':{x:76,y:84,zoom:500},
-    'atom-Au':{x:92,y:84,zoom:500},
-    'atom-Hg':{x:100,y:84,zoom:500}
+    'atom-Pb':{x:10,y:84,zoom:500},
+    'atom-Sn':{x:23,y:84,zoom:500},
+    'atom-Fe':{x:37,y:84,zoom:500},
+    'atom-Cu':{x:50,y:84,zoom:500},
+    'atom-Ag':{x:64,y:84,zoom:500},
+    'atom-Au':{x:77,y:84,zoom:500},
+    'atom-Hg':{x:91,y:84,zoom:500}
   }
 };
