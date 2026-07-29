@@ -29,7 +29,7 @@
     });
     svg.appendChild(d);
   }
-  function drawBoard(svg,scene){const {cols=8,rows=5,size=42,offsetX=66,offsetY=55}=scene.board||{};const g=el('g');for(let r=0;r<rows;r++)for(let q=0;q<cols;q++){const p=axial(q,r,size,offsetX,offsetY);g.appendChild(el('polygon',{points:hexPoints(p.x,p.y,size-2),fill:palette.cell,stroke:palette.cellLine,'stroke-width':1.1,opacity:.72}));}svg.appendChild(g);}
+  function drawBoard(svg,scene){if(scene.board?.visible===false)return;const {cols=8,rows=5,size=42,offsetX=66,offsetY=55}=scene.board||{};const g=el('g');for(let r=0;r<rows;r++)for(let q=0;q<cols;q++){const p=axial(q,r,size,offsetX,offsetY);g.appendChild(el('polygon',{points:hexPoints(p.x,p.y,size-2),fill:palette.cell,stroke:palette.cellLine,'stroke-width':1.1,opacity:.72}));}svg.appendChild(g);}
   function drawAtom(svg,item,scene,id){
     const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);
     const element=String(item.element||'Fe');
