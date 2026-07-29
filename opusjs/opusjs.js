@@ -18,11 +18,11 @@
   function defs(svg,id){
     const d=el('defs');
     const shadow=el('filter',{id:`shadow-${id}`,x:'-50%',y:'-50%',width:'200%',height:'200%'});
-    shadow.appendChild(el('feDropShadow',{dx:0,dy:1.8,stdDeviation:2.1,'flood-color':'#000','flood-opacity':.62}));d.appendChild(shadow);
+    shadow.appendChild(el('feDropShadow',{dx:0,dy:1.7,stdDeviation:1.9,'flood-color':'#000','flood-opacity':.6}));d.appendChild(shadow);
     const bevel=el('linearGradient',{id:`bevel-${id}`,x1:'8%',y1:'4%',x2:'92%',y2:'96%'});
-    [['0%','#e8d2ad'],['20%','#b18d5d'],['48%','#5a432d'],['74%','#c7a170'],['100%','#433124']].forEach(([offset,color])=>bevel.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(bevel);
+    [['0%','#d8c19e'],['20%','#96744f'],['48%','#49382c'],['74%','#a9845d'],['100%','#352820']].forEach(([offset,color])=>bevel.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(bevel);
     const holder=el('linearGradient',{id:`holder-${id}`,x1:'0%',y1:'0%',x2:'100%',y2:'100%'});
-    [['0%','#72543c'],['34%','#30251e'],['72%','#8b6645'],['100%','#241b17']].forEach(([offset,color])=>holder.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(holder);
+    [['0%','#654b39'],['34%','#2c231d'],['72%','#74573f'],['100%','#211a16']].forEach(([offset,color])=>holder.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(holder);
     Object.entries(elements).forEach(([symbol,c])=>{
       const radial=el('radialGradient',{id:`atom-${symbol}-${id}`,cx:'38%',cy:'24%',r:'78%'});
       [['0%',c.light],['28%',c.mid],['68%',c.base],['100%',c.dark]].forEach(([offset,color])=>radial.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(radial);
@@ -36,17 +36,17 @@
     const c=elements[element]||elements.Fe;
     const g=el('g',{transform:`translate(${p.x} ${p.y})`,'data-atom':element});
     const body=el('g',{filter:`url(#shadow-${id})`});
-    body.appendChild(el('polygon',{points:hexPoints(0,0,27.8),fill:`url(#holder-${id})`,stroke:'#987151','stroke-width':.78}));
-    body.appendChild(el('polygon',{points:hexPoints(0,0,25.8),fill:'#171411',stroke:'#2a211c','stroke-width':.72}));
-    body.appendChild(el('circle',{r:24.5,fill:'#090908',stroke:'#201a17','stroke-width':1.05}));
-    body.appendChild(el('circle',{r:23.15,fill:`url(#bevel-${id})`,stroke:'#2f241d','stroke-width':.78}));
-    body.appendChild(el('circle',{r:21.05,fill:'#111513',stroke:'#070909','stroke-width':.88}));
-    body.appendChild(el('circle',{r:19.85,fill:`url(#atom-${element}-${id})`,stroke:c.light,'stroke-width':.58}));
-    body.appendChild(el('circle',{r:17.05,fill:'none',stroke:c.dark,'stroke-width':.82,opacity:.64}));
-    body.appendChild(el('ellipse',{cx:-5.1,cy:-7.1,rx:6.7,ry:2.9,fill:'#fff',opacity:.10,transform:'rotate(-18)'}));
-    for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:21.65*Math.cos(a),cy:21.65*Math.sin(a),r:.52,fill:'#3a3027',stroke:'#c8ad7d','stroke-width':.28,opacity:.58}));}
+    body.appendChild(el('polygon',{points:hexPoints(0,0,26.2),fill:`url(#holder-${id})`,stroke:'#806047','stroke-width':.62}));
+    body.appendChild(el('polygon',{points:hexPoints(0,0,24.7),fill:'#171411',stroke:'#29211c','stroke-width':.58}));
+    body.appendChild(el('circle',{r:23.0,fill:'#090908',stroke:'#201a17','stroke-width':.92}));
+    body.appendChild(el('circle',{r:21.75,fill:`url(#bevel-${id})`,stroke:'#2f241d','stroke-width':.62}));
+    body.appendChild(el('circle',{r:19.55,fill:'#111513',stroke:'#070909','stroke-width':.72}));
+    body.appendChild(el('circle',{r:18.2,fill:`url(#atom-${element}-${id})`,stroke:c.light,'stroke-width':.48}));
+    body.appendChild(el('circle',{r:15.55,fill:'none',stroke:c.dark,'stroke-width':.7,opacity:.6}));
+    body.appendChild(el('ellipse',{cx:-4.8,cy:-6.8,rx:6.2,ry:2.6,fill:'#fff',opacity:.085,transform:'rotate(-18)'}));
+    for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:20.35*Math.cos(a),cy:20.35*Math.sin(a),r:.44,fill:'#3a3027',stroke:'#b99d70','stroke-width':.22,opacity:.5}));}
     g.appendChild(body);
-    const t=el('text',{x:0,y:-.15,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':18.6,'font-weight':300,fill:c.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:.96});
+    const t=el('text',{x:0,y:-.1,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':18.2,'font-weight':300,fill:c.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:.96});
     t.textContent=c.mark;
     g.appendChild(t);
     svg.appendChild(g);
@@ -56,5 +56,5 @@
   function drawBonding(svg,item,scene){const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);const g=el('g',{transform:`translate(${p.x} ${p.y})`});g.appendChild(el('circle',{r:28,fill:palette.shadow,stroke:palette.brass,'stroke-width':4}));g.appendChild(el('path',{d:'M-12,-9 L0,0 L12,-9 M-12,9 L0,0 L12,9',fill:'none',stroke:palette.metal,'stroke-width':4,'stroke-linecap':'round'}));svg.appendChild(g);}
   function drawTrack(svg,item,scene){const a=axial(item.q1,item.r1,scene.board.size,scene.board.offsetX,scene.board.offsetY);const b=axial(item.q2,item.r2,scene.board.size,scene.board.offsetX,scene.board.offsetY);svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:palette.brassDark,'stroke-width':12,'stroke-linecap':'round'}));svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:palette.metal,'stroke-width':3,'stroke-dasharray':'8 8','stroke-linecap':'round'}));}
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
-  window.OpusJS={version:'0.4.0',render,axial};
+  window.OpusJS={version:'0.4.1',render,axial};
 })();
