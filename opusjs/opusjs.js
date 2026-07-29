@@ -26,7 +26,7 @@
     Cu:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b66f48',ink:'#fff0e5',mark:'♀',symbolSize:26.3,symbolX:0,symbolY:.8,symbolOpacity:.96},
     Ag:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#bfc4c1',ink:'#ffffff',mark:'☽',symbolSize:27.2,symbolX:1.0,symbolY:-.2,symbolOpacity:.96},
     Au:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#c39a3f',ink:'#fff4c2',mark:'☉',symbolSize:23.8,symbolX:0,symbolY:.2,symbolOpacity:.96},
-    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b8b19a',ink:'#fff8e7',mark:'☿',symbolSize:25.8,symbolX:0,symbolY:.8,symbolOpacity:.95}
+    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b7b09a',gradientStops:['#e6e1d2','#d9d3c2','#beb7a2','#9f9885','#857f70','#625e53','#403d36'],ringTint:'#d7d2c4',innerRingTint:'#8f897a',ink:'#fff8e7',mark:'☿',symbolSize:25.8,symbolX:0,symbolY:.8,symbolOpacity:.95}
   };
 
   const el=(name,attrs={})=>{const node=document.createElementNS(NS,name);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,v));return node;};
@@ -45,7 +45,7 @@
     const material=atomMaterials.masterMaterialV1;
     Object.entries(atomIdentities).forEach(([key,identity])=>{
       const radial=el('radialGradient',{id:`atom-${key}-${id}`,...material.gradient});
-      material.stopOffsets.forEach((offset,index)=>radial.appendChild(el('stop',{offset,'stop-color':shade(identity.color,material.stopLevels[index])})));
+      material.stopOffsets.forEach((offset,index)=>radial.appendChild(el('stop',{offset,'stop-color':identity.gradientStops?.[index]||shade(identity.color,material.stopLevels[index])})));
       d.appendChild(radial);
     });
     svg.appendChild(d);
@@ -80,8 +80,8 @@
     body.appendChild(el('circle',{r:geometry.outerCasingRadius,fill:'#090908',stroke:'#201a17','stroke-width':.96}));
     body.appendChild(el('circle',{r:geometry.bevelRadius,fill:`url(#bevel-${id})`,stroke:'#2f241d','stroke-width':.7}));
     body.appendChild(el('circle',{r:geometry.innerCasingRadius,fill:'#111513',stroke:'#070909','stroke-width':.76}));
-    body.appendChild(el('circle',{r:geometry.coreRadius,fill:`url(#atom-${element}-${id})`,stroke:shade(identity.color,1.35),'stroke-width':.5}));
-    body.appendChild(el('circle',{r:geometry.innerRingRadius,fill:'none',stroke:shade(identity.color,.3),'stroke-width':.72,opacity:.58}));
+    body.appendChild(el('circle',{r:geometry.coreRadius,fill:`url(#atom-${element}-${id})`,stroke:identity.ringTint||shade(identity.color,1.35),'stroke-width':.5}));
+    body.appendChild(el('circle',{r:geometry.innerRingRadius,fill:'none',stroke:identity.innerRingTint||shade(identity.color,.3),'stroke-width':.72,opacity:.58}));
     drawMaterialReflections(body);
     for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:geometry.rivetOrbit*Math.cos(a),cy:geometry.rivetOrbit*Math.sin(a),r:geometry.rivetRadius,fill:'#3a3027',stroke:'#b99d70','stroke-width':.2,opacity:.46}));}
     g.appendChild(body);
@@ -96,5 +96,5 @@
 
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
 
-  window.OpusJS={version:'1.0.0',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
+  window.OpusJS={version:'1.0.1',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
 })();
