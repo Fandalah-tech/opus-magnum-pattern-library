@@ -16,62 +16,124 @@
     y: oy + size * 1.5 * r
   });
 
-  function addTrackDefs(svg, id) {
-    const defs = svg.querySelector('defs') || svg.insertBefore(svgEl('defs'), svg.firstChild);
-    const metal = svgEl('linearGradient', { id: `track-metal-${id}`, x1: '0%', y1: '0%', x2: '0%', y2: '100%' });
-    [['0%', '#f2f3f1'], ['24%', '#c8cccb'], ['52%', '#6c7375'], ['78%', '#bcc1c0'], ['100%', '#454b4e']]
-      .forEach(([offset, color]) => metal.appendChild(svgEl('stop', { offset, 'stop-color': color })));
-    defs.appendChild(metal);
+  function pointsFor(track) {
+    if (Array.isArray(track.points) && track.points.length > 1) return track.points;
+    return [{ q: track.q1, r: track.r1 }, { q: track.q2, r: track.r2 }];
   }
 
-  function normalizedSegments(track) {
-    if (Array.isArray(track.points) && track.points.length > 1) {
-      return track.points.slice(0, -1).map((point, index) => [point, track.points[index + 1]]);
+  function removeLegacyTracks(svg) {
+    svg.querySelectorAll('line').forEach(line => {
+      const stroke = line.getAttribute('stroke');
+      if (stroke === '#6a5124' || (stroke === '#e6dcc5' && line.hasAttribute('stroke-dasharray'))) line.remove();
+    });
+    svg.querySelectorAll('[data-track-layer]').forEach(layer => layer.remove());
+  }
+
+  function segment(layer, a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+    const railOffset = 5.1;
+
+    layer.appendChild(svgEl('line', {
+      x1: a.x, y1: a.y + 2.5, x2: b.x, y2: b.y + 2.5,
+      stroke: '#020302', 'stroke-width': 20, 'stroke-linecap': 'round', opacity: .82
+    }));
+    layer.appendChild(svgEl('line', {
+      x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+      stroke: '#17120d', 'stroke-width': 17, 'stroke-linecap': 'round'
+    }));
+    layer.appendChild(svgEl('line', {
+      x1: a.x, y1: a.y, x2: b.x, y2: b.y,
+      stroke: '#050706', 'stroke-width': 11.2, 'stroke-linecap': 'round'
+    }));
+
+    [-railOffset, railOffset].forEach(offset => {
+      layer.appendChild(svgEl('line', {
+        x1: a.x + nx * offset, y1: a.y + ny * offset,
+        x2: b.x + nx * offset, y2: b.y + ny * offset,
+        stroke: '#3b2a18', 'stroke-width': 4.3, 'stroke-linecap': 'round'
+      }));
+      layer.appendChild(svgEl('line', {
+        x1: a.x + nx * offset, y1: a.y + ny * offset - .45,
+        x2: b.x + nx * offset, y2: b.y + ny * offset - .45,
+        stroke: '#a47b42', 'stroke-width': 2.55, 'stroke-linecap': 'round'
+      }));
+      layer.appendChild(svgEl('line', {
+        x1: a.x + nx * offset, y1: a.y + ny * offset - 1,
+        x2: b.x + nx * offset, y2: b.y + ny * offset - 1,
+        stroke: '#d7b06d', 'stroke-width': .65, 'stroke-linecap': 'round', opacity: .72
+      }));
+    });
+  }
+
+  function joint(layer, point) {
+    layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y + 2, r: 10.4, fill: '#020302', opacity: .8 }));
+    layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 9.1, fill: '#17120d', stroke: '#5f4529', 'stroke-width': 1.1 }));
+    layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 6.25, fill: '#050706', stroke: '#a47b42', 'stroke-width': 1.45 }));
+    layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 2.15, fill: '#dfc88f', stroke: '#6f5a35', 'stroke-width': .65 }));
+  }
+
+  function marker(layer, point, neighbor, label) {
+    const dx = neighbor.x - point.x;
+    const dy = neighbor.y - point.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+    const x = point.x + nx * 17;
+    const y = point.y + ny * 17;
+    const text = svgEl('text', {
+      x, y, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+      'font-family': 'Georgia, Times New Roman, serif', 'font-size': 18,
+      'font-weight': 700, fill: '#e8d6a5', stroke: '#17120d', 'stroke-width': 1.1,
+      'paint-order': 'stroke', 'data-track-marker': label
+    });
+    text.textContent = label;
+    layer.appendChild(text);
+  }
+
+  function renderTrack(layer, track, board) {
+    const source = pointsFor(track);
+    const loop = track.loop === true || (source.length > 2 && source[0].q === source[source.length - 1].q && source[0].r === source[source.length - 1].r);
+    const points = source.map(point => axial(point.q, point.r, board.size, board.offsetX, board.offsetY));
+    const uniquePoints = loop && points.length > 1 ? points.slice(0, -1) : points;
+    const segmentCount = loop ? uniquePoints.length : uniquePoints.length - 1;
+
+    for (let index = 0; index < segmentCount; index++) {
+      const a = uniquePoints[index];
+      const b = uniquePoints[(index + 1) % uniquePoints.length];
+      segment(layer, a, b);
     }
-    return [[{ q: track.q1, r: track.r1 }, { q: track.q2, r: track.r2 }]];
+    uniquePoints.forEach(point => joint(layer, point));
+
+    const minusIndex = Math.max(0, Math.min(uniquePoints.length - 1, Number.isInteger(track.minusIndex) ? track.minusIndex : 0));
+    const plusIndex = Math.max(0, Math.min(uniquePoints.length - 1, Number.isInteger(track.plusIndex) ? track.plusIndex : (loop ? Math.floor(uniquePoints.length / 2) : uniquePoints.length - 1)));
+    const minusNeighbor = uniquePoints[(minusIndex + 1) % uniquePoints.length] || uniquePoints[minusIndex];
+    const plusNeighbor = uniquePoints[(plusIndex - 1 + uniquePoints.length) % uniquePoints.length] || uniquePoints[plusIndex];
+    marker(layer, uniquePoints[minusIndex], minusNeighbor, '−');
+    marker(layer, uniquePoints[plusIndex], plusNeighbor, '+');
   }
 
-  function renderTrackLayer(svg, scene, id) {
+  function renderTrackLayer(svg, scene) {
     const tracks = scene.tracks || [];
     if (!tracks.length) return;
-
     const board = { size: 42, offsetX: 66, offsetY: 55, ...(scene.board || {}) };
-    const layer = svgEl('g', { 'data-track-layer': 'masterTrackV1' });
-    const joints = new Map();
-
-    tracks.flatMap(normalizedSegments).forEach(([start, end]) => {
-      const a = axial(start.q, start.r, board.size, board.offsetX, board.offsetY);
-      const b = axial(end.q, end.r, board.size, board.offsetX, board.offsetY);
-      joints.set(`${a.x.toFixed(3)},${a.y.toFixed(3)}`, a);
-      joints.set(`${b.x.toFixed(3)},${b.y.toFixed(3)}`, b);
-
-      layer.appendChild(svgEl('line', { x1: a.x, y1: a.y + 2.2, x2: b.x, y2: b.y + 2.2, stroke: '#020403', 'stroke-width': 16, 'stroke-linecap': 'round', opacity: .78 }));
-      layer.appendChild(svgEl('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: '#75562d', 'stroke-width': 12.5, 'stroke-linecap': 'round' }));
-      layer.appendChild(svgEl('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: '#171d1c', 'stroke-width': 8.2, 'stroke-linecap': 'round' }));
-      layer.appendChild(svgEl('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, stroke: `url(#track-metal-${id})`, 'stroke-width': 3.15, 'stroke-linecap': 'round' }));
-      layer.appendChild(svgEl('line', { x1: a.x, y1: a.y - 1.05, x2: b.x, y2: b.y - 1.05, stroke: '#f2eee2', 'stroke-width': .7, 'stroke-linecap': 'round', opacity: .72 }));
-    });
-
-    joints.forEach(point => {
-      layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y + 1.4, r: 7.4, fill: '#020403', opacity: .72 }));
-      layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 6.5, fill: '#75562d', stroke: '#241b12', 'stroke-width': .85 }));
-      layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 4.35, fill: '#171d1c', stroke: '#b58d54', 'stroke-width': .7 }));
-      layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 1.65, fill: `url(#track-metal-${id})`, stroke: '#f2eee2', 'stroke-width': .35 }));
-    });
-
-    const firstForeground = svg.querySelector('g[data-arm-group], g[data-arm="simple"], g[data-atom]');
-    svg.insertBefore(layer, firstForeground || null);
+    const layer = svgEl('g', { 'data-track-layer': 'masterTrackV2' });
+    tracks.forEach(track => renderTrack(layer, track, board));
+    const foreground = svg.querySelector('g[data-arm-group], g[data-arm="simple"], g[data-atom]');
+    svg.insertBefore(layer, foreground || null);
   }
 
   window.OpusJS.render = scene => {
     const markup = originalRender(scene);
     const doc = new DOMParser().parseFromString(markup, 'image/svg+xml');
     const svg = doc.documentElement;
-    const id = `v1-${Date.now().toString(36)}`;
-    addTrackDefs(svg, id);
-    renderTrackLayer(svg, scene, id);
+    removeLegacyTracks(svg);
+    renderTrackLayer(svg, scene);
     return new XMLSerializer().serializeToString(svg);
   };
 
-  window.OpusJS.version = '1.6.0';
+  window.OpusJS.version = '1.8.0';
 })();
