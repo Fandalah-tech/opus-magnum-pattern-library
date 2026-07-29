@@ -1,0 +1,13 @@
+@media(max-width:760px){
+  .mode-tabs{
+    position:relative;
+    top:auto;
+    z-index:3;
+    scrollbar-width:none;
+    overscroll-behavior-inline:contain;
+  }
+  .mode-tabs::-webkit-scrollbar{display:none}
+  .mode-tab{flex:0 0 auto}
+  .workspace{overflow-x:hidden}
+  .reference-sheet a{max-height:none;overflow:visible}
+}
