@@ -4,7 +4,7 @@
   let renderId=0;
   const palette={board:'#0d1211',cell:'#232c29',cellLine:'#414b47',brass:'#d3a348',brassDark:'#6a5124',metal:'#e6dcc5',shadow:'#050807'};
   const elements={
-    Pb:{base:'#4b5b61',mid:'#708086',dark:'#243137',light:'#c5d0d0',ink:'#f3f5f1',mark:'♄'},
+    Pb:{base:'#46575e',mid:'#687a80',dark:'#202e34',light:'#aebbbc',ink:'#eef1ed',mark:'♄'},
     Sn:{base:'#996844',mid:'#bd8a62',dark:'#573721',light:'#dfb68e',ink:'#f4e7d8',mark:'♃'},
     Fe:{base:'#777e83',mid:'#a3a9ad',dark:'#3d4246',light:'#d1d5d6',ink:'#f0f0ec',mark:'♂'},
     Cu:{base:'#9b5934',mid:'#c77b4b',dark:'#5a301e',light:'#e5a574',ink:'#f7e8dd',mark:'♀'},
@@ -24,7 +24,7 @@
     const holder=el('linearGradient',{id:`holder-${id}`,x1:'0%',y1:'0%',x2:'100%',y2:'100%'});
     [['0%','#654b39'],['34%','#2c231d'],['72%','#74573f'],['100%','#211a16']].forEach(([offset,color])=>holder.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(holder);
     Object.entries(elements).forEach(([symbol,c])=>{
-      const radial=el('radialGradient',{id:`atom-${symbol}-${id}`,cx:'38%',cy:'24%',r:'78%'});
+      const radial=el('radialGradient',{id:`atom-${symbol}-${id}`,cx:'38%',cy:symbol==='Pb'?'27%':'24%',r:'78%'});
       [['0%',c.light],['28%',c.mid],['68%',c.base],['100%',c.dark]].forEach(([offset,color])=>radial.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(radial);
     });
     svg.appendChild(d);
@@ -44,9 +44,13 @@
     body.appendChild(el('circle',{r:18.2,fill:`url(#atom-${element}-${id})`,stroke:c.light,'stroke-width':.48}));
     body.appendChild(el('circle',{r:15.55,fill:'none',stroke:c.dark,'stroke-width':.7,opacity:.6}));
     body.appendChild(el('ellipse',{cx:-4.8,cy:-6.8,rx:6.2,ry:2.6,fill:'#fff',opacity:.085,transform:'rotate(-18)'}));
+    if(element==='Pb'){
+      body.appendChild(el('ellipse',{cx:4.2,cy:5.2,rx:10.2,ry:6.0,fill:'#d8e1df',opacity:.05,transform:'rotate(-24)'}));
+      body.appendChild(el('ellipse',{cx:-5.4,cy:3.6,rx:6.7,ry:9.6,fill:'#152329',opacity:.12,transform:'rotate(18)'}));
+    }
     for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:20.35*Math.cos(a),cy:20.35*Math.sin(a),r:.44,fill:'#3a3027',stroke:'#b99d70','stroke-width':.22,opacity:.5}));}
     g.appendChild(body);
-    const t=el('text',{x:0,y:-.1,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':18.2,'font-weight':300,fill:c.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:.96});
+    const t=el('text',{x:0,y:-.1,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':element==='Pb'?17.1:18.2,'font-weight':300,fill:c.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:element==='Pb'?.92:.96});
     t.textContent=c.mark;
     g.appendChild(t);
     svg.appendChild(g);
@@ -56,5 +60,5 @@
   function drawBonding(svg,item,scene){const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);const g=el('g',{transform:`translate(${p.x} ${p.y})`});g.appendChild(el('circle',{r:28,fill:palette.shadow,stroke:palette.brass,'stroke-width':4}));g.appendChild(el('path',{d:'M-12,-9 L0,0 L12,-9 M-12,9 L0,0 L12,9',fill:'none',stroke:palette.metal,'stroke-width':4,'stroke-linecap':'round'}));svg.appendChild(g);}
   function drawTrack(svg,item,scene){const a=axial(item.q1,item.r1,scene.board.size,scene.board.offsetX,scene.board.offsetY);const b=axial(item.q2,item.r2,scene.board.size,scene.board.offsetX,scene.board.offsetY);svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:palette.brassDark,'stroke-width':12,'stroke-linecap':'round'}));svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:palette.metal,'stroke-width':3,'stroke-dasharray':'8 8','stroke-linecap':'round'}));}
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
-  window.OpusJS={version:'0.4.1',render,axial};
+  window.OpusJS={version:'0.4.2',render,axial};
 })();
