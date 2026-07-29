@@ -52,7 +52,7 @@
     }
     for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:(element==='Pb'?21.15:20.35)*Math.cos(a),cy:(element==='Pb'?21.15:20.35)*Math.sin(a),r:.42,fill:'#3a3027',stroke:'#b99d70','stroke-width':.2,opacity:.46}));}
     g.appendChild(body);
-    const t=el('text',{x:0,y:element==='Pb'?-0.65:-.1,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':element==='Pb'?18.6:18.2,'font-weight':300,fill:c.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:element==='Pb'?.95:.96});
+    const t=el('text',{x:0,y:element==='Pb'?-0.65:-.1,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':element==='Pb'?21.2:18.2,'font-weight':300,fill:c.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:element==='Pb'?.95:.96});
     t.textContent=c.mark;
     g.appendChild(t);
     svg.appendChild(g);
@@ -62,5 +62,5 @@
   function drawBonding(svg,item,scene){const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);const g=el('g',{transform:`translate(${p.x} ${p.y})`});g.appendChild(el('circle',{r:28,fill:palette.shadow,stroke:palette.brass,'stroke-width':4}));g.appendChild(el('path',{d:'M-12,-9 L0,0 L12,-9 M-12,9 L0,0 L12,9',fill:'none',stroke:palette.metal,'stroke-width':4,'stroke-linecap':'round'}));svg.appendChild(g);}
   function drawTrack(svg,item,scene){const a=axial(item.q1,item.r1,scene.board.size,scene.board.offsetX,scene.board.offsetY);const b=axial(item.q2,item.r2,scene.board.size,scene.board.offsetX,scene.board.offsetY);svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:palette.brassDark,'stroke-width':12,'stroke-linecap':'round'}));svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:palette.metal,'stroke-width':3,'stroke-dasharray':'8 8','stroke-linecap':'round'}));}
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
-  window.OpusJS={version:'0.5.0',render,axial};
+  window.OpusJS={version:'0.5.1',render,axial};
 })();
