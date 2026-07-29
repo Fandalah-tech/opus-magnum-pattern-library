@@ -19,13 +19,13 @@
   };
 
   const atomIdentities={
-    Pb:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#73878a',ink:'#f5f5ef',mark:'♄',symbolSize:21.2,symbolY:-1,symbolOpacity:.95},
-    Sn:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#969477',ink:'#f5f1dc',mark:'♃',symbolSize:19.0,symbolY:-.85,symbolOpacity:.94},
-    Fe:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#806f73',ink:'#fff5ef',mark:'♂',symbolSize:19.1,symbolY:-.1,symbolOpacity:.96},
-    Cu:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b66f48',ink:'#fff0e5',mark:'♀',symbolSize:18.6,symbolY:-.1,symbolOpacity:.96},
-    Ag:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#bfc4c1',ink:'#ffffff',mark:'☽',symbolSize:18.9,symbolY:-.1,symbolOpacity:.96},
-    Au:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#c39a3f',ink:'#fff4c2',mark:'☉',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
-    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#8fa8b2',ink:'#f5fbfc',mark:'☿',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96}
+    Pb:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#73878a',ink:'#f5f5ef',mark:'♄',symbolSize:22.0,symbolY:-.4,symbolOpacity:.95},
+    Sn:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#969477',ink:'#f5f1dc',mark:'♃',symbolSize:21.2,symbolY:-.4,symbolOpacity:.94},
+    Fe:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#806f73',ink:'#fff5ef',mark:'♂',symbolSize:21.0,symbolY:0,symbolOpacity:.96},
+    Cu:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b66f48',ink:'#fff0e5',mark:'♀',symbolSize:21.0,symbolY:.2,symbolOpacity:.96},
+    Ag:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#bfc4c1',ink:'#ffffff',mark:'☽',symbolSize:21.0,symbolY:0,symbolOpacity:.96},
+    Au:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#c39a3f',ink:'#fff4c2',mark:'☉',symbolSize:20.8,symbolY:0,symbolOpacity:.96},
+    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#8d8f81',symbolType:'quicksilver',dotRadius:1.55,dotGap:6.2,symbolY:.2,symbolOpacity:.78}
   };
 
   const el=(name,attrs={})=>{const node=document.createElementNS(NS,name);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,v));return node;};
@@ -62,6 +62,17 @@
     body.appendChild(el('ellipse',{cx:8.2,cy:1.0,rx:4.5,ry:11.6,fill:'#fff',opacity:.02,transform:'rotate(27)'}));
   }
 
+  function drawIdentity(g,identity){
+    if(identity.symbolType==='quicksilver'){
+      const marks=el('g',{transform:`translate(0 ${identity.symbolY||0})`,opacity:identity.symbolOpacity});
+      [-identity.dotGap,0,identity.dotGap].forEach(x=>marks.appendChild(el('circle',{cx:x,cy:0,r:identity.dotRadius,fill:'#090b09',stroke:'#1a1d19','stroke-width':.45})));
+      g.appendChild(marks);
+      return;
+    }
+    const t=el('text',{x:0,y:identity.symbolY,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':identity.symbolSize,'font-weight':300,fill:identity.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:identity.symbolOpacity});
+    t.textContent=identity.mark;g.appendChild(t);
+  }
+
   function drawAtom(svg,item,scene,id){
     const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);
     const element=String(item.element||'Fe');
@@ -79,8 +90,8 @@
     drawMaterialReflections(body);
     for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:geometry.rivetOrbit*Math.cos(a),cy:geometry.rivetOrbit*Math.sin(a),r:geometry.rivetRadius,fill:'#3a3027',stroke:'#b99d70','stroke-width':.2,opacity:.46}));}
     g.appendChild(body);
-    const t=el('text',{x:0,y:identity.symbolY,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':identity.symbolSize,'font-weight':300,fill:identity.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:identity.symbolOpacity});
-    t.textContent=identity.mark;g.appendChild(t);svg.appendChild(g);
+    drawIdentity(g,identity);
+    svg.appendChild(g);
   }
 
   function drawArm(svg,item,scene){const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);const angle=(item.rotation||0)*60;const len=(item.length||1)*scene.board.size*SQRT3;const g=el('g',{transform:`translate(${p.x} ${p.y}) rotate(${angle})`});g.appendChild(el('circle',{r:22,fill:palette.shadow,opacity:.5}));g.appendChild(el('circle',{r:18,fill:palette.brassDark,stroke:palette.metal,'stroke-width':3}));g.appendChild(el('circle',{r:6,fill:palette.brass}));g.appendChild(el('rect',{x:8,y:-6,width:len-16,height:12,rx:5,fill:palette.brass,stroke:palette.metal,'stroke-width':2}));g.appendChild(el('path',{d:`M${len-8},-10 L${len+8},0 L${len-8},10 Z`,fill:palette.metal,stroke:palette.brassDark,'stroke-width':2}));svg.appendChild(g);}
@@ -90,5 +101,5 @@
 
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
 
-  window.OpusJS={version:'0.8.1',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
+  window.OpusJS={version:'0.8.2',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
 })();
