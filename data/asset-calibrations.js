@@ -1,0 +1,5 @@
+window.OpusAssetCalibrations={
+  version:1,
+  source:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/48f7201e-226e-4949-a318-348c4ca2d34c/atom_layout_B_1200.png',
+  assets:{}
+};
