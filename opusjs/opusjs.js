@@ -21,7 +21,24 @@
 
   const atomMaterials={
     lead:{base:'#46585a',mid:'#6f7f7c',dark:'#202d2e',light:'#c2ccca',ink:'#f5f5ef',gradient:{cx:'43%',cy:'34%',r:'82%'},reflection:'leadGlass'},
-    tin:{base:'#666552',mid:'#8b8971',dark:'#292b22',light:'#d6d2b5',ink:'#f5f1dc',gradient:{cx:'43%',cy:'35%',r:'84%'},reflection:'tinMetal'},
+    tin:{
+      base:'#555744',
+      mid:'#7b7b61',
+      dark:'#171a14',
+      light:'#e2ddbd',
+      ink:'#f5f1dc',
+      gradient:{cx:'46%',cy:'28%',r:'88%'},
+      stops:[
+        ['0%','#eee8c8'],
+        ['10%','#d8d3b2'],
+        ['27%','#959276'],
+        ['49%','#696a53'],
+        ['72%','#414536'],
+        ['89%','#25291f'],
+        ['100%','#10130f']
+      ],
+      reflection:'tinMetal'
+    },
     iron:{base:'#777e83',mid:'#a3a9ad',dark:'#3d4246',light:'#d1d5d6',ink:'#f0f0ec',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
     copper:{base:'#9b5934',mid:'#c77b4b',dark:'#5a301e',light:'#e5a574',ink:'#f7e8dd',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
     silver:{base:'#a7aaa3',mid:'#d4d5cf',dark:'#60645f',light:'#f0efe8',ink:'#ffffff',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
@@ -53,7 +70,8 @@
     [['0%','#73553e'],['30%','#2d241e'],['70%','#7d5d43'],['100%','#211a16']].forEach(([offset,color])=>holder.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(holder);
     Object.entries(atomMaterials).forEach(([key,material])=>{
       const radial=el('radialGradient',{id:`atom-material-${key}-${id}`,...material.gradient});
-      [['0%',material.light],['24%',material.mid],['64%',material.base],['100%',material.dark]].forEach(([offset,color])=>radial.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(radial);
+      const stops=material.stops||[['0%',material.light],['24%',material.mid],['64%',material.base],['100%',material.dark]];
+      stops.forEach(([offset,color])=>radial.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(radial);
     });
     svg.appendChild(d);
   }
@@ -67,9 +85,12 @@
       body.appendChild(el('ellipse',{cx:-5.0,cy:3.0,rx:7.2,ry:10.0,fill:'#142225',opacity:.16,transform:'rotate(16)'}));
       body.appendChild(el('ellipse',{cx:5.6,cy:-1.0,rx:5.8,ry:11.4,fill:'#f4f6f1',opacity:.035,transform:'rotate(30)'}));
     }else if(profile==='tinMetal'){
-      body.appendChild(el('ellipse',{cx:2.4,cy:4.7,rx:10.8,ry:6.8,fill:'#dad6bd',opacity:.042,transform:'rotate(-22)'}));
-      body.appendChild(el('ellipse',{cx:-5.5,cy:3.6,rx:7.1,ry:10.0,fill:'#171911',opacity:.19,transform:'rotate(15)'}));
-      body.appendChild(el('ellipse',{cx:4.8,cy:-1.7,rx:5.1,ry:10.7,fill:'#f6f1d9',opacity:.028,transform:'rotate(29)'}));
+      body.appendChild(el('ellipse',{cx:-1.5,cy:-8.0,rx:7.3,ry:3.0,fill:'#fff8d8',opacity:.16,transform:'rotate(-12)'}));
+      body.appendChild(el('ellipse',{cx:2.6,cy:-4.9,rx:9.1,ry:5.1,fill:'#e9e3c2',opacity:.075,transform:'rotate(-20)'}));
+      body.appendChild(el('ellipse',{cx:5.0,cy:3.4,rx:10.9,ry:7.6,fill:'#b8b697',opacity:.038,transform:'rotate(-24)'}));
+      body.appendChild(el('ellipse',{cx:-6.2,cy:3.8,rx:7.4,ry:10.8,fill:'#11140f',opacity:.27,transform:'rotate(14)'}));
+      body.appendChild(el('ellipse',{cx:3.6,cy:8.8,rx:12.0,ry:5.3,fill:'#090b08',opacity:.31,transform:'rotate(-7)'}));
+      body.appendChild(el('ellipse',{cx:8.2,cy:1.0,rx:4.5,ry:11.6,fill:'#eef0d7',opacity:.028,transform:'rotate(27)'}));
     }
   }
 
@@ -104,5 +125,5 @@
 
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
 
-  window.OpusJS={version:'0.7.1',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
+  window.OpusJS={version:'0.7.2',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
 })();
