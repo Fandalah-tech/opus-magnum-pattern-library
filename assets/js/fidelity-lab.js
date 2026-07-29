@@ -2,7 +2,7 @@
   const atoms=['Pb','Sn','Fe','Cu','Ag','Au','Hg'];
   const source=()=>window.OpusAssetCalibrations?.source;
   const cropFor=metal=>window.OpusAssetCalibrations?.assets?.[`atom-${metal}`];
-  const atomScene=metal=>({width:84,height:84,board:{cols:1,rows:1,size:38,offsetX:42,offsetY:42},atoms:[{element:metal,q:0,r:0}]});
+  const atomScene=metal=>({width:84,height:84,board:{visible:false,cols:1,rows:1,size:38,offsetX:42,offsetY:42},atoms:[{element:metal,q:0,r:0}]});
   const model={outerDiameter:76,coreDiameter:48,rimWidth:8,rivetRadius:2.2,symbolScale:1};
   let mounting=false;
 
@@ -23,7 +23,7 @@
     const rendered=`<div class="lab-render">${reconstruction}</div>`;
     const difference=`<div class="lab-reference" style="${referenceStyle(crop)}"></div><div class="lab-render lab-difference">${reconstruction}</div>`;
     const heatmap='<div class="lab-heatmap" aria-label="Heatmap placeholder"></div>';
-    return `<section class="fidelity-lab" data-metal="${metal}"><header><div><p class="eyebrow">FIDELITY LAB · PHASE 2</p><h3>Scientific atom reconstruction</h3><span>Four normalized square views using one shared coordinate frame.</span></div><label>Atom <select data-lab-metal>${atoms.map(x=>`<option${x===metal?' selected':''}>${x}</option>`).join('')}</select></label></header><div class="lab-grid">${tile('Reference',reference)}${tile('Reconstruction',rendered)}${tile('Difference',difference,'lab-composite')}${tile('Heatmap scaffold',heatmap)}</div><div class="lab-metrics"><strong>Parametric atom model v0.1</strong><dl><div><dt>Outer diameter</dt><dd>${model.outerDiameter}px</dd></div><div><dt>Core diameter</dt><dd>${model.coreDiameter}px</dd></div><div><dt>Rim width</dt><dd>${model.rimWidth}px</dd></div><div><dt>Rivet radius</dt><dd>${model.rivetRadius}px</dd></div><div><dt>Symbol scale</dt><dd>${model.symbolScale.toFixed(2)}</dd></div></dl><small>The scientific viewport is now 84 × 84 around the 76 px model, matching the isolated production atom more closely without changing the reference crop.</small></div></section>`;
+    return `<section class="fidelity-lab" data-metal="${metal}"><header><div><p class="eyebrow">FIDELITY LAB · PHASE 2</p><h3>Scientific atom reconstruction</h3><span>Four normalized square views using one shared coordinate frame.</span></div><label>Atom <select data-lab-metal>${atoms.map(x=>`<option${x===metal?' selected':''}>${x}</option>`).join('')}</select></label></header><div class="lab-grid">${tile('Reference',reference)}${tile('Reconstruction',rendered)}${tile('Difference',difference,'lab-composite')}${tile('Heatmap scaffold',heatmap)}</div><div class="lab-metrics"><strong>Parametric atom model v0.1</strong><dl><div><dt>Outer diameter</dt><dd>${model.outerDiameter}px</dd></div><div><dt>Core diameter</dt><dd>${model.coreDiameter}px</dd></div><div><dt>Rim width</dt><dd>${model.rimWidth}px</dd></div><div><dt>Rivet radius</dt><dd>${model.rivetRadius}px</dd></div><div><dt>Symbol scale</dt><dd>${model.symbolScale.toFixed(2)}</dd></div></dl><small>The scientific viewport now suppresses the board tile so only the atom holder is compared with the production reference.</small></div></section>`;
   }
 
   function mount(force=false){
