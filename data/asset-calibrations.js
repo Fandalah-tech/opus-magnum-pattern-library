@@ -1,7 +1,7 @@
 window.OpusAssetCalibrations={
-  version:2,
+  version:3,
   source:'https://images.squarespace-cdn.com/content/v1/52917573e4b03e7a0728e5b3/48f7201e-226e-4949-a318-348c4ca2d34c/atom_layout_B_1200.png',
-  calibrationStatus:'canonical-metal-row-v0-4-mercury-corrected',
+  calibrationStatus:'canonical-metal-row-v0-5-quicksilver-restored',
   assets:{
     'atom-Pb':{x:10,y:84,zoom:500},
     'atom-Sn':{x:23,y:84,zoom:500},
@@ -9,6 +9,6 @@ window.OpusAssetCalibrations={
     'atom-Cu':{x:50,y:84,zoom:500},
     'atom-Ag':{x:64,y:84,zoom:500},
     'atom-Au':{x:77,y:84,zoom:500},
-    'atom-Hg':{x:84,y:84,zoom:500}
+    'atom-Hg':{x:91,y:84,zoom:500}
   }
 };
