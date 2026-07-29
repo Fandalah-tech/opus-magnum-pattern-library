@@ -7,14 +7,23 @@
   let mounting=false;
 
   function referenceStyle(crop){
-    return `background-image:url('${source()}');--lab-x:${crop.x}%;--lab-y:${crop.y}%;--lab-zoom:${crop.zoom}%`;
+    const normalizedZoom=Math.min(1400,Math.max(850,Number(crop.zoom||500)*1.8));
+    return `background-image:url('${source()}');--lab-x:${crop.x}%;--lab-y:${crop.y}%;--lab-zoom:${normalizedZoom}%`;
+  }
+
+  function tile(label,body,className=''){
+    return `<figure class="lab-tile ${className}"><div class="lab-frame">${body}</div><figcaption>${label}</figcaption></figure>`;
   }
 
   function renderLab(metal='Pb'){
     const crop=cropFor(metal);
     if(!crop||!window.OpusJS) return '';
     const reconstruction=window.OpusJS.render({...atomScene(metal),label:''});
-    return `<section class="fidelity-lab" data-metal="${metal}"><header><div><p class="eyebrow">FIDELITY LAB · PHASE 2</p><h3>Scientific atom reconstruction</h3><span>Normalized four-view comparison using the shared crop registry.</span></div><label>Atom <select data-lab-metal>${atoms.map(x=>`<option${x===metal?' selected':''}>${x}</option>`).join('')}</select></label></header><div class="lab-grid"><figure><div class="lab-reference" style="${referenceStyle(crop)}"></div><figcaption>Reference</figcaption></figure><figure><div class="lab-render">${reconstruction}</div><figcaption>Reconstruction</figcaption></figure><figure><div class="lab-reference" style="${referenceStyle(crop)}"></div><div class="lab-render lab-difference">${reconstruction}</div><figcaption>Difference</figcaption></figure><figure><div class="lab-heatmap"><span></span></div><figcaption>Heatmap scaffold</figcaption></figure></div><div class="lab-metrics"><strong>Parametric atom model v0.1</strong><dl><div><dt>Outer diameter</dt><dd>${model.outerDiameter}px</dd></div><div><dt>Core diameter</dt><dd>${model.coreDiameter}px</dd></div><div><dt>Rim width</dt><dd>${model.rimWidth}px</dd></div><div><dt>Rivet radius</dt><dd>${model.rivetRadius}px</dd></div><div><dt>Symbol scale</dt><dd>${model.symbolScale.toFixed(2)}</dd></div></dl><small>Values currently describe the reconstruction model. Automated reference measurements and numerical error scores are the next stage.</small></div></section>`;
+    const reference=`<div class="lab-reference" style="${referenceStyle(crop)}"></div>`;
+    const rendered=`<div class="lab-render">${reconstruction}</div>`;
+    const difference=`<div class="lab-reference" style="${referenceStyle(crop)}"></div><div class="lab-render lab-difference">${reconstruction}</div>`;
+    const heatmap='<div class="lab-heatmap" aria-label="Heatmap placeholder"></div>';
+    return `<section class="fidelity-lab" data-metal="${metal}"><header><div><p class="eyebrow">FIDELITY LAB · PHASE 2</p><h3>Scientific atom reconstruction</h3><span>Four normalized square views using one shared coordinate frame.</span></div><label>Atom <select data-lab-metal>${atoms.map(x=>`<option${x===metal?' selected':''}>${x}</option>`).join('')}</select></label></header><div class="lab-grid">${tile('Reference',reference)}${tile('Reconstruction',rendered)}${tile('Difference',difference,'lab-composite')}${tile('Heatmap scaffold',heatmap)}</div><div class="lab-metrics"><strong>Parametric atom model v0.1</strong><dl><div><dt>Outer diameter</dt><dd>${model.outerDiameter}px</dd></div><div><dt>Core diameter</dt><dd>${model.coreDiameter}px</dd></div><div><dt>Rim width</dt><dd>${model.rimWidth}px</dd></div><div><dt>Rivet radius</dt><dd>${model.rivetRadius}px</dd></div><div><dt>Symbol scale</dt><dd>${model.symbolScale.toFixed(2)}</dd></div></dl><small>Reference and reconstruction now use the same fixed viewport. Pixel measurement remains the next stage.</small></div></section>`;
   }
 
   function mount(force=false){
