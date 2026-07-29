@@ -18,14 +18,15 @@
     }
   };
 
+  // Final canonical atom set. Shared geometry/material; only identity, optical scale and centering vary.
   const atomIdentities={
     Pb:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#73878a',ink:'#f5f5ef',mark:'♄',symbolSize:24.2,symbolX:0,symbolY:.2,symbolOpacity:.95},
     Sn:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#969477',ink:'#f5f1dc',mark:'♃',symbolSize:23.8,symbolX:.3,symbolY:.1,symbolOpacity:.94},
-    Fe:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#806f73',ink:'#fff5ef',mark:'♂',symbolSize:24.0,symbolX:.1,symbolY:.4,symbolOpacity:.96},
-    Cu:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b66f48',ink:'#fff0e5',mark:'♀',symbolSize:23.8,symbolX:0,symbolY:.6,symbolOpacity:.96},
-    Ag:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#bfc4c1',ink:'#ffffff',mark:'☽',symbolSize:24.4,symbolX:.5,symbolY:.2,symbolOpacity:.96},
+    Fe:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#806f73',ink:'#fff5ef',mark:'♂',symbolSize:26.6,symbolX:.2,symbolY:.5,symbolOpacity:.96},
+    Cu:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b66f48',ink:'#fff0e5',mark:'♀',symbolSize:26.3,symbolX:0,symbolY:.8,symbolOpacity:.96},
+    Ag:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#bfc4c1',ink:'#ffffff',mark:'☽',symbolSize:27.2,symbolX:1.0,symbolY:-.2,symbolOpacity:.96},
     Au:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#c39a3f',ink:'#fff4c2',mark:'☉',symbolSize:23.8,symbolX:0,symbolY:.2,symbolOpacity:.96},
-    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#8fa8b2',ink:'#f5fbfc',mark:'☿',symbolSize:24.5,symbolX:0,symbolY:.7,symbolOpacity:.96}
+    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b8b19a',ink:'#fff8e7',mark:'☿',symbolSize:25.8,symbolX:0,symbolY:.8,symbolOpacity:.95}
   };
 
   const el=(name,attrs={})=>{const node=document.createElementNS(NS,name);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,v));return node;};
@@ -95,5 +96,5 @@
 
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
 
-  window.OpusJS={version:'0.8.3',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
+  window.OpusJS={version:'1.0.0',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
 })();
