@@ -93,12 +93,17 @@
     return new XMLSerializer().serializeToString(svg);
   };
 
-  window.OpusJS.version='1.7.0';
-  if (window.OpusAssetGallery?.entries && !window.OpusAssetGallery.entries.some(entry=>entry.id==='arm-piston')) {
-    window.OpusAssetGallery.entries.splice(10,0,{
+  const currentVersion = String(window.OpusJS.version || '0.0.0');
+  if (currentVersion.localeCompare('1.8.1', undefined, { numeric: true }) < 0) window.OpusJS.version = '1.8.1';
+
+  if (window.OpusAssetGallery?.entries) {
+    const existing = window.OpusAssetGallery.entries.find(entry => entry.id === 'arm-piston');
+    const pistonEntry = {
       id:'arm-piston',group:'Mechanisms',name:'Piston arm',status:'draft',reference:'parts',calibratable:false,
-      notes:['Variable reach from one to three cells','Telescoping sleeve and intermediate collars use MasterPistonV1'],
+      notes:['Temporary V1 restored for comparison','Canonical telescoping geometry still requires reconstruction'],
       scene:{width:420,height:250,board:{cols:5,rows:3,size:38,offsetX:62,offsetY:58},arms:[{type:'piston',q:0,r:1,length:3,rotation:0}]}
-    });
+    };
+    if (existing) Object.assign(existing, pistonEntry);
+    else window.OpusAssetGallery.entries.splice(10,0,pistonEntry);
   }
 })();
