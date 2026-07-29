@@ -76,14 +76,7 @@
     layer.appendChild(svgEl('circle', { cx: point.x, cy: point.y, r: 2.15, fill: '#dfc88f', stroke: '#6f5a35', 'stroke-width': .65 }));
   }
 
-  function marker(layer, point, neighbor, label) {
-    const dx = neighbor.x - point.x;
-    const dy = neighbor.y - point.y;
-    const length = Math.hypot(dx, dy) || 1;
-    const nx = -dy / length;
-    const ny = dx / length;
-    const x = point.x + nx * 17;
-    const y = point.y + ny * 17;
+  function markerText(layer, x, y, label) {
     const text = svgEl('text', {
       x, y, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
       'font-family': 'Georgia, Times New Roman, serif', 'font-size': 18,
@@ -92,6 +85,25 @@
     });
     text.textContent = label;
     layer.appendChild(text);
+  }
+
+  function marker(layer, point, neighbor, label) {
+    const dx = neighbor.x - point.x;
+    const dy = neighbor.y - point.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+    markerText(layer, point.x + nx * 17, point.y + ny * 17, label);
+  }
+
+  function loopMarkerPair(layer, point, neighbor) {
+    const dx = neighbor.x - point.x;
+    const dy = neighbor.y - point.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const nx = -dy / length;
+    const ny = dx / length;
+    markerText(layer, point.x + nx * 17, point.y + ny * 17, '+');
+    markerText(layer, point.x - nx * 17, point.y - ny * 17, '−');
   }
 
   function renderTrack(layer, track, board) {
@@ -108,10 +120,17 @@
     }
     uniquePoints.forEach(point => joint(layer, point));
 
+    if (loop) {
+      const markerIndex = Math.max(0, Math.min(uniquePoints.length - 1, Number.isInteger(track.markerIndex) ? track.markerIndex : 0));
+      const neighbor = uniquePoints[(markerIndex + 1) % uniquePoints.length] || uniquePoints[markerIndex];
+      loopMarkerPair(layer, uniquePoints[markerIndex], neighbor);
+      return;
+    }
+
     const minusIndex = Math.max(0, Math.min(uniquePoints.length - 1, Number.isInteger(track.minusIndex) ? track.minusIndex : 0));
-    const plusIndex = Math.max(0, Math.min(uniquePoints.length - 1, Number.isInteger(track.plusIndex) ? track.plusIndex : (loop ? Math.floor(uniquePoints.length / 2) : uniquePoints.length - 1)));
-    const minusNeighbor = uniquePoints[(minusIndex + 1) % uniquePoints.length] || uniquePoints[minusIndex];
-    const plusNeighbor = uniquePoints[(plusIndex - 1 + uniquePoints.length) % uniquePoints.length] || uniquePoints[plusIndex];
+    const plusIndex = Math.max(0, Math.min(uniquePoints.length - 1, Number.isInteger(track.plusIndex) ? track.plusIndex : uniquePoints.length - 1));
+    const minusNeighbor = uniquePoints[Math.min(minusIndex + 1, uniquePoints.length - 1)] || uniquePoints[minusIndex];
+    const plusNeighbor = uniquePoints[Math.max(plusIndex - 1, 0)] || uniquePoints[plusIndex];
     marker(layer, uniquePoints[minusIndex], minusNeighbor, '−');
     marker(layer, uniquePoints[plusIndex], plusNeighbor, '+');
   }
@@ -135,5 +154,5 @@
     return new XMLSerializer().serializeToString(svg);
   };
 
-  window.OpusJS.version = '1.8.0';
+  window.OpusJS.version = '1.8.1';
 })();
