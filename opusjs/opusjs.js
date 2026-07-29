@@ -39,7 +39,24 @@
       ],
       reflection:'tinMetal'
     },
-    iron:{base:'#777e83',mid:'#a3a9ad',dark:'#3d4246',light:'#d1d5d6',ink:'#f0f0ec',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
+    iron:{
+      base:'#626a70',
+      mid:'#8f989e',
+      dark:'#20272c',
+      light:'#dce2e5',
+      ink:'#f3f5f5',
+      gradient:{cx:'44%',cy:'27%',r:'86%'},
+      stops:[
+        ['0%','#eef3f5'],
+        ['9%','#d5dde1'],
+        ['24%','#a9b2b7'],
+        ['46%','#788188'],
+        ['69%','#4b545a'],
+        ['88%','#2b3338'],
+        ['100%','#171d21']
+      ],
+      reflection:'ironSteel'
+    },
     copper:{base:'#9b5934',mid:'#c77b4b',dark:'#5a301e',light:'#e5a574',ink:'#f7e8dd',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
     silver:{base:'#a7aaa3',mid:'#d4d5cf',dark:'#60645f',light:'#f0efe8',ink:'#ffffff',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
     gold:{base:'#a98425',mid:'#d4ad42',dark:'#5f4816',light:'#f1d77c',ink:'#fff4c2',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
@@ -91,6 +108,12 @@
       body.appendChild(el('ellipse',{cx:-6.2,cy:3.8,rx:7.4,ry:10.8,fill:'#11140f',opacity:.27,transform:'rotate(14)'}));
       body.appendChild(el('ellipse',{cx:3.6,cy:8.8,rx:12.0,ry:5.3,fill:'#090b08',opacity:.31,transform:'rotate(-7)'}));
       body.appendChild(el('ellipse',{cx:8.2,cy:1.0,rx:4.5,ry:11.6,fill:'#eef0d7',opacity:.028,transform:'rotate(27)'}));
+    }else if(profile==='ironSteel'){
+      body.appendChild(el('ellipse',{cx:-1.8,cy:-8.2,rx:6.5,ry:2.15,fill:'#f8fcfd',opacity:.21,transform:'rotate(-13)'}));
+      body.appendChild(el('ellipse',{cx:2.8,cy:-5.3,rx:8.4,ry:4.0,fill:'#dce7eb',opacity:.085,transform:'rotate(-21)'}));
+      body.appendChild(el('ellipse',{cx:-6.0,cy:3.7,rx:6.7,ry:10.4,fill:'#131a1f',opacity:.22,transform:'rotate(13)'}));
+      body.appendChild(el('ellipse',{cx:4.0,cy:8.4,rx:11.7,ry:4.8,fill:'#0d1216',opacity:.24,transform:'rotate(-6)'}));
+      body.appendChild(el('ellipse',{cx:7.7,cy:.4,rx:3.8,ry:10.8,fill:'#d9e4e8',opacity:.042,transform:'rotate(28)'}));
     }
   }
 
@@ -125,5 +148,5 @@
 
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
 
-  window.OpusJS={version:'0.7.2',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
+  window.OpusJS={version:'0.8.0',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
 })();
