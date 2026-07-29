@@ -6,59 +6,32 @@
   const palette={board:'#0d1211',cell:'#232c29',cellLine:'#414b47',brass:'#d3a348',brassDark:'#6a5124',metal:'#e6dcc5',shadow:'#050807'};
 
   const atomGeometries={
-    masterAtomV1:{
-      holderRadius:28.0,
-      holderInset:1.7,
-      outerCasingRadius:24.0,
-      bevelRadius:22.65,
-      innerCasingRadius:20.15,
-      coreRadius:18.7,
-      innerRingRadius:16.05,
-      rivetOrbit:21.15,
-      rivetRadius:.42
-    }
+    masterAtomV1:{holderRadius:28.0,holderInset:1.7,outerCasingRadius:24.0,bevelRadius:22.65,innerCasingRadius:20.15,coreRadius:18.7,innerRingRadius:16.05,rivetOrbit:21.15,rivetRadius:.42}
   };
 
   const atomMaterials={
-    lead:{base:'#46585a',mid:'#6f7f7c',dark:'#202d2e',light:'#c2ccca',ink:'#f5f5ef',gradient:{cx:'43%',cy:'34%',r:'82%'},reflection:'leadGlass'},
-    tin:{
-      base:'#555744',
-      mid:'#7b7b61',
-      dark:'#171a14',
-      light:'#e2ddbd',
-      ink:'#f5f1dc',
+    masterMaterialV1:{
       gradient:{cx:'46%',cy:'28%',r:'88%'},
-      stops:[
-        ['0%','#eee8c8'],
-        ['10%','#d8d3b2'],
-        ['27%','#959276'],
-        ['49%','#696a53'],
-        ['72%','#414536'],
-        ['89%','#25291f'],
-        ['100%','#10130f']
-      ],
-      reflection:'tinMetal'
-    },
-    iron:{base:'#777e83',mid:'#a3a9ad',dark:'#3d4246',light:'#d1d5d6',ink:'#f0f0ec',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
-    copper:{base:'#9b5934',mid:'#c77b4b',dark:'#5a301e',light:'#e5a574',ink:'#f7e8dd',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
-    silver:{base:'#a7aaa3',mid:'#d4d5cf',dark:'#60645f',light:'#f0efe8',ink:'#ffffff',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
-    gold:{base:'#a98425',mid:'#d4ad42',dark:'#5f4816',light:'#f1d77c',ink:'#fff4c2',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'},
-    mercury:{base:'#8699a1',mid:'#b8c7cc',dark:'#4d6068',light:'#dce8eb',ink:'#f5fbfc',gradient:{cx:'43%',cy:'24%',r:'78%'},reflection:'standard'}
+      stopLevels:[1,.89,.63,.43,.25,.12,.045],
+      stopOffsets:['0%','10%','27%','49%','72%','89%','100%'],
+      reflection:'masterGlassMetal'
+    }
   };
 
   const atomIdentities={
-    Pb:{geometry:'masterAtomV1',material:'lead',mark:'♄',symbolSize:21.2,symbolY:0,symbolOpacity:.95},
-    Sn:{geometry:'masterAtomV1',material:'tin',mark:'♃',symbolSize:19.6,symbolY:.15,symbolOpacity:.94},
-    Fe:{geometry:'masterAtomV1',material:'iron',mark:'♂',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
-    Cu:{geometry:'masterAtomV1',material:'copper',mark:'♀',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
-    Ag:{geometry:'masterAtomV1',material:'silver',mark:'☽',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
-    Au:{geometry:'masterAtomV1',material:'gold',mark:'☉',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
-    Hg:{geometry:'masterAtomV1',material:'mercury',mark:'☿',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96}
+    Pb:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#73878a',ink:'#f5f5ef',mark:'♄',symbolSize:21.2,symbolY:0,symbolOpacity:.95},
+    Sn:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#969477',ink:'#f5f1dc',mark:'♃',symbolSize:19.6,symbolY:.15,symbolOpacity:.94},
+    Fe:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#806f73',ink:'#fff5ef',mark:'♂',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
+    Cu:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#b66f48',ink:'#fff0e5',mark:'♀',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
+    Ag:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#bfc4c1',ink:'#ffffff',mark:'☽',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
+    Au:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#c39a3f',ink:'#fff4c2',mark:'☉',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96},
+    Hg:{geometry:'masterAtomV1',material:'masterMaterialV1',color:'#8fa8b2',ink:'#f5fbfc',mark:'☿',symbolSize:18.2,symbolY:-.1,symbolOpacity:.96}
   };
 
   const el=(name,attrs={})=>{const node=document.createElementNS(NS,name);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,v));return node;};
   const axial=(q,r,size,ox,oy)=>({x:ox+size*SQRT3*(q+r/2),y:oy+size*1.5*r});
   function hexPoints(cx,cy,size){return Array.from({length:6},(_,i)=>{const a=Math.PI/180*(60*i-30);return `${cx+size*Math.cos(a)},${cy+size*Math.sin(a)}`}).join(' ')}
+  function shade(hex,factor){const value=parseInt(hex.slice(1),16);const r=(value>>16)&255,g=(value>>8)&255,b=value&255;const channel=n=>Math.max(0,Math.min(255,Math.round(n*factor)));return `#${[channel(r),channel(g),channel(b)].map(n=>n.toString(16).padStart(2,'0')).join('')}`;}
 
   function defs(svg,id){
     const d=el('defs');
@@ -68,30 +41,25 @@
     [['0%','#d9c19b'],['18%','#9a7650'],['47%','#46362a'],['73%','#ad8860'],['100%','#30251e']].forEach(([offset,color])=>bevel.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(bevel);
     const holder=el('linearGradient',{id:`holder-${id}`,x1:'0%',y1:'0%',x2:'100%',y2:'100%'});
     [['0%','#73553e'],['30%','#2d241e'],['70%','#7d5d43'],['100%','#211a16']].forEach(([offset,color])=>holder.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(holder);
-    Object.entries(atomMaterials).forEach(([key,material])=>{
-      const radial=el('radialGradient',{id:`atom-material-${key}-${id}`,...material.gradient});
-      const stops=material.stops||[['0%',material.light],['24%',material.mid],['64%',material.base],['100%',material.dark]];
-      stops.forEach(([offset,color])=>radial.appendChild(el('stop',{offset,'stop-color':color})));d.appendChild(radial);
+    const material=atomMaterials.masterMaterialV1;
+    Object.entries(atomIdentities).forEach(([key,identity])=>{
+      const radial=el('radialGradient',{id:`atom-${key}-${id}`,...material.gradient});
+      material.stopOffsets.forEach((offset,index)=>radial.appendChild(el('stop',{offset,'stop-color':shade(identity.color,material.stopLevels[index])})));
+      d.appendChild(radial);
     });
     svg.appendChild(d);
   }
 
   function drawBoard(svg,scene){if(scene.board?.visible===false)return;const {cols=8,rows=5,size=42,offsetX=66,offsetY=55}=scene.board||{};const g=el('g');for(let r=0;r<rows;r++)for(let q=0;q<cols;q++){const p=axial(q,r,size,offsetX,offsetY);g.appendChild(el('polygon',{points:hexPoints(p.x,p.y,size-2),fill:palette.cell,stroke:palette.cellLine,'stroke-width':1.1,opacity:.72}));}svg.appendChild(g);}
 
-  function drawMaterialReflections(body,profile){
+  function drawMaterialReflections(body){
     body.appendChild(el('ellipse',{cx:-4.6,cy:-6.4,rx:6.0,ry:2.45,fill:'#fff',opacity:.075,transform:'rotate(-18)'}));
-    if(profile==='leadGlass'){
-      body.appendChild(el('ellipse',{cx:3.2,cy:4.8,rx:10.6,ry:6.6,fill:'#d8e1df',opacity:.045,transform:'rotate(-22)'}));
-      body.appendChild(el('ellipse',{cx:-5.0,cy:3.0,rx:7.2,ry:10.0,fill:'#142225',opacity:.16,transform:'rotate(16)'}));
-      body.appendChild(el('ellipse',{cx:5.6,cy:-1.0,rx:5.8,ry:11.4,fill:'#f4f6f1',opacity:.035,transform:'rotate(30)'}));
-    }else if(profile==='tinMetal'){
-      body.appendChild(el('ellipse',{cx:-1.5,cy:-8.0,rx:7.3,ry:3.0,fill:'#fff8d8',opacity:.16,transform:'rotate(-12)'}));
-      body.appendChild(el('ellipse',{cx:2.6,cy:-4.9,rx:9.1,ry:5.1,fill:'#e9e3c2',opacity:.075,transform:'rotate(-20)'}));
-      body.appendChild(el('ellipse',{cx:5.0,cy:3.4,rx:10.9,ry:7.6,fill:'#b8b697',opacity:.038,transform:'rotate(-24)'}));
-      body.appendChild(el('ellipse',{cx:-6.2,cy:3.8,rx:7.4,ry:10.8,fill:'#11140f',opacity:.27,transform:'rotate(14)'}));
-      body.appendChild(el('ellipse',{cx:3.6,cy:8.8,rx:12.0,ry:5.3,fill:'#090b08',opacity:.31,transform:'rotate(-7)'}));
-      body.appendChild(el('ellipse',{cx:8.2,cy:1.0,rx:4.5,ry:11.6,fill:'#eef0d7',opacity:.028,transform:'rotate(27)'}));
-    }
+    body.appendChild(el('ellipse',{cx:-1.5,cy:-8.0,rx:7.3,ry:3.0,fill:'#fff',opacity:.12,transform:'rotate(-12)'}));
+    body.appendChild(el('ellipse',{cx:2.6,cy:-4.9,rx:9.1,ry:5.1,fill:'#fff',opacity:.055,transform:'rotate(-20)'}));
+    body.appendChild(el('ellipse',{cx:5.0,cy:3.4,rx:10.9,ry:7.6,fill:'#fff',opacity:.022,transform:'rotate(-24)'}));
+    body.appendChild(el('ellipse',{cx:-6.2,cy:3.8,rx:7.4,ry:10.8,fill:'#000',opacity:.20,transform:'rotate(14)'}));
+    body.appendChild(el('ellipse',{cx:3.6,cy:8.8,rx:12.0,ry:5.3,fill:'#000',opacity:.24,transform:'rotate(-7)'}));
+    body.appendChild(el('ellipse',{cx:8.2,cy:1.0,rx:4.5,ry:11.6,fill:'#fff',opacity:.02,transform:'rotate(27)'}));
   }
 
   function drawAtom(svg,item,scene,id){
@@ -99,7 +67,6 @@
     const element=String(item.element||'Fe');
     const identity=atomIdentities[element]||atomIdentities.Fe;
     const geometry=atomGeometries[identity.geometry];
-    const material=atomMaterials[identity.material];
     const g=el('g',{transform:`translate(${p.x} ${p.y})`,'data-atom':element,'data-geometry':identity.geometry,'data-material':identity.material});
     const body=el('g',{filter:`url(#shadow-${id})`});
     body.appendChild(el('polygon',{points:hexPoints(0,0,geometry.holderRadius),fill:`url(#holder-${id})`,stroke:'#806047','stroke-width':.72}));
@@ -107,15 +74,13 @@
     body.appendChild(el('circle',{r:geometry.outerCasingRadius,fill:'#090908',stroke:'#201a17','stroke-width':.96}));
     body.appendChild(el('circle',{r:geometry.bevelRadius,fill:`url(#bevel-${id})`,stroke:'#2f241d','stroke-width':.7}));
     body.appendChild(el('circle',{r:geometry.innerCasingRadius,fill:'#111513',stroke:'#070909','stroke-width':.76}));
-    body.appendChild(el('circle',{r:geometry.coreRadius,fill:`url(#atom-material-${identity.material}-${id})`,stroke:material.light,'stroke-width':.5}));
-    body.appendChild(el('circle',{r:geometry.innerRingRadius,fill:'none',stroke:material.dark,'stroke-width':.72,opacity:.58}));
-    drawMaterialReflections(body,material.reflection);
+    body.appendChild(el('circle',{r:geometry.coreRadius,fill:`url(#atom-${element}-${id})`,stroke:shade(identity.color,1.35),'stroke-width':.5}));
+    body.appendChild(el('circle',{r:geometry.innerRingRadius,fill:'none',stroke:shade(identity.color,.3),'stroke-width':.72,opacity:.58}));
+    drawMaterialReflections(body);
     for(let i=0;i<6;i++){const a=i*Math.PI/3;body.appendChild(el('circle',{cx:geometry.rivetOrbit*Math.cos(a),cy:geometry.rivetOrbit*Math.sin(a),r:geometry.rivetRadius,fill:'#3a3027',stroke:'#b99d70','stroke-width':.2,opacity:.46}));}
     g.appendChild(body);
-    const t=el('text',{x:0,y:identity.symbolY,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':identity.symbolSize,'font-weight':300,fill:material.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:identity.symbolOpacity});
-    t.textContent=identity.mark;
-    g.appendChild(t);
-    svg.appendChild(g);
+    const t=el('text',{x:0,y:identity.symbolY,'text-anchor':'middle','dominant-baseline':'middle','font-family':'Noto Serif Symbols 2, Segoe UI Symbol, DejaVu Sans, serif','font-size':identity.symbolSize,'font-weight':300,fill:identity.ink,'text-rendering':'geometricPrecision','pointer-events':'none',opacity:identity.symbolOpacity});
+    t.textContent=identity.mark;g.appendChild(t);svg.appendChild(g);
   }
 
   function drawArm(svg,item,scene){const p=axial(item.q,item.r,scene.board.size,scene.board.offsetX,scene.board.offsetY);const angle=(item.rotation||0)*60;const len=(item.length||1)*scene.board.size*SQRT3;const g=el('g',{transform:`translate(${p.x} ${p.y}) rotate(${angle})`});g.appendChild(el('circle',{r:22,fill:palette.shadow,opacity:.5}));g.appendChild(el('circle',{r:18,fill:palette.brassDark,stroke:palette.metal,'stroke-width':3}));g.appendChild(el('circle',{r:6,fill:palette.brass}));g.appendChild(el('rect',{x:8,y:-6,width:len-16,height:12,rx:5,fill:palette.brass,stroke:palette.metal,'stroke-width':2}));g.appendChild(el('path',{d:`M${len-8},-10 L${len+8},0 L${len-8},10 Z`,fill:palette.metal,stroke:palette.brassDark,'stroke-width':2}));svg.appendChild(g);}
@@ -125,5 +90,5 @@
 
   function render(scene){const width=scene.width||720,height=scene.height||360;const id=++renderId;scene.board={cols:8,rows:5,size:42,offsetX:66,offsetY:55,...scene.board};const svg=el('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':scene.label||'Opus Magnum scene'});defs(svg,id);svg.appendChild(el('rect',{width,height,fill:palette.board}));drawBoard(svg,scene);(scene.tracks||[]).forEach(x=>drawTrack(svg,x,scene));(scene.glyphs||[]).forEach(x=>x.type==='projection'?drawProjection(svg,x,scene):x.type==='bonding'?drawBonding(svg,x,scene):null);(scene.arms||[]).forEach(x=>drawArm(svg,x,scene));(scene.atoms||[]).forEach(x=>drawAtom(svg,x,scene,id));return svg.outerHTML;}
 
-  window.OpusJS={version:'0.7.2',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
+  window.OpusJS={version:'0.8.0',render,axial,primitives:{atomGeometries,atomMaterials,atomIdentities}};
 })();
