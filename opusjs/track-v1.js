@@ -91,15 +91,19 @@
       return;
     }
 
-    const labels = marker === '±' ? ['+', '−'] : [marker];
-    labels.forEach((label, index) => {
+    const labels = marker === '±' ? [
+      {label:'−', x:-3.6},
+      {label:'+', x:3.6}
+    ] : [{label:marker, x:0}];
+
+    labels.forEach(({label, x}) => {
       const text = svgEl('text', {
-        x: point.x,
-        y: point.y + (labels.length === 2 ? (index === 0 ? -3.25 : 4.15) : .45),
+        x: point.x + x,
+        y: point.y + .55,
         'text-anchor': 'middle',
         'dominant-baseline': 'middle',
         'font-family': 'Georgia, Times New Roman, serif',
-        'font-size': labels.length === 2 ? 8.5 : 12,
+        'font-size': labels.length === 2 ? 8.6 : 12,
         'font-weight': 700,
         fill: '#ecd8a5',
         stroke: '#17120d',
@@ -161,5 +165,5 @@
     return new XMLSerializer().serializeToString(svg);
   };
 
-  window.OpusJS.version = '1.9.0';
+  window.OpusJS.version = '1.9.1';
 })();
