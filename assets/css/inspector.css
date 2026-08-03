@@ -61,6 +61,17 @@ button:disabled { opacity: .35; cursor: not-allowed; }
 .arm { padding: 12px; background: var(--panel-2); border-left: 3px solid var(--accent); }
 .arm strong { display: flex; justify-content: space-between; }
 .arm small { color: var(--muted); }
+.timeline-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.timeline-facts div { padding: 12px; background: var(--panel-2); border: 1px solid var(--line); }
+.timeline-facts small { display: block; color: var(--muted); margin-bottom: 5px; }
+.timeline-facts strong { color: var(--accent); font-size: 22px; }
+.timeline-arms { display: grid; gap: 10px; }
+.timeline-row { display: grid; grid-template-columns: minmax(160px, 220px) 1fr 48px; gap: 12px; align-items: center; }
+.timeline-label { display: grid; }
+.timeline-label small { color: var(--muted); }
+.timeline-track { height: 12px; background: #0e0d0c; border: 1px solid var(--line); overflow: hidden; }
+.timeline-track span { display: block; height: 100%; background: linear-gradient(90deg, #9b6d31, var(--accent)); }
+.timeline-row b { text-align: right; color: var(--accent); }
 .hint { color: var(--muted); font-size: 13px; }
 .raw-panel { margin-top: 12px; padding: 16px 20px; }
 .raw-panel summary { cursor: pointer; font-weight: 800; }
@@ -71,6 +82,8 @@ footer { padding: 22px; text-align: center; border-top: 1px solid var(--line); c
   .topbar nav { display: none; }
   .upload-panel, .result-grid { grid-template-columns: 1fr; }
   .upload-panel button { min-height: 52px; }
-  .metrics { grid-template-columns: 1fr 1fr; }
+  .metrics, .timeline-facts { grid-template-columns: 1fr 1fr; }
+  .timeline-row { grid-template-columns: 1fr; }
+  .timeline-row b { text-align: left; }
   .summary-head { align-items: flex-start; flex-direction: column; }
 }
