@@ -147,3 +147,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# The private fixture archive is provisioned in Cloud Storage; changes to this
+# runner intentionally trigger the reference-regression workflow.
