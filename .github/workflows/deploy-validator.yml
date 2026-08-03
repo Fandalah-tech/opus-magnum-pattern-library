@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/deploy-validator.yml
       - packages/opus_parser/**
+      - packages/opus_analysis/**
       - services/validator/**
       - tools/omsim_adapter/**
   workflow_dispatch:
@@ -34,8 +35,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run parser tests
-        run: python -m unittest discover -s packages/opus_parser/tests -v
+      - name: Run SDK tests
+        run: |
+          python -m unittest discover -s packages/opus_parser/tests -v
+          python -m unittest discover -s packages/opus_analysis/tests -v
 
       - name: Authenticate to Google Cloud
         id: auth
