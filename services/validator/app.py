@@ -10,10 +10,10 @@ from typing import Any
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from packages.opus_analysis import build_program_timeline, build_solution_graph
+from packages.opus_analysis import build_program_timeline, build_solution_graph, detect_patterns
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 
-app = FastAPI(title="Opus Codex Validator", version="0.4.0")
+app = FastAPI(title="Opus Codex Validator", version="0.5.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -41,6 +41,13 @@ def _canonical_parse(parser, upload: UploadFile) -> dict[str, Any]:
         return parser(data, source_name=upload.filename)
     except ParseError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+def _analysis_bundle(solution_model: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    graph = build_solution_graph(solution_model)
+    timeline = build_program_timeline(solution_model)
+    patterns = detect_patterns(solution_model, graph, timeline)
+    return graph, timeline, patterns
 
 
 def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
@@ -75,7 +82,7 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "validator": "omsim", "apiVersion": "0.4.0"}
+    return {"status": "ok", "validator": "omsim", "apiVersion": "0.5.0"}
 
 
 @app.post("/parse/puzzle")
@@ -98,6 +105,19 @@ def analyze_graph_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
 def analyze_timeline_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
     solution_model = _canonical_parse(parse_solution_bytes, solution)
     return build_program_timeline(solution_model)
+
+
+@app.post("/analyze/patterns")
+def analyze_patterns_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
+    solution_model = _canonical_parse(parse_solution_bytes, solution)
+    graph, timeline, patterns = _analysis_bundle(solution_model)
+    return {
+        **patterns,
+        "inputs": {
+            "graph": graph["summary"],
+            "timeline": timeline["summary"],
+        },
+    }
 
 
 @app.post("/validate")
@@ -124,8 +144,7 @@ def validate(
         solution_path.write_bytes(solution_bytes)
         result = _run_omsim(puzzle_path, solution_path)
 
-    graph = build_solution_graph(solution_model)
-    timeline = build_program_timeline(solution_model)
+    graph, timeline, patterns = _analysis_bundle(solution_model)
     result["puzzle"] = {
         "name": puzzle_model["name"],
         "sha256": puzzle_model["source"]["sha256"],
@@ -140,6 +159,7 @@ def validate(
     result["analysis"] = {
         "structuralGraph": graph["summary"],
         "programTimeline": timeline["summary"],
+        "patterns": patterns["summary"],
     }
     json.dumps(result)
     return result
