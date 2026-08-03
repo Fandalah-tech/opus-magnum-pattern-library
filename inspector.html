@@ -71,6 +71,12 @@
       </div>
 
       <article class="panel full">
+        <div class="panel-head"><h3 data-i18n="inspector.patterns">Detected patterns</h3><span id="pattern-count"></span></div>
+        <p class="hint" data-i18n="inspector.patternsHint">Findings are explainable and confidence-rated. Medium-confidence findings remain hypotheses for human review.</p>
+        <div id="pattern-findings" class="pattern-findings"></div>
+      </article>
+
+      <article class="panel full">
         <div class="panel-head"><h3 data-i18n="inspector.timeline">Program timeline</h3><span id="timeline-horizon"></span></div>
         <p class="hint" data-i18n="inspector.timelineHint">Static instruction timeline. It measures activity and parallelism without simulating molecules yet.</p>
         <div id="timeline-facts" class="timeline-facts"></div>
