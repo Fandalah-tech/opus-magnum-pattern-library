@@ -69,8 +69,11 @@
     validity.textContent = validation.valid ? "VALIDE" : "INVALIDE";
     validity.className = `status-badge ${validation.valid ? "valid" : "invalid"}`;
 
-    const metrics = validation.metrics || solution.metrics || {};
-    for (const key of ["cost", "cycles", "area", "instructions"]) text(`metric-${key}`, metrics[key]);
+    const validatorMetrics = validation.metrics || {};
+    const declaredMetrics = solution.metrics || {};
+    for (const key of ["cost", "cycles", "area", "instructions"]) {
+      text(`metric-${key}`, validatorMetrics[key] ?? declaredMetrics[key]);
+    }
 
     renderParts(solution);
     renderFacts(graph);
