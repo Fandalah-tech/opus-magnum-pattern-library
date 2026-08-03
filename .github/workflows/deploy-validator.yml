@@ -1,6 +1,13 @@
 name: Deploy validator to Cloud Run
 
 on:
+  push:
+    branches:
+      - agent/architecture-reboot
+    paths:
+      - .github/workflows/deploy-validator.yml
+      - services/validator/**
+      - tools/omsim_adapter/**
   workflow_dispatch:
 
 permissions:
