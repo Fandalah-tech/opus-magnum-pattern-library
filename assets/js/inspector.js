@@ -8,6 +8,11 @@
 
   const byId = (id) => document.getElementById(id);
   const text = (id, value) => { byId(id).textContent = value ?? "—"; };
+  const solutionForm = () => {
+    const form = new FormData();
+    form.append("solution", solutionInput.files[0]);
+    return form;
+  };
 
   function updateFiles() {
     text("puzzle-name", puzzleInput.files[0]?.name || "Choisir un fichier .puzzle");
@@ -49,6 +54,23 @@
     }).join("") || "<p class='hint'>Aucun bras détecté.</p>";
   }
 
+  function renderTimeline(timeline) {
+    const summary = timeline.summary || {};
+    text("timeline-horizon", `${summary.horizon ?? 0} cycles analysés`);
+    const facts = [
+      ["Cycles actifs", summary.activeCycleCount],
+      ["Cycles globalement inactifs", summary.globalIdleCycles],
+      ["Pic de parallélisme", summary.peakParallelArms],
+      ["Parallélisme moyen", summary.averageParallelArms],
+    ];
+    byId("timeline-facts").innerHTML = facts.map(([label, value]) => `<div><small>${label}</small><strong>${value ?? "—"}</strong></div>`).join("");
+    byId("timeline-arms").innerHTML = (timeline.arms || []).map((arm) => {
+      const pct = Math.max(0, Math.min(100, Math.round((arm.utilization || 0) * 100)));
+      const label = `${arm.type}${arm.armNumber !== undefined ? ` #${arm.armNumber}` : ""}`;
+      return `<div class="timeline-row"><div class="timeline-label"><strong>${label}</strong><small>${arm.actionCount} actions · période ${arm.period}</small></div><div class="timeline-track"><span style="width:${pct}%"></span></div><b>${pct}%</b></div>`;
+    }).join("") || "<p class='hint'>Aucun bras détecté.</p>";
+  }
+
   function renderRelations(graph) {
     const edges = graph.edges || [];
     text("edge-count", `${edges.length} relations`);
@@ -58,11 +80,7 @@
   }
 
   function render(payload) {
-    const validation = payload.validation;
-    const puzzle = payload.puzzle;
-    const solution = payload.solution;
-    const graph = payload.graph;
-
+    const { validation, puzzle, solution, graph, timeline } = payload;
     text("solution-title", solution.name || solution.source?.name || "Solution");
     text("puzzle-title", puzzle.name || solution.puzzleFile || "Puzzle");
     const validity = byId("validity");
@@ -78,6 +96,7 @@
     renderParts(solution);
     renderFacts(graph);
     renderArms(graph);
+    renderTimeline(timeline);
     renderRelations(graph);
     byId("raw-json").textContent = JSON.stringify(payload, null, 2);
     results.hidden = false;
@@ -88,24 +107,26 @@
     button.disabled = true;
     results.hidden = true;
     status.textContent = "Analyse en cours…";
-    const form = new FormData();
-    form.append("puzzle", puzzleInput.files[0]);
-    form.append("solution", solutionInput.files[0]);
+    const validationForm = new FormData();
+    validationForm.append("puzzle", puzzleInput.files[0]);
+    validationForm.append("solution", solutionInput.files[0]);
+    const puzzleForm = new FormData();
+    puzzleForm.append("puzzle", puzzleInput.files[0]);
 
     try {
-      const [validationResponse, graphResponse, puzzleResponse, solutionResponse] = await Promise.all([
-        fetch(`${API}/validate`, { method: "POST", body: form }),
-        fetch(`${API}/analyze/graph`, { method: "POST", body: (() => { const f = new FormData(); f.append("solution", solutionInput.files[0]); return f; })() }),
-        fetch(`${API}/parse/puzzle`, { method: "POST", body: (() => { const f = new FormData(); f.append("puzzle", puzzleInput.files[0]); return f; })() }),
-        fetch(`${API}/parse/solution`, { method: "POST", body: (() => { const f = new FormData(); f.append("solution", solutionInput.files[0]); return f; })() }),
+      const responses = await Promise.all([
+        fetch(`${API}/validate`, { method: "POST", body: validationForm }),
+        fetch(`${API}/analyze/graph`, { method: "POST", body: solutionForm() }),
+        fetch(`${API}/analyze/timeline`, { method: "POST", body: solutionForm() }),
+        fetch(`${API}/parse/puzzle`, { method: "POST", body: puzzleForm }),
+        fetch(`${API}/parse/solution`, { method: "POST", body: solutionForm() }),
       ]);
-      const responses = [validationResponse, graphResponse, puzzleResponse, solutionResponse];
       if (responses.some((response) => !response.ok)) {
         const failed = responses.find((response) => !response.ok);
         throw new Error(`API ${failed.status}: ${await failed.text()}`);
       }
-      const [validation, graph, puzzle, solution] = await Promise.all(responses.map((response) => response.json()));
-      render({ validation, graph, puzzle, solution });
+      const [validation, graph, timeline, puzzle, solution] = await Promise.all(responses.map((response) => response.json()));
+      render({ validation, graph, timeline, puzzle, solution });
       status.textContent = "Analyse terminée.";
     } catch (error) {
       console.error(error);
