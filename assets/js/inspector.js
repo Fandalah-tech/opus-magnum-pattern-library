@@ -1,5 +1,6 @@
 (() => {
   const API = "https://opus-validator-6gflgqb25q-nn.a.run.app";
+  const ANALYZE_ENDPOINT = "/api/v1/analyze";
   const i18n = window.OpusI18n;
   const puzzleInput = document.querySelector("#puzzle-file");
   const solutionInput = document.querySelector("#solution-file");
@@ -10,7 +11,6 @@
   const byId = (id) => document.getElementById(id);
   const text = (id, value) => { byId(id).textContent = value ?? "—"; };
   const t = (key) => i18n.t(key);
-  const solutionForm = () => { const form = new FormData(); form.append("solution", solutionInput.files[0]); return form; };
 
   function applyTranslations() {
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
@@ -98,32 +98,41 @@
     validity.className = `status-badge ${validation.valid ? "valid" : "invalid"}`;
     const vm = validation.metrics || {}, dm = solution.metrics || {};
     for (const key of ["cost", "cycles", "area", "instructions"]) text(`metric-${key}`, vm[key] ?? dm[key]);
-    renderParts(solution); renderFacts(graph); renderArms(graph); renderDiagnostics(diagnostics); renderPatterns(patterns); renderTimeline(timeline); renderRelations(graph);
+    renderParts(solution);
+    renderFacts(graph);
+    renderArms(graph);
+    renderDiagnostics(diagnostics);
+    renderPatterns(patterns);
+    renderTimeline(timeline);
+    renderRelations(graph);
     byId("raw-json").textContent = JSON.stringify(payload, null, 2);
     results.hidden = false;
     results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   button.addEventListener("click", async () => {
-    button.disabled = true; results.hidden = true; status.textContent = t("inspector.running");
-    const validationForm = new FormData(); validationForm.append("puzzle", puzzleInput.files[0]); validationForm.append("solution", solutionInput.files[0]);
-    const puzzleForm = new FormData(); puzzleForm.append("puzzle", puzzleInput.files[0]);
+    button.disabled = true;
+    results.hidden = true;
+    status.textContent = t("inspector.running");
+    const form = new FormData();
+    form.append("puzzle", puzzleInput.files[0]);
+    form.append("solution", solutionInput.files[0]);
+    const endpoint = `${API}${ANALYZE_ENDPOINT}`;
+
     try {
-      const responses = await Promise.all([
-        fetch(`${API}/validate`, { method: "POST", body: validationForm }),
-        fetch(`${API}/analyze/graph`, { method: "POST", body: solutionForm() }),
-        fetch(`${API}/analyze/timeline`, { method: "POST", body: solutionForm() }),
-        fetch(`${API}/analyze/patterns`, { method: "POST", body: solutionForm() }),
-        fetch(`${API}/analyze/diagnostics`, { method: "POST", body: solutionForm() }),
-        fetch(`${API}/parse/puzzle`, { method: "POST", body: puzzleForm }),
-        fetch(`${API}/parse/solution`, { method: "POST", body: solutionForm() }),
-      ]);
-      if (responses.some((response) => !response.ok)) { const failed = responses.find((response) => !response.ok); throw new Error(`API ${failed.status}: ${await failed.text()}`); }
-      const [validation, graph, timeline, patterns, diagnostics, puzzle, solution] = await Promise.all(responses.map((response) => response.json()));
-      render({ validation, graph, timeline, patterns, diagnostics, puzzle, solution });
+      const response = await fetch(endpoint, { method: "POST", body: form });
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(`POST ${ANALYZE_ENDPOINT} → ${response.status}: ${body}`);
+      }
+      render(await response.json());
       status.textContent = t("inspector.complete");
-    } catch (error) { console.error(error); status.textContent = `${t("inspector.failed")}: ${error.message}`; }
-    finally { button.disabled = false; }
+    } catch (error) {
+      console.error(error);
+      status.textContent = `${t("inspector.failed")}: ${error.message}`;
+    } finally {
+      button.disabled = false;
+    }
   });
 
   applyTranslations();
