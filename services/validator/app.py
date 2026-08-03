@@ -9,9 +9,10 @@ from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
+from packages.opus_analysis import build_solution_graph
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 
-app = FastAPI(title="Opus Codex Validator", version="0.2.0")
+app = FastAPI(title="Opus Codex Validator", version="0.3.0")
 
 OMSIM_BIN = os.environ.get("OMSIM_BIN", "/usr/local/bin/omsim")
 MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", str(10 * 1024 * 1024)))
@@ -67,7 +68,7 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "validator": "omsim", "apiVersion": "0.2.0"}
+    return {"status": "ok", "validator": "omsim", "apiVersion": "0.3.0"}
 
 
 @app.post("/parse/puzzle")
@@ -78,6 +79,12 @@ def parse_puzzle_endpoint(puzzle: UploadFile = File(...)) -> dict[str, Any]:
 @app.post("/parse/solution")
 def parse_solution_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
     return _canonical_parse(parse_solution_bytes, solution)
+
+
+@app.post("/analyze/graph")
+def analyze_graph_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
+    solution_model = _canonical_parse(parse_solution_bytes, solution)
+    return build_solution_graph(solution_model)
 
 
 @app.post("/validate")
@@ -114,6 +121,9 @@ def validate(
         "sha256": solution_model["source"]["sha256"],
         "declaredMetrics": solution_model["metrics"],
         "partCount": len(solution_model["parts"]),
+    }
+    result["analysis"] = {
+        "structuralGraph": build_solution_graph(solution_model)["summary"]
     }
     json.dumps(result)
     return result
