@@ -17,6 +17,7 @@ FROM python:3.12-slim-bookworm
 ARG OMSIM_COMMIT=master
 ENV OMSIM_BIN=/usr/local/bin/omsim \
     OMSIM_COMMIT=$OMSIM_COMMIT \
+    PYTHONPATH=/app \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
@@ -26,6 +27,7 @@ COPY --from=omsim-build /src/omsim/omsim /usr/local/bin/omsim
 COPY services/validator/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
+COPY packages /app/packages
 COPY services/validator/app.py /app/app.py
 WORKDIR /app
 USER appuser
