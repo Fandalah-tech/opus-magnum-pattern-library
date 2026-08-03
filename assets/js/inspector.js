@@ -7,15 +7,10 @@
   const status = document.querySelector("#status");
   const results = document.querySelector("#results");
   const localeSelect = document.querySelector("#locale-select");
-
   const byId = (id) => document.getElementById(id);
   const text = (id, value) => { byId(id).textContent = value ?? "—"; };
   const t = (key) => i18n.t(key);
-  const solutionForm = () => {
-    const form = new FormData();
-    form.append("solution", solutionInput.files[0]);
-    return form;
-  };
+  const solutionForm = () => { const form = new FormData(); form.append("solution", solutionInput.files[0]); return form; };
 
   function applyTranslations() {
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
@@ -39,8 +34,8 @@
   window.addEventListener("opus:localechange", applyTranslations);
 
   function renderFacts(graph) {
-    const summary = graph.summary || {};
-    const items = [[t("inspector.nodes"), summary.nodeCount], [t("nav.relations"), summary.edgeCount], [t("inspector.components"), summary.componentCount], [t("inspector.arms"), summary.armCount]];
+    const s = graph.summary || {};
+    const items = [[t("inspector.nodes"), s.nodeCount], [t("nav.relations"), s.edgeCount], [t("inspector.components"), s.componentCount], [t("inspector.arms"), s.armCount]];
     byId("graph-summary").innerHTML = items.map(([label, value]) => `<dt>${label}</dt><dd>${value ?? "—"}</dd>`).join("");
   }
 
@@ -55,27 +50,31 @@
     const arms = (graph.nodes || []).filter((node) => node.kind === "arm");
     text("arm-count", `${arms.length} ${t("inspector.armCount")}`);
     byId("arm-programs").innerHTML = arms.map((arm) => {
-      const program = arm.program || {};
-      const histogram = Object.entries(program.histogram || {}).map(([name, count]) => `${name} ${count}`).join(" · ");
-      return `<div class="arm"><strong><span>${arm.type}</span><span>${program.instructionCount || 0}</span></strong><small>${histogram || t("inspector.noInstructions")}</small></div>`;
+      const p = arm.program || {};
+      const histogram = Object.entries(p.histogram || {}).map(([name, count]) => `${name} ${count}`).join(" · ");
+      return `<div class="arm"><strong><span>${arm.type}</span><span>${p.instructionCount || 0}</span></strong><small>${histogram || t("inspector.noInstructions")}</small></div>`;
     }).join("") || `<p class='hint'>${t("inspector.noArms")}</p>`;
   }
 
   function renderPatterns(patterns) {
     const findings = patterns.findings || [];
     text("pattern-count", `${findings.length} ${t("inspector.patternCount")}`);
-    byId("pattern-findings").innerHTML = findings.map((finding) => {
-      const name = t(`pattern.${finding.id}`);
-      const confidence = t(`confidence.${finding.confidence}`);
-      const evidenceCount = finding.evidence?.length || 0;
-      return `<article class="pattern-finding"><div><strong>${name}</strong><small>${finding.id}</small></div><span class="confidence ${finding.confidence}">${confidence}</span><p>${evidenceCount} ${t("inspector.evidenceItems")}</p></article>`;
-    }).join("") || `<p class='hint'>${t("inspector.noPatterns")}</p>`;
+    byId("pattern-findings").innerHTML = findings.map((finding) => `<article class="pattern-finding"><div><strong>${t(`pattern.${finding.id}`)}</strong><small>${finding.id}</small></div><span class="confidence ${finding.confidence}">${t(`confidence.${finding.confidence}`)}</span><p>${finding.evidence?.length || 0} ${t("inspector.evidenceItems")}</p></article>`).join("") || `<p class='hint'>${t("inspector.noPatterns")}</p>`;
+  }
+
+  function renderDiagnostics(diagnostics) {
+    const items = diagnostics.diagnostics || [];
+    text("diagnostic-count", `${items.length} ${t("inspector.diagnosticCount")}`);
+    byId("diagnostic-findings").innerHTML = items.map((item) => {
+      const targets = item.targets?.length ? item.targets.join(", ") : "";
+      return `<article class="pattern-finding"><div><strong>${t(`diagnostic.${item.id}`)}</strong><small>${item.id}${targets ? ` · ${targets}` : ""}</small></div><span class="confidence ${item.confidence}">${t(`severity.${item.severity}`)}</span><p>${item.evidence?.length || 0} ${t("inspector.evidenceItems")}</p></article>`;
+    }).join("") || `<p class='hint'>${t("inspector.noDiagnostics")}</p>`;
   }
 
   function renderTimeline(timeline) {
-    const summary = timeline.summary || {};
-    text("timeline-horizon", `${summary.horizon ?? 0} ${t("inspector.cyclesAnalyzed")}`);
-    const facts = [[t("inspector.activeCycles"), summary.activeCycleCount], [t("inspector.globalIdle"), summary.globalIdleCycles], [t("inspector.peakParallel"), summary.peakParallelArms], [t("inspector.averageParallel"), summary.averageParallelArms]];
+    const s = timeline.summary || {};
+    text("timeline-horizon", `${s.horizon ?? 0} ${t("inspector.cyclesAnalyzed")}`);
+    const facts = [[t("inspector.activeCycles"), s.activeCycleCount], [t("inspector.globalIdle"), s.globalIdleCycles], [t("inspector.peakParallel"), s.peakParallelArms], [t("inspector.averageParallel"), s.averageParallelArms]];
     byId("timeline-facts").innerHTML = facts.map(([label, value]) => `<div><small>${label}</small><strong>${value ?? "—"}</strong></div>`).join("");
     byId("timeline-arms").innerHTML = (timeline.arms || []).map((arm) => {
       const pct = Math.max(0, Math.min(100, Math.round((arm.utilization || 0) * 100)));
@@ -91,57 +90,40 @@
   }
 
   function render(payload) {
-    const { validation, puzzle, solution, graph, timeline, patterns } = payload;
+    const { validation, puzzle, solution, graph, timeline, patterns, diagnostics } = payload;
     text("solution-title", solution.name || solution.source?.name || "Solution");
     text("puzzle-title", puzzle.name || solution.puzzleFile || "Puzzle");
     const validity = byId("validity");
     validity.textContent = validation.valid ? t("inspector.valid") : t("inspector.invalid");
     validity.className = `status-badge ${validation.valid ? "valid" : "invalid"}`;
-    const validatorMetrics = validation.metrics || {};
-    const declaredMetrics = solution.metrics || {};
-    for (const key of ["cost", "cycles", "area", "instructions"]) text(`metric-${key}`, validatorMetrics[key] ?? declaredMetrics[key]);
-    renderParts(solution);
-    renderFacts(graph);
-    renderArms(graph);
-    renderPatterns(patterns);
-    renderTimeline(timeline);
-    renderRelations(graph);
+    const vm = validation.metrics || {}, dm = solution.metrics || {};
+    for (const key of ["cost", "cycles", "area", "instructions"]) text(`metric-${key}`, vm[key] ?? dm[key]);
+    renderParts(solution); renderFacts(graph); renderArms(graph); renderDiagnostics(diagnostics); renderPatterns(patterns); renderTimeline(timeline); renderRelations(graph);
     byId("raw-json").textContent = JSON.stringify(payload, null, 2);
     results.hidden = false;
     results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   button.addEventListener("click", async () => {
-    button.disabled = true;
-    results.hidden = true;
-    status.textContent = t("inspector.running");
-    const validationForm = new FormData();
-    validationForm.append("puzzle", puzzleInput.files[0]);
-    validationForm.append("solution", solutionInput.files[0]);
-    const puzzleForm = new FormData();
-    puzzleForm.append("puzzle", puzzleInput.files[0]);
+    button.disabled = true; results.hidden = true; status.textContent = t("inspector.running");
+    const validationForm = new FormData(); validationForm.append("puzzle", puzzleInput.files[0]); validationForm.append("solution", solutionInput.files[0]);
+    const puzzleForm = new FormData(); puzzleForm.append("puzzle", puzzleInput.files[0]);
     try {
       const responses = await Promise.all([
         fetch(`${API}/validate`, { method: "POST", body: validationForm }),
         fetch(`${API}/analyze/graph`, { method: "POST", body: solutionForm() }),
         fetch(`${API}/analyze/timeline`, { method: "POST", body: solutionForm() }),
         fetch(`${API}/analyze/patterns`, { method: "POST", body: solutionForm() }),
+        fetch(`${API}/analyze/diagnostics`, { method: "POST", body: solutionForm() }),
         fetch(`${API}/parse/puzzle`, { method: "POST", body: puzzleForm }),
         fetch(`${API}/parse/solution`, { method: "POST", body: solutionForm() }),
       ]);
-      if (responses.some((response) => !response.ok)) {
-        const failed = responses.find((response) => !response.ok);
-        throw new Error(`API ${failed.status}: ${await failed.text()}`);
-      }
-      const [validation, graph, timeline, patterns, puzzle, solution] = await Promise.all(responses.map((response) => response.json()));
-      render({ validation, graph, timeline, patterns, puzzle, solution });
+      if (responses.some((response) => !response.ok)) { const failed = responses.find((response) => !response.ok); throw new Error(`API ${failed.status}: ${await failed.text()}`); }
+      const [validation, graph, timeline, patterns, diagnostics, puzzle, solution] = await Promise.all(responses.map((response) => response.json()));
+      render({ validation, graph, timeline, patterns, diagnostics, puzzle, solution });
       status.textContent = t("inspector.complete");
-    } catch (error) {
-      console.error(error);
-      status.textContent = `${t("inspector.failed")}: ${error.message}`;
-    } finally {
-      button.disabled = false;
-    }
+    } catch (error) { console.error(error); status.textContent = `${t("inspector.failed")}: ${error.message}`; }
+    finally { button.disabled = false; }
   });
 
   applyTranslations();
