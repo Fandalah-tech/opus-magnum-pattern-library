@@ -3,7 +3,7 @@ name: Deploy validator to Cloud Run
 on:
   push:
     branches:
-      - agent/architecture-reboot
+      - main
     paths:
       - .github/workflows/deploy-validator.yml
       - packages/opus_parser/**
@@ -85,10 +85,22 @@ jobs:
             --concurrency=8
             --timeout=60
 
-      - name: Verify health endpoint
+      - name: Verify deployed API
         run: |
-          curl --fail --show-error --silent \
-            "${{ steps.deploy.outputs.url }}/health"
+          BASE_URL="${{ steps.deploy.outputs.url }}"
+          curl --fail --show-error --silent "${BASE_URL}/health" > health.json
+          python - <<'PY'
+          import json
+          data = json.load(open('health.json'))
+          assert data['status'] == 'ok'
+          assert data['apiVersion'] == '1.0.0'
+          PY
+          curl --fail --show-error --silent "${BASE_URL}/openapi.json" > openapi.json
+          python - <<'PY'
+          import json
+          data = json.load(open('openapi.json'))
+          assert '/api/v1/analyze' in data['paths']
+          PY
 
       - name: Deployment summary
         run: |
@@ -96,4 +108,5 @@ jobs:
           echo "- Service: ${{ env.SERVICE }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Region: ${{ env.REGION }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- URL: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- API: /api/v1/analyze" >> "$GITHUB_STEP_SUMMARY"
           echo "- Image: ${{ env.IMAGE }}:${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
