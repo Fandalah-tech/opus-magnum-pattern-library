@@ -10,10 +10,10 @@ from typing import Any
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from packages.opus_analysis import build_solution_graph
+from packages.opus_analysis import build_program_timeline, build_solution_graph
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 
-app = FastAPI(title="Opus Codex Validator", version="0.3.1")
+app = FastAPI(title="Opus Codex Validator", version="0.4.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -75,7 +75,7 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "validator": "omsim", "apiVersion": "0.3.1"}
+    return {"status": "ok", "validator": "omsim", "apiVersion": "0.4.0"}
 
 
 @app.post("/parse/puzzle")
@@ -92,6 +92,12 @@ def parse_solution_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
 def analyze_graph_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
     solution_model = _canonical_parse(parse_solution_bytes, solution)
     return build_solution_graph(solution_model)
+
+
+@app.post("/analyze/timeline")
+def analyze_timeline_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
+    solution_model = _canonical_parse(parse_solution_bytes, solution)
+    return build_program_timeline(solution_model)
 
 
 @app.post("/validate")
@@ -118,6 +124,8 @@ def validate(
         solution_path.write_bytes(solution_bytes)
         result = _run_omsim(puzzle_path, solution_path)
 
+    graph = build_solution_graph(solution_model)
+    timeline = build_program_timeline(solution_model)
     result["puzzle"] = {
         "name": puzzle_model["name"],
         "sha256": puzzle_model["source"]["sha256"],
@@ -130,7 +138,8 @@ def validate(
         "partCount": len(solution_model["parts"]),
     }
     result["analysis"] = {
-        "structuralGraph": build_solution_graph(solution_model)["summary"]
+        "structuralGraph": graph["summary"],
+        "programTimeline": timeline["summary"],
     }
     json.dumps(result)
     return result
