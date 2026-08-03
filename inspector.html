@@ -17,6 +17,18 @@
   </header>
   <main>
     <section class="hero"><p class="eyebrow" data-i18n="inspector.kicker">REAL ANALYSIS · OMSIM</p><h1 data-i18n="inspector.title">Inspect a solution</h1><p data-i18n="inspector.intro">Upload a matching puzzle and solution to parse, validate, and explore their structure.</p></section>
+
+    <section class="pair-library" aria-labelledby="pair-library-title">
+      <div>
+        <p class="eyebrow" id="pair-library-title" data-i18n="library.title">Recent pairs</p>
+        <p class="hint" data-i18n="library.description">Pairs are stored privately in this browser for faster repeat testing.</p>
+      </div>
+      <select id="saved-pair-select" aria-label="Recent pairs"><option value="" data-i18n="library.empty">No saved pair yet</option></select>
+      <button id="load-pair-button" class="secondary-button" disabled data-i18n="library.load">Load pair</button>
+      <button id="rename-pair-button" class="secondary-button" disabled data-i18n="library.rename">Rename</button>
+      <button id="delete-pair-button" class="danger-button" disabled data-i18n="library.delete">Delete</button>
+    </section>
+
     <section class="upload-panel">
       <label class="file-card"><span class="file-icon">⬡</span><strong data-i18n="inspector.puzzleFile">Puzzle file</strong><small id="puzzle-name" data-i18n="inspector.choosePuzzle">Choose a .puzzle file</small><input id="puzzle-file" type="file" accept=".puzzle,application/octet-stream"></label>
       <label class="file-card"><span class="file-icon">⌬</span><strong data-i18n="inspector.solutionFile">Solution file</strong><small id="solution-name" data-i18n="inspector.chooseSolution">Choose a .solution file</small><input id="solution-file" type="file" accept=".solution,application/octet-stream"></label>
@@ -37,6 +49,10 @@
     </section>
   </main>
   <footer data-i18n="inspector.footer">Unofficial research project. Validation powered by omsim; Opus Magnum was created by Zachtronics.</footer>
-  <script src="data/i18n.js"></script><script src="data/diagnostics-i18n.js"></script><script src="assets/js/inspector.js"></script>
+  <script src="data/i18n.js"></script>
+  <script src="data/diagnostics-i18n.js"></script>
+  <script src="data/pair-library-i18n.js"></script>
+  <script src="assets/js/pair-library.js"></script>
+  <script src="assets/js/inspector.js"></script>
 </body>
 </html>
