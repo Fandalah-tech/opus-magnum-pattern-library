@@ -9,7 +9,7 @@
   const results = document.querySelector("#results");
   const localeSelect = document.querySelector("#locale-select");
   const byId = (id) => document.getElementById(id);
-  const text = (id, value) => { byId(id).textContent = value ?? "—"; };
+  const text = (id, value) => { const node = byId(id); if (node) node.textContent = value ?? "—"; };
   const t = (key) => i18n.t(key);
 
   function applyTranslations() {
@@ -51,8 +51,9 @@
     text("arm-count", `${arms.length} ${t("inspector.armCount")}`);
     byId("arm-programs").innerHTML = arms.map((arm) => {
       const p = arm.program || {};
-      const histogram = Object.entries(p.histogram || {}).map(([name, count]) => `${name} ${count}`).join(" · ");
-      return `<div class="arm"><strong><span>${arm.type}</span><span>${p.instructionCount || 0}</span></strong><small>${histogram || t("inspector.noInstructions")}</small></div>`;
+      const histogram = Object.entries(p.instructionHistogram || {}).map(([name, count]) => `${name} ${count}`).join(" · ");
+      const label = `${arm.partType}${arm.armNumber !== null && arm.armNumber !== undefined ? ` #${arm.armNumber}` : ""}`;
+      return `<div class="arm"><strong><span>${label}</span><span>${p.instructionCount || 0}</span></strong><small>${histogram || t("inspector.noInstructions")}</small></div>`;
     }).join("") || `<p class='hint'>${t("inspector.noArms")}</p>`;
   }
 
@@ -78,7 +79,7 @@
     byId("timeline-facts").innerHTML = facts.map(([label, value]) => `<div><small>${label}</small><strong>${value ?? "—"}</strong></div>`).join("");
     byId("timeline-arms").innerHTML = (timeline.arms || []).map((arm) => {
       const pct = Math.max(0, Math.min(100, Math.round((arm.utilization || 0) * 100)));
-      const label = `${arm.type}${arm.armNumber !== undefined ? ` #${arm.armNumber}` : ""}`;
+      const label = `${arm.type}${arm.armNumber !== null && arm.armNumber !== undefined ? ` #${arm.armNumber}` : ""}`;
       return `<div class="timeline-row"><div class="timeline-label"><strong>${label}</strong><small>${arm.actionCount} ${t("inspector.actions")} · ${t("inspector.period")} ${arm.period}</small></div><div class="timeline-track"><span style="width:${pct}%"></span></div><b>${pct}%</b></div>`;
     }).join("") || `<p class='hint'>${t("inspector.noArms")}</p>`;
   }
@@ -86,7 +87,27 @@
   function renderRelations(graph) {
     const edges = graph.edges || [];
     text("edge-count", `${edges.length} ${t("inspector.relationCount")}`);
-    byId("relations").innerHTML = edges.slice(0, 80).map((edge) => `<span>${edge.source} → ${edge.target} · ${edge.type}</span>`).join("") || `<span>${t("inspector.noRelations")}</span>`;
+    byId("relations").innerHTML = edges.slice(0, 80).map((edge) => `<span>${edge.source} → ${edge.target} · ${edge.relation}</span>`).join("") || `<span>${t("inspector.noRelations")}</span>`;
+  }
+
+  function ensureValidatorPanel() {
+    let panel = byId("validator-panel");
+    if (panel) return panel;
+    panel = document.createElement("article");
+    panel.id = "validator-panel";
+    panel.className = "panel full";
+    panel.innerHTML = `<div class="panel-head"><h3>Validator details</h3><span id="validator-name"></span></div><div id="validator-issues" class="arm-list"></div><details><summary>View validator output</summary><pre id="validator-output"></pre></details>`;
+    document.querySelector(".metrics").insertAdjacentElement("afterend", panel);
+    return panel;
+  }
+
+  function renderValidation(validation) {
+    const panel = ensureValidatorPanel();
+    const issues = validation.issues || [];
+    text("validator-name", validation.validator?.name || "omsim");
+    byId("validator-issues").innerHTML = issues.map((issue) => `<div class="arm"><strong>${issue.code || issue.severity || "Issue"}</strong><small>${issue.message || ""}</small></div>`).join("") || `<p class="hint">No validator issue reported.</p>`;
+    text("validator-output", validation.rawOutput || "No raw output.");
+    panel.hidden = validation.valid && !validation.rawOutput && issues.length === 0;
   }
 
   function render(payload) {
@@ -98,6 +119,7 @@
     validity.className = `status-badge ${validation.valid ? "valid" : "invalid"}`;
     const vm = validation.metrics || {}, dm = solution.metrics || {};
     for (const key of ["cost", "cycles", "area", "instructions"]) text(`metric-${key}`, vm[key] ?? dm[key]);
+    renderValidation(validation);
     renderParts(solution);
     renderFacts(graph);
     renderArms(graph);
@@ -118,13 +140,9 @@
     form.append("puzzle", puzzleInput.files[0]);
     form.append("solution", solutionInput.files[0]);
     const endpoint = `${API}${ANALYZE_ENDPOINT}`;
-
     try {
       const response = await fetch(endpoint, { method: "POST", body: form });
-      if (!response.ok) {
-        const body = await response.text();
-        throw new Error(`POST ${ANALYZE_ENDPOINT} → ${response.status}: ${body}`);
-      }
+      if (!response.ok) throw new Error(`POST ${ANALYZE_ENDPOINT} → ${response.status}: ${await response.text()}`);
       render(await response.json());
       status.textContent = t("inspector.complete");
     } catch (error) {
