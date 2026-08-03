@@ -1,0 +1,104 @@
+name: Audit external Opus Magnum corpus
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/architecture-reboot
+    paths:
+      - .github/workflows/corpus-audit.yml
+      - datasets/**
+      - tools/datasets/**
+
+permissions:
+  contents: read
+
+env:
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Prepare workspace
+        run: mkdir -p .dataset-cache reports
+
+      - name: Clone public upstream repositories
+        run: |
+          git clone --depth 1 https://github.com/ianh/omsim.git .dataset-cache/omsim
+          git clone --depth 1 https://github.com/gtw123/OpusSolver.git .dataset-cache/opussolver
+
+      - name: Download challenge sample archive
+        id: challenge_sample
+        continue-on-error: true
+        run: |
+          curl --fail --location --retry 3 \
+            https://critelli.technology/24hour-1-sample.zip \
+            --output .dataset-cache/24hour-1-sample.zip
+          mkdir -p .dataset-cache/24hour-sample
+          unzip -q .dataset-cache/24hour-1-sample.zip -d .dataset-cache/24hour-sample
+
+      - name: Inventory omsim
+        run: |
+          python tools/datasets/inventory.py .dataset-cache/omsim \
+            --dataset-id omsim-upstream-tests \
+            --output reports/omsim-inventory.json
+
+      - name: Inventory OpusSolver
+        run: |
+          python tools/datasets/inventory.py .dataset-cache/opussolver \
+            --dataset-id opussolver-corpus \
+            --output reports/opussolver-inventory.json
+
+      - name: Inventory challenge sample
+        if: steps.challenge_sample.outcome == 'success'
+        run: |
+          python tools/datasets/inventory.py .dataset-cache/24hour-sample \
+            --dataset-id panic-24hour-sample-100 \
+            --output reports/challenge-sample-inventory.json
+
+      - name: Validate matching omsim pairs
+        continue-on-error: true
+        run: |
+          python tools/datasets/validate_pairs.py .dataset-cache/omsim \
+            --url "$VALIDATOR_URL" \
+            --limit 20 \
+            --output reports/omsim-validation.json
+
+      - name: Validate matching OpusSolver pairs
+        continue-on-error: true
+        run: |
+          python tools/datasets/validate_pairs.py .dataset-cache/opussolver \
+            --url "$VALIDATOR_URL" \
+            --limit 20 \
+            --output reports/opussolver-validation.json
+
+      - name: Validate matching challenge pairs
+        if: steps.challenge_sample.outcome == 'success'
+        continue-on-error: true
+        run: |
+          python tools/datasets/validate_pairs.py .dataset-cache/24hour-sample \
+            --url "$VALIDATOR_URL" \
+            --limit 20 \
+            --output reports/challenge-sample-validation.json
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: opus-corpus-audit-${{ github.sha }}
+          path: reports/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Audit summary
+        run: |
+          echo "### Corpus audit" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Validator: $VALIDATOR_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "- omsim inventory: generated" >> "$GITHUB_STEP_SUMMARY"
+          echo "- OpusSolver inventory: generated" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Challenge sample download: ${{ steps.challenge_sample.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Detailed JSON reports are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
