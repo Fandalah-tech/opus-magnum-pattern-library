@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1.0",
+  "policy": {
+    "defaultRedistribution": "reference-only",
+    "requireSource": true,
+    "requireAuthor": true,
+    "requireLicenseStatus": true,
+    "requireHashBeforeImport": true
+  },
+  "datasets": [
+    {
+      "id": "panic-24hour-sample-100",
+      "title": "Opus Magnum 24 Hour Challenge sample puzzles",
+      "kind": "puzzles",
+      "source": "https://critelli.technology/24hour-1-sample.zip",
+      "sourcePage": "https://biggieblog.com/solving-puzzles-faster-than-humanly-possible/",
+      "author": "Ian Henderson (panic)",
+      "published": "2024",
+      "estimatedItems": 100,
+      "license": {
+        "status": "unknown",
+        "redistribution": "reference-only",
+        "notes": "Publicly offered as challenge test fodder, but no explicit redistribution license was located. Do not commit archive contents until permission or license is confirmed."
+      },
+      "intendedUse": ["external-download", "local-validation", "benchmark-candidate"],
+      "status": "source-confirmed-download-pending"
+    },
+    {
+      "id": "panic-24hour-test-1000",
+      "title": "Opus Magnum 24 Hour Challenge test puzzles",
+      "kind": "puzzles",
+      "source": "https://critelli.technology/24hour-1-test.zip",
+      "sourcePage": "https://biggieblog.com/solving-puzzles-faster-than-humanly-possible/",
+      "author": "Ian Henderson (panic)",
+      "published": "2024-06-02",
+      "estimatedItems": 1000,
+      "license": {
+        "status": "unknown",
+        "redistribution": "reference-only",
+        "notes": "Challenge distribution confirmed by the original announcement; no explicit redistribution license located."
+      },
+      "intendedUse": ["external-download", "benchmark-candidate"],
+      "status": "source-confirmed-download-pending"
+    },
+    {
+      "id": "panic-24hour-official-1000",
+      "title": "Opus Magnum 24 Hour Challenge official puzzles",
+      "kind": "puzzles",
+      "source": "https://critelli.technology/24hour-1-puzzles.zip",
+      "sourcePage": "https://biggieblog.com/solving-puzzles-faster-than-humanly-possible/",
+      "author": "Ian Henderson (panic)",
+      "published": "2024-10-20",
+      "estimatedItems": 1000,
+      "license": {
+        "status": "unknown",
+        "redistribution": "reference-only",
+        "notes": "Official event puzzle archive. Keep external until redistribution terms are clarified."
+      },
+      "intendedUse": ["external-download", "benchmark-candidate"],
+      "status": "source-confirmed-download-pending"
+    },
+    {
+      "id": "omsim-upstream-tests",
+      "title": "omsim upstream test corpus",
+      "kind": "validator-tests",
+      "source": "https://github.com/ianh/omsim",
+      "author": "Ian Henderson and omsim contributors",
+      "license": {
+        "status": "permissive-upstream-notice",
+        "redistribution": "allowed-with-credit",
+        "notes": "omsim COPYING states that the software may be used however desired. Individual game-derived fixtures still require provenance review before copying."
+      },
+      "intendedUse": ["upstream-tests", "behavior-reference", "cross-validation"],
+      "status": "repository-confirmed-inventory-pending"
+    },
+    {
+      "id": "opussolver-corpus",
+      "title": "OpusSolver puzzle and generated-solution corpus",
+      "kind": "solver-tests",
+      "source": "https://github.com/gtw123/OpusSolver",
+      "author": "gtw123 and contributors",
+      "license": {
+        "status": "MIT",
+        "redistribution": "allowed-with-license-notice",
+        "notes": "Code is MIT. Puzzle or game data included in the repository must still be inventoried separately."
+      },
+      "intendedUse": ["solver-regression", "generated-solutions", "benchmark-reference"],
+      "status": "repository-confirmed-inventory-pending"
+    }
+  ]
+}
