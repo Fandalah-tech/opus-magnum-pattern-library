@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opus-codex.local/schemas/solution-graph.schema.json",
+  "title": "Opus Codex Structural Solution Graph",
+  "type": "object",
+  "required": ["schemaVersion", "analysis", "source", "summary", "nodes", "edges", "degrees", "components", "limitations"],
+  "properties": {
+    "schemaVersion": {"const": "0.1.0"},
+    "analysis": {"const": "structural-solution-graph"},
+    "source": {"type": "object"},
+    "summary": {
+      "type": "object",
+      "required": ["nodeCount", "edgeCount", "armCount", "glyphCount", "trackCount", "inputCount", "outputCount", "componentCount"]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "partType", "position", "footprint", "program"]
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "target", "relation", "confidence", "evidence"],
+        "properties": {
+          "confidence": {"enum": ["low", "medium", "high"]},
+          "relation": {"enum": ["shared-hex", "within-arm-reach", "workspace-overlap"]}
+        }
+      }
+    },
+    "degrees": {"type": "object"},
+    "components": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

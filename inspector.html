@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Inspecteur de puzzles et solutions Opus Magnum propulsé par omsim.">
+  <title>Solution Inspector · Opus Magnum Codex</title>
+  <link rel="stylesheet" href="assets/css/inspector.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Retour au Codex">
+      <span class="brand-mark">OM</span>
+      <span><small>OPUS MAGNUM CODEX</small><strong>Solution Inspector</strong></span>
+    </a>
+    <nav><a href="index.html">Codex</a><a class="active" href="inspector.html">Laboratoire</a></nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">ANALYSE RÉELLE · OMSIM</p>
+      <h1>Inspecter une solution</h1>
+      <p>Dépose un puzzle et une solution correspondante pour les parser, les valider et explorer leur structure.</p>
+    </section>
+
+    <section class="upload-panel">
+      <label class="file-card">
+        <span class="file-icon">⬡</span>
+        <strong>Fichier puzzle</strong>
+        <small id="puzzle-name">Choisir un fichier .puzzle</small>
+        <input id="puzzle-file" type="file" accept=".puzzle,application/octet-stream">
+      </label>
+      <label class="file-card">
+        <span class="file-icon">⌬</span>
+        <strong>Fichier solution</strong>
+        <small id="solution-name">Choisir un fichier .solution</small>
+        <input id="solution-file" type="file" accept=".solution,application/octet-stream">
+      </label>
+      <button id="analyze-button" disabled>Analyser la paire</button>
+      <p id="status" role="status">Deux fichiers sont requis.</p>
+    </section>
+
+    <section id="results" hidden>
+      <div class="summary-head">
+        <div><p class="eyebrow">RÉSULTAT</p><h2 id="solution-title">Solution</h2><p id="puzzle-title"></p></div>
+        <span id="validity" class="status-badge"></span>
+      </div>
+
+      <div class="metrics" aria-label="Métriques">
+        <article><small>Coût</small><strong id="metric-cost">—</strong></article>
+        <article><small>Cycles</small><strong id="metric-cycles">—</strong></article>
+        <article><small>Aire</small><strong id="metric-area">—</strong></article>
+        <article><small>Instructions</small><strong id="metric-instructions">—</strong></article>
+      </div>
+
+      <div class="result-grid">
+        <article class="panel">
+          <div class="panel-head"><h3>Structure</h3><span id="part-count"></span></div>
+          <div id="part-summary" class="chips"></div>
+          <dl id="graph-summary" class="facts"></dl>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h3>Programmes des bras</h3><span id="arm-count"></span></div>
+          <div id="arm-programs" class="arm-list"></div>
+        </article>
+      </div>
+
+      <article class="panel full">
+        <div class="panel-head"><h3>Timeline des programmes</h3><span id="timeline-horizon"></span></div>
+        <p class="hint">Timeline statique des instructions. Elle mesure l’activité et le parallélisme, sans encore simuler les molécules.</p>
+        <div id="timeline-facts" class="timeline-facts"></div>
+        <div id="timeline-arms" class="timeline-arms"></div>
+      </article>
+
+      <article class="panel full">
+        <div class="panel-head"><h3>Relations structurelles candidates</h3><span id="edge-count"></span></div>
+        <p class="hint">Ces relations sont déduites statiquement. Les transferts confirmés viendront avec les traces physiques d’omsim.</p>
+        <div id="relations" class="relations"></div>
+      </article>
+
+      <details class="raw-panel"><summary>Voir le JSON complet</summary><pre id="raw-json"></pre></details>
+    </section>
+  </main>
+
+  <footer>Projet de recherche non officiel. Validation fournie par omsim; Opus Magnum est une création de Zachtronics.</footer>
+  <script src="assets/js/inspector.js"></script>
+</body>
+</html>

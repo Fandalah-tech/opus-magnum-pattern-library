@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opus-codex.local/schemas/validation-result.schema.json",
+  "title": "Opus Codex Validation Result",
+  "type": "object",
+  "required": ["schemaVersion", "validator", "valid", "metrics", "issues"],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "validator": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": ["string", "null"] },
+        "commit": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "valid": { "type": "boolean" },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "cost": { "type": ["integer", "null"], "minimum": 0 },
+        "cycles": { "type": ["integer", "null"], "minimum": 0 },
+        "area": { "type": ["integer", "null"], "minimum": 0 },
+        "instructions": { "type": ["integer", "null"], "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "code", "message"],
+        "properties": {
+          "severity": { "enum": ["info", "warning", "error"] },
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "cycle": { "type": ["integer", "null"], "minimum": 0 },
+          "partId": { "type": ["string", "null"] },
+          "details": { "type": "object", "additionalProperties": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "knownDivergence": { "type": "boolean", "default": false },
+    "rawOutput": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

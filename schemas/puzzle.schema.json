@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opus-codex.local/schemas/puzzle.schema.json",
+  "title": "Opus Codex Puzzle",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "inputs", "outputs", "allowedParts"],
+  "properties": {
+    "schemaVersion": { "const": "0.1.0" },
+    "id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "properties": {
+        "fileName": { "type": "string" },
+        "sha256": { "type": "string" },
+        "formatVersion": { "type": ["integer", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/moleculePort" }
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/moleculePort" }
+    },
+    "allowedParts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "production": { "type": "boolean", "default": false },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "hex": {
+      "type": "object",
+      "required": ["q", "r"],
+      "properties": {
+        "q": { "type": "integer" },
+        "r": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "atom": {
+      "type": "object",
+      "required": ["id", "element", "position"],
+      "properties": {
+        "id": { "type": "string" },
+        "element": { "type": "string" },
+        "position": { "$ref": "#/$defs/hex" }
+      },
+      "additionalProperties": false
+    },
+    "bond": {
+      "type": "object",
+      "required": ["a", "b", "type"],
+      "properties": {
+        "a": { "type": "string" },
+        "b": { "type": "string" },
+        "type": { "enum": ["single", "double", "triple"] }
+      },
+      "additionalProperties": false
+    },
+    "molecule": {
+      "type": "object",
+      "required": ["atoms", "bonds"],
+      "properties": {
+        "atoms": { "type": "array", "items": { "$ref": "#/$defs/atom" } },
+        "bonds": { "type": "array", "items": { "$ref": "#/$defs/bond" } }
+      },
+      "additionalProperties": false
+    },
+    "moleculePort": {
+      "type": "object",
+      "required": ["index", "molecule"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "molecule": { "$ref": "#/$defs/molecule" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
