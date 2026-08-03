@@ -1,0 +1,87 @@
+name: Validate private campaign references
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - agent/architecture-reboot
+    paths:
+      - packages/opus_parser/**
+      - services/validator/**
+      - tools/run_reference_regression.py
+      - fixtures/reference/campaign-p007-p015.manifest.json
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  PROJECT_ID: opus-magnum-codex
+  WORKLOAD_IDENTITY_PROVIDER: projects/740016697359/locations/global/workloadIdentityPools/github-actions/providers/opus-pattern-library
+  DEPLOYER_SERVICE_ACCOUNT: opus-github-deployer@opus-magnum-codex.iam.gserviceaccount.com
+  FIXTURE_BUCKET: gs://opus-magnum-codex-private-fixtures
+  FIXTURE_OBJECT: campaign/p007-p015.zip
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SERVICE_ACCOUNT }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Download private fixtures
+        run: |
+          mkdir -p .private-fixtures reports
+          gcloud storage cp \
+            "${FIXTURE_BUCKET}/${FIXTURE_OBJECT}" \
+            .private-fixtures/p007-p015.zip
+          unzip -q .private-fixtures/p007-p015.zip -d .private-fixtures/files
+
+      - name: Run parser unit tests
+        run: python -m unittest discover -s packages/opus_parser/tests -v
+
+      - name: Run campaign regression
+        run: |
+          python tools/run_reference_regression.py \
+            --manifest fixtures/reference/campaign-p007-p015.manifest.json \
+            --fixtures .private-fixtures/files \
+            --validator-url "${VALIDATOR_URL}" \
+            --output reports/campaign-p007-p015.json
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: campaign-p007-p015-regression
+          path: reports/campaign-p007-p015.json
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Write summary
+        if: always()
+        run: |
+          if [[ -f reports/campaign-p007-p015.json ]]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('reports/campaign-p007-p015.json').read_text())
+          summary = report['summary']
+          with open(__import__('os').environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('## Campaign P007-P015 regression\n\n')
+              out.write(f"- Total: {summary['total']}\n")
+              out.write(f"- Passed: {summary['passed']}\n")
+              out.write(f"- Failed: {summary['failed']}\n")
+          PY
+          fi
