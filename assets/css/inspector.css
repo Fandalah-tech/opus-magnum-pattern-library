@@ -25,6 +25,13 @@ main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 54px 0 80
 .hero { max-width: 720px; margin-bottom: 30px; }
 .hero h1 { margin: 7px 0 12px; font: 700 clamp(34px, 6vw, 62px)/1 Georgia, serif; }
 .hero p { color: var(--muted); font-size: 18px; line-height: 1.6; }
+.pair-library { display: grid; grid-template-columns: minmax(220px,1fr) minmax(260px,1.4fr) auto auto auto; gap: 10px; align-items: center; padding: 16px 18px; margin-bottom: 12px; border: 1px solid var(--line); background: rgba(26,24,22,.84); }
+.pair-library p { margin: 3px 0 0; }
+.pair-library select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); }
+.secondary-button, .danger-button { min-height: 44px; padding: 0 15px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); }
+.secondary-button:hover:not(:disabled) { border-color: var(--accent); }
+.danger-button { color: var(--bad); border-color: rgba(231,127,115,.45); }
+.danger-button:hover:not(:disabled) { border-color: var(--bad); }
 .upload-panel { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; padding: 18px; border: 1px solid var(--line); background: rgba(26,24,22,.84); box-shadow: 0 18px 50px rgba(0,0,0,.25); }
 .file-card { min-height: 112px; display: grid; grid-template-columns: 44px 1fr; grid-template-rows: auto auto; gap: 4px 12px; align-content: center; padding: 16px; border: 1px dashed #5c5144; background: var(--panel-2); cursor: pointer; }
 .file-card:hover { border-color: var(--accent); }
@@ -77,10 +84,15 @@ button:disabled { opacity: .35; cursor: not-allowed; }
 .raw-panel summary { cursor: pointer; font-weight: 800; }
 pre { max-height: 480px; overflow: auto; padding: 14px; background: #0d0c0b; color: #d8cfbf; font-size: 12px; }
 footer { padding: 22px; text-align: center; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+@media (max-width: 900px) {
+  .pair-library { grid-template-columns: 1fr 1fr; }
+  .pair-library > div { grid-column: 1 / -1; }
+}
 @media (max-width: 780px) {
   .topbar { align-items: flex-start; }
   .topbar nav { display: none; }
-  .upload-panel, .result-grid { grid-template-columns: 1fr; }
+  .pair-library, .upload-panel, .result-grid { grid-template-columns: 1fr; }
+  .pair-library > div { grid-column: auto; }
   .upload-panel button { min-height: 52px; }
   .metrics, .timeline-facts { grid-template-columns: 1fr 1fr; }
   .timeline-row { grid-template-columns: 1fr; }
