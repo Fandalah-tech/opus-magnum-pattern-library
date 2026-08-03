@@ -9,7 +9,9 @@ from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
-app = FastAPI(title="Opus Codex Validator", version="0.1.0")
+from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
+
+app = FastAPI(title="Opus Codex Validator", version="0.2.0")
 
 OMSIM_BIN = os.environ.get("OMSIM_BIN", "/usr/local/bin/omsim")
 MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", str(10 * 1024 * 1024)))
@@ -21,6 +23,16 @@ def _read_limited(upload: UploadFile) -> bytes:
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=413, detail="Uploaded file is too large")
     return data
+
+
+def _canonical_parse(parser, upload: UploadFile) -> dict[str, Any]:
+    data = _read_limited(upload)
+    if not data:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    try:
+        return parser(data, source_name=upload.filename)
+    except ParseError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
@@ -38,9 +50,6 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
         raise HTTPException(status_code=504, detail="Validation timed out") from exc
 
     raw_output = "\n".join(part for part in (completed.stdout, completed.stderr) if part).strip()
-
-    # The first service version intentionally preserves upstream output.
-    # Normalized metric/error parsing is delegated to the shared adapter next.
     return {
         "schemaVersion": "0.1.0",
         "validator": {"name": "omsim", "version": None, "commit": os.environ.get("OMSIM_COMMIT")},
@@ -58,7 +67,17 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "validator": "omsim"}
+    return {"status": "ok", "validator": "omsim", "apiVersion": "0.2.0"}
+
+
+@app.post("/parse/puzzle")
+def parse_puzzle_endpoint(puzzle: UploadFile = File(...)) -> dict[str, Any]:
+    return _canonical_parse(parse_puzzle_bytes, puzzle)
+
+
+@app.post("/parse/solution")
+def parse_solution_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
+    return _canonical_parse(parse_solution_bytes, solution)
 
 
 @app.post("/validate")
@@ -68,9 +87,14 @@ def validate(
 ) -> dict[str, Any]:
     puzzle_bytes = _read_limited(puzzle)
     solution_bytes = _read_limited(solution)
-
     if not puzzle_bytes or not solution_bytes:
         raise HTTPException(status_code=400, detail="Both files must contain data")
+
+    try:
+        puzzle_model = parse_puzzle_bytes(puzzle_bytes, source_name=puzzle.filename)
+        solution_model = parse_solution_bytes(solution_bytes, source_name=solution.filename)
+    except ParseError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     with tempfile.TemporaryDirectory(prefix="opus-validator-") as temp_dir:
         root = Path(temp_dir)
@@ -80,6 +104,16 @@ def validate(
         solution_path.write_bytes(solution_bytes)
         result = _run_omsim(puzzle_path, solution_path)
 
-    # Force serialization now so malformed output cannot escape the request.
+    result["puzzle"] = {
+        "name": puzzle_model["name"],
+        "sha256": puzzle_model["source"]["sha256"],
+        "production": puzzle_model["production"],
+    }
+    result["solution"] = {
+        "name": solution_model["name"],
+        "sha256": solution_model["source"]["sha256"],
+        "declaredMetrics": solution_model["metrics"],
+        "partCount": len(solution_model["parts"]),
+    }
     json.dumps(result)
     return result
