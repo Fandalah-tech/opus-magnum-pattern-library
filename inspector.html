@@ -11,91 +11,32 @@
 <body>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="Back to the Codex" data-i18n-aria-label="inspector.back">
-      <span class="brand-mark">OM</span>
-      <span><small>OPUS MAGNUM CODEX</small><strong>Solution Inspector</strong></span>
+      <span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Solution Inspector</strong></span>
     </a>
-    <nav>
-      <a href="index.html">Codex</a>
-      <a class="active" href="inspector.html" data-i18n="inspector.lab">Laboratory</a>
-      <select id="locale-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option></select>
-    </nav>
+    <nav><a href="index.html">Codex</a><a class="active" href="inspector.html" data-i18n="inspector.lab">Laboratory</a><select id="locale-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option></select></nav>
   </header>
-
   <main>
-    <section class="hero">
-      <p class="eyebrow" data-i18n="inspector.kicker">REAL ANALYSIS · OMSIM</p>
-      <h1 data-i18n="inspector.title">Inspect a solution</h1>
-      <p data-i18n="inspector.intro">Upload a matching puzzle and solution to parse, validate, and explore their structure.</p>
-    </section>
-
+    <section class="hero"><p class="eyebrow" data-i18n="inspector.kicker">REAL ANALYSIS · OMSIM</p><h1 data-i18n="inspector.title">Inspect a solution</h1><p data-i18n="inspector.intro">Upload a matching puzzle and solution to parse, validate, and explore their structure.</p></section>
     <section class="upload-panel">
-      <label class="file-card">
-        <span class="file-icon">⬡</span>
-        <strong data-i18n="inspector.puzzleFile">Puzzle file</strong>
-        <small id="puzzle-name" data-i18n="inspector.choosePuzzle">Choose a .puzzle file</small>
-        <input id="puzzle-file" type="file" accept=".puzzle,application/octet-stream">
-      </label>
-      <label class="file-card">
-        <span class="file-icon">⌬</span>
-        <strong data-i18n="inspector.solutionFile">Solution file</strong>
-        <small id="solution-name" data-i18n="inspector.chooseSolution">Choose a .solution file</small>
-        <input id="solution-file" type="file" accept=".solution,application/octet-stream">
-      </label>
-      <button id="analyze-button" disabled data-i18n="inspector.analyze">Analyze pair</button>
-      <p id="status" role="status" data-i18n="inspector.twoFiles">Both files are required.</p>
+      <label class="file-card"><span class="file-icon">⬡</span><strong data-i18n="inspector.puzzleFile">Puzzle file</strong><small id="puzzle-name" data-i18n="inspector.choosePuzzle">Choose a .puzzle file</small><input id="puzzle-file" type="file" accept=".puzzle,application/octet-stream"></label>
+      <label class="file-card"><span class="file-icon">⌬</span><strong data-i18n="inspector.solutionFile">Solution file</strong><small id="solution-name" data-i18n="inspector.chooseSolution">Choose a .solution file</small><input id="solution-file" type="file" accept=".solution,application/octet-stream"></label>
+      <button id="analyze-button" disabled data-i18n="inspector.analyze">Analyze pair</button><p id="status" role="status" data-i18n="inspector.twoFiles">Both files are required.</p>
     </section>
-
     <section id="results" hidden>
-      <div class="summary-head">
-        <div><p class="eyebrow" data-i18n="inspector.result">RESULT</p><h2 id="solution-title">Solution</h2><p id="puzzle-title"></p></div>
-        <span id="validity" class="status-badge"></span>
-      </div>
-
-      <div class="metrics" aria-label="Metrics">
-        <article><small data-i18n="metric.cost">Cost</small><strong id="metric-cost">—</strong></article>
-        <article><small data-i18n="metric.cycles">Cycles</small><strong id="metric-cycles">—</strong></article>
-        <article><small data-i18n="metric.area">Area</small><strong id="metric-area">—</strong></article>
-        <article><small data-i18n="metric.instructions">Instructions</small><strong id="metric-instructions">—</strong></article>
-      </div>
-
+      <div class="summary-head"><div><p class="eyebrow" data-i18n="inspector.result">RESULT</p><h2 id="solution-title">Solution</h2><p id="puzzle-title"></p></div><span id="validity" class="status-badge"></span></div>
+      <div class="metrics" aria-label="Metrics"><article><small data-i18n="metric.cost">Cost</small><strong id="metric-cost">—</strong></article><article><small data-i18n="metric.cycles">Cycles</small><strong id="metric-cycles">—</strong></article><article><small data-i18n="metric.area">Area</small><strong id="metric-area">—</strong></article><article><small data-i18n="metric.instructions">Instructions</small><strong id="metric-instructions">—</strong></article></div>
       <div class="result-grid">
-        <article class="panel">
-          <div class="panel-head"><h3 data-i18n="inspector.structure">Structure</h3><span id="part-count"></span></div>
-          <div id="part-summary" class="chips"></div>
-          <dl id="graph-summary" class="facts"></dl>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head"><h3 data-i18n="inspector.armPrograms">Arm programs</h3><span id="arm-count"></span></div>
-          <div id="arm-programs" class="arm-list"></div>
-        </article>
+        <article class="panel"><div class="panel-head"><h3 data-i18n="inspector.structure">Structure</h3><span id="part-count"></span></div><div id="part-summary" class="chips"></div><dl id="graph-summary" class="facts"></dl></article>
+        <article class="panel"><div class="panel-head"><h3 data-i18n="inspector.armPrograms">Arm programs</h3><span id="arm-count"></span></div><div id="arm-programs" class="arm-list"></div></article>
       </div>
-
-      <article class="panel full">
-        <div class="panel-head"><h3 data-i18n="inspector.patterns">Detected patterns</h3><span id="pattern-count"></span></div>
-        <p class="hint" data-i18n="inspector.patternsHint">Findings are explainable and confidence-rated. Medium-confidence findings remain hypotheses for human review.</p>
-        <div id="pattern-findings" class="pattern-findings"></div>
-      </article>
-
-      <article class="panel full">
-        <div class="panel-head"><h3 data-i18n="inspector.timeline">Program timeline</h3><span id="timeline-horizon"></span></div>
-        <p class="hint" data-i18n="inspector.timelineHint">Static instruction timeline. It measures activity and parallelism without simulating molecules yet.</p>
-        <div id="timeline-facts" class="timeline-facts"></div>
-        <div id="timeline-arms" class="timeline-arms"></div>
-      </article>
-
-      <article class="panel full">
-        <div class="panel-head"><h3 data-i18n="inspector.relations">Candidate structural relations</h3><span id="edge-count"></span></div>
-        <p class="hint" data-i18n="inspector.relationsHint">These relations are inferred statically. Confirmed transfers will come from physical omsim traces.</p>
-        <div id="relations" class="relations"></div>
-      </article>
-
+      <article class="panel full"><div class="panel-head"><h3 data-i18n="inspector.diagnostics">Optimization diagnostics</h3><span id="diagnostic-count"></span></div><p class="hint" data-i18n="inspector.diagnosticsHint">Static, explainable opportunities. Every proposed change must still be validated by omsim.</p><div id="diagnostic-findings" class="pattern-findings"></div></article>
+      <article class="panel full"><div class="panel-head"><h3 data-i18n="inspector.patterns">Detected patterns</h3><span id="pattern-count"></span></div><p class="hint" data-i18n="inspector.patternsHint">Findings are explainable and confidence-rated. Medium-confidence findings remain hypotheses for human review.</p><div id="pattern-findings" class="pattern-findings"></div></article>
+      <article class="panel full"><div class="panel-head"><h3 data-i18n="inspector.timeline">Program timeline</h3><span id="timeline-horizon"></span></div><p class="hint" data-i18n="inspector.timelineHint">Static instruction timeline. It measures activity and parallelism without simulating molecules yet.</p><div id="timeline-facts" class="timeline-facts"></div><div id="timeline-arms" class="timeline-arms"></div></article>
+      <article class="panel full"><div class="panel-head"><h3 data-i18n="inspector.relations">Candidate structural relations</h3><span id="edge-count"></span></div><p class="hint" data-i18n="inspector.relationsHint">These relations are inferred statically. Confirmed transfers will come from physical omsim traces.</p><div id="relations" class="relations"></div></article>
       <details class="raw-panel"><summary data-i18n="inspector.raw">View full JSON</summary><pre id="raw-json"></pre></details>
     </section>
   </main>
-
   <footer data-i18n="inspector.footer">Unofficial research project. Validation powered by omsim; Opus Magnum was created by Zachtronics.</footer>
-  <script src="data/i18n.js"></script>
-  <script src="assets/js/inspector.js"></script>
+  <script src="data/i18n.js"></script><script src="data/diagnostics-i18n.js"></script><script src="assets/js/inspector.js"></script>
 </body>
 </html>
