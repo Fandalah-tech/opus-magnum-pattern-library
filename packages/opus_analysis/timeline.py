@@ -3,19 +3,72 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
-CONTROL_INSTRUCTIONS = {"period_override", "repeat"}
+PERIOD_OVERRIDE = "period_override"
+REPEAT = "repeat"
+RESET = "reset"
 
 
-def _arm_period(program: list[dict[str, Any]]) -> tuple[int, str]:
-    if not program:
-        return 0, "empty"
-    overrides = [item["cycle"] + 1 for item in program if item.get("instruction") == "period_override"]
+def _copy_instruction(item: dict[str, Any], cycle: int, *, generated_by: str | None = None) -> dict[str, Any]:
+    copied = dict(item)
+    copied["cycle"] = cycle
+    if generated_by:
+        copied["generatedBy"] = generated_by
+        copied["sourceCycle"] = item.get("cycle")
+    return copied
+
+
+def _expand_repeat_macros(program: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Expand Opus Magnum repeat placeholders into scheduled instructions.
+
+    A repeat placeholder copies the most recent instruction block. The block is
+    the instructions since the previous repeat, or the previous repeated block
+    when repeat placeholders are adjacent. Generated instructions begin at the
+    repeat placeholder's cycle and preserve the source block's spacing.
+    """
+    ordered = sorted(program, key=lambda item: int(item.get("cycle", 0)))
+    expanded: list[dict[str, Any]] = []
+    current_block: list[dict[str, Any]] = []
+    previous_block: list[dict[str, Any]] = []
+
+    for item in ordered:
+        instruction = item.get("instruction")
+        cycle = int(item.get("cycle", 0))
+        if instruction == PERIOD_OVERRIDE:
+            continue
+        if instruction == REPEAT:
+            source = current_block or previous_block
+            if not source:
+                continue
+            block_start = min(int(entry["cycle"]) for entry in source)
+            for entry in source:
+                generated_cycle = cycle + int(entry["cycle"]) - block_start
+                expanded.append(_copy_instruction(entry, generated_cycle, generated_by=REPEAT))
+            previous_block = [dict(entry) for entry in source]
+            current_block = []
+            continue
+
+        expanded.append(dict(item))
+        current_block.append(dict(item))
+
+    return sorted(expanded, key=lambda item: int(item["cycle"]))
+
+
+def _declared_global_period(programs: list[list[dict[str, Any]]]) -> tuple[int, str]:
+    overrides = [
+        int(item["cycle"]) + 1
+        for program in programs
+        for item in program
+        if item.get("instruction") == PERIOD_OVERRIDE
+    ]
     if overrides:
         return max(overrides), "period_override"
-    repeats = [item["cycle"] + 1 for item in program if item.get("instruction") == "repeat"]
-    if repeats:
-        return max(repeats), "repeat"
-    return max(item["cycle"] for item in program) + 1, "last_instruction"
+
+    expanded_ends = [
+        int(item["cycle"]) + 1
+        for program in programs
+        for item in _expand_repeat_macros(program)
+    ]
+    return max(expanded_ends, default=1), "longest_tape"
 
 
 def _expanded_actions(
@@ -23,15 +76,9 @@ def _expanded_actions(
     period: int,
     horizon: int,
 ) -> dict[int, list[dict[str, Any]]]:
-    """Expand a repeating arm tape over a finite analysis horizon.
-
-    Opus Magnum arm programs loop. Control markers define or document the tape
-    period but are not physical actions, so they are excluded from activity.
-    Multiple instructions on the same tape position are preserved.
-    """
     explicit: dict[int, list[dict[str, Any]]] = {}
-    for item in program:
-        if item.get("instruction") in CONTROL_INSTRUCTIONS:
+    for item in _expand_repeat_macros(program):
+        if item.get("instruction") == PERIOD_OVERRIDE:
             continue
         explicit.setdefault(int(item["cycle"]), []).append(item)
 
@@ -47,29 +94,22 @@ def _expanded_actions(
 
 
 def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None = None) -> dict[str, Any]:
-    """Build a repeating static instruction timeline from a parsed solution.
+    """Build a macro-expanded, globally synchronized instruction timeline.
 
-    This is program analysis, not physical simulation. It expands each arm tape
-    over the declared solution-cycle horizon and reports utilization and
-    parallelism. It does not infer atom motion, collisions, grabs that fail, or
-    production completion.
+    Opus Magnum uses one global tape period: shorter arm programs are padded to
+    the longest tape. Repeat placeholders generate physical instructions inside
+    that tape; they are not loop boundaries by themselves.
     """
     arms = [
         part for part in solution.get("parts", [])
         if part.get("type", "").startswith("arm") or part.get("type") in {"piston", "baron"}
     ]
     declared_cycles = solution.get("metrics", {}).get("cycles")
-    inferred_periods: list[int] = []
-    arm_rows: list[tuple[dict[str, Any], list[dict[str, Any]], int, str]] = []
+    programs = [sorted(arm.get("program", []), key=lambda item: item["cycle"]) for arm in arms]
+    global_period, period_source = _declared_global_period(programs)
 
-    for arm in arms:
-        program = sorted(arm.get("program", []), key=lambda item: item["cycle"])
-        period, period_source = _arm_period(program)
-        inferred_periods.append(period)
-        arm_rows.append((arm, program, period, period_source))
-
-    default_horizon = max([declared_cycles or 0, *inferred_periods, 1])
-    horizon = min(max_cycles, default_horizon) if max_cycles else default_horizon
+    default_horizon = max(int(declared_cycles or 0), global_period, 1)
+    horizon = int(max_cycles) if max_cycles is not None else default_horizon
     horizon = max(1, horizon)
 
     cycles: list[dict[str, Any]] = []
@@ -77,8 +117,9 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     per_arm: list[dict[str, Any]] = []
     expanded_by_arm: dict[str, dict[int, list[dict[str, Any]]]] = {}
 
-    for arm, program, period, period_source in arm_rows:
-        expanded = _expanded_actions(program, period, horizon)
+    for arm, program in zip(arms, programs):
+        macro_expanded = _expand_repeat_macros(program)
+        expanded = _expanded_actions(program, global_period, horizon)
         expanded_by_arm[arm["id"]] = expanded
         active = sorted(expanded)
         histogram = Counter(
@@ -90,9 +131,10 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
             "partId": arm["id"],
             "type": arm["type"],
             "armNumber": arm.get("armNumber"),
-            "period": period,
+            "period": global_period,
             "periodSource": period_source,
             "instructionCount": len(program),
+            "expandedInstructionCount": len(macro_expanded),
             "actionCount": sum(len(expanded[cycle]) for cycle in active),
             "activeCycleCount": len(active),
             "idleCycles": horizon - len(active),
@@ -106,7 +148,7 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
 
     for cycle in range(horizon):
         events: list[dict[str, Any]] = []
-        for arm, _program, period, _period_source in arm_rows:
+        for arm in arms:
             for item in expanded_by_arm.get(arm["id"], {}).get(cycle, []):
                 events.append({
                     "partId": arm["id"],
@@ -114,7 +156,9 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
                     "armNumber": arm.get("armNumber"),
                     "instruction": item["instruction"],
                     "rawCode": item.get("rawCode"),
-                    "tapeCycle": cycle % period if period else None,
+                    "tapeCycle": cycle % global_period,
+                    "generatedBy": item.get("generatedBy"),
+                    "sourceCycle": item.get("sourceCycle"),
                 })
         cycles.append({"cycle": cycle, "activeArms": active_counts[cycle], "events": events})
 
@@ -123,16 +167,18 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     active_cycle_count = sum(1 for cycle in range(horizon) if active_counts[cycle] > 0)
 
     return {
-        "schemaVersion": "0.2.0",
-        "analysisType": "repeating-static-program-timeline",
+        "schemaVersion": "0.3.0",
+        "analysisType": "macro-expanded-global-program-timeline",
         "limitations": [
-            "No atom positions, collisions, grabs, drops or glyph effects are simulated.",
-            "Arm tapes are expanded by their inferred period across the declared solution-cycle horizon.",
+            "Repeat placeholders are expanded; reset placeholders are still represented as reset events.",
+            "No atom positions, collisions, grabs, drops or glyph effects are physically simulated.",
             "An instruction is counted as scheduled even if physical execution would later fail or be blocked.",
         ],
         "summary": {
             "horizon": horizon,
             "declaredCycles": declared_cycles,
+            "globalPeriod": global_period,
+            "periodSource": period_source,
             "armCount": len(arms),
             "activeCycleCount": active_cycle_count,
             "globalIdleCycles": horizon - active_cycle_count,
