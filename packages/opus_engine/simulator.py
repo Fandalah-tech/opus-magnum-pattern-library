@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .arm import ArmState
-from .builder import DIRECTIONS, build_initial_world, rotate_hex
+from .builder import DIRECTIONS, InputSource, build_input_sources, rotate_hex
 from .model import Hex
 from .world import World, WorldEvent
 
@@ -56,6 +56,7 @@ class ArmMutation:
 class Simulator:
     world: World
     arms: dict[str, ArmState]
+    inputs: list[InputSource] = field(default_factory=list)
     frames: list[dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self) -> None:
@@ -64,7 +65,12 @@ class Simulator:
 
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
-        world = build_initial_world(puzzle, solution)
+        world = World()
+        inputs = build_input_sources(puzzle, solution)
+        for source in inputs:
+            source.spawn(world)
+        world.events = []
+
         track_cells: tuple[Hex, ...] = tuple(
             tuple(cell)
             for part in solution.get("parts", [])
@@ -84,7 +90,7 @@ class Simulator:
                 length=max(1, int(part.get("length") or 1)),
                 track_cells=track_cells,
             )
-        return cls(world=world, arms=arms)
+        return cls(world=world, arms=arms, inputs=inputs)
 
     def molecule_atom_ids(self, atom_id: str) -> set[str]:
         for molecule in self.world.molecules():
@@ -255,6 +261,10 @@ class Simulator:
 
         return [], None
 
+    def _respawn_inputs(self) -> None:
+        for source in self.inputs:
+            source.spawn(self.world)
+
     def step(self, instructions: dict[str, str | None]) -> dict[str, Any]:
         self.world.events = []
 
@@ -280,6 +290,8 @@ class Simulator:
         self._validate_and_apply(proposals)
         for mutation in mutations:
             mutation.apply()
+
+        self._respawn_inputs()
 
         for arm_id, instruction in instructions.items():
             if instruction:
@@ -307,7 +319,7 @@ class Simulator:
                 self.frames.append(self.snapshot("error"))
                 break
         return {
-            "schemaVersion": "0.1.0",
+            "schemaVersion": "0.2.0",
             "traceType": "opus-engine-experimental",
             "summary": {
                 "frameCount": len(self.frames),
@@ -321,6 +333,7 @@ class Simulator:
                 "piston": True,
                 "track": True,
                 "grabDrop": True,
+                "inputRespawn": True,
                 "transactionalCollisionCheck": True,
                 "glyphs": False,
             },
@@ -332,6 +345,14 @@ class Simulator:
             "cycle": self.world.cycle,
             "phase": phase,
             "arms": [arm.snapshot() for arm in sorted(self.arms.values(), key=lambda item: item.id)],
+            "inputs": [
+                {
+                    "inputId": source.id,
+                    "spawnCount": source.spawn_count,
+                    "footprint": [list(position) for position in source.footprint],
+                }
+                for source in self.inputs
+            ],
             "world": self.world.snapshot(),
             "events": [
                 {"kind": event.kind, "cycle": event.cycle, **event.data}
