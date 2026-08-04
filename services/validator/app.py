@@ -17,10 +17,11 @@ from packages.opus_analysis import (
     build_solution_graph,
     detect_patterns,
 )
+from packages.opus_engine import Simulator
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.6.0"
+API_VERSION = "1.7.0"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 
@@ -94,7 +95,7 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
     replay_cycles = int(validated_cycles) if isinstance(validated_cycles, (int, float)) and validated_cycles > 0 else None
     graph, timeline, replay, patterns, diagnostics = _bundle(puzzle_model, solution_model, replay_cycles=replay_cycles)
     return {
-        "schemaVersion": "1.6.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
+        "schemaVersion": "1.7.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
         "solution": solution_model, "validation": validation, "graph": graph,
         "timeline": timeline, "replay": replay, "patterns": patterns, "diagnostics": diagnostics,
     }
@@ -118,6 +119,18 @@ def replay_endpoint(puzzle: UploadFile = File(...), solution: UploadFile = File(
     solution_model = _canonical_parse(parse_solution_bytes, solution)
     timeline = build_program_timeline(solution_model)
     return build_replay_trace(puzzle_model, solution_model, timeline)
+
+
+@app.post("/api/v1/engine/replay")
+def experimental_engine_replay_endpoint(
+    puzzle: UploadFile = File(...),
+    solution: UploadFile = File(...),
+) -> dict[str, Any]:
+    puzzle_model = _canonical_parse(parse_puzzle_bytes, puzzle)
+    solution_model = _canonical_parse(parse_solution_bytes, solution)
+    timeline = build_program_timeline(solution_model)
+    simulator = Simulator.from_models(puzzle_model, solution_model)
+    return simulator.run_timeline(timeline)
 
 
 @app.post("/parse/puzzle")
