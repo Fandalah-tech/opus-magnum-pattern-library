@@ -12,8 +12,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from packages.opus_analysis import analyze_solution, build_program_timeline, build_solution_graph, detect_patterns
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
+from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.0.0"
+API_VERSION = "1.1.0"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
 app.add_middleware(
     CORSMiddleware,
@@ -56,9 +57,10 @@ def _bundle(model: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict
 
 
 def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
+    command = build_command(OMSIM_BIN, puzzle_path, solution_path)
     try:
         completed = subprocess.run(
-            [OMSIM_BIN, str(puzzle_path), str(solution_path)],
+            command,
             capture_output=True,
             text=True,
             timeout=TIMEOUT_SECONDS,
@@ -70,22 +72,22 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
         raise HTTPException(status_code=504, detail="Validation timed out") from exc
 
     raw = "\n".join(part for part in (completed.stdout, completed.stderr) if part).strip()
+    classified = classify_result(completed.returncode, raw)
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "validator": {
             "name": "omsim",
             "version": None,
             "commit": os.environ.get("OMSIM_COMMIT"),
         },
-        "valid": completed.returncode == 0,
-        "metrics": {"cost": None, "cycles": None, "area": None, "instructions": None},
-        "issues": [] if completed.returncode == 0 else [{
-            "severity": "error",
-            "code": "OMSIM_VALIDATION_FAILED",
-            "message": raw or f"omsim exited with code {completed.returncode}",
-        }],
+        **classified,
         "knownDivergence": False,
         "rawOutput": raw,
+        "execution": {
+            "exitCode": completed.returncode,
+            "timeoutSeconds": TIMEOUT_SECONDS,
+            "interface": "--puzzle-file",
+        },
     }
 
 
@@ -105,7 +107,7 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
 
     graph, timeline, patterns, diagnostics = _bundle(solution_model)
     return {
-        "schemaVersion": "1.0.0",
+        "schemaVersion": "1.1.0",
         "apiVersion": API_VERSION,
         "puzzle": puzzle_model,
         "solution": solution_model,
