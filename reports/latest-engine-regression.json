@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-04T20:04:53.406141+00:00",
+  "generatedAt": "2026-08-04T20:07:01.469077+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
@@ -54,7 +54,7 @@
           ],
           "confidence": "high",
           "engineError": {
-            "message": "Atom part-1-spawn-1-atom-0 collides with stationary atom part-1-spawn-0-atom-0 at (1, 1); activeArms={'part-0': {'instruction': 'rotate_cw', 'heldAtoms': ['part-1-spawn-1-atom-0']}}",
+            "message": "Atom part-1-spawn-1-atom-0 collides with stationary atom part-1-spawn-0-atom-0 at (1, 1); activeArms={'part-0': {'instruction': 'rotate_cw', 'heldAtoms': ['part-1-spawn-1-atom-0']}}; atomHolders={'part-1-spawn-1-atom-0': ['part-0']}; outputs=[{'outputId': 'part-4', 'productIndex': 0, 'atoms': [((-1, 0), 'water'), ((-1, 1), 'salt')], 'bonds': [('normal', (-1, 0), (-1, 1))]}]; delivered={}",
             "cycle": 15
           }
         },
@@ -168,7 +168,7 @@
           ],
           "confidence": "high",
           "engineError": {
-            "message": "Atom part-1-spawn-2-atom-0 collides with stationary atom part-1-spawn-1-atom-0 at (-2, 0); activeArms={'part-0': {'instruction': 'rotate_ccw', 'heldAtoms': ['part-1-spawn-2-atom-0']}}",
+            "message": "Atom part-1-spawn-2-atom-0 collides with stationary atom part-1-spawn-1-atom-0 at (-2, 0); activeArms={'part-0': {'instruction': 'rotate_ccw', 'heldAtoms': ['part-1-spawn-2-atom-0']}}; atomHolders={'part-1-spawn-2-atom-0': ['part-0']}; outputs=[{'outputId': 'part-4', 'productIndex': 0, 'atoms': [((-2, 2), 'salt'), ((-1, 1), 'fire'), ((0, 1), 'fire'), ((1, 0), 'salt')], 'bonds': [('normal', (-2, 2), (-1, 1)), ('normal', (-1, 1), (0, 1)), ('normal', (0, 1), (1, 0))]}]; delivered={}",
             "cycle": 20
           }
         },
@@ -287,7 +287,7 @@
           ],
           "confidence": "high",
           "engineError": {
-            "message": "Atom part-1-spawn-1-atom-0 collides with stationary atom part-1-spawn-0-atom-0 at (1, 1); activeArms={'part-2': {'instruction': 'rotate_cw', 'heldAtoms': ['part-1-spawn-1-atom-0']}}",
+            "message": "Atom part-1-spawn-1-atom-0 collides with stationary atom part-1-spawn-0-atom-0 at (1, 1); activeArms={'part-2': {'instruction': 'rotate_cw', 'heldAtoms': ['part-1-spawn-1-atom-0']}}; atomHolders={'part-1-spawn-1-atom-0': ['part-2']}; outputs=[{'outputId': 'part-4', 'productIndex': 0, 'atoms': [((-1, 0), 'earth'), ((-1, 1), 'salt')], 'bonds': [('normal', (-1, 0), (-1, 1))]}]; delivered={}",
             "cycle": 15
           }
         },
@@ -401,7 +401,7 @@
           ],
           "confidence": "high",
           "engineError": {
-            "message": "Atom part-0-spawn-1-atom-0 collides with stationary atom part-0-spawn-0-atom-0 at (0, 2); activeArms={'part-4': {'instruction': 'rotate_cw', 'heldAtoms': ['part-0-spawn-1-atom-0']}}",
+            "message": "Atom part-0-spawn-1-atom-0 collides with stationary atom part-0-spawn-0-atom-0 at (0, 2); activeArms={'part-4': {'instruction': 'rotate_cw', 'heldAtoms': ['part-0-spawn-1-atom-0']}}; atomHolders={'part-0-spawn-1-atom-0': ['part-4']}; outputs=[{'outputId': 'part-2', 'productIndex': 0, 'atoms': [((1, 0), 'gold')], 'bonds': []}]; delivered={}",
             "cycle": 12
           }
         },
@@ -530,7 +530,7 @@
           ],
           "confidence": "high",
           "engineError": {
-            "message": "Atom part-0-spawn-0-atom-0 collides with stationary atom part-3-spawn-0-atom-0 at (-10, -6); activeArms={'part-4': {'instruction': 'rotate_ccw', 'heldAtoms': ['part-0-spawn-0-atom-0']}}",
+            "message": "Atom part-0-spawn-0-atom-0 collides with stationary atom part-3-spawn-0-atom-0 at (-10, -6); activeArms={'part-4': {'instruction': 'rotate_ccw', 'heldAtoms': ['part-0-spawn-0-atom-0']}}; atomHolders={'part-0-spawn-0-atom-0': ['part-4']}; outputs=[{'outputId': 'part-2', 'productIndex': 0, 'atoms': [((-10, -7), 'air'), ((-9, -7), 'air'), ((-9, -6), 'water')], 'bonds': [('normal', (-10, -7), (-9, -7)), ('normal', (-9, -7), (-9, -6))]}]; delivered={}",
             "cycle": 15
           }
         },
@@ -720,7 +720,7 @@
           ],
           "confidence": "high",
           "engineError": {
-            "message": "Atom part-3-spawn-1-atom-0 collides with stationary atom part-3-spawn-0-atom-0 at (-2, 1); activeArms={'part-0': {'instruction': 'rotate_cw', 'heldAtoms': ['part-3-spawn-1-atom-0']}}",
+            "message": "Atom part-3-spawn-1-atom-0 collides with stationary atom part-3-spawn-0-atom-0 at (-2, 1); activeArms={'part-0': {'instruction': 'rotate_cw', 'heldAtoms': ['part-3-spawn-1-atom-0']}}; atomHolders={'part-3-spawn-1-atom-0': ['part-0']}; outputs=[{'outputId': 'part-4', 'productIndex': 0, 'atoms': [((0, 1), 'vitae'), ((1, -1), 'salt'), ((1, 0), 'water'), ((2, 0), 'salt'), ((2, 1), 'vitae')], 'bonds': [('normal', (0, 1), (1, 0)), ('normal', (1, -1), (1, 0)), ('normal', (1, 0), (2, 0)), ('normal', (2, 0), (2, 1))]}]; delivered={}",
             "cycle": 14
           }
         },
