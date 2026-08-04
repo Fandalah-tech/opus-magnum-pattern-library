@@ -139,12 +139,16 @@ jobs:
         if: always()
         run: |
           if [[ -f reports/latest-engine-regression.json ]]; then
+            cp reports/latest-engine-regression.json /tmp/latest-engine-regression.json
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/latest-engine-regression.json reports/latest-engine-regression.json
             git add reports/latest-engine-regression.json
             if ! git diff --cached --quiet; then
               git commit -m "Update latest engine regression report [skip ci]"
-              git push
+              git push origin HEAD:main
             fi
           fi
 
