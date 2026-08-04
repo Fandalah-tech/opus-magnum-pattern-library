@@ -6,6 +6,7 @@ import json
 import sys
 import urllib.error
 import urllib.request
+from collections import Counter
 from pathlib import Path
 
 from packages.opus_parser import parse_puzzle, parse_solution
@@ -22,14 +23,11 @@ def sha256(path: Path) -> str:
 def multipart(puzzle: Path, solution: Path) -> tuple[bytes, str]:
     boundary = "----opus-codex-regression"
     chunks: list[bytes] = []
-    for field, path, content_type in (
-        ("puzzle", puzzle, "application/octet-stream"),
-        ("solution", solution, "application/octet-stream"),
-    ):
+    for field, path in (("puzzle", puzzle), ("solution", solution)):
         chunks.extend([
             f"--{boundary}\r\n".encode(),
             f'Content-Disposition: form-data; name="{field}"; filename="{path.name}"\r\n'.encode(),
-            f"Content-Type: {content_type}\r\n\r\n".encode(),
+            b"Content-Type: application/octet-stream\r\n\r\n",
             path.read_bytes(),
             b"\r\n",
         ])
@@ -37,20 +35,20 @@ def multipart(puzzle: Path, solution: Path) -> tuple[bytes, str]:
     return b"".join(chunks), boundary
 
 
-def validate_remote(url: str, puzzle: Path, solution: Path) -> dict:
+def post_pair(url: str, endpoint: str, puzzle: Path, solution: Path) -> dict:
     body, boundary = multipart(puzzle, solution)
     request = urllib.request.Request(
-        f"{url.rstrip('/')}/validate",
+        f"{url.rstrip('/')}{endpoint}",
         data=body,
         method="POST",
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
     )
     try:
-        with urllib.request.urlopen(request, timeout=90) as response:
+        with urllib.request.urlopen(request, timeout=120) as response:
             return json.load(response)
     except urllib.error.HTTPError as exc:
         payload = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"Validator returned HTTP {exc.code}: {payload}") from exc
+        raise RuntimeError(f"{endpoint} returned HTTP {exc.code}: {payload}") from exc
 
 
 def main() -> int:
@@ -64,6 +62,7 @@ def main() -> int:
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     results = []
     failed = False
+    classifications: Counter[str] = Counter()
 
     for pair in manifest["pairs"]:
         puzzle_meta = pair["puzzle"]
@@ -71,6 +70,9 @@ def main() -> int:
         puzzle_path = args.fixtures / puzzle_meta["file"]
         solution_path = args.fixtures / solution_meta["file"]
         errors: list[str] = []
+        local = None
+        remote = None
+        engine = None
 
         for path, expected in ((puzzle_path, puzzle_meta), (solution_path, solution_meta)):
             if not path.exists():
@@ -81,8 +83,6 @@ def main() -> int:
             if sha256(path) != expected["sha256"]:
                 errors.append(f"sha256 mismatch: {path.name}")
 
-        local = None
-        remote = None
         if not errors:
             puzzle = parse_puzzle(puzzle_path)
             solution = parse_solution(solution_path)
@@ -106,7 +106,7 @@ def main() -> int:
 
         if not errors:
             try:
-                remote = validate_remote(args.validator_url, puzzle_path, solution_path)
+                remote = post_pair(args.validator_url, "/validate", puzzle_path, solution_path)
                 if not remote.get("valid"):
                     errors.append("omsim rejected solution")
                 remote_metrics = remote.get("metrics", {})
@@ -114,8 +114,24 @@ def main() -> int:
                     actual = remote_metrics.get(key)
                     if actual is not None and actual != expected:
                         errors.append(f"remote metric mismatch for {key}: {actual} != {expected}")
-            except Exception as exc:  # report every pair, then fail once
+            except Exception as exc:
                 errors.append(str(exc))
+
+        if not errors:
+            try:
+                engine = post_pair(args.validator_url, "/api/v1/engine/compare", puzzle_path, solution_path)
+                status = str(engine.get("status") or "unknown")
+                if status == "diverged":
+                    classification = engine.get("firstDivergence", {}).get("classification", {})
+                    classifications[str(classification.get("subsystem") or "unclassified")] += 1
+                elif status == "engine-error":
+                    classifications["engine-error"] += 1
+                elif status == "match":
+                    classifications["match"] += 1
+                else:
+                    classifications["unknown"] += 1
+            except Exception as exc:
+                errors.append(f"engine comparison failed: {exc}")
 
         if errors:
             failed = True
@@ -126,16 +142,18 @@ def main() -> int:
             "errors": errors,
             "local": local,
             "remote": remote,
+            "engineComparison": engine,
         })
 
     report = {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
             "total": len(results),
             "passed": sum(1 for item in results if item["passed"]),
             "failed": sum(1 for item in results if not item["passed"]),
+            "engineClassifications": dict(sorted(classifications.items())),
         },
         "results": results,
     }
@@ -147,6 +165,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
-# The private fixture archive is provisioned in Cloud Storage; changes to this
-# runner intentionally trigger the reference-regression workflow.
