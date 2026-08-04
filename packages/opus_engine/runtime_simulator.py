@@ -20,13 +20,16 @@ def _bond_signature(kind: str, start: tuple[int, int], end: tuple[int, int]) -> 
 class Simulator(BaseSimulator):
     """Runtime simulator with reset and board-consumer semantics."""
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.output_patterns: list[tuple[str, int, tuple, tuple]] = []
+        self.disposal_cells: set[tuple[int, int]] = set()
+        self.delivered_products: dict[str, int] = {}
+
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
         simulator = super().from_models(puzzle, solution)
         products = puzzle.get("products", [])
-        simulator.output_patterns = []
-        simulator.disposal_cells = set()
-        simulator.delivered_products = {}
 
         for part in solution.get("parts", []):
             part_type = str(part.get("type") or "")
