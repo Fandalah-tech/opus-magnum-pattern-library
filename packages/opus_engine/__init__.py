@@ -1,5 +1,6 @@
 from .arm import ArmState, branch_offsets
 from .builder import build_initial_world
+from .comparison import compare_replays
 from .model import Atom, Bond, Hex, Molecule, connected_components
 from .simulator import MotionProposal, SimulationError, Simulator
 from .world import World, WorldEvent
@@ -17,5 +18,6 @@ __all__ = [
     "WorldEvent",
     "branch_offsets",
     "build_initial_world",
+    "compare_replays",
     "connected_components",
 ]
