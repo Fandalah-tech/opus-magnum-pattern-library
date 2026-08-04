@@ -79,6 +79,29 @@ def test_simulator_rejects_collision_transactionally() -> None:
     assert simulator.arms["arm"].rotation == 0
 
 
+def test_run_timeline_preserves_simulation_error_context() -> None:
+    world = World()
+    world.add_atom(Atom("moving", "salt", (1, 0)))
+    world.add_atom(Atom("blocking", "water", (0, 1)))
+    simulator = Simulator(world, {"arm": ArmState("arm", "arm1", (0, 0), 0, 1)})
+    timeline = {
+        "cycles": [
+            {"cycle": 0, "events": [{"partId": "arm", "instruction": "grab"}]},
+            {"cycle": 1, "events": [{"partId": "arm", "instruction": "rotate_ccw"}]},
+        ]
+    }
+
+    replay = simulator.run_timeline(timeline)
+
+    assert replay["summary"]["terminatedWithError"] is True
+    error_frame = replay["frames"][-1]
+    assert error_frame["phase"] == "error"
+    assert any(
+        event["kind"] == "simulation-error" and "collides" in event["message"]
+        for event in error_frame["events"]
+    )
+
+
 def test_piston_moves_held_molecule() -> None:
     world = World()
     world.add_atom(Atom("a", "salt", (1, 0)))
