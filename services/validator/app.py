@@ -20,7 +20,7 @@ from packages.opus_analysis import (
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.5.0"
+API_VERSION = "1.6.0"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 
@@ -94,7 +94,7 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
     replay_cycles = int(validated_cycles) if isinstance(validated_cycles, (int, float)) and validated_cycles > 0 else None
     graph, timeline, replay, patterns, diagnostics = _bundle(puzzle_model, solution_model, replay_cycles=replay_cycles)
     return {
-        "schemaVersion": "1.5.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
+        "schemaVersion": "1.6.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
         "solution": solution_model, "validation": validation, "graph": graph,
         "timeline": timeline, "replay": replay, "patterns": patterns, "diagnostics": diagnostics,
     }
