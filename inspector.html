@@ -9,12 +9,11 @@
   <link rel="stylesheet" href="assets/css/pattern-findings.css">
   <link rel="stylesheet" href="assets/css/validation-status.css">
   <link rel="stylesheet" href="assets/css/solution-viewer.css">
+  <link rel="stylesheet" href="assets/css/replay-controls.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Back to the Codex" data-i18n-aria-label="inspector.back">
-      <span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Solution Inspector</strong></span>
-    </a>
+    <a class="brand" href="index.html" aria-label="Back to the Codex" data-i18n-aria-label="inspector.back"><span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Solution Inspector</strong></span></a>
     <nav><a href="index.html">Codex</a><a class="active" href="inspector.html" data-i18n="inspector.lab">Laboratory</a><select id="locale-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option></select></nav>
   </header>
   <main>
@@ -24,7 +23,11 @@
     <section id="results" hidden>
       <div class="summary-head"><div><p class="eyebrow" data-i18n="inspector.result">RESULT</p><h2 id="solution-title">Solution</h2><p id="puzzle-title"></p></div><span id="validity" class="status-badge"></span></div>
       <div class="metrics" aria-label="Metrics"><article><small data-i18n="metric.cost">Cost</small><strong id="metric-cost">—</strong></article><article><small data-i18n="metric.cycles">Cycles</small><strong id="metric-cycles">—</strong></article><article><small data-i18n="metric.area">Area</small><strong id="metric-area">—</strong></article><article><small data-i18n="metric.instructions">Instructions</small><strong id="metric-instructions">—</strong></article></div>
-      <article id="solution-viewer" class="solution-viewer"><div class="viewer-head"><div><h3 data-i18n="viewer.title">Solution viewer</h3><p class="hint" data-i18n="viewer.hint">Select a part to inspect it. Drag to pan and use the mouse wheel to zoom.</p></div><div class="viewer-tools"><button type="button" data-viewer-fit data-i18n="viewer.fit">Fit</button><button type="button" data-viewer-reset data-i18n="viewer.reset">Reset</button><span data-viewer-zoom>100%</span></div></div><div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Interactive solution map" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details><p class="hint" data-i18n="viewer.select">Select a part on the map.</p></aside></div></article>
+      <article id="solution-viewer" class="solution-viewer">
+        <div class="viewer-head"><div><h3 data-i18n="viewer.title">Solution viewer</h3><p class="hint" data-i18n="viewer.hint">Select a part to inspect it. Drag to pan and use the mouse wheel to zoom.</p></div><div class="viewer-tools"><button type="button" data-viewer-fit data-i18n="viewer.fit">Fit</button><button type="button" data-viewer-reset data-i18n="viewer.reset">Reset</button><span data-viewer-zoom>100%</span></div></div>
+        <div class="replay-controls" aria-label="Replay controls"><button type="button" data-replay-previous disabled aria-label="Previous cycle">◀</button><button type="button" data-replay-play disabled>Play</button><button type="button" data-replay-next disabled aria-label="Next cycle">▶</button><input type="range" data-replay-range min="0" max="0" value="0" disabled aria-label="Replay cycle"><span class="replay-cycle" data-replay-cycle>Cycle —</span><select data-replay-speed disabled aria-label="Replay speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><p class="replay-note" data-replay-note>Analyze a pair to initialize replay.</p></div>
+        <div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Interactive solution map" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details><p class="hint" data-i18n="viewer.select">Select a part on the map.</p></aside></div>
+      </article>
       <div class="result-grid"><article class="panel"><div class="panel-head"><h3 data-i18n="inspector.structure">Structure</h3><span id="part-count"></span></div><div id="part-summary" class="chips"></div><dl id="graph-summary" class="facts"></dl></article><article class="panel"><div class="panel-head"><h3 data-i18n="inspector.armPrograms">Arm programs</h3><span id="arm-count"></span></div><div id="arm-programs" class="arm-list"></div></article></div>
       <article class="panel full"><div class="panel-head"><h3 data-i18n="inspector.diagnostics">Optimization diagnostics</h3><span id="diagnostic-count"></span></div><p class="hint" data-i18n="inspector.diagnosticsHint">Static, explainable opportunities. Every proposed change must still be validated by omsim.</p><div id="diagnostic-findings" class="pattern-findings"></div></article>
       <article class="panel full"><div class="panel-head"><h3 data-i18n="inspector.patterns">Detected patterns</h3><span id="pattern-count"></span></div><p class="hint" data-i18n="inspector.patternsHint">Findings are explainable and confidence-rated. Medium-confidence findings remain hypotheses for human review.</p><div id="pattern-findings" class="pattern-findings"></div></article>
@@ -34,6 +37,6 @@
     </section>
   </main>
   <footer data-i18n="inspector.footer">Unofficial research project. Validation powered by omsim; Opus Magnum was created by Zachtronics.</footer>
-  <script src="data/i18n.js"></script><script src="data/diagnostics-i18n.js"></script><script src="data/pair-library-i18n.js"></script><script src="data/validation-i18n.js"></script><script src="data/viewer-i18n.js"></script><script src="assets/js/pair-library.js"></script><script src="assets/js/pair-library-ui.js"></script><script src="assets/js/opus-geometry.js"></script><script src="assets/js/opus-piece-symbols.js"></script><script src="assets/js/solution-viewer.js"></script><script src="assets/js/solution-viewer-bridge.js"></script><script src="assets/js/inspector.js"></script>
+  <script src="data/i18n.js"></script><script src="data/diagnostics-i18n.js"></script><script src="data/pair-library-i18n.js"></script><script src="data/validation-i18n.js"></script><script src="data/viewer-i18n.js"></script><script src="assets/js/pair-library.js"></script><script src="assets/js/pair-library-ui.js"></script><script src="assets/js/opus-geometry.js"></script><script src="assets/js/opus-piece-symbols.js"></script><script src="assets/js/solution-viewer.js"></script><script src="assets/js/solution-viewer-bridge.js"></script><script src="assets/js/replay-controls.js"></script><script src="assets/js/inspector.js"></script>
 </body>
 </html>
