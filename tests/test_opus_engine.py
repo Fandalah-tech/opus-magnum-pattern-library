@@ -72,3 +72,43 @@ def test_simulator_rejects_collision_transactionally() -> None:
 
     assert world.atoms["moving"].position == (1, 0)
     assert simulator.arms["arm"].rotation == 0
+
+
+def test_piston_moves_held_molecule() -> None:
+    world = World()
+    world.add_atom(Atom("a", "salt", (1, 0)))
+    arm = ArmState("arm", "piston", (0, 0), 0, 1)
+    simulator = Simulator(world, {"arm": arm})
+
+    simulator.step({"arm": "grab"})
+    simulator.step({"arm": "extend"})
+
+    assert arm.length == 2
+    assert world.atoms["a"].position == (2, 0)
+
+
+def test_pivot_rotates_around_grabbed_atom() -> None:
+    world = World()
+    world.add_atom(Atom("a", "salt", (1, 0)))
+    world.add_atom(Atom("b", "water", (2, 0)))
+    world.add_bond(Bond("a", "b"))
+    simulator = Simulator(world, {"arm": ArmState("arm", "arm1", (0, 0), 0, 1)})
+
+    simulator.step({"arm": "grab"})
+    simulator.step({"arm": "pivot_ccw"})
+
+    assert world.atoms["a"].position == (1, 0)
+    assert world.atoms["b"].position == (1, 1)
+
+
+def test_track_move_translates_arm_and_molecule() -> None:
+    world = World()
+    world.add_atom(Atom("a", "salt", (1, 0)))
+    arm = ArmState("arm", "arm1", (0, 0), 0, 1, track_cells=((0, 0), (1, 0)))
+    simulator = Simulator(world, {"arm": arm})
+
+    simulator.step({"arm": "grab"})
+    simulator.step({"arm": "track_plus"})
+
+    assert arm.origin == (1, 0)
+    assert world.atoms["a"].position == (2, 0)
