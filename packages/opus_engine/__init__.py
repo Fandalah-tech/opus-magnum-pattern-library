@@ -2,7 +2,8 @@ from .arm import ArmState, branch_offsets
 from .builder import InputSource, build_initial_world, build_input_sources
 from .comparison import compare_replays
 from .model import Atom, Bond, Hex, Molecule, connected_components
-from .simulator import MotionProposal, SimulationError, Simulator
+from .runtime_simulator import Simulator
+from .simulator import MotionProposal, SimulationError
 from .world import World, WorldEvent
 
 __all__ = [
