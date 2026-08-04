@@ -24,7 +24,9 @@
     frameIndex = Math.max(0, Math.min(trace.frames.length - 1, frameIndex));
     const frame = trace.frames[frameIndex];
     range.value = String(frameIndex);
-    cycleLabel.textContent = `Cycle ${frame.cycle + 1} / ${trace.summary.cycleCount}`;
+    cycleLabel.textContent = frame.phaseLabel === 'initial'
+      ? `Initial state · 0 / ${trace.summary.cycleCount}`
+      : `Cycle ${frame.displayCycle ?? frame.cycle + 1} / ${trace.summary.cycleCount}`;
     const active = new Map((frame.events || []).map((event) => [event.partId, event.instruction]));
     root.querySelectorAll('[data-part-id]').forEach((node) => {
       const instruction = active.get(node.dataset.partId);
@@ -65,7 +67,8 @@
     range.value = '0';
     [play, previous, next, range, speed].forEach((node) => { if (node) node.disabled = count === 0; });
     if (note) {
-      if (trace?.capabilities?.moleculeAnimation) note.textContent = 'Physical replay with molecules.';
+      if (trace?.capabilities?.multiBranchGrab) note.textContent = 'Physical replay with molecules and multi-branch arms.';
+      else if (trace?.capabilities?.moleculeAnimation) note.textContent = 'Physical replay with molecules.';
       else if (trace?.capabilities?.physicalArmAnimation) note.textContent = 'Kinematic arm replay — molecules, tracks and collisions are not available yet.';
       else note.textContent = 'Program replay preview — physical states are not available yet.';
     }
