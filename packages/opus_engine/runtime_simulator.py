@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from .builder import rotate_hex
-from .simulator import RESET, Simulator as BaseSimulator
+from .simulator import RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
 
@@ -20,11 +20,12 @@ def _bond_signature(kind: str, start: tuple[int, int], end: tuple[int, int]) -> 
 class Simulator(BaseSimulator):
     """Runtime simulator with reset and board-consumer semantics."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        self.output_patterns: list[tuple[str, int, tuple, tuple]] = []
-        self.disposal_cells: set[tuple[int, int]] = set()
-        self.delivered_products: dict[str, int] = {}
+    def __post_init__(self) -> None:
+        self.output_patterns = []
+        self.disposal_cells = set()
+        self.delivered_products = {}
+        self._active_instructions = {}
+        super().__post_init__()
 
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
@@ -60,6 +61,7 @@ class Simulator(BaseSimulator):
         return simulator
 
     def step(self, instructions: dict[str, str | None]) -> dict[str, Any]:
+        self._active_instructions = dict(instructions)
         for arm_id, instruction in instructions.items():
             if instruction not in RESET:
                 continue
@@ -67,6 +69,20 @@ class Simulator(BaseSimulator):
             if arm is not None:
                 self._drop(arm)
         return super().step(instructions)
+
+    def _validate_and_apply(self, proposals) -> None:
+        try:
+            super()._validate_and_apply(proposals)
+        except SimulationError as error:
+            held = {
+                arm_id: {
+                    "instruction": self._active_instructions.get(arm_id),
+                    "heldAtoms": sorted(self._held_atom_ids(arm)),
+                }
+                for arm_id, arm in sorted(self.arms.items())
+                if arm.held_atoms
+            }
+            raise SimulationError(f"{error}; activeArms={held}") from error
 
     def _molecule_signature(self, atom_ids: set[str]) -> tuple[tuple, tuple]:
         atoms = tuple(sorted(
