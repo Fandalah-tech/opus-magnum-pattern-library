@@ -8,7 +8,6 @@
     glyph: "#b397cc", selected: "#f5d58f", grid: "#302c27", text: "#efe7d7"
   };
 
-  // Opus coordinates: rotation 0 points east; positive rotation moves toward NE.
   const axialToPixel = ([q, r]) => [SIZE * SQRT3 * (q + r / 2), -SIZE * 1.5 * r];
   const hexPoints = (x, y, radius = SIZE * .9) => Array.from({ length: 6 }, (_, i) => {
     const angle = Math.PI / 180 * (60 * i - 30);
@@ -109,16 +108,30 @@
     }
 
     drawArm(group, part) {
-      const [x, y] = axialToPixel(part.position || [0, 0]);
-      const [dq, dr] = GEO.direction(part.rotation || 0);
-      const target = [
-        (part.position?.[0] || 0) + dq * Math.max(1, Number(part.length || 1)),
-        (part.position?.[1] || 0) + dr * Math.max(1, Number(part.length || 1)),
-      ];
-      const [ex, ey] = axialToPixel(target);
-      group.append(svgEl("circle", { cx: x, cy: y, r: 15, fill: "#2b2722", stroke: COLORS.arm, "stroke-width": 4 }));
-      group.append(svgEl("line", { x1: x, y1: y, x2: ex, y2: ey, stroke: COLORS.arm, "stroke-width": 8, "stroke-linecap": "round" }));
-      group.append(svgEl("circle", { cx: ex, cy: ey, r: 10, fill: COLORS.arm }));
+      const origin = part.position || [0, 0];
+      const [x, y] = axialToPixel(origin);
+      const branchOffsets = part.type === "arm6" ? [0, 1, 2, 3, 4, 5] : [0];
+      const length = Math.max(1, Number(part.length || 1));
+      group.dataset.branchCount = String(branchOffsets.length);
+
+      for (let branchIndex = 0; branchIndex < branchOffsets.length; branchIndex += 1) {
+        const rotation = Number(part.rotation || 0) + branchOffsets[branchIndex];
+        const [dq, dr] = GEO.direction(rotation);
+        const [ex, ey] = axialToPixel([origin[0] + dq * length, origin[1] + dr * length]);
+        group.append(svgEl("line", {
+          x1: x, y1: y, x2: ex, y2: ey,
+          stroke: COLORS.arm, "stroke-width": 8, "stroke-linecap": "round",
+          "data-arm-shaft": branchIndex
+        }));
+        group.append(svgEl("circle", {
+          cx: ex, cy: ey, r: 10, fill: COLORS.arm,
+          "data-arm-tip": branchIndex
+        }));
+      }
+      group.append(svgEl("circle", {
+        cx: x, cy: y, r: 15, fill: "#2b2722", stroke: COLORS.arm, "stroke-width": 4,
+        "data-arm-base": "true"
+      }));
     }
 
     drawStation(group, part, kind) {
@@ -144,6 +157,7 @@
       const rows = [
         ["Type", part.type], ["ID", part.id], ["Position", `(${part.position?.join(", ") || "—"})`],
         ["Rotation", part.rotation ?? 0], ["Length", part.length ?? 1], ["Arm number", part.armNumber ?? "—"],
+        ["Branches", part.type === "arm6" ? 6 : 1],
         ["Footprint", footprint.map(([q, r]) => `(${q}, ${r})`).join(" ")], ["Instructions", program.length], ["Relations", relations.length]
       ];
       this.details.innerHTML = `<h4>${part.type}</h4><dl>${rows.map(([key, value]) => `<dt>${key}</dt><dd>${value}</dd>`).join("")}</dl>${program.length ? `<h5>Program</h5><ol>${program.slice(0, 80).map((item) => `<li><b>${item.cycle}</b> ${item.instruction}</li>`).join("")}</ol>` : ""}`;
