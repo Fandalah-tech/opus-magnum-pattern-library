@@ -29,6 +29,7 @@ class Simulator(BaseSimulator):
         self.bonder_pairs = []
         self.unbonder_pairs = []
         self.purification_glyphs = []
+        self.projection_glyphs = []
         self.delivered_products = {}
         self._active_instructions = {}
         self._glyph_generation = 0
@@ -59,6 +60,14 @@ class Simulator(BaseSimulator):
                     _transform((0, 0), origin, rotation),
                     _transform((1, 0), origin, rotation),
                     _transform((2, 0), origin, rotation),
+                    part_id,
+                ))
+                continue
+
+            if part_type == "glyph-projection":
+                simulator.projection_glyphs.append((
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
                     part_id,
                 ))
                 continue
@@ -127,8 +136,45 @@ class Simulator(BaseSimulator):
                 f"{error}; activeArms={held}; atomHolders={atom_holders}; "
                 f"outputs={outputs}; delivered={self.delivered_products}; "
                 f"bonders={self.bonder_pairs}; unbonders={self.unbonder_pairs}; "
-                f"purification={self.purification_glyphs}"
+                f"purification={self.purification_glyphs}; projection={self.projection_glyphs}"
             ) from error
+
+    def _replace_atom_element(self, atom_id: str, element: str) -> None:
+        self.world.atoms[atom_id].element = element
+
+    def _process_projection(self) -> None:
+        for first_pos, second_pos, part_id in self.projection_glyphs:
+            first = self.world.atom_at(first_pos)
+            second = self.world.atom_at(second_pos)
+            if first is None or second is None:
+                continue
+
+            if first.element == "quicksilver":
+                quicksilver, metal = first, second
+            elif second.element == "quicksilver":
+                quicksilver, metal = second, first
+            else:
+                continue
+
+            try:
+                index = METAL_ORDER.index(metal.element)
+            except ValueError:
+                continue
+            if index >= len(METAL_ORDER) - 1:
+                continue
+
+            previous = metal.element
+            produced = METAL_ORDER[index + 1]
+            self.world.remove_atom(quicksilver.id)
+            self._replace_atom_element(metal.id, produced)
+            self.world.events.append(WorldEvent("atom-projected", self.world.cycle, {
+                "glyphPartId": part_id,
+                "consumedAtomId": quicksilver.id,
+                "transformedAtomId": metal.id,
+                "fromElement": previous,
+                "toElement": produced,
+                "position": list(metal.position),
+            }))
 
     def _process_purification(self) -> None:
         for first_pos, center_pos, second_pos, part_id in self.purification_glyphs:
@@ -187,8 +233,6 @@ class Simulator(BaseSimulator):
                 "toAtomId": second.id,
                 "type": "normal",
             }))
-
-        self._process_purification()
 
     def _molecule_signature(self, atom_ids: set[str]) -> tuple[tuple, tuple]:
         atoms = tuple(sorted(
@@ -252,5 +296,7 @@ class Simulator(BaseSimulator):
 
     def _respawn_inputs(self) -> None:
         self._process_basic_glyphs()
+        self._process_projection()
+        self._process_purification()
         self._process_consumers()
         super()._respawn_inputs()
