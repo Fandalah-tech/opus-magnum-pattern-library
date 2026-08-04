@@ -71,18 +71,43 @@ def main() -> int:
         puzzle_path = args.fixtures / puzzle_meta["file"]
         solution_path = args.fixtures / solution_meta["file"]
         errors: list[str] = []
+        fixture_checks: list[dict] = []
         local = None
         remote = None
         engine = None
 
         for path, expected in ((puzzle_path, puzzle_meta), (solution_path, solution_meta)):
+            check = {
+                "file": path.name,
+                "exists": path.exists(),
+                "expectedSize": expected["size"],
+                "actualSize": None,
+                "expectedSha256": expected["sha256"],
+                "actualSha256": None,
+                "sizeMatches": False,
+                "sha256Matches": False,
+            }
             if not path.exists():
                 errors.append(f"missing file: {path.name}")
+                fixture_checks.append(check)
                 continue
-            if path.stat().st_size != expected["size"]:
-                errors.append(f"size mismatch: {path.name}")
-            if sha256(path) != expected["sha256"]:
-                errors.append(f"sha256 mismatch: {path.name}")
+
+            check["actualSize"] = path.stat().st_size
+            check["actualSha256"] = sha256(path)
+            check["sizeMatches"] = check["actualSize"] == check["expectedSize"]
+            check["sha256Matches"] = check["actualSha256"] == check["expectedSha256"]
+            fixture_checks.append(check)
+
+            if not check["sizeMatches"]:
+                errors.append(
+                    f"size mismatch: {path.name} "
+                    f"expected={check['expectedSize']} actual={check['actualSize']}"
+                )
+            if not check["sha256Matches"]:
+                errors.append(
+                    f"sha256 mismatch: {path.name} "
+                    f"expected={check['expectedSha256']} actual={check['actualSha256']}"
+                )
 
         if not errors:
             puzzle = parse_puzzle(puzzle_path)
@@ -138,13 +163,14 @@ def main() -> int:
             "solution": solution_meta["file"],
             "passed": not errors,
             "errors": errors,
+            "fixtureChecks": fixture_checks,
             "local": local,
             "remote": remote,
             "engineComparison": engine,
         })
 
     report = {
-        "schemaVersion": "0.3.0",
+        "schemaVersion": "0.4.0",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
