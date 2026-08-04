@@ -3,6 +3,7 @@
   if (!root) return;
   const world = root.querySelector('[data-viewer-world]');
   if (!world) return;
+
   const NS = 'http://www.w3.org/2000/svg';
   const SIZE = 34;
   const SQRT3 = Math.sqrt(3);
@@ -21,6 +22,9 @@
   };
 
   let layer = null;
+  let previousMolecules = new Map();
+  let animationFrame = null;
+
   function ensureLayer() {
     if (layer?.isConnected) return layer;
     layer = svgEl('g', { class: 'replay-molecule-layer', 'pointer-events': 'none' });
@@ -28,18 +32,44 @@
     return layer;
   }
 
-  function drawMolecules(molecules) {
+  function cloneMolecule(molecule) {
+    return {
+      ...molecule,
+      atoms: (molecule.atoms || []).map((atom) => ({ ...atom, position: [...atom.position] })),
+      bonds: (molecule.bonds || []).map((bond) => ({ ...bond, from: [...bond.from], to: [...bond.to] }))
+    };
+  }
+
+  function interpolatePosition(start, end, t) {
+    const [sx, sy] = axialToPixel(start || end || [0, 0]);
+    const [ex, ey] = axialToPixel(end || start || [0, 0]);
+    return [sx + (ex - sx) * t, sy + (ey - sy) * t];
+  }
+
+  function moleculeHeld(molecule) {
+    return Array.isArray(molecule.heldBy) ? molecule.heldBy.length > 0 : Boolean(molecule.heldBy);
+  }
+
+  function drawInterpolated(molecules, t) {
     const target = ensureLayer();
     target.replaceChildren();
+
     for (const molecule of molecules || []) {
+      const previous = previousMolecules.get(molecule.id);
+      const held = moleculeHeld(molecule);
       const group = svgEl('g', {
-        class: `replay-molecule${molecule.heldBy ? ' held' : ''}`,
+        class: `replay-molecule${held ? ' held' : ''}`,
         'data-molecule-id': molecule.id,
-        'data-held-by': molecule.heldBy || ''
+        'data-held-by': held ? 'true' : ''
       });
+
+      const previousAtoms = new Map((previous?.atoms || []).map((atom) => [atom.id, atom]));
+      const previousBonds = new Map((previous?.bonds || []).map((bond) => [bond.id, bond]));
+
       for (const bond of molecule.bonds || []) {
-        const [x1, y1] = axialToPixel(bond.from);
-        const [x2, y2] = axialToPixel(bond.to);
+        const oldBond = previousBonds.get(bond.id);
+        const [x1, y1] = interpolatePosition(oldBond?.from, bond.from, t);
+        const [x2, y2] = interpolatePosition(oldBond?.to, bond.to, t);
         group.append(svgEl('line', {
           x1, y1, x2, y2,
           stroke: '#e8dcc4',
@@ -48,13 +78,15 @@
           opacity: .85
         }));
       }
+
       for (const atom of molecule.atoms || []) {
-        const [x, y] = axialToPixel(atom.position);
+        const oldAtom = previousAtoms.get(atom.id);
+        const [x, y] = interpolatePosition(oldAtom?.position, atom.position, t);
         group.append(svgEl('circle', {
           cx: x, cy: y, r: 13,
           fill: COLORS[atom.element] || '#ddd',
-          stroke: molecule.heldBy ? '#fff2a8' : '#201d19',
-          'stroke-width': molecule.heldBy ? 4 : 3
+          stroke: held ? '#fff2a8' : '#201d19',
+          'stroke-width': held ? 4 : 3
         }));
         const title = svgEl('title');
         title.textContent = `${atom.element} · ${molecule.id}`;
@@ -64,7 +96,32 @@
     }
   }
 
+  function animateMolecules(molecules, duration) {
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+    const started = performance.now();
+
+    const tick = (now) => {
+      const raw = duration <= 0 ? 1 : Math.min(1, (now - started) / duration);
+      const eased = 1 - Math.pow(1 - raw, 3);
+      drawInterpolated(molecules, eased);
+      if (raw < 1) animationFrame = requestAnimationFrame(tick);
+      else {
+        animationFrame = null;
+        previousMolecules = new Map((molecules || []).map((molecule) => [molecule.id, cloneMolecule(molecule)]));
+      }
+    };
+    animationFrame = requestAnimationFrame(tick);
+  }
+
   root.addEventListener('opus:replayframe', (event) => {
-    drawMolecules(event.detail.frame?.molecules || []);
+    const molecules = event.detail.frame?.molecules || [];
+    const playing = root.querySelector('[data-replay-play]')?.dataset.state === 'playing';
+    animateMolecules(molecules, playing ? 420 : 140);
+  });
+
+  window.addEventListener('opus:analysisready', () => {
+    previousMolecules = new Map();
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+    animationFrame = null;
   });
 })();
