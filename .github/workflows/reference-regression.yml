@@ -4,9 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - agent/architecture-reboot
+      - main
     paths:
       - packages/opus_parser/**
+      - packages/opus_analysis/**
+      - packages/opus_engine/**
       - services/validator/**
       - tools/run_reference_regression.py
       - fixtures/reference/campaign-p007-p015.manifest.json
@@ -49,8 +51,10 @@ jobs:
             .private-fixtures/p007-p015.zip
           unzip -q .private-fixtures/p007-p015.zip -d .private-fixtures/files
 
-      - name: Run parser unit tests
-        run: python -m unittest discover -s packages/opus_parser/tests -v
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -s packages/opus_parser/tests -v
+          python -m pytest tests/test_opus_engine.py tests/test_engine_comparison.py -q
 
       - name: Run campaign regression
         run: |
@@ -75,13 +79,18 @@ jobs:
           if [[ -f reports/campaign-p007-p015.json ]]; then
             python - <<'PY'
           import json
+          import os
           from pathlib import Path
+
           report = json.loads(Path('reports/campaign-p007-p015.json').read_text())
           summary = report['summary']
-          with open(__import__('os').environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
               out.write('## Campaign P007-P015 regression\n\n')
               out.write(f"- Total: {summary['total']}\n")
-              out.write(f"- Passed: {summary['passed']}\n")
-              out.write(f"- Failed: {summary['failed']}\n")
+              out.write(f"- Reference checks passed: {summary['passed']}\n")
+              out.write(f"- Reference checks failed: {summary['failed']}\n")
+              out.write('\n### Engine comparison\n\n')
+              for name, count in summary.get('engineClassifications', {}).items():
+                  out.write(f"- {name}: {count}\n")
           PY
           fi
