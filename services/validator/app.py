@@ -20,7 +20,7 @@ from packages.opus_analysis import (
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.2.0"
+API_VERSION = "1.2.1"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
 app.add_middleware(
     CORSMiddleware,
@@ -54,9 +54,9 @@ def _canonical_parse(parser, upload: UploadFile) -> dict[str, Any]:
     return _parse_bytes(parser, _read_limited(upload), upload.filename)
 
 
-def _bundle(model: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+def _bundle(model: dict[str, Any], *, replay_cycles: int | None = None) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
     graph = build_solution_graph(model)
-    timeline = build_program_timeline(model)
+    timeline = build_program_timeline(model, max_cycles=replay_cycles)
     replay = build_replay_trace(model, timeline)
     patterns = detect_patterns(model, graph, timeline)
     diagnostics = analyze_solution(model, graph, timeline, patterns)
@@ -66,13 +66,7 @@ def _bundle(model: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict
 def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
     command = build_command(OMSIM_BIN, puzzle_path, solution_path)
     try:
-        completed = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            timeout=TIMEOUT_SECONDS,
-            check=False,
-        )
+        completed = subprocess.run(command, capture_output=True, text=True, timeout=TIMEOUT_SECONDS, check=False)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=503, detail="omsim binary is unavailable") from exc
     except subprocess.TimeoutExpired as exc:
@@ -82,19 +76,11 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
     classified = classify_result(completed.returncode, raw)
     return {
         "schemaVersion": "0.2.0",
-        "validator": {
-            "name": "omsim",
-            "version": None,
-            "commit": os.environ.get("OMSIM_COMMIT"),
-        },
+        "validator": {"name": "omsim", "version": None, "commit": os.environ.get("OMSIM_COMMIT")},
         **classified,
         "knownDivergence": False,
         "rawOutput": raw,
-        "execution": {
-            "exitCode": completed.returncode,
-            "timeoutSeconds": TIMEOUT_SECONDS,
-            "interface": "--puzzle-file",
-        },
+        "execution": {"exitCode": completed.returncode, "timeoutSeconds": TIMEOUT_SECONDS, "interface": "--puzzle-file"},
     }
 
 
@@ -112,9 +98,11 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
         solution_path.write_bytes(solution_bytes)
         validation = _run_omsim(puzzle_path, solution_path)
 
-    graph, timeline, replay, patterns, diagnostics = _bundle(solution_model)
+    validated_cycles = validation.get("metrics", {}).get("cycles")
+    replay_cycles = int(validated_cycles) if isinstance(validated_cycles, (int, float)) and validated_cycles > 0 else None
+    graph, timeline, replay, patterns, diagnostics = _bundle(solution_model, replay_cycles=replay_cycles)
     return {
-        "schemaVersion": "1.2.0",
+        "schemaVersion": "1.2.1",
         "apiVersion": API_VERSION,
         "puzzle": puzzle_model,
         "solution": solution_model,
@@ -133,10 +121,7 @@ def health() -> dict[str, str]:
 
 
 @app.post("/api/v1/analyze")
-def analyze_pair_endpoint(
-    puzzle: UploadFile = File(...),
-    solution: UploadFile = File(...),
-) -> dict[str, Any]:
+def analyze_pair_endpoint(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
     result = _analyze_pair(puzzle, solution)
     json.dumps(result)
     return result
@@ -180,39 +165,14 @@ def analyze_patterns_endpoint(solution: UploadFile = File(...)) -> dict[str, Any
 def analyze_diagnostics_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
     model = _canonical_parse(parse_solution_bytes, solution)
     graph, timeline, _replay, patterns, diagnostics = _bundle(model)
-    return {
-        **diagnostics,
-        "inputs": {
-            "graph": graph["summary"],
-            "timeline": timeline["summary"],
-            "patterns": patterns["summary"],
-        },
-    }
+    return {**diagnostics, "inputs": {"graph": graph["summary"], "timeline": timeline["summary"], "patterns": patterns["summary"]}}
 
 
 @app.post("/validate")
-def validate(
-    puzzle: UploadFile = File(...),
-    solution: UploadFile = File(...),
-) -> dict[str, Any]:
+def validate(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
     result = _analyze_pair(puzzle, solution)
     validation = result["validation"]
-    validation["puzzle"] = {
-        "name": result["puzzle"]["name"],
-        "sha256": result["puzzle"]["source"]["sha256"],
-        "production": result["puzzle"]["production"],
-    }
-    validation["solution"] = {
-        "name": result["solution"]["name"],
-        "sha256": result["solution"]["source"]["sha256"],
-        "declaredMetrics": result["solution"]["metrics"],
-        "partCount": len(result["solution"]["parts"]),
-    }
-    validation["analysis"] = {
-        "structuralGraph": result["graph"]["summary"],
-        "programTimeline": result["timeline"]["summary"],
-        "replay": result["replay"]["summary"],
-        "patterns": result["patterns"]["summary"],
-        "diagnostics": result["diagnostics"]["summary"],
-    }
+    validation["puzzle"] = {"name": result["puzzle"]["name"], "sha256": result["puzzle"]["source"]["sha256"], "production": result["puzzle"]["production"]}
+    validation["solution"] = {"name": result["solution"]["name"], "sha256": result["solution"]["source"]["sha256"], "declaredMetrics": result["solution"]["metrics"], "partCount": len(result["solution"]["parts"])}
+    validation["analysis"] = {"structuralGraph": result["graph"]["summary"], "programTimeline": result["timeline"]["summary"], "replay": result["replay"]["summary"], "patterns": result["patterns"]["summary"], "diagnostics": result["diagnostics"]["summary"]}
     return validation
