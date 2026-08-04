@@ -82,7 +82,24 @@ class Simulator(BaseSimulator):
                 for arm_id, arm in sorted(self.arms.items())
                 if arm.held_atoms
             }
-            raise SimulationError(f"{error}; activeArms={held}") from error
+            atom_holders = {
+                atom_id: sorted(atom.held_by)
+                for atom_id, atom in sorted(self.world.atoms.items())
+                if atom.held_by
+            }
+            outputs = [
+                {
+                    "outputId": output_id,
+                    "productIndex": product_index,
+                    "atoms": list(expected_atoms),
+                    "bonds": list(expected_bonds),
+                }
+                for output_id, product_index, expected_atoms, expected_bonds in self.output_patterns
+            ]
+            raise SimulationError(
+                f"{error}; activeArms={held}; atomHolders={atom_holders}; "
+                f"outputs={outputs}; delivered={self.delivered_products}"
+            ) from error
 
     def _molecule_signature(self, atom_ids: set[str]) -> tuple[tuple, tuple]:
         atoms = tuple(sorted(
