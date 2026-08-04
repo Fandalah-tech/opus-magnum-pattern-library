@@ -1,0 +1,4 @@
+.status-badge.validator-error {
+  color: var(--accent);
+  border-color: var(--accent);
+}
