@@ -64,9 +64,11 @@
     range.max = String(Math.max(0, count - 1));
     range.value = '0';
     [play, previous, next, range, speed].forEach((node) => { if (node) node.disabled = count === 0; });
-    if (note) note.textContent = trace?.capabilities?.moleculeAnimation
-      ? 'Physical OMSim replay'
-      : 'Program replay preview — molecule and physical arm states are not available yet.';
+    if (note) {
+      if (trace?.capabilities?.moleculeAnimation) note.textContent = 'Physical replay with molecules.';
+      else if (trace?.capabilities?.physicalArmAnimation) note.textContent = 'Kinematic arm replay — molecules, tracks and collisions are not available yet.';
+      else note.textContent = 'Program replay preview — physical states are not available yet.';
+    }
     renderFrame();
   });
 })();
