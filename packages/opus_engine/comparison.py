@@ -44,12 +44,58 @@ def _engine_atom_signature(frame: dict[str, Any]) -> list[tuple[str, int, int]]:
     return sorted(atoms)
 
 
+def _instruction_context(frame: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {
+            "partId": event.get("partId") or event.get("armId"),
+            "instruction": event.get("instruction"),
+        }
+        for event in frame.get("events", [])
+        if event.get("instruction")
+    ]
+
+
+def classify_divergence(categories: dict[str, Any], legacy_frame: dict[str, Any], engine_frame: dict[str, Any]) -> dict[str, Any]:
+    instructions = _instruction_context(legacy_frame) or _instruction_context(engine_frame)
+    names = {str(item.get("instruction") or "") for item in instructions}
+
+    if "frameCount" in categories:
+        subsystem, reason = "timeline", "frame-count-mismatch"
+    elif "arms" in categories:
+        if names & {"track_plus", "track_minus"}:
+            subsystem, reason = "track", "arm-origin-divergence"
+        elif names & {"extend", "retract", "extend_piston", "retract_piston"}:
+            subsystem, reason = "piston", "arm-length-divergence"
+        elif names & {"reset"}:
+            subsystem, reason = "reset", "arm-state-divergence"
+        else:
+            subsystem, reason = "arm-kinematics", "arm-state-divergence"
+    elif "atoms" in categories:
+        legacy_count = int(categories["atoms"].get("legacyCount", 0))
+        engine_count = int(categories["atoms"].get("engineCount", 0))
+        if legacy_count != engine_count:
+            subsystem, reason = "world-lifecycle", "atom-count-divergence"
+        elif names & {"pivot_cw", "pivot_ccw", "pivot-clockwise", "pivot-counterclockwise"}:
+            subsystem, reason = "pivot", "atom-position-divergence"
+        else:
+            subsystem, reason = "molecule-motion", "atom-position-divergence"
+    else:
+        subsystem, reason = "unknown", "unclassified-divergence"
+
+    return {
+        "subsystem": subsystem,
+        "reason": reason,
+        "instructions": instructions,
+        "confidence": "high" if instructions or subsystem in {"timeline", "world-lifecycle"} else "medium",
+    }
+
+
 def compare_replays(old_replay: dict[str, Any], engine_replay: dict[str, Any]) -> dict[str, Any]:
     """Compare canonical observable state without relying on generated atom IDs."""
     old_frames = old_replay.get("frames", [])
     engine_frames = engine_replay.get("frames", [])
     compared = min(len(old_frames), len(engine_frames))
-    divergences: list[dict[str, Any]] = []
+    divergence = None
 
     for index in range(compared):
         old_frame = old_frames[index]
@@ -72,30 +118,30 @@ def compare_replays(old_replay: dict[str, Any], engine_replay: dict[str, Any]) -
             }
 
         if categories:
-            divergences.append({
+            divergence = {
                 "frameIndex": index,
                 "legacyCycle": old_frame.get("displayCycle", old_frame.get("cycle")),
                 "engineCycle": engine_frame.get("cycle"),
                 "categories": categories,
-            })
+                "classification": classify_divergence(categories, old_frame, engine_frame),
+            }
             break
 
-    frame_count_mismatch = len(old_frames) != len(engine_frames)
-    if not divergences and frame_count_mismatch:
-        divergences.append({
+    if divergence is None and len(old_frames) != len(engine_frames):
+        categories = {"frameCount": {"legacy": len(old_frames), "engine": len(engine_frames)}}
+        divergence = {
             "frameIndex": compared,
-            "categories": {
-                "frameCount": {"legacy": len(old_frames), "engine": len(engine_frames)}
-            },
-        })
+            "categories": categories,
+            "classification": classify_divergence(categories, {}, {}),
+        }
 
     return {
-        "schemaVersion": "0.1.0",
-        "status": "match" if not divergences else "diverged",
+        "schemaVersion": "0.2.0",
+        "status": "match" if divergence is None else "diverged",
         "comparedFrameCount": compared,
         "legacyFrameCount": len(old_frames),
         "engineFrameCount": len(engine_frames),
-        "firstDivergence": divergences[0] if divergences else None,
+        "firstDivergence": divergence,
         "limitations": [
             "Atom comparison uses element and board position rather than generated IDs.",
             "The legacy replay is a development reference, not an authoritative game simulation.",
