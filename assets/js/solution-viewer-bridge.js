@@ -9,7 +9,11 @@
       const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || '';
       if (response.ok && url.includes('/api/v1/analyze')) {
         response.clone().json().then((payload) => {
-          if (payload?.solution) requestAnimationFrame(() => viewer.render(payload.solution, payload.graph));
+          if (!payload?.solution) return;
+          requestAnimationFrame(() => {
+            viewer.render(payload.solution, payload.graph);
+            window.dispatchEvent(new CustomEvent('opus:analysisready', { detail: { payload, viewer } }));
+          });
         }).catch(() => {});
       }
       return response;
