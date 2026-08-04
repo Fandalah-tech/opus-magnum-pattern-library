@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 from .arm import ArmState
 from .builder import rotate_hex
@@ -90,7 +90,6 @@ class Simulator:
     def _rotation_proposal(self, arm: ArmState, steps: int, instruction: str) -> MotionProposal | None:
         held_roots = set(arm.held_atoms.values())
         if not held_roots:
-            arm.rotation = (arm.rotation + steps) % 6
             return None
 
         atom_ids: set[str] = set()
@@ -137,7 +136,6 @@ class Simulator:
     def step(self, instructions: dict[str, str | None]) -> dict[str, Any]:
         self.world.events = []
 
-        # Grabs and drops happen at the current geometry before movement planning.
         for arm_id in sorted(self.arms):
             instruction = instructions.get(arm_id)
             arm = self.arms[arm_id]
@@ -178,12 +176,11 @@ class Simulator:
         return frame
 
     def snapshot(self, phase: str) -> dict[str, Any]:
-        world = self.world.snapshot()
         return {
             "cycle": self.world.cycle,
             "phase": phase,
             "arms": [arm.snapshot() for arm in sorted(self.arms.values(), key=lambda item: item.id)],
-            "world": world,
+            "world": self.world.snapshot(),
             "events": [
                 {"kind": event.kind, "cycle": event.cycle, **event.data}
                 for event in self.world.events
