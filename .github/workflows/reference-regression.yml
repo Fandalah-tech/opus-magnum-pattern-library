@@ -11,6 +11,7 @@ on:
       - packages/opus_engine/**
       - services/validator/**
       - tools/run_reference_regression.py
+      - tools/local_engine_compare.py
       - fixtures/reference/campaign-p007-p015.manifest.json
       - .github/workflows/reference-regression.yml
 
@@ -93,12 +94,14 @@ jobs:
                   'puzzle': item.get('puzzle'),
                   'solution': item.get('solution'),
                   'referencePassed': item.get('passed'),
+                  'referenceErrors': item.get('errors', []),
                   'status': comparison.get('status'),
                   'firstDivergence': {
                       'frameIndex': divergence.get('frameIndex'),
                       'legacyCycle': divergence.get('legacyCycle'),
                       'engineCycle': divergence.get('engineCycle'),
                       'classification': divergence.get('classification'),
+                      'categories': divergence.get('categories'),
                   } if divergence else None,
                   'engineError': {
                       'type': comparison.get('errorType'),
@@ -108,7 +111,7 @@ jobs:
               })
 
           compact = {
-              'schemaVersion': '0.1.0',
+              'schemaVersion': '0.2.0',
               'generatedAt': datetime.now(timezone.utc).isoformat(),
               'sourceManifest': source.get('manifest'),
               'summary': source.get('summary', {}),
@@ -163,5 +166,10 @@ jobs:
               out.write('\n### Engine comparison\n\n')
               for name, count in summary.get('engineClassifications', {}).items():
                   out.write(f"- {name}: {count}\n")
+              failures = [item for item in report.get('results', []) if item.get('errors')]
+              if failures:
+                  out.write('\n### Reference failures\n\n')
+                  for item in failures:
+                      out.write(f"- {item['puzzle']}: {'; '.join(item['errors'])}\n")
           PY
           fi
