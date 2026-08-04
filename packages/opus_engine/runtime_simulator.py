@@ -3,9 +3,11 @@ from __future__ import annotations
 from typing import Any
 
 from .builder import rotate_hex
-from .model import Bond
+from .model import Atom, Bond
 from .simulator import RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
+
+METAL_ORDER = ("lead", "tin", "iron", "copper", "silver", "gold")
 
 
 def _transform(position: list[int] | tuple[int, int], origin: tuple[int, int], rotation: int) -> tuple[int, int]:
@@ -26,8 +28,10 @@ class Simulator(BaseSimulator):
         self.disposal_cells = set()
         self.bonder_pairs = []
         self.unbonder_pairs = []
+        self.purification_glyphs = []
         self.delivered_products = {}
         self._active_instructions = {}
+        self._glyph_generation = 0
         super().__post_init__()
 
     @classmethod
@@ -39,14 +43,24 @@ class Simulator(BaseSimulator):
             part_type = str(part.get("type") or "")
             origin = tuple(part.get("position") or (0, 0))
             rotation = int(part.get("rotation") or 0)
+            part_id = str(part.get("id") or part_type)
 
             if part_type in {"bonder", "unbonder"}:
                 second = _transform((1, 0), origin, rotation)
-                pair = (origin, second, str(part.get("id") or part_type))
+                pair = (origin, second, part_id)
                 if part_type == "bonder":
                     simulator.bonder_pairs.append(pair)
                 else:
                     simulator.unbonder_pairs.append(pair)
+                continue
+
+            if part_type == "glyph-purification":
+                simulator.purification_glyphs.append((
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((2, 0), origin, rotation),
+                    part_id,
+                ))
                 continue
 
             if part_type == "glyph-disposal":
@@ -112,8 +126,36 @@ class Simulator(BaseSimulator):
             raise SimulationError(
                 f"{error}; activeArms={held}; atomHolders={atom_holders}; "
                 f"outputs={outputs}; delivered={self.delivered_products}; "
-                f"bonders={self.bonder_pairs}; unbonders={self.unbonder_pairs}"
+                f"bonders={self.bonder_pairs}; unbonders={self.unbonder_pairs}; "
+                f"purification={self.purification_glyphs}"
             ) from error
+
+    def _process_purification(self) -> None:
+        for first_pos, center_pos, second_pos, part_id in self.purification_glyphs:
+            first = self.world.atom_at(first_pos)
+            second = self.world.atom_at(second_pos)
+            if first is None or second is None or first.element != second.element:
+                continue
+            try:
+                index = METAL_ORDER.index(first.element)
+            except ValueError:
+                continue
+            if index >= len(METAL_ORDER) - 1 or self.world.atom_at(center_pos) is not None:
+                continue
+
+            consumed_ids = {first.id, second.id}
+            self._remove_molecule(consumed_ids)
+            atom_id = f"{part_id}-purified-{self._glyph_generation}"
+            self._glyph_generation += 1
+            produced = METAL_ORDER[index + 1]
+            self.world.add_atom(Atom(atom_id, produced, center_pos))
+            self.world.events.append(WorldEvent("atom-purified", self.world.cycle, {
+                "glyphPartId": part_id,
+                "consumedAtomIds": sorted(consumed_ids),
+                "producedAtomId": atom_id,
+                "element": produced,
+                "position": list(center_pos),
+            }))
 
     def _process_basic_glyphs(self) -> None:
         for first_pos, second_pos, part_id in self.unbonder_pairs:
@@ -145,6 +187,8 @@ class Simulator(BaseSimulator):
                 "toAtomId": second.id,
                 "type": "normal",
             }))
+
+        self._process_purification()
 
     def _molecule_signature(self, atom_ids: set[str]) -> tuple[tuple, tuple]:
         atoms = tuple(sorted(
