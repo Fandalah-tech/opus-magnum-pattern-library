@@ -55,11 +55,27 @@ def _instruction_context(frame: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
+def _simulation_error(frame: dict[str, Any]) -> dict[str, Any] | None:
+    if frame.get("phase") != "error":
+        return None
+    event = next(
+        (item for item in frame.get("events", []) if item.get("kind") == "simulation-error"),
+        None,
+    )
+    return {
+        "message": event.get("message") if event else None,
+        "cycle": frame.get("cycle"),
+    }
+
+
 def classify_divergence(categories: dict[str, Any], legacy_frame: dict[str, Any], engine_frame: dict[str, Any]) -> dict[str, Any]:
     instructions = _instruction_context(legacy_frame) or _instruction_context(engine_frame)
     names = {str(item.get("instruction") or "") for item in instructions}
+    engine_error = _simulation_error(engine_frame)
 
-    if "frameCount" in categories:
+    if engine_error is not None:
+        subsystem, reason = "engine-error", "simulation-error"
+    elif "frameCount" in categories:
         subsystem, reason = "timeline", "frame-count-mismatch"
     elif "arms" in categories:
         if names & {"track_plus", "track_minus"}:
@@ -82,12 +98,15 @@ def classify_divergence(categories: dict[str, Any], legacy_frame: dict[str, Any]
     else:
         subsystem, reason = "unknown", "unclassified-divergence"
 
-    return {
+    result = {
         "subsystem": subsystem,
         "reason": reason,
         "instructions": instructions,
-        "confidence": "high" if instructions or subsystem in {"timeline", "world-lifecycle"} else "medium",
+        "confidence": "high" if instructions or subsystem in {"timeline", "world-lifecycle", "engine-error"} else "medium",
     }
+    if engine_error is not None:
+        result["engineError"] = engine_error
+    return result
 
 
 def compare_replays(old_replay: dict[str, Any], engine_replay: dict[str, Any]) -> dict[str, Any]:
@@ -117,7 +136,7 @@ def compare_replays(old_replay: dict[str, Any], engine_replay: dict[str, Any]) -
                 "engine": new_atoms,
             }
 
-        if categories:
+        if categories or _simulation_error(engine_frame) is not None:
             divergence = {
                 "frameIndex": index,
                 "legacyCycle": old_frame.get("displayCycle", old_frame.get("cycle")),
