@@ -1,15 +1,15 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-04T21:01:41.208974+00:00",
+  "generatedAt": "2026-08-04T21:45:47.110503+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 6,
     "failed": 3,
     "engineClassifications": {
-      "engine-error": 1,
       "molecule-motion": 3,
-      "pivot": 2
+      "pivot": 2,
+      "world-lifecycle": 1
     }
   },
   "results": [
@@ -300,52 +300,24 @@
       ],
       "status": "diverged",
       "firstDivergence": {
-        "frameIndex": 13,
-        "legacyCycle": 13,
-        "engineCycle": 12,
+        "frameIndex": 9,
+        "legacyCycle": 9,
+        "engineCycle": 9,
         "classification": {
-          "subsystem": "engine-error",
-          "reason": "simulation-error",
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
           "instructions": [
             {
               "partId": "part-4",
               "instruction": "rotate_cw"
             }
           ],
-          "confidence": "high",
-          "engineError": {
-            "message": "Atom part-0-spawn-1-atom-0 collides with stationary atom part-0-spawn-0-atom-0 at (0, 2); activeArms={'part-4': {'instruction': 'rotate_cw', 'heldAtoms': ['part-0-spawn-1-atom-0']}}; atomHolders={'part-0-spawn-1-atom-0': ['part-4']}; outputs=[{'outputId': 'part-2', 'productIndex': 0, 'atoms': [((1, 0), 'gold')], 'bonds': []}]; delivered={}; bonders=[]; unbonders=[]; purification=[]",
-            "cycle": 12
-          }
+          "confidence": "high"
         },
         "categories": {
-          "arms": {
-            "legacy": {
-              "part-4": [
-                [
-                  0,
-                  1
-                ],
-                1,
-                1,
-                true
-              ]
-            },
-            "engine": {
-              "part-4": [
-                [
-                  0,
-                  1
-                ],
-                2,
-                1,
-                true
-              ]
-            }
-          },
           "atoms": {
-            "legacyCount": 5,
-            "engineCount": 4,
+            "legacyCount": 4,
+            "engineCount": 3,
             "legacy": [
               [
                 "lead",
@@ -366,11 +338,6 @@
                 "quicksilver",
                 0,
                 2
-              ],
-              [
-                "quicksilver",
-                0,
-                2
               ]
             ],
             "engine": [
@@ -380,19 +347,14 @@
                 1
               ],
               [
-                "lead",
-                1,
-                1
-              ],
-              [
                 "quicksilver",
                 -1,
                 2
               ],
               [
-                "quicksilver",
-                0,
-                2
+                "tin",
+                1,
+                1
               ]
             ]
           }
