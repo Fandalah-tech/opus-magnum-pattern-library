@@ -12,9 +12,10 @@ on:
       - services/validator/**
       - tools/run_reference_regression.py
       - fixtures/reference/campaign-p007-p015.manifest.json
+      - .github/workflows/reference-regression.yml
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 env:
@@ -64,14 +65,74 @@ jobs:
             --validator-url "${VALIDATOR_URL}" \
             --output reports/campaign-p007-p015.json
 
+      - name: Build compact latest report
+        if: always()
+        run: |
+          if [[ -f reports/campaign-p007-p015.json ]]; then
+            python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          source = json.loads(Path('reports/campaign-p007-p015.json').read_text())
+          compact_results = []
+          for item in source.get('results', []):
+              comparison = item.get('engineComparison') or {}
+              divergence = comparison.get('firstDivergence') or {}
+              compact_results.append({
+                  'puzzle': item.get('puzzle'),
+                  'solution': item.get('solution'),
+                  'referencePassed': item.get('passed'),
+                  'status': comparison.get('status'),
+                  'firstDivergence': {
+                      'frameIndex': divergence.get('frameIndex'),
+                      'legacyCycle': divergence.get('legacyCycle'),
+                      'engineCycle': divergence.get('engineCycle'),
+                      'classification': divergence.get('classification'),
+                  } if divergence else None,
+                  'engineError': {
+                      'type': comparison.get('errorType'),
+                      'message': comparison.get('message'),
+                      'completedFrameCount': comparison.get('completedFrameCount'),
+                  } if comparison.get('status') == 'engine-error' else None,
+              })
+
+          compact = {
+              'schemaVersion': '0.1.0',
+              'generatedAt': datetime.now(timezone.utc).isoformat(),
+              'sourceManifest': source.get('manifest'),
+              'summary': source.get('summary', {}),
+              'results': compact_results,
+          }
+          Path('reports/latest-engine-regression.json').write_text(
+              json.dumps(compact, indent=2), encoding='utf-8'
+          )
+          PY
+          fi
+
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: campaign-p007-p015-regression
-          path: reports/campaign-p007-p015.json
+          path: |
+            reports/campaign-p007-p015.json
+            reports/latest-engine-regression.json
           retention-days: 30
           if-no-files-found: warn
+
+      - name: Publish latest compact report
+        if: always()
+        run: |
+          if [[ -f reports/latest-engine-regression.json ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add reports/latest-engine-regression.json
+            if ! git diff --cached --quiet; then
+              git commit -m "Update latest engine regression report [skip ci]"
+              git push
+            fi
+          fi
 
       - name: Write summary
         if: always()
