@@ -10,6 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 from packages.opus_parser import parse_puzzle, parse_solution
+from tools.local_engine_compare import compare_pair_locally
 
 
 def sha256(path: Path) -> str:
@@ -61,7 +62,7 @@ def main() -> int:
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     results = []
-    failed = False
+    reference_failed = False
     classifications: Counter[str] = Counter()
 
     for pair in manifest["pairs"]:
@@ -118,23 +119,20 @@ def main() -> int:
                 errors.append(str(exc))
 
         if not errors:
-            try:
-                engine = post_pair(args.validator_url, "/api/v1/engine/compare", puzzle_path, solution_path)
-                status = str(engine.get("status") or "unknown")
-                if status == "diverged":
-                    classification = engine.get("firstDivergence", {}).get("classification", {})
-                    classifications[str(classification.get("subsystem") or "unclassified")] += 1
-                elif status == "engine-error":
-                    classifications["engine-error"] += 1
-                elif status == "match":
-                    classifications["match"] += 1
-                else:
-                    classifications["unknown"] += 1
-            except Exception as exc:
-                errors.append(f"engine comparison failed: {exc}")
+            engine = compare_pair_locally(puzzle_path, solution_path)
+            status = str(engine.get("status") or "unknown")
+            if status == "diverged":
+                classification = engine.get("firstDivergence", {}).get("classification", {})
+                classifications[str(classification.get("subsystem") or "unclassified")] += 1
+            elif status == "engine-error":
+                classifications["engine-error"] += 1
+            elif status == "match":
+                classifications["match"] += 1
+            else:
+                classifications["unknown"] += 1
 
         if errors:
-            failed = True
+            reference_failed = True
         results.append({
             "puzzle": puzzle_meta["file"],
             "solution": solution_meta["file"],
@@ -146,7 +144,7 @@ def main() -> int:
         })
 
     report = {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
@@ -160,7 +158,7 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report["summary"]))
-    return 1 if failed else 0
+    return 1 if reference_failed else 0
 
 
 if __name__ == "__main__":
