@@ -96,7 +96,7 @@
     panel = document.createElement("article");
     panel.id = "validator-panel";
     panel.className = "panel full";
-    panel.innerHTML = `<div class="panel-head"><h3>Validator details</h3><span id="validator-name"></span></div><div id="validator-issues" class="arm-list"></div><details><summary>View validator output</summary><pre id="validator-output"></pre></details>`;
+    panel.innerHTML = `<div class="panel-head"><h3>${t("validation.details")}</h3><span id="validator-name"></span></div><div id="validator-issues" class="arm-list"></div><details><summary>${t("validation.output")}</summary><pre id="validator-output"></pre></details>`;
     document.querySelector(".metrics").insertAdjacentElement("afterend", panel);
     return panel;
   }
@@ -104,19 +104,22 @@
   function renderValidation(validation) {
     const panel = ensureValidatorPanel();
     const issues = validation.issues || [];
-    text("validator-name", validation.validator?.name || "omsim");
-    byId("validator-issues").innerHTML = issues.map((issue) => `<div class="arm"><strong>${issue.code || issue.severity || "Issue"}</strong><small>${issue.message || ""}</small></div>`).join("") || `<p class="hint">No validator issue reported.</p>`;
-    text("validator-output", validation.rawOutput || "No raw output.");
-    panel.hidden = validation.valid && !validation.rawOutput && issues.length === 0;
+    text("validator-name", `${validation.validator?.name || "omsim"} · ${validation.status || "unknown"}`);
+    byId("validator-issues").innerHTML = issues.map((issue) => `<div class="arm"><strong>${issue.code || issue.severity || "Issue"}</strong><small>${issue.message || ""}</small></div>`).join("") || `<p class="hint">${t("validation.noIssues")}</p>`;
+    text("validator-output", validation.rawOutput || t("validation.noOutput"));
+    panel.hidden = validation.status === "valid" && !validation.rawOutput && issues.length === 0;
   }
 
   function render(payload) {
     const { validation, puzzle, solution, graph, timeline, patterns, diagnostics } = payload;
     text("solution-title", solution.name || solution.source?.name || "Solution");
     text("puzzle-title", puzzle.name || solution.puzzleFile || "Puzzle");
+
+    const validationStatus = validation.status || (validation.valid === true ? "valid" : validation.valid === false ? "invalid" : "validator-error");
     const validity = byId("validity");
-    validity.textContent = validation.valid ? t("inspector.valid") : t("inspector.invalid");
-    validity.className = `status-badge ${validation.valid ? "valid" : "invalid"}`;
+    validity.textContent = validationStatus === "valid" ? t("validation.valid") : validationStatus === "invalid" ? t("validation.invalid") : t("validation.error");
+    validity.className = `status-badge ${validationStatus === "valid" ? "valid" : validationStatus === "invalid" ? "invalid" : "validator-error"}`;
+
     const vm = validation.metrics || {}, dm = solution.metrics || {};
     for (const key of ["cost", "cycles", "area", "instructions"]) text(`metric-${key}`, vm[key] ?? dm[key]);
     renderValidation(validation);
