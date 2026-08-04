@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from .builder import rotate_hex
+from .model import Bond
 from .simulator import RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
@@ -18,11 +19,13 @@ def _bond_signature(kind: str, start: tuple[int, int], end: tuple[int, int]) -> 
 
 
 class Simulator(BaseSimulator):
-    """Runtime simulator with reset and board-consumer semantics."""
+    """Runtime simulator with reset, basic glyph, and board-consumer semantics."""
 
     def __post_init__(self) -> None:
         self.output_patterns = []
         self.disposal_cells = set()
+        self.bonder_pairs = []
+        self.unbonder_pairs = []
         self.delivered_products = {}
         self._active_instructions = {}
         super().__post_init__()
@@ -34,16 +37,26 @@ class Simulator(BaseSimulator):
 
         for part in solution.get("parts", []):
             part_type = str(part.get("type") or "")
+            origin = tuple(part.get("position") or (0, 0))
+            rotation = int(part.get("rotation") or 0)
+
+            if part_type in {"bonder", "unbonder"}:
+                second = _transform((1, 0), origin, rotation)
+                pair = (origin, second, str(part.get("id") or part_type))
+                if part_type == "bonder":
+                    simulator.bonder_pairs.append(pair)
+                else:
+                    simulator.unbonder_pairs.append(pair)
+                continue
+
             if part_type == "glyph-disposal":
-                simulator.disposal_cells.add(tuple(part.get("position") or (0, 0)))
+                simulator.disposal_cells.add(origin)
                 continue
             if not part_type.startswith("out-"):
                 continue
             product_index = int(part.get("which") or 0)
             if not 0 <= product_index < len(products):
                 continue
-            origin = tuple(part.get("position") or (0, 0))
-            rotation = int(part.get("rotation") or 0)
             product = products[product_index]
             atoms = tuple(sorted(
                 (_transform(atom.get("position") or (0, 0), origin, rotation), str(atom.get("element")))
@@ -98,8 +111,40 @@ class Simulator(BaseSimulator):
             ]
             raise SimulationError(
                 f"{error}; activeArms={held}; atomHolders={atom_holders}; "
-                f"outputs={outputs}; delivered={self.delivered_products}"
+                f"outputs={outputs}; delivered={self.delivered_products}; "
+                f"bonders={self.bonder_pairs}; unbonders={self.unbonder_pairs}"
             ) from error
+
+    def _process_basic_glyphs(self) -> None:
+        for first_pos, second_pos, part_id in self.unbonder_pairs:
+            first = self.world.atom_at(first_pos)
+            second = self.world.atom_at(second_pos)
+            if first is None or second is None:
+                continue
+            before = len(self.world.bonds)
+            self.world.remove_bond(first.id, second.id)
+            if len(self.world.bonds) != before:
+                self.world.events.append(WorldEvent("bond-removed", self.world.cycle, {
+                    "glyphPartId": part_id,
+                    "fromAtomId": first.id,
+                    "toAtomId": second.id,
+                }))
+
+        for first_pos, second_pos, part_id in self.bonder_pairs:
+            first = self.world.atom_at(first_pos)
+            second = self.world.atom_at(second_pos)
+            if first is None or second is None or first.id == second.id:
+                continue
+            bond = Bond(first.id, second.id, "normal")
+            if bond.key in self.world.bonds:
+                continue
+            self.world.add_bond(bond)
+            self.world.events.append(WorldEvent("bond-created", self.world.cycle, {
+                "glyphPartId": part_id,
+                "fromAtomId": first.id,
+                "toAtomId": second.id,
+                "type": "normal",
+            }))
 
     def _molecule_signature(self, atom_ids: set[str]) -> tuple[tuple, tuple]:
         atoms = tuple(sorted(
@@ -162,5 +207,6 @@ class Simulator(BaseSimulator):
             self._remove_molecule(consumed)
 
     def _respawn_inputs(self) -> None:
+        self._process_basic_glyphs()
         self._process_consumers()
         super()._respawn_inputs()
