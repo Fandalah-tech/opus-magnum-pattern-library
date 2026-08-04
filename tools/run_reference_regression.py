@@ -170,7 +170,7 @@ def main() -> int:
         })
 
     report = {
-        "schemaVersion": "0.4.0",
+        "schemaVersion": "0.4.1",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
@@ -184,6 +184,31 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report["summary"]))
+
+    for item in results:
+        comparison = item.get("engineComparison") or {}
+        status = comparison.get("status")
+        if status == "engine-error":
+            print(json.dumps({
+                "puzzle": item.get("puzzle"),
+                "status": status,
+                "errorType": comparison.get("errorType"),
+                "message": comparison.get("message"),
+                "completedFrameCount": comparison.get("completedFrameCount"),
+            }))
+        elif status == "diverged":
+            divergence = comparison.get("firstDivergence") or {}
+            classification = divergence.get("classification") or {}
+            engine_error = classification.get("engineError") or {}
+            if classification.get("subsystem") == "engine-error":
+                print(json.dumps({
+                    "puzzle": item.get("puzzle"),
+                    "status": status,
+                    "frameIndex": divergence.get("frameIndex"),
+                    "engineCycle": divergence.get("engineCycle"),
+                    "message": engine_error.get("message"),
+                }))
+
     return 1 if reference_failed else 0
 
 
