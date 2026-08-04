@@ -10,11 +10,17 @@ from typing import Any
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from packages.opus_analysis import analyze_solution, build_program_timeline, build_solution_graph, detect_patterns
+from packages.opus_analysis import (
+    analyze_solution,
+    build_program_timeline,
+    build_replay_trace,
+    build_solution_graph,
+    detect_patterns,
+)
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.1.0"
+API_VERSION = "1.2.0"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
 app.add_middleware(
     CORSMiddleware,
@@ -48,12 +54,13 @@ def _canonical_parse(parser, upload: UploadFile) -> dict[str, Any]:
     return _parse_bytes(parser, _read_limited(upload), upload.filename)
 
 
-def _bundle(model: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+def _bundle(model: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
     graph = build_solution_graph(model)
     timeline = build_program_timeline(model)
+    replay = build_replay_trace(model, timeline)
     patterns = detect_patterns(model, graph, timeline)
     diagnostics = analyze_solution(model, graph, timeline, patterns)
-    return graph, timeline, patterns, diagnostics
+    return graph, timeline, replay, patterns, diagnostics
 
 
 def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
@@ -105,15 +112,16 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
         solution_path.write_bytes(solution_bytes)
         validation = _run_omsim(puzzle_path, solution_path)
 
-    graph, timeline, patterns, diagnostics = _bundle(solution_model)
+    graph, timeline, replay, patterns, diagnostics = _bundle(solution_model)
     return {
-        "schemaVersion": "1.1.0",
+        "schemaVersion": "1.2.0",
         "apiVersion": API_VERSION,
         "puzzle": puzzle_model,
         "solution": solution_model,
         "validation": validation,
         "graph": graph,
         "timeline": timeline,
+        "replay": replay,
         "patterns": patterns,
         "diagnostics": diagnostics,
     }
@@ -132,6 +140,13 @@ def analyze_pair_endpoint(
     result = _analyze_pair(puzzle, solution)
     json.dumps(result)
     return result
+
+
+@app.post("/api/v1/replay")
+def replay_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
+    model = _canonical_parse(parse_solution_bytes, solution)
+    timeline = build_program_timeline(model)
+    return build_replay_trace(model, timeline)
 
 
 @app.post("/parse/puzzle")
@@ -157,14 +172,14 @@ def analyze_timeline_endpoint(solution: UploadFile = File(...)) -> dict[str, Any
 @app.post("/analyze/patterns")
 def analyze_patterns_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
     model = _canonical_parse(parse_solution_bytes, solution)
-    graph, timeline, patterns, _ = _bundle(model)
+    graph, timeline, _replay, patterns, _ = _bundle(model)
     return {**patterns, "inputs": {"graph": graph["summary"], "timeline": timeline["summary"]}}
 
 
 @app.post("/analyze/diagnostics")
 def analyze_diagnostics_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
     model = _canonical_parse(parse_solution_bytes, solution)
-    graph, timeline, patterns, diagnostics = _bundle(model)
+    graph, timeline, _replay, patterns, diagnostics = _bundle(model)
     return {
         **diagnostics,
         "inputs": {
@@ -196,6 +211,7 @@ def validate(
     validation["analysis"] = {
         "structuralGraph": result["graph"]["summary"],
         "programTimeline": result["timeline"]["summary"],
+        "replay": result["replay"]["summary"],
         "patterns": result["patterns"]["summary"],
         "diagnostics": result["diagnostics"]["summary"],
     }
