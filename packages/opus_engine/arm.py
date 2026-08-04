@@ -22,6 +22,9 @@ class ArmState:
     base_length: int | None = None
     grabbing: bool = False
     held_atoms: dict[int, str] = field(default_factory=dict)
+    track_cells: tuple[Hex, ...] = ()
+    track_index: int = 0
+    base_track_index: int = 0
 
     def __post_init__(self) -> None:
         self.rotation %= 6
@@ -29,10 +32,17 @@ class ArmState:
         self.base_origin = self.origin if self.base_origin is None else self.base_origin
         self.base_rotation = self.rotation if self.base_rotation is None else self.base_rotation % 6
         self.base_length = self.length if self.base_length is None else max(1, self.base_length)
+        if self.track_cells and self.origin in self.track_cells:
+            self.track_index = self.track_cells.index(self.origin)
+            self.base_track_index = self.track_index
 
     @property
     def branches(self) -> tuple[int, ...]:
         return branch_offsets(self.part_type)
+
+    @property
+    def is_piston(self) -> bool:
+        return self.part_type == "piston"
 
     def tip(self, branch: int = 0) -> Hex:
         direction = DIRECTIONS[(self.rotation + self.branches[branch]) % 6]
@@ -58,4 +68,6 @@ class ArmState:
                 {"branchIndex": branch, "atomId": atom_id}
                 for branch, atom_id in sorted(self.held_atoms.items())
             ],
+            "trackIndex": self.track_index,
+            "trackCellCount": len(self.track_cells),
         }
