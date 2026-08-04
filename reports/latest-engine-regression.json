@@ -1,13 +1,13 @@
 {
-  "schemaVersion": "0.2.0",
-  "generatedAt": "2026-08-04T18:18:14.913237+00:00",
+  "schemaVersion": "0.3.0",
+  "generatedAt": "2026-08-04T18:38:19.962617+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 6,
     "failed": 3,
     "engineClassifications": {
-      "arm-kinematics": 6
+      "engine-error": 6
     }
   },
   "results": [
@@ -16,21 +16,47 @@
       "solution": "40g-6i-143c-12a-4h-4w-3b-24r-12a0-4h-4w-3b-T_STABILIZED_WATER.solution",
       "referencePassed": true,
       "referenceErrors": [],
+      "fixtureChecks": [
+        {
+          "file": "P007.puzzle",
+          "exists": true,
+          "expectedSize": 91,
+          "actualSize": 91,
+          "expectedSha256": "6c8d8aa1155b664544b54f7ebbfd6653271dd611e92a85f3321ec65e93df5150",
+          "actualSha256": "6c8d8aa1155b664544b54f7ebbfd6653271dd611e92a85f3321ec65e93df5150",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "40g-6i-143c-12a-4h-4w-3b-24r-12a0-4h-4w-3b-T_STABILIZED_WATER.solution",
+          "exists": true,
+          "expectedSize": 273,
+          "actualSize": 273,
+          "expectedSha256": "760b27837122589579f8eb8e56c39c18a79c648201d5364890beecaa6b81beb6",
+          "actualSha256": "760b27837122589579f8eb8e56c39c18a79c648201d5364890beecaa6b81beb6",
+          "sizeMatches": true,
+          "sha256Matches": true
+        }
+      ],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 16,
         "legacyCycle": 16,
         "engineCycle": 15,
         "classification": {
-          "subsystem": "arm-kinematics",
-          "reason": "arm-state-divergence",
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
           "instructions": [
             {
               "partId": "part-0",
               "instruction": "rotate_cw"
             }
           ],
-          "confidence": "high"
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-1-spawn-1-atom-0 collides with stationary atom part-1-spawn-0-atom-0 at (1, 1)",
+            "cycle": 15
+          }
         },
         "categories": {
           "arms": {
@@ -104,21 +130,47 @@
       "solution": "40g-21i-266c-13a-4h-4w-3b-42r-13a0-4h-4w-3b-T_AIRSHIP_FUEL.solution",
       "referencePassed": true,
       "referenceErrors": [],
+      "fixtureChecks": [
+        {
+          "file": "P008.puzzle",
+          "exists": true,
+          "expectedSize": 114,
+          "actualSize": 114,
+          "expectedSha256": "94871b173a9eb9ff1ba9c1a1561242dd90a6258feb1655afc91af18abf61de45",
+          "actualSha256": "94871b173a9eb9ff1ba9c1a1561242dd90a6258feb1655afc91af18abf61de45",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "40g-21i-266c-13a-4h-4w-3b-42r-13a0-4h-4w-3b-T_AIRSHIP_FUEL.solution",
+          "exists": true,
+          "expectedSize": 335,
+          "actualSize": 335,
+          "expectedSha256": "1004c7ada442aa1b5a0e69f8b522027659e45eb25a2decdd2e531e8da14f88be",
+          "actualSha256": "1004c7ada442aa1b5a0e69f8b522027659e45eb25a2decdd2e531e8da14f88be",
+          "sizeMatches": true,
+          "sha256Matches": true
+        }
+      ],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 21,
         "legacyCycle": 21,
         "engineCycle": 20,
         "classification": {
-          "subsystem": "arm-kinematics",
-          "reason": "arm-state-divergence",
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
           "instructions": [
             {
               "partId": "part-0",
               "instruction": "rotate_ccw"
             }
           ],
-          "confidence": "high"
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-1-spawn-2-atom-0 collides with stationary atom part-1-spawn-1-atom-0 at (-2, 0)",
+            "cycle": 20
+          }
         },
         "categories": {
           "arms": {
@@ -197,21 +249,47 @@
       "solution": "40g-6i-143c-12a-4h-4w-3b-24r-12a0-4h-4w-3b-T_FACE_POWDER.solution",
       "referencePassed": true,
       "referenceErrors": [],
+      "fixtureChecks": [
+        {
+          "file": "P009.puzzle",
+          "exists": true,
+          "expectedSize": 75,
+          "actualSize": 75,
+          "expectedSha256": "73148f31f7c97a06cfd5aa0f91462989a2171241c2af4555b6fbba76157e2f8a",
+          "actualSha256": "73148f31f7c97a06cfd5aa0f91462989a2171241c2af4555b6fbba76157e2f8a",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "40g-6i-143c-12a-4h-4w-3b-24r-12a0-4h-4w-3b-T_FACE_POWDER.solution",
+          "exists": true,
+          "expectedSize": 281,
+          "actualSize": 281,
+          "expectedSha256": "3d6cf2c486cbd6c18c6d2c56269c3457a5e40d66f28bc4ed18d39fea57b0f2d0",
+          "actualSha256": "3d6cf2c486cbd6c18c6d2c56269c3457a5e40d66f28bc4ed18d39fea57b0f2d0",
+          "sizeMatches": true,
+          "sha256Matches": true
+        }
+      ],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 16,
         "legacyCycle": 16,
         "engineCycle": 15,
         "classification": {
-          "subsystem": "arm-kinematics",
-          "reason": "arm-state-divergence",
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
           "instructions": [
             {
               "partId": "part-2",
               "instruction": "rotate_cw"
             }
           ],
-          "confidence": "high"
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-1-spawn-1-atom-0 collides with stationary atom part-1-spawn-0-atom-0 at (1, 1)",
+            "cycle": 15
+          }
         },
         "categories": {
           "arms": {
@@ -285,21 +363,47 @@
       "solution": "40g-26i-426c-7a-3h-3w-2b-78r-7a0-3h-3w-2b-T_REFINED_GOLD.solution",
       "referencePassed": true,
       "referenceErrors": [],
+      "fixtureChecks": [
+        {
+          "file": "P010.puzzle",
+          "exists": true,
+          "expectedSize": 79,
+          "actualSize": 79,
+          "expectedSha256": "3f81a325b767e69395b12e8d4108fa3d09080120b6770e0f57182c6062a08f63",
+          "actualSha256": "3f81a325b767e69395b12e8d4108fa3d09080120b6770e0f57182c6062a08f63",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "40g-26i-426c-7a-3h-3w-2b-78r-7a0-3h-3w-2b-T_REFINED_GOLD.solution",
+          "exists": true,
+          "expectedSize": 369,
+          "actualSize": 369,
+          "expectedSha256": "b8d49c95287531e6a9b1de04843d808c8746fb2a40c9593020cd9d0f97af6d41",
+          "actualSha256": "b8d49c95287531e6a9b1de04843d808c8746fb2a40c9593020cd9d0f97af6d41",
+          "sizeMatches": true,
+          "sha256Matches": true
+        }
+      ],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 13,
         "legacyCycle": 13,
         "engineCycle": 12,
         "classification": {
-          "subsystem": "arm-kinematics",
-          "reason": "arm-state-divergence",
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
           "instructions": [
             {
               "partId": "part-4",
               "instruction": "rotate_cw"
             }
           ],
-          "confidence": "high"
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-0-spawn-1-atom-0 collides with stationary atom part-0-spawn-0-atom-0 at (0, 2)",
+            "cycle": 12
+          }
         },
         "categories": {
           "arms": {
@@ -388,21 +492,47 @@
       "solution": "30g-18i-211c-10a-3h-3.5w-3b-36r-10a0-3h-3.5w-3b-T_WATERPROOF_SEALANT.solution",
       "referencePassed": true,
       "referenceErrors": [],
+      "fixtureChecks": [
+        {
+          "file": "P011.puzzle",
+          "exists": true,
+          "expectedSize": 101,
+          "actualSize": 101,
+          "expectedSha256": "fbd2541433f0449625d8f760d6e86afa9d2580e7d231d453976ab064a8b73706",
+          "actualSha256": "fbd2541433f0449625d8f760d6e86afa9d2580e7d231d453976ab064a8b73706",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "30g-18i-211c-10a-3h-3.5w-3b-36r-10a0-3h-3.5w-3b-T_WATERPROOF_SEALANT.solution",
+          "exists": true,
+          "expectedSize": 331,
+          "actualSize": 331,
+          "expectedSha256": "aaf848a578cefcba8c501b8d1d287071ecc716958d7e277c39aab717283604f4",
+          "actualSha256": "aaf848a578cefcba8c501b8d1d287071ecc716958d7e277c39aab717283604f4",
+          "sizeMatches": true,
+          "sha256Matches": true
+        }
+      ],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 16,
         "legacyCycle": 16,
         "engineCycle": 15,
         "classification": {
-          "subsystem": "arm-kinematics",
-          "reason": "arm-state-divergence",
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
           "instructions": [
             {
               "partId": "part-4",
               "instruction": "rotate_ccw"
             }
           ],
-          "confidence": "high"
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-0-spawn-0-atom-0 collides with stationary atom part-3-spawn-0-atom-0 at (-10, -6)",
+            "cycle": 15
+          }
         },
         "categories": {
           "arms": {
@@ -486,7 +616,29 @@
       "solution": "60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution",
       "referencePassed": false,
       "referenceErrors": [
-        "sha256 mismatch: 60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution"
+        "sha256 mismatch: 60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution expected=bd31ccbe88d752a27dc62bd9a524914c58113df9fd399831555048471d1aa439 actual=2a1a59e26ab173f314fdd729843bf8b33e616858818574f0e5268e5c17f0cb9b"
+      ],
+      "fixtureChecks": [
+        {
+          "file": "P012.puzzle",
+          "exists": true,
+          "expectedSize": 115,
+          "actualSize": 115,
+          "expectedSha256": "cb1a991db5c3e0133d9702415761ea5e09206d792aa77daa2067b73530b722d3",
+          "actualSha256": "cb1a991db5c3e0133d9702415761ea5e09206d792aa77daa2067b73530b722d3",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution",
+          "exists": true,
+          "expectedSize": 514,
+          "actualSize": 514,
+          "expectedSha256": "bd31ccbe88d752a27dc62bd9a524914c58113df9fd399831555048471d1aa439",
+          "actualSha256": "2a1a59e26ab173f314fdd729843bf8b33e616858818574f0e5268e5c17f0cb9b",
+          "sizeMatches": true,
+          "sha256Matches": false
+        }
       ],
       "status": null,
       "firstDivergence": null,
@@ -497,7 +649,29 @@
       "solution": "40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution",
       "referencePassed": false,
       "referenceErrors": [
-        "sha256 mismatch: 40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution"
+        "sha256 mismatch: 40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution expected=ca720153bda8aaea130386a42d597d1ce3a9ef5e04f2220e0c3f291bb51df9a7 actual=b4a251a600f90cb4cf04a753550a48769cb40b3d8b19d4f6d7d2a21983ddb4bc"
+      ],
+      "fixtureChecks": [
+        {
+          "file": "P013.puzzle",
+          "exists": true,
+          "expectedSize": 85,
+          "actualSize": 85,
+          "expectedSha256": "55240fc37ecb9fbfce1b21c4d5f5b0b723c7f54a63df5134c0315aeb5cef3cf8",
+          "actualSha256": "55240fc37ecb9fbfce1b21c4d5f5b0b723c7f54a63df5134c0315aeb5cef3cf8",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution",
+          "exists": true,
+          "expectedSize": 320,
+          "actualSize": 320,
+          "expectedSha256": "ca720153bda8aaea130386a42d597d1ce3a9ef5e04f2220e0c3f291bb51df9a7",
+          "actualSha256": "b4a251a600f90cb4cf04a753550a48769cb40b3d8b19d4f6d7d2a21983ddb4bc",
+          "sizeMatches": true,
+          "sha256Matches": false
+        }
       ],
       "status": null,
       "firstDivergence": null,
@@ -508,21 +682,47 @@
       "solution": "30g-20i-320c-28a-6h-5.5w-4b-60r-28a0-6h-5.5w-4b-T_HEALTH_TONIC.solution",
       "referencePassed": true,
       "referenceErrors": [],
+      "fixtureChecks": [
+        {
+          "file": "P014.puzzle",
+          "exists": true,
+          "expectedSize": 127,
+          "actualSize": 127,
+          "expectedSha256": "3d49bf1c0bab43274089844c2391259dd7a7849828eb2e23b859fe7399c78a3c",
+          "actualSha256": "3d49bf1c0bab43274089844c2391259dd7a7849828eb2e23b859fe7399c78a3c",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "30g-20i-320c-28a-6h-5.5w-4b-60r-28a0-6h-5.5w-4b-T_HEALTH_TONIC.solution",
+          "exists": true,
+          "expectedSize": 338,
+          "actualSize": 338,
+          "expectedSha256": "7d9bf159376cdeeac02f04db739f2ac3075a0833760f20d2e5a0914c402fc2d4",
+          "actualSha256": "7d9bf159376cdeeac02f04db739f2ac3075a0833760f20d2e5a0914c402fc2d4",
+          "sizeMatches": true,
+          "sha256Matches": true
+        }
+      ],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 15,
         "legacyCycle": 15,
         "engineCycle": 14,
         "classification": {
-          "subsystem": "arm-kinematics",
-          "reason": "arm-state-divergence",
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
           "instructions": [
             {
               "partId": "part-0",
               "instruction": "rotate_cw"
             }
           ],
-          "confidence": "high"
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-3-spawn-1-atom-0 collides with stationary atom part-3-spawn-0-atom-0 at (-2, 1)",
+            "cycle": 14
+          }
         },
         "categories": {
           "arms": {
@@ -621,7 +821,29 @@
       "solution": "60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution",
       "referencePassed": false,
       "referenceErrors": [
-        "sha256 mismatch: 60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution"
+        "sha256 mismatch: 60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution expected=2095c89fb4d728f65b345e4ba8d5559c7d628698a4689f234b7bbab4e701db0b actual=53af6a8165c0c60a99bd42147ca3322b8cffe6dd1b0db526554b88ae61a357fa"
+      ],
+      "fixtureChecks": [
+        {
+          "file": "P015.puzzle",
+          "exists": true,
+          "expectedSize": 156,
+          "actualSize": 156,
+          "expectedSha256": "2120aa967df7ec4a6e20aa1c1b6bc43555ec353c2ade6870ddad4a70941b49f8",
+          "actualSha256": "2120aa967df7ec4a6e20aa1c1b6bc43555ec353c2ade6870ddad4a70941b49f8",
+          "sizeMatches": true,
+          "sha256Matches": true
+        },
+        {
+          "file": "60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution",
+          "exists": true,
+          "expectedSize": 520,
+          "actualSize": 520,
+          "expectedSha256": "2095c89fb4d728f65b345e4ba8d5559c7d628698a4689f234b7bbab4e701db0b",
+          "actualSha256": "53af6a8165c0c60a99bd42147ca3322b8cffe6dd1b0db526554b88ae61a357fa",
+          "sizeMatches": true,
+          "sha256Matches": false
+        }
       ],
       "status": null,
       "firstDivergence": null,
