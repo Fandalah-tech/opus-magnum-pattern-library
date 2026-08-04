@@ -20,14 +20,9 @@ from packages.opus_analysis import (
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.3.0"
+API_VERSION = "1.4.0"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["*"],
-)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 
 OMSIM_BIN = os.environ.get("OMSIM_BIN", "/usr/local/bin/omsim")
 MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", str(10 * 1024 * 1024)))
@@ -54,12 +49,12 @@ def _canonical_parse(parser, upload: UploadFile) -> dict[str, Any]:
     return _parse_bytes(parser, _read_limited(upload), upload.filename)
 
 
-def _bundle(model: dict[str, Any], *, replay_cycles: int | None = None) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
-    graph = build_solution_graph(model)
-    timeline = build_program_timeline(model, max_cycles=replay_cycles)
-    replay = build_replay_trace(model, timeline)
-    patterns = detect_patterns(model, graph, timeline)
-    diagnostics = analyze_solution(model, graph, timeline, patterns)
+def _bundle(puzzle: dict[str, Any], solution: dict[str, Any], *, replay_cycles: int | None = None):
+    graph = build_solution_graph(solution)
+    timeline = build_program_timeline(solution, max_cycles=replay_cycles)
+    replay = build_replay_trace(puzzle, solution, timeline)
+    patterns = detect_patterns(solution, graph, timeline)
+    diagnostics = analyze_solution(solution, graph, timeline, patterns)
     return graph, timeline, replay, patterns, diagnostics
 
 
@@ -71,7 +66,6 @@ def _run_omsim(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
         raise HTTPException(status_code=503, detail="omsim binary is unavailable") from exc
     except subprocess.TimeoutExpired as exc:
         raise HTTPException(status_code=504, detail="Validation timed out") from exc
-
     raw = "\n".join(part for part in (completed.stdout, completed.stderr) if part).strip()
     classified = classify_result(completed.returncode, raw)
     return {
@@ -89,7 +83,6 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
     solution_bytes = _read_limited(solution)
     puzzle_model = _parse_bytes(parse_puzzle_bytes, puzzle_bytes, puzzle.filename)
     solution_model = _parse_bytes(parse_solution_bytes, solution_bytes, solution.filename)
-
     with tempfile.TemporaryDirectory(prefix="opus-validator-") as temp_dir:
         root = Path(temp_dir)
         puzzle_path = root / "input.puzzle"
@@ -97,21 +90,13 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
         puzzle_path.write_bytes(puzzle_bytes)
         solution_path.write_bytes(solution_bytes)
         validation = _run_omsim(puzzle_path, solution_path)
-
     validated_cycles = validation.get("metrics", {}).get("cycles")
     replay_cycles = int(validated_cycles) if isinstance(validated_cycles, (int, float)) and validated_cycles > 0 else None
-    graph, timeline, replay, patterns, diagnostics = _bundle(solution_model, replay_cycles=replay_cycles)
+    graph, timeline, replay, patterns, diagnostics = _bundle(puzzle_model, solution_model, replay_cycles=replay_cycles)
     return {
-        "schemaVersion": "1.3.0",
-        "apiVersion": API_VERSION,
-        "puzzle": puzzle_model,
-        "solution": solution_model,
-        "validation": validation,
-        "graph": graph,
-        "timeline": timeline,
-        "replay": replay,
-        "patterns": patterns,
-        "diagnostics": diagnostics,
+        "schemaVersion": "1.4.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
+        "solution": solution_model, "validation": validation, "graph": graph,
+        "timeline": timeline, "replay": replay, "patterns": patterns, "diagnostics": diagnostics,
     }
 
 
@@ -128,10 +113,11 @@ def analyze_pair_endpoint(puzzle: UploadFile = File(...), solution: UploadFile =
 
 
 @app.post("/api/v1/replay")
-def replay_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
-    model = _canonical_parse(parse_solution_bytes, solution)
-    timeline = build_program_timeline(model)
-    return build_replay_trace(model, timeline)
+def replay_endpoint(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
+    puzzle_model = _canonical_parse(parse_puzzle_bytes, puzzle)
+    solution_model = _canonical_parse(parse_solution_bytes, solution)
+    timeline = build_program_timeline(solution_model)
+    return build_replay_trace(puzzle_model, solution_model, timeline)
 
 
 @app.post("/parse/puzzle")
@@ -154,25 +140,6 @@ def analyze_timeline_endpoint(solution: UploadFile = File(...)) -> dict[str, Any
     return build_program_timeline(_canonical_parse(parse_solution_bytes, solution))
 
 
-@app.post("/analyze/patterns")
-def analyze_patterns_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
-    model = _canonical_parse(parse_solution_bytes, solution)
-    graph, timeline, _replay, patterns, _ = _bundle(model)
-    return {**patterns, "inputs": {"graph": graph["summary"], "timeline": timeline["summary"]}}
-
-
-@app.post("/analyze/diagnostics")
-def analyze_diagnostics_endpoint(solution: UploadFile = File(...)) -> dict[str, Any]:
-    model = _canonical_parse(parse_solution_bytes, solution)
-    graph, timeline, _replay, patterns, diagnostics = _bundle(model)
-    return {**diagnostics, "inputs": {"graph": graph["summary"], "timeline": timeline["summary"], "patterns": patterns["summary"]}}
-
-
 @app.post("/validate")
 def validate(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
-    result = _analyze_pair(puzzle, solution)
-    validation = result["validation"]
-    validation["puzzle"] = {"name": result["puzzle"]["name"], "sha256": result["puzzle"]["source"]["sha256"], "production": result["puzzle"]["production"]}
-    validation["solution"] = {"name": result["solution"]["name"], "sha256": result["solution"]["source"]["sha256"], "declaredMetrics": result["solution"]["metrics"], "partCount": len(result["solution"]["parts"])}
-    validation["analysis"] = {"structuralGraph": result["graph"]["summary"], "programTimeline": result["timeline"]["summary"], "replay": result["replay"]["summary"], "patterns": result["patterns"]["summary"], "diagnostics": result["diagnostics"]["summary"]}
-    return validation
+    return _analyze_pair(puzzle, solution)["validation"]
