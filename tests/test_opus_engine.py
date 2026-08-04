@@ -2,6 +2,7 @@ from packages.opus_engine import (
     ArmState,
     Atom,
     Bond,
+    InputSource,
     SimulationError,
     Simulator,
     World,
@@ -116,3 +117,20 @@ def test_track_move_translates_arm_and_molecule() -> None:
 
     assert arm.origin == (1, 0)
     assert world.atoms["a"].position == (2, 0)
+
+
+def test_input_respawns_after_full_footprint_clears() -> None:
+    world = World()
+    source = InputSource("input", (("water", (1, 0)),), ())
+    assert source.spawn(world)
+    arm = ArmState("arm", "arm1", (0, 0), 0, 1)
+    simulator = Simulator(world, {"arm": arm}, inputs=[source])
+
+    simulator.step({"arm": "grab"})
+    simulator.step({"arm": "rotate_ccw"})
+
+    assert sorted((atom.element, atom.position) for atom in world.atoms.values()) == [
+        ("water", (0, 1)),
+        ("water", (1, 0)),
+    ]
+    assert source.spawn_count == 2
