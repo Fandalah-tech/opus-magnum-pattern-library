@@ -170,7 +170,7 @@ def main() -> int:
         })
 
     report = {
-        "schemaVersion": "0.4.1",
+        "schemaVersion": "0.4.2",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
@@ -196,18 +196,25 @@ def main() -> int:
                 "message": comparison.get("message"),
                 "completedFrameCount": comparison.get("completedFrameCount"),
             }))
-        elif status == "diverged":
-            divergence = comparison.get("firstDivergence") or {}
-            classification = divergence.get("classification") or {}
-            engine_error = classification.get("engineError") or {}
-            if classification.get("subsystem") == "engine-error":
-                print(json.dumps({
-                    "puzzle": item.get("puzzle"),
-                    "status": status,
-                    "frameIndex": divergence.get("frameIndex"),
-                    "engineCycle": divergence.get("engineCycle"),
-                    "message": engine_error.get("message"),
-                }))
+            continue
+        if status != "diverged":
+            continue
+
+        divergence = comparison.get("firstDivergence") or {}
+        classification = divergence.get("classification") or {}
+        categories = divergence.get("categories") or {}
+        print(json.dumps({
+            "puzzle": item.get("puzzle"),
+            "status": status,
+            "frameIndex": divergence.get("frameIndex"),
+            "legacyCycle": divergence.get("legacyCycle"),
+            "engineCycle": divergence.get("engineCycle"),
+            "subsystem": classification.get("subsystem"),
+            "reason": classification.get("reason"),
+            "instructions": classification.get("instructions"),
+            "engineError": classification.get("engineError"),
+            "categories": categories,
+        }))
 
     return 1 if reference_failed else 0
 
