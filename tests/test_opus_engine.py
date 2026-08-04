@@ -33,7 +33,11 @@ def test_world_rejects_atom_collision() -> None:
 
 
 def test_connected_components_accepts_isolated_atoms() -> None:
-    assert sorted(connected_components(["a", "b"], [])) == [{"a"}, {"b"}]
+    components = connected_components(["a", "b"], [])
+    assert {frozenset(component) for component in components} == {
+        frozenset({"a"}),
+        frozenset({"b"}),
+    }
 
 
 def test_arm6_exposes_six_tips() -> None:
