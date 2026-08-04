@@ -25,6 +25,7 @@ env:
   FIXTURE_BUCKET: gs://opus-magnum-codex-private-fixtures
   FIXTURE_OBJECT: campaign/p007-p015.zip
   VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  PYTHONPATH: ${{ github.workspace }}
 
 jobs:
   regression:
