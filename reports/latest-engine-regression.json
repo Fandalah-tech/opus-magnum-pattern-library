@@ -1,13 +1,13 @@
 {
-  "schemaVersion": "0.1.0",
-  "generatedAt": "2026-08-04T17:55:14.317964+00:00",
+  "schemaVersion": "0.2.0",
+  "generatedAt": "2026-08-04T18:03:48.979554+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 6,
     "failed": 3,
     "engineClassifications": {
-      "unclassified": 6
+      "world-lifecycle": 6
     }
   },
   "results": [
@@ -15,12 +15,48 @@
       "puzzle": "P007.puzzle",
       "solution": "40g-6i-143c-12a-4h-4w-3b-24r-12a0-4h-4w-3b-T_STABILIZED_WATER.solution",
       "referencePassed": true,
+      "referenceErrors": [],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 3,
         "legacyCycle": 3,
         "engineCycle": 3,
-        "classification": null
+        "classification": {
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
+          "instructions": [
+            {
+              "partId": "part-0",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "atoms": {
+            "legacyCount": 2,
+            "engineCount": 1,
+            "legacy": [
+              [
+                "water",
+                -1,
+                2
+              ],
+              [
+                "water",
+                0,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "water",
+                0,
+                2
+              ]
+            ]
+          }
+        }
       },
       "engineError": null
     },
@@ -28,12 +64,48 @@
       "puzzle": "P008.puzzle",
       "solution": "40g-21i-266c-13a-4h-4w-3b-42r-13a0-4h-4w-3b-T_AIRSHIP_FUEL.solution",
       "referencePassed": true,
+      "referenceErrors": [],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 2,
         "legacyCycle": 2,
         "engineCycle": 2,
-        "classification": null
+        "classification": {
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
+          "instructions": [
+            {
+              "partId": "part-0",
+              "instruction": "rotate_ccw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "atoms": {
+            "legacyCount": 2,
+            "engineCount": 1,
+            "legacy": [
+              [
+                "fire",
+                -3,
+                1
+              ],
+              [
+                "fire",
+                -2,
+                0
+              ]
+            ],
+            "engine": [
+              [
+                "fire",
+                -2,
+                0
+              ]
+            ]
+          }
+        }
       },
       "engineError": null
     },
@@ -41,12 +113,48 @@
       "puzzle": "P009.puzzle",
       "solution": "40g-6i-143c-12a-4h-4w-3b-24r-12a0-4h-4w-3b-T_FACE_POWDER.solution",
       "referencePassed": true,
+      "referenceErrors": [],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 3,
         "legacyCycle": 3,
         "engineCycle": 3,
-        "classification": null
+        "classification": {
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
+          "instructions": [
+            {
+              "partId": "part-2",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "atoms": {
+            "legacyCount": 2,
+            "engineCount": 1,
+            "legacy": [
+              [
+                "earth",
+                -1,
+                2
+              ],
+              [
+                "earth",
+                0,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "earth",
+                0,
+                2
+              ]
+            ]
+          }
+        }
       },
       "engineError": null
     },
@@ -54,12 +162,58 @@
       "puzzle": "P010.puzzle",
       "solution": "40g-26i-426c-7a-3h-3w-2b-78r-7a0-3h-3w-2b-T_REFINED_GOLD.solution",
       "referencePassed": true,
+      "referenceErrors": [],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 2,
         "legacyCycle": 2,
         "engineCycle": 2,
-        "classification": null
+        "classification": {
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
+          "instructions": [
+            {
+              "partId": "part-4",
+              "instruction": "rotate_ccw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "atoms": {
+            "legacyCount": 3,
+            "engineCount": 2,
+            "legacy": [
+              [
+                "lead",
+                -1,
+                1
+              ],
+              [
+                "lead",
+                0,
+                0
+              ],
+              [
+                "quicksilver",
+                -1,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "lead",
+                0,
+                0
+              ],
+              [
+                "quicksilver",
+                -1,
+                2
+              ]
+            ]
+          }
+        }
       },
       "engineError": null
     },
@@ -67,12 +221,58 @@
       "puzzle": "P011.puzzle",
       "solution": "30g-18i-211c-10a-3h-3.5w-3b-36r-10a0-3h-3.5w-3b-T_WATERPROOF_SEALANT.solution",
       "referencePassed": true,
+      "referenceErrors": [],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 2,
         "legacyCycle": 2,
         "engineCycle": 2,
-        "classification": null
+        "classification": {
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
+          "instructions": [
+            {
+              "partId": "part-4",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "atoms": {
+            "legacyCount": 3,
+            "engineCount": 2,
+            "legacy": [
+              [
+                "air",
+                -11,
+                -4
+              ],
+              [
+                "water",
+                -9,
+                -6
+              ],
+              [
+                "water",
+                -9,
+                -5
+              ]
+            ],
+            "engine": [
+              [
+                "air",
+                -11,
+                -4
+              ],
+              [
+                "water",
+                -9,
+                -6
+              ]
+            ]
+          }
+        }
       },
       "engineError": null
     },
@@ -80,6 +280,9 @@
       "puzzle": "P012.puzzle",
       "solution": "60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution",
       "referencePassed": false,
+      "referenceErrors": [
+        "sha256 mismatch: 60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution"
+      ],
       "status": null,
       "firstDivergence": null,
       "engineError": null
@@ -88,6 +291,9 @@
       "puzzle": "P013.puzzle",
       "solution": "40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution",
       "referencePassed": false,
+      "referenceErrors": [
+        "sha256 mismatch: 40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution"
+      ],
       "status": null,
       "firstDivergence": null,
       "engineError": null
@@ -96,12 +302,78 @@
       "puzzle": "P014.puzzle",
       "solution": "30g-20i-320c-28a-6h-5.5w-4b-60r-28a0-6h-5.5w-4b-T_HEALTH_TONIC.solution",
       "referencePassed": true,
+      "referenceErrors": [],
       "status": "diverged",
       "firstDivergence": {
         "frameIndex": 2,
         "legacyCycle": 2,
         "engineCycle": 2,
-        "classification": null
+        "classification": {
+          "subsystem": "world-lifecycle",
+          "reason": "atom-count-divergence",
+          "instructions": [
+            {
+              "partId": "part-0",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "atoms": {
+            "legacyCount": 5,
+            "engineCount": 4,
+            "legacy": [
+              [
+                "salt",
+                -2,
+                3
+              ],
+              [
+                "salt",
+                0,
+                2
+              ],
+              [
+                "vitae",
+                -2,
+                1
+              ],
+              [
+                "vitae",
+                -1,
+                0
+              ],
+              [
+                "water",
+                -1,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "salt",
+                -2,
+                3
+              ],
+              [
+                "salt",
+                0,
+                2
+              ],
+              [
+                "vitae",
+                -2,
+                1
+              ],
+              [
+                "water",
+                -1,
+                2
+              ]
+            ]
+          }
+        }
       },
       "engineError": null
     },
@@ -109,6 +381,9 @@
       "puzzle": "P015.puzzle",
       "solution": "60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution",
       "referencePassed": false,
+      "referenceErrors": [
+        "sha256 mismatch: 60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution"
+      ],
       "status": null,
       "firstDivergence": null,
       "engineError": null
