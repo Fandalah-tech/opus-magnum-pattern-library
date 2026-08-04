@@ -95,6 +95,7 @@ jobs:
                   'solution': item.get('solution'),
                   'referencePassed': item.get('passed'),
                   'referenceErrors': item.get('errors', []),
+                  'fixtureChecks': item.get('fixtureChecks', []),
                   'status': comparison.get('status'),
                   'firstDivergence': {
                       'frameIndex': divergence.get('frameIndex'),
@@ -111,7 +112,7 @@ jobs:
               })
 
           compact = {
-              'schemaVersion': '0.2.0',
+              'schemaVersion': '0.3.0',
               'generatedAt': datetime.now(timezone.utc).isoformat(),
               'sourceManifest': source.get('manifest'),
               'summary': source.get('summary', {}),
