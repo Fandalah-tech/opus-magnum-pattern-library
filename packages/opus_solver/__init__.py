@@ -1,6 +1,7 @@
 from .beam_explorer import BeamExplorationResult, explore_simulator_beam
 from .disjoint_plan import DisjointProductPlan, ProductComponent, build_disjoint_product_plan
 from .explorer import ExplorationResult, enumerate_joint_actions, explore_simulator_states
+from .macro_explorer import MacroExplorationResult, explore_simulator_macro_beam
 from .manufacturing import (
     AtomFlow,
     ManufacturingOperation,
@@ -37,6 +38,7 @@ __all__ = [
     "ExplorationResult",
     "GeneratedSolutionError",
     "MacroApplication",
+    "MacroExplorationResult",
     "ManufacturingOperation",
     "ManufacturingPlan",
     "MechanicalMacro",
@@ -63,6 +65,7 @@ __all__ = [
     "enumerate_joint_actions",
     "enumerate_macro_successors",
     "explore_simulator_beam",
+    "explore_simulator_macro_beam",
     "explore_simulator_states",
     "rank_seed_candidates",
     "select_macros",
