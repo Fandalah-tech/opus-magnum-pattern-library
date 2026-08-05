@@ -11,7 +11,7 @@ def branch_offsets(part_type: str) -> tuple[int, ...]:
         return (0, 3)
     if part_type == "arm3":
         return (0, 2, 4)
-    if part_type == "arm6":
+    if part_type in {"arm6", "baron"}:
         return tuple(range(6))
     return (0,)
 
