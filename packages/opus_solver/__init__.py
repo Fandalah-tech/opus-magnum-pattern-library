@@ -16,6 +16,11 @@ from .mechanical_macros import (
     select_macros,
 )
 from .rotor_corpus import RotorCorpusEntry, analyze_solution_zip, rank_seed_candidates, summarize_solution
+from .rotor_mechanical_library import (
+    build_rotor_seed_macro_library,
+    compile_program_window,
+    learn_program_windows,
+)
 from .rotor_recipe import AtomAssignment, RotorRecipe, SourceAtom, TargetAtom, build_rotor_recipe
 from .rotor_schedule import RotorSchedule, RotorStep, build_rotor_schedule
 from .rotor_trace import RotorTrace, TraceMilestone, trace_solution_milestones
@@ -61,12 +66,15 @@ __all__ = [
     "build_manufacturing_plan",
     "build_rotor_recipe",
     "build_rotor_schedule",
+    "build_rotor_seed_macro_library",
     "canonical_state_key",
+    "compile_program_window",
     "enumerate_joint_actions",
     "enumerate_macro_successors",
     "explore_simulator_beam",
     "explore_simulator_macro_beam",
     "explore_simulator_states",
+    "learn_program_windows",
     "rank_seed_candidates",
     "select_macros",
     "solve_from_reference_corpus",
