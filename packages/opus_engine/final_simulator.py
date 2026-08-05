@@ -2,20 +2,21 @@ from __future__ import annotations
 
 from typing import Any
 
-from .builder import DIRECTIONS
 from .complete_simulator import Simulator as CompleteSimulator
+from .model import Atom
 from .simulator import Simulator as BaseSimulator
 from .world import WorldEvent
 
-VAN_BERLO_ELEMENTS = ("salt", "air", "water", "salt", "earth", "fire")
+# Element order around the physical Van Berlo wheel in local branch order.
+VAN_BERLO_ELEMENTS = ("salt", "water", "air", "salt", "fire", "earth")
 
 
 class Simulator(CompleteSimulator):
     """Campaign-complete simulator surface.
 
-    Adds Van Berlo wheel chemistry and remembers repeating products that were
-    valid at any point during the simulation, even if the finished polymer is
-    later moved away from the output footprint.
+    Models the Van Berlo wheel as six permanent atoms held by a six-branch
+    rotating wheel and remembers repeating products that were valid at any
+    point during the simulation.
     """
 
     def __post_init__(self) -> None:
@@ -29,25 +30,17 @@ class Simulator(CompleteSimulator):
         simulator.van_berlo_arms = [
             arm for arm in simulator.arms.values() if arm.part_type == "baron"
         ]
+        for arm in simulator.van_berlo_arms:
+            arm.grabbing = True
+            for branch, element in enumerate(VAN_BERLO_ELEMENTS):
+                atom_id = f"{arm.id}-wheel-{branch}"
+                atom = Atom(atom_id, element, arm.tip(branch))
+                atom.held_by.add(arm.id)
+                simulator.world.add_atom(atom)
+                arm.held_atoms[branch] = atom_id
+        if simulator.van_berlo_arms:
+            simulator.frames[0] = simulator.snapshot("initial")
         return simulator
-
-    def _process_van_berlo(self) -> None:
-        for arm in self.van_berlo_arms:
-            for direction_index, direction in enumerate(DIRECTIONS):
-                position = (arm.origin[0] + direction[0], arm.origin[1] + direction[1])
-                atom = self.world.atom_at(position)
-                if atom is None or atom.element != "salt":
-                    continue
-                produced = VAN_BERLO_ELEMENTS[(arm.rotation - direction_index) % 6]
-                if produced == "salt":
-                    continue
-                atom.element = produced
-                self.world.events.append(WorldEvent("atom-van-berlo-transformed", self.world.cycle, {
-                    "wheelPartId": arm.id,
-                    "atomId": atom.id,
-                    "toElement": produced,
-                    "position": list(position),
-                }))
 
     def repeating_product_complete(self, output_id: str, repetitions: int = 3) -> bool:
         if output_id in self.completed_repeating_outputs:
@@ -67,7 +60,6 @@ class Simulator(CompleteSimulator):
 
     def _respawn_inputs(self) -> None:
         self._process_calcification()
-        self._process_van_berlo()
         self._process_duplication()
         self._process_animismus()
         self._process_basic_glyphs()
