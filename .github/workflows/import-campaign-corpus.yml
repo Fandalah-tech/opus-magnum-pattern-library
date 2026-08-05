@@ -68,69 +68,6 @@ jobs:
           fi
           python tools/import_campaign_corpus.py "${args[@]}"
 
-      - name: Trace P041 with OMSim
-        continue-on-error: true
-        run: |
-          git clone --depth 1 https://github.com/ianh/omsim.git /tmp/omsim
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('/tmp/omsim/sim.c')
-          text = path.read_text()
-          needle = '        consume_outputs(solution, board);\n'
-          injected = '''        consume_outputs(solution, board);
-          if (board->cycle >= 218 && board->cycle <= 245) {
-              struct vector p1 = {1, -1};
-              struct vector p2 = {2, -1};
-              struct vector p0 = {0, -1};
-              struct vector p3 = {0, -3};
-              atom a1 = *lookup_atom(board, p1);
-              atom a2 = *lookup_atom(board, p2);
-              atom a0 = *lookup_atom(board, p0);
-              atom a3 = *lookup_atom(board, p3);
-              fprintf(stderr, "TRACE cycle=%llu half=%u p1=%016llx p2=%016llx p0m1=%016llx p0m3=%016llx",
-                      (unsigned long long)board->cycle, board->half_cycle,
-                      (unsigned long long)a1, (unsigned long long)a2,
-                      (unsigned long long)a0, (unsigned long long)a3);
-              for (size_t debug_i = 0; debug_i < solution->number_of_arms; ++debug_i) {
-                  struct mechanism debug_arm = solution->arms[debug_i];
-                  fprintf(stderr, " arm%zu=(%d,%d du=%d,%d type=%08x move=%d,%d rot=%d)",
-                          debug_i, debug_arm.position.u, debug_arm.position.v,
-                          debug_arm.direction_u.u, debug_arm.direction_u.v,
-                          debug_arm.type, debug_arm.movement.u, debug_arm.movement.v,
-                          debug_arm.arm_rotation);
-              }
-              fputc('\\n', stderr);
-          }
-          if (board->cycle >= 200 && board->cycle <= 237 && board->half_cycle == 2) {
-              fprintf(stderr, "WHEELGRID cycle=%llu half=%u", (unsigned long long)board->cycle, board->half_cycle);
-              for (int v = 3; v >= -6; --v) {
-                  for (int u = -6; u <= 4; ++u) {
-                      struct vector p = {u, v};
-                      atom a = *lookup_atom(board, p);
-                      if ((a & VALID) && !(a & REMOVED))
-                          fprintf(stderr, " (%d,%d)=%016llx", u, v, (unsigned long long)a);
-                  }
-              }
-              fprintf(stderr, " overlaps=%u", board->number_of_overlapped_atoms);
-              for (uint32_t oi = 0; oi < board->number_of_overlapped_atoms; ++oi) {
-                  struct atom_at_position oa = board->overlapped_atoms[oi];
-                  fprintf(stderr, " ov(%d,%d)=%016llx", oa.position.u, oa.position.v,
-                          (unsigned long long)oa.atom);
-              }
-              fputc('\\n', stderr);
-          }
-          '''
-          if needle not in text:
-              raise SystemExit('injection point not found')
-          path.write_text(text.replace(needle, injected, 1))
-          PY
-          make -C /tmp/omsim
-          puzzle=$(find .datasets/campaign-corpus/puzzles -name 'P041.puzzle' -print -quit)
-          solution=$(find .datasets/campaign-corpus/solutions/zlbb/P041 -name '002-*.solution' -print -quit)
-          /tmp/omsim/omsim --disable-limits --metric cycles --puzzle-file "$puzzle" "$solution" 2> /tmp/p041-trace.log
-          echo '--- OMSim focused trace ---'
-          grep -E 'cycle=(21[8-9]|22[0-9]|23[0-9]|24[0-5]) |WHEELGRID' /tmp/p041-trace.log
-
       - name: Audit solutions against opus_engine
         id: engine_audit
         continue-on-error: true
@@ -174,3 +111,25 @@ jobs:
             reports/campaign-corpus-audit.json
           if-no-files-found: error
           retention-days: 30
+
+      - name: Enforce complete campaign regression
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          summary = json.loads(
+              Path('reports/campaign-corpus-audit.json').read_text(encoding='utf-8')
+          )['summary']
+          total = int(summary.get('total', 0))
+          complete = int(summary.get('engineComplete', 0))
+          incomplete = int(summary.get('engineIncomplete', 0))
+          gaps = int(summary.get('semanticGaps', 0))
+          errors = int(summary.get('engineErrors', 0))
+          if total != 108 or complete != total or incomplete or gaps or errors:
+              raise SystemExit(
+                  f"Campaign regression failed: total={total}, complete={complete}, "
+                  f"incomplete={incomplete}, semanticGaps={gaps}, errors={errors}"
+              )
+          print(f"Campaign regression passed: {complete}/{total}")
+          PY
