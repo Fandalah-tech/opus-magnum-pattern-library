@@ -25,11 +25,13 @@ def search_compact_continuation(
     target: RotorContinuationTarget | None = None,
     max_depth: int = 8,
     max_states: int = 200_000,
+    max_active_arms: int | None = 1,
 ) -> ExplorationResult:
     """Search the two compact Rotor pistons for the next persistent bond.
 
-    The fixed A42 layout and trusted human prefix remain untouched. Search is
-    limited to the two pistons and the ordinary mechanical instruction set.
+    The first pass defaults to one active piston per cycle to avoid the full
+    Cartesian explosion. Callers may set ``max_active_arms=2`` when a genuinely
+    coordinated transition is required.
     """
     target = target or RotorContinuationTarget()
     active = {
@@ -56,4 +58,5 @@ def search_compact_continuation(
         max_depth=max_depth,
         max_states=max_states,
         include_idle=False,
+        max_active_arms=max_active_arms,
     )
