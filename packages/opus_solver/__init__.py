@@ -1,3 +1,4 @@
+from .beam_explorer import BeamExplorationResult, explore_simulator_beam
 from .disjoint_plan import DisjointProductPlan, ProductComponent, build_disjoint_product_plan
 from .explorer import ExplorationResult, enumerate_joint_actions, explore_simulator_states
 from .manufacturing import (
@@ -19,10 +20,12 @@ from .solver import (
     validate_generated_solution,
 )
 from .state import canonical_state_key
+from .structure_goal import StructureGoal
 
 __all__ = [
     "AtomAssignment",
     "AtomFlow",
+    "BeamExplorationResult",
     "DisjointProductPlan",
     "ExplorationResult",
     "GeneratedSolutionError",
@@ -37,6 +40,7 @@ __all__ = [
     "SeedSolveResult",
     "SolveResult",
     "SourceAtom",
+    "StructureGoal",
     "TargetAtom",
     "TraceMilestone",
     "UnsupportedPuzzleError",
@@ -47,6 +51,7 @@ __all__ = [
     "build_rotor_schedule",
     "canonical_state_key",
     "enumerate_joint_actions",
+    "explore_simulator_beam",
     "explore_simulator_states",
     "rank_seed_candidates",
     "solve_from_reference_corpus",
