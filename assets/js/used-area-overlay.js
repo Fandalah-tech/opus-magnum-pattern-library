@@ -113,6 +113,7 @@
     build(event.detail?.payload);
     ensureLayer();
     ensureBadge();
+    if (replay?.frames?.length) render(replay.frames[0], replay);
   });
 
   root.addEventListener('opus:replayframe', (event) => {
