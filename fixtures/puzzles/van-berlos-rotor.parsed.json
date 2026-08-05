@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {"kind": "puzzle", "version": 3},
+  "source": {"name": "weeklies2026_van-berlos-rotor.puzzle", "size": 159},
+  "name": "Van Berlo's Rotor",
+  "creatorId": "76561199057291573",
+  "availableParts": {
+    "rawFlags": 398472975,
+    "arms": ["arm1", "arm2", "arm3", "arm6", "piston", "van-berlo"],
+    "glyphs": ["equilibrium", "bonder", "unbonder", "multibonder", "triplex-bonder", "calcification", "duplication", "projection", "purification", "animismus", "disposal", "unification", "dispersion"]
+  },
+  "reagents": [
+    {
+      "id": "reagent-0",
+      "atoms": [
+        {"id": "a0", "element": "water", "position": [0, 0]},
+        {"id": "a1", "element": "salt", "position": [1, 0]}
+      ],
+      "bonds": []
+    },
+    {
+      "id": "reagent-1",
+      "atoms": [
+        {"id": "a0", "element": "salt", "position": [0, 0]},
+        {"id": "a1", "element": "salt", "position": [-2, 0]},
+        {"id": "a2", "element": "salt", "position": [2, 0]}
+      ],
+      "bonds": []
+    }
+  ],
+  "products": [
+    {
+      "id": "product-0",
+      "atoms": [
+        {"id": "a0", "element": "salt", "position": [0, 0]},
+        {"id": "a1", "element": "water", "position": [0, 2]},
+        {"id": "a2", "element": "salt", "position": [-1, 2]},
+        {"id": "a3", "element": "air", "position": [-2, 2]},
+        {"id": "a4", "element": "water", "position": [-2, 1]},
+        {"id": "a5", "element": "air", "position": [-1, -1]},
+        {"id": "a6", "element": "fire", "position": [0, -2]},
+        {"id": "a7", "element": "salt", "position": [1, -2]},
+        {"id": "a8", "element": "earth", "position": [2, -2]},
+        {"id": "a9", "element": "fire", "position": [2, -1]},
+        {"id": "a10", "element": "earth", "position": [1, 1]},
+        {"id": "a11", "element": "salt", "position": [2, 0]},
+        {"id": "a12", "element": "salt", "position": [-2, 0]}
+      ],
+      "bonds": [
+        {"type": "normal", "from": [1, -2], "to": [2, -2]},
+        {"type": "normal", "from": [2, 0], "to": [2, -1]},
+        {"type": "normal", "from": [-2, 2], "to": [-1, 2]},
+        {"type": "normal", "from": [0, 2], "to": [1, 1]},
+        {"type": "normal", "from": [-1, -1], "to": [0, -2]},
+        {"type": "normal", "from": [-2, 1], "to": [-2, 0]}
+      ]
+    }
+  ],
+  "outputScale": 1,
+  "production": false,
+  "trailingBytes": 0
+}
