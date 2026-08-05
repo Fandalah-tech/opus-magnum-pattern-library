@@ -42,18 +42,14 @@ class StructureGoal:
         for steps in range(6):
             rotated_positions = [rotate_hex(point, steps) for point in positions]
             anchor = min(rotated_positions, default=(0, 0))
-            shift = lambda point: (point[0] - anchor[0], point[1] - anchor[1])
+            def shift(point: Hex) -> Hex:
+                return point[0] - anchor[0], point[1] - anchor[1]
             position_variants.append(tuple(sorted(shift(point) for point in rotated_positions)))
             edge_variants.append(tuple(sorted(
                 _canon_edge(shift(rotate_hex(a, steps)), shift(rotate_hex(b, steps)))
                 for a, b in edges
             )))
-        return cls(
-            atom_count=len(positions),
-            bond_count=len(edges),
-            position_variants=tuple(position_variants),
-            edge_variants=tuple(edge_variants),
-        )
+        return cls(len(positions), len(edges), tuple(position_variants), tuple(edge_variants))
 
     def _eligible_atom_ids(self, simulator: Any) -> set[str]:
         baron_ids = {
@@ -78,16 +74,28 @@ class StructureGoal:
 
         best = StructureMatch(0, 0, (0, 0), 0)
         for rotation, (positions, edges) in enumerate(zip(self.position_variants, self.edge_variants, strict=True)):
-            translations = {
-                (world[0] - target[0], world[1] - target[1])
-                for world in occupied for target in positions
-            }
+            translations: set[Hex] = set()
+            # Bond-aligned translations are the strongest and cheapest candidates.
+            for world_a, world_b in world_edges:
+                for target_a, target_b in edges:
+                    translations.add((world_a[0] - target_a[0], world_a[1] - target_a[1]))
+                    translations.add((world_a[0] - target_b[0], world_a[1] - target_b[1]))
+            # Before any bond exists, align only against the target center and
+            # peripheral endpoints instead of all 13xN combinations.
+            probes = (positions[0], positions[len(positions) // 2], positions[-1])
+            for world in occupied:
+                for target in probes:
+                    translations.add((world[0] - target[0], world[1] - target[1]))
+
             for translation in translations:
-                move = lambda point: (point[0] + translation[0], point[1] + translation[1])
-                occupied_count = len({move(point) for point in positions}.intersection(occupied))
-                edge_count = len({
-                    _canon_edge(move(a), move(b)) for a, b in edges
-                }.intersection(world_edges))
+                tq, tr = translation
+                shifted_positions = {(q + tq, r + tr) for q, r in positions}
+                occupied_count = len(shifted_positions.intersection(occupied))
+                shifted_edges = {
+                    _canon_edge((a[0] + tq, a[1] + tr), (b[0] + tq, b[1] + tr))
+                    for a, b in edges
+                }
+                edge_count = len(shifted_edges.intersection(world_edges))
                 candidate = StructureMatch(occupied_count, edge_count, translation, rotation)
                 if (candidate.matched_edges, candidate.occupied_positions) > (best.matched_edges, best.occupied_positions):
                     best = candidate
@@ -99,4 +107,11 @@ class StructureGoal:
 
     def score(self, simulator: Any) -> int:
         match = self.best_match(simulator)
-        return match.occupied_positions * 12 + match.matched_edges * 80
+        eligible = self._eligible_atom_ids(simulator)
+        live_bonds = sum(
+            1 for bond in simulator.world.bonds.values()
+            if bond.a in eligible and bond.b in eligible
+        )
+        # Matching target edges dominates, while any new bond provides a useful
+        # gradient before the complete structure is aligned.
+        return match.occupied_positions * 12 + match.matched_edges * 100 + min(live_bonds, self.bond_count) * 18
