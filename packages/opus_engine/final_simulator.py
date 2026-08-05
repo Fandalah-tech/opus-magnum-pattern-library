@@ -4,7 +4,7 @@ from typing import Any
 
 from .complete_simulator import Simulator as CompleteSimulator
 from .model import Atom
-from .simulator import Simulator as BaseSimulator
+from .simulator import SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
 # Element order around the physical Van Berlo wheel in local branch order.
@@ -57,6 +57,35 @@ class Simulator(CompleteSimulator):
                     "consumerPartId": output_id,
                     "repetitions": 3,
                 }))
+
+    def _validate_and_apply(self, proposals) -> None:
+        try:
+            super()._validate_and_apply(proposals)
+        except SimulationError as error:
+            output_cells = {
+                position
+                for _, _, expected_atoms, _ in self.output_patterns
+                for position, _ in expected_atoms
+            }
+            candidates = []
+            for molecule in self.world.molecules():
+                if not any(
+                    self.world.atoms[atom_id].position in output_cells
+                    for atom_id in molecule.atom_ids
+                ):
+                    continue
+                atoms, bonds = self._molecule_signature(set(molecule.atom_ids))
+                candidates.append({
+                    "atomIds": sorted(molecule.atom_ids),
+                    "atoms": list(atoms),
+                    "bonds": list(bonds),
+                    "heldBy": {
+                        atom_id: sorted(self.world.atoms[atom_id].held_by)
+                        for atom_id in sorted(molecule.atom_ids)
+                        if self.world.atoms[atom_id].held_by
+                    },
+                })
+            raise SimulationError(f"{error}; outputCandidates={candidates}") from error
 
     def _process_consumers(self) -> None:
         # Standard outputs consume a matching product even when a grabber is
