@@ -1,4 +1,12 @@
 (() => {
+  const loadScript = (src) => new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = resolve;
+    document.head.append(script);
+  });
+
   const init = () => {
     const root = document.querySelector('#solution-viewer');
     if (!root || !window.OpusSolutionViewer) return;
@@ -21,9 +29,8 @@
     window.addEventListener('resize', () => viewer.fit());
   };
 
-  const enhancement = document.createElement('script');
-  enhancement.src = 'assets/js/solution-viewer-symbols.js';
-  enhancement.onload = init;
-  enhancement.onerror = init;
-  document.head.append(enhancement);
+  Promise.resolve()
+    .then(() => loadScript('assets/js/solution-viewer-symbols.js'))
+    .then(() => loadScript('assets/js/output-product-preview.js'))
+    .then(init);
 })();
