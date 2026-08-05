@@ -14,6 +14,40 @@ STANDARD_PRODUCT_TARGET = 6
 REPEATING_PRODUCT_TARGET = 3
 
 
+def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    result: list[dict[str, Any]] = []
+    for frame in frames:
+        cycle = int(frame.get("cycle", 0))
+        if cycle < 180:
+            continue
+        world = frame.get("world", {})
+        atoms = [
+            atom for atom in world.get("atoms", [])
+            if str(atom.get("id", "")).startswith("part-10-")
+            or tuple(atom.get("position", [])) in {(0, 0), (1, -1), (2, -1), (4, -3)}
+        ]
+        events = [
+            event for event in frame.get("events", [])
+            if "part-10" in json.dumps(event, sort_keys=True)
+            or event.get("kind") in {
+                "atoms-animated", "bond-created", "bond-removed",
+                "molecule-consumed", "product-delivered", "atoms-dropped",
+            }
+        ]
+        if atoms or events or cycle >= 210:
+            result.append({
+                "cycle": cycle,
+                "phase": frame.get("phase"),
+                "atoms": atoms,
+                "events": events,
+                "arms": [
+                    arm for arm in frame.get("arms", [])
+                    if arm.get("partId") in {"part-4", "part-12"}
+                ],
+            })
+    return result[-50:]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Audit imported campaign solutions against opus_engine.")
     parser.add_argument("--root", type=Path, default=Path(".datasets/campaign-corpus"))
@@ -85,9 +119,6 @@ def main() -> int:
                 all(int(delivered.get(output_id, 0)) >= STANDARD_PRODUCT_TARGET for output_id in standard_outputs)
                 and all(repeating_complete.values())
             )
-            # The game ends as soon as every target has been delivered. Tape
-            # instructions after that point are unreachable and cannot invalidate
-            # an already completed solution.
             if targets_complete:
                 record["status"] = "engine-complete"
             elif replay.get("summary", {}).get("terminatedWithError"):
@@ -106,6 +137,8 @@ def main() -> int:
                     "message": message,
                     "completedCycles": replay.get("summary", {}).get("completedCycles"),
                 })
+                if item.get("puzzleId") == "P041" and "/002-" in str(item.get("file")):
+                    record["debugLifecycle"] = _debug_p041(simulator.frames)
                 for part_type in part_types:
                     errors_by_part[part_type] += 1
             else:
@@ -153,7 +186,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.4.1", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.2", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
