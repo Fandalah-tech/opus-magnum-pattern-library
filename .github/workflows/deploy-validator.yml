@@ -8,6 +8,8 @@ on:
       - .github/workflows/deploy-validator.yml
       - packages/opus_parser/**
       - packages/opus_analysis/**
+      - packages/opus_engine/**
+      - packages/opus_solver/**
       - packages/opus_validator/**
       - services/validator/**
       - tools/omsim_adapter/**
@@ -95,13 +97,14 @@ jobs:
           import json
           data = json.load(open('health.json'))
           assert data['status'] == 'ok'
-          assert data['apiVersion'] == '1.1.0'
+          assert data['apiVersion'] == '1.8.0'
           PY
           curl --fail --show-error --silent "${BASE_URL}/openapi.json" > openapi.json
           python - <<'PY'
           import json
           data = json.load(open('openapi.json'))
           assert '/api/v1/analyze' in data['paths']
+          assert '/api/v1/engine/replay' in data['paths']
           PY
 
       - name: Deployment summary
@@ -110,6 +113,7 @@ jobs:
           echo "- Service: ${{ env.SERVICE }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Region: ${{ env.REGION }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- URL: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- API version: 1.1.0" >> "$GITHUB_STEP_SUMMARY"
+          echo "- API version: 1.8.0" >> "$GITHUB_STEP_SUMMARY"
           echo "- API: /api/v1/analyze" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Engine replay: /api/v1/engine/replay" >> "$GITHUB_STEP_SUMMARY"
           echo "- Image: ${{ env.IMAGE }}:${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
