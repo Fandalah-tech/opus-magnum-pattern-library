@@ -9,6 +9,7 @@ from .manufacturing import (
 from .rotor_corpus import RotorCorpusEntry, analyze_solution_zip, rank_seed_candidates, summarize_solution
 from .rotor_recipe import AtomAssignment, RotorRecipe, SourceAtom, TargetAtom, build_rotor_recipe
 from .rotor_schedule import RotorSchedule, RotorStep, build_rotor_schedule
+from .rotor_trace import RotorTrace, TraceMilestone, trace_solution_milestones
 from .seed_solver import SeedSolveResult, solve_from_reference_corpus
 from .solver import (
     GeneratedSolutionError,
@@ -32,10 +33,12 @@ __all__ = [
     "RotorRecipe",
     "RotorSchedule",
     "RotorStep",
+    "RotorTrace",
     "SeedSolveResult",
     "SolveResult",
     "SourceAtom",
     "TargetAtom",
+    "TraceMilestone",
     "UnsupportedPuzzleError",
     "analyze_solution_zip",
     "build_disjoint_product_plan",
@@ -49,5 +52,6 @@ __all__ = [
     "solve_from_reference_corpus",
     "solve_puzzle",
     "summarize_solution",
+    "trace_solution_milestones",
     "validate_generated_solution",
 ]
