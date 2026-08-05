@@ -17,6 +17,7 @@ FROM python:3.12-slim-bookworm
 ARG OMSIM_COMMIT=master
 ENV OMSIM_BIN=/usr/local/bin/omsim \
     OMSIM_COMMIT=$OMSIM_COMMIT \
+    STATIC_ROOT=/app/static \
     PYTHONPATH=/app \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
@@ -29,6 +30,15 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY packages /app/packages
 COPY services/validator/app.py /app/app.py
+
+# Cloud Run also acts as the immediate static production fallback for the
+# Codex and Solver Lab when the Vercel free-tier build queue is unavailable.
+COPY index.html inspector.html solver-lab.html /app/static/
+COPY assets /app/static/assets
+COPY data /app/static/data
+COPY opusjs /app/static/opusjs
+COPY samples /app/static/samples
+
 WORKDIR /app
 USER appuser
 
