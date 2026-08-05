@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import asdict, dataclass
+from functools import lru_cache
+from itertools import product
 from typing import Any
 
 
 Hex = tuple[int, int]
+CLASSICAL = {"air", "earth", "fire", "water"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,6 +30,8 @@ class DisjointProductPlan:
     components: tuple[ProductComponent, ...]
     element_demand: tuple[tuple[str, int], ...]
     reagent_element_supply: tuple[tuple[int, tuple[tuple[str, int], ...]], ...]
+    reagent_pulls: tuple[int, ...]
+    waste_atoms: int
     required_transmutations: int
     required_bonds: int
     isolated_atoms: int
@@ -79,17 +84,91 @@ def _components(product: dict[str, Any]) -> tuple[ProductComponent, ...]:
     return tuple(sorted(result, key=lambda item: (len(item.atom_ids), item.positions)))
 
 
+def _conversion_cost(source: str, target: str) -> int | None:
+    if source == target:
+        return 0
+    if source in CLASSICAL | {"salt"} and target in CLASSICAL:
+        return 1
+    if source in CLASSICAL and target == "salt":
+        return 1
+    return None
+
+
+def _minimum_assignment_cost(source_elements: tuple[str, ...], demand: Counter[str]) -> int | None:
+    targets = tuple(sorted(demand))
+    initial = tuple(demand[target] for target in targets)
+
+    @lru_cache(maxsize=None)
+    def visit(index: int, remaining: tuple[int, ...]) -> int | None:
+        if index == len(source_elements):
+            return 0 if not any(remaining) else None
+        source = source_elements[index]
+        best = visit(index + 1, remaining)  # discard this atom
+        for target_index, target in enumerate(targets):
+            if remaining[target_index] <= 0:
+                continue
+            conversion = _conversion_cost(source, target)
+            if conversion is None:
+                continue
+            updated = list(remaining)
+            updated[target_index] -= 1
+            suffix = visit(index + 1, tuple(updated))
+            if suffix is None:
+                continue
+            candidate = conversion + suffix
+            if best is None or candidate < best:
+                best = candidate
+        return best
+
+    return visit(0, initial)
+
+
+def _best_reagent_plan(reagents: list[dict[str, Any]], demand: Counter[str]) -> tuple[tuple[int, ...], int, int] | None:
+    target_atoms = sum(demand.values())
+    templates = [
+        tuple(str(atom.get("element") or "") for atom in reagent.get("atoms") or [])
+        for reagent in reagents
+    ]
+    if any(not template for template in templates):
+        return None
+    limits = [target_atoms // len(template) + 2 for template in templates]
+    best: tuple[tuple[int, int, int, tuple[int, ...]], tuple[int, ...], int, int] | None = None
+    for pulls in product(*(range(limit + 1) for limit in limits)):
+        supplied = tuple(
+            element
+            for reagent_index, count in enumerate(pulls)
+            for _ in range(count)
+            for element in templates[reagent_index]
+        )
+        if len(supplied) < target_atoms:
+            continue
+        cost = _minimum_assignment_cost(supplied, demand)
+        if cost is None:
+            continue
+        waste = len(supplied) - target_atoms
+        score = (waste, sum(pulls), cost, pulls)
+        if best is None or score < best[0]:
+            best = score, pulls, waste, cost
+    if best is None:
+        return None
+    return best[1], best[2], best[3]
+
+
 def build_disjoint_product_plan(puzzle: dict[str, Any], product_index: int = 0) -> DisjointProductPlan:
     products = list(puzzle.get("products") or [])
     reagents = list(puzzle.get("reagents") or [])
-    if not 0 <= product_index < len(products):
-        return DisjointProductPlan(False, "product index is out of range", product_index, (), (), (), 0, 0, 0)
-    if not reagents:
-        return DisjointProductPlan(False, "puzzle has no reagents", product_index, (), (), (), 0, 0, 0)
 
-    product = products[product_index]
-    components = _components(product)
-    demand = Counter(str(atom.get("element") or "") for atom in product.get("atoms") or [])
+    def unsupported(reason: str) -> DisjointProductPlan:
+        return DisjointProductPlan(False, reason, product_index, (), (), (), (), 0, 0, 0, 0)
+
+    if not 0 <= product_index < len(products):
+        return unsupported("product index is out of range")
+    if not reagents:
+        return unsupported("puzzle has no reagents")
+
+    product_model = products[product_index]
+    components = _components(product_model)
+    demand = Counter(str(atom.get("element") or "") for atom in product_model.get("atoms") or [])
     supply = tuple(
         (
             index,
@@ -100,21 +179,10 @@ def build_disjoint_product_plan(puzzle: dict[str, Any], product_index: int = 0) 
         )
         for index, reagent in enumerate(reagents)
     )
-
-    direct_classical = sum(
-        count
-        for element, count in Counter(
-            str(atom.get("element") or "")
-            for reagent in reagents
-            for atom in reagent.get("atoms") or []
-        ).items()
-        if element in {"air", "earth", "fire", "water"}
-    )
-    classical_demand = sum(demand[element] for element in ("air", "earth", "fire", "water"))
-    # This is a chemistry lower bound, not a scheduling claim: every demanded
-    # classical atom not already present in one complete reagent set must be
-    # created by Van Berlo or another conversion glyph.
-    required_transmutations = max(0, classical_demand - direct_classical)
+    reagent_plan = _best_reagent_plan(reagents, demand)
+    if reagent_plan is None:
+        return unsupported("available reagent atoms cannot be assigned to the product")
+    pulls, waste_atoms, required_transmutations = reagent_plan
 
     return DisjointProductPlan(
         supported=True,
@@ -123,7 +191,9 @@ def build_disjoint_product_plan(puzzle: dict[str, Any], product_index: int = 0) 
         components=components,
         element_demand=tuple(sorted(demand.items())),
         reagent_element_supply=supply,
+        reagent_pulls=pulls,
+        waste_atoms=waste_atoms,
         required_transmutations=required_transmutations,
-        required_bonds=len(product.get("bonds") or []),
+        required_bonds=len(product_model.get("bonds") or []),
         isolated_atoms=sum(1 for component in components if len(component.atom_ids) == 1),
     )
