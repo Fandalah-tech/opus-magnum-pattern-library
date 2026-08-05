@@ -261,6 +261,9 @@ class Simulator:
 
         return [], None
 
+    def _before_motion(self) -> None:
+        """First-half hook, after grab/drop but before physical motion."""
+
     def _respawn_inputs(self) -> None:
         for source in self.inputs:
             source.spawn(self.world)
@@ -275,6 +278,8 @@ class Simulator:
                 self._grab(arm)
             elif instruction in DROP:
                 self._drop(arm)
+
+        self._before_motion()
 
         proposals: list[MotionProposal] = []
         mutations: list[ArmMutation] = []
