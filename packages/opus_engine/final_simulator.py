@@ -2,22 +2,17 @@ from __future__ import annotations
 
 from typing import Any
 
+from .builder import rotate_hex
 from .complete_simulator import Simulator as CompleteSimulator
 from .model import Atom
-from .simulator import SimulationError, Simulator as BaseSimulator
+from .simulator import ArmMutation, MotionProposal, RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
-# Element order around the physical Van Berlo wheel in local branch order.
 VAN_BERLO_ELEMENTS = ("salt", "water", "air", "salt", "fire", "earth")
 
 
 class Simulator(CompleteSimulator):
-    """Campaign-complete simulator surface.
-
-    Models the Van Berlo wheel as six permanent atoms held by a six-branch
-    rotating wheel and remembers repeating products that were valid at any
-    point during the simulation.
-    """
+    """Campaign-complete simulator surface."""
 
     def __post_init__(self) -> None:
         self.van_berlo_arms = []
@@ -41,6 +36,49 @@ class Simulator(CompleteSimulator):
         if simulator.van_berlo_arms:
             simulator.frames[0] = simulator.snapshot("initial")
         return simulator
+
+    def _plan_motion(self, arm, instruction):
+        if arm.part_type == "baron" and instruction in RESET:
+            atom_ids = self._held_atom_ids(arm)
+            destinations = {}
+            rotation_steps = int(arm.base_rotation) - arm.rotation
+            target_origin = arm.base_origin
+            for atom_id in atom_ids:
+                atom = self.world.atoms[atom_id]
+                relative = (
+                    atom.position[0] - arm.origin[0],
+                    atom.position[1] - arm.origin[1],
+                )
+                rotated = rotate_hex(relative, rotation_steps)
+                destinations[atom_id] = (
+                    int(target_origin[0]) + rotated[0],
+                    int(target_origin[1]) + rotated[1],
+                )
+            proposal = MotionProposal(arm.id, atom_ids, destinations, instruction) if atom_ids else None
+            return ([proposal] if proposal else []), ArmMutation(
+                arm,
+                origin=arm.base_origin,
+                rotation=arm.base_rotation,
+                length=arm.base_length,
+                track_index=arm.base_track_index,
+            )
+        return super()._plan_motion(arm, instruction)
+
+    def _molecule_signature(self, atom_ids):
+        atoms, bonds = super()._molecule_signature(atom_ids)
+        triplex_pairs = {
+            tuple(sorted((start, end)))
+            for kind, start, end in bonds
+            if kind == "triplex"
+        }
+        normalized = tuple(
+            bond for bond in bonds
+            if not (
+                bond[0] == "normal"
+                and tuple(sorted((bond[1], bond[2]))) in triplex_pairs
+            )
+        )
+        return atoms, normalized
 
     def repeating_product_complete(self, output_id: str, repetitions: int = 3) -> bool:
         if output_id in self.completed_repeating_outputs:
@@ -106,9 +144,6 @@ class Simulator(CompleteSimulator):
                 atom.held_by.update(holders)
 
     def _respawn_inputs(self) -> None:
-        # OMSim order: spawn available inputs, then apply glyphs, then consume
-        # outputs. This is essential when a newly spawned atom immediately sits
-        # on calcification, duplication, projection, or bonding footprints.
         BaseSimulator._respawn_inputs(self)
         self._process_calcification()
         self._process_duplication()
