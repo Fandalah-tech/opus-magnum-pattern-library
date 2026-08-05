@@ -69,7 +69,7 @@
       subtree: true,
       childList: true,
       attributes: true,
-      characterData: false
+      attributeFilter: ['hidden', 'open']
     });
     resize();
   };
