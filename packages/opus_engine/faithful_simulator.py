@@ -139,14 +139,18 @@ class Simulator(RuntimeSimulator):
         super()._process_basic_glyphs()
         for positions, part_id in self.prismatic_bonders:
             atoms = [self.world.atom_at(position) for position in positions]
-            if any(atom is None for atom in atoms):
-                continue
             for first_index, second_index in ((0, 1), (1, 2), (2, 0)):
                 first = atoms[first_index]
                 second = atoms[second_index]
-                if first is None or second is None or first.id == second.id:
+                if (
+                    first is None
+                    or second is None
+                    or first.id == second.id
+                    or first.element != "fire"
+                    or second.element != "fire"
+                ):
                     continue
-                bond = Bond(first.id, second.id, "normal")
+                bond = Bond(first.id, second.id, "triplex")
                 if bond.key in self.world.bonds:
                     continue
                 self.world.add_bond(bond)
@@ -154,6 +158,6 @@ class Simulator(RuntimeSimulator):
                     "glyphPartId": part_id,
                     "fromAtomId": first.id,
                     "toAtomId": second.id,
-                    "type": "normal",
+                    "type": "triplex",
                     "prismatic": True,
                 }))
