@@ -162,6 +162,9 @@ class Simulator(RuntimeSimulator):
                     or second.element != "fire"
                 ):
                     continue
+                # A prismatic bonder upgrades the bond between fire atoms; it does
+                # not leave a separate normal bond in parallel with the triplex bond.
+                self.world.remove_bond(first.id, second.id)
                 bond = Bond(first.id, second.id, "triplex")
                 if bond.key in self.world.bonds:
                     continue
