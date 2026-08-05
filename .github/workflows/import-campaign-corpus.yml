@@ -42,7 +42,7 @@ jobs:
 
       - name: Import campaign puzzles and ZLBB solutions
         env:
-          PUZZLE_LIMIT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.puzzle_limit || '3' }}
+          PUZZLE_LIMIT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.puzzle_limit || '' }}
           LIMIT_PER_PUZZLE: ${{ github.event.inputs.limit_per_puzzle || '3' }}
         run: |
           args=(
