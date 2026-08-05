@@ -16,36 +16,32 @@ REPEATING_PRODUCT_TARGET = 3
 
 def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
+    target = "part-10-mors-0"
+    previous_position = None
+    previous_holders = None
     for frame in frames:
         cycle = int(frame.get("cycle", 0))
-        if cycle < 180:
-            continue
         world = frame.get("world", {})
-        atoms = [
-            atom for atom in world.get("atoms", [])
-            if str(atom.get("id", "")).startswith("part-10-")
-            or tuple(atom.get("position", [])) in {(0, 0), (1, -1), (2, -1), (4, -3)}
-        ]
+        atom = next((item for item in world.get("atoms", []) if item.get("id") == target), None)
+        position = tuple(atom.get("position", [])) if atom else None
+        holders = tuple(atom.get("heldBy", [])) if atom else None
         events = [
             event for event in frame.get("events", [])
-            if "part-10" in json.dumps(event, sort_keys=True)
-            or event.get("kind") in {
-                "atoms-animated", "bond-created", "bond-removed",
-                "molecule-consumed", "product-delivered", "atoms-dropped",
-            }
+            if target in json.dumps(event, sort_keys=True)
+            or event.get("kind") == "atoms-animated"
         ]
-        if atoms or events or cycle >= 210:
+        changed = position != previous_position or holders != previous_holders
+        if events or changed or cycle >= 210:
             result.append({
                 "cycle": cycle,
                 "phase": frame.get("phase"),
-                "atoms": atoms,
+                "atom": atom,
                 "events": events,
-                "arms": [
-                    arm for arm in frame.get("arms", [])
-                    if arm.get("partId") in {"part-4", "part-12"}
-                ],
+                "arm": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-12"), None),
             })
-    return result[-50:]
+        previous_position = position
+        previous_holders = holders
+    return result
 
 
 def main() -> int:
@@ -186,7 +182,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.4.2", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.3", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
