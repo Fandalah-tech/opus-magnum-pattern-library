@@ -22,7 +22,7 @@ from packages.opus_engine import Simulator, compare_replays
 from packages.opus_parser import ParseError, parse_puzzle_bytes, parse_solution_bytes
 from packages.opus_validator import build_command, classify_result
 
-API_VERSION = "1.8.0"
+API_VERSION = "1.9.0"
 app = FastAPI(title="Opus Codex Validator", version=API_VERSION)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "POST", "OPTIONS"], allow_headers=["*"])
 
@@ -52,10 +52,130 @@ def _canonical_parse(parser, upload: UploadFile) -> dict[str, Any]:
     return _parse_bytes(parser, _read_limited(upload), upload.filename)
 
 
+def _visual_molecules(world: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[str, str]]:
+    atoms_by_id = {
+        str(atom.get("id")): atom
+        for atom in world.get("atoms", [])
+        if atom.get("id") is not None
+    }
+    visual: list[dict[str, Any]] = []
+    atom_to_molecule: dict[str, str] = {}
+
+    for component in world.get("molecules", []):
+        atom_ids = sorted(str(atom_id) for atom_id in component.get("atomIds", []))
+        if not atom_ids:
+            continue
+        molecule_id = f"engine-molecule-{atom_ids[0]}"
+        component_ids = set(atom_ids)
+        atoms = []
+        holders: set[str] = set()
+        for atom_id in atom_ids:
+            atom = atoms_by_id.get(atom_id)
+            if atom is None:
+                continue
+            atoms.append({
+                "id": atom_id,
+                "element": atom.get("element"),
+                "position": list(atom.get("position") or (0, 0)),
+            })
+            holders.update(str(holder) for holder in atom.get("heldBy", []))
+            atom_to_molecule[atom_id] = molecule_id
+
+        bonds = []
+        for bond in world.get("bonds", []):
+            first_id = str(bond.get("fromAtomId"))
+            second_id = str(bond.get("toAtomId"))
+            if first_id not in component_ids or second_id not in component_ids:
+                continue
+            first = atoms_by_id.get(first_id)
+            second = atoms_by_id.get(second_id)
+            if first is None or second is None:
+                continue
+            kind = str(bond.get("type") or "normal")
+            edge = sorted((first_id, second_id))
+            bonds.append({
+                "id": f"engine-bond-{edge[0]}-{edge[1]}-{kind}",
+                "type": kind,
+                "fromAtomId": first_id,
+                "toAtomId": second_id,
+                "from": list(first.get("position") or (0, 0)),
+                "to": list(second.get("position") or (0, 0)),
+            })
+
+        visual.append({
+            "id": molecule_id,
+            "source": "opus-engine",
+            "heldBy": [{"partId": holder} for holder in sorted(holders)],
+            "atoms": atoms,
+            "bonds": bonds,
+        })
+    return visual, atom_to_molecule
+
+
+def _visual_engine_replay(puzzle: dict[str, Any], solution: dict[str, Any], timeline: dict[str, Any]) -> dict[str, Any]:
+    simulator = Simulator.from_models(puzzle, solution)
+    raw = simulator.run_timeline(timeline)
+    frames: list[dict[str, Any]] = []
+
+    for index, frame in enumerate(raw.get("frames", [])):
+        molecules, atom_to_molecule = _visual_molecules(frame.get("world", {}))
+        arm_states = []
+        for arm in frame.get("arms", []):
+            state = dict(arm)
+            state["heldMoleculeIds"] = sorted({
+                atom_to_molecule.get(str(item.get("atomId")))
+                for item in arm.get("heldAtoms", [])
+                if atom_to_molecule.get(str(item.get("atomId")))
+            })
+            arm_states.append(state)
+
+        events = []
+        for event in frame.get("events", []):
+            normalized = dict(event)
+            if normalized.get("partId") is None and normalized.get("armId") is not None:
+                normalized["partId"] = normalized.get("armId")
+            events.append(normalized)
+
+        initial = index == 0 or frame.get("phase") == "initial"
+        display_cycle = 0 if initial else int(frame.get("cycle") or index)
+        frames.append({
+            "cycle": int(frame.get("cycle") or 0),
+            "displayCycle": display_cycle,
+            "phase": frame.get("phase"),
+            "phaseLabel": "initial" if initial else "after-instructions",
+            "armStates": arm_states,
+            "molecules": molecules,
+            "events": events,
+            "world": frame.get("world", {}),
+        })
+
+    raw_summary = raw.get("summary", {})
+    requested_cycles = int(raw_summary.get("requestedCycles") or len(timeline.get("cycles", [])))
+    return {
+        "schemaVersion": "0.3.0",
+        "traceType": "opus-engine-visual",
+        "summary": {
+            "frameCount": len(frames),
+            "cycleCount": requested_cycles,
+            "completedCycles": int(raw_summary.get("completedCycles") or max(0, len(frames) - 1)),
+            "terminatedWithError": bool(raw_summary.get("terminatedWithError")),
+        },
+        "capabilities": {
+            "physicalArmAnimation": True,
+            "moleculeAnimation": True,
+            "multiBranchGrab": True,
+            "bondState": True,
+            "elementTransmutation": True,
+            "engineReplay": True,
+        },
+        "frames": frames,
+    }
+
+
 def _bundle(puzzle: dict[str, Any], solution: dict[str, Any], *, replay_cycles: int | None = None):
     graph = build_solution_graph(solution)
     timeline = build_program_timeline(solution, max_cycles=replay_cycles)
-    replay = build_replay_trace(puzzle, solution, timeline)
+    replay = _visual_engine_replay(puzzle, solution, timeline)
     patterns = detect_patterns(solution, graph, timeline)
     diagnostics = analyze_solution(solution, graph, timeline, patterns)
     return graph, timeline, replay, patterns, diagnostics
@@ -97,7 +217,7 @@ def _analyze_pair(puzzle: UploadFile, solution: UploadFile) -> dict[str, Any]:
     replay_cycles = int(validated_cycles) if isinstance(validated_cycles, (int, float)) and validated_cycles > 0 else None
     graph, timeline, replay, patterns, diagnostics = _bundle(puzzle_model, solution_model, replay_cycles=replay_cycles)
     return {
-        "schemaVersion": "1.8.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
+        "schemaVersion": "1.9.0", "apiVersion": API_VERSION, "puzzle": puzzle_model,
         "solution": solution_model, "validation": validation, "graph": graph,
         "timeline": timeline, "replay": replay, "patterns": patterns, "diagnostics": diagnostics,
     }
@@ -117,6 +237,14 @@ def analyze_pair_endpoint(puzzle: UploadFile = File(...), solution: UploadFile =
 
 @app.post("/api/v1/replay")
 def replay_endpoint(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
+    puzzle_model = _canonical_parse(parse_puzzle_bytes, puzzle)
+    solution_model = _canonical_parse(parse_solution_bytes, solution)
+    timeline = build_program_timeline(solution_model)
+    return _visual_engine_replay(puzzle_model, solution_model, timeline)
+
+
+@app.post("/api/v1/replay/legacy")
+def legacy_replay_endpoint(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
     puzzle_model = _canonical_parse(parse_puzzle_bytes, puzzle)
     solution_model = _canonical_parse(parse_solution_bytes, solution)
     timeline = build_program_timeline(solution_model)
