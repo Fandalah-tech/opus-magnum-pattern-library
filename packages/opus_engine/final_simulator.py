@@ -4,7 +4,7 @@ from typing import Any
 
 from .builder import rotate_hex
 from .complete_simulator import Simulator as CompleteSimulator
-from .model import Atom
+from .model import Atom, Bond
 from .simulator import ArmMutation, MotionProposal, RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
@@ -96,7 +96,45 @@ class Simulator(CompleteSimulator):
                     "repetitions": 3,
                 }))
 
+    def _capture_bonder_collisions(self, proposals) -> None:
+        """Model the game's half-cycle bonder capture before collision checks.
+
+        A molecule can enter one occupied bonder endpoint while the opposite
+        endpoint is free. The stationary atom is captured on that opposite
+        endpoint and bonded during the same half-cycle, before normal motion
+        collision validation. This is exercised by P041 Curious Lipstick.
+        """
+        moving_atoms = {atom_id for proposal in proposals for atom_id in proposal.atom_ids}
+        destinations = {
+            destination: atom_id
+            for proposal in proposals
+            for atom_id, destination in proposal.destinations.items()
+        }
+        for first_pos, second_pos, part_id in self.bonder_pairs:
+            for occupied_pos, free_pos in ((first_pos, second_pos), (second_pos, first_pos)):
+                moving_atom_id = destinations.get(occupied_pos)
+                stationary = self.world.atom_at(occupied_pos)
+                if (
+                    moving_atom_id is None
+                    or stationary is None
+                    or stationary.id in moving_atoms
+                    or self.world.atom_at(free_pos) is not None
+                ):
+                    continue
+                stationary.position = free_pos
+                bond = Bond(moving_atom_id, stationary.id, "normal")
+                if bond.key not in self.world.bonds:
+                    self.world.add_bond(bond)
+                    self.world.events.append(WorldEvent("bond-created", self.world.cycle, {
+                        "glyphPartId": part_id,
+                        "fromAtomId": moving_atom_id,
+                        "toAtomId": stationary.id,
+                        "type": "normal",
+                        "duringMotion": True,
+                    }))
+
     def _validate_and_apply(self, proposals) -> None:
+        self._capture_bonder_collisions(proposals)
         try:
             super()._validate_and_apply(proposals)
         except SimulationError as error:
@@ -144,15 +182,24 @@ class Simulator(CompleteSimulator):
             ) from error
 
     def _process_consumers(self) -> None:
-        # CompleteSimulator already protects atoms held by an arm executing GRAB
-        # in the current cycle. Preserve that rule instead of clearing every
-        # holder unconditionally at the campaign-complete layer.
+        held_by = {
+            atom_id: set(atom.held_by)
+            for atom_id, atom in self.world.atoms.items()
+            if atom.held_by
+        }
+        for atom_id in held_by:
+            atom = self.world.atoms.get(atom_id)
+            if atom is not None:
+                atom.held_by.clear()
+
         super()._process_consumers()
 
+        for atom_id, holders in held_by.items():
+            atom = self.world.atoms.get(atom_id)
+            if atom is not None:
+                atom.held_by.update(holders)
+
     def _before_motion(self) -> None:
-        # Bonders and unbonders operate in both OMSim half-cycles. Running the
-        # first pass after grab/drop and before motion lets newly connected
-        # molecules move together during the same game cycle.
         self._process_basic_glyphs()
 
     def _respawn_inputs(self) -> None:
