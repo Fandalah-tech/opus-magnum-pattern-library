@@ -20,7 +20,7 @@ def test_van_berlo_rotor_decomposes_into_six_dimers_and_one_isolated_atom() -> N
     assert plan.required_bonds == 6
 
 
-def test_van_berlo_rotor_element_demand_and_conversion_lower_bound() -> None:
+def test_van_berlo_rotor_element_demand_and_exact_reagent_plan() -> None:
     puzzle = json.loads(FIXTURE.read_text(encoding="utf-8"))
 
     plan = build_disjoint_product_plan(puzzle)
@@ -34,7 +34,9 @@ def test_van_berlo_rotor_element_demand_and_conversion_lower_bound() -> None:
     }
     assert dict(plan.reagent_element_supply[0][1]) == {"salt": 1, "water": 1}
     assert dict(plan.reagent_element_supply[1][1]) == {"salt": 3}
-    assert plan.required_transmutations == 7
+    assert plan.reagent_pulls == (2, 3)
+    assert plan.waste_atoms == 0
+    assert plan.required_transmutations == 6
 
 
 def test_each_bonded_component_is_a_product_dimer() -> None:
