@@ -11,6 +11,11 @@
     tin: '#aeb3b4', lead: '#6f6578', vitae: '#f0d46a', mors: '#a48bb9', quintessence: '#e8c2ff',
     repeat: '#d7d7d7'
   };
+  const LABELS = {
+    salt: 'S', air: 'A', earth: 'E', fire: 'F', water: 'W', quicksilver: 'Q',
+    gold: 'Au', silver: 'Ag', copper: 'Cu', iron: 'Fe', tin: 'Sn', lead: 'Pb',
+    vitae: 'V', mors: 'M', quintessence: 'Qe'
+  };
   const axialToPixel = ([q, r]) => [SIZE * SQRT3 * (q + r / 2), -SIZE * 1.5 * r];
   const svgEl = (name, attrs = {}) => {
     const node = document.createElementNS(NS, name);
@@ -25,7 +30,7 @@
   function removeGenericSymbol(group) {
     for (const child of [...group.children]) {
       if (child.tagName.toLowerCase() === 'title') continue;
-      if (child.classList.contains('viewer-piece-footprint')) continue;
+      if (child.hasAttribute('data-part-hit-targets')) continue;
       child.remove();
     }
   }
@@ -55,18 +60,19 @@
       const [x2, y2] = axialToPixel(toPosition);
       bonds.append(svgEl('line', {
         x1, y1, x2, y2,
-        stroke: '#21180f',
+        stroke: '#21170f',
         'stroke-width': bond.type === 'triplex' ? 12 : 9,
         'stroke-linecap': 'round',
-        opacity: .92
+        opacity: 1,
+        class: 'viewer-output-target-bond-shadow'
       }));
       bonds.append(svgEl('line', {
         x1, y1, x2, y2,
-        stroke: bond.type === 'triplex' ? '#efc366' : '#e5b96b',
-        'stroke-width': bond.type === 'triplex' ? 7 : 4.5,
+        stroke: bond.type === 'triplex' ? '#f6c96c' : '#f0cf8d',
+        'stroke-width': bond.type === 'triplex' ? 7 : 4.8,
         'stroke-linecap': 'round',
-        'stroke-dasharray': bond.type === 'triplex' ? 'none' : '5 4',
-        opacity: .72
+        opacity: .96,
+        class: `viewer-output-target-bond viewer-output-target-bond-${bond.type || 'normal'}`
       }));
     }
     preview.append(bonds);
@@ -75,27 +81,41 @@
     for (const atom of atoms) {
       const [x, y] = axialToPixel(atom.position);
       atomGroup.append(svgEl('circle', {
-        cx: x, cy: y, r: 18,
+        cx: x, cy: y, r: 17.5,
         fill: '#17120d',
-        stroke: '#efc36e',
-        'stroke-width': 3,
-        'stroke-dasharray': '4 3',
-        opacity: .95,
+        stroke: '#edae55',
+        'stroke-width': 3.2,
+        opacity: 1,
         class: 'viewer-output-target-ring'
       }));
       atomGroup.append(svgEl('circle', {
         cx: x, cy: y, r: 12.5,
         fill: COLORS[atom.element] || '#ddd',
-        stroke: '#fff5d7',
-        'stroke-width': 1.3,
-        'stroke-opacity': .52,
-        opacity: .68,
+        stroke: '#fff3d1',
+        'stroke-width': 1.5,
+        'stroke-opacity': .6,
+        opacity: .94,
         class: 'viewer-output-target-core'
       }));
       atomGroup.append(svgEl('circle', {
         cx: x - 4, cy: y - 5, r: 3,
-        fill: '#fff', opacity: .32
+        fill: '#fff', opacity: .42
       }));
+      const label = svgEl('text', {
+        x,
+        y: y + 4,
+        'text-anchor': 'middle',
+        fill: atom.element === 'salt' ? '#4e463b' : '#17120e',
+        stroke: '#fff5df',
+        'stroke-width': .55,
+        'paint-order': 'stroke',
+        'font-size': (LABELS[atom.element] || '?').length > 1 ? 7.5 : 9.5,
+        'font-weight': 900,
+        'font-family': 'ui-sans-serif,system-ui,sans-serif',
+        class: 'viewer-output-target-label'
+      });
+      label.textContent = LABELS[atom.element] || '?';
+      atomGroup.append(label);
     }
     preview.append(atomGroup);
     group.classList.add('output-preview-ready');
