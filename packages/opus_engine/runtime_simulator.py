@@ -8,6 +8,7 @@ from .simulator import RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
 METAL_ORDER = ("lead", "tin", "iron", "copper", "silver", "gold")
+CLASSICAL_ELEMENTS = {"air", "earth", "fire", "water"}
 
 
 def _transform(position: list[int] | tuple[int, int], origin: tuple[int, int], rotation: int) -> tuple[int, int]:
@@ -21,13 +22,14 @@ def _bond_signature(kind: str, start: tuple[int, int], end: tuple[int, int]) -> 
 
 
 class Simulator(BaseSimulator):
-    """Runtime simulator with reset, basic glyph, and board-consumer semantics."""
+    """Runtime simulator with reset, glyph, and board-consumer semantics."""
 
     def __post_init__(self) -> None:
         self.output_patterns = []
         self.disposal_cells = set()
         self.bonder_pairs = []
         self.unbonder_pairs = []
+        self.calcification_cells = []
         self.purification_glyphs = []
         self.projection_glyphs = []
         self.delivered_products = {}
@@ -53,6 +55,10 @@ class Simulator(BaseSimulator):
                     simulator.bonder_pairs.append(pair)
                 else:
                     simulator.unbonder_pairs.append(pair)
+                continue
+
+            if part_type == "glyph-calcification":
+                simulator.calcification_cells.append((origin, part_id))
                 continue
 
             if part_type == "glyph-purification":
@@ -136,11 +142,27 @@ class Simulator(BaseSimulator):
                 f"{error}; activeArms={held}; atomHolders={atom_holders}; "
                 f"outputs={outputs}; delivered={self.delivered_products}; "
                 f"bonders={self.bonder_pairs}; unbonders={self.unbonder_pairs}; "
+                f"calcification={self.calcification_cells}; "
                 f"purification={self.purification_glyphs}; projection={self.projection_glyphs}"
             ) from error
 
     def _replace_atom_element(self, atom_id: str, element: str) -> None:
         self.world.atoms[atom_id].element = element
+
+    def _process_calcification(self) -> None:
+        for position, part_id in self.calcification_cells:
+            atom = self.world.atom_at(position)
+            if atom is None or atom.element not in CLASSICAL_ELEMENTS:
+                continue
+            previous = atom.element
+            self._replace_atom_element(atom.id, "salt")
+            self.world.events.append(WorldEvent("atom-calcified", self.world.cycle, {
+                "glyphPartId": part_id,
+                "atomId": atom.id,
+                "fromElement": previous,
+                "toElement": "salt",
+                "position": list(position),
+            }))
 
     def _process_projection(self) -> None:
         for first_pos, second_pos, part_id in self.projection_glyphs:
@@ -295,6 +317,7 @@ class Simulator(BaseSimulator):
             self._remove_molecule(consumed)
 
     def _respawn_inputs(self) -> None:
+        self._process_calcification()
         self._process_basic_glyphs()
         self._process_projection()
         self._process_purification()
