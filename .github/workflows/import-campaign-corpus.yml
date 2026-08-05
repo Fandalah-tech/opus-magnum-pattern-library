@@ -78,16 +78,19 @@ jobs:
           text = path.read_text()
           needle = '        consume_outputs(solution, board);\n'
           injected = '''        consume_outputs(solution, board);
-          if (board->cycle >= 60 && board->cycle <= 225) {
+          if (board->cycle >= 218 && board->cycle <= 245) {
               struct vector p1 = {1, -1};
               struct vector p2 = {2, -1};
-              struct vector p0 = {0, 0};
+              struct vector p0 = {0, -1};
+              struct vector p3 = {0, -3};
               atom a1 = *lookup_atom(board, p1);
               atom a2 = *lookup_atom(board, p2);
               atom a0 = *lookup_atom(board, p0);
-              fprintf(stderr, "TRACE cycle=%llu half=%u p1=%016llx p2=%016llx p0=%016llx",
+              atom a3 = *lookup_atom(board, p3);
+              fprintf(stderr, "TRACE cycle=%llu half=%u p1=%016llx p2=%016llx p0m1=%016llx p0m3=%016llx",
                       (unsigned long long)board->cycle, board->half_cycle,
-                      (unsigned long long)a1, (unsigned long long)a2, (unsigned long long)a0);
+                      (unsigned long long)a1, (unsigned long long)a2,
+                      (unsigned long long)a0, (unsigned long long)a3);
               for (size_t debug_i = 0; debug_i < solution->number_of_arms; ++debug_i) {
                   struct mechanism debug_arm = solution->arms[debug_i];
                   fprintf(stderr, " arm%zu=(%d,%d du=%d,%d type=%08x move=%d,%d rot=%d)",
@@ -108,7 +111,7 @@ jobs:
           solution=$(find .datasets/campaign-corpus/solutions/zlbb/P041 -name '002-*.solution' -print -quit)
           /tmp/omsim/omsim --disable-limits --metric cycles --puzzle-file "$puzzle" "$solution" 2> /tmp/p041-trace.log
           echo '--- OMSim focused trace ---'
-          grep -E 'cycle=(6[0-9]|7[0-9]|20[0-9]|21[0-9]|22[0-5]) ' /tmp/p041-trace.log
+          grep -E 'cycle=(21[8-9]|22[0-9]|23[0-9]|24[0-5]) ' /tmp/p041-trace.log
 
       - name: Audit solutions against opus_engine
         id: engine_audit
