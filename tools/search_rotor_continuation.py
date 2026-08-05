@@ -19,8 +19,8 @@ def main() -> None:
     simulator = build_locked_prefix_simulator(_load(PUZZLE), _load(PREFIX))
     result = search_compact_continuation(
         simulator,
-        max_depth=6,
-        max_states=20_000,
+        max_depth=5,
+        max_states=2_000,
         max_active_arms=1,
     )
     print(json.dumps({
