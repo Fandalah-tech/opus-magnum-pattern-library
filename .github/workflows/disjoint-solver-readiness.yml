@@ -28,6 +28,7 @@ jobs:
             tests/test_engine_disjoint.py \
             tests/test_disjoint_product_plan.py \
             tests/test_solver_explorer.py \
+            tests/test_structure_goal.py \
             tests/test_rotor_recipe.py \
             tests/test_rotor_blueprint.py \
             tests/test_rotor_schedule.py \
