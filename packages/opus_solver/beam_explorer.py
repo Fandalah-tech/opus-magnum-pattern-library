@@ -13,6 +13,17 @@ from .state import canonical_state_key
 ScoreFunction = Callable[[Any], int]
 GoalPredicate = Callable[[Any], bool]
 
+_INVERSE_INSTRUCTION = {
+    "rotate_cw": "rotate_ccw",
+    "rotate_ccw": "rotate_cw",
+    "pivot_cw": "pivot_ccw",
+    "pivot_ccw": "pivot_cw",
+    "extend": "retract",
+    "retract": "extend",
+    "track_plus": "track_minus",
+    "track_minus": "track_plus",
+}
+
 
 @dataclass(slots=True)
 class BeamExplorationResult:
@@ -32,6 +43,19 @@ def _strip_history(simulator: Any) -> Any:
     return simulator
 
 
+def _immediately_reverses(previous: Action, current: Action) -> bool:
+    """Return true only when every active arm exactly undoes its prior motion.
+
+    Grab/drop are intentionally excluded: even consecutive opposites can change
+    which molecule is held after glyph processing or a simultaneous second-arm
+    action. Restricting this to pure kinematic inverses is safe and removes a
+    large family of two-cycle no-op branches.
+    """
+    if not previous or previous.keys() != current.keys():
+        return False
+    return all(_INVERSE_INSTRUCTION.get(previous[arm_id]) == instruction for arm_id, instruction in current.items())
+
+
 def explore_simulator_beam(
     initial_simulator: Any,
     action_options: dict[str, Iterable[str | None]],
@@ -44,6 +68,7 @@ def explore_simulator_beam(
     max_active_arms: int | None = 2,
     include_idle: bool = False,
     time_limit_seconds: float | None = None,
+    prune_immediate_reversals: bool = True,
 ) -> BeamExplorationResult:
     if max_depth < 0:
         raise ValueError("max_depth must be non-negative")
@@ -82,7 +107,10 @@ def explore_simulator_beam(
             if timed_out():
                 return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, depth, "time-limit", best_score)
             expanded += 1
+            previous_action = path[-1] if path else None
             for action in actions:
+                if prune_immediate_reversals and previous_action is not None and _immediately_reverses(previous_action, action):
+                    continue
                 if timed_out():
                     return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, depth, "time-limit", best_score)
                 candidate = _strip_history(deepcopy(simulator))
