@@ -7,120 +7,248 @@ PERIOD_OVERRIDE = "period_override"
 REPEAT = "repeat"
 RESET = "reset"
 
+ROTATE_CCW = "rotate_ccw"
+ROTATE_CW = "rotate_cw"
+EXTEND = "extend"
+RETRACT = "retract"
+TRACK_PLUS = "track_plus"
+TRACK_MINUS = "track_minus"
+GRAB = "grab"
+DROP = "drop"
 
-def _copy_instruction(item: dict[str, Any], cycle: int, *, generated_by: str | None = None) -> dict[str, Any]:
-    copied = dict(item)
-    copied["cycle"] = cycle
-    if generated_by:
-        copied["generatedBy"] = generated_by
-        copied["sourceCycle"] = item.get("cycle")
-    return copied
+
+def _absolute_tracks(solution: dict[str, Any]) -> list[tuple[tuple[int, int], ...]]:
+    tracks: list[tuple[tuple[int, int], ...]] = []
+    for part in solution.get("parts", []):
+        if part.get("type") != "track" or not part.get("trackHexes"):
+            continue
+        origin = tuple(part.get("position") or (0, 0))
+        tracks.append(tuple(
+            (origin[0] + int(cell[0]), origin[1] + int(cell[1]))
+            for cell in part.get("trackHexes", [])
+        ))
+    return tracks
 
 
-def _expand_repeat_macros(program: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Expand Opus Magnum repeat placeholders into scheduled instructions.
+def _adjacent(first: tuple[int, int], second: tuple[int, int]) -> bool:
+    delta = (second[0] - first[0], second[1] - first[1])
+    return delta in {(1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)}
 
-    A repeat placeholder copies the most recent instruction block. The block is
-    the instructions since the previous repeat, or the previous repeated block
-    when repeat placeholders are adjacent. Generated instructions begin at the
-    repeat placeholder's cycle and preserve the source block's spacing.
+
+def _owned_track(arm: dict[str, Any], tracks: list[tuple[tuple[int, int], ...]]) -> tuple[tuple[int, int], ...]:
+    origin = tuple(arm.get("position") or (0, 0))
+    return next((track for track in tracks if origin in track), tracks[0] if tracks else ())
+
+
+def _set_tape(tape: list[dict[str, Any] | None], index: int, item: dict[str, Any]) -> None:
+    while len(tape) <= index:
+        tape.append(None)
+    tape[index] = item
+
+
+def _generated(source: dict[str, Any], instruction: str, generated_by: str) -> dict[str, Any]:
+    return {
+        "instruction": instruction,
+        "rawCode": None,
+        "generatedBy": generated_by,
+        "sourceCycle": source.get("cycle"),
+    }
+
+
+def _expand_arm_tape(
+    arm: dict[str, Any],
+    tracks: list[tuple[tuple[int, int], ...]],
+) -> dict[str, Any]:
+    """Decode one arm tape using the same reset rules as OMSim.
+
+    A reset is not an instantaneous teleport. It expands into physical drop,
+    piston, rotation and track instructions and can therefore lengthen the tape.
     """
-    ordered = sorted(program, key=lambda item: int(item.get("cycle", 0)))
-    expanded: list[dict[str, Any]] = []
-    current_block: list[dict[str, Any]] = []
-    previous_block: list[dict[str, Any]] = []
+    ordered = sorted(arm.get("program", []), key=lambda item: int(item.get("cycle", 0)))
+    ordered = [item for item in ordered if item.get("instruction") != PERIOD_OVERRIDE]
+    if not ordered:
+        return {"start": 0, "tape": [], "sourceCount": 0}
 
-    for item in ordered:
-        instruction = item.get("instruction")
-        cycle = int(item.get("cycle", 0))
-        if instruction == PERIOD_OVERRIDE:
-            continue
+    min_tape = int(ordered[0].get("cycle", 0))
+    max_tape = int(ordered[-1].get("cycle", 0))
+    tape: list[dict[str, Any] | None] = [None] * max(1, max_tape - min_tape + 1)
+    last_end = 0
+    last_repeat = 0
+    reset_from = 0
+    j = 0
+
+    track = _owned_track(arm, tracks)
+    base_position = tuple(arm.get("position") or (0, 0))
+    base_track_index = track.index(base_position) if track and base_position in track else 0
+    track_loop = len(track) >= 3 and _adjacent(track[-1], track[0])
+    base_piston = max(1, int(arm.get("length") or 1))
+
+    while j < len(ordered):
+        item = ordered[j]
+        instruction = str(item.get("instruction") or "")
+        n = int(item.get("cycle", 0)) - min_tape
+
         if instruction == REPEAT:
-            source = current_block or previous_block
-            if not source:
-                continue
-            block_start = min(int(entry["cycle"]) for entry in source)
-            for entry in source:
-                generated_cycle = cycle + int(entry["cycle"]) - block_start
-                expanded.append(_copy_instruction(entry, generated_cycle, generated_by=REPEAT))
-            previous_block = [dict(entry) for entry in source]
-            current_block = []
+            if last_repeat < -min_tape:
+                last_repeat = -min_tape
+            while j < len(ordered) and ordered[j].get("instruction") == REPEAT:
+                repeat_n = int(ordered[j].get("cycle", 0)) - min_tape
+                if last_end > last_repeat:
+                    block = tape[last_repeat:last_end]
+                    for offset, copied in enumerate(block):
+                        if copied is not None:
+                            clone = dict(copied)
+                            clone["generatedBy"] = REPEAT
+                            clone["sourceCycle"] = copied.get("sourceCycle", copied.get("cycle"))
+                            _set_tape(tape, repeat_n + offset, clone)
+                    last_end = max(last_end, repeat_n + len(block))
+                j += 1
+            if j < len(ordered):
+                last_repeat = int(ordered[j].get("cycle", 0)) - min_tape
+                reset_from = last_repeat
             continue
 
-        expanded.append(dict(item))
-        current_block.append(dict(item))
+        if instruction == RESET:
+            rotation = 0
+            piston = base_piston
+            grabbing = False
+            track_index = base_track_index
+            track_steps = 0
 
-    return sorted(expanded, key=lambda item: int(item["cycle"]))
+            for entry in tape[reset_from:n]:
+                if entry is None:
+                    continue
+                action = entry.get("instruction")
+                if action == ROTATE_CCW:
+                    rotation += 1
+                elif action == ROTATE_CW:
+                    rotation -= 1
+                elif action == EXTEND:
+                    piston = min(3, piston + 1)
+                elif action == RETRACT:
+                    piston = max(1, piston - 1)
+                elif action == TRACK_PLUS and track:
+                    next_index = track_index + 1
+                    if track_loop:
+                        next_index %= len(track)
+                    else:
+                        next_index = min(len(track) - 1, next_index)
+                    if next_index != track_index:
+                        track_steps += 1
+                    track_index = next_index
+                elif action == TRACK_MINUS and track:
+                    next_index = track_index - 1
+                    if track_loop:
+                        next_index %= len(track)
+                    else:
+                        next_index = max(0, next_index)
+                    if next_index != track_index:
+                        track_steps -= 1
+                    track_index = next_index
+                elif action == GRAB:
+                    grabbing = True
+                elif action == DROP:
+                    grabbing = False
 
+            cursor = n
+            if grabbing:
+                _set_tape(tape, cursor, _generated(item, DROP, RESET))
+                cursor += 1
+            while piston > base_piston:
+                _set_tape(tape, cursor, _generated(item, RETRACT, RESET))
+                piston -= 1
+                cursor += 1
 
-def _declared_global_period(programs: list[list[dict[str, Any]]]) -> tuple[int, str]:
-    overrides = [
-        int(item["cycle"]) + 1
-        for program in programs
-        for item in program
-        if item.get("instruction") == PERIOD_OVERRIDE
-    ]
-    if overrides:
-        return max(overrides), "period_override"
+            while rotation > 3:
+                rotation -= 6
+            while rotation < -3:
+                rotation += 6
+            while rotation > 0:
+                _set_tape(tape, cursor, _generated(item, ROTATE_CW, RESET))
+                rotation -= 1
+                cursor += 1
+            while rotation < 0:
+                _set_tape(tape, cursor, _generated(item, ROTATE_CCW, RESET))
+                rotation += 1
+                cursor += 1
 
-    expanded_ends = [
-        int(item["cycle"]) + 1
-        for program in programs
-        for item in _expand_repeat_macros(program)
-    ]
-    return max(expanded_ends, default=1), "longest_tape"
+            if track:
+                if track_loop:
+                    forward = (base_track_index - track_index) % len(track)
+                    backward = (track_index - base_track_index) % len(track)
+                    if forward < backward:
+                        return_actions = [TRACK_PLUS] * forward
+                    else:
+                        return_actions = [TRACK_MINUS] * backward
+                else:
+                    delta = base_track_index - track_index
+                    return_actions = ([TRACK_PLUS] * delta) if delta > 0 else ([TRACK_MINUS] * -delta)
+                for action in return_actions:
+                    _set_tape(tape, cursor, _generated(item, action, RESET))
+                    cursor += 1
 
+            while piston < base_piston:
+                _set_tape(tape, cursor, _generated(item, EXTEND, RESET))
+                piston += 1
+                cursor += 1
 
-def _expanded_actions(
-    program: list[dict[str, Any]],
-    period: int,
-    horizon: int,
-) -> dict[int, list[dict[str, Any]]]:
-    explicit: dict[int, list[dict[str, Any]]] = {}
-    for item in _expand_repeat_macros(program):
-        if item.get("instruction") == PERIOD_OVERRIDE:
+            # A no-op reset still occupies one tape cell.
+            if cursor == n:
+                cursor += 1
+            reset_from = cursor
+            last_end = max(last_end, cursor)
+            j += 1
             continue
-        explicit.setdefault(int(item["cycle"]), []).append(item)
 
-    if not explicit or period <= 0:
-        return {}
+        copied = dict(item)
+        copied["cycle"] = int(item.get("cycle", 0))
+        _set_tape(tape, n, copied)
+        last_end = max(last_end, n + 1)
+        j += 1
 
-    expanded: dict[int, list[dict[str, Any]]] = {}
-    for cycle in range(horizon):
-        tape_cycle = cycle % period
-        if tape_cycle in explicit:
-            expanded[cycle] = explicit[tape_cycle]
-    return expanded
+    while tape and tape[-1] is None:
+        tape.pop()
+    return {"start": min_tape, "tape": tape, "sourceCount": len(ordered)}
 
 
 def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None = None) -> dict[str, Any]:
-    """Build a macro-expanded, globally synchronized instruction timeline.
-
-    Opus Magnum uses one global tape period: shorter arm programs are padded to
-    the longest tape. Repeat placeholders generate physical instructions inside
-    that tape; they are not loop boundaries by themselves.
-    """
+    """Build the physical, globally synchronized instruction timeline."""
     arms = [
         part for part in solution.get("parts", [])
         if part.get("type", "").startswith("arm") or part.get("type") in {"piston", "baron"}
     ]
-    declared_cycles = solution.get("metrics", {}).get("cycles")
-    programs = [sorted(arm.get("program", []), key=lambda item: item["cycle"]) for arm in arms]
-    global_period, period_source = _declared_global_period(programs)
+    tracks = _absolute_tracks(solution)
+    decoded = [_expand_arm_tape(arm, tracks) for arm in arms]
+    starts = [item["start"] for item in decoded if item["tape"]]
+    global_start = min(starts, default=0)
+    global_period = max((len(item["tape"]) for item in decoded), default=1)
 
+    declared_cycles = solution.get("metrics", {}).get("cycles")
     default_horizon = max(int(declared_cycles or 0), global_period, 1)
-    horizon = int(max_cycles) if max_cycles is not None else default_horizon
-    horizon = max(1, horizon)
+    horizon = max(1, int(max_cycles) if max_cycles is not None else default_horizon)
 
     cycles: list[dict[str, Any]] = []
     active_counts: Counter[int] = Counter()
     per_arm: list[dict[str, Any]] = []
     expanded_by_arm: dict[str, dict[int, list[dict[str, Any]]]] = {}
 
-    for arm, program in zip(arms, programs):
-        macro_expanded = _expand_repeat_macros(program)
-        expanded = _expanded_actions(program, global_period, horizon)
-        expanded_by_arm[arm["id"]] = expanded
+    for arm, decoded_arm in zip(arms, decoded):
+        tape = decoded_arm["tape"]
+        start = decoded_arm["start"] - global_start
+        expanded: dict[int, list[dict[str, Any]]] = {}
+        if tape:
+            for cycle in range(horizon):
+                relative = cycle - start
+                if relative < 0:
+                    continue
+                index = relative % global_period
+                if index >= len(tape):
+                    continue
+                item = tape[index]
+                if item is None:
+                    continue
+                expanded[cycle] = [item]
+        expanded_by_arm[str(arm["id"])] = expanded
         active = sorted(expanded)
         histogram = Counter(
             item["instruction"]
@@ -132,9 +260,9 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
             "type": arm["type"],
             "armNumber": arm.get("armNumber"),
             "period": global_period,
-            "periodSource": period_source,
-            "instructionCount": len(program),
-            "expandedInstructionCount": len(macro_expanded),
+            "periodSource": "decoded_physical_tape",
+            "instructionCount": decoded_arm["sourceCount"],
+            "expandedInstructionCount": sum(1 for item in tape if item is not None),
             "actionCount": sum(len(expanded[cycle]) for cycle in active),
             "activeCycleCount": len(active),
             "idleCycles": horizon - len(active),
@@ -149,7 +277,7 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     for cycle in range(horizon):
         events: list[dict[str, Any]] = []
         for arm in arms:
-            for item in expanded_by_arm.get(arm["id"], {}).get(cycle, []):
+            for item in expanded_by_arm.get(str(arm["id"]), {}).get(cycle, []):
                 events.append({
                     "partId": arm["id"],
                     "type": arm["type"],
@@ -167,18 +295,17 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     active_cycle_count = sum(1 for cycle in range(horizon) if active_counts[cycle] > 0)
 
     return {
-        "schemaVersion": "0.3.0",
-        "analysisType": "macro-expanded-global-program-timeline",
+        "schemaVersion": "0.4.0",
+        "analysisType": "physical-decoded-global-program-timeline",
         "limitations": [
-            "Repeat placeholders are expanded; reset placeholders are still represented as reset events.",
-            "No atom positions, collisions, grabs, drops or glyph effects are physically simulated.",
-            "An instruction is counted as scheduled even if physical execution would later fail or be blocked.",
+            "Reset instructions are expanded into physical motions.",
+            "An instruction is counted as scheduled even if physical execution later fails or is blocked.",
         ],
         "summary": {
             "horizon": horizon,
             "declaredCycles": declared_cycles,
             "globalPeriod": global_period,
-            "periodSource": period_source,
+            "periodSource": "decoded_physical_tape",
             "armCount": len(arms),
             "activeCycleCount": active_cycle_count,
             "globalIdleCycles": horizon - active_cycle_count,
