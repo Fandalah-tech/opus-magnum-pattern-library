@@ -7,6 +7,14 @@ from .simulator import ArmMutation, TRACK_MINUS, TRACK_PLUS
 from .world import WorldEvent
 
 
+def _absolute_track(part: dict[str, Any]) -> tuple[tuple[int, int], ...]:
+    origin = tuple(part.get("position") or (0, 0))
+    return tuple(
+        (origin[0] + int(cell[0]), origin[1] + int(cell[1]))
+        for cell in (part.get("trackHexes") or [])
+    )
+
+
 class Simulator(RuntimeSimulator):
     """Runtime simulator with faithful track ownership and safe atom consumption."""
 
@@ -14,7 +22,7 @@ class Simulator(RuntimeSimulator):
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
         simulator = super().from_models(puzzle, solution)
         tracks = [
-            tuple(tuple(cell) for cell in (part.get("trackHexes") or []))
+            _absolute_track(part)
             for part in solution.get("parts", [])
             if part.get("type") == "track" and part.get("trackHexes")
         ]
