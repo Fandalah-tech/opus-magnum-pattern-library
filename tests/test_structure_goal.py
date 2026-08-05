@@ -34,6 +34,6 @@ def test_structure_goal_ignores_elements_translation_and_rotation() -> None:
 
 def test_structure_goal_rejects_missing_bond() -> None:
     simulator = _simulator()
-    simulator.world.remove_bond(next(iter(simulator.world.bonds)))
+    simulator.world.remove_bond("0", "1")
     goal = StructureGoal.from_product(_product())
     assert not goal.reached(simulator)
