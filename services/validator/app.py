@@ -9,6 +9,7 @@ from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from packages.opus_analysis import (
     analyze_solution,
@@ -28,6 +29,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["GET", "P
 OMSIM_BIN = os.environ.get("OMSIM_BIN", "/usr/local/bin/omsim")
 MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", str(10 * 1024 * 1024)))
 TIMEOUT_SECONDS = int(os.environ.get("OMSIM_TIMEOUT_SECONDS", "30"))
+STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", "/app/static"))
 
 
 def _read_limited(upload: UploadFile) -> bytes:
@@ -179,3 +181,8 @@ def analyze_timeline_endpoint(solution: UploadFile = File(...)) -> dict[str, Any
 @app.post("/validate")
 def validate(puzzle: UploadFile = File(...), solution: UploadFile = File(...)) -> dict[str, Any]:
     return _analyze_pair(puzzle, solution)["validation"]
+
+
+# Registered last so API and OpenAPI routes keep priority over the static app.
+if STATIC_ROOT.is_dir():
+    app.mount("/", StaticFiles(directory=STATIC_ROOT, html=True), name="codex-static")
