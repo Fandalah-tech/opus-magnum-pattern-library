@@ -52,7 +52,7 @@ button:disabled { opacity: .5; cursor: progress; }
 .viewer-label { min-height: 54px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
 .viewer-label span { font-weight: 800; }
 .viewer-label small { color: var(--muted); }
-#solver-inspector { width: 100%; height: min(76vh, 980px); min-height: 720px; border: 0; background: var(--bg); }
+#solver-inspector { display: block; width: 100%; height: 720px; min-height: 720px; border: 0; background: var(--bg); overflow: hidden; }
 .method { margin-top: 48px; }
 .method h2 { margin: 7px 0 18px; font: 700 34px Georgia, serif; }
 .method-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -75,6 +75,6 @@ footer { padding: 24px; text-align: center; border-top: 1px solid var(--line); c
   .milestone-grid, .method-grid { grid-template-columns: 1fr; }
   .milestone-grid article:first-child { grid-column: auto; }
   .actions { display: grid; }
-  #solver-inspector { min-height: 650px; height: 78vh; }
+  #solver-inspector { min-height: 650px; height: 650px; }
   .viewer-label { align-items: flex-start; flex-direction: column; }
 }
