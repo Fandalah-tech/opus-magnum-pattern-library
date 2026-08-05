@@ -1,4 +1,4 @@
-name: Deploy validator to Cloud Run
+name: Deploy validator and Solver Lab to Cloud Run
 
 on:
   push:
@@ -13,6 +13,11 @@ on:
       - packages/opus_validator/**
       - services/validator/**
       - tools/omsim_adapter/**
+      - "*.html"
+      - assets/**
+      - data/**
+      - opusjs/**
+      - samples/**
   workflow_dispatch:
 
 permissions:
@@ -89,9 +94,10 @@ jobs:
             --concurrency=8
             --timeout=60
 
-      - name: Verify deployed API
+      - name: Verify deployed API and Solver Lab
         run: |
           BASE_URL="${{ steps.deploy.outputs.url }}"
+
           curl --fail --show-error --silent "${BASE_URL}/health" > health.json
           python - <<'PY'
           import json
@@ -99,6 +105,7 @@ jobs:
           assert data['status'] == 'ok'
           assert data['apiVersion'] == '1.8.0'
           PY
+
           curl --fail --show-error --silent "${BASE_URL}/openapi.json" > openapi.json
           python - <<'PY'
           import json
@@ -107,13 +114,39 @@ jobs:
           assert '/api/v1/engine/replay' in data['paths']
           PY
 
+          curl --fail --show-error --silent "${BASE_URL}/solver-lab.html" > solver-lab.html
+          grep -F "P007 — Stabilized Water" solver-lab.html
+          curl --fail --show-error --silent "${BASE_URL}/assets/css/solver-lab.css" > solver-lab.css
+          curl --fail --show-error --silent "${BASE_URL}/assets/js/solver-lab.js" > solver-lab.js
+          test -s solver-lab.css
+          test -s solver-lab.js
+          curl --fail --show-error --silent "${BASE_URL}/samples/solver/P007.puzzle" > live-P007.puzzle
+          curl --fail --show-error --silent "${BASE_URL}/samples/solver/P007-auto.solution" > live-P007-auto.solution
+          cmp samples/solver/P007.puzzle live-P007.puzzle
+          cmp samples/solver/P007-auto.solution live-P007-auto.solution
+
+          curl --fail --show-error --silent \
+            -F "puzzle=@live-P007.puzzle" \
+            -F "solution=@live-P007-auto.solution" \
+            "${BASE_URL}/api/v1/analyze" > live-analysis.json
+          python - <<'PY'
+          import json
+          data = json.load(open('live-analysis.json'))
+          validation = data['validation']
+          assert validation['status'] == 'valid', validation
+          assert validation['metrics']['cycles'] == 77, validation
+          assert data['solution']['name'] == 'Opus Solver MVP - bonded pair v1'
+          assert len(data['replay']['frames']) > 0
+          PY
+
       - name: Deployment summary
         run: |
           echo "### Cloud Run deployment" >> "$GITHUB_STEP_SUMMARY"
           echo "- Service: ${{ env.SERVICE }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Region: ${{ env.REGION }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- URL: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Solver Lab: ${{ steps.deploy.outputs.url }}/solver-lab.html" >> "$GITHUB_STEP_SUMMARY"
           echo "- API version: 1.8.0" >> "$GITHUB_STEP_SUMMARY"
-          echo "- API: /api/v1/analyze" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Live P007 validation: 77 cycles" >> "$GITHUB_STEP_SUMMARY"
           echo "- Engine replay: /api/v1/engine/replay" >> "$GITHUB_STEP_SUMMARY"
           echo "- Image: ${{ env.IMAGE }}:${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
