@@ -3,7 +3,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from packages.opus_solver import StructureGoal, explore_simulator_beam
+from packages.opus_solver import (
+    StructureGoal,
+    build_rotor_seed_macro_library,
+    explore_simulator_beam,
+    explore_simulator_macro_beam,
+    learn_action_windows,
+)
 from packages.opus_solver.rotor_prefix import build_locked_prefix_simulator
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
@@ -37,6 +43,7 @@ def _summary(label, result, goal):
         "visitedStates": result.visited_states,
         "expandedStates": result.expanded_states,
         "stoppedReason": result.stopped_reason,
+        "macros": getattr(result, "macros", []),
         "actions": result.actions,
         "matchedPositions": match.occupied_positions if match else None,
         "matchedEdges": match.matched_edges if match else None,
@@ -115,7 +122,33 @@ def main() -> None:
         stages.append(_summary("edge-plateau-position-refinement", stage3, goal))
         current = stage3
 
-    print(json.dumps({"stages": stages, "best": stages[-1]}, indent=2))
+    if not current.found and current.simulator is not None and current.actions:
+        current_match = goal.best_match(current.simulator)
+        trajectory_macros = learn_action_windows(
+            current.actions,
+            lengths=(2, 3, 4, 6, 8),
+            tag="rotor-discovered",
+        )
+        macro_library = (*build_rotor_seed_macro_library(solution), *trajectory_macros)
+        stage4 = explore_simulator_macro_beam(
+            current.simulator,
+            macro_library,
+            goal.reached,
+            _plateau_score(goal, current_match.matched_edges),
+            max_depth=8,
+            beam_width=180,
+            max_states=30_000,
+            time_limit_seconds=45,
+        )
+        stage4.actions = [*current.actions, *stage4.actions]
+        stages.append(_summary("learned-macro-refinement", stage4, goal))
+        current = stage4
+
+    print(json.dumps({
+        "stages": stages,
+        "best": stages[-1],
+        "learnedMacroCount": len(learn_action_windows(current.actions)) if current.actions else 0,
+    }, indent=2))
 
 
 if __name__ == "__main__":
