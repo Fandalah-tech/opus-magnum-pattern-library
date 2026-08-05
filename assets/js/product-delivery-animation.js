@@ -28,8 +28,8 @@
       'data-viewer-layer': 'delivery',
       'pointer-events': 'none'
     });
-    const armLayer = world.querySelector('[data-viewer-layer="arm"]');
-    world.insertBefore(deliveryLayer, armLayer || null);
+    const overlay = world.querySelector('[data-viewer-layer="overlay"]');
+    world.insertBefore(deliveryLayer, overlay || null);
     return deliveryLayer;
   }
 
@@ -98,7 +98,7 @@
     return a + (b - a) * t;
   }
 
-  function animateDelivery(event, frame, trace) {
+  function animateDelivery(event, frame, trace, context = {}) {
     const output = outputs.get(String(event.consumerPartId));
     if (!output) return;
     const delivered = previousAtomsFor(event, frame, trace);
@@ -114,8 +114,9 @@
       'data-output-id': String(event.consumerPartId)
     });
     layer.append(group);
-    const playing = root.querySelector('[data-replay-play]')?.dataset.state === 'playing';
-    const duration = playing ? 680 : 560;
+    const playing = Boolean(context.isPlaying);
+    const baseDuration = Number(context.animationDuration ?? 560);
+    const duration = playing ? Math.max(90, baseDuration * .96) : 560;
     const started = performance.now();
     const atomMap = new Map(delivered.atoms.map((atom) => [String(atom.id), atom]));
 
@@ -207,7 +208,7 @@
     const frame = event.detail?.frame;
     const trace = event.detail?.trace;
     const delivery = (frame?.events || []).find((item) => item.kind === 'product-delivered');
-    if (delivery) animateDelivery(delivery, frame, trace);
+    if (delivery) animateDelivery(delivery, frame, trace, event.detail || {});
     else if (deliveryLayer) deliveryLayer.replaceChildren();
   });
 })();
