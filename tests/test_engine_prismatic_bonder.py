@@ -1,7 +1,7 @@
 from packages.opus_engine import Atom, Bond, Simulator, World
 
 
-def test_prismatic_bonder_creates_triangle_bonds() -> None:
+def test_prismatic_bonder_creates_triplex_bonds_between_fire_pairs() -> None:
     puzzle = {"products": []}
     solution = {
         "parts": [
@@ -9,26 +9,28 @@ def test_prismatic_bonder_creates_triangle_bonds() -> None:
         ]
     }
     world = World()
-    world.add_atom(Atom("a", "salt", (0, 0)))
+    world.add_atom(Atom("a", "fire", (0, 0)))
     world.add_atom(Atom("b", "fire", (1, 0)))
-    world.add_atom(Atom("c", "water", (0, 1)))
+    world.add_atom(Atom("c", "fire", (0, 1)))
     simulator = Simulator.from_models(puzzle, solution)
     simulator.world = world
 
     frame = simulator.step({})
 
     assert {
-        Bond("a", "b").key,
-        Bond("b", "c").key,
-        Bond("c", "a").key,
+        Bond("a", "b", "triplex").key,
+        Bond("b", "c", "triplex").key,
+        Bond("c", "a", "triplex").key,
     } <= set(world.bonds)
     assert sum(
-        event["kind"] == "bond-created" and event.get("prismatic") is True
+        event["kind"] == "bond-created"
+        and event.get("prismatic") is True
+        and event.get("type") == "triplex"
         for event in frame["events"]
     ) == 3
 
 
-def test_prismatic_bonder_waits_for_all_three_atoms() -> None:
+def test_prismatic_bonder_only_bonds_present_fire_pairs() -> None:
     puzzle = {"products": []}
     solution = {
         "parts": [
@@ -36,11 +38,11 @@ def test_prismatic_bonder_waits_for_all_three_atoms() -> None:
         ]
     }
     world = World()
-    world.add_atom(Atom("a", "salt", (0, 0)))
+    world.add_atom(Atom("a", "fire", (0, 0)))
     world.add_atom(Atom("b", "fire", (1, 0)))
     simulator = Simulator.from_models(puzzle, solution)
     simulator.world = world
 
     simulator.step({})
 
-    assert world.bonds == {}
+    assert set(world.bonds) == {Bond("a", "b", "triplex").key}
