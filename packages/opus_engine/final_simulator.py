@@ -190,8 +190,55 @@ class Simulator(CompleteSimulator):
                     "type": "normal",
                 }))
 
+    def _capture_van_berlo_carried_molecules(self, proposals) -> None:
+        wheel_proposals = [
+            proposal for proposal in proposals
+            if self.arms.get(proposal.arm_id) is not None
+            and self.arms[proposal.arm_id].part_type == "baron"
+            and proposal.instruction in {"rotate_cw", "rotate-clockwise", "rotate_ccw", "rotate-counterclockwise"}
+        ]
+        if not wheel_proposals:
+            return
+        moving_atoms = {atom_id for proposal in proposals for atom_id in proposal.atom_ids}
+        destination_positions = {
+            destination
+            for proposal in proposals
+            if proposal not in wheel_proposals
+            for destination in proposal.destinations.values()
+        }
+        for wheel_proposal in wheel_proposals:
+            arm = self.arms[wheel_proposal.arm_id]
+            steps = -1 if wheel_proposal.instruction in {"rotate_cw", "rotate-clockwise"} else 1
+            captured: set[str] = set()
+            for destination in destination_positions:
+                stationary = self.world.atom_at(destination)
+                if stationary is None or stationary.id in moving_atoms:
+                    continue
+                captured.update(self.molecule_atom_ids(stationary.id))
+            for atom_id in captured:
+                if atom_id in moving_atoms or atom_id.startswith(f"{arm.id}-wheel-"):
+                    continue
+                atom = self.world.atoms[atom_id]
+                relative = (
+                    atom.position[0] - arm.origin[0],
+                    atom.position[1] - arm.origin[1],
+                )
+                rotated = rotate_hex(relative, steps)
+                wheel_proposal.atom_ids.add(atom_id)
+                wheel_proposal.destinations[atom_id] = (
+                    arm.origin[0] + rotated[0],
+                    arm.origin[1] + rotated[1],
+                )
+                moving_atoms.add(atom_id)
+            if captured:
+                self.world.events.append(WorldEvent("van-berlo-molecule-captured", self.world.cycle, {
+                    "armId": arm.id,
+                    "atomIds": sorted(captured),
+                }))
+
     def _validate_and_apply(self, proposals) -> None:
         self._capture_bonder_collisions(proposals)
+        self._capture_van_berlo_carried_molecules(proposals)
         try:
             super()._validate_and_apply(proposals)
         except SimulationError as error:
