@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {
+    "kind": "solution",
+    "version": 7
+  },
+  "source": {
+    "name": "van-berlo's-rotor-weeklies2026_van-berlos-rotor-41.solution",
+    "sha256": "42ecb456e2de715c15d9c0d32461b623e293be55212f38fa586c1b36c3e1dab8",
+    "size": 755
+  },
+  "puzzleFile": "weeklies2026_van-berlos-rotor",
+  "name": "IDEAL SETUP 2",
+  "metrics": {
+    "cycles": null,
+    "cost": null,
+    "area": null,
+    "instructions": null
+  },
+  "unknownMetrics": [],
+  "parts": [
+    {
+      "id": "part-0",
+      "type": "bonder",
+      "enabled": true,
+      "position": [2, -4],
+      "length": 1,
+      "rotation": 2,
+      "which": 0,
+      "armNumber": 6,
+      "program": []
+    },
+    {
+      "id": "part-1",
+      "type": "bonder",
+      "enabled": true,
+      "position": [0, -1],
+      "length": 1,
+      "rotation": 4,
+      "which": 0,
+      "armNumber": 6,
+      "program": []
+    },
+    {
+      "id": "part-2",
+      "type": "out-std",
+      "enabled": true,
+      "position": [3, -2],
+      "length": 1,
+      "rotation": 1,
+      "which": 0,
+      "armNumber": 0,
+      "program": []
+    },
+    {
+      "id": "part-3",
+      "type": "baron",
+      "enabled": true,
+      "position": [0, 3],
+      "length": 1,
+      "rotation": 5,
+      "which": 0,
+      "armNumber": 2,
+      "program": []
+    },
+    {
+      "id": "part-4",
+      "type": "glyph-duplication",
+      "enabled": true,
+      "position": [0, 2],
+      "length": 1,
+      "rotation": 5,
+      "which": 0,
+      "armNumber": 0,
+      "program": []
+    },
+    {
+      "id": "part-5",
+      "type": "glyph-duplication",
+      "enabled": true,
+      "position": [1, 2],
+      "length": 1,
+      "rotation": 5,
+      "which": 0,
+      "armNumber": 0,
+      "program": []
+    },
+    {
+      "id": "part-6",
+      "type": "input",
+      "enabled": true,
+      "position": [5, -1],
+      "length": 1,
+      "rotation": 2,
+      "which": 1,
+      "armNumber": 16,
+      "program": []
+    },
+    {
+      "id": "part-7",
+      "type": "glyph-calcification",
+      "enabled": true,
+      "position": [4, -5],
+      "length": 1,
+      "rotation": 0,
+      "which": 0,
+      "armNumber": 0,
+      "program": []
+    },
+    {
+      "id": "part-8",
+      "type": "unbonder",
+      "enabled": true,
+      "position": [0, 0],
+      "length": 1,
+      "rotation": 1,
+      "which": 0,
+      "armNumber": 0,
+      "program": []
+    },
+    {
+      "id": "part-9",
+      "type": "track",
+      "enabled": true,
+      "position": [3, -2],
+      "length": 1,
+      "rotation": 0,
+      "which": 0,
+      "armNumber": 0,
+      "program": [],
+      "trackHexes": [[-1, 1], [0, 1], [1, 0], [1, -1], [0, -1], [-1, 0]]
+    },
+    {
+      "id": "part-10",
+      "type": "piston",
+      "enabled": true,
+      "position": [3, -3],
+      "length": 2,
+      "rotation": 4,
+      "which": 0,
+      "armNumber": 1,
+      "program": [
+        {"cycle": 0, "instruction": "grab", "rawCode": null},
+        {"cycle": 1, "instruction": "track_minus", "rawCode": null},
+        {"cycle": 2, "instruction": "rotate_cw", "rawCode": null},
+        {"cycle": 3, "instruction": "rotate_cw", "rawCode": null},
+        {"cycle": 4, "instruction": "track_plus", "rawCode": null},
+        {"cycle": 5, "instruction": "track_plus", "rawCode": null},
+        {"cycle": 6, "instruction": "drop", "rawCode": null},
+        {"cycle": 7, "instruction": "track_minus", "rawCode": null},
+        {"cycle": 8, "instruction": "track_minus", "rawCode": null},
+        {"cycle": 9, "instruction": "rotate_ccw", "rawCode": null},
+        {"cycle": 10, "instruction": "rotate_ccw", "rawCode": null},
+        {"cycle": 11, "instruction": "track_plus", "rawCode": null},
+        {"cycle": 12, "instruction": "grab", "rawCode": null},
+        {"cycle": 13, "instruction": "track_minus", "rawCode": null},
+        {"cycle": 14, "instruction": "rotate_cw", "rawCode": null},
+        {"cycle": 15, "instruction": "track_plus", "rawCode": null}
+      ]
+    },
+    {
+      "id": "part-11",
+      "type": "input",
+      "enabled": true,
+      "position": [3, -5],
+      "length": 1,
+      "rotation": 3,
+      "which": 0,
+      "armNumber": 16,
+      "program": []
+    },
+    {
+      "id": "part-12",
+      "type": "piston",
+      "enabled": true,
+      "position": [3, -1],
+      "length": 2,
+      "rotation": 0,
+      "which": 0,
+      "armNumber": 0,
+      "program": [
+        {"cycle": 2, "instruction": "grab", "rawCode": null},
+        {"cycle": 3, "instruction": "retract", "rawCode": null},
+        {"cycle": 4, "instruction": "track_minus", "rawCode": null},
+        {"cycle": 5, "instruction": "rotate_cw", "rawCode": null},
+        {"cycle": 6, "instruction": "pivot_ccw", "rawCode": null},
+        {"cycle": 7, "instruction": "drop", "rawCode": null},
+        {"cycle": 8, "instruction": "track_plus", "rawCode": null},
+        {"cycle": 9, "instruction": "rotate_cw", "rawCode": null},
+        {"cycle": 10, "instruction": "track_plus", "rawCode": null},
+        {"cycle": 11, "instruction": "rotate_cw", "rawCode": null},
+        {"cycle": 13, "instruction": "grab", "rawCode": null},
+        {"cycle": 14, "instruction": "pivot_cw", "rawCode": null},
+        {"cycle": 15, "instruction": "extend", "rawCode": null}
+      ]
+    }
+  ],
+  "trailingBytes": 0
+}
