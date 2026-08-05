@@ -34,4 +34,5 @@ jobs:
             tests/test_rotor_layout.py \
             tests/test_rotor_corpus.py \
             tests/test_rotor_seed_fixture.py \
+            tests/test_rotor_trace.py \
             -q
