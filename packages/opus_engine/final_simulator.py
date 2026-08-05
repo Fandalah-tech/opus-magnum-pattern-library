@@ -2,13 +2,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from .builder import rotate_hex
+from .builder import DIRECTIONS, rotate_hex
 from .complete_simulator import Simulator as CompleteSimulator
 from .model import Atom, Bond
 from .simulator import ArmMutation, MotionProposal, RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
 VAN_BERLO_ELEMENTS = ("salt", "water", "air", "salt", "fire", "earth")
+ROTATE_CW = {"rotate_cw", "rotate-clockwise"}
+ROTATE_CCW = {"rotate_ccw", "rotate-counterclockwise"}
 
 
 class Simulator(CompleteSimulator):
@@ -24,9 +26,7 @@ class Simulator(CompleteSimulator):
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
         simulator = super().from_models(puzzle, solution)
-        simulator.van_berlo_arms = [
-            arm for arm in simulator.arms.values() if arm.part_type == "baron"
-        ]
+        simulator.van_berlo_arms = [arm for arm in simulator.arms.values() if arm.part_type == "baron"]
         for arm in simulator.van_berlo_arms:
             arm.grabbing = True
             for branch, element in enumerate(VAN_BERLO_ELEMENTS):
@@ -40,26 +40,17 @@ class Simulator(CompleteSimulator):
         return simulator
 
     def molecule_atom_ids(self, atom_id: str) -> set[str]:
-        """Return the mechanically reachable component.
-
-        A bond created during the bonder overlap half-cycle is temporarily
-        directional. The displaced stationary endpoint can pull the molecule,
-        but the molecule cannot pull that endpoint until the bond settles.
-        """
         if atom_id not in self.world.atoms:
             return {atom_id}
-        adjacency: dict[str, set[str]] = {
-            item: set() for item in self.world.atoms
-        }
+        adjacency: dict[str, set[str]] = {item: set() for item in self.world.atoms}
         for key, bond in self.world.bonds.items():
             root = self.floating_bond_roots.get(key)
             if root is None:
                 adjacency[bond.a].add(bond.b)
                 adjacency[bond.b].add(bond.a)
-                continue
-            payload = bond.b if bond.a == root else bond.a
-            adjacency[root].add(payload)
-
+            else:
+                payload = bond.b if bond.a == root else bond.a
+                adjacency[root].add(payload)
         component = {atom_id}
         stack = [atom_id]
         while stack:
@@ -70,7 +61,29 @@ class Simulator(CompleteSimulator):
                     stack.append(neighbor)
         return component
 
+    def _baron_rotation_proposal(self, arm, instruction):
+        steps = -1 if instruction in ROTATE_CW else 1
+        atom_ids = self._held_atom_ids(arm)
+        for direction in DIRECTIONS:
+            position = (
+                arm.origin[0] + direction[0] * 2,
+                arm.origin[1] + direction[1] * 2,
+            )
+            atom = self.world.atom_at(position)
+            if atom is not None and not atom.id.startswith(f"{arm.id}-wheel-"):
+                atom_ids.update(self.molecule_atom_ids(atom.id))
+        destinations = {}
+        for atom_id in atom_ids:
+            atom = self.world.atoms[atom_id]
+            relative = (atom.position[0] - arm.origin[0], atom.position[1] - arm.origin[1])
+            rotated = rotate_hex(relative, steps)
+            destinations[atom_id] = (arm.origin[0] + rotated[0], arm.origin[1] + rotated[1])
+        proposal = MotionProposal(arm.id, atom_ids, destinations, instruction) if atom_ids else None
+        return ([proposal] if proposal else []), ArmMutation(arm, rotation=arm.rotation + steps)
+
     def _plan_motion(self, arm, instruction):
+        if arm.part_type == "baron" and instruction in ROTATE_CW | ROTATE_CCW:
+            return self._baron_rotation_proposal(arm, instruction)
         if arm.part_type == "baron" and instruction in RESET:
             atom_ids = self._held_atom_ids(arm)
             destinations = {}
@@ -78,10 +91,7 @@ class Simulator(CompleteSimulator):
             target_origin = arm.base_origin
             for atom_id in atom_ids:
                 atom = self.world.atoms[atom_id]
-                relative = (
-                    atom.position[0] - arm.origin[0],
-                    atom.position[1] - arm.origin[1],
-                )
+                relative = (atom.position[0] - arm.origin[0], atom.position[1] - arm.origin[1])
                 rotated = rotate_hex(relative, rotation_steps)
                 destinations[atom_id] = (
                     int(target_origin[0]) + rotated[0],
@@ -99,17 +109,10 @@ class Simulator(CompleteSimulator):
 
     def _molecule_signature(self, atom_ids):
         atoms, bonds = super()._molecule_signature(atom_ids)
-        triplex_pairs = {
-            tuple(sorted((start, end)))
-            for kind, start, end in bonds
-            if kind == "triplex"
-        }
+        triplex_pairs = {tuple(sorted((start, end))) for kind, start, end in bonds if kind == "triplex"}
         normalized = tuple(
             bond for bond in bonds
-            if not (
-                bond[0] == "normal"
-                and tuple(sorted((bond[1], bond[2]))) in triplex_pairs
-            )
+            if not (bond[0] == "normal" and tuple(sorted((bond[1], bond[2]))) in triplex_pairs)
         )
         return atoms, normalized
 
@@ -120,19 +123,16 @@ class Simulator(CompleteSimulator):
 
     def _latch_repeating_outputs(self) -> None:
         for output_id, *_ in self.repeating_patterns:
-            if output_id in self.completed_repeating_outputs:
-                continue
-            if super().repeating_product_complete(output_id, 3):
+            if output_id not in self.completed_repeating_outputs and super().repeating_product_complete(output_id, 3):
                 self.completed_repeating_outputs.add(output_id)
                 self.world.events.append(WorldEvent("repeating-product-completed", self.world.cycle, {
-                    "consumerPartId": output_id,
-                    "repetitions": 3,
+                    "consumerPartId": output_id, "repetitions": 3,
                 }))
 
     @staticmethod
     def _adjacent_positions(first, second) -> bool:
         delta = (second[0] - first[0], second[1] - first[1])
-        return delta in {(1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)}
+        return delta in set(DIRECTIONS)
 
     def _settle_floating_bonds(self) -> None:
         for key, root_id in list(self.floating_bond_roots.items()):
@@ -145,17 +145,10 @@ class Simulator(CompleteSimulator):
             if first is None or second is None:
                 self.floating_bond_roots.pop(key, None)
                 continue
-            if (
-                not first.held_by
-                and not second.held_by
-                and self._adjacent_positions(first.position, second.position)
-            ):
+            if not first.held_by and not second.held_by and self._adjacent_positions(first.position, second.position):
                 self.floating_bond_roots.pop(key, None)
                 self.world.events.append(WorldEvent("floating-bond-settled", self.world.cycle, {
-                    "fromAtomId": bond.a,
-                    "toAtomId": bond.b,
-                    "rootAtomId": root_id,
-                    "type": bond.kind,
+                    "fromAtomId": bond.a, "toAtomId": bond.b, "rootAtomId": root_id, "type": bond.kind,
                 }))
 
     def _capture_bonder_collisions(self, proposals) -> None:
@@ -171,20 +164,14 @@ class Simulator(CompleteSimulator):
                 if moving_atom_id is None:
                     continue
                 stationary = self.world.atom_at(occupied_pos)
-                if (
-                    stationary is None
-                    or stationary.id in moving_atoms
-                    or self.world.atom_at(free_pos) is not None
-                ):
+                if stationary is None or stationary.id in moving_atoms or self.world.atom_at(free_pos) is not None:
                     continue
                 stationary.position = free_pos
                 pair = frozenset((moving_atom_id, stationary.id))
                 self.pending_floating_pairs[pair] = stationary.id
                 self.world.events.append(WorldEvent("atom-bonder-displaced", self.world.cycle, {
-                    "glyphPartId": part_id,
-                    "atomId": stationary.id,
-                    "from": list(occupied_pos),
-                    "to": list(free_pos),
+                    "glyphPartId": part_id, "atomId": stationary.id,
+                    "from": list(occupied_pos), "to": list(free_pos),
                 }))
 
     def _mark_pending_floating_bonds(self) -> None:
@@ -198,10 +185,7 @@ class Simulator(CompleteSimulator):
                 self.floating_bond_roots[key] = root_id
                 self.pending_floating_pairs.pop(pair, None)
                 self.world.events.append(WorldEvent("floating-bond-created", self.world.cycle, {
-                    "fromAtomId": first,
-                    "toAtomId": second,
-                    "rootAtomId": root_id,
-                    "type": "normal",
+                    "fromAtomId": first, "toAtomId": second, "rootAtomId": root_id, "type": "normal",
                 }))
 
     def _validate_and_apply(self, proposals) -> None:
@@ -210,47 +194,28 @@ class Simulator(CompleteSimulator):
             super()._validate_and_apply(proposals)
         except SimulationError as error:
             output_cells = {
-                position
-                for _, _, expected_atoms, _ in self.output_patterns
-                for position, _ in expected_atoms
+                position for _, _, expected_atoms, _ in self.output_patterns for position, _ in expected_atoms
             }
             candidates = []
             for molecule in self.world.molecules():
-                if not any(
-                    self.world.atoms[atom_id].position in output_cells
-                    for atom_id in molecule.atom_ids
-                ):
+                if not any(self.world.atoms[atom_id].position in output_cells for atom_id in molecule.atom_ids):
                     continue
                 atoms, bonds = self._molecule_signature(set(molecule.atom_ids))
                 candidates.append({
-                    "atomIds": sorted(molecule.atom_ids),
-                    "atoms": list(atoms),
-                    "bonds": list(bonds),
+                    "atomIds": sorted(molecule.atom_ids), "atoms": list(atoms), "bonds": list(bonds),
                     "heldBy": {
                         atom_id: sorted(self.world.atoms[atom_id].held_by)
-                        for atom_id in sorted(molecule.atom_ids)
-                        if self.world.atoms[atom_id].held_by
+                        for atom_id in sorted(molecule.atom_ids) if self.world.atoms[atom_id].held_by
                     },
                 })
-            motion_state = [
-                {
-                    "armId": proposal.arm_id,
-                    "instruction": proposal.instruction,
-                    "sources": {
-                        atom_id: list(self.world.atoms[atom_id].position)
-                        for atom_id in sorted(proposal.atom_ids)
-                    },
-                    "destinations": {
-                        atom_id: list(destination)
-                        for atom_id, destination in sorted(proposal.destinations.items())
-                    },
-                    "arm": self.arms[proposal.arm_id].snapshot(),
-                }
-                for proposal in proposals
-            ]
-            raise SimulationError(
-                f"{error}; motionState={motion_state}; outputCandidates={candidates}"
-            ) from error
+            motion_state = [{
+                "armId": proposal.arm_id,
+                "instruction": proposal.instruction,
+                "sources": {atom_id: list(self.world.atoms[atom_id].position) for atom_id in sorted(proposal.atom_ids)},
+                "destinations": {atom_id: list(destination) for atom_id, destination in sorted(proposal.destinations.items())},
+                "arm": self.arms[proposal.arm_id].snapshot(),
+            } for proposal in proposals]
+            raise SimulationError(f"{error}; motionState={motion_state}; outputCandidates={candidates}") from error
 
     def _before_motion(self) -> None:
         self._settle_floating_bonds()
