@@ -18,9 +18,12 @@ on:
       - .github/workflows/import-campaign-corpus.yml
       - tools/import_campaign_corpus.py
       - tools/audit_campaign_corpus.py
+      - tools/audit_first_solver.py
+      - tools/solve_puzzle.py
       - packages/opus_engine/**
       - packages/opus_analysis/**
       - packages/opus_parser/**
+      - packages/opus_solver/**
 
 permissions:
   contents: read
@@ -78,6 +81,25 @@ jobs:
             --root .datasets/campaign-corpus \
             --output reports/campaign-corpus-audit.json
 
+      - name: Generate first autonomous campaign solution
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/audit_first_solver.py \
+            --root .datasets/campaign-corpus \
+            --output-dir reports/generated
+
+      - name: Validate autonomous solution with OMSim
+        run: |
+          git clone --depth 1 https://github.com/ianh/omsim.git /tmp/omsim
+          make -C /tmp/omsim
+          puzzle=$(find .datasets/campaign-corpus/puzzles -name 'P007.puzzle' -print -quit)
+          /tmp/omsim/omsim \
+            --disable-limits \
+            --metric cycles \
+            --puzzle-file "$puzzle" \
+            reports/generated/P007-auto.solution
+
       - name: Summarize corpus
         run: |
           python - <<'PY'
@@ -88,6 +110,7 @@ jobs:
           corpus = json.loads(Path('.datasets/campaign-corpus/index.json').read_text(encoding='utf-8'))
           audit_path = Path('reports/campaign-corpus-audit.json')
           audit = json.loads(audit_path.read_text(encoding='utf-8')) if audit_path.exists() else {'summary': {}}
+          solver = json.loads(Path('reports/generated/P007-auto.json').read_text(encoding='utf-8'))
           successful = [item for item in corpus.get('solutions', []) if item.get('file')]
           failed = [item for item in corpus.get('solutions', []) if item.get('error')]
           summary = audit.get('summary', {})
@@ -100,6 +123,11 @@ jobs:
               out.write(f"- Engine incomplete: {summary.get('engineIncomplete', 0)}\n")
               out.write(f"- Semantic gaps: {summary.get('semanticGaps', 0)}\n")
               out.write(f"- Engine errors: {summary.get('engineErrors', 0)}\n")
+              out.write('\n## First autonomous solve\n\n')
+              out.write(f"- Puzzle: {solver.get('puzzleName')}\n")
+              out.write(f"- Strategy: {solver.get('strategy')}\n")
+              out.write(f"- Engine complete: {solver.get('roundTripValidation', {}).get('complete')}\n")
+              out.write(f"- Matches a reference file: {solver.get('matchesReferenceSolution')}\n")
           PY
 
       - name: Upload campaign corpus and audit
@@ -109,6 +137,8 @@ jobs:
           path: |
             .datasets/campaign-corpus/
             reports/campaign-corpus-audit.json
+            reports/generated/P007-auto.solution
+            reports/generated/P007-auto.json
           if-no-files-found: error
           retention-days: 30
 
@@ -121,15 +151,26 @@ jobs:
           summary = json.loads(
               Path('reports/campaign-corpus-audit.json').read_text(encoding='utf-8')
           )['summary']
+          solver = json.loads(
+              Path('reports/generated/P007-auto.json').read_text(encoding='utf-8')
+          )
           total = int(summary.get('total', 0))
           complete = int(summary.get('engineComplete', 0))
           incomplete = int(summary.get('engineIncomplete', 0))
           gaps = int(summary.get('semanticGaps', 0))
           errors = int(summary.get('engineErrors', 0))
+          solver_complete = bool(solver.get('roundTripValidation', {}).get('complete'))
+          copied_reference = bool(solver.get('matchesReferenceSolution'))
           if total != 108 or complete != total or incomplete or gaps or errors:
               raise SystemExit(
                   f"Campaign regression failed: total={total}, complete={complete}, "
                   f"incomplete={incomplete}, semanticGaps={gaps}, errors={errors}"
               )
+          if not solver_complete or copied_reference:
+              raise SystemExit(
+                  f"Autonomous solve failed: complete={solver_complete}, "
+                  f"matchesReferenceSolution={copied_reference}"
+              )
           print(f"Campaign regression passed: {complete}/{total}")
+          print("Autonomous solve passed: P007")
           PY
