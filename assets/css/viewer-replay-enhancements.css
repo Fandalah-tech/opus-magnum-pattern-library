@@ -1,0 +1,25 @@
+.viewer-layer-area,.viewer-layer-delivery{pointer-events:none}
+.viewer-area-cell{vector-effect:non-scaling-stroke;transition:fill-opacity .16s ease,stroke-opacity .16s ease}
+.viewer-area-cell.active{filter:drop-shadow(0 0 4px rgba(213,166,92,.22))}
+.viewer-area-badge{
+  position:absolute;
+  left:14px;
+  bottom:14px;
+  z-index:3;
+  pointer-events:none;
+  padding:6px 9px;
+  border:1px solid rgba(155,113,64,.55);
+  border-radius:999px;
+  background:rgba(20,16,12,.82);
+  color:#d8bd8f;
+  box-shadow:0 5px 18px rgba(0,0,0,.28);
+  font:700 11px ui-monospace,SFMono-Regular,Consolas,monospace;
+  letter-spacing:.02em;
+  backdrop-filter:blur(5px)
+}
+.product-delivery-animation{filter:drop-shadow(0 0 10px rgba(255,211,125,.7))}
+.product-delivery-pulse,.product-delivery-bond,.product-delivery-ring{vector-effect:non-scaling-stroke}
+.viewer-inspector-empty h4{color:#d3b277}
+.viewer-inspector-empty .viewer-kind-badge{border-color:#665744;color:#c8b18b;background:#241e17}
+.viewer-output-product{filter:drop-shadow(0 0 5px rgba(239,195,110,.18))}
+@media(max-width:560px){.viewer-area-badge{left:9px;bottom:9px;font-size:10px}}
