@@ -6,8 +6,10 @@ from .manufacturing import (
     ManufacturingPlan,
     build_manufacturing_plan,
 )
+from .rotor_corpus import RotorCorpusEntry, analyze_solution_zip, rank_seed_candidates, summarize_solution
 from .rotor_recipe import AtomAssignment, RotorRecipe, SourceAtom, TargetAtom, build_rotor_recipe
 from .rotor_schedule import RotorSchedule, RotorStep, build_rotor_schedule
+from .seed_solver import SeedSolveResult, solve_from_reference_corpus
 from .solver import (
     GeneratedSolutionError,
     SolveResult,
@@ -26,13 +28,16 @@ __all__ = [
     "ManufacturingOperation",
     "ManufacturingPlan",
     "ProductComponent",
+    "RotorCorpusEntry",
     "RotorRecipe",
     "RotorSchedule",
     "RotorStep",
+    "SeedSolveResult",
     "SolveResult",
     "SourceAtom",
     "TargetAtom",
     "UnsupportedPuzzleError",
+    "analyze_solution_zip",
     "build_disjoint_product_plan",
     "build_manufacturing_plan",
     "build_rotor_recipe",
@@ -40,6 +45,9 @@ __all__ = [
     "canonical_state_key",
     "enumerate_joint_actions",
     "explore_simulator_states",
+    "rank_seed_candidates",
+    "solve_from_reference_corpus",
     "solve_puzzle",
+    "summarize_solution",
     "validate_generated_solution",
 ]
