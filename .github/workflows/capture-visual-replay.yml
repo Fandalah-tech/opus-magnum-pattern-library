@@ -1,0 +1,71 @@
+name: Capture visual replay frames
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy validator and Solver Lab to Cloud Run
+    types:
+      - completed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Capture every P007 replay frame
+        run: |
+          python tools/capture_visual_replay.py \
+            --url https://opus-validator-6gflgqb25q-nn.a.run.app/solver-lab.html \
+            --output reports/visual/P007
+
+      - name: Verify capture manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('reports/visual/P007')
+          manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
+          assert manifest['frameCount'] == 78, manifest['frameCount']
+          assert manifest['imageCount'] >= manifest['frameCount']
+          assert manifest['replay']['traceType'] == 'opus-engine-visual'
+          assert any(
+              event.get('kind') == 'product-delivered'
+              for frame in manifest['frames']
+              for event in frame.get('events', [])
+          )
+          assert all(frame.get('usedCells') for frame in manifest['frames'])
+          assert len(list((root / 'img').glob('cycle-*.png'))) == manifest['imageCount']
+          print(json.dumps({
+              'frames': manifest['frameCount'],
+              'images': manifest['imageCount'],
+              'maxUsedArea': max(len(frame['usedCells']) for frame in manifest['frames']),
+          }))
+          PY
+
+      - name: Upload visual replay archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: P007-visual-replay-${{ github.run_id }}
+          path: reports/visual/P007/
+          if-no-files-found: error
+          retention-days: 30
