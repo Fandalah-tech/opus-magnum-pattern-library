@@ -65,16 +65,35 @@ def main() -> int:
 
             timeline = build_program_timeline(solution)
             simulator = Simulator.from_models(puzzle, solution)
-            simulator.run_timeline(timeline)
+            replay = simulator.run_timeline(timeline)
             delivered = dict(simulator.delivered_products)
             record.update({
                 "frames": len(simulator.frames),
+                "requestedCycles": len(timeline.get("cycles", [])),
                 "deliveredProducts": delivered,
                 "standardOutputs": standard_outputs,
                 "repeatingOutputs": repeating_outputs,
             })
 
-            if repeating_outputs:
+            if replay.get("summary", {}).get("terminatedWithError"):
+                last_frame = replay.get("frames", [])[-1] if replay.get("frames") else {}
+                error_event = next(
+                    (
+                        event for event in reversed(last_frame.get("events", []))
+                        if event.get("kind") == "simulation-error"
+                    ),
+                    {},
+                )
+                message = str(error_event.get("message") or "Simulation terminated with an unspecified error")
+                record.update({
+                    "status": "engine-error",
+                    "errorType": "SimulationError",
+                    "message": message,
+                    "completedCycles": replay.get("summary", {}).get("completedCycles"),
+                })
+                for part_type in part_types:
+                    errors_by_part[part_type] += 1
+            elif repeating_outputs:
                 record.update({
                     "status": "semantic-gap",
                     "reason": "repeating-output-completion-not-yet-validated",
@@ -120,7 +139,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.2.0", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.3.0", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
