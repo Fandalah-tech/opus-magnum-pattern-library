@@ -92,11 +92,11 @@
       const isActive = active.has(positionKey);
       layer.append(svgEl('polygon', {
         points: hexPoints(x, y, SIZE * .87),
-        fill: isActive ? '#b57a2f' : '#6e4a25',
-        'fill-opacity': isActive ? .25 : .13,
-        stroke: isActive ? '#d5a65c' : '#7d5a32',
-        'stroke-opacity': isActive ? .52 : .25,
-        'stroke-width': isActive ? 1.25 : .75,
+        fill: isActive ? '#c08a3d' : '#82572b',
+        'fill-opacity': isActive ? .38 : .23,
+        stroke: isActive ? '#e0b56e' : '#a3723e',
+        'stroke-opacity': isActive ? .68 : .38,
+        'stroke-width': isActive ? 1.45 : .95,
         class: isActive ? 'viewer-area-cell active' : 'viewer-area-cell used'
       }));
     }
@@ -113,7 +113,6 @@
     build(event.detail?.payload);
     ensureLayer();
     ensureBadge();
-    if (replay?.frames?.length) render(replay.frames[0], replay);
   });
 
   root.addEventListener('opus:replayframe', (event) => {
