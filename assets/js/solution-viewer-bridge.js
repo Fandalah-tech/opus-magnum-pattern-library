@@ -32,5 +32,8 @@
   Promise.resolve()
     .then(() => loadScript('assets/js/solution-viewer-symbols.js'))
     .then(() => loadScript('assets/js/output-product-preview.js'))
+    .then(() => loadScript('assets/js/viewer-interactions.js'))
+    .then(() => loadScript('assets/js/used-area-overlay.js'))
+    .then(() => loadScript('assets/js/product-delivery-animation.js'))
     .then(init);
 })();
