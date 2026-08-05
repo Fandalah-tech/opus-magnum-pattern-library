@@ -17,6 +17,10 @@ on:
     paths:
       - .github/workflows/import-campaign-corpus.yml
       - tools/import_campaign_corpus.py
+      - tools/audit_campaign_corpus.py
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+      - packages/opus_parser/**
 
 permissions:
   contents: read
@@ -55,6 +59,16 @@ jobs:
           fi
           python tools/import_campaign_corpus.py "${args[@]}"
 
+      - name: Audit solutions against opus_engine
+        id: engine_audit
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/audit_campaign_corpus.py \
+            --root .datasets/campaign-corpus \
+            --output reports/campaign-corpus-audit.json
+
       - name: Summarize corpus
         run: |
           python - <<'PY'
@@ -62,25 +76,32 @@ jobs:
           import os
           from pathlib import Path
 
-          path = Path('.datasets/campaign-corpus/index.json')
-          data = json.loads(path.read_text(encoding='utf-8'))
-          successful = [item for item in data.get('solutions', []) if item.get('file')]
-          failed = [item for item in data.get('solutions', []) if item.get('error')]
+          corpus = json.loads(Path('.datasets/campaign-corpus/index.json').read_text(encoding='utf-8'))
+          audit_path = Path('reports/campaign-corpus-audit.json')
+          audit = json.loads(audit_path.read_text(encoding='utf-8')) if audit_path.exists() else {'summary': {}}
+          successful = [item for item in corpus.get('solutions', []) if item.get('file')]
+          failed = [item for item in corpus.get('solutions', []) if item.get('error')]
+          summary = audit.get('summary', {})
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
               out.write('## Campaign corpus import\n\n')
-              out.write(f"- Campaign puzzles indexed: {data.get('puzzleCount', 0)}\n")
+              out.write(f"- Campaign puzzles indexed: {corpus.get('puzzleCount', 0)}\n")
               out.write(f"- Solutions downloaded: {len(successful)}\n")
-              out.write(f"- Failed puzzle/download records: {len(failed)}\n")
-              if failed:
-                  out.write('\n### First failures\n\n')
-                  for item in failed[:20]:
-                      out.write(f"- {item.get('puzzleId')}: {item.get('error')}\n")
+              out.write(f"- Download errors: {len(failed)}\n")
+              out.write(f"- Engine simulations completed: {summary.get('simulated', 0)}\n")
+              out.write(f"- Engine errors: {summary.get('engineErrors', 0)}\n")
+              failures = [item for item in audit.get('results', []) if item.get('status') == 'engine-error']
+              if failures:
+                  out.write('\n### First engine failures\n\n')
+                  for item in failures[:20]:
+                      out.write(f"- {item.get('puzzleId')} [{', '.join(item.get('partTypes', []))}]: {item.get('message')}\n")
           PY
 
-      - name: Upload campaign corpus
+      - name: Upload campaign corpus and audit
         uses: actions/upload-artifact@v4
         with:
           name: campaign-corpus-${{ github.run_id }}
-          path: .datasets/campaign-corpus/
+          path: |
+            .datasets/campaign-corpus/
+            reports/campaign-corpus-audit.json
           if-no-files-found: error
           retention-days: 30
