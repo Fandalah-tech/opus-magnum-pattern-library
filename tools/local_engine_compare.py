@@ -39,6 +39,33 @@ def _unsupported_oracle_parts(solution: dict[str, Any]) -> list[str]:
     })
 
 
+def _track_diagnostics(solution: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "tracks": [
+            {
+                "partId": part.get("id"),
+                "position": part.get("position"),
+                "trackHexes": part.get("trackHexes") or [],
+            }
+            for part in solution.get("parts", [])
+            if part.get("type") == "track"
+        ],
+        "arms": [
+            {
+                "partId": part.get("id"),
+                "type": part.get("type"),
+                "position": part.get("position"),
+                "rotation": part.get("rotation"),
+                "length": part.get("length"),
+                "program": part.get("program") or [],
+            }
+            for part in solution.get("parts", [])
+            if str(part.get("type") or "").startswith("arm")
+            or part.get("type") in {"piston", "baron"}
+        ],
+    }
+
+
 def compare_pair_locally(puzzle_path: Path, solution_path: Path) -> dict[str, Any]:
     """Compare opus_engine against an independently implemented chemical replay."""
     puzzle = parse_puzzle(puzzle_path)
@@ -71,4 +98,8 @@ def compare_pair_locally(puzzle_path: Path, solution_path: Path) -> dict[str, An
         "traceType": oracle.get("traceType"),
         "capabilities": oracle.get("capabilities"),
     }
+    if comparison.get("status") == "diverged":
+        divergence = comparison.get("firstDivergence") or {}
+        categories = divergence.setdefault("categories", {})
+        categories["trackDiagnostics"] = _track_diagnostics(solution)
     return comparison
