@@ -10,6 +10,9 @@
   const button = document.querySelector('#load-demo');
   const status = document.querySelector('#lab-status');
   let loading = false;
+  let resizeObserver = null;
+  let mutationObserver = null;
+  let resizeFrame = null;
 
   const setStatus = (message, kind = '') => {
     status.textContent = message;
@@ -32,17 +35,60 @@
     return response.arrayBuffer();
   };
 
+  const disconnectEmbeddedObservers = () => {
+    resizeObserver?.disconnect();
+    mutationObserver?.disconnect();
+    resizeObserver = null;
+    mutationObserver = null;
+    if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    resizeFrame = null;
+  };
+
+  const resizeEmbeddedView = (doc = iframe.contentDocument) => {
+    if (!doc) return;
+    if (resizeFrame) cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = null;
+      const rootHeight = doc.documentElement?.scrollHeight || 0;
+      const bodyHeight = doc.body?.scrollHeight || 0;
+      const height = Math.max(720, rootHeight, bodyHeight);
+      iframe.style.height = `${Math.ceil(height + 4)}px`;
+    });
+  };
+
+  const observeEmbeddedView = (doc) => {
+    disconnectEmbeddedObservers();
+    const resize = () => resizeEmbeddedView(doc);
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(resize);
+      if (doc.documentElement) resizeObserver.observe(doc.documentElement);
+      if (doc.body) resizeObserver.observe(doc.body);
+    }
+    mutationObserver = new MutationObserver(resize);
+    mutationObserver.observe(doc.documentElement, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      characterData: false
+    });
+    resize();
+  };
+
   const installEmbeddedView = (doc) => {
-    if (doc.querySelector('#solver-lab-embedded-style')) return;
-    const style = doc.createElement('style');
-    style.id = 'solver-lab-embedded-style';
-    style.textContent = `
-      .topbar, .hero, .pair-library, .upload-panel, footer { display: none !important; }
-      main { width: min(1180px, calc(100% - 24px)) !important; padding: 18px 0 54px !important; }
-      #results { margin-top: 0 !important; }
-      body { background: #11100f !important; }
-    `;
-    doc.head.append(style);
+    if (!doc.querySelector('#solver-lab-embedded-style')) {
+      const style = doc.createElement('style');
+      style.id = 'solver-lab-embedded-style';
+      style.textContent = `
+        html, body { height: auto !important; min-height: 0 !important; overflow: hidden !important; }
+        .topbar, .hero, .pair-library, .upload-panel, footer { display: none !important; }
+        main { width: min(1180px, calc(100% - 24px)) !important; padding: 18px 0 54px !important; }
+        #results { margin-top: 0 !important; }
+        body { background: #11100f !important; }
+      `;
+      doc.head.append(style);
+    }
+    iframe.setAttribute('scrolling', 'no');
+    observeEmbeddedView(doc);
   };
 
   const assignFile = (win, input, bytes, name) => {
@@ -82,6 +128,10 @@
       return node && !node.hidden ? node : null;
     }, 60000, 200);
 
+    resizeEmbeddedView(doc);
+    window.setTimeout(() => resizeEmbeddedView(doc), 250);
+    window.setTimeout(() => resizeEmbeddedView(doc), 900);
+
     const badge = results.querySelector('#validity');
     const cycles = results.querySelector('#metric-cycles')?.textContent?.trim();
     const isValid = badge?.classList.contains('valid');
@@ -101,6 +151,8 @@
     setStatus('Initialisation du visualisateur…');
     try {
       if (refresh) {
+        disconnectEmbeddedObservers();
+        iframe.style.height = '720px';
         iframe.src = `inspector.html?embedded=solver-lab&reload=${Date.now()}`;
         await new Promise((resolve) => iframe.addEventListener('load', resolve, { once: true }));
       } else if (iframe.contentDocument?.readyState !== 'complete') {
@@ -118,5 +170,6 @@
   };
 
   button.addEventListener('click', () => load({ refresh: true }));
+  window.addEventListener('resize', () => resizeEmbeddedView());
   window.addEventListener('DOMContentLoaded', () => load());
 })();
