@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from itertools import product
 from typing import Any
 
 
@@ -56,7 +55,7 @@ def _product_components(product: dict[str, Any]) -> list[set[tuple[int, int]]]:
         adjacency[first].add(second)
         adjacency[second].add(first)
     result: list[set[tuple[int, int]]] = []
-    remaining = set(positions)
+    remaining = set(adjacency)
     while remaining:
         root = min(remaining)
         stack = [root]
@@ -88,9 +87,9 @@ def build_rotor_recipe(
 ) -> RotorRecipe:
     """Assign concrete reagent atoms to the Rotor product.
 
-    The search minimizes Van Berlo transformations first, then the number of
-    bonded product components assembled from more than one reagent pull. This
-    is a chemistry and provenance plan; it does not yet place machine parts.
+    A bitmask dynamic program minimizes the number of Van Berlo conversions.
+    The result is a chemistry/provenance plan and intentionally does not place
+    machine parts or schedule arms yet.
     """
     products = list(puzzle.get("products") or [])
     reagents = list(puzzle.get("reagents") or [])
@@ -139,49 +138,55 @@ def build_rotor_recipe(
             (),
         )
 
-    candidates = [
-        [index for index, target in enumerate(targets) if _conversion(source.source_element, target.target_element) is not False]
-        for source in sources
-    ]
-    order = sorted(range(len(sources)), key=lambda index: len(candidates[index]))
-    best: tuple[tuple[int, int], list[AtomAssignment]] | None = None
+    size = 1 << len(targets)
+    infinity = len(targets) + 1
+    costs = [infinity] * size
+    predecessors: list[tuple[int, int, str | None] | None] = [None] * size
+    costs[0] = 0
 
-    def visit(depth: int, used: set[int], assignments: list[AtomAssignment]) -> None:
-        nonlocal best
-        if depth == len(order):
-            component_pulls: dict[int, set[str]] = {}
-            transforms = 0
-            for assignment in assignments:
-                component_pulls.setdefault(assignment.target.component_index, set()).add(assignment.source.pull_id)
-                transforms += assignment.transformation is not None
-            mixed = sum(1 for pulls in component_pulls.values() if len(pulls) > 1)
-            score = (transforms, mixed)
-            if best is None or score < best[0]:
-                best = score, list(assignments)
-            return
-
-        source_index = order[depth]
-        source = sources[source_index]
-        for target_index in candidates[source_index]:
-            if target_index in used:
+    for source_index, source in enumerate(sources):
+        next_costs = [infinity] * size
+        next_predecessors: list[tuple[int, int, str | None] | None] = [None] * size
+        expected_bits = source_index
+        for mask, cost in enumerate(costs):
+            if cost == infinity or mask.bit_count() != expected_bits:
                 continue
-            target = targets[target_index]
-            transformation = _conversion(source.source_element, target.target_element)
-            assert transformation is not False
-            partial_transforms = sum(item.transformation is not None for item in assignments) + (transformation is not None)
-            if best is not None and partial_transforms > best[0][0]:
-                continue
-            used.add(target_index)
-            assignments.append(AtomAssignment(source, target, transformation))
-            visit(depth + 1, used, assignments)
-            assignments.pop()
-            used.remove(target_index)
+            for target_index, target in enumerate(targets):
+                bit = 1 << target_index
+                if mask & bit:
+                    continue
+                transformation = _conversion(source.source_element, target.target_element)
+                if transformation is False:
+                    continue
+                new_mask = mask | bit
+                new_cost = cost + (transformation is not None)
+                if new_cost < next_costs[new_mask]:
+                    next_costs[new_mask] = new_cost
+                    next_predecessors[new_mask] = (mask, target_index, transformation)
+        costs = next_costs
+        predecessors = next_predecessors if source_index == len(sources) - 1 else predecessors
+        if source_index != len(sources) - 1:
+            # Preserve one predecessor layer per source for reconstruction.
+            if source_index == 0:
+                layers: list[list[tuple[int, int, str | None] | None]] = []
+            layers.append(next_predecessors)
 
-    visit(0, set(), [])
-    if best is None:
+    full_mask = size - 1
+    if costs[full_mask] == infinity:
         return RotorRecipe(False, "no legal atom assignment exists", reagent_pulls, (), 0, (), ())
 
-    _, assignments = best
+    all_layers = [*layers, predecessors] if len(sources) > 1 else [predecessors]
+    assignments_reversed: list[AtomAssignment] = []
+    mask = full_mask
+    for source_index in range(len(sources) - 1, -1, -1):
+        predecessor = all_layers[source_index][mask]
+        if predecessor is None:
+            return RotorRecipe(False, "assignment reconstruction failed", reagent_pulls, (), 0, (), ())
+        previous_mask, target_index, transformation = predecessor
+        assignments_reversed.append(AtomAssignment(sources[source_index], targets[target_index], transformation))
+        mask = previous_mask
+    assignments = list(reversed(assignments_reversed))
+
     component_pulls: dict[int, set[str]] = {}
     for assignment in assignments:
         component_pulls.setdefault(assignment.target.component_index, set()).add(assignment.source.pull_id)
