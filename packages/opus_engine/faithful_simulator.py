@@ -29,6 +29,10 @@ def _transform(
 class Simulator(RuntimeSimulator):
     """Runtime simulator with faithful track ownership and safe atom consumption."""
 
+    def __post_init__(self) -> None:
+        self.prismatic_bonders = []
+        super().__post_init__()
+
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
         simulator = super().from_models(puzzle, solution)
@@ -48,7 +52,6 @@ class Simulator(RuntimeSimulator):
                 arm.track_index = 0
             arm.base_track_index = arm.track_index
 
-        simulator.prismatic_bonders = []
         for part in solution.get("parts", []):
             if part.get("type") != "bonder-prisma":
                 continue
