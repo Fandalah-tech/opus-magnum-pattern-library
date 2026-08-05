@@ -6,6 +6,7 @@ from .manufacturing import (
     ManufacturingPlan,
     build_manufacturing_plan,
 )
+from .rotor_recipe import AtomAssignment, RotorRecipe, SourceAtom, TargetAtom, build_rotor_recipe
 from .solver import (
     GeneratedSolutionError,
     SolveResult,
@@ -16,6 +17,7 @@ from .solver import (
 from .state import canonical_state_key
 
 __all__ = [
+    "AtomAssignment",
     "AtomFlow",
     "DisjointProductPlan",
     "ExplorationResult",
@@ -23,10 +25,14 @@ __all__ = [
     "ManufacturingOperation",
     "ManufacturingPlan",
     "ProductComponent",
+    "RotorRecipe",
     "SolveResult",
+    "SourceAtom",
+    "TargetAtom",
     "UnsupportedPuzzleError",
     "build_disjoint_product_plan",
     "build_manufacturing_plan",
+    "build_rotor_recipe",
     "canonical_state_key",
     "enumerate_joint_actions",
     "explore_simulator_states",
