@@ -3,6 +3,10 @@ name: Import campaign corpus
 on:
   workflow_dispatch:
     inputs:
+      puzzle_limit:
+        description: Maximum campaign puzzles to scan; leave empty for all
+        required: false
+        default: ""
       limit_per_puzzle:
         description: Maximum ZLBB solutions downloaded per puzzle
         required: false
@@ -38,12 +42,18 @@ jobs:
 
       - name: Import campaign puzzles and ZLBB solutions
         env:
+          PUZZLE_LIMIT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.puzzle_limit || '3' }}
           LIMIT_PER_PUZZLE: ${{ github.event.inputs.limit_per_puzzle || '3' }}
         run: |
-          python tools/import_campaign_corpus.py \
-            --root .datasets/campaign-corpus \
-            --limit-per-puzzle "$LIMIT_PER_PUZZLE" \
+          args=(
+            --root .datasets/campaign-corpus
+            --limit-per-puzzle "$LIMIT_PER_PUZZLE"
             --force
+          )
+          if [[ -n "$PUZZLE_LIMIT" ]]; then
+            args+=(--puzzle-limit "$PUZZLE_LIMIT")
+          fi
+          python tools/import_campaign_corpus.py "${args[@]}"
 
       - name: Summarize corpus
         run: |
@@ -58,9 +68,9 @@ jobs:
           failed = [item for item in data.get('solutions', []) if item.get('error')]
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
               out.write('## Campaign corpus import\n\n')
-              out.write(f"- Puzzles: {data.get('puzzleCount', 0)}\n")
+              out.write(f"- Campaign puzzles indexed: {data.get('puzzleCount', 0)}\n")
               out.write(f"- Solutions downloaded: {len(successful)}\n")
-              out.write(f"- Failed downloads: {len(failed)}\n")
+              out.write(f"- Failed puzzle/download records: {len(failed)}\n")
               if failed:
                   out.write('\n### First failures\n\n')
                   for item in failed[:20]:
