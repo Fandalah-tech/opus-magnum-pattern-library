@@ -7,6 +7,7 @@ from .manufacturing import (
     build_manufacturing_plan,
 )
 from .rotor_recipe import AtomAssignment, RotorRecipe, SourceAtom, TargetAtom, build_rotor_recipe
+from .rotor_schedule import RotorSchedule, RotorStep, build_rotor_schedule
 from .solver import (
     GeneratedSolutionError,
     SolveResult,
@@ -26,6 +27,8 @@ __all__ = [
     "ManufacturingPlan",
     "ProductComponent",
     "RotorRecipe",
+    "RotorSchedule",
+    "RotorStep",
     "SolveResult",
     "SourceAtom",
     "TargetAtom",
@@ -33,6 +36,7 @@ __all__ = [
     "build_disjoint_product_plan",
     "build_manufacturing_plan",
     "build_rotor_recipe",
+    "build_rotor_schedule",
     "canonical_state_key",
     "enumerate_joint_actions",
     "explore_simulator_states",
