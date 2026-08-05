@@ -52,6 +52,17 @@ def post_pair(url: str, endpoint: str, puzzle: Path, solution: Path) -> dict:
         raise RuntimeError(f"{endpoint} returned HTTP {exc.code}: {payload}") from exc
 
 
+def classify_engine(engine: dict | None, classifications: Counter[str]) -> None:
+    status = str((engine or {}).get("status") or "unknown")
+    if status == "diverged":
+        classification = (engine or {}).get("firstDivergence", {}).get("classification", {})
+        classifications[str(classification.get("subsystem") or "unclassified")] += 1
+    elif status in {"engine-error", "match", "reference-gap"}:
+        classifications[status] += 1
+    else:
+        classifications["unknown"] += 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
@@ -62,7 +73,6 @@ def main() -> int:
 
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     results = []
-    reference_failed = False
     classifications: Counter[str] = Counter()
 
     for pair in manifest["pairs"]:
@@ -91,46 +101,47 @@ def main() -> int:
                 errors.append(f"missing file: {path.name}")
                 fixture_checks.append(check)
                 continue
-
             check["actualSize"] = path.stat().st_size
             check["actualSha256"] = sha256(path)
             check["sizeMatches"] = check["actualSize"] == check["expectedSize"]
             check["sha256Matches"] = check["actualSha256"] == check["expectedSha256"]
             fixture_checks.append(check)
-
             if not check["sizeMatches"]:
                 errors.append(
-                    f"size mismatch: {path.name} "
-                    f"expected={check['expectedSize']} actual={check['actualSize']}"
+                    f"size mismatch: {path.name} expected={check['expectedSize']} actual={check['actualSize']}"
                 )
             if not check["sha256Matches"]:
                 errors.append(
-                    f"sha256 mismatch: {path.name} "
-                    f"expected={check['expectedSha256']} actual={check['actualSha256']}"
+                    f"sha256 mismatch: {path.name} expected={check['expectedSha256']} actual={check['actualSha256']}"
                 )
 
-        if not errors:
-            puzzle = parse_puzzle(puzzle_path)
-            solution = parse_solution(solution_path)
-            local = {
-                "puzzleName": puzzle["name"],
-                "puzzleTrailingBytes": puzzle["trailingBytes"],
-                "solutionTrailingBytes": solution["trailingBytes"],
-                "puzzleFile": solution["puzzleFile"],
-                "metrics": solution["metrics"],
-            }
-            if puzzle["name"] != puzzle_meta["name"]:
-                errors.append("puzzle name mismatch")
-            if solution["puzzleFile"] != solution_meta["puzzleFile"]:
-                errors.append("solution puzzle reference mismatch")
-            if solution["metrics"] != solution_meta["metrics"]:
-                errors.append("embedded metric mismatch")
-            if puzzle["trailingBytes"] != pair["parserChecks"]["puzzleTrailingBytes"]:
-                errors.append("puzzle trailing-byte mismatch")
-            if solution["trailingBytes"] != pair["parserChecks"]["solutionTrailingBytes"]:
-                errors.append("solution trailing-byte mismatch")
+        files_available = puzzle_path.exists() and solution_path.exists()
+        if files_available:
+            try:
+                puzzle = parse_puzzle(puzzle_path)
+                solution = parse_solution(solution_path)
+                local = {
+                    "puzzleName": puzzle["name"],
+                    "puzzleTrailingBytes": puzzle["trailingBytes"],
+                    "solutionTrailingBytes": solution["trailingBytes"],
+                    "puzzleFile": solution["puzzleFile"],
+                    "metrics": solution["metrics"],
+                    "partTypes": sorted({str(part.get("type") or "") for part in solution.get("parts", [])}),
+                }
+                if puzzle["name"] != puzzle_meta["name"]:
+                    errors.append("puzzle name mismatch")
+                if solution["puzzleFile"] != solution_meta["puzzleFile"]:
+                    errors.append("solution puzzle reference mismatch")
+                if solution["metrics"] != solution_meta["metrics"]:
+                    errors.append("embedded metric mismatch")
+                if puzzle["trailingBytes"] != pair["parserChecks"]["puzzleTrailingBytes"]:
+                    errors.append("puzzle trailing-byte mismatch")
+                if solution["trailingBytes"] != pair["parserChecks"]["solutionTrailingBytes"]:
+                    errors.append("solution trailing-byte mismatch")
+            except Exception as exc:
+                errors.append(f"local parse failed: {type(exc).__name__}: {exc}")
 
-        if not errors:
+        if local is not None:
             try:
                 remote = post_pair(args.validator_url, "/validate", puzzle_path, solution_path)
                 if not remote.get("valid"):
@@ -143,19 +154,18 @@ def main() -> int:
             except Exception as exc:
                 errors.append(str(exc))
 
-        if not errors:
-            engine = compare_pair_locally(puzzle_path, solution_path)
-            status = str(engine.get("status") or "unknown")
-            if status == "diverged":
-                classification = engine.get("firstDivergence", {}).get("classification", {})
-                classifications[str(classification.get("subsystem") or "unclassified")] += 1
-            elif status in {"engine-error", "match", "reference-gap"}:
-                classifications[status] += 1
-            else:
-                classifications["unknown"] += 1
+            try:
+                engine = compare_pair_locally(puzzle_path, solution_path)
+            except Exception as exc:
+                engine = {
+                    "schemaVersion": "0.2.0",
+                    "status": "engine-error",
+                    "errorType": type(exc).__name__,
+                    "message": str(exc),
+                    "completedFrameCount": 0,
+                }
+            classify_engine(engine, classifications)
 
-        if errors:
-            reference_failed = True
         results.append({
             "puzzle": puzzle_meta["file"],
             "solution": solution_meta["file"],
@@ -168,7 +178,7 @@ def main() -> int:
         })
 
     report = {
-        "schemaVersion": "0.4.3",
+        "schemaVersion": "0.5.0",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
@@ -184,6 +194,13 @@ def main() -> int:
     print(json.dumps(report["summary"]))
 
     for item in results:
+        if item.get("errors"):
+            print(json.dumps({
+                "puzzle": item.get("puzzle"),
+                "status": "reference-failure",
+                "errors": item.get("errors"),
+                "partTypes": (item.get("local") or {}).get("partTypes"),
+            }))
         comparison = item.get("engineComparison") or {}
         status = comparison.get("status")
         if status == "engine-error":
@@ -194,35 +211,29 @@ def main() -> int:
                 "message": comparison.get("message"),
                 "completedFrameCount": comparison.get("completedFrameCount"),
             }))
-            continue
-        if status == "reference-gap":
+        elif status == "reference-gap":
             print(json.dumps({
                 "puzzle": item.get("puzzle"),
                 "status": status,
                 "reason": comparison.get("reason"),
                 "unsupportedLegacyParts": comparison.get("unsupportedLegacyParts"),
             }))
-            continue
-        if status != "diverged":
-            continue
+        elif status == "diverged":
+            divergence = comparison.get("firstDivergence") or {}
+            classification = divergence.get("classification") or {}
+            print(json.dumps({
+                "puzzle": item.get("puzzle"),
+                "status": status,
+                "frameIndex": divergence.get("frameIndex"),
+                "legacyCycle": divergence.get("legacyCycle"),
+                "engineCycle": divergence.get("engineCycle"),
+                "subsystem": classification.get("subsystem"),
+                "reason": classification.get("reason"),
+                "instructions": classification.get("instructions"),
+                "categories": divergence.get("categories") or {},
+            }))
 
-        divergence = comparison.get("firstDivergence") or {}
-        classification = divergence.get("classification") or {}
-        categories = divergence.get("categories") or {}
-        print(json.dumps({
-            "puzzle": item.get("puzzle"),
-            "status": status,
-            "frameIndex": divergence.get("frameIndex"),
-            "legacyCycle": divergence.get("legacyCycle"),
-            "engineCycle": divergence.get("engineCycle"),
-            "subsystem": classification.get("subsystem"),
-            "reason": classification.get("reason"),
-            "instructions": classification.get("instructions"),
-            "engineError": classification.get("engineError"),
-            "categories": categories,
-        }))
-
-    return 1 if reference_failed else 0
+    return 1 if any(not item["passed"] for item in results) else 0
 
 
 if __name__ == "__main__":
