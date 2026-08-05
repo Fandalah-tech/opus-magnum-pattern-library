@@ -144,22 +144,10 @@ class Simulator(CompleteSimulator):
             ) from error
 
     def _process_consumers(self) -> None:
-        held_by = {
-            atom_id: set(atom.held_by)
-            for atom_id, atom in self.world.atoms.items()
-            if atom.held_by
-        }
-        for atom_id in held_by:
-            atom = self.world.atoms.get(atom_id)
-            if atom is not None:
-                atom.held_by.clear()
-
+        # CompleteSimulator already protects atoms held by an arm executing GRAB
+        # in the current cycle. Preserve that rule instead of clearing every
+        # holder unconditionally at the campaign-complete layer.
         super()._process_consumers()
-
-        for atom_id, holders in held_by.items():
-            atom = self.world.atoms.get(atom_id)
-            if atom is not None:
-                atom.held_by.update(holders)
 
     def _before_motion(self) -> None:
         # Bonders and unbonders operate in both OMSim half-cycles. Running the
