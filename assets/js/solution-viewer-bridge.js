@@ -1,4 +1,12 @@
 (() => {
+  const loadStylesheet = (href) => {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.append(link);
+  };
+
   const loadScript = (src) => new Promise((resolve) => {
     const script = document.createElement('script');
     script.src = src;
@@ -29,6 +37,7 @@
     window.addEventListener('resize', () => viewer.fit());
   };
 
+  loadStylesheet('assets/css/viewer-replay-enhancements.css');
   Promise.resolve()
     .then(() => loadScript('assets/js/solution-viewer-symbols.js'))
     .then(() => loadScript('assets/js/output-product-preview.js'))
