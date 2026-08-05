@@ -101,8 +101,7 @@
   }
 
   root.addEventListener('opus:replayframe', (event) => {
-    const playing = root.querySelector('[data-replay-play]')?.dataset.state === 'playing';
-    const duration = playing ? 520 : 180;
+    const duration = Number(event.detail?.animationDuration ?? 180);
     const seen = new Set();
     for (const state of event.detail.frame?.armStates || []) {
       seen.add(state.partId);
