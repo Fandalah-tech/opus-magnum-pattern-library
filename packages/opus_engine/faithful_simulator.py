@@ -3,11 +3,12 @@ from __future__ import annotations
 from typing import Any
 
 from .runtime_simulator import METAL_ORDER, Simulator as RuntimeSimulator
+from .simulator import ArmMutation, TRACK_MINUS, TRACK_PLUS
 from .world import WorldEvent
 
 
 class Simulator(RuntimeSimulator):
-    """Runtime simulator with per-arm track ownership and safe atom consumption."""
+    """Runtime simulator with faithful track ownership and safe atom consumption."""
 
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
@@ -15,18 +16,35 @@ class Simulator(RuntimeSimulator):
         tracks = [
             tuple(tuple(cell) for cell in (part.get("trackHexes") or []))
             for part in solution.get("parts", [])
-            if part.get("type") == "track"
+            if part.get("type") == "track" and part.get("trackHexes")
         ]
         for arm in simulator.arms.values():
-            owned_track = next((track for track in tracks if arm.origin in track), ())
+            owned_track = next((track for track in tracks if arm.origin in track), None)
+            if owned_track is None:
+                owned_track = tracks[0] if tracks else ()
             arm.track_cells = owned_track
-            if owned_track:
+            if owned_track and arm.origin in owned_track:
                 arm.track_index = owned_track.index(arm.origin)
-                arm.base_track_index = arm.track_index
             else:
                 arm.track_index = 0
-                arm.base_track_index = 0
+            arm.base_track_index = arm.track_index
         return simulator
+
+    def _plan_motion(self, arm, instruction):
+        if instruction in TRACK_PLUS or instruction in TRACK_MINUS:
+            if not arm.track_cells:
+                return [], None
+            step = 1 if instruction in TRACK_PLUS else -1
+            next_index = max(0, min(len(arm.track_cells) - 1, arm.track_index + step))
+            next_origin = arm.track_cells[next_index]
+            delta = (next_origin[0] - arm.origin[0], next_origin[1] - arm.origin[1])
+            proposal = self._translate_proposal(arm, delta, instruction)
+            return ([proposal] if proposal else []), ArmMutation(
+                arm,
+                origin=next_origin,
+                track_index=next_index,
+            )
+        return super()._plan_motion(arm, instruction)
 
     def _detach_consumed_atom(self, atom_id: str) -> None:
         atom = self.world.atoms.get(atom_id)
