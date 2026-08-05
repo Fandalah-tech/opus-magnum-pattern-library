@@ -68,6 +68,17 @@ jobs:
           fi
           python tools/import_campaign_corpus.py "${args[@]}"
 
+      - name: Cross-check P041 with OMSim
+        continue-on-error: true
+        run: |
+          git clone --depth 1 https://github.com/ianh/omsim.git /tmp/omsim
+          make -C /tmp/omsim
+          puzzle=$(find .datasets/campaign-corpus/puzzles -name 'P041.puzzle' -print -quit)
+          solution=$(find .datasets/campaign-corpus/solutions/zlbb/P041 -name '002-*.solution' -print -quit)
+          echo "Puzzle: $puzzle"
+          echo "Solution: $solution"
+          /tmp/omsim/omsim --disable-limits --metric cycles --puzzle-file "$puzzle" "$solution"
+
       - name: Audit solutions against opus_engine
         id: engine_audit
         continue-on-error: true
