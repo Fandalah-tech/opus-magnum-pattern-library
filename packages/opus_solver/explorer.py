@@ -29,12 +29,17 @@ def enumerate_joint_actions(
     action_options: dict[str, Iterable[str | None]],
     *,
     include_idle: bool = False,
+    max_active_arms: int | None = None,
 ) -> list[Action]:
     """Expand per-arm instruction choices into deterministic joint actions.
 
-    ``None`` represents an idle arm. By default the all-idle joint action is
-    omitted because it cannot improve an untimed geometric search state.
+    ``None`` represents an idle arm. ``max_active_arms`` can cap simultaneous
+    arm actions, which is useful for a first inexpensive search pass before
+    allowing fully coordinated motions.
     """
+    if max_active_arms is not None and max_active_arms < 0:
+        raise ValueError("max_active_arms must be non-negative")
+
     arm_ids = sorted(str(arm_id) for arm_id in action_options)
     choices = [tuple(action_options[arm_id]) for arm_id in arm_ids]
     actions: list[Action] = []
@@ -44,6 +49,8 @@ def enumerate_joint_actions(
             for arm_id, instruction in zip(arm_ids, combination, strict=True)
             if instruction is not None
         }
+        if max_active_arms is not None and len(action) > max_active_arms:
+            continue
         if action or include_idle:
             actions.append(action)
     return actions
@@ -57,6 +64,7 @@ def explore_simulator_states(
     max_depth: int = 12,
     max_states: int = 100_000,
     include_idle: bool = False,
+    max_active_arms: int | None = None,
 ) -> ExplorationResult:
     """Breadth-first search over legal simulator transitions.
 
@@ -75,7 +83,11 @@ def explore_simulator_states(
     if goal(root):
         return ExplorationResult(True, [], root, 1, 0, 0, "goal")
 
-    joint_actions = enumerate_joint_actions(action_options, include_idle=include_idle)
+    joint_actions = enumerate_joint_actions(
+        action_options,
+        include_idle=include_idle,
+        max_active_arms=max_active_arms,
+    )
     queue = deque([(root, [], 0)])
     visited = {root_key}
     expanded = 0
