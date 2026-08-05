@@ -24,5 +24,5 @@ def test_sum465_produces_reusable_35_cycle_template() -> None:
     assert template.source_product_indices == (1, 2, 3, 4, 5)
     assert template.exact_timing_match is True
     assert any(event.kind == "product-delivered" for event in template.events)
-    assert sum(event.kind == "bond-removed" for event in template.events) == 1
-    assert sum(event.kind == "bond-created" for event in template.events) == 7
+    assert sum(event.occurrences_per_product for event in template.events if event.kind == "bond-removed") == 1
+    assert sum(event.occurrences_per_product for event in template.events if event.kind == "bond-created") == 7
