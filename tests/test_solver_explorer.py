@@ -1,4 +1,5 @@
 from packages.opus_engine import ArmState, Atom, Simulator, World
+from packages.opus_solver.beam_explorer import _immediately_reverses
 from packages.opus_solver.explorer import enumerate_joint_actions, explore_simulator_states
 
 
@@ -14,6 +15,20 @@ def test_joint_action_enumeration_omits_all_idle_by_default() -> None:
         {"a": "grab"},
         {"a": "grab", "b": "rotate_cw"},
     ]
+
+
+def test_immediate_inverse_pruning_only_removes_exact_kinematic_undo() -> None:
+    assert _immediately_reverses({"a": "rotate_cw"}, {"a": "rotate_ccw"})
+    assert _immediately_reverses(
+        {"a": "extend", "b": "track_plus"},
+        {"a": "retract", "b": "track_minus"},
+    )
+    assert not _immediately_reverses({"a": "grab"}, {"a": "drop"})
+    assert not _immediately_reverses({"a": "rotate_cw"}, {"b": "rotate_ccw"})
+    assert not _immediately_reverses(
+        {"a": "extend", "b": "track_plus"},
+        {"a": "retract"},
+    )
 
 
 def test_explorer_finds_simple_grab_and_rotation_sequence() -> None:
