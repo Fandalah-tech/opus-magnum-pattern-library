@@ -21,5 +21,12 @@
 .product-delivery-pulse,.product-delivery-bond,.product-delivery-ring{vector-effect:non-scaling-stroke}
 .viewer-inspector-empty h4{color:#d3b277}
 .viewer-inspector-empty .viewer-kind-badge{border-color:#665744;color:#c8b18b;background:#241e17}
-.viewer-output-product{filter:drop-shadow(0 0 5px rgba(239,195,110,.18))}
+.viewer-part-hit-targets{pointer-events:all}
+.viewer-part-hit-target{transition:fill-opacity .12s ease,stroke-opacity .12s ease;vector-effect:non-scaling-stroke}
+.viewer-part.hovered .viewer-part-hit-target,.viewer-part:hover .viewer-part-hit-target{fill:#f0c87f!important;fill-opacity:.1!important;stroke:#e7bd72!important;stroke-opacity:.62!important;stroke-width:1.4!important}
+.viewer-output-product{filter:drop-shadow(0 0 4px rgba(239,174,85,.22))}
+.viewer-output-target-ring,.viewer-output-target-core,.viewer-output-target-bond,.viewer-output-target-bond-shadow{vector-effect:non-scaling-stroke}
+.viewer-output-target-label{pointer-events:none}
+.viewer-arm [data-arm-number-label]{filter:none}
+.viewer-arm [data-arm-hub-decoration="hidden"]{display:none}
 @media(max-width:560px){.viewer-area-badge{left:9px;bottom:9px;font-size:10px}}
