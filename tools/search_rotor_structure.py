@@ -37,15 +37,18 @@ def main() -> None:
         for arm_id, arm in simulator.arms.items()
         if arm.part_type == "piston"
     }
+    # First pass deliberately limits each cycle to one active piston. This is
+    # fast enough for CI and produces a useful best frontier before a later
+    # coordinated two-arm refinement pass.
     result = explore_simulator_beam(
         simulator,
         action_options,
         goal.reached,
         goal.score,
-        max_depth=18,
-        beam_width=400,
-        max_states=80_000,
-        max_active_arms=2,
+        max_depth=24,
+        beam_width=160,
+        max_states=45_000,
+        max_active_arms=1,
     )
     best = result.simulator
     print(json.dumps({
