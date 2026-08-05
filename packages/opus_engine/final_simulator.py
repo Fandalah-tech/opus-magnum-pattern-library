@@ -40,24 +40,10 @@ class Simulator(CompleteSimulator):
         return simulator
 
     def molecule_atom_ids(self, atom_id: str) -> set[str]:
-        """Return the physically moving component, excluding floating bonds."""
-        if atom_id not in self.world.atoms:
-            return {atom_id}
-        adjacency = {item: set() for item in self.world.atoms}
-        for key, bond in self.world.bonds.items():
-            if key in self.floating_bond_keys:
-                continue
-            adjacency[bond.a].add(bond.b)
-            adjacency[bond.b].add(bond.a)
-        component = {atom_id}
-        stack = [atom_id]
-        while stack:
-            current = stack.pop()
-            for neighbor in adjacency.get(current, ()):
-                if neighbor not in component:
-                    component.add(neighbor)
-                    stack.append(neighbor)
-        return component
+        # Disjoint bonds remain mechanically rigid: grabbing either endpoint
+        # moves the complete bonded component, even while the endpoints are not
+        # adjacent on the board.
+        return BaseSimulator.molecule_atom_ids(self, atom_id)
 
     def _plan_motion(self, arm, instruction):
         if arm.part_type == "baron" and instruction in RESET:
@@ -190,55 +176,8 @@ class Simulator(CompleteSimulator):
                     "type": "normal",
                 }))
 
-    def _capture_van_berlo_carried_molecules(self, proposals) -> None:
-        wheel_proposals = [
-            proposal for proposal in proposals
-            if self.arms.get(proposal.arm_id) is not None
-            and self.arms[proposal.arm_id].part_type == "baron"
-            and proposal.instruction in {"rotate_cw", "rotate-clockwise", "rotate_ccw", "rotate-counterclockwise"}
-        ]
-        if not wheel_proposals:
-            return
-        moving_atoms = {atom_id for proposal in proposals for atom_id in proposal.atom_ids}
-        destination_positions = {
-            destination
-            for proposal in proposals
-            if proposal not in wheel_proposals
-            for destination in proposal.destinations.values()
-        }
-        for wheel_proposal in wheel_proposals:
-            arm = self.arms[wheel_proposal.arm_id]
-            steps = -1 if wheel_proposal.instruction in {"rotate_cw", "rotate-clockwise"} else 1
-            captured: set[str] = set()
-            for destination in destination_positions:
-                stationary = self.world.atom_at(destination)
-                if stationary is None or stationary.id in moving_atoms:
-                    continue
-                captured.update(self.molecule_atom_ids(stationary.id))
-            for atom_id in captured:
-                if atom_id in moving_atoms or atom_id.startswith(f"{arm.id}-wheel-"):
-                    continue
-                atom = self.world.atoms[atom_id]
-                relative = (
-                    atom.position[0] - arm.origin[0],
-                    atom.position[1] - arm.origin[1],
-                )
-                rotated = rotate_hex(relative, steps)
-                wheel_proposal.atom_ids.add(atom_id)
-                wheel_proposal.destinations[atom_id] = (
-                    arm.origin[0] + rotated[0],
-                    arm.origin[1] + rotated[1],
-                )
-                moving_atoms.add(atom_id)
-            if captured:
-                self.world.events.append(WorldEvent("van-berlo-molecule-captured", self.world.cycle, {
-                    "armId": arm.id,
-                    "atomIds": sorted(captured),
-                }))
-
     def _validate_and_apply(self, proposals) -> None:
         self._capture_bonder_collisions(proposals)
-        self._capture_van_berlo_carried_molecules(proposals)
         try:
             super()._validate_and_apply(proposals)
         except SimulationError as error:
