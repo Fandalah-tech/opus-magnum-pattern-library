@@ -22,10 +22,15 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install --upgrade pip pytest
-      - name: Run disjoint and solver tests
+      - name: Run disjoint and Rotor solver tests
         run: |
           python -m pytest \
             tests/test_engine_disjoint.py \
             tests/test_disjoint_product_plan.py \
             tests/test_solver_explorer.py \
+            tests/test_rotor_recipe.py \
+            tests/test_rotor_blueprint.py \
+            tests/test_rotor_schedule.py \
+            tests/test_rotor_layout.py \
+            tests/test_rotor_corpus.py \
             -q
