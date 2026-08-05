@@ -2,10 +2,18 @@ from __future__ import annotations
 
 from typing import Any
 
-from .builder import rotate_hex
+from .builder import DIRECTIONS, rotate_hex
 from .complete_simulator import Simulator as CompleteSimulator
 from .model import Atom, Bond
-from .simulator import ArmMutation, MotionProposal, RESET, SimulationError, Simulator as BaseSimulator
+from .simulator import (
+    ArmMutation,
+    MotionProposal,
+    RESET,
+    ROTATE_CCW,
+    ROTATE_CW,
+    SimulationError,
+    Simulator as BaseSimulator,
+)
 from .world import WorldEvent
 
 VAN_BERLO_ELEMENTS = ("salt", "water", "air", "salt", "fire", "earth")
@@ -33,11 +41,21 @@ class Simulator(CompleteSimulator):
                 atom_id = f"{arm.id}-wheel-{branch}"
                 atom = Atom(atom_id, element, arm.tip(branch))
                 atom.held_by.add(arm.id)
-                simulator.world.add_atom(atom)
+                # Wheel atoms are allowed to overlap ordinary atoms.  OMSim
+                # stores them as a special overlapped layer rather than as a
+                # normal board occupant, so bypass World.add_atom here.
+                simulator.world.atoms[atom_id] = atom
                 arm.held_atoms[branch] = atom_id
         if simulator.van_berlo_arms:
             simulator.frames[0] = simulator.snapshot("initial")
         return simulator
+
+    @staticmethod
+    def _is_wheel_atom_id(atom_id: str) -> bool:
+        return "-wheel-" in atom_id
+
+    def _atoms_at(self, position):
+        return [atom for atom in self.world.atoms.values() if atom.position == position]
 
     def molecule_atom_ids(self, atom_id: str) -> set[str]:
         """Return the mechanically reachable component.
@@ -70,9 +88,42 @@ class Simulator(CompleteSimulator):
                     stack.append(neighbor)
         return component
 
+    def _baron_attached_atom_ids(self, arm) -> set[str]:
+        """Return wheel atoms plus molecules overlapping its six grabbers."""
+        atom_ids = self._held_atom_ids(arm)
+        for branch in range(6):
+            tip = arm.tip(branch)
+            for atom in self._atoms_at(tip):
+                if self._is_wheel_atom_id(atom.id):
+                    continue
+                atom_ids.update(self.molecule_atom_ids(atom.id))
+        return atom_ids
+
+    def _baron_rotation_proposal(self, arm, instruction):
+        steps = -1 if instruction in ROTATE_CW else 1
+        atom_ids = self._baron_attached_atom_ids(arm)
+        destinations = {}
+        for atom_id in atom_ids:
+            atom = self.world.atoms[atom_id]
+            relative = (
+                atom.position[0] - arm.origin[0],
+                atom.position[1] - arm.origin[1],
+            )
+            rotated = rotate_hex(relative, steps)
+            destinations[atom_id] = (
+                arm.origin[0] + rotated[0],
+                arm.origin[1] + rotated[1],
+            )
+        proposal = MotionProposal(arm.id, atom_ids, destinations, instruction) if atom_ids else None
+        return ([proposal] if proposal else []), ArmMutation(
+            arm, rotation=arm.rotation + steps,
+        )
+
     def _plan_motion(self, arm, instruction):
+        if arm.part_type == "baron" and instruction in ROTATE_CW | ROTATE_CCW:
+            return self._baron_rotation_proposal(arm, instruction)
         if arm.part_type == "baron" and instruction in RESET:
-            atom_ids = self._held_atom_ids(arm)
+            atom_ids = self._baron_attached_atom_ids(arm)
             destinations = {}
             rotation_steps = int(arm.base_rotation) - arm.rotation
             target_origin = arm.base_origin
@@ -132,7 +183,7 @@ class Simulator(CompleteSimulator):
     @staticmethod
     def _adjacent_positions(first, second) -> bool:
         delta = (second[0] - first[0], second[1] - first[1])
-        return delta in {(1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)}
+        return delta in set(DIRECTIONS)
 
     def _settle_floating_bonds(self) -> None:
         for key, root_id in list(self.floating_bond_roots.items()):
@@ -164,17 +215,28 @@ class Simulator(CompleteSimulator):
             destination: atom_id
             for proposal in proposals
             for atom_id, destination in proposal.destinations.items()
+            if not self._is_wheel_atom_id(atom_id)
         }
         for first_pos, second_pos, part_id in self.bonder_pairs:
             for occupied_pos, free_pos in ((first_pos, second_pos), (second_pos, first_pos)):
                 moving_atom_id = destinations.get(occupied_pos)
                 if moving_atom_id is None:
                     continue
-                stationary = self.world.atom_at(occupied_pos)
+                stationary = next(
+                    (
+                        atom for atom in self._atoms_at(occupied_pos)
+                        if not self._is_wheel_atom_id(atom.id)
+                    ),
+                    None,
+                )
+                free_occupied = any(
+                    not self._is_wheel_atom_id(atom.id)
+                    for atom in self._atoms_at(free_pos)
+                )
                 if (
                     stationary is None
                     or stationary.id in moving_atoms
-                    or self.world.atom_at(free_pos) is not None
+                    or free_occupied
                 ):
                     continue
                 stationary.position = free_pos
@@ -204,10 +266,51 @@ class Simulator(CompleteSimulator):
                     "type": "normal",
                 }))
 
+    def _apply_without_wheel_colliders(self, proposals) -> None:
+        """Apply ordinary motion while keeping wheel atoms on an overlap layer."""
+        wheel_atoms = {
+            atom_id: atom
+            for atom_id, atom in list(self.world.atoms.items())
+            if self._is_wheel_atom_id(atom_id)
+        }
+        wheel_destinations = {
+            atom_id: destination
+            for proposal in proposals
+            for atom_id, destination in proposal.destinations.items()
+            if atom_id in wheel_atoms
+        }
+        ordinary_proposals = []
+        for proposal in proposals:
+            atom_ids = {
+                atom_id for atom_id in proposal.atom_ids
+                if atom_id not in wheel_atoms
+            }
+            if not atom_ids:
+                continue
+            ordinary_proposals.append(MotionProposal(
+                proposal.arm_id,
+                atom_ids,
+                {
+                    atom_id: destination
+                    for atom_id, destination in proposal.destinations.items()
+                    if atom_id in atom_ids
+                },
+                proposal.instruction,
+            ))
+
+        for atom_id in wheel_atoms:
+            self.world.atoms.pop(atom_id, None)
+        try:
+            super()._validate_and_apply(ordinary_proposals)
+        finally:
+            for atom_id, atom in wheel_atoms.items():
+                atom.position = wheel_destinations.get(atom_id, atom.position)
+                self.world.atoms[atom_id] = atom
+
     def _validate_and_apply(self, proposals) -> None:
         self._capture_bonder_collisions(proposals)
         try:
-            super()._validate_and_apply(proposals)
+            self._apply_without_wheel_colliders(proposals)
         except SimulationError as error:
             output_cells = {
                 position
