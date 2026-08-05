@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {"kind": "solution", "version": 7},
+  "source": {
+    "name": "van-berlo's-rotor-weeklies2026_van-berlos-rotor-40.solution",
+    "sha256": "225d261dffb9c26d295cd088343ebd4f0eb60c7852f5a7bf63b47b653785d564",
+    "size": 629
+  },
+  "puzzleFile": "weeklies2026_van-berlos-rotor",
+  "name": "IDEAL SETUP?",
+  "metrics": {"cycles": null, "cost": null, "area": null, "instructions": null},
+  "unknownMetrics": [],
+  "parts": [
+    {"id":"part-0","type":"bonder","enabled":true,"position":[2,-4],"length":1,"rotation":2,"which":0,"armNumber":6,"program":[]},
+    {"id":"part-1","type":"bonder","enabled":true,"position":[0,-1],"length":1,"rotation":4,"which":0,"armNumber":6,"program":[]},
+    {"id":"part-2","type":"out-std","enabled":true,"position":[3,-2],"length":1,"rotation":1,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-3","type":"baron","enabled":true,"position":[0,3],"length":1,"rotation":5,"which":0,"armNumber":2,"program":[]},
+    {"id":"part-4","type":"glyph-duplication","enabled":true,"position":[0,2],"length":1,"rotation":5,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-5","type":"glyph-duplication","enabled":true,"position":[1,2],"length":1,"rotation":5,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-6","type":"input","enabled":true,"position":[5,-1],"length":1,"rotation":2,"which":1,"armNumber":16,"program":[]},
+    {"id":"part-7","type":"glyph-calcification","enabled":true,"position":[4,-5],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-8","type":"input","enabled":true,"position":[2,-5],"length":1,"rotation":0,"which":0,"armNumber":16,"program":[]},
+    {"id":"part-9","type":"piston","enabled":true,"position":[2,-1],"length":3,"rotation":0,"which":0,"armNumber":0,"program":[{"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"retract"},{"cycle":2,"instruction":"retract"},{"cycle":3,"instruction":"rotate_cw"}]},
+    {"id":"part-10","type":"unbonder","enabled":true,"position":[0,0],"length":1,"rotation":1,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-11","type":"track","enabled":true,"position":[3,-2],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[],"trackHexes":[[-1,1],[0,1],[1,0],[1,-1],[0,-1],[-1,0]]},
+    {"id":"part-12","type":"piston","enabled":true,"position":[4,-3],"length":1,"rotation":3,"which":0,"armNumber":1,"program":[]}
+  ],
+  "trailingBytes": 0
+}
