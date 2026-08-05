@@ -1,15 +1,13 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-05T11:04:18.269293+00:00",
+  "generatedAt": "2026-08-05T11:06:50.901460+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 6,
     "failed": 3,
     "engineClassifications": {
-      "molecule-motion": 3,
-      "pivot": 2,
-      "world-lifecycle": 1
+      "unknown": 6
     }
   },
   "results": [
@@ -40,63 +38,8 @@
           "sha256Matches": true
         }
       ],
-      "status": "diverged",
-      "firstDivergence": {
-        "frameIndex": 16,
-        "legacyCycle": 16,
-        "engineCycle": 16,
-        "classification": {
-          "subsystem": "molecule-motion",
-          "reason": "atom-position-divergence",
-          "instructions": [
-            {
-              "partId": "part-0",
-              "instruction": "rotate_cw"
-            }
-          ],
-          "confidence": "high"
-        },
-        "categories": {
-          "atoms": {
-            "legacyCount": 3,
-            "engineCount": 3,
-            "legacy": [
-              [
-                "water",
-                -1,
-                2
-              ],
-              [
-                "water",
-                1,
-                1
-              ],
-              [
-                "water",
-                1,
-                1
-              ]
-            ],
-            "engine": [
-              [
-                "water",
-                -1,
-                2
-              ],
-              [
-                "water",
-                1,
-                0
-              ],
-              [
-                "water",
-                1,
-                1
-              ]
-            ]
-          }
-        }
-      },
+      "status": "reference-gap",
+      "firstDivergence": null,
       "engineError": null
     },
     {
@@ -126,63 +69,8 @@
           "sha256Matches": true
         }
       ],
-      "status": "diverged",
-      "firstDivergence": {
-        "frameIndex": 17,
-        "legacyCycle": 17,
-        "engineCycle": 17,
-        "classification": {
-          "subsystem": "pivot",
-          "reason": "atom-position-divergence",
-          "instructions": [
-            {
-              "partId": "part-0",
-              "instruction": "pivot_ccw"
-            }
-          ],
-          "confidence": "high"
-        },
-        "categories": {
-          "atoms": {
-            "legacyCount": 3,
-            "engineCount": 3,
-            "legacy": [
-              [
-                "fire",
-                -3,
-                1
-              ],
-              [
-                "fire",
-                -2,
-                0
-              ],
-              [
-                "fire",
-                -1,
-                0
-              ]
-            ],
-            "engine": [
-              [
-                "fire",
-                -3,
-                1
-              ],
-              [
-                "fire",
-                -1,
-                -1
-              ],
-              [
-                "fire",
-                -1,
-                0
-              ]
-            ]
-          }
-        }
-      },
+      "status": "reference-gap",
+      "firstDivergence": null,
       "engineError": null
     },
     {
@@ -212,63 +100,8 @@
           "sha256Matches": true
         }
       ],
-      "status": "diverged",
-      "firstDivergence": {
-        "frameIndex": 16,
-        "legacyCycle": 16,
-        "engineCycle": 16,
-        "classification": {
-          "subsystem": "molecule-motion",
-          "reason": "atom-position-divergence",
-          "instructions": [
-            {
-              "partId": "part-2",
-              "instruction": "rotate_cw"
-            }
-          ],
-          "confidence": "high"
-        },
-        "categories": {
-          "atoms": {
-            "legacyCount": 3,
-            "engineCount": 3,
-            "legacy": [
-              [
-                "earth",
-                -1,
-                2
-              ],
-              [
-                "earth",
-                1,
-                1
-              ],
-              [
-                "earth",
-                1,
-                1
-              ]
-            ],
-            "engine": [
-              [
-                "earth",
-                -1,
-                2
-              ],
-              [
-                "earth",
-                1,
-                0
-              ],
-              [
-                "earth",
-                1,
-                1
-              ]
-            ]
-          }
-        }
-      },
+      "status": "reference-gap",
+      "firstDivergence": null,
       "engineError": null
     },
     {
@@ -298,68 +131,8 @@
           "sha256Matches": true
         }
       ],
-      "status": "diverged",
-      "firstDivergence": {
-        "frameIndex": 9,
-        "legacyCycle": 9,
-        "engineCycle": 9,
-        "classification": {
-          "subsystem": "world-lifecycle",
-          "reason": "atom-count-divergence",
-          "instructions": [
-            {
-              "partId": "part-4",
-              "instruction": "rotate_cw"
-            }
-          ],
-          "confidence": "high"
-        },
-        "categories": {
-          "atoms": {
-            "legacyCount": 4,
-            "engineCount": 3,
-            "legacy": [
-              [
-                "lead",
-                -1,
-                1
-              ],
-              [
-                "lead",
-                1,
-                1
-              ],
-              [
-                "quicksilver",
-                -1,
-                2
-              ],
-              [
-                "quicksilver",
-                0,
-                2
-              ]
-            ],
-            "engine": [
-              [
-                "lead",
-                -1,
-                1
-              ],
-              [
-                "quicksilver",
-                -1,
-                2
-              ],
-              [
-                "tin",
-                1,
-                1
-              ]
-            ]
-          }
-        }
-      },
+      "status": "reference-gap",
+      "firstDivergence": null,
       "engineError": null
     },
     {
@@ -389,73 +162,8 @@
           "sha256Matches": true
         }
       ],
-      "status": "diverged",
-      "firstDivergence": {
-        "frameIndex": 16,
-        "legacyCycle": 16,
-        "engineCycle": 16,
-        "classification": {
-          "subsystem": "molecule-motion",
-          "reason": "atom-position-divergence",
-          "instructions": [
-            {
-              "partId": "part-4",
-              "instruction": "rotate_ccw"
-            }
-          ],
-          "confidence": "high"
-        },
-        "categories": {
-          "atoms": {
-            "legacyCount": 4,
-            "engineCount": 4,
-            "legacy": [
-              [
-                "air",
-                -11,
-                -4
-              ],
-              [
-                "air",
-                -10,
-                -6
-              ],
-              [
-                "water",
-                -10,
-                -6
-              ],
-              [
-                "water",
-                -9,
-                -5
-              ]
-            ],
-            "engine": [
-              [
-                "air",
-                -11,
-                -4
-              ],
-              [
-                "air",
-                -10,
-                -6
-              ],
-              [
-                "water",
-                -9,
-                -6
-              ],
-              [
-                "water",
-                -9,
-                -5
-              ]
-            ]
-          }
-        }
-      },
+      "status": "reference-gap",
+      "firstDivergence": null,
       "engineError": null
     },
     {
@@ -551,83 +259,8 @@
           "sha256Matches": true
         }
       ],
-      "status": "diverged",
-      "firstDivergence": {
-        "frameIndex": 8,
-        "legacyCycle": 8,
-        "engineCycle": 8,
-        "classification": {
-          "subsystem": "pivot",
-          "reason": "atom-position-divergence",
-          "instructions": [
-            {
-              "partId": "part-0",
-              "instruction": "pivot_cw"
-            }
-          ],
-          "confidence": "high"
-        },
-        "categories": {
-          "atoms": {
-            "legacyCount": 5,
-            "engineCount": 5,
-            "legacy": [
-              [
-                "salt",
-                -2,
-                3
-              ],
-              [
-                "salt",
-                0,
-                2
-              ],
-              [
-                "vitae",
-                -2,
-                1
-              ],
-              [
-                "vitae",
-                -1,
-                0
-              ],
-              [
-                "water",
-                -1,
-                2
-              ]
-            ],
-            "engine": [
-              [
-                "salt",
-                -2,
-                3
-              ],
-              [
-                "salt",
-                0,
-                2
-              ],
-              [
-                "vitae",
-                -3,
-                3
-              ],
-              [
-                "vitae",
-                -1,
-                0
-              ],
-              [
-                "water",
-                -1,
-                2
-              ]
-            ]
-          }
-        }
-      },
+      "status": "reference-gap",
+      "firstDivergence": null,
       "engineError": null
     },
     {
