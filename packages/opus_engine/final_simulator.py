@@ -123,7 +123,25 @@ class Simulator(CompleteSimulator):
                         if self.world.atoms[atom_id].held_by
                     },
                 })
-            raise SimulationError(f"{error}; outputCandidates={candidates}") from error
+            motion_state = [
+                {
+                    "armId": proposal.arm_id,
+                    "instruction": proposal.instruction,
+                    "sources": {
+                        atom_id: list(self.world.atoms[atom_id].position)
+                        for atom_id in sorted(proposal.atom_ids)
+                    },
+                    "destinations": {
+                        atom_id: list(destination)
+                        for atom_id, destination in sorted(proposal.destinations.items())
+                    },
+                    "arm": self.arms[proposal.arm_id].snapshot(),
+                }
+                for proposal in proposals
+            ]
+            raise SimulationError(
+                f"{error}; motionState={motion_state}; outputCandidates={candidates}"
+            ) from error
 
     def _process_consumers(self) -> None:
         held_by = {
