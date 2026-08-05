@@ -88,8 +88,6 @@ class Simulator(CompleteSimulator):
             raise SimulationError(f"{error}; outputCandidates={candidates}") from error
 
     def _process_consumers(self) -> None:
-        # Standard outputs consume a matching product even when a grabber is
-        # still attached to it. Preserve holder state only for atoms that remain.
         held_by = {
             atom_id: set(atom.held_by)
             for atom_id, atom in self.world.atoms.items()
@@ -108,6 +106,10 @@ class Simulator(CompleteSimulator):
                 atom.held_by.update(holders)
 
     def _respawn_inputs(self) -> None:
+        # OMSim order: spawn available inputs, then apply glyphs, then consume
+        # outputs. This is essential when a newly spawned atom immediately sits
+        # on calcification, duplication, projection, or bonding footprints.
+        BaseSimulator._respawn_inputs(self)
         self._process_calcification()
         self._process_duplication()
         self._process_animismus()
@@ -116,4 +118,3 @@ class Simulator(CompleteSimulator):
         self._process_purification()
         self._latch_repeating_outputs()
         self._process_consumers()
-        BaseSimulator._respawn_inputs(self)
