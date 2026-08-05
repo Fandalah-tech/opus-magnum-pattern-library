@@ -1,13 +1,13 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-05T12:45:00.173227+00:00",
+  "generatedAt": "2026-08-05T13:02:23.495315+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 9,
     "failed": 0,
     "engineClassifications": {
-      "match": 9
+      "arm-kinematics": 9
     }
   },
   "results": [
@@ -38,8 +38,124 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 22,
+        "legacyCycle": 22,
+        "engineCycle": 22,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-0",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-0": [
+                [
+                  0,
+                  1
+                ],
+                3,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-0": [
+                [
+                  0,
+                  1
+                ],
+                3,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 3,
+            "engineCount": 1,
+            "legacy": [
+              [
+                "salt",
+                -1,
+                1
+              ],
+              [
+                "water",
+                -1,
+                0
+              ],
+              [
+                "water",
+                -1,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "water",
+                -1,
+                2
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-0",
+                "type": "arm1",
+                "position": [
+                  0,
+                  1
+                ],
+                "rotation": 2,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -69,8 +185,209 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 51,
+        "legacyCycle": 51,
+        "engineCycle": 51,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-0",
+              "instruction": "pivot_ccw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-0": [
+                [
+                  -2,
+                  1
+                ],
+                0,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-0": [
+                [
+                  -2,
+                  1
+                ],
+                0,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 7,
+            "engineCount": 3,
+            "legacy": [
+              [
+                "fire",
+                -3,
+                1
+              ],
+              [
+                "fire",
+                -2,
+                0
+              ],
+              [
+                "fire",
+                -1,
+                0
+              ],
+              [
+                "fire",
+                -1,
+                1
+              ],
+              [
+                "fire",
+                0,
+                1
+              ],
+              [
+                "salt",
+                -2,
+                2
+              ],
+              [
+                "salt",
+                1,
+                0
+              ]
+            ],
+            "engine": [
+              [
+                "fire",
+                -3,
+                1
+              ],
+              [
+                "fire",
+                -2,
+                0
+              ],
+              [
+                "fire",
+                -1,
+                0
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-0",
+                "type": "arm1",
+                "position": [
+                  -2,
+                  1
+                ],
+                "rotation": 3,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "reset",
+                    "rawCode": "X"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 18,
+                    "instruction": "reset",
+                    "rawCode": "X"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -100,8 +417,124 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 22,
+        "legacyCycle": 22,
+        "engineCycle": 22,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-2",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-2": [
+                [
+                  0,
+                  1
+                ],
+                3,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-2": [
+                [
+                  0,
+                  1
+                ],
+                3,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 3,
+            "engineCount": 1,
+            "legacy": [
+              [
+                "earth",
+                -1,
+                0
+              ],
+              [
+                "earth",
+                -1,
+                2
+              ],
+              [
+                "salt",
+                -1,
+                1
+              ]
+            ],
+            "engine": [
+              [
+                "earth",
+                -1,
+                2
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-2",
+                "type": "arm1",
+                "position": [
+                  0,
+                  1
+                ],
+                "rotation": 2,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -131,8 +564,229 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 35,
+        "legacyCycle": 35,
+        "engineCycle": 35,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-4",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-4": [
+                [
+                  0,
+                  1
+                ],
+                5,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-4": [
+                [
+                  0,
+                  1
+                ],
+                5,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 3,
+            "engineCount": 2,
+            "legacy": [
+              [
+                "gold",
+                1,
+                0
+              ],
+              [
+                "lead",
+                -1,
+                1
+              ],
+              [
+                "quicksilver",
+                -1,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "lead",
+                -1,
+                1
+              ],
+              [
+                "quicksilver",
+                -1,
+                2
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-4",
+                "type": "arm1",
+                "position": [
+                  0,
+                  1
+                ],
+                "rotation": 3,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 18,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 19,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 20,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 21,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 22,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 23,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 24,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 25,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -162,8 +816,199 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 30,
+        "legacyCycle": 30,
+        "engineCycle": 30,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-4",
+              "instruction": "pivot_ccw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-4": [
+                [
+                  -10,
+                  -5
+                ],
+                5,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-4": [
+                [
+                  -10,
+                  -5
+                ],
+                5,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 5,
+            "engineCount": 2,
+            "legacy": [
+              [
+                "air",
+                -11,
+                -4
+              ],
+              [
+                "air",
+                -10,
+                -7
+              ],
+              [
+                "air",
+                -9,
+                -7
+              ],
+              [
+                "water",
+                -9,
+                -6
+              ],
+              [
+                "water",
+                -9,
+                -5
+              ]
+            ],
+            "engine": [
+              [
+                "air",
+                -11,
+                -4
+              ],
+              [
+                "water",
+                -9,
+                -5
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-4",
+                "type": "arm1",
+                "position": [
+                  -10,
+                  -5
+                ],
+                "rotation": 6,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -193,8 +1038,282 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 49,
+        "legacyCycle": 49,
+        "engineCycle": 49,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-7",
+              "instruction": "pivot_ccw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-7": [
+                [
+                  -4,
+                  3
+                ],
+                0,
+                2,
+                true
+              ]
+            },
+            "engine": {
+              "part-7": [
+                [
+                  -4,
+                  3
+                ],
+                0,
+                2,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 6,
+            "engineCount": 3,
+            "legacy": [
+              [
+                "lead",
+                -1,
+                3
+              ],
+              [
+                "quicksilver",
+                -5,
+                3
+              ],
+              [
+                "tin",
+                -3,
+                4
+              ],
+              [
+                "tin",
+                -1,
+                2
+              ],
+              [
+                "water",
+                -6,
+                3
+              ],
+              [
+                "water",
+                -2,
+                3
+              ]
+            ],
+            "engine": [
+              [
+                "lead",
+                -1,
+                3
+              ],
+              [
+                "quicksilver",
+                -5,
+                3
+              ],
+              [
+                "water",
+                -6,
+                3
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [
+              {
+                "partId": "part-0",
+                "position": [
+                  -4,
+                  3
+                ],
+                "relativeTrackHexes": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                "absoluteTrackHexes": [
+                  [
+                    -4,
+                    3
+                  ],
+                  [
+                    -3,
+                    3
+                  ]
+                ]
+              }
+            ],
+            "arms": [
+              {
+                "partId": "part-7",
+                "type": "arm1",
+                "position": [
+                  -3,
+                  3
+                ],
+                "rotation": 0,
+                "length": 2,
+                "program": [
+                  {
+                    "cycle": 4,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "track_minus",
+                    "rawCode": "a"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 18,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 19,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 20,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 21,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 22,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 23,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 24,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 25,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 26,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 27,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 28,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 29,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 30,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -224,8 +1343,164 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 37,
+        "legacyCycle": 37,
+        "engineCycle": 37,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-2",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-2": [
+                [
+                  1,
+                  0
+                ],
+                2,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-2": [
+                [
+                  1,
+                  0
+                ],
+                2,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 4,
+            "engineCount": 1,
+            "legacy": [
+              [
+                "salt",
+                -1,
+                0
+              ],
+              [
+                "salt",
+                0,
+                1
+              ],
+              [
+                "water",
+                -1,
+                1
+              ],
+              [
+                "water",
+                1,
+                1
+              ]
+            ],
+            "engine": [
+              [
+                "water",
+                1,
+                1
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-2",
+                "type": "arm1",
+                "position": [
+                  1,
+                  0
+                ],
+                "rotation": 1,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -255,8 +1530,239 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 19,
+        "legacyCycle": 19,
+        "engineCycle": 19,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-0",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-0": [
+                [
+                  -1,
+                  1
+                ],
+                0,
+                1,
+                true
+              ]
+            },
+            "engine": {
+              "part-0": [
+                [
+                  -1,
+                  1
+                ],
+                0,
+                1,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 9,
+            "engineCount": 4,
+            "legacy": [
+              [
+                "salt",
+                -2,
+                3
+              ],
+              [
+                "salt",
+                0,
+                2
+              ],
+              [
+                "salt",
+                1,
+                -1
+              ],
+              [
+                "salt",
+                2,
+                0
+              ],
+              [
+                "vitae",
+                -1,
+                0
+              ],
+              [
+                "vitae",
+                0,
+                1
+              ],
+              [
+                "vitae",
+                2,
+                1
+              ],
+              [
+                "water",
+                -1,
+                2
+              ],
+              [
+                "water",
+                1,
+                0
+              ]
+            ],
+            "engine": [
+              [
+                "salt",
+                -2,
+                3
+              ],
+              [
+                "salt",
+                0,
+                2
+              ],
+              [
+                "vitae",
+                -1,
+                0
+              ],
+              [
+                "water",
+                -1,
+                2
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [],
+            "arms": [
+              {
+                "partId": "part-0",
+                "type": "arm1",
+                "position": [
+                  -1,
+                  1
+                ],
+                "rotation": 4,
+                "length": 1,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "pivot_ccw",
+                    "rawCode": "p"
+                  },
+                  {
+                    "cycle": 18,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 19,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -286,8 +1792,337 @@
           "sha256Matches": true
         }
       ],
-      "status": "match",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 30,
+        "legacyCycle": 30,
+        "engineCycle": 30,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-5",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-5": [
+                [
+                  2,
+                  -1
+                ],
+                2,
+                2,
+                true
+              ]
+            },
+            "engine": {
+              "part-5": [
+                [
+                  2,
+                  -1
+                ],
+                2,
+                2,
+                false
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 12,
+            "engineCount": 5,
+            "legacy": [
+              [
+                "iron",
+                1,
+                2
+              ],
+              [
+                "lead",
+                3,
+                -1
+              ],
+              [
+                "quicksilver",
+                4,
+                -1
+              ],
+              [
+                "salt",
+                -3,
+                0
+              ],
+              [
+                "salt",
+                -1,
+                -1
+              ],
+              [
+                "salt",
+                -1,
+                3
+              ],
+              [
+                "salt",
+                0,
+                1
+              ],
+              [
+                "salt",
+                2,
+                3
+              ],
+              [
+                "salt",
+                3,
+                1
+              ],
+              [
+                "water",
+                -2,
+                0
+              ],
+              [
+                "water",
+                0,
+                2
+              ],
+              [
+                "water",
+                2,
+                2
+              ]
+            ],
+            "engine": [
+              [
+                "lead",
+                3,
+                -1
+              ],
+              [
+                "quicksilver",
+                4,
+                -1
+              ],
+              [
+                "salt",
+                -3,
+                0
+              ],
+              [
+                "salt",
+                -1,
+                -1
+              ],
+              [
+                "water",
+                -2,
+                0
+              ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [
+              {
+                "partId": "part-4",
+                "position": [
+                  1,
+                  -1
+                ],
+                "relativeTrackHexes": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ],
+                "absoluteTrackHexes": [
+                  [
+                    1,
+                    -1
+                  ],
+                  [
+                    2,
+                    -1
+                  ]
+                ]
+              }
+            ],
+            "arms": [
+              {
+                "partId": "part-5",
+                "type": "arm1",
+                "position": [
+                  1,
+                  -1
+                ],
+                "rotation": 3,
+                "length": 2,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "track_minus",
+                    "rawCode": "a"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 18,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 19,
+                    "instruction": "track_minus",
+                    "rawCode": "a"
+                  },
+                  {
+                    "cycle": 20,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 21,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 22,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 23,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 24,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 25,
+                    "instruction": "reset",
+                    "rawCode": "X"
+                  },
+                  {
+                    "cycle": 27,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 28,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  },
+                  {
+                    "cycle": 29,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 30,
+                    "instruction": "reset",
+                    "rawCode": "X"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       "engineError": null
     }
   ]
