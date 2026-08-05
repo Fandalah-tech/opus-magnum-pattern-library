@@ -18,6 +18,28 @@ class RotorPrefixCheckpoint:
         return asdict(self)
 
 
+def build_locked_prefix_simulator(
+    puzzle: dict[str, Any],
+    solution: dict[str, Any],
+    *,
+    settle_cycles: int = 1,
+) -> Simulator:
+    """Replay a trusted partial program and return its live terminal simulator."""
+    if settle_cycles < 0:
+        raise ValueError("settle_cycles must be non-negative")
+
+    simulator = Simulator.from_models(puzzle, solution)
+    timeline = build_program_timeline(solution)
+    cycles = list(timeline.get("cycles", []))
+    start = len(cycles)
+    cycles.extend(
+        {"cycle": start + offset, "activeArms": 0, "events": []}
+        for offset in range(settle_cycles)
+    )
+    simulator.run_timeline({**timeline, "cycles": cycles})
+    return simulator
+
+
 def replay_locked_prefix(
     puzzle: dict[str, Any],
     solution: dict[str, Any],
@@ -31,14 +53,12 @@ def replay_locked_prefix(
     instruction may need the following idle cycle for its final bond or glyph
     event to become observable.
     """
-    if settle_cycles < 0:
-        raise ValueError("settle_cycles must be non-negative")
-
-    simulator = Simulator.from_models(puzzle, solution)
-    timeline = list(build_program_timeline(solution))
-    timeline.extend({} for _ in range(settle_cycles))
-    replay = simulator.run_timeline(timeline)
-    frames = replay.get("frames", [])
+    simulator = build_locked_prefix_simulator(
+        puzzle,
+        solution,
+        settle_cycles=settle_cycles,
+    )
+    frames = simulator.frames
     final_frame = dict(frames[-1]) if frames else {}
 
     counts: dict[str, int] = {}
@@ -48,10 +68,9 @@ def replay_locked_prefix(
             if kind:
                 counts[kind] = counts.get(kind, 0) + 1
 
-    summary = replay.get("summary", {})
     return RotorPrefixCheckpoint(
-        completed_cycles=int(summary.get("completedCycles") or 0),
-        terminated_with_error=bool(summary.get("terminatedWithError")),
+        completed_cycles=max(0, len(frames) - 1),
+        terminated_with_error=bool(frames and frames[-1].get("phase") == "error"),
         event_counts=tuple(sorted(counts.items())),
         final_frame=final_frame,
     )
