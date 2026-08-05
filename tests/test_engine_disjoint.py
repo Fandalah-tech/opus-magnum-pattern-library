@@ -6,34 +6,47 @@ def make_disjoint_simulator() -> Simulator:
     world.add_atom(Atom("left", "salt", (1, 0)))
     world.add_atom(Atom("center", "salt", (3, 0)))
     world.add_atom(Atom("right", "salt", (5, 0)))
-    simulator = Simulator(
+    world.register_molecule({"left", "center", "right"}, "tripartite-salt")
+    return Simulator(
         world,
-        {
-            "left-arm": ArmState("left-arm", "arm1", (0, 0), 0, 1),
-            "center-arm": ArmState("center-arm", "arm1", (2, 0), 0, 1),
-            "right-arm": ArmState("right-arm", "arm1", (4, 0), 0, 1),
-        },
+        {"arm": ArmState("arm", "arm1", (0, 0), 0, 1)},
     )
-    return simulator
 
 
-def test_disconnected_atoms_remain_independent_mechanical_components() -> None:
+def test_disconnected_atoms_share_one_logical_mechanical_molecule() -> None:
     simulator = make_disjoint_simulator()
 
-    assert simulator.molecule_atom_ids("left") == {"left"}
-    assert simulator.molecule_atom_ids("center") == {"center"}
-    assert simulator.molecule_atom_ids("right") == {"right"}
+    expected = {"left", "center", "right"}
+    assert simulator.molecule_atom_ids("left") == expected
+    assert simulator.molecule_atom_ids("center") == expected
+    assert simulator.molecule_atom_ids("right") == expected
 
 
-def test_grabbing_one_disjoint_component_does_not_move_the_others() -> None:
+def test_grabbing_one_disjoint_part_moves_the_whole_logical_molecule() -> None:
     simulator = make_disjoint_simulator()
 
-    simulator.step({"left-arm": "grab"})
-    simulator.step({"left-arm": "rotate_ccw"})
+    simulator.step({"arm": "grab"})
+    simulator.step({"arm": "rotate_ccw"})
 
     assert simulator.world.atoms["left"].position == (0, 1)
-    assert simulator.world.atoms["center"].position == (3, 0)
-    assert simulator.world.atoms["right"].position == (5, 0)
+    assert simulator.world.atoms["center"].position == (0, 3)
+    assert simulator.world.atoms["right"].position == (0, 5)
+
+
+def test_successful_debond_recalculates_all_disjoint_components() -> None:
+    world = World()
+    world.add_atom(Atom("a", "salt", (0, 0)))
+    world.add_atom(Atom("b", "water", (1, 0)))
+    world.add_atom(Atom("remote", "salt", (4, 0)))
+    world.add_bond(Bond("a", "b"))
+    world.register_molecule({"a", "b", "remote"}, "disjoint-reagent")
+
+    assert world.molecule_atom_ids("a") == {"a", "b", "remote"}
+    assert world.remove_bond("a", "b") is True
+
+    assert world.molecule_atom_ids("a") == {"a"}
+    assert world.molecule_atom_ids("b") == {"b"}
+    assert world.molecule_atom_ids("remote") == {"remote"}
 
 
 def test_recent_bond_is_chemical_but_does_not_transmit_next_motion() -> None:
