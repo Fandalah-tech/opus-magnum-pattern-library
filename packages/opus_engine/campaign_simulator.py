@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .final_simulator import Simulator as FinalSimulator
+from .world import WorldEvent
 
 
 class Simulator(FinalSimulator):
@@ -39,19 +40,53 @@ class Simulator(FinalSimulator):
 
     def _apply_without_wheel_colliders(self, proposals) -> None:
         super()._apply_without_wheel_colliders(proposals)
-        if self.floating_bond_roots:
-            for key, root_id in list(self.floating_bond_roots.items()):
-                bond = self.world.bonds.get(key)
-                if bond is not None:
-                    self.world.events.append(self._recent_bond_settled_event(bond, root_id))
-            self.floating_bond_roots.clear()
+        self._resolve_recent_bonds_after_motion()
 
-    def _recent_bond_settled_event(self, bond, root_id):
-        from .world import WorldEvent
+    def _resolve_recent_bonds_after_motion(self) -> None:
+        """Convert one-half-cycle bond flags back to physical bonds.
 
-        return WorldEvent("floating-bond-settled", self.world.cycle, {
-            "fromAtomId": bond.a,
-            "toAtomId": bond.b,
-            "rootAtomId": root_id,
-            "type": bond.kind,
-        })
+        OMSim stores bonds as directional bits on atoms. A RECENT_BOND does not
+        transmit motion; when one endpoint moves, its bit moves with it rather
+        than preserving an impossible long-distance atom-to-atom edge. Our
+        graph model therefore keeps the edge only when the original endpoints
+        are still adjacent after the motion. Otherwise the stale edge is
+        removed.
+        """
+        for key, root_id in list(self.floating_bond_roots.items()):
+            bond = self.world.bonds.get(key)
+            if bond is None:
+                self.floating_bond_roots.pop(key, None)
+                continue
+            first = self.world.atoms.get(bond.a)
+            second = self.world.atoms.get(bond.b)
+            if first is None or second is None:
+                self.world.bonds.pop(key, None)
+                self.floating_bond_roots.pop(key, None)
+                continue
+
+            if self._adjacent_positions(first.position, second.position):
+                self.world.events.append(WorldEvent(
+                    "floating-bond-settled",
+                    self.world.cycle,
+                    {
+                        "fromAtomId": bond.a,
+                        "toAtomId": bond.b,
+                        "rootAtomId": root_id,
+                        "type": bond.kind,
+                    },
+                ))
+            else:
+                self.world.bonds.pop(key, None)
+                self.world.events.append(WorldEvent(
+                    "floating-bond-dissolved",
+                    self.world.cycle,
+                    {
+                        "fromAtomId": bond.a,
+                        "toAtomId": bond.b,
+                        "rootAtomId": root_id,
+                        "type": bond.kind,
+                        "fromPosition": list(first.position),
+                        "toPosition": list(second.position),
+                    },
+                ))
+            self.floating_bond_roots.pop(key, None)
