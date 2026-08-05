@@ -4,7 +4,7 @@ from typing import Any
 
 from .builder import rotate_hex
 from .complete_simulator import Simulator as CompleteSimulator
-from .model import Atom
+from .model import Atom, Bond
 from .simulator import ArmMutation, MotionProposal, RESET, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
@@ -17,6 +17,8 @@ class Simulator(CompleteSimulator):
     def __post_init__(self) -> None:
         self.van_berlo_arms = []
         self.completed_repeating_outputs = set()
+        self.floating_bond_keys: set[tuple[str, str, str]] = set()
+        self.pending_floating_pairs: set[frozenset[str]] = set()
         super().__post_init__()
 
     @classmethod
@@ -36,6 +38,26 @@ class Simulator(CompleteSimulator):
         if simulator.van_berlo_arms:
             simulator.frames[0] = simulator.snapshot("initial")
         return simulator
+
+    def molecule_atom_ids(self, atom_id: str) -> set[str]:
+        """Return the physically moving component, excluding floating bonds."""
+        if atom_id not in self.world.atoms:
+            return {atom_id}
+        adjacency = {item: set() for item in self.world.atoms}
+        for key, bond in self.world.bonds.items():
+            if key in self.floating_bond_keys:
+                continue
+            adjacency[bond.a].add(bond.b)
+            adjacency[bond.b].add(bond.a)
+        component = {atom_id}
+        stack = [atom_id]
+        while stack:
+            current = stack.pop()
+            for neighbor in adjacency.get(current, ()):
+                if neighbor not in component:
+                    component.add(neighbor)
+                    stack.append(neighbor)
+        return component
 
     def _plan_motion(self, arm, instruction):
         if arm.part_type == "baron" and instruction in RESET:
@@ -96,14 +118,35 @@ class Simulator(CompleteSimulator):
                     "repetitions": 3,
                 }))
 
-    def _capture_bonder_collisions(self, proposals) -> None:
-        """Resolve the transient overlap produced at a bonder endpoint.
+    @staticmethod
+    def _adjacent_positions(first, second) -> bool:
+        delta = (second[0] - first[0], second[1] - first[1])
+        return delta in {(1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)}
 
-        During the first half-cycle a moving atom may enter an occupied bonder
-        endpoint while the opposite endpoint is free. OMSim displaces the
-        stationary atom to that opposite endpoint before the collision phase;
-        the regular glyph pass then decides whether a bond can be created.
-        """
+    def _settle_floating_bonds(self) -> None:
+        for key in list(self.floating_bond_keys):
+            bond = self.world.bonds.get(key)
+            if bond is None:
+                self.floating_bond_keys.discard(key)
+                continue
+            first = self.world.atoms.get(bond.a)
+            second = self.world.atoms.get(bond.b)
+            if first is None or second is None:
+                self.floating_bond_keys.discard(key)
+                continue
+            if (
+                not first.held_by
+                and not second.held_by
+                and self._adjacent_positions(first.position, second.position)
+            ):
+                self.floating_bond_keys.discard(key)
+                self.world.events.append(WorldEvent("floating-bond-settled", self.world.cycle, {
+                    "fromAtomId": bond.a,
+                    "toAtomId": bond.b,
+                    "type": bond.kind,
+                }))
+
+    def _capture_bonder_collisions(self, proposals) -> None:
         moving_atoms = {atom_id for proposal in proposals for atom_id in proposal.atom_ids}
         destinations = {
             destination: atom_id
@@ -112,7 +155,8 @@ class Simulator(CompleteSimulator):
         }
         for first_pos, second_pos, part_id in self.bonder_pairs:
             for occupied_pos, free_pos in ((first_pos, second_pos), (second_pos, first_pos)):
-                if occupied_pos not in destinations:
+                moving_atom_id = destinations.get(occupied_pos)
+                if moving_atom_id is None:
                     continue
                 stationary = self.world.atom_at(occupied_pos)
                 if (
@@ -122,11 +166,28 @@ class Simulator(CompleteSimulator):
                 ):
                     continue
                 stationary.position = free_pos
+                self.pending_floating_pairs.add(frozenset((moving_atom_id, stationary.id)))
                 self.world.events.append(WorldEvent("atom-bonder-displaced", self.world.cycle, {
                     "glyphPartId": part_id,
                     "atomId": stationary.id,
                     "from": list(occupied_pos),
                     "to": list(free_pos),
+                }))
+
+    def _mark_pending_floating_bonds(self) -> None:
+        for pair in list(self.pending_floating_pairs):
+            if len(pair) != 2:
+                self.pending_floating_pairs.discard(pair)
+                continue
+            first, second = tuple(pair)
+            key = Bond(first, second, "normal").key
+            if key in self.world.bonds:
+                self.floating_bond_keys.add(key)
+                self.pending_floating_pairs.discard(pair)
+                self.world.events.append(WorldEvent("floating-bond-created", self.world.cycle, {
+                    "fromAtomId": first,
+                    "toAtomId": second,
+                    "type": "normal",
                 }))
 
     def _validate_and_apply(self, proposals) -> None:
@@ -178,7 +239,9 @@ class Simulator(CompleteSimulator):
             ) from error
 
     def _before_motion(self) -> None:
+        self._settle_floating_bonds()
         self._process_basic_glyphs()
+        self._mark_pending_floating_bonds()
 
     def _respawn_inputs(self) -> None:
         BaseSimulator._respawn_inputs(self)
@@ -186,6 +249,7 @@ class Simulator(CompleteSimulator):
         self._process_duplication()
         self._process_animismus()
         self._process_basic_glyphs()
+        self._mark_pending_floating_bonds()
         self._process_projection()
         self._process_purification()
         self._latch_repeating_outputs()
