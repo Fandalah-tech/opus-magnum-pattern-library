@@ -74,6 +74,7 @@ def _safe_name(value: str) -> str:
 
 def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int | None) -> list[dict[str, Any]]:
     try:
+        from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
         from playwright.sync_api import sync_playwright
     except ImportError as exc:
         raise RuntimeError(
@@ -88,23 +89,50 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(accept_downloads=True)
         page = context.new_page()
+        page.set_default_timeout(30000)
 
-        for puzzle in puzzles:
+        for puzzle_number, puzzle in enumerate(puzzles, start=1):
             puzzle_id = puzzle["puzzleId"]
-            page.goto(puzzle["leaderboardUrl"], wait_until="networkidle", timeout=120000)
+            url = puzzle["leaderboardUrl"]
+            print(f"[{puzzle_number}/{len(puzzles)}] {puzzle_id}: loading {url}", flush=True)
+            try:
+                page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                page.locator("body").wait_for(state="attached", timeout=10000)
+            except Exception as exc:
+                records.append({
+                    "puzzleId": puzzle_id,
+                    "error": f"navigation-{type(exc).__name__}: {exc}",
+                    "sourceUrl": url,
+                })
+                continue
+
             links = page.get_by_text("Download", exact=True)
+            try:
+                links.first.wait_for(state="attached", timeout=20000)
+            except PlaywrightTimeoutError:
+                records.append({
+                    "puzzleId": puzzle_id,
+                    "error": "no-download-links-found",
+                    "sourceUrl": page.url,
+                })
+                continue
+
             count = links.count()
             if limit_per_puzzle is not None:
                 count = min(count, limit_per_puzzle)
+            print(f"[{puzzle_number}/{len(puzzles)}] {puzzle_id}: {count} download(s)", flush=True)
 
             puzzle_dir = output_root / puzzle_id
             puzzle_dir.mkdir(parents=True, exist_ok=True)
             for index in range(count):
                 link = links.nth(index)
-                container_text = link.locator("xpath=ancestor::*[self::div or self::li][1]").inner_text()
+                try:
+                    container_text = link.locator("xpath=ancestor::*[self::div or self::li][1]").inner_text()
+                except Exception:
+                    container_text = ""
                 category = container_text.splitlines()[0].strip() if container_text else f"record-{index + 1}"
                 try:
-                    with page.expect_download(timeout=120000) as pending:
+                    with page.expect_download(timeout=30000) as pending:
                         link.click()
                     item = pending.value
                     suggested = item.suggested_filename or f"{puzzle_id}-{index + 1}.solution"
@@ -125,7 +153,7 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
                         "puzzleId": puzzle_id,
                         "category": category,
                         "rankOnPage": index + 1,
-                        "error": f"{type(exc).__name__}: {exc}",
+                        "error": f"download-{type(exc).__name__}: {exc}",
                         "sourceUrl": page.url,
                     })
         browser.close()
@@ -133,16 +161,16 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
 
 
 def write_index(root: Path, puzzles: list[dict[str, Any]], solutions: list[dict[str, Any]] | None = None) -> Path:
+    solution_records = solutions or []
     index = {
-        "schemaVersion": "0.1.0",
-        "sources": {
-            "puzzles": OPUSSOLVER_ARCHIVE,
-            "solutions": ZLBB_BASE,
-        },
+        "schemaVersion": "0.2.0",
+        "sources": {"puzzles": OPUSSOLVER_ARCHIVE, "solutions": ZLBB_BASE},
         "puzzleCount": len(puzzles),
-        "solutionCount": len(solutions or []),
+        "solutionRecordCount": len(solution_records),
+        "solutionFileCount": sum(1 for item in solution_records if item.get("file")),
+        "solutionErrorCount": sum(1 for item in solution_records if item.get("error")),
         "puzzles": puzzles,
-        "solutions": solutions or [],
+        "solutions": solution_records,
     }
     path = root / "index.json"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -154,20 +182,24 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Build a local Opus Magnum campaign corpus.")
     parser.add_argument("--root", type=Path, default=Path(".datasets/campaign-corpus"))
     parser.add_argument("--puzzles-only", action="store_true")
+    parser.add_argument("--puzzle-limit", type=int)
     parser.add_argument("--limit-per-puzzle", type=int)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
-    puzzles = import_puzzles(args.root, force=args.force)
+    all_puzzles = import_puzzles(args.root, force=args.force)
+    selected_puzzles = all_puzzles[: args.puzzle_limit] if args.puzzle_limit else all_puzzles
     solutions = None
     if not args.puzzles_only:
-        solutions = import_zlbb(args.root, puzzles, args.limit_per_puzzle)
-    index = write_index(args.root, puzzles, solutions)
+        solutions = import_zlbb(args.root, selected_puzzles, args.limit_per_puzzle)
+    index = write_index(args.root, all_puzzles, solutions)
     print(json.dumps({
-        "puzzles": len(puzzles),
-        "solutions": len(solutions or []),
+        "puzzles": len(all_puzzles),
+        "puzzlesScanned": len(selected_puzzles),
+        "solutionFiles": sum(1 for item in (solutions or []) if item.get("file")),
+        "solutionErrors": sum(1 for item in (solutions or []) if item.get("error")),
         "index": str(index),
-    }))
+    }), flush=True)
     return 0
 
 
