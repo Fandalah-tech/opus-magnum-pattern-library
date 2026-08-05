@@ -28,17 +28,45 @@ def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
             bond for bond in world.get("bonds", [])
             if target in {bond.get("a"), bond.get("b")}
         ]
+        life_atoms = sorted(
+            (
+                {
+                    "id": atom.get("id"),
+                    "element": atom.get("element"),
+                    "position": atom.get("position"),
+                    "heldBy": atom.get("heldBy"),
+                }
+                for atom in atoms
+                if atom.get("element") in {"vitae", "mors"}
+            ),
+            key=lambda item: str(item.get("id")),
+        )
         state = (
             tuple(target_atom.get("position", [])) if target_atom else None,
             tuple(target_atom.get("heldBy", [])) if target_atom else None,
             neighbor.get("id") if neighbor else None,
             tuple(sorted((bond.get("a"), bond.get("b"), bond.get("kind")) for bond in bonds)),
+            tuple(
+                (
+                    str(atom.get("id")),
+                    str(atom.get("element")),
+                    tuple(atom.get("position") or ()),
+                    tuple(atom.get("heldBy") or ()),
+                )
+                for atom in life_atoms
+            ),
         )
         events = [
             event for event in frame.get("events", [])
             if target in json.dumps(event, sort_keys=True)
             or (neighbor and neighbor.get("id") in json.dumps(event, sort_keys=True))
-            or event.get("kind") in {"bond-created", "bond-removed"}
+            or event.get("kind") in {
+                "atoms-animated",
+                "bond-created",
+                "bond-removed",
+                "molecule-consumed",
+                "product-delivered",
+            }
         ]
         if state != previous or events or cycle >= 205:
             spawn_atoms = [
@@ -58,6 +86,7 @@ def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "neighborAt2Minus1": neighbor,
                 "targetBonds": bonds,
                 "events": events,
+                "lifeAtoms": life_atoms,
                 "spawnAtoms": sorted(spawn_atoms, key=lambda item: str(item.get("id"))),
                 "arm": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-12"), None),
                 "baron": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-4"), None),
@@ -191,7 +220,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.4.4", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.5", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
