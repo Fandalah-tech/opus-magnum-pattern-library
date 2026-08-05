@@ -31,12 +31,12 @@ def test_sum465_seed_has_expected_reference_topology() -> None:
     }
 
 
-def test_sum465_seed_reaches_one_product_in_local_engine() -> None:
+def test_sum465_seed_delivers_all_six_products_in_local_engine() -> None:
     puzzle = _load(PUZZLE)
     solution = _load(SOLUTION)
 
-    validation = validate_generated_solution(puzzle, solution, target=1)
+    validation = validate_generated_solution(puzzle, solution, target=6)
 
     assert validation["terminatedWithError"] is False
     assert validation["complete"] is True
-    assert validation["deliveredProducts"].get("part-13", 0) >= 1
+    assert validation["deliveredProducts"].get("part-13", 0) >= 6
