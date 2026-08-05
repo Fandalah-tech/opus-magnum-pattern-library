@@ -218,7 +218,33 @@ class Simulator(FaithfulSimulator):
                     return False
         return True
 
+    def _process_disposal_exact(self) -> None:
+        """Apply the disposal glyph without weakening grab/bond guards.
+
+        The game removes only the single atom on the glyph, and only while that
+        atom is unbonded and not grabbed. It never consumes an entire molecule.
+        """
+        for position in tuple(self.disposal_cells):
+            atom = self.world.atom_at(position)
+            if atom is None or atom.held_by:
+                continue
+            if any(atom.id in (bond.a, bond.b) for bond in self.world.bonds.values()):
+                continue
+            atom_id = atom.id
+            self._remove_molecule({atom_id})
+            self.world.events.append(WorldEvent("molecule-consumed", self.world.cycle, {
+                "consumerType": "glyph-disposal",
+                "atomIds": [atom_id],
+            }))
+
     def _process_consumers(self) -> None:
+        # Disposal observes the real GRABBED state. Outputs retain the existing
+        # half-cycle compatibility behavior, where atoms already in motion may
+        # be consumed but an atom grabbed in this instruction may not.
+        self._process_disposal_exact()
+        disposal_cells = self.disposal_cells
+        self.disposal_cells = set()
+
         protected_arms = {
             arm_id
             for arm_id, instruction in self._active_instructions.items()
@@ -234,12 +260,14 @@ class Simulator(FaithfulSimulator):
             if atom is not None:
                 atom.held_by.clear()
 
-        super()._process_consumers()
-
-        for atom_id, holders in held_by.items():
-            atom = self.world.atoms.get(atom_id)
-            if atom is not None:
-                atom.held_by.update(holders)
+        try:
+            super()._process_consumers()
+        finally:
+            self.disposal_cells = disposal_cells
+            for atom_id, holders in held_by.items():
+                atom = self.world.atoms.get(atom_id)
+                if atom is not None:
+                    atom.held_by.update(holders)
 
     def _respawn_inputs(self) -> None:
         self._process_calcification()
