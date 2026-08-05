@@ -11,7 +11,7 @@
         response.clone().json().then((payload) => {
           if (!payload?.solution) return;
           requestAnimationFrame(() => {
-            viewer.render(payload.solution, payload.graph);
+            viewer.render(payload.solution, payload.graph, payload.puzzle, payload.replay);
             window.dispatchEvent(new CustomEvent('opus:analysisready', { detail: { payload, viewer } }));
           });
         }).catch(() => {});
