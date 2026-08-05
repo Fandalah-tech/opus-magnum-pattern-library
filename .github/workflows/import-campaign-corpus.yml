@@ -39,12 +39,21 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Restore campaign corpus
+        id: corpus_cache
+        uses: actions/cache@v4
+        with:
+          path: .datasets/campaign-corpus
+          key: opus-campaign-corpus-v1-3-per-puzzle
+
       - name: Install Playwright
+        if: steps.corpus_cache.outputs.cache-hit != 'true'
         run: |
           python -m pip install --upgrade pip playwright
           python -m playwright install --with-deps chromium
 
       - name: Import campaign puzzles and ZLBB solutions
+        if: steps.corpus_cache.outputs.cache-hit != 'true'
         env:
           PUZZLE_LIMIT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.puzzle_limit || '' }}
           LIMIT_PER_PUZZLE: ${{ github.event.inputs.limit_per_puzzle || '3' }}
@@ -83,11 +92,13 @@ jobs:
           failed = [item for item in corpus.get('solutions', []) if item.get('error')]
           summary = audit.get('summary', {})
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
-              out.write('## Campaign corpus import\n\n')
+              out.write('## Campaign corpus audit\n\n')
               out.write(f"- Campaign puzzles indexed: {corpus.get('puzzleCount', 0)}\n")
               out.write(f"- Solutions downloaded: {len(successful)}\n")
               out.write(f"- Download errors: {len(failed)}\n")
-              out.write(f"- Engine simulations completed: {summary.get('simulated', 0)}\n")
+              out.write(f"- Engine complete: {summary.get('engineComplete', 0)}\n")
+              out.write(f"- Engine incomplete: {summary.get('engineIncomplete', 0)}\n")
+              out.write(f"- Semantic gaps: {summary.get('semanticGaps', 0)}\n")
               out.write(f"- Engine errors: {summary.get('engineErrors', 0)}\n")
               failures = [item for item in audit.get('results', []) if item.get('status') == 'engine-error']
               if failures:
