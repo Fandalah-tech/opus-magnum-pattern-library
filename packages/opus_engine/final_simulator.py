@@ -17,8 +17,8 @@ class Simulator(CompleteSimulator):
     def __post_init__(self) -> None:
         self.van_berlo_arms = []
         self.completed_repeating_outputs = set()
-        self.floating_bond_keys: set[tuple[str, str, str]] = set()
-        self.pending_floating_pairs: set[frozenset[str]] = set()
+        self.floating_bond_roots: dict[tuple[str, str, str], str] = {}
+        self.pending_floating_pairs: dict[frozenset[str], str] = {}
         super().__post_init__()
 
     @classmethod
@@ -40,10 +40,35 @@ class Simulator(CompleteSimulator):
         return simulator
 
     def molecule_atom_ids(self, atom_id: str) -> set[str]:
-        # Disjoint bonds remain mechanically rigid: grabbing either endpoint
-        # moves the complete bonded component, even while the endpoints are not
-        # adjacent on the board.
-        return BaseSimulator.molecule_atom_ids(self, atom_id)
+        """Return the mechanically reachable component.
+
+        A bond created during the bonder overlap half-cycle is temporarily
+        directional. The displaced stationary endpoint can pull the molecule,
+        but the molecule cannot pull that endpoint until the bond settles.
+        """
+        if atom_id not in self.world.atoms:
+            return {atom_id}
+        adjacency: dict[str, set[str]] = {
+            item: set() for item in self.world.atoms
+        }
+        for key, bond in self.world.bonds.items():
+            root = self.floating_bond_roots.get(key)
+            if root is None:
+                adjacency[bond.a].add(bond.b)
+                adjacency[bond.b].add(bond.a)
+                continue
+            payload = bond.b if bond.a == root else bond.a
+            adjacency[root].add(payload)
+
+        component = {atom_id}
+        stack = [atom_id]
+        while stack:
+            current = stack.pop()
+            for neighbor in adjacency.get(current, ()):
+                if neighbor not in component:
+                    component.add(neighbor)
+                    stack.append(neighbor)
+        return component
 
     def _plan_motion(self, arm, instruction):
         if arm.part_type == "baron" and instruction in RESET:
@@ -110,25 +135,26 @@ class Simulator(CompleteSimulator):
         return delta in {(1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)}
 
     def _settle_floating_bonds(self) -> None:
-        for key in list(self.floating_bond_keys):
+        for key, root_id in list(self.floating_bond_roots.items()):
             bond = self.world.bonds.get(key)
             if bond is None:
-                self.floating_bond_keys.discard(key)
+                self.floating_bond_roots.pop(key, None)
                 continue
             first = self.world.atoms.get(bond.a)
             second = self.world.atoms.get(bond.b)
             if first is None or second is None:
-                self.floating_bond_keys.discard(key)
+                self.floating_bond_roots.pop(key, None)
                 continue
             if (
                 not first.held_by
                 and not second.held_by
                 and self._adjacent_positions(first.position, second.position)
             ):
-                self.floating_bond_keys.discard(key)
+                self.floating_bond_roots.pop(key, None)
                 self.world.events.append(WorldEvent("floating-bond-settled", self.world.cycle, {
                     "fromAtomId": bond.a,
                     "toAtomId": bond.b,
+                    "rootAtomId": root_id,
                     "type": bond.kind,
                 }))
 
@@ -152,7 +178,8 @@ class Simulator(CompleteSimulator):
                 ):
                     continue
                 stationary.position = free_pos
-                self.pending_floating_pairs.add(frozenset((moving_atom_id, stationary.id)))
+                pair = frozenset((moving_atom_id, stationary.id))
+                self.pending_floating_pairs[pair] = stationary.id
                 self.world.events.append(WorldEvent("atom-bonder-displaced", self.world.cycle, {
                     "glyphPartId": part_id,
                     "atomId": stationary.id,
@@ -161,18 +188,19 @@ class Simulator(CompleteSimulator):
                 }))
 
     def _mark_pending_floating_bonds(self) -> None:
-        for pair in list(self.pending_floating_pairs):
+        for pair, root_id in list(self.pending_floating_pairs.items()):
             if len(pair) != 2:
-                self.pending_floating_pairs.discard(pair)
+                self.pending_floating_pairs.pop(pair, None)
                 continue
             first, second = tuple(pair)
             key = Bond(first, second, "normal").key
             if key in self.world.bonds:
-                self.floating_bond_keys.add(key)
-                self.pending_floating_pairs.discard(pair)
+                self.floating_bond_roots[key] = root_id
+                self.pending_floating_pairs.pop(pair, None)
                 self.world.events.append(WorldEvent("floating-bond-created", self.world.cycle, {
                     "fromAtomId": first,
                     "toAtomId": second,
+                    "rootAtomId": root_id,
                     "type": "normal",
                 }))
 
