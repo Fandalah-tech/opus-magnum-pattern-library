@@ -60,15 +60,30 @@ class _BinaryWriter:
 
 
 def _metric_entries(solution: dict[str, Any]) -> list[tuple[int, int]]:
+    """Return the exact solved-metrics block expected by the game.
+
+    Version 7 does not encode an arbitrary metric count. A zero means an
+    unsolved file; any non-zero value is followed by exactly four id/value
+    pairs in the order cycles, cost, area and instructions.
+    """
     metrics = solution.get("metrics") or {}
-    entries: list[tuple[int, int]] = []
-    for name, code in sorted(_METRIC_CODES.items(), key=lambda item: item[1]):
-        value = metrics.get(name)
-        if value is not None:
-            entries.append((code, int(value)))
-    for item in solution.get("unknownMetrics") or []:
-        entries.append((int(item["id"]), int(item["value"])))
-    return entries
+    values = {name: metrics.get(name) for name in _METRIC_CODES}
+    present = [name for name, value in values.items() if value is not None]
+    if not present:
+        if solution.get("unknownMetrics"):
+            raise SolutionWriteError("Unknown metrics cannot be written without the canonical metric block")
+        return []
+    missing = [name for name, value in values.items() if value is None]
+    if missing:
+        raise SolutionWriteError(
+            "Solved solution files require all four metrics; missing " + ", ".join(sorted(missing))
+        )
+    if solution.get("unknownMetrics"):
+        raise SolutionWriteError("Version 7 solution files do not support additional metrics")
+    return [
+        (code, int(values[name]))
+        for name, code in sorted(_METRIC_CODES.items(), key=lambda item: item[1])
+    ]
 
 
 def write_solution_bytes(solution: dict[str, Any], *, version: int | None = None) -> bytes:
@@ -79,8 +94,8 @@ def write_solution_bytes(solution: dict[str, Any], *, version: int | None = None
     through the parser without a second internal representation.
     """
     resolved_version = int(version or (solution.get("format") or {}).get("version") or 7)
-    if resolved_version not in (6, 7):
-        raise SolutionWriteError(f"Unsupported solution version {resolved_version}; expected 6 or 7")
+    if resolved_version != 7:
+        raise SolutionWriteError(f"Writing solution version {resolved_version} is not supported; expected 7")
 
     writer = _BinaryWriter()
     writer.int32(resolved_version)
