@@ -195,8 +195,8 @@
 
   root.addEventListener('opus:replayframe', (event) => {
     const molecules = event.detail.frame?.molecules || [];
-    const playing = root.querySelector('[data-replay-play]')?.dataset.state === 'playing';
-    animateMolecules(molecules, playing ? 420 : 140);
+    const duration = Number(event.detail?.animationDuration ?? 140);
+    animateMolecules(molecules, duration);
   });
 
   window.addEventListener('opus:analysisready', () => {
