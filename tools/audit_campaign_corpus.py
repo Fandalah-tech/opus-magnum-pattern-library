@@ -10,6 +10,8 @@ from packages.opus_analysis import build_program_timeline
 from packages.opus_engine import Simulator
 from packages.opus_parser import parse_puzzle, parse_solution
 
+STANDARD_PRODUCT_TARGET = 6
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Audit imported campaign solutions against opus_engine.")
@@ -25,7 +27,8 @@ def main() -> int:
 
     results: list[dict[str, Any]] = []
     part_usage: Counter[str] = Counter()
-    failures_by_part: defaultdict[str, int] = defaultdict(int)
+    incomplete_by_part: defaultdict[str, int] = defaultdict(int)
+    errors_by_part: defaultdict[str, int] = defaultdict(int)
 
     for item in index.get("solutions", []):
         if not item.get("file"):
@@ -48,17 +51,56 @@ def main() -> int:
             record["partTypes"] = part_types
             for part_type in part_types:
                 part_usage[part_type] += 1
+
+            standard_outputs = [
+                str(part.get("id"))
+                for part in solution.get("parts", [])
+                if part.get("type") == "out-std"
+            ]
+            repeating_outputs = [
+                str(part.get("id"))
+                for part in solution.get("parts", [])
+                if part.get("type") == "out-rep"
+            ]
+
             timeline = build_program_timeline(solution)
             simulator = Simulator.from_models(puzzle, solution)
             simulator.run_timeline(timeline)
+            delivered = dict(simulator.delivered_products)
             record.update({
-                "status": "simulated",
                 "frames": len(simulator.frames),
-                "deliveredProducts": dict(simulator.delivered_products),
+                "deliveredProducts": delivered,
+                "standardOutputs": standard_outputs,
+                "repeatingOutputs": repeating_outputs,
             })
+
+            if repeating_outputs:
+                record.update({
+                    "status": "semantic-gap",
+                    "reason": "repeating-output-completion-not-yet-validated",
+                })
+            else:
+                missing = {
+                    output_id: {
+                        "delivered": int(delivered.get(output_id, 0)),
+                        "required": STANDARD_PRODUCT_TARGET,
+                    }
+                    for output_id in standard_outputs
+                    if int(delivered.get(output_id, 0)) < STANDARD_PRODUCT_TARGET
+                }
+                if missing:
+                    record.update({
+                        "status": "engine-incomplete",
+                        "reason": "standard-products-not-completed",
+                        "missingProducts": missing,
+                    })
+                    for part_type in part_types:
+                        incomplete_by_part[part_type] += 1
+                else:
+                    record["status"] = "engine-complete"
         except Exception as exc:
             for part_type in record["partTypes"]:
-                failures_by_part[part_type] += 1
+                errors_by_part[part_type] += 1
             record.update({
                 "status": "engine-error",
                 "errorType": type(exc).__name__,
@@ -67,14 +109,18 @@ def main() -> int:
         results.append(record)
         print(json.dumps(record), flush=True)
 
+    statuses = Counter(item["status"] for item in results)
     summary = {
         "total": len(results),
-        "simulated": sum(1 for item in results if item["status"] == "simulated"),
-        "engineErrors": sum(1 for item in results if item["status"] == "engine-error"),
+        "engineComplete": statuses["engine-complete"],
+        "engineIncomplete": statuses["engine-incomplete"],
+        "semanticGaps": statuses["semantic-gap"],
+        "engineErrors": statuses["engine-error"],
         "partUsage": dict(sorted(part_usage.items())),
-        "failuresByPart": dict(sorted(failures_by_part.items())),
+        "incompleteByPart": dict(sorted(incomplete_by_part.items())),
+        "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.1.0", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.2.0", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
