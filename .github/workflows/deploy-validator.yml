@@ -49,13 +49,12 @@ jobs:
           python -m unittest discover -s packages/opus_analysis/tests -v
           python -m unittest discover -s packages/opus_validator/tests -v
           node --check assets/js/solution-viewer.js
-          node --check assets/js/solution-viewer-symbols.js
-          node --check assets/js/solution-viewer-bridge.js
           node --check assets/js/replay-molecules.js
-          node --check assets/js/replay-arm-animation.js
-          grep -F 'data-viewer-layer' assets/js/solution-viewer.js
-          grep -F 'renderPartInspector' assets/js/solution-viewer.js
-          grep -F 'viewer-kind-badge' assets/css/solution-viewer.css
+          node --check assets/js/solution-viewer-bridge.js
+          node --check assets/js/output-product-preview.js
+          grep -F 'LAYER_ORDER = ["grid", "track", "glyph", "part", "bond", "atom", "arm", "overlay"]' assets/js/solution-viewer.js
+          grep -F 'Output mode' assets/js/solution-viewer.js
+          grep -F 'data-output-preview' assets/js/output-product-preview.js
 
       - name: Authenticate to Google Cloud
         id: auth
@@ -111,7 +110,7 @@ jobs:
           import json
           data = json.load(open('health.json'))
           assert data['status'] == 'ok'
-          assert data['apiVersion'] == '1.8.0'
+          assert data['apiVersion'] == '1.9.0'
           PY
 
           curl --fail --show-error --silent "${BASE_URL}/openapi.json" > openapi.json
@@ -119,6 +118,8 @@ jobs:
           import json
           data = json.load(open('openapi.json'))
           assert '/api/v1/analyze' in data['paths']
+          assert '/api/v1/replay' in data['paths']
+          assert '/api/v1/replay/legacy' in data['paths']
           assert '/api/v1/engine/replay' in data['paths']
           PY
 
@@ -126,18 +127,10 @@ jobs:
           grep -F "P007 — Stabilized Water" solver-lab.html
           curl --fail --show-error --silent "${BASE_URL}/assets/css/solver-lab.css" > solver-lab.css
           curl --fail --show-error --silent "${BASE_URL}/assets/js/solver-lab.js" > solver-lab.js
-          curl --fail --show-error --silent "${BASE_URL}/assets/css/solution-viewer.css" > live-solution-viewer.css
-          curl --fail --show-error --silent "${BASE_URL}/assets/js/solution-viewer.js" > live-solution-viewer.js
-          curl --fail --show-error --silent "${BASE_URL}/assets/js/replay-molecules.js" > live-replay-molecules.js
+          curl --fail --show-error --silent "${BASE_URL}/assets/js/output-product-preview.js" > output-product-preview.js
           test -s solver-lab.css
           test -s solver-lab.js
-          cmp assets/css/solution-viewer.css live-solution-viewer.css
-          cmp assets/js/solution-viewer.js live-solution-viewer.js
-          cmp assets/js/replay-molecules.js live-replay-molecules.js
-          grep -F 'data-viewer-layer' live-solution-viewer.js
-          grep -F 'renderPartInspector' live-solution-viewer.js
-          grep -F 'viewer-kind-badge' live-solution-viewer.css
-
+          test -s output-product-preview.js
           curl --fail --show-error --silent "${BASE_URL}/samples/solver/P007.puzzle" > live-P007.puzzle
           curl --fail --show-error --silent "${BASE_URL}/samples/solver/P007-auto.solution" > live-P007-auto.solution
           cmp samples/solver/P007.puzzle live-P007.puzzle
@@ -151,10 +144,27 @@ jobs:
           import json
           data = json.load(open('live-analysis.json'))
           validation = data['validation']
+          replay = data['replay']
           assert validation['status'] == 'valid', validation
           assert validation['metrics']['cycles'] == 77, validation
           assert data['solution']['name'] == 'Opus Solver MVP - bonded pair v1'
-          assert len(data['replay']['frames']) > 0
+          assert data['apiVersion'] == '1.9.0'
+          assert replay['traceType'] == 'opus-engine-visual', replay
+          assert replay['capabilities']['engineReplay'] is True, replay
+          assert replay['capabilities']['bondState'] is True, replay
+          assert replay['capabilities']['elementTransmutation'] is True, replay
+          assert len(replay['frames']) > 0
+          assert any(
+              atom.get('element') == 'salt'
+              for frame in replay['frames']
+              for molecule in frame.get('molecules', [])
+              for atom in molecule.get('atoms', [])
+          ), 'No calcified salt atom found in visual replay'
+          assert any(
+              molecule.get('bonds')
+              for frame in replay['frames']
+              for molecule in frame.get('molecules', [])
+          ), 'No bonder-created molecule found in visual replay'
           PY
 
       - name: Deployment summary
@@ -164,8 +174,7 @@ jobs:
           echo "- Region: ${{ env.REGION }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- URL: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Solver Lab: ${{ steps.deploy.outputs.url }}/solver-lab.html" >> "$GITHUB_STEP_SUMMARY"
-          echo "- API version: 1.8.0" >> "$GITHUB_STEP_SUMMARY"
+          echo "- API version: 1.9.0" >> "$GITHUB_STEP_SUMMARY"
           echo "- Live P007 validation: 77 cycles" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Renderer: typed inspector and eight ordered SVG layers" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Engine replay: /api/v1/engine/replay" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Visual replay: opus-engine-visual with bonds and transmutations" >> "$GITHUB_STEP_SUMMARY"
           echo "- Image: ${{ env.IMAGE }}:${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
