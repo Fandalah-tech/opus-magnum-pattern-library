@@ -14,87 +14,6 @@ STANDARD_PRODUCT_TARGET = 6
 REPEATING_PRODUCT_TARGET = 3
 
 
-def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    result: list[dict[str, Any]] = []
-    target = "part-10-mors-0"
-    previous = None
-    for frame in frames:
-        cycle = int(frame.get("cycle", 0))
-        world = frame.get("world", {})
-        atoms = world.get("atoms", [])
-        target_atom = next((item for item in atoms if item.get("id") == target), None)
-        neighbor = next((item for item in atoms if tuple(item.get("position", [])) == (2, -1)), None)
-        bonds = [
-            bond for bond in world.get("bonds", [])
-            if target in {bond.get("a"), bond.get("b")}
-        ]
-        life_atoms = sorted(
-            (
-                {
-                    "id": atom.get("id"),
-                    "element": atom.get("element"),
-                    "position": atom.get("position"),
-                    "heldBy": atom.get("heldBy"),
-                }
-                for atom in atoms
-                if atom.get("element") in {"vitae", "mors"}
-            ),
-            key=lambda item: str(item.get("id")),
-        )
-        state = (
-            tuple(target_atom.get("position", [])) if target_atom else None,
-            tuple(target_atom.get("heldBy", [])) if target_atom else None,
-            neighbor.get("id") if neighbor else None,
-            tuple(sorted((bond.get("a"), bond.get("b"), bond.get("kind")) for bond in bonds)),
-            tuple(
-                (
-                    str(atom.get("id")),
-                    str(atom.get("element")),
-                    tuple(atom.get("position") or ()),
-                    tuple(atom.get("heldBy") or ()),
-                )
-                for atom in life_atoms
-            ),
-        )
-        events = [
-            event for event in frame.get("events", [])
-            if target in json.dumps(event, sort_keys=True)
-            or (neighbor and neighbor.get("id") in json.dumps(event, sort_keys=True))
-            or event.get("kind") in {
-                "atoms-animated",
-                "bond-created",
-                "bond-removed",
-                "molecule-consumed",
-                "product-delivered",
-            }
-        ]
-        if state != previous or events or cycle >= 205:
-            spawn_atoms = [
-                {
-                    "id": atom.get("id"),
-                    "element": atom.get("element"),
-                    "position": atom.get("position"),
-                    "heldBy": atom.get("heldBy"),
-                }
-                for atom in atoms
-                if str(atom.get("id") or "").startswith("part-5-spawn-")
-            ] if 195 <= cycle <= 240 else []
-            result.append({
-                "cycle": cycle,
-                "phase": frame.get("phase"),
-                "target": target_atom,
-                "neighborAt2Minus1": neighbor,
-                "targetBonds": bonds,
-                "events": events,
-                "lifeAtoms": life_atoms,
-                "spawnAtoms": sorted(spawn_atoms, key=lambda item: str(item.get("id"))),
-                "arm": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-12"), None),
-                "baron": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-4"), None),
-            })
-        previous = state
-    return result
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description="Audit imported campaign solutions against opus_engine.")
     parser.add_argument("--root", type=Path, default=Path(".datasets/campaign-corpus"))
@@ -180,8 +99,6 @@ def main() -> int:
                     "message": str(error_event.get("message") or "Simulation terminated with an unspecified error"),
                     "completedCycles": replay.get("summary", {}).get("completedCycles"),
                 })
-                if item.get("puzzleId") == "P041" and "/002-" in str(item.get("file")):
-                    record["debugLifecycle"] = _debug_p041(simulator.frames)
                 for part_type in part_types:
                     errors_by_part[part_type] += 1
             else:
@@ -220,11 +137,11 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.4.5", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.6", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
-    return 1 if summary["engineErrors"] else 0
+    return 1 if summary["engineErrors"] or summary["engineIncomplete"] or summary["semanticGaps"] else 0
 
 
 if __name__ == "__main__":
