@@ -4,17 +4,17 @@ from typing import Any
 
 from .builder import rotate_hex
 from .faithful_simulator import Simulator as FaithfulSimulator
-from .model import Atom
+from .model import Atom, Bond
 from .simulator import GRAB, Simulator as BaseSimulator
 from .world import WorldEvent
 
 
 def _transform(
-    position: tuple[int, int],
+    position: tuple[int, int] | list[int],
     origin: tuple[int, int],
     rotation: int,
 ) -> tuple[int, int]:
-    rotated = rotate_hex(position, rotation)
+    rotated = rotate_hex((int(position[0]), int(position[1])), rotation)
     return origin[0] + rotated[0], origin[1] + rotated[1]
 
 
@@ -25,12 +25,14 @@ class Simulator(FaithfulSimulator):
         self.animismus_glyphs = []
         self.duplication_glyphs = []
         self.faithful_purification_glyphs = []
+        self.repeating_patterns = []
         super().__post_init__()
 
     @classmethod
     def from_models(cls, puzzle: dict[str, Any], solution: dict[str, Any]) -> "Simulator":
         simulator = super().from_models(puzzle, solution)
         simulator.purification_glyphs = []
+        products = puzzle.get("products", [])
         for part in solution.get("parts", []):
             part_type = str(part.get("type") or "")
             origin = tuple(part.get("position") or (0, 0))
@@ -56,6 +58,35 @@ class Simulator(FaithfulSimulator):
                     _transform((1, 0), origin, rotation),
                     _transform((0, 1), origin, rotation),
                     part_id,
+                ))
+            elif part_type == "out-rep":
+                product_index = int(part.get("which") or 0)
+                if not 0 <= product_index < len(products):
+                    continue
+                product = products[product_index]
+                real_atoms = [atom for atom in product.get("atoms", []) if atom.get("element") != "repeat"]
+                repeat_atoms = [atom for atom in product.get("atoms", []) if atom.get("element") == "repeat"]
+                if not real_atoms or not repeat_atoms:
+                    continue
+                anchor_local = tuple(real_atoms[0].get("position") or (0, 0))
+                repeat_local = tuple(repeat_atoms[0].get("position") or (0, 0))
+                anchor = _transform(anchor_local, origin, rotation)
+                repeat_position = _transform(repeat_local, origin, rotation)
+                shift = (repeat_position[0] - anchor[0], repeat_position[1] - anchor[1])
+                atoms = tuple(
+                    (tuple(atom.get("position") or (0, 0)), str(atom.get("element")))
+                    for atom in real_atoms
+                )
+                bonds = tuple(
+                    (
+                        str(bond.get("type") or "normal"),
+                        tuple(bond.get("from") or (0, 0)),
+                        tuple(bond.get("to") or (0, 0)),
+                    )
+                    for bond in product.get("bonds", [])
+                )
+                simulator.repeating_patterns.append((
+                    part_id, origin, rotation, anchor_local, repeat_local, shift, atoms, bonds,
                 ))
         return simulator
 
@@ -144,6 +175,48 @@ class Simulator(FaithfulSimulator):
                 "element": produced,
                 "position": list(output_pos),
             }))
+
+    def repeating_product_complete(self, output_id: str, repetitions: int = 3) -> bool:
+        pattern = next((item for item in self.repeating_patterns if item[0] == output_id), None)
+        if pattern is None:
+            return False
+        _, origin, rotation, anchor_local, repeat_local, shift, atoms, bonds = pattern
+        repeat_set = {repeat_local}
+
+        def position_for(local: tuple[int, int], repetition: int) -> tuple[int, int]:
+            base = _transform(local, origin, rotation)
+            return base[0] + repetition * shift[0], base[1] + repetition * shift[1]
+
+        atom_ids: dict[tuple[int, tuple[int, int]], str] = {}
+        for repetition in range(repetitions):
+            for local, element in atoms:
+                position = position_for(local, repetition)
+                atom = self.world.atom_at(position)
+                if atom is None or atom.element != element:
+                    return False
+                atom_ids[(repetition, local)] = atom.id
+
+        for repetition in range(repetitions):
+            for kind, start, end in bonds:
+                start_rep = repetition
+                end_rep = repetition
+                start_local = start
+                end_local = end
+                if start in repeat_set:
+                    start_rep += 1
+                    start_local = anchor_local
+                if end in repeat_set:
+                    end_rep += 1
+                    end_local = anchor_local
+                if start_rep >= repetitions or end_rep >= repetitions:
+                    continue
+                first_id = atom_ids.get((start_rep, start_local))
+                second_id = atom_ids.get((end_rep, end_local))
+                if first_id is None or second_id is None:
+                    return False
+                if Bond(first_id, second_id, kind).key not in self.world.bonds:
+                    return False
+        return True
 
     def _process_consumers(self) -> None:
         protected_arms = {
