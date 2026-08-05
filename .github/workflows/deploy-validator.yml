@@ -43,11 +43,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run SDK tests
+      - name: Run SDK and renderer checks
         run: |
           python -m unittest discover -s packages/opus_parser/tests -v
           python -m unittest discover -s packages/opus_analysis/tests -v
           python -m unittest discover -s packages/opus_validator/tests -v
+          node --check assets/js/solution-viewer.js
+          node --check assets/js/solution-viewer-symbols.js
+          node --check assets/js/solution-viewer-bridge.js
+          node --check assets/js/replay-molecules.js
+          node --check assets/js/replay-arm-animation.js
+          grep -F 'data-viewer-layer' assets/js/solution-viewer.js
+          grep -F 'renderPartInspector' assets/js/solution-viewer.js
+          grep -F 'viewer-kind-badge' assets/css/solution-viewer.css
 
       - name: Authenticate to Google Cloud
         id: auth
@@ -118,8 +126,18 @@ jobs:
           grep -F "P007 — Stabilized Water" solver-lab.html
           curl --fail --show-error --silent "${BASE_URL}/assets/css/solver-lab.css" > solver-lab.css
           curl --fail --show-error --silent "${BASE_URL}/assets/js/solver-lab.js" > solver-lab.js
+          curl --fail --show-error --silent "${BASE_URL}/assets/css/solution-viewer.css" > live-solution-viewer.css
+          curl --fail --show-error --silent "${BASE_URL}/assets/js/solution-viewer.js" > live-solution-viewer.js
+          curl --fail --show-error --silent "${BASE_URL}/assets/js/replay-molecules.js" > live-replay-molecules.js
           test -s solver-lab.css
           test -s solver-lab.js
+          cmp assets/css/solution-viewer.css live-solution-viewer.css
+          cmp assets/js/solution-viewer.js live-solution-viewer.js
+          cmp assets/js/replay-molecules.js live-replay-molecules.js
+          grep -F 'data-viewer-layer' live-solution-viewer.js
+          grep -F 'renderPartInspector' live-solution-viewer.js
+          grep -F 'viewer-kind-badge' live-solution-viewer.css
+
           curl --fail --show-error --silent "${BASE_URL}/samples/solver/P007.puzzle" > live-P007.puzzle
           curl --fail --show-error --silent "${BASE_URL}/samples/solver/P007-auto.solution" > live-P007-auto.solution
           cmp samples/solver/P007.puzzle live-P007.puzzle
@@ -148,5 +166,6 @@ jobs:
           echo "- Solver Lab: ${{ steps.deploy.outputs.url }}/solver-lab.html" >> "$GITHUB_STEP_SUMMARY"
           echo "- API version: 1.8.0" >> "$GITHUB_STEP_SUMMARY"
           echo "- Live P007 validation: 77 cycles" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Renderer: typed inspector and eight ordered SVG layers" >> "$GITHUB_STEP_SUMMARY"
           echo "- Engine replay: /api/v1/engine/replay" >> "$GITHUB_STEP_SUMMARY"
           echo "- Image: ${{ env.IMAGE }}:${{ github.sha }}" >> "$GITHUB_STEP_SUMMARY"
