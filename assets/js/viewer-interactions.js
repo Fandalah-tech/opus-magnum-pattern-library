@@ -39,6 +39,9 @@
     window.__OPUS_CLEAR_SELECTION__ = clearSelection;
     window.__OPUS_CAPTURE_READY__ = true;
 
+    // The board is the useful default state: no dimming and no selection glow.
+    clearSelection();
+
     const svg = viewer?.svg || root.querySelector('svg');
     if (!svg || svg.dataset.emptyDeselectBound === 'true') return;
     svg.dataset.emptyDeselectBound = 'true';
