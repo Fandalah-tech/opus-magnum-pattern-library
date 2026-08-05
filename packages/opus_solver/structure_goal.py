@@ -27,14 +27,13 @@ def _normalize_edges(edges: Iterable[Edge]) -> tuple[Edge, ...]:
         return ()
     points = [point for edge in materialized for point in edge]
     anchor = min(points)
-    shifted = [
+    return tuple(sorted(
         _canon_edge(
             (a[0] - anchor[0], a[1] - anchor[1]),
             (b[0] - anchor[0], b[1] - anchor[1]),
         )
         for a, b in materialized
-    ]
-    return tuple(sorted(shifted))
+    ))
 
 
 def _rotations(points: Iterable[Hex]) -> tuple[tuple[Hex, ...], ...]:
@@ -48,6 +47,14 @@ def _edge_rotations(edges: Iterable[Edge]) -> tuple[tuple[Edge, ...], ...]:
         _normalize_edges((rotate_hex(a, steps), rotate_hex(b, steps)) for a, b in source)
         for steps in range(6)
     )
+
+
+@dataclass(frozen=True, slots=True)
+class StructureMatch:
+    occupied_positions: int
+    matched_edges: int
+    translation: Hex
+    rotation: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -75,42 +82,65 @@ class StructureGoal:
             edge_variants=_edge_rotations(edges),
         )
 
-    def world_positions(self, simulator: Any) -> tuple[Hex, ...]:
-        return _normalize_positions(tuple(atom.position) for atom in simulator.world.atoms.values())
+    def _eligible_atom_ids(self, simulator: Any) -> set[str]:
+        baron_ids = {
+            arm_id for arm_id, arm in getattr(simulator, "arms", {}).items()
+            if getattr(arm, "part_type", "") == "baron"
+        }
+        return {
+            atom_id for atom_id, atom in simulator.world.atoms.items()
+            if not atom.held_by.intersection(baron_ids)
+        }
 
-    def world_edges(self, simulator: Any) -> tuple[Edge, ...]:
-        edges = []
-        for bond in simulator.world.bonds.values():
-            a = simulator.world.atoms[bond.a].position
-            b = simulator.world.atoms[bond.b].position
-            edges.append(_canon_edge(a, b))
-        return _normalize_edges(edges)
+    def best_match(self, simulator: Any) -> StructureMatch:
+        eligible = self._eligible_atom_ids(simulator)
+        occupied = {
+            simulator.world.atoms[atom_id].position: atom_id
+            for atom_id in eligible
+        }
+        world_edges = {
+            _canon_edge(
+                simulator.world.atoms[bond.a].position,
+                simulator.world.atoms[bond.b].position,
+            )
+            for bond in simulator.world.bonds.values()
+            if bond.a in eligible and bond.b in eligible
+        }
+        if not occupied:
+            return StructureMatch(0, 0, (0, 0), 0)
+
+        best = StructureMatch(0, 0, (0, 0), 0)
+        world_positions = tuple(occupied)
+        for rotation, (positions, edges) in enumerate(zip(self.position_variants, self.edge_variants, strict=True)):
+            translations = {
+                (world[0] - target[0], world[1] - target[1])
+                for world in world_positions
+                for target in positions
+            }
+            for translation in translations:
+                shifted_positions = {
+                    (point[0] + translation[0], point[1] + translation[1])
+                    for point in positions
+                }
+                occupied_count = len(shifted_positions.intersection(occupied))
+                shifted_edges = {
+                    _canon_edge(
+                        (a[0] + translation[0], a[1] + translation[1]),
+                        (b[0] + translation[0], b[1] + translation[1]),
+                    )
+                    for a, b in edges
+                }
+                edge_count = len(shifted_edges.intersection(world_edges))
+                candidate = StructureMatch(occupied_count, edge_count, translation, rotation)
+                if (candidate.matched_edges, candidate.occupied_positions) > (best.matched_edges, best.occupied_positions):
+                    best = candidate
+        return best
 
     def reached(self, simulator: Any) -> bool:
-        if len(simulator.world.atoms) != self.atom_count:
-            return False
-        if len(simulator.world.bonds) != self.bond_count:
-            return False
-        return (
-            self.world_positions(simulator) in self.position_variants
-            and self.world_edges(simulator) in self.edge_variants
-        )
+        match = self.best_match(simulator)
+        return match.occupied_positions == self.atom_count and match.matched_edges == self.bond_count
 
     def score(self, simulator: Any) -> int:
-        """Higher is better; elements and Van Berlo state are intentionally ignored."""
-        atoms = tuple(simulator.world.atoms.values())
-        bonds = tuple(simulator.world.bonds.values())
-        count_score = -abs(self.atom_count - len(atoms)) * 40
-        bond_count_score = -abs(self.bond_count - len(bonds)) * 60
-
-        world_positions = set(self.world_positions(simulator))
-        position_overlap = max(
-            (len(world_positions.intersection(variant)) for variant in self.position_variants),
-            default=0,
-        )
-        world_edges = set(self.world_edges(simulator))
-        edge_overlap = max(
-            (len(world_edges.intersection(variant)) for variant in self.edge_variants),
-            default=0,
-        )
-        return count_score + bond_count_score + position_overlap * 8 + edge_overlap * 30
+        """Higher is better; elements, spare reagents and Van Berlo wheel atoms are ignored."""
+        match = self.best_match(simulator)
+        return match.occupied_positions * 12 + match.matched_edges * 80
