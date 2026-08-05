@@ -149,10 +149,8 @@ def main() -> int:
             if status == "diverged":
                 classification = engine.get("firstDivergence", {}).get("classification", {})
                 classifications[str(classification.get("subsystem") or "unclassified")] += 1
-            elif status == "engine-error":
-                classifications["engine-error"] += 1
-            elif status == "match":
-                classifications["match"] += 1
+            elif status in {"engine-error", "match", "reference-gap"}:
+                classifications[status] += 1
             else:
                 classifications["unknown"] += 1
 
@@ -170,7 +168,7 @@ def main() -> int:
         })
 
     report = {
-        "schemaVersion": "0.4.2",
+        "schemaVersion": "0.4.3",
         "manifest": manifest["id"],
         "validatorUrl": args.validator_url,
         "summary": {
@@ -195,6 +193,14 @@ def main() -> int:
                 "errorType": comparison.get("errorType"),
                 "message": comparison.get("message"),
                 "completedFrameCount": comparison.get("completedFrameCount"),
+            }))
+            continue
+        if status == "reference-gap":
+            print(json.dumps({
+                "puzzle": item.get("puzzle"),
+                "status": status,
+                "reason": comparison.get("reason"),
+                "unsupportedLegacyParts": comparison.get("unsupportedLegacyParts"),
             }))
             continue
         if status != "diverged":
