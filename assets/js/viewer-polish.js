@@ -3,6 +3,7 @@
   if (!root || !window.OpusSolutionViewer) return;
 
   const { axialToPixel, svgEl } = window.OpusSolutionViewer.constants;
+  const SIZE = 34;
   const ATOM_LABELS = {
     salt: 'S', air: 'A', earth: 'E', fire: 'F', water: 'W',
     quicksilver: 'Q', gold: 'Au', silver: 'Ag', copper: 'Cu', iron: 'Fe',
@@ -14,6 +15,13 @@
   let previousAtomPositions = new Map();
   let atomAnimationFrame = null;
   const armLabelFrames = new Map();
+
+  function hexPoints(x, y, radius = SIZE * .86) {
+    return Array.from({ length: 6 }, (_, index) => {
+      const angle = Math.PI / 180 * (60 * index - 30);
+      return `${x + radius * Math.cos(angle)},${y + radius * Math.sin(angle)}`;
+    }).join(' ');
+  }
 
   function reorderDynamicLayers() {
     const world = viewer?.world || root.querySelector('[data-viewer-world]');
@@ -98,6 +106,29 @@
     atomAnimationFrame = requestAnimationFrame(tick);
   }
 
+  function installFullHexHitTargets(solution) {
+    for (const part of solution?.parts || []) {
+      const group = root.querySelector(`[data-part-id="${CSS.escape(String(part.id))}"]`);
+      if (!group || group.querySelector('[data-part-hit-targets]')) continue;
+      const hits = svgEl('g', {
+        'data-part-hit-targets': String(part.id),
+        class: 'viewer-part-hit-targets'
+      });
+      for (const cell of window.OpusGeometry?.occupiedCells(part) || [part.position || [0, 0]]) {
+        const [x, y] = axialToPixel(cell);
+        hits.append(svgEl('polygon', {
+          points: hexPoints(x, y),
+          fill: '#fff',
+          'fill-opacity': .001,
+          stroke: 'none',
+          'pointer-events': 'all',
+          class: 'viewer-part-hit-target'
+        }));
+      }
+      group.prepend(hits);
+    }
+  }
+
   function armNumber(part) {
     const raw = Number(part.armNumber ?? 0);
     return Number.isFinite(raw) ? raw + 1 : 1;
@@ -107,18 +138,26 @@
     for (const part of solution?.parts || []) {
       if (!/^(arm|piston|baron)/.test(String(part.type || ''))) continue;
       const group = root.querySelector(`[data-part-id="${CSS.escape(String(part.id))}"]`);
-      if (!group || group.querySelector('[data-arm-number-label]')) continue;
+      if (!group) continue;
+
+      const decorativeHub = group.querySelector(':scope > circle:last-of-type');
+      if (decorativeHub) {
+        decorativeHub.setAttribute('opacity', '0');
+        decorativeHub.setAttribute('data-arm-hub-decoration', 'hidden');
+      }
+
+      if (group.querySelector('[data-arm-number-label]')) continue;
       const [x, y] = axialToPixel(part.position || [0, 0]);
       const label = svgEl('text', {
         x,
-        y: y + 4,
+        y: y + 5,
         'text-anchor': 'middle',
-        fill: '#f7dfab',
-        stroke: '#22180d',
-        'stroke-width': 2.5,
+        fill: '#fff1ca',
+        stroke: '#17110b',
+        'stroke-width': 3.2,
         'paint-order': 'stroke',
-        'font-size': 10,
-        'font-weight': 900,
+        'font-size': 14,
+        'font-weight': 950,
         'font-family': 'ui-sans-serif,system-ui,sans-serif',
         'data-arm-number-label': String(part.id),
         'pointer-events': 'none'
@@ -135,13 +174,13 @@
     if (previous) cancelAnimationFrame(previous);
     const [tx, ty] = axialToPixel(state.origin || [0, 0]);
     const sx = Number(label.getAttribute('x')) || tx;
-    const sy = (Number(label.getAttribute('y')) || (ty + 4)) - 4;
+    const sy = (Number(label.getAttribute('y')) || (ty + 5)) - 5;
     const started = performance.now();
     const tick = (now) => {
       const raw = duration <= 0 ? 1 : Math.min(1, (now - started) / duration);
       const t = 1 - Math.pow(1 - raw, 3);
       label.setAttribute('x', sx + (tx - sx) * t);
-      label.setAttribute('y', sy + (ty - sy) * t + 4);
+      label.setAttribute('y', sy + (ty - sy) * t + 5);
       if (raw < 1) armLabelFrames.set(String(state.partId), requestAnimationFrame(tick));
       else armLabelFrames.delete(String(state.partId));
     };
@@ -193,6 +232,7 @@
     previousAtomPositions = new Map();
     reorderDynamicLayers();
     ensureAtomLabelLayer();
+    installFullHexHitTargets(event.detail?.payload?.solution);
     installArmLabels(event.detail?.payload?.solution);
     installContentFit();
     window.__OPUS_VIEWER_FIT_CONTENT__ = () => viewer?.fit?.();
