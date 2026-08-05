@@ -39,6 +39,9 @@ jobs:
             tests/test_rotor_template.py \
             tests/test_rotor_prefix.py \
             -q
+      - name: Search compact Rotor continuation
+        timeout-minutes: 3
+        run: python tools/search_rotor_continuation.py
       - name: Report corrected Rotor prefix state
         if: always()
         run: python tools/report_rotor_prefix.py
