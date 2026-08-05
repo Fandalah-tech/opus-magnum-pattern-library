@@ -21,16 +21,23 @@ class RotorPrefixCheckpoint:
 def replay_locked_prefix(
     puzzle: dict[str, Any],
     solution: dict[str, Any],
+    *,
+    settle_cycles: int = 1,
 ) -> RotorPrefixCheckpoint:
     """Replay a human-supplied partial program and freeze its terminal state.
 
-    This checkpoint is the handoff between a trusted compact opening and the
-    autonomous local search. The complete final frame is retained so later
-    search code can reconstruct atom, arm, bond and molecule state without
-    replaying or modifying the locked prefix.
+    One idle settling cycle is included by default. Opus Magnum glyph effects
+    are resolved after arm movement, so a partial tape ending on the placement
+    instruction may need the following idle cycle for its final bond or glyph
+    event to become observable.
     """
+    if settle_cycles < 0:
+        raise ValueError("settle_cycles must be non-negative")
+
     simulator = Simulator.from_models(puzzle, solution)
-    replay = simulator.run_timeline(build_program_timeline(solution))
+    timeline = list(build_program_timeline(solution))
+    timeline.extend({} for _ in range(settle_cycles))
+    replay = simulator.run_timeline(timeline)
     frames = replay.get("frames", [])
     final_frame = dict(frames[-1]) if frames else {}
 
