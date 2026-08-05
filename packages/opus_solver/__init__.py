@@ -7,6 +7,13 @@ from .manufacturing import (
     ManufacturingPlan,
     build_manufacturing_plan,
 )
+from .mechanical_macros import (
+    MacroApplication,
+    MechanicalMacro,
+    apply_mechanical_macro,
+    enumerate_macro_successors,
+    select_macros,
+)
 from .rotor_corpus import RotorCorpusEntry, analyze_solution_zip, rank_seed_candidates, summarize_solution
 from .rotor_recipe import AtomAssignment, RotorRecipe, SourceAtom, TargetAtom, build_rotor_recipe
 from .rotor_schedule import RotorSchedule, RotorStep, build_rotor_schedule
@@ -29,8 +36,10 @@ __all__ = [
     "DisjointProductPlan",
     "ExplorationResult",
     "GeneratedSolutionError",
+    "MacroApplication",
     "ManufacturingOperation",
     "ManufacturingPlan",
+    "MechanicalMacro",
     "ProductComponent",
     "RotorCorpusEntry",
     "RotorRecipe",
@@ -45,15 +54,18 @@ __all__ = [
     "TraceMilestone",
     "UnsupportedPuzzleError",
     "analyze_solution_zip",
+    "apply_mechanical_macro",
     "build_disjoint_product_plan",
     "build_manufacturing_plan",
     "build_rotor_recipe",
     "build_rotor_schedule",
     "canonical_state_key",
     "enumerate_joint_actions",
+    "enumerate_macro_successors",
     "explore_simulator_beam",
     "explore_simulator_states",
     "rank_seed_candidates",
+    "select_macros",
     "solve_from_reference_corpus",
     "solve_puzzle",
     "summarize_solution",
