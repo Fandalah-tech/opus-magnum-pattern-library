@@ -22,35 +22,26 @@ def main() -> None:
 
     action_options = {
         arm_id: (
-            None,
-            "grab",
-            "drop",
-            "rotate_cw",
-            "rotate_ccw",
-            "pivot_cw",
-            "pivot_ccw",
-            "extend",
-            "retract",
-            "track_plus",
-            "track_minus",
+            None, "grab", "drop", "rotate_cw", "rotate_ccw",
+            "pivot_cw", "pivot_ccw", "extend", "retract",
+            "track_plus", "track_minus",
         )
         for arm_id, arm in simulator.arms.items()
         if arm.part_type == "piston"
     }
-    # First pass deliberately limits each cycle to one active piston. This is
-    # fast enough for CI and produces a useful best frontier before a later
-    # coordinated two-arm refinement pass.
     result = explore_simulator_beam(
         simulator,
         action_options,
         goal.reached,
         goal.score,
-        max_depth=24,
-        beam_width=160,
-        max_states=45_000,
+        max_depth=32,
+        beam_width=220,
+        max_states=75_000,
         max_active_arms=1,
+        time_limit_seconds=145,
     )
     best = result.simulator
+    match = goal.best_match(best) if best else None
     print(json.dumps({
         "found": result.found,
         "depth": result.depth,
@@ -59,6 +50,10 @@ def main() -> None:
         "expandedStates": result.expanded_states,
         "stoppedReason": result.stopped_reason,
         "actions": result.actions,
+        "matchedPositions": match.occupied_positions if match else None,
+        "matchedEdges": match.matched_edges if match else None,
+        "matchRotation": match.rotation if match else None,
+        "matchTranslation": list(match.translation) if match else None,
         "bestAtomCount": len(best.world.atoms) if best else None,
         "bestBondCount": len(best.world.bonds) if best else None,
         "bestPositions": sorted([list(atom.position) for atom in best.world.atoms.values()]) if best else None,
