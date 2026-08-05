@@ -49,11 +49,16 @@ class Simulator(CompleteSimulator):
                     "position": list(position),
                 }))
 
+    def repeating_product_complete(self, output_id: str, repetitions: int = 3) -> bool:
+        if output_id in self.completed_repeating_outputs:
+            return True
+        return super().repeating_product_complete(output_id, repetitions)
+
     def _latch_repeating_outputs(self) -> None:
         for output_id, *_ in self.repeating_patterns:
             if output_id in self.completed_repeating_outputs:
                 continue
-            if self.repeating_product_complete(output_id, 3):
+            if super().repeating_product_complete(output_id, 3):
                 self.completed_repeating_outputs.add(output_id)
                 self.world.events.append(WorldEvent("repeating-product-completed", self.world.cycle, {
                     "consumerPartId": output_id,
