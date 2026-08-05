@@ -36,6 +36,7 @@ jobs:
             tests/test_rotor_seed_fixture.py \
             tests/test_rotor_trace.py \
             tests/test_rotor_macros.py \
+            tests/test_rotor_template.py \
             -q
       - name: Report learned Rotor macro structure
         run: python tools/report_rotor_macros.py
