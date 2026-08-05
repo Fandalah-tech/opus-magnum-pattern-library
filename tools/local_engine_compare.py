@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -39,13 +40,33 @@ def _unsupported_oracle_parts(solution: dict[str, Any]) -> list[str]:
     })
 
 
+def _oracle_solution(solution: dict[str, Any]) -> dict[str, Any]:
+    normalized = deepcopy(solution)
+    for part in normalized.get("parts", []):
+        if part.get("type") != "track":
+            continue
+        origin = part.get("position") or [0, 0]
+        part["trackHexes"] = [
+            [int(origin[0]) + int(cell[0]), int(origin[1]) + int(cell[1])]
+            for cell in (part.get("trackHexes") or [])
+        ]
+    return normalized
+
+
 def _track_diagnostics(solution: dict[str, Any]) -> dict[str, Any]:
     return {
         "tracks": [
             {
                 "partId": part.get("id"),
                 "position": part.get("position"),
-                "trackHexes": part.get("trackHexes") or [],
+                "relativeTrackHexes": part.get("trackHexes") or [],
+                "absoluteTrackHexes": [
+                    [
+                        int((part.get("position") or [0, 0])[0]) + int(cell[0]),
+                        int((part.get("position") or [0, 0])[1]) + int(cell[1]),
+                    ]
+                    for cell in (part.get("trackHexes") or [])
+                ],
             }
             for part in solution.get("parts", [])
             if part.get("type") == "track"
@@ -80,7 +101,7 @@ def compare_pair_locally(puzzle_path: Path, solution_path: Path) -> dict[str, An
             "unsupportedLegacyParts": unsupported,
         }
 
-    oracle = build_chemical_replay_trace(puzzle, solution, timeline)
+    oracle = build_chemical_replay_trace(puzzle, _oracle_solution(solution), timeline)
     simulator = Simulator.from_models(puzzle, solution)
     try:
         engine = simulator.run_timeline(timeline)
