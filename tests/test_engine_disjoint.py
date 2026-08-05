@@ -49,23 +49,27 @@ def test_successful_debond_recalculates_all_disjoint_components() -> None:
     assert world.molecule_atom_ids("remote") == {"remote"}
 
 
-def test_recent_bond_is_chemical_but_does_not_transmit_next_motion() -> None:
+def test_recent_bond_is_chemical_but_does_not_transmit_its_motion_half_cycle() -> None:
     world = World()
     world.add_atom(Atom("moving", "salt", (1, 0)))
     world.add_atom(Atom("stationary", "water", (2, 0)))
-    bond = Bond("moving", "stationary")
-    world.add_bond(bond)
     simulator = Simulator(
         world,
         {"arm": ArmState("arm", "arm1", (0, 0), 0, 1)},
     )
+
+    # The arm must already be holding the payload when the first-half bonder
+    # phase creates a recent bond. A separate grab cycle would consume the
+    # recent-bond lifetime before the physical rotation being tested.
+    simulator.step({"arm": "grab"})
+    bond = Bond("moving", "stationary")
+    world.add_bond(bond)
     simulator.floating_bond_roots[bond.key] = "stationary"
 
     assert bond.key in world.bonds
     assert simulator.molecule_atom_ids("moving") == {"moving"}
     assert simulator.molecule_atom_ids("stationary") == {"stationary"}
 
-    simulator.step({"arm": "grab"})
     simulator.step({"arm": "rotate_ccw"})
 
     assert world.atoms["moving"].position == (0, 1)
