@@ -11,6 +11,7 @@ from packages.opus_engine import Simulator
 from packages.opus_parser import parse_puzzle, parse_solution
 
 STANDARD_PRODUCT_TARGET = 6
+REPEATING_PRODUCT_TARGET = 3
 
 
 def main() -> int:
@@ -67,12 +68,17 @@ def main() -> int:
             simulator = Simulator.from_models(puzzle, solution)
             replay = simulator.run_timeline(timeline)
             delivered = dict(simulator.delivered_products)
+            repeating_complete = {
+                output_id: simulator.repeating_product_complete(output_id, REPEATING_PRODUCT_TARGET)
+                for output_id in repeating_outputs
+            }
             record.update({
                 "frames": len(simulator.frames),
                 "requestedCycles": len(timeline.get("cycles", [])),
                 "deliveredProducts": delivered,
                 "standardOutputs": standard_outputs,
                 "repeatingOutputs": repeating_outputs,
+                "repeatingComplete": repeating_complete,
             })
 
             if replay.get("summary", {}).get("terminatedWithError"):
@@ -93,13 +99,8 @@ def main() -> int:
                 })
                 for part_type in part_types:
                     errors_by_part[part_type] += 1
-            elif repeating_outputs:
-                record.update({
-                    "status": "semantic-gap",
-                    "reason": "repeating-output-completion-not-yet-validated",
-                })
             else:
-                missing = {
+                missing_standard = {
                     output_id: {
                         "delivered": int(delivered.get(output_id, 0)),
                         "required": STANDARD_PRODUCT_TARGET,
@@ -107,11 +108,15 @@ def main() -> int:
                     for output_id in standard_outputs
                     if int(delivered.get(output_id, 0)) < STANDARD_PRODUCT_TARGET
                 }
-                if missing:
+                missing_repeating = [
+                    output_id for output_id, complete in repeating_complete.items() if not complete
+                ]
+                if missing_standard or missing_repeating:
                     record.update({
                         "status": "engine-incomplete",
-                        "reason": "standard-products-not-completed",
-                        "missingProducts": missing,
+                        "reason": "products-not-completed",
+                        "missingProducts": missing_standard,
+                        "missingRepeatingProducts": missing_repeating,
                     })
                     for part_type in part_types:
                         incomplete_by_part[part_type] += 1
@@ -139,7 +144,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.3.0", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.0", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
