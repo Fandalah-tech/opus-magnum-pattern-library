@@ -1,13 +1,15 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-05T11:42:03.275082+00:00",
+  "generatedAt": "2026-08-05T11:42:18.948335+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 6,
     "failed": 3,
     "engineClassifications": {
-      "reference-gap": 9
+      "arm-kinematics": 1,
+      "engine-error": 2,
+      "match": 6
     }
   },
   "results": [
@@ -38,7 +40,7 @@
           "sha256Matches": true
         }
       ],
-      "status": "reference-gap",
+      "status": "match",
       "firstDivergence": null,
       "engineError": null
     },
@@ -69,7 +71,7 @@
           "sha256Matches": true
         }
       ],
-      "status": "reference-gap",
+      "status": "match",
       "firstDivergence": null,
       "engineError": null
     },
@@ -100,7 +102,7 @@
           "sha256Matches": true
         }
       ],
-      "status": "reference-gap",
+      "status": "match",
       "firstDivergence": null,
       "engineError": null
     },
@@ -131,8 +133,49 @@
           "sha256Matches": true
         }
       ],
-      "status": "reference-gap",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 9,
+        "legacyCycle": 9,
+        "engineCycle": 9,
+        "classification": {
+          "subsystem": "arm-kinematics",
+          "reason": "arm-state-divergence",
+          "instructions": [
+            {
+              "partId": "part-4",
+              "instruction": "rotate_cw"
+            }
+          ],
+          "confidence": "high"
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-4": [
+                [
+                  0,
+                  1
+                ],
+                1,
+                1,
+                false
+              ]
+            },
+            "engine": {
+              "part-4": [
+                [
+                  0,
+                  1
+                ],
+                1,
+                1,
+                true
+              ]
+            }
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -162,7 +205,7 @@
           "sha256Matches": true
         }
       ],
-      "status": "reference-gap",
+      "status": "match",
       "firstDivergence": null,
       "engineError": null
     },
@@ -195,8 +238,53 @@
           "sha256Matches": false
         }
       ],
-      "status": "reference-gap",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 14,
+        "legacyCycle": 14,
+        "engineCycle": 13,
+        "classification": {
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
+          "instructions": [
+            {
+              "partId": "part-7",
+              "instruction": "track_minus"
+            }
+          ],
+          "confidence": "high",
+          "engineError": {
+            "message": "Arm part-7 cannot move beyond its track",
+            "cycle": 13
+          }
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-7": [
+                [
+                  0,
+                  0
+                ],
+                5,
+                2,
+                false
+              ]
+            },
+            "engine": {
+              "part-7": [
+                [
+                  -3,
+                  3
+                ],
+                5,
+                2,
+                false
+              ]
+            }
+          }
+        }
+      },
       "engineError": null
     },
     {
@@ -228,7 +316,7 @@
           "sha256Matches": false
         }
       ],
-      "status": "reference-gap",
+      "status": "match",
       "firstDivergence": null,
       "engineError": null
     },
@@ -259,7 +347,7 @@
           "sha256Matches": true
         }
       ],
-      "status": "reference-gap",
+      "status": "match",
       "firstDivergence": null,
       "engineError": null
     },
@@ -292,8 +380,156 @@
           "sha256Matches": false
         }
       ],
-      "status": "reference-gap",
-      "firstDivergence": null,
+      "status": "diverged",
+      "firstDivergence": {
+        "frameIndex": 29,
+        "legacyCycle": 29,
+        "engineCycle": 28,
+        "classification": {
+          "subsystem": "engine-error",
+          "reason": "simulation-error",
+          "instructions": [
+            {
+              "partId": "part-5",
+              "instruction": "track_plus"
+            }
+          ],
+          "confidence": "high",
+          "engineError": {
+            "message": "Atom part-3-spawn-1-atom-2 collides with stationary atom part-3-spawn-0-atom-2 at (-1, 0); activeArms={'part-5': {'instruction': 'track_plus', 'heldAtoms': ['part-3-spawn-1-atom-0', 'part-3-spawn-1-atom-1', 'part-3-spawn-1-atom-2']}}; atomHolders={'part-3-spawn-1-atom-2': ['part-5']}; outputs=[{'outputId': 'part-0', 'productIndex': 0, 'atoms': [((-1, 3), 'salt'), ((0, 1), 'salt'), ((0, 2), 'water'), ((1, 2), 'iron'), ((2, 2), 'water'), ((2, 3), 'salt'), ((3, 1), 'salt')], 'bonds': [('normal', (-1, 3), (0, 2)), ('normal', (0, 1), (0, 2)), ('normal', (0, 2), (1, 2)), ('normal', (1, 2), (2, 2)), ('normal', (2, 2), (2, 3)), ('normal', (2, 2), (3, 1))]}]; delivered={}; bonders=[((-1, 0), (-1, 1), 'part-2')]; unbonders=[]; calcification=[]; purification=[]; projection=[((2, 1), (1, 1), 'part-1')]",
+            "cycle": 28
+          }
+        },
+        "categories": {
+          "arms": {
+            "legacy": {
+              "part-5": [
+                [
+                  1,
+                  0
+                ],
+                3,
+                2,
+                true
+              ]
+            },
+            "engine": {
+              "part-5": [
+                [
+                  1,
+                  -1
+                ],
+                3,
+                2,
+                true
+              ]
+            }
+          },
+          "atoms": {
+            "legacyCount": 11,
+            "engineCount": 8,
+            "legacy": [
+              [
+                "lead",
+                3,
+                -1
+              ],
+              [
+                "quicksilver",
+                4,
+                -1
+              ],
+              [
+                "salt",
+                -3,
+                0
+              ],
+              [
+                "salt",
+                -3,
+                1
+              ],
+              [
+                "salt",
+                -3,
+                1
+              ],
+              [
+                "salt",
+                -1,
+                -1
+              ],
+              [
+                "salt",
+                -1,
+                0
+              ],
+              [
+                "salt",
+                -1,
+                0
+              ],
+              [
+                "water",
+                -2,
+                0
+              ],
+              [
+                "water",
+                -2,
+                1
+              ],
+              [
+                "water",
+                -2,
+                1
+              ]
+            ],
+            "engine": [
+              [
+                "lead",
+                3,
+                -1
+              ],
+              [
+                "quicksilver",
+                4,
+                -1
+              ],
+              [
+                "salt",
+                -3,
+                0
+              ],
+              [
+                "salt",
+                -3,
+                1
+              ],
+              [
+                "salt",
+                -1,
+                -1
+              ],
+              [
+                "salt",
+                -1,
+                0
+              ],
+              [
+                "water",
+                -2,
+                0
+              ],
+              [
+                "water",
+                -2,
+                1
+              ]
+            ]
+          }
+        }
+      },
       "engineError": null
     }
   ]
