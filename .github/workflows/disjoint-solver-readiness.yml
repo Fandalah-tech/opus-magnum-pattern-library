@@ -40,9 +40,9 @@ jobs:
             tests/test_rotor_template.py \
             tests/test_rotor_prefix.py \
             -q
-      - name: Search compact Rotor continuation
+      - name: Search structure-only A42 Rotor solve
         timeout-minutes: 3
-        run: python tools/search_rotor_continuation.py
+        run: python tools/search_rotor_structure.py
       - name: Report corrected Rotor prefix state
         if: always()
         run: python tools/report_rotor_prefix.py
