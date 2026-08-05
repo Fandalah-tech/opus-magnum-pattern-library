@@ -101,10 +101,10 @@ jobs:
               }
               fputc('\\n', stderr);
           }
-          if ((board->cycle == 236 || board->cycle == 237) && board->half_cycle == 2) {
+          if (board->cycle >= 200 && board->cycle <= 237 && board->half_cycle == 2) {
               fprintf(stderr, "WHEELGRID cycle=%llu half=%u", (unsigned long long)board->cycle, board->half_cycle);
-              for (int v = 1; v >= -4; --v) {
-                  for (int u = -4; u <= 1; ++u) {
+              for (int v = 3; v >= -6; --v) {
+                  for (int u = -6; u <= 4; ++u) {
                       struct vector p = {u, v};
                       atom a = *lookup_atom(board, p);
                       if ((a & VALID) && !(a & REMOVED))
