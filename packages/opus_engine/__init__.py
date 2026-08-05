@@ -1,7 +1,7 @@
 from .arm import ArmState, branch_offsets
 from .builder import InputSource, build_initial_world, build_input_sources
-from .campaign_simulator import Simulator
 from .comparison import compare_replays
+from .disjoint_simulator import Simulator
 from .model import Atom, Bond, Hex, Molecule, connected_components
 from .simulator import MotionProposal, SimulationError
 from .world import World, WorldEvent
