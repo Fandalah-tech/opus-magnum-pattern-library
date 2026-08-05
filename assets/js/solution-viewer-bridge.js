@@ -44,5 +44,6 @@
     .then(() => loadScript('assets/js/viewer-interactions.js'))
     .then(() => loadScript('assets/js/used-area-overlay.js'))
     .then(() => loadScript('assets/js/product-delivery-animation.js'))
+    .then(() => loadScript('assets/js/viewer-polish.js'))
     .then(init);
 })();
