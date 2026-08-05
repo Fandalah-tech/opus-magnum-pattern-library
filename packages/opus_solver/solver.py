@@ -125,7 +125,6 @@ def _generate_bonded_pair_solution(
     translation = (4, 3)
 
     template_salt_position = (0, -1)
-    template_direct_position = (1, -1)
     product_delta = _sub(direct.product_position, calcified.product_position)
     output_rotation = _rotation_mapping(product_delta, (1, 0))
     transformed_salt_local = rotate_hex(calcified.product_position, output_rotation)
@@ -206,9 +205,9 @@ def _generate_bonded_pair_solution(
         "name": "Opus Solver MVP - bonded pair v1",
         "metrics": {
             "cycles": 77,
-            "cost": None,
-            "area": None,
-            "instructions": None,
+            "cost": 40,
+            "area": 9,
+            "instructions": 13,
         },
         "unknownMetrics": [],
         "parts": parts,
