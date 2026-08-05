@@ -161,6 +161,12 @@ class Simulator(CompleteSimulator):
             if atom is not None:
                 atom.held_by.update(holders)
 
+    def _before_motion(self) -> None:
+        # Bonders and unbonders operate in both OMSim half-cycles. Running the
+        # first pass after grab/drop and before motion lets newly connected
+        # molecules move together during the same game cycle.
+        self._process_basic_glyphs()
+
     def _respawn_inputs(self) -> None:
         BaseSimulator._respawn_inputs(self)
         self._process_calcification()
