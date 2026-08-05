@@ -26,6 +26,11 @@ def _transform(
     return origin[0] + rotated[0], origin[1] + rotated[1]
 
 
+def _adjacent(first: tuple[int, int], second: tuple[int, int]) -> bool:
+    delta = (second[0] - first[0], second[1] - first[1])
+    return delta in {(1, 0), (0, 1), (-1, 1), (-1, 0), (0, -1), (1, -1)}
+
+
 class Simulator(RuntimeSimulator):
     """Runtime simulator with faithful track ownership and safe atom consumption."""
 
@@ -72,7 +77,14 @@ class Simulator(RuntimeSimulator):
             if not arm.track_cells:
                 return [], None
             step = 1 if instruction in TRACK_PLUS else -1
-            next_index = max(0, min(len(arm.track_cells) - 1, arm.track_index + step))
+            is_loop = (
+                len(arm.track_cells) >= 3
+                and _adjacent(arm.track_cells[-1], arm.track_cells[0])
+            )
+            if is_loop:
+                next_index = (arm.track_index + step) % len(arm.track_cells)
+            else:
+                next_index = max(0, min(len(arm.track_cells) - 1, arm.track_index + step))
             next_origin = arm.track_cells[next_index]
             delta = (next_origin[0] - arm.origin[0], next_origin[1] - arm.origin[1])
             proposal = self._translate_proposal(arm, delta, instruction)
