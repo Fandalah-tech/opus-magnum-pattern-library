@@ -55,6 +55,20 @@ def _generated(source: dict[str, Any], instruction: str, generated_by: str) -> d
     }
 
 
+def _track_next_index(
+    track: tuple[tuple[int, int], ...],
+    index: int,
+    step: int,
+    is_loop: bool,
+) -> int:
+    if not track:
+        return index
+    next_index = index + step
+    if is_loop:
+        return next_index % len(track)
+    return max(0, min(len(track) - 1, next_index))
+
+
 def _expand_arm_tape(
     arm: dict[str, Any],
     tracks: list[tuple[tuple[int, int], ...]],
@@ -114,6 +128,7 @@ def _expand_arm_tape(
             grabbing = False
             track_index = base_track_index
             track_steps = 0
+            track_looping_steps = 0
 
             for entry in tape[reset_from:n]:
                 if entry is None:
@@ -127,28 +142,20 @@ def _expand_arm_tape(
                     piston = min(3, piston + 1)
                 elif action == RETRACT:
                     piston = max(1, piston - 1)
-                elif action == TRACK_PLUS and track:
-                    next_index = track_index + 1
-                    if track_loop:
-                        next_index %= len(track)
-                    else:
-                        next_index = min(len(track) - 1, next_index)
+                elif action in {TRACK_PLUS, TRACK_MINUS} and track:
+                    step = 1 if action == TRACK_PLUS else -1
+                    next_index = _track_next_index(track, track_index, step, track_loop)
                     if next_index != track_index:
-                        track_steps += 1
-                    track_index = next_index
-                elif action == TRACK_MINUS and track:
-                    next_index = track_index - 1
-                    if track_loop:
-                        next_index %= len(track)
-                    else:
-                        next_index = max(0, next_index)
-                    if next_index != track_index:
-                        track_steps -= 1
+                        track_steps += step
                     track_index = next_index
                 elif action == GRAB:
                     grabbing = True
                 elif action == DROP:
                     grabbing = False
+
+                if track and track_index == base_track_index:
+                    track_looping_steps += track_steps
+                    track_steps = 0
 
             cursor = n
             if grabbing:
@@ -172,20 +179,29 @@ def _expand_arm_tape(
                 rotation += 1
                 cursor += 1
 
-            if track:
-                if track_loop:
-                    forward = (base_track_index - track_index) % len(track)
-                    backward = (track_index - base_track_index) % len(track)
-                    if forward < backward:
-                        return_actions = [TRACK_PLUS] * forward
-                    else:
-                        return_actions = [TRACK_MINUS] * backward
-                else:
-                    delta = base_track_index - track_index
-                    return_actions = ([TRACK_PLUS] * delta) if delta > 0 else ([TRACK_MINUS] * -delta)
-                for action in return_actions:
-                    _set_tape(tape, cursor, _generated(item, action, RESET))
-                    cursor += 1
+            # OMSim preserves the signed path accumulated since reset_from and
+            # only considers the opposite route around a loop within that search
+            # depth. This also reproduces its tie-breaking behavior.
+            if track and track_steps != 0:
+                search_depth = abs(track_steps)
+                direction = 1 if track_steps > 0 else -1
+                if track_steps * (track_steps + track_looping_steps) < 0:
+                    search_depth += 1
+                probe_index = track_index
+                for distance in range(search_depth):
+                    if probe_index == base_track_index:
+                        track_steps = -distance * direction
+                        break
+                    probe_index = _track_next_index(track, probe_index, direction, track_loop)
+
+            while track_steps > 0:
+                _set_tape(tape, cursor, _generated(item, TRACK_MINUS, RESET))
+                track_steps -= 1
+                cursor += 1
+            while track_steps < 0:
+                _set_tape(tape, cursor, _generated(item, TRACK_PLUS, RESET))
+                track_steps += 1
+                cursor += 1
 
             while piston < base_piston:
                 _set_tape(tape, cursor, _generated(item, EXTEND, RESET))
@@ -295,7 +311,7 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     active_cycle_count = sum(1 for cycle in range(horizon) if active_counts[cycle] > 0)
 
     return {
-        "schemaVersion": "0.4.0",
+        "schemaVersion": "0.4.1",
         "analysisType": "physical-decoded-global-program-timeline",
         "limitations": [
             "Reset instructions are expanded into physical motions.",
