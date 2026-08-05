@@ -75,13 +75,10 @@ class StructureGoal:
         best = StructureMatch(0, 0, (0, 0), 0)
         for rotation, (positions, edges) in enumerate(zip(self.position_variants, self.edge_variants, strict=True)):
             translations: set[Hex] = set()
-            # Bond-aligned translations are the strongest and cheapest candidates.
             for world_a, world_b in world_edges:
                 for target_a, target_b in edges:
                     translations.add((world_a[0] - target_a[0], world_a[1] - target_a[1]))
                     translations.add((world_a[0] - target_b[0], world_a[1] - target_b[1]))
-            # Before any bond exists, align only against the target center and
-            # peripheral endpoints instead of all 13xN combinations.
             probes = (positions[0], positions[len(positions) // 2], positions[-1])
             for world in occupied:
                 for target in probes:
@@ -112,6 +109,6 @@ class StructureGoal:
             1 for bond in simulator.world.bonds.values()
             if bond.a in eligible and bond.b in eligible
         )
-        # Matching target edges dominates, while any new bond provides a useful
-        # gradient before the complete structure is aligned.
-        return match.occupied_positions * 12 + match.matched_edges * 100 + min(live_bonds, self.bond_count) * 18
+        # Preserve target-aligned geometry. Incidental bonds provide only a
+        # weak gradient and cannot outweigh losing an already matched position.
+        return match.occupied_positions * 24 + match.matched_edges * 140 + min(live_bonds, self.bond_count) * 4
