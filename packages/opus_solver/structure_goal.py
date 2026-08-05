@@ -42,8 +42,10 @@ class StructureGoal:
         for steps in range(6):
             rotated_positions = [rotate_hex(point, steps) for point in positions]
             anchor = min(rotated_positions, default=(0, 0))
+
             def shift(point: Hex) -> Hex:
                 return point[0] - anchor[0], point[1] - anchor[1]
+
             position_variants.append(tuple(sorted(shift(point) for point in rotated_positions)))
             edge_variants.append(tuple(sorted(
                 _canon_edge(shift(rotate_hex(a, steps)), shift(rotate_hex(b, steps)))
@@ -109,6 +111,13 @@ class StructureGoal:
             1 for bond in simulator.world.bonds.values()
             if bond.a in eligible and bond.b in eligible
         )
+        excess_atoms = max(0, len(eligible) - self.atom_count)
         # Preserve target-aligned geometry. Incidental bonds provide only a
-        # weak gradient and cannot outweigh losing an already matched position.
-        return match.occupied_positions * 24 + match.matched_edges * 140 + min(live_bonds, self.bond_count) * 4
+        # weak gradient. Excess spawned reagents are mildly penalized so the
+        # beam does not fill the compact A42 workspace with unusable clutter.
+        return (
+            match.occupied_positions * 24
+            + match.matched_edges * 140
+            + min(live_bonds, self.bond_count) * 4
+            - excess_atoms * 10
+        )
