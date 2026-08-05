@@ -47,6 +47,21 @@ def _summary(label, result, goal):
     }
 
 
+def _plateau_score(goal, minimum_edges: int):
+    def score(simulator) -> int:
+        match = goal.best_match(simulator)
+        if match.matched_edges < minimum_edges:
+            return -100_000 + match.matched_edges * 1_000 + match.occupied_positions
+        eligible = goal._eligible_atom_ids(simulator)
+        excess_atoms = max(0, len(eligible) - goal.atom_count)
+        return (
+            match.matched_edges * 10_000
+            + match.occupied_positions * 500
+            - excess_atoms * 25
+        )
+    return score
+
+
 def main() -> None:
     puzzle = _load(PUZZLE)
     solution = _load(SEED)
@@ -58,29 +73,47 @@ def main() -> None:
         _actions(simulator),
         goal.reached,
         goal.score,
-        max_depth=24,
+        max_depth=20,
         beam_width=180,
-        max_states=45_000,
+        max_states=40_000,
         max_active_arms=1,
-        time_limit_seconds=68,
+        time_limit_seconds=45,
     )
     stages = [_summary("single-arm-frontier", stage1, goal)]
+    current = stage1
 
-    if not stage1.found and stage1.simulator is not None:
+    if not current.found and current.simulator is not None:
         stage2 = explore_simulator_beam(
-            stage1.simulator,
-            _actions(stage1.simulator),
+            current.simulator,
+            _actions(current.simulator),
             goal.reached,
             goal.score,
-            max_depth=16,
-            beam_width=110,
-            max_states=35_000,
+            max_depth=14,
+            beam_width=120,
+            max_states=32_000,
             max_active_arms=2,
-            time_limit_seconds=68,
+            time_limit_seconds=45,
         )
-        combined_actions = [*stage1.actions, *stage2.actions]
-        stage2.actions = combined_actions
+        stage2.actions = [*current.actions, *stage2.actions]
         stages.append(_summary("coordinated-refinement", stage2, goal))
+        current = stage2
+
+    if not current.found and current.simulator is not None:
+        current_match = goal.best_match(current.simulator)
+        stage3 = explore_simulator_beam(
+            current.simulator,
+            _actions(current.simulator),
+            goal.reached,
+            _plateau_score(goal, current_match.matched_edges),
+            max_depth=14,
+            beam_width=140,
+            max_states=36_000,
+            max_active_arms=2,
+            time_limit_seconds=45,
+        )
+        stage3.actions = [*current.actions, *stage3.actions]
+        stages.append(_summary("edge-plateau-position-refinement", stage3, goal))
+        current = stage3
 
     print(json.dumps({"stages": stages, "best": stages[-1]}, indent=2))
 
