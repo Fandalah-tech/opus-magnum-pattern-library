@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import asdict, dataclass
 from typing import Any
 
@@ -35,9 +36,7 @@ def build_steady_state_template(program: RotorMacroProgram) -> RotorMacroTemplat
     """Build a reusable periodic chemistry target from stable product macros.
 
     Atom identifiers and other run-specific payload are intentionally removed.
-    The resulting template states which observable chemical events must happen
-    at each phase of the steady-state period, ready for a mechanical compiler
-    to satisfy with a different arm program or layout.
+    Repeated events at the same phase are retained through multiplicity counts.
     """
     if program.steady_state_period is None or program.stable_from_product is None:
         return None
@@ -49,13 +48,13 @@ def build_steady_state_template(program: RotorMacroProgram) -> RotorMacroTemplat
     signatures = [_event_timing_signature(product) for product in products]
     exact = all(signature == signatures[0] for signature in signatures[1:])
 
-    common = set(signatures[0])
+    common = Counter(signatures[0])
     for signature in signatures[1:]:
-        common &= set(signature)
+        common &= Counter(signature)
 
     events = tuple(
-        TemplateEvent(relative_cycle=cycle, kind=kind, occurrences_per_product=1)
-        for cycle, kind in sorted(common)
+        TemplateEvent(relative_cycle=cycle, kind=kind, occurrences_per_product=count)
+        for (cycle, kind), count in sorted(common.items())
     )
     return RotorMacroTemplate(
         period=program.steady_state_period,
