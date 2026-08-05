@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-05T11:45:14.365643+00:00",
+  "generatedAt": "2026-08-05T11:47:48.401052+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
@@ -439,6 +439,191 @@
                 -2,
                 1
               ]
+            ]
+          },
+          "trackDiagnostics": {
+            "tracks": [
+              {
+                "partId": "part-4",
+                "position": [
+                  1,
+                  -1
+                ],
+                "trackHexes": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ]
+                ]
+              }
+            ],
+            "arms": [
+              {
+                "partId": "part-5",
+                "type": "arm1",
+                "position": [
+                  1,
+                  -1
+                ],
+                "rotation": 3,
+                "length": 2,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "track_minus",
+                    "rawCode": "a"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 14,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 15,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 16,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 17,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 18,
+                    "instruction": "drop",
+                    "rawCode": "g"
+                  },
+                  {
+                    "cycle": 19,
+                    "instruction": "track_minus",
+                    "rawCode": "a"
+                  },
+                  {
+                    "cycle": 20,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 21,
+                    "instruction": "rotate_ccw",
+                    "rawCode": "r"
+                  },
+                  {
+                    "cycle": 22,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 23,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 24,
+                    "instruction": "pivot_cw",
+                    "rawCode": "P"
+                  },
+                  {
+                    "cycle": 25,
+                    "instruction": "reset",
+                    "rawCode": "X"
+                  },
+                  {
+                    "cycle": 27,
+                    "instruction": "grab",
+                    "rawCode": "G"
+                  },
+                  {
+                    "cycle": 28,
+                    "instruction": "track_plus",
+                    "rawCode": "A"
+                  },
+                  {
+                    "cycle": 29,
+                    "instruction": "rotate_cw",
+                    "rawCode": "R"
+                  },
+                  {
+                    "cycle": 30,
+                    "instruction": "reset",
+                    "rawCode": "X"
+                  }
+                ]
+              }
             ]
           }
         }
