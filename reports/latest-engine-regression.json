@@ -1,11 +1,11 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-05T11:49:45.289619+00:00",
+  "generatedAt": "2026-08-05T11:51:27.839387+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
-    "passed": 6,
-    "failed": 3,
+    "passed": 9,
+    "failed": 0,
     "engineClassifications": {
       "match": 9
     }
@@ -169,10 +169,8 @@
     {
       "puzzle": "P012.puzzle",
       "solution": "60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution",
-      "referencePassed": false,
-      "referenceErrors": [
-        "sha256 mismatch: 60g-27i-312c-39a-7h-6.5w-5b-54r-39a0-7h-6.5w-5b_PRECISION_MACHINE_OIL.solution expected=bd31ccbe88d752a27dc62bd9a524914c58113df9fd399831555048471d1aa439 actual=2a1a59e26ab173f314fdd729843bf8b33e616858818574f0e5268e5c17f0cb9b"
-      ],
+      "referencePassed": true,
+      "referenceErrors": [],
       "fixtureChecks": [
         {
           "file": "P012.puzzle",
@@ -189,10 +187,10 @@
           "exists": true,
           "expectedSize": 514,
           "actualSize": 514,
-          "expectedSha256": "bd31ccbe88d752a27dc62bd9a524914c58113df9fd399831555048471d1aa439",
+          "expectedSha256": "2a1a59e26ab173f314fdd729843bf8b33e616858818574f0e5268e5c17f0cb9b",
           "actualSha256": "2a1a59e26ab173f314fdd729843bf8b33e616858818574f0e5268e5c17f0cb9b",
           "sizeMatches": true,
-          "sha256Matches": false
+          "sha256Matches": true
         }
       ],
       "status": "match",
@@ -202,10 +200,8 @@
     {
       "puzzle": "P013.puzzle",
       "solution": "40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution",
-      "referencePassed": false,
-      "referenceErrors": [
-        "sha256 mismatch: 40g-13i-233c-14a-4h-4w-3b-39r-14a0-4h-4w-3b-T_HANGOVER_CURE.solution expected=ca720153bda8aaea130386a42d597d1ce3a9ef5e04f2220e0c3f291bb51df9a7 actual=b4a251a600f90cb4cf04a753550a48769cb40b3d8b19d4f6d7d2a21983ddb4bc"
-      ],
+      "referencePassed": true,
+      "referenceErrors": [],
       "fixtureChecks": [
         {
           "file": "P013.puzzle",
@@ -222,10 +218,10 @@
           "exists": true,
           "expectedSize": 320,
           "actualSize": 320,
-          "expectedSha256": "ca720153bda8aaea130386a42d597d1ce3a9ef5e04f2220e0c3f291bb51df9a7",
+          "expectedSha256": "b4a251a600f90cb4cf04a753550a48769cb40b3d8b19d4f6d7d2a21983ddb4bc",
           "actualSha256": "b4a251a600f90cb4cf04a753550a48769cb40b3d8b19d4f6d7d2a21983ddb4bc",
           "sizeMatches": true,
-          "sha256Matches": false
+          "sha256Matches": true
         }
       ],
       "status": "match",
@@ -266,10 +262,8 @@
     {
       "puzzle": "P015.puzzle",
       "solution": "60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution",
-      "referencePassed": false,
-      "referenceErrors": [
-        "sha256 mismatch: 60g-33i-196c-37a-6h-6.5w-5b-33r-37a0-6h-6.5w-5b_STAMINA_POTION.solution expected=2095c89fb4d728f65b345e4ba8d5559c7d628698a4689f234b7bbab4e701db0b actual=53af6a8165c0c60a99bd42147ca3322b8cffe6dd1b0db526554b88ae61a357fa"
-      ],
+      "referencePassed": true,
+      "referenceErrors": [],
       "fixtureChecks": [
         {
           "file": "P015.puzzle",
@@ -286,10 +280,10 @@
           "exists": true,
           "expectedSize": 520,
           "actualSize": 520,
-          "expectedSha256": "2095c89fb4d728f65b345e4ba8d5559c7d628698a4689f234b7bbab4e701db0b",
+          "expectedSha256": "53af6a8165c0c60a99bd42147ca3322b8cffe6dd1b0db526554b88ae61a357fa",
           "actualSha256": "53af6a8165c0c60a99bd42147ca3322b8cffe6dd1b0db526554b88ae61a357fa",
           "sizeMatches": true,
-          "sha256Matches": false
+          "sha256Matches": true
         }
       ],
       "status": "match",
