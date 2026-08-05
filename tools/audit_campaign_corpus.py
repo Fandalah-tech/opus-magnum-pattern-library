@@ -35,6 +35,7 @@ def main() -> int:
             "puzzleId": item.get("puzzleId"),
             "category": item.get("category"),
             "solution": item.get("file"),
+            "partTypes": [],
         }
         try:
             solution = parse_solution(solution_path)
@@ -44,6 +45,7 @@ def main() -> int:
                 raise FileNotFoundError(f"No puzzle found for {puzzle_key}")
             puzzle = parse_puzzle(puzzle_path)
             part_types = sorted({str(part.get("type") or "") for part in solution.get("parts", [])})
+            record["partTypes"] = part_types
             for part_type in part_types:
                 part_usage[part_type] += 1
             timeline = build_program_timeline(solution)
@@ -51,19 +53,16 @@ def main() -> int:
             simulator.run_timeline(timeline)
             record.update({
                 "status": "simulated",
-                "partTypes": part_types,
                 "frames": len(simulator.frames),
                 "deliveredProducts": dict(simulator.delivered_products),
             })
         except Exception as exc:
-            part_types = record.get("partTypes") or []
-            for part_type in part_types:
+            for part_type in record["partTypes"]:
                 failures_by_part[part_type] += 1
             record.update({
                 "status": "engine-error",
                 "errorType": type(exc).__name__,
                 "message": str(exc),
-                "partTypes": part_types,
             })
         results.append(record)
         print(json.dumps(record), flush=True)
