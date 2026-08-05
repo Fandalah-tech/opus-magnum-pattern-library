@@ -81,7 +81,16 @@ def main() -> int:
                 "repeatingComplete": repeating_complete,
             })
 
-            if replay.get("summary", {}).get("terminatedWithError"):
+            targets_complete = (
+                all(int(delivered.get(output_id, 0)) >= STANDARD_PRODUCT_TARGET for output_id in standard_outputs)
+                and all(repeating_complete.values())
+            )
+            # The game ends as soon as every target has been delivered. Tape
+            # instructions after that point are unreachable and cannot invalidate
+            # an already completed solution.
+            if targets_complete:
+                record["status"] = "engine-complete"
+            elif replay.get("summary", {}).get("terminatedWithError"):
                 last_frame = replay.get("frames", [])[-1] if replay.get("frames") else {}
                 error_event = next(
                     (
@@ -144,7 +153,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.4.0", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.1", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
