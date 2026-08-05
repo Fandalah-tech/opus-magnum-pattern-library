@@ -157,3 +157,41 @@ def test_input_respawns_after_full_footprint_clears() -> None:
         ("water", (1, 0)),
     ]
     assert source.spawn_count == 2
+
+
+def test_calcification_converts_classical_element_and_preserves_bonds() -> None:
+    puzzle = {"products": []}
+    solution = {
+        "parts": [
+            {"id": "calc", "type": "glyph-calcification", "position": [0, 0], "rotation": 0},
+        ]
+    }
+    world = World()
+    world.add_atom(Atom("water", "water", (0, 0)))
+    world.add_atom(Atom("neighbor", "salt", (1, 0)))
+    world.add_bond(Bond("water", "neighbor"))
+    simulator = Simulator.from_models(puzzle, solution)
+    simulator.world = world
+
+    frame = simulator.step({})
+
+    assert world.atoms["water"].element == "salt"
+    assert Bond("water", "neighbor").key in world.bonds
+    assert any(event["kind"] == "atom-calcified" for event in frame["events"])
+
+
+def test_calcification_ignores_non_classical_atoms() -> None:
+    puzzle = {"products": []}
+    solution = {
+        "parts": [
+            {"id": "calc", "type": "glyph-calcification", "position": [0, 0], "rotation": 0},
+        ]
+    }
+    world = World()
+    world.add_atom(Atom("gold", "gold", (0, 0)))
+    simulator = Simulator.from_models(puzzle, solution)
+    simulator.world = world
+
+    simulator.step({})
+
+    assert world.atoms["gold"].element == "gold"
