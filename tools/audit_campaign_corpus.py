@@ -41,6 +41,16 @@ def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
             or event.get("kind") in {"bond-created", "bond-removed"}
         ]
         if state != previous or events or cycle >= 205:
+            spawn_atoms = [
+                {
+                    "id": atom.get("id"),
+                    "element": atom.get("element"),
+                    "position": atom.get("position"),
+                    "heldBy": atom.get("heldBy"),
+                }
+                for atom in atoms
+                if str(atom.get("id") or "").startswith("part-5-spawn-")
+            ] if 195 <= cycle <= 240 else []
             result.append({
                 "cycle": cycle,
                 "phase": frame.get("phase"),
@@ -48,7 +58,9 @@ def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "neighborAt2Minus1": neighbor,
                 "targetBonds": bonds,
                 "events": events,
+                "spawnAtoms": sorted(spawn_atoms, key=lambda item: str(item.get("id"))),
                 "arm": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-12"), None),
+                "baron": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-4"), None),
             })
         previous = state
     return result
