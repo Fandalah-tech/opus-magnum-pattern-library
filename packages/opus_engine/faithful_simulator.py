@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from .builder import rotate_hex
+from .model import Bond
 from .runtime_simulator import METAL_ORDER, Simulator as RuntimeSimulator
 from .simulator import ArmMutation, TRACK_MINUS, TRACK_PLUS
 from .world import WorldEvent
@@ -13,6 +15,15 @@ def _absolute_track(part: dict[str, Any]) -> tuple[tuple[int, int], ...]:
         (origin[0] + int(cell[0]), origin[1] + int(cell[1]))
         for cell in (part.get("trackHexes") or [])
     )
+
+
+def _transform(
+    position: tuple[int, int],
+    origin: tuple[int, int],
+    rotation: int,
+) -> tuple[int, int]:
+    rotated = rotate_hex(position, rotation)
+    return origin[0] + rotated[0], origin[1] + rotated[1]
 
 
 class Simulator(RuntimeSimulator):
@@ -36,6 +47,21 @@ class Simulator(RuntimeSimulator):
             else:
                 arm.track_index = 0
             arm.base_track_index = arm.track_index
+
+        simulator.prismatic_bonders = []
+        for part in solution.get("parts", []):
+            if part.get("type") != "bonder-prisma":
+                continue
+            origin = tuple(part.get("position") or (0, 0))
+            rotation = int(part.get("rotation") or 0)
+            simulator.prismatic_bonders.append((
+                (
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((0, 1), origin, rotation),
+                ),
+                str(part.get("id") or "bonder-prisma"),
+            ))
         return simulator
 
     def _plan_motion(self, arm, instruction):
@@ -105,3 +131,26 @@ class Simulator(RuntimeSimulator):
                 "toElement": produced,
                 "position": list(metal.position),
             }))
+
+    def _process_basic_glyphs(self) -> None:
+        super()._process_basic_glyphs()
+        for positions, part_id in self.prismatic_bonders:
+            atoms = [self.world.atom_at(position) for position in positions]
+            if any(atom is None for atom in atoms):
+                continue
+            for first_index, second_index in ((0, 1), (1, 2), (2, 0)):
+                first = atoms[first_index]
+                second = atoms[second_index]
+                if first is None or second is None or first.id == second.id:
+                    continue
+                bond = Bond(first.id, second.id, "normal")
+                if bond.key in self.world.bonds:
+                    continue
+                self.world.add_bond(bond)
+                self.world.events.append(WorldEvent("bond-created", self.world.cycle, {
+                    "glyphPartId": part_id,
+                    "fromAtomId": first.id,
+                    "toAtomId": second.id,
+                    "type": "normal",
+                    "prismatic": True,
+                }))
