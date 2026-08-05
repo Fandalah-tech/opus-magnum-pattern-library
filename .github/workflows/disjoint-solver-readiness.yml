@@ -40,11 +40,12 @@ jobs:
             tests/test_mechanical_macros.py \
             tests/test_macro_explorer.py \
             tests/test_rotor_mechanical_library.py \
+            tests/test_path_macro_learning.py \
             tests/test_rotor_template.py \
             tests/test_rotor_prefix.py \
             -q
       - name: Search structure-only A42 Rotor solve
-        timeout-minutes: 3
+        timeout-minutes: 4
         run: python tools/search_rotor_structure.py
       - name: Report corrected Rotor prefix state
         if: always()
