@@ -17,30 +17,40 @@ REPEATING_PRODUCT_TARGET = 3
 def _debug_p041(frames: list[dict[str, Any]]) -> list[dict[str, Any]]:
     result: list[dict[str, Any]] = []
     target = "part-10-mors-0"
-    previous_position = None
-    previous_holders = None
+    previous = None
     for frame in frames:
         cycle = int(frame.get("cycle", 0))
         world = frame.get("world", {})
-        atom = next((item for item in world.get("atoms", []) if item.get("id") == target), None)
-        position = tuple(atom.get("position", [])) if atom else None
-        holders = tuple(atom.get("heldBy", [])) if atom else None
+        atoms = world.get("atoms", [])
+        target_atom = next((item for item in atoms if item.get("id") == target), None)
+        neighbor = next((item for item in atoms if tuple(item.get("position", [])) == (2, -1)), None)
+        bonds = [
+            bond for bond in world.get("bonds", [])
+            if target in {bond.get("a"), bond.get("b")}
+        ]
+        state = (
+            tuple(target_atom.get("position", [])) if target_atom else None,
+            tuple(target_atom.get("heldBy", [])) if target_atom else None,
+            neighbor.get("id") if neighbor else None,
+            tuple(sorted((bond.get("a"), bond.get("b"), bond.get("kind")) for bond in bonds)),
+        )
         events = [
             event for event in frame.get("events", [])
             if target in json.dumps(event, sort_keys=True)
-            or event.get("kind") == "atoms-animated"
+            or (neighbor and neighbor.get("id") in json.dumps(event, sort_keys=True))
+            or event.get("kind") in {"bond-created", "bond-removed"}
         ]
-        changed = position != previous_position or holders != previous_holders
-        if events or changed or cycle >= 210:
+        if state != previous or events or cycle >= 205:
             result.append({
                 "cycle": cycle,
                 "phase": frame.get("phase"),
-                "atom": atom,
+                "target": target_atom,
+                "neighborAt2Minus1": neighbor,
+                "targetBonds": bonds,
                 "events": events,
                 "arm": next((arm for arm in frame.get("arms", []) if arm.get("partId") == "part-12"), None),
             })
-        previous_position = position
-        previous_holders = holders
+        previous = state
     return result
 
 
@@ -120,17 +130,13 @@ def main() -> int:
             elif replay.get("summary", {}).get("terminatedWithError"):
                 last_frame = replay.get("frames", [])[-1] if replay.get("frames") else {}
                 error_event = next(
-                    (
-                        event for event in reversed(last_frame.get("events", []))
-                        if event.get("kind") == "simulation-error"
-                    ),
+                    (event for event in reversed(last_frame.get("events", [])) if event.get("kind") == "simulation-error"),
                     {},
                 )
-                message = str(error_event.get("message") or "Simulation terminated with an unspecified error")
                 record.update({
                     "status": "engine-error",
                     "errorType": "SimulationError",
-                    "message": message,
+                    "message": str(error_event.get("message") or "Simulation terminated with an unspecified error"),
                     "completedCycles": replay.get("summary", {}).get("completedCycles"),
                 })
                 if item.get("puzzleId") == "P041" and "/002-" in str(item.get("file")):
@@ -139,16 +145,11 @@ def main() -> int:
                     errors_by_part[part_type] += 1
             else:
                 missing_standard = {
-                    output_id: {
-                        "delivered": int(delivered.get(output_id, 0)),
-                        "required": STANDARD_PRODUCT_TARGET,
-                    }
+                    output_id: {"delivered": int(delivered.get(output_id, 0)), "required": STANDARD_PRODUCT_TARGET}
                     for output_id in standard_outputs
                     if int(delivered.get(output_id, 0)) < STANDARD_PRODUCT_TARGET
                 }
-                missing_repeating = [
-                    output_id for output_id, complete in repeating_complete.items() if not complete
-                ]
+                missing_repeating = [output_id for output_id, complete in repeating_complete.items() if not complete]
                 if missing_standard or missing_repeating:
                     record.update({
                         "status": "engine-incomplete",
@@ -163,11 +164,7 @@ def main() -> int:
         except Exception as exc:
             for part_type in record["partTypes"]:
                 errors_by_part[part_type] += 1
-            record.update({
-                "status": "engine-error",
-                "errorType": type(exc).__name__,
-                "message": str(exc),
-            })
+            record.update({"status": "engine-error", "errorType": type(exc).__name__, "message": str(exc)})
         results.append(record)
         print(json.dumps(record), flush=True)
 
@@ -182,7 +179,7 @@ def main() -> int:
         "incompleteByPart": dict(sorted(incomplete_by_part.items())),
         "errorsByPart": dict(sorted(errors_by_part.items())),
     }
-    report = {"schemaVersion": "0.4.3", "summary": summary, "results": results}
+    report = {"schemaVersion": "0.4.4", "summary": summary, "results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(summary), flush=True)
