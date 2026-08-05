@@ -39,5 +39,9 @@ jobs:
             tests/test_rotor_template.py \
             tests/test_rotor_prefix.py \
             -q
+      - name: Report corrected Rotor prefix state
+        if: always()
+        run: python tools/report_rotor_prefix.py
       - name: Report learned Rotor macro structure
+        if: always()
         run: python tools/report_rotor_macros.py
