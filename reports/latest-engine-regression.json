@@ -1,13 +1,13 @@
 {
   "schemaVersion": "0.3.0",
-  "generatedAt": "2026-08-05T11:32:31.263644+00:00",
+  "generatedAt": "2026-08-05T11:39:41.674782+00:00",
   "sourceManifest": "campaign-p007-p015-user-reference",
   "summary": {
     "total": 9,
     "passed": 6,
     "failed": 3,
     "engineClassifications": {
-      "reference-gap": 6
+      "reference-gap": 9
     }
   },
   "results": [
@@ -195,7 +195,7 @@
           "sha256Matches": false
         }
       ],
-      "status": null,
+      "status": "reference-gap",
       "firstDivergence": null,
       "engineError": null
     },
@@ -228,7 +228,7 @@
           "sha256Matches": false
         }
       ],
-      "status": null,
+      "status": "reference-gap",
       "firstDivergence": null,
       "engineError": null
     },
@@ -292,7 +292,7 @@
           "sha256Matches": false
         }
       ],
-      "status": null,
+      "status": "reference-gap",
       "firstDivergence": null,
       "engineError": null
     }
