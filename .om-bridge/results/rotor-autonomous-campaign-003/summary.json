@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-autonomous-campaign-003",
+    "operation": "run_rotor_autonomous_campaign",
+    "timeout_seconds": 21600,
+    "notes": "Run corrected safety tests, strict replay, and the long last-atom continuation search."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-autonomous-campaign-003.json",
+  "git_sha": "4cdb5b6d7a97ef54c6efbc05912ebce7b308bc52",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T11:30:52.407865+00:00",
+  "finished_at": "2026-08-06T11:30:53.908846+00:00",
+  "duration_seconds": 1.501,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
