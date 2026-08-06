@@ -1,0 +1,6 @@
+{
+  "id": "post-disjoint-reference-regression-002",
+  "operation": "run_reference_regression",
+  "timeout_seconds": 3600,
+  "notes": "Run campaign P007-P015 regression with fixed required arguments after disjoint-output and bonder-chain changes."
+}
