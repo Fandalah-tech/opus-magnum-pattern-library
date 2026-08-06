@@ -1,4 +1,5 @@
 from pathlib import Path
+import runpy
 
 PATH = Path("packages/opus_engine/final_simulator.py")
 OLD = '''    def _translate_stationary_component(self, stationary_id, occupied_pos, free_pos, moving_atoms):
@@ -63,7 +64,12 @@ NEW = '''    def _translate_stationary_component(self, stationary_id, occupied_p
         return True
 '''
 text = PATH.read_text(encoding="utf-8")
-if OLD not in text:
+if OLD in text:
+    PATH.write_text(text.replace(OLD, NEW), encoding="utf-8")
+    print("patched recursive bonder chain displacement")
+elif "bonder-chain-shifted" in text:
+    print("recursive bonder chain displacement already present")
+else:
     raise SystemExit("target helper block not found")
-PATH.write_text(text.replace(OLD, NEW), encoding="utf-8")
-print("patched recursive bonder chain displacement")
+
+runpy.run_path("tools/apply_disjoint_output_patch.py", run_name="__main__")
