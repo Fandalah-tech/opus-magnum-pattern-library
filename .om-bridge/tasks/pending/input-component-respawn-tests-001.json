@@ -1,0 +1,7 @@
+{
+  "id": "input-component-respawn-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": ["tests/test_input_component_respawn.py"],
+  "notes": "Validate independent respawn of disconnected reagent components and all-or-nothing respawn of bonded components."
+}
