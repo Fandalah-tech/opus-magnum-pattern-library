@@ -1,0 +1,6 @@
+{
+  "id": "rotor-candidate-replay-004",
+  "operation": "build_rotor_candidate_replay",
+  "timeout_seconds": 900,
+  "notes": "Regenerate the complete Rotor replay from the initial simulator state through the human prefix and persisted solver segment. Publish all frames plus renderContext puzzle and solution data for the OpusJS replay in reports/rotor-tail-best-candidate-replay.json."
+}
