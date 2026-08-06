@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-duplication-neighbors-001",
+    "operation": "report_rotor_duplication_cells",
+    "timeout_seconds": 900,
+    "notes": "Identify which adjacent direction ordinary salts actually occupy around each Van Berlo duplication source."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-duplication-neighbors-001.json",
+  "git_sha": "8c99b4e2780aef454da35379f772410019fb94aa",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:50:59.131336+00:00",
+  "finished_at": "2026-08-06T03:50:59.622101+00:00",
+  "duration_seconds": 0.491,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

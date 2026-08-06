@@ -1,0 +1,46 @@
+{
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "rows": [
+    {
+      "cycle": 0,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "sourceWheel": [
+            {
+              "id": "part-1-wheel-2",
+              "element": "air"
+            }
+          ],
+          "configuredSaltPosition": [
+            1,
+            1
+          ],
+          "neighbors": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "sourceWheel": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt"
+            }
+          ],
+          "configuredSaltPosition": [
+            2,
+            1
+          ],
+          "neighbors": []
+        }
+      ]
+    }
+  ]
+}
