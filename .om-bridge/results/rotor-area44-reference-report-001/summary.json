@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area44-reference-report-001",
+    "operation": "report_rotor_prefix",
+    "timeout_seconds": 300,
+    "notes": "Replay the uploaded A44 IDEAL SETUP 6 reference cycle by cycle and report structural transitions, especially Baron rotations and plateau crossings."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area44-reference-report-001.json",
+  "git_sha": "feab18e2c28f4323d78ce5bcce4eeba1c31b21e8",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:03:03.536946+00:00",
+  "finished_at": "2026-08-06T02:03:04.170527+00:00",
+  "duration_seconds": 0.634,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

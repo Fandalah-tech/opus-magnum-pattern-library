@@ -1,0 +1,97 @@
+{
+  "name": "IDEAL SETUP 6",
+  "requestedCycles": 56,
+  "completedCycles": 56,
+  "final": {
+    "matchedPositions": 4,
+    "matchedEdges": 0,
+    "rotation": 0,
+    "translation": [
+      -3,
+      3
+    ],
+    "atomCount": 11
+  },
+  "transitions": [
+    {
+      "cycle": 1,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        -3,
+        3
+      ],
+      "baronRotation": 1,
+      "atomCount": 11,
+      "instructions": {
+        "part-9": "grab"
+      }
+    },
+    {
+      "cycle": 43,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        -3,
+        3
+      ],
+      "baronRotation": 0,
+      "atomCount": 11,
+      "instructions": {
+        "part-2": "rotate_cw",
+        "part-9": "track_minus",
+        "part-11": "retract"
+      }
+    },
+    {
+      "cycle": 46,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        -3,
+        3
+      ],
+      "baronRotation": 1,
+      "atomCount": 11,
+      "instructions": {
+        "part-2": "rotate_ccw",
+        "part-9": "track_plus"
+      }
+    },
+    {
+      "cycle": 52,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        -3,
+        3
+      ],
+      "baronRotation": 2,
+      "atomCount": 11,
+      "instructions": {
+        "part-2": "rotate_ccw",
+        "part-9": "grab"
+      }
+    },
+    {
+      "cycle": 56,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        -3,
+        3
+      ],
+      "baronRotation": 3,
+      "atomCount": 11,
+      "instructions": {
+        "part-2": "rotate_ccw",
+        "part-9": "track_minus"
+      }
+    }
+  ]
+}
