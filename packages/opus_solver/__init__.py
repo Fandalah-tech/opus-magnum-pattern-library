@@ -16,6 +16,7 @@ from .mechanical_macros import (
     select_macros,
 )
 from .path_macro_learning import learn_action_windows
+from .reference_macros import compile_reference_macro, load_reference_macro
 from .rotor_corpus import RotorCorpusEntry, analyze_solution_zip, rank_seed_candidates, summarize_solution
 from .rotor_mechanical_library import (
     build_rotor_seed_macro_library,
@@ -70,6 +71,7 @@ __all__ = [
     "build_rotor_seed_macro_library",
     "canonical_state_key",
     "compile_program_window",
+    "compile_reference_macro",
     "enumerate_joint_actions",
     "enumerate_macro_successors",
     "explore_simulator_beam",
@@ -77,6 +79,7 @@ __all__ = [
     "explore_simulator_states",
     "learn_action_windows",
     "learn_program_windows",
+    "load_reference_macro",
     "rank_seed_candidates",
     "select_macros",
     "solve_from_reference_corpus",
