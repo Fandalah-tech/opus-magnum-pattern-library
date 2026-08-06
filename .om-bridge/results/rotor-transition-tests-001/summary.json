@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-transition-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_solver_explorer.py",
+      "tests/test_macro_explorer.py",
+      "tests/test_mechanical_macros.py"
+    ],
+    "notes": "Validate primitive beam admissibility filtering before running the 12-to-13 atom transition campaign."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-transition-tests-001.json",
+  "git_sha": "619ab137d56e995ea88b6a465f94888ae8540252",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T01:15:13.096863+00:00",
+  "finished_at": "2026-08-06T01:15:14.594947+00:00",
+  "duration_seconds": 1.498,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
