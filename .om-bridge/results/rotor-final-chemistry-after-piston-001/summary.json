@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-final-chemistry-after-piston-001",
+    "operation": "solve_rotor_area47_final_chemistry",
+    "timeout_seconds": 21600,
+    "notes": "Re-run the A47 final chemistry search after correcting piston retract semantics. Treat the known mechanical prefix as authoritative and report any valid completion or the earliest remaining blocker."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-final-chemistry-after-piston-001.json",
+  "git_sha": "5f5fb26ac961584eef04cda90895c5de2aa7b38d",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:20:22.764627+00:00",
+  "finished_at": "2026-08-06T08:20:24.266410+00:00",
+  "duration_seconds": 1.502,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
