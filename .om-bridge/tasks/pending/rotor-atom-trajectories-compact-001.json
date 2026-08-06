@@ -1,0 +1,6 @@
+{
+  "id": "rotor-atom-trajectories-compact-001",
+  "operation": "report_rotor_atom_trajectories",
+  "timeout_seconds": 900,
+  "notes": "Compact route of the first processed water/salt atoms and both pistons through cycle 70."
+}
