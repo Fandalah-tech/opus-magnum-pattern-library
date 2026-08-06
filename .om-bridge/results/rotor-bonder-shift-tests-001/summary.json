@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-bonder-shift-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 1800,
+    "pytest_targets": [
+      "tests/test_opus_engine.py"
+    ],
+    "notes": "Validate occupied-bonder payload shift experiment against engine regressions."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-bonder-shift-tests-001.json",
+  "git_sha": "93694b7ef95837ac7f78f9f27fae8feb2d060a28",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:38:31.574479+00:00",
+  "finished_at": "2026-08-06T09:38:32.828405+00:00",
+  "duration_seconds": 1.254,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
