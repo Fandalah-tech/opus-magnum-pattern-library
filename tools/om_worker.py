@@ -21,6 +21,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_area46_fragments": [sys.executable, "tools/report_rotor_area46_fragments.py"],
     "solve_rotor_area47_chemistry": [sys.executable, "tools/solve_rotor_area47_chemistry.py"],
     "solve_rotor_area47_near_complete": [sys.executable, "tools/solve_rotor_area47_near_complete.py"],
+    "solve_rotor_area47_final_chemistry": [sys.executable, "tools/solve_rotor_area47_final_chemistry.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
 }
