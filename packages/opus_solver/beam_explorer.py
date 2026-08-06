@@ -12,6 +12,7 @@ from .state import canonical_state_key
 
 ScoreFunction = Callable[[Any], int]
 GoalPredicate = Callable[[Any], bool]
+StateFilter = Callable[[Any], bool]
 
 _INVERSE_INSTRUCTION = {
     "rotate_cw": "rotate_ccw",
@@ -69,6 +70,7 @@ def explore_simulator_beam(
     include_idle: bool = False,
     time_limit_seconds: float | None = None,
     prune_immediate_reversals: bool = True,
+    state_filter: StateFilter | None = None,
 ) -> BeamExplorationResult:
     if max_depth < 0:
         raise ValueError("max_depth must be non-negative")
@@ -81,6 +83,8 @@ def explore_simulator_beam(
 
     started = monotonic()
     root = _strip_history(deepcopy(initial_simulator))
+    if state_filter is not None and not state_filter(root):
+        raise ValueError("initial_simulator does not satisfy state_filter")
     root_score = score(root)
     if goal(root):
         return BeamExplorationResult(True, [], root, 1, 0, 0, "goal", root_score)
@@ -122,6 +126,8 @@ def explore_simulator_beam(
                     continue
 
                 candidate = _strip_history(candidate)
+                if state_filter is not None and not state_filter(candidate):
+                    continue
                 key = canonical_state_key(candidate)
                 if key in visited:
                     continue
