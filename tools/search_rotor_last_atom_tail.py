@@ -10,10 +10,15 @@ from packages.opus_analysis import build_program_timeline
 from packages.opus_engine.final_simulator import Simulator
 from packages.opus_parser.solution import parse_solution_bytes
 from packages.opus_solver.beam_explorer import explore_simulator_beam
+from tools.github_live_status import GitHubLiveStatusPublisher
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-last-isolated-atom-prefix.solution.b64")
 HEARTBEAT = Path("reports/rotor-tail-search-heartbeat.json")
+MAX_DEPTH = 28
+MAX_STATES = 750_000
+TIME_LIMIT_SECONDS = 5_400
+PUBLISHER = GitHubLiveStatusPublisher(min_interval_seconds=60.0)
 
 
 def ordinary_atoms(simulator: Simulator):
@@ -77,15 +82,20 @@ def snapshot(simulator: Simulator):
     }
 
 
-def report_progress(progress: dict) -> None:
+def report_progress(progress: dict, *, force_publish: bool = False, status: str = "running") -> None:
     payload = {
         "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "status": status,
         "stage": "tail-search",
+        "maxDepth": MAX_DEPTH,
+        "maxStates": MAX_STATES,
+        "timeLimitSeconds": TIME_LIMIT_SECONDS,
         **progress,
     }
     HEARTBEAT.parent.mkdir(parents=True, exist_ok=True)
     HEARTBEAT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(json.dumps({"heartbeat": payload}), file=sys.stderr, flush=True)
+    PUBLISHER.publish(payload, force=force_publish)
 
 
 def main() -> None:
@@ -104,20 +114,40 @@ def main() -> None:
         elif arm.part_type == "baron":
             action_options[arm_id] = (None, "rotate_cw", "rotate_ccw", "drop")
 
+    report_progress({
+        "message": "Préfixe rejoué. Initialisation du beam search.",
+        "depth": 0,
+        "elapsedSeconds": 0,
+        "visitedStates": 1,
+        "expandedStates": 0,
+        "frontierSize": 1,
+        "bestScore": output_score(simulator),
+    }, force_publish=True)
+
     result = explore_simulator_beam(
         simulator,
         action_options,
         lambda state: state.delivered_products.get(output_id, 0) > 0,
         output_score,
-        max_depth=28,
+        max_depth=MAX_DEPTH,
         beam_width=3000,
-        max_states=750000,
+        max_states=MAX_STATES,
         max_active_arms=2,
         include_idle=False,
-        time_limit_seconds=5400,
+        time_limit_seconds=TIME_LIMIT_SECONDS,
         progress_callback=report_progress,
         progress_interval_seconds=15.0,
     )
+    report_progress({
+        "message": "Recherche terminée.",
+        "depth": result.depth,
+        "visitedStates": result.visited_states,
+        "expandedStates": result.expanded_states,
+        "bestScore": result.best_score,
+        "stoppedReason": result.stopped_reason,
+        "found": result.found,
+    }, force_publish=True, status="completed" if result.found else "stopped")
+
     print(json.dumps({
         "sourceSha256": solution.get("source", {}).get("sha256"),
         "start": snapshot(simulator),
