@@ -1,0 +1,11 @@
+{
+  "id": "rotor-inventory-filter-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": [
+    "tests/test_macro_explorer.py",
+    "tests/test_mechanical_macros.py",
+    "tests/test_structure_goal.py"
+  ],
+  "notes": "Validate macro-state admissibility filtering before rerunning the Rotor structure search with exact target inventory."
+}
