@@ -7,7 +7,7 @@ from copy import deepcopy
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
-from packages.opus_engine.final_simulator import Simulator
+from packages.opus_engine.van_berlo_simulator import Simulator
 from packages.opus_engine.simulator import SimulationError
 from packages.opus_engine.builder import rotate_hex
 from packages.opus_parser.solution import parse_solution_bytes
