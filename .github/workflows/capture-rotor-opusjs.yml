@@ -12,6 +12,7 @@ on:
       - "assets/js/replay-molecules.js"
       - "assets/js/rotor-opus-replay.js"
       - "assets/css/solution-viewer.css"
+      - ".visual-review-trigger/**"
   workflow_dispatch:
 
 permissions:
