@@ -18,20 +18,34 @@ def _load(path: Path) -> dict:
 def main() -> None:
     puzzle = _load(PUZZLE)
     simulator = build_locked_prefix_simulator(puzzle, _load(PREFIX))
-    goal = StructureGoal.from_product(puzzle["products"][0])
-    match = goal.best_match(simulator)
-    eligible = goal._eligible_atom_ids(simulator)
+    free_goal = StructureGoal.from_product(puzzle["products"][0])
+    full_goal = StructureGoal.from_product(
+        puzzle["products"][0],
+        include_baron_held=True,
+    )
+    free_match = free_goal.best_match(simulator)
+    full_match = full_goal.best_match(simulator)
+    free_atoms = free_goal._eligible_atom_ids(simulator)
+    full_atoms = full_goal._eligible_atom_ids(simulator)
 
     print(f"cycle={simulator.world.cycle}")
     print(
-        "structure:",
-        f"eligibleAtoms={len(eligible)}",
-        f"targetAtoms={goal.atom_count}",
-        f"matchedPositions={match.occupied_positions}",
-        f"matchedEdges={match.matched_edges}",
-        f"targetEdges={goal.bond_count}",
-        f"rotation={match.rotation}",
-        f"translation={match.translation}",
+        "free-structure:",
+        f"atoms={len(free_atoms)}",
+        f"matchedPositions={free_match.occupied_positions}",
+        f"matchedEdges={free_match.matched_edges}",
+        f"rotation={free_match.rotation}",
+        f"translation={free_match.translation}",
+    )
+    print(
+        "full-structure:",
+        f"atoms={len(full_atoms)}",
+        f"targetAtoms={full_goal.atom_count}",
+        f"matchedPositions={full_match.occupied_positions}",
+        f"matchedEdges={full_match.matched_edges}",
+        f"targetEdges={full_goal.bond_count}",
+        f"rotation={full_match.rotation}",
+        f"translation={full_match.translation}",
     )
     print("arms:")
     for arm in sorted(simulator.arms.values(), key=lambda item: item.id):
@@ -50,7 +64,7 @@ def main() -> None:
             atom.id,
             atom.element,
             atom.position,
-            f"eligible={atom.id in eligible}",
+            f"free={atom.id in free_atoms}",
             f"held={sorted(atom.held_by)}",
         )
     print("bonds:")
