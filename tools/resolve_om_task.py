@@ -8,15 +8,15 @@ from pathlib import Path
 SAFE_TASK = re.compile(r"^\.om-bridge/tasks/pending/[A-Za-z0-9._-]+\.json$")
 
 
-def _changed_task() -> str:
+def _changed_task(trigger_sha: str) -> str:
     completed = subprocess.run(
         [
             "git",
-            "diff",
+            "show",
+            "--pretty=format:",
             "--name-only",
             "--diff-filter=AM",
-            "HEAD^",
-            "HEAD",
+            trigger_sha,
             "--",
             ".om-bridge/tasks/pending/*.json",
         ],
@@ -24,21 +24,31 @@ def _changed_task() -> str:
         capture_output=True,
         check=True,
     )
-    for line in completed.stdout.splitlines():
-        candidate = line.strip().replace("\\", "/")
-        if candidate:
-            return candidate
-    raise ValueError("No pending task JSON was found in the triggering commit.")
+    candidates = [
+        line.strip().replace("\\", "/")
+        for line in completed.stdout.splitlines()
+        if line.strip()
+    ]
+    if len(candidates) != 1:
+        raise ValueError(
+            f"Expected exactly one pending task JSON in triggering commit {trigger_sha}, found {candidates}"
+        )
+    return candidates[0]
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--event", required=True)
     parser.add_argument("--dispatch-task", default="")
+    parser.add_argument("--trigger-sha", default="HEAD")
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
 
-    task = args.dispatch_task.strip() if args.event == "workflow_dispatch" else _changed_task()
+    task = (
+        args.dispatch_task.strip()
+        if args.event == "workflow_dispatch"
+        else _changed_task(args.trigger_sha.strip() or "HEAD")
+    )
     task = task.replace("\\", "/")
     if not SAFE_TASK.fullmatch(task):
         raise ValueError(f"Unsafe task path: {task}")
