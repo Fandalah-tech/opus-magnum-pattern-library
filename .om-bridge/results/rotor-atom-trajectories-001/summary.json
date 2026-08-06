@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-atom-trajectories-001",
+    "operation": "report_rotor_atom_trajectories",
+    "timeout_seconds": 900,
+    "notes": "Trace the five initial reagent atoms and both piston states through cycle 70."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-atom-trajectories-001.json",
+  "git_sha": "cc13d76676e24bf2f254c56d5f3a6122db4c8ea7",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:53:40.964302+00:00",
+  "finished_at": "2026-08-06T03:53:41.443060+00:00",
+  "duration_seconds": 0.479,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

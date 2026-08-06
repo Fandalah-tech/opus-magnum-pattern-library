@@ -1,0 +1,5595 @@
+{
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "rows": [
+    {
+      "cycle": 0,
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            3,
+            -5
+          ],
+          "element": "water",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 1,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            3,
+            -5
+          ],
+          "element": "water",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -5
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 2,
+      "instructions": {
+        "part-8": "track_minus"
+      },
+      "events": [
+        {
+          "kind": "atom-calcified",
+          "glyphPartId": "part-5",
+          "atomId": "part-9-spawn-0-atom-0",
+          "fromElement": "water",
+          "toElement": "salt",
+          "position": [
+            4,
+            -5
+          ]
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            4,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 3,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            2,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -3
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 7,
+      "instructions": {
+        "part-8": "extend"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 8,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            1,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 10,
+      "instructions": {
+        "part-8": "pivot_cw",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            5,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            1,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            5,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 12,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 13,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 14,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 1,
+          "length": 2,
+          "tip": [
+            2,
+            1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 15,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            0,
+            1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 16,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 17,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 18,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            0,
+            1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 19,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 1,
+          "length": 2,
+          "tip": [
+            2,
+            1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 20,
+      "instructions": {
+        "part-10": "extend"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 1,
+          "length": 3,
+          "tip": [
+            2,
+            2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 21,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 1,
+          "length": 2,
+          "tip": [
+            2,
+            1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 22,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            0,
+            1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 23,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 24,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            1,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 25,
+      "instructions": {
+        "part-8": "extend",
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            0,
+            1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 26,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 1,
+          "length": 2,
+          "tip": [
+            2,
+            1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 27,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 28,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": true,
+          "held": [
+            "part-9-spawn-0-atom-0"
+          ],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 29,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 5,
+          "length": 2,
+          "tip": [
+            4,
+            -3
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 30,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 5,
+          "length": 2,
+          "tip": [
+            4,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 31,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 5,
+          "length": 2,
+          "tip": [
+            5,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 32,
+      "instructions": {
+        "part-8": "rotate_ccw",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 5,
+          "length": 2,
+          "tip": [
+            6,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 33,
+      "instructions": {
+        "part-8": "rotate_ccw",
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 34,
+      "instructions": {
+        "part-8": "extend",
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 3,
+          "tip": [
+            3,
+            -6
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -2
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 35,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "grab"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 3,
+          "tip": [
+            3,
+            -6
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 36,
+      "instructions": {
+        "part-1": "rotate_ccw",
+        "part-8": "track_minus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 3,
+          "tip": [
+            4,
+            -6
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 37,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -3
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 38,
+      "instructions": {
+        "part-8": "extend",
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 39,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 40,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "extend"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 41,
+      "instructions": {
+        "part-8": "rotate_ccw",
+        "part-10": "retract"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 42,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 43,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -3
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 44,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 45,
+      "instructions": {
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 46,
+      "instructions": {
+        "part-10": "drop"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -2
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        }
+      }
+    },
+    {
+      "cycle": 47,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            3,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            1,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 1
+        }
+      }
+    },
+    {
+      "cycle": 48,
+      "instructions": {
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 49,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            2,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 50,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 5,
+          "length": 2,
+          "tip": [
+            4,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 51,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 5,
+          "length": 2,
+          "tip": [
+            4,
+            -3
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 52,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 53,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 54,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 55,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            3,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            3,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 4
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 56,
+      "instructions": {
+        "part-8": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 57,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 58,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -4
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 59,
+      "instructions": {
+        "part-8": "extend"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 3,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 60,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 4,
+          "length": 3,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 61,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -1
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -2
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 2
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -1
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 0
+        }
+      }
+    },
+    {
+      "cycle": 62,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": true,
+          "held": [
+            "part-4-spawn-0-atom-0"
+          ],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 63,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 3,
+          "tip": [
+            1,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 0,
+          "length": 2,
+          "tip": [
+            4,
+            -2
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 64,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 1,
+          "length": 2,
+          "tip": [
+            2,
+            0
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 65,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            2,
+            -3
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 66,
+      "instructions": {
+        "part-8": "rotate_ccw",
+        "part-10": "extend"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            -1,
+            1
+          ],
+          "grabbing": false,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 67,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "grab"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 2,
+          "length": 3,
+          "tip": [
+            -1,
+            1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 68,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 2,
+          "length": 2,
+          "tip": [
+            0,
+            0
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 69,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -2
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -2
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 5
+        }
+      }
+    },
+    {
+      "cycle": 70,
+      "instructions": {
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": {
+        "part-4-spawn-0-atom-0": {
+          "position": [
+            4,
+            -2
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-1": {
+          "position": [
+            7,
+            -3
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-4-spawn-0-atom-2": {
+          "position": [
+            3,
+            1
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-0": {
+          "position": [
+            0,
+            0
+          ],
+          "element": "salt",
+          "heldBy": []
+        },
+        "part-9-spawn-0-atom-1": {
+          "position": [
+            2,
+            -5
+          ],
+          "element": "salt",
+          "heldBy": []
+        }
+      },
+      "arms": {
+        "part-8": {
+          "origin": [
+            4,
+            -3
+          ],
+          "rotation": 4,
+          "length": 2,
+          "tip": [
+            4,
+            -5
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 3
+        },
+        "part-10": {
+          "origin": [
+            2,
+            -1
+          ],
+          "rotation": 3,
+          "length": 2,
+          "tip": [
+            0,
+            -1
+          ],
+          "grabbing": true,
+          "held": [],
+          "trackIndex": 0
+        }
+      }
+    }
+  ]
+}
