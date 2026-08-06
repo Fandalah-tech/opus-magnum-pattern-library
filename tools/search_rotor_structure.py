@@ -35,6 +35,7 @@ def _actions(simulator):
 def _summary(label, result, goal):
     best = result.simulator
     match = goal.best_match(best) if best else None
+    eligible_count = len(goal._eligible_atom_ids(best)) if best else None
     return {
         "label": label,
         "found": result.found,
@@ -49,6 +50,9 @@ def _summary(label, result, goal):
         "matchedEdges": match.matched_edges if match else None,
         "matchRotation": match.rotation if match else None,
         "matchTranslation": list(match.translation) if match else None,
+        "eligibleAtomCount": eligible_count,
+        "targetAtomCount": goal.atom_count,
+        "targetBondCount": goal.bond_count,
         "bestAtomCount": len(best.world.atoms) if best else None,
         "bestBondCount": len(best.world.bonds) if best else None,
     }
@@ -60,13 +64,19 @@ def _plateau_score(goal, minimum_edges: int):
         if match.matched_edges < minimum_edges:
             return -100_000 + match.matched_edges * 1_000 + match.occupied_positions
         eligible = goal._eligible_atom_ids(simulator)
-        excess_atoms = max(0, len(eligible) - goal.atom_count)
+        atom_delta = abs(len(eligible) - goal.atom_count)
         return (
             match.matched_edges * 10_000
             + match.occupied_positions * 500
-            - excess_atoms * 25
+            - atom_delta * 250
         )
     return score
+
+
+def _exact_target_inventory(goal):
+    def admissible(simulator) -> bool:
+        return len(goal._eligible_atom_ids(simulator)) == goal.atom_count
+    return admissible
 
 
 def main() -> None:
@@ -139,9 +149,10 @@ def main() -> None:
             beam_width=180,
             max_states=30_000,
             time_limit_seconds=45,
+            state_filter=_exact_target_inventory(goal),
         )
         stage4.actions = [*current.actions, *stage4.actions]
-        stages.append(_summary("learned-macro-refinement", stage4, goal))
+        stages.append(_summary("inventory-preserving-macro-refinement", stage4, goal))
         current = stage4
 
     print(json.dumps({
