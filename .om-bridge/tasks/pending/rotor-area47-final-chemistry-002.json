@@ -1,0 +1,6 @@
+{
+  "id": "rotor-area47-final-chemistry-002",
+  "operation": "solve_rotor_area47_final_chemistry",
+  "timeout_seconds": 900,
+  "notes": "Re-run the 27 late Van Berlo rotation variants with overlap-aware duplication semantics."
+}
