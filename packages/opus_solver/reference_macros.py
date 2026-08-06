@@ -4,7 +4,58 @@ import json
 from pathlib import Path
 from typing import Any, Mapping
 
-from .mechanical_macros import MechanicalMacro
+from .mechanical_macros import MechanicalMacro, MacroGuard
+
+
+def _compile_guard(data: Mapping[str, Any]) -> MacroGuard | None:
+    guard_data = data.get("guard")
+    if guard_data is None:
+        return None
+    if not isinstance(guard_data, Mapping):
+        raise ValueError("reference macro guard must be an object")
+    arms = guard_data.get("arms", {})
+    if not isinstance(arms, Mapping) or not arms:
+        raise ValueError("reference macro guard arms must be a non-empty object")
+
+    expected: dict[str, dict[str, Any]] = {}
+    allowed_fields = {"origin", "rotation", "length", "trackIndex", "grabbing", "heldBranches"}
+    for arm_id, fields in arms.items():
+        if not isinstance(arm_id, str) or not isinstance(fields, Mapping):
+            raise ValueError("reference macro guard arms must map strings to objects")
+        unknown = set(fields) - allowed_fields
+        if unknown:
+            raise ValueError(f"unknown arm guard fields for {arm_id}: {sorted(unknown)}")
+        normalized = dict(fields)
+        if "origin" in normalized:
+            origin = normalized["origin"]
+            if not isinstance(origin, list) or len(origin) != 2 or not all(isinstance(v, int) for v in origin):
+                raise ValueError("arm guard origin must contain two integers")
+            normalized["origin"] = tuple(origin)
+        if "heldBranches" in normalized:
+            branches = normalized["heldBranches"]
+            if not isinstance(branches, list) or not all(isinstance(v, int) for v in branches):
+                raise ValueError("arm guard heldBranches must be a list of integers")
+            normalized["heldBranches"] = tuple(sorted(branches))
+        expected[arm_id] = normalized
+
+    def guard(simulator: Any) -> bool:
+        for arm_id, fields in expected.items():
+            arm = getattr(simulator, "arms", {}).get(arm_id)
+            if arm is None:
+                return False
+            actual = {
+                "origin": tuple(arm.origin),
+                "rotation": arm.rotation,
+                "length": arm.length,
+                "trackIndex": arm.track_index,
+                "grabbing": arm.grabbing,
+                "heldBranches": tuple(sorted(arm.held_atoms)),
+            }
+            if any(actual[field] != value for field, value in fields.items()):
+                return False
+        return True
+
+    return guard
 
 
 def compile_reference_macro(data: Mapping[str, Any]) -> MechanicalMacro:
@@ -12,6 +63,8 @@ def compile_reference_macro(data: Mapping[str, Any]) -> MechanicalMacro:
 
     Cycle numbers are metadata only; the compiled macro preserves every cycle,
     including empty instruction frames, so synchronized timing remains exact.
+    Optional mechanical guards prevent a source-specific macro from appearing
+    legal in unrelated states where its instructions merely move empty arms.
     """
     if data.get("schemaVersion") != "0.1.0":
         raise ValueError(f"unsupported reference macro schema: {data.get('schemaVersion')!r}")
@@ -46,7 +99,7 @@ def compile_reference_macro(data: Mapping[str, Any]) -> MechanicalMacro:
     tags = data.get("tags", [])
     if not isinstance(tags, list) or not all(isinstance(tag, str) for tag in tags):
         raise ValueError("reference macro tags must be a list of strings")
-    return MechanicalMacro.from_actions(name, actions, tags=tags)
+    return MechanicalMacro.from_actions(name, actions, tags=tags, guard=_compile_guard(data))
 
 
 def load_reference_macro(path: str | Path) -> MechanicalMacro:
