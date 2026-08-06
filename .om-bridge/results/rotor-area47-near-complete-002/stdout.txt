@@ -1,0 +1,737 @@
+{
+  "reference": "IDEAL SETUP 9",
+  "referenceSha256": "93a6cd071d221815ae9c8c7fd44117bb47e8faf50b8a97de865e3a04da4d1a10",
+  "editableCycles": [
+    11,
+    35,
+    51,
+    88,
+    89,
+    90,
+    145
+  ],
+  "variants": 2187,
+  "successes": [],
+  "top": [
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": null,
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": null,
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": null,
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": "rotate_cw",
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": "rotate_cw",
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": "rotate_cw",
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": "rotate_ccw",
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": "rotate_ccw",
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": null,
+        "90": "rotate_ccw",
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": null,
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": null,
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": null,
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": "rotate_cw",
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": "rotate_cw",
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": "rotate_cw",
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": "rotate_ccw",
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": "rotate_ccw",
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_cw",
+        "90": "rotate_ccw",
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": null,
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": null,
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": null,
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": "rotate_cw",
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": "rotate_cw",
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": "rotate_cw",
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": "rotate_ccw",
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": "rotate_ccw",
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": null,
+        "89": "rotate_ccw",
+        "90": "rotate_ccw",
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": "rotate_cw",
+        "89": null,
+        "90": null,
+        "145": null
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": "rotate_cw",
+        "89": null,
+        "90": null,
+        "145": "rotate_cw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    },
+    {
+      "choices": {
+        "11": null,
+        "35": null,
+        "51": null,
+        "88": "rotate_cw",
+        "89": null,
+        "90": null,
+        "145": "rotate_ccw"
+      },
+      "completedCycles": 152,
+      "delivered": {},
+      "typedAtoms": 3,
+      "occupiedPositions": 4,
+      "correctBonds": 0,
+      "wrongElements": 1,
+      "translation": [
+        3,
+        -3
+      ],
+      "rotation": 3,
+      "error": null,
+      "score": 300542
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area47-near-complete-002",
+    "operation": "solve_rotor_area47_near_complete",
+    "timeout_seconds": 1800,
+    "notes": "Retry targeted near-complete A47 chemistry search after simulator import fix."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area47-near-complete-002.json",
+  "git_sha": "ce2e273b1231aefaa9f5f7c179dc06e1f1aeda90",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:55:43.333458+00:00",
+  "finished_at": "2026-08-06T02:56:34.363392+00:00",
+  "duration_seconds": 51.03,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
