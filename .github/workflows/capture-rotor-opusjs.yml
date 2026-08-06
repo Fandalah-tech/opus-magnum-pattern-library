@@ -1,0 +1,80 @@
+name: Capture Rotor OpusJS review set
+
+on:
+  push:
+    branches:
+      - feature/disjoint-solver-readiness
+    paths:
+      - ".github/workflows/capture-rotor-opusjs.yml"
+      - "rotor-opus-replay.html"
+      - "assets/js/solution-viewer.js"
+      - "assets/js/viewer-interaction-polish.js"
+      - "assets/js/replay-arm-animation.js"
+      - "assets/js/replay-molecules.js"
+      - "assets/js/rotor-opus-replay.js"
+      - "assets/css/solution-viewer.css"
+      - ".visual-review-trigger/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Capture 20 representative replay frames
+        run: |
+          mkdir -p reports/visual/rotor-opusjs/img
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          url = 'https://raw.githack.com/Fandalah-tech/opus-magnum-pattern-library/feature/disjoint-solver-readiness/rotor-opus-replay.html'
+          out = Path('reports/visual/rotor-opusjs')
+          manifest = {'url': url, 'indices': [], 'frames': []}
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1600, 'height': 1000}, device_scale_factor=1)
+              page.goto(url, wait_until='networkidle', timeout=120000)
+              page.wait_for_selector('[data-rotor-range]', timeout=120000)
+              page.wait_for_function("document.querySelector('[data-rotor-position]').textContent.includes('/')", timeout=120000)
+              slider = page.locator('[data-rotor-range]')
+              maximum = int(slider.get_attribute('max') or '0')
+              indices = [round(i * maximum / 19) for i in range(20)] if maximum else [0]
+              manifest['indices'] = indices
+              for order, index in enumerate(indices):
+                  slider.evaluate('(node, value) => { node.value = value; node.dispatchEvent(new Event(\'input\', {bubbles:true})); }', index)
+                  page.wait_for_timeout(350)
+                  cycle = page.locator('[data-rotor-cycle]').inner_text()
+                  score = page.locator('[data-rotor-score]').inner_text()
+                  filename = f'img/{order:02d}-frame-{index:03d}-cycle-{cycle}.png'
+                  page.locator('.layout').screenshot(path=str(out / filename))
+                  manifest['frames'].append({'order': order, 'index': index, 'cycle': cycle, 'score': score, 'file': filename})
+              browser.close()
+
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2), encoding='utf-8')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rotor-opusjs-review-${{ github.run_id }}
+          path: reports/visual/rotor-opusjs/
+          if-no-files-found: error
+          retention-days: 30
