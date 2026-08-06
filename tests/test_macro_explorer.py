@@ -1,3 +1,5 @@
+import pytest
+
 from packages.opus_solver.macro_explorer import explore_simulator_macro_beam
 from packages.opus_solver.mechanical_macros import MechanicalMacro
 
@@ -11,7 +13,7 @@ class FakeSimulator:
         return {"phase": "complete"}
 
 
-def test_macro_search_crosses_a_score_plateau(monkeypatch):
+def _patch_keys(monkeypatch):
     monkeypatch.setattr(
         "packages.opus_solver.mechanical_macros.canonical_state_key",
         lambda simulator: (simulator.position,),
@@ -20,6 +22,10 @@ def test_macro_search_crosses_a_score_plateau(monkeypatch):
         "packages.opus_solver.macro_explorer.canonical_state_key",
         lambda simulator: (simulator.position,),
     )
+
+
+def test_macro_search_crosses_a_score_plateau(monkeypatch):
+    _patch_keys(monkeypatch)
     macros = (
         MechanicalMacro.from_actions(
             "confined-rotation",
@@ -51,14 +57,7 @@ def test_macro_search_crosses_a_score_plateau(monkeypatch):
 
 
 def test_macro_search_reports_best_partial_state(monkeypatch):
-    monkeypatch.setattr(
-        "packages.opus_solver.mechanical_macros.canonical_state_key",
-        lambda simulator: (simulator.position,),
-    )
-    monkeypatch.setattr(
-        "packages.opus_solver.macro_explorer.canonical_state_key",
-        lambda simulator: (simulator.position,),
-    )
+    _patch_keys(monkeypatch)
     macro = MechanicalMacro.from_actions("advance", [{"delta": 1}])
 
     result = explore_simulator_macro_beam(
@@ -73,3 +72,37 @@ def test_macro_search_reports_best_partial_state(monkeypatch):
     assert result.stopped_reason == "depth-limit"
     assert result.best_score == 2
     assert result.macros == ["advance", "advance"]
+
+
+def test_state_filter_rejects_successors_before_visited_budget(monkeypatch):
+    _patch_keys(monkeypatch)
+    macros = (
+        MechanicalMacro.from_actions("admissible", [{"delta": 1}]),
+        MechanicalMacro.from_actions("clutter", [{"delta": 10}]),
+    )
+
+    result = explore_simulator_macro_beam(
+        FakeSimulator(),
+        macros,
+        lambda simulator: simulator.position >= 2,
+        lambda simulator: simulator.position,
+        max_depth=2,
+        state_filter=lambda simulator: simulator.position <= 2,
+    )
+
+    assert result.found
+    assert result.macros == ["admissible", "admissible"]
+    assert result.visited_states == 3
+
+
+def test_state_filter_must_accept_initial_state(monkeypatch):
+    _patch_keys(monkeypatch)
+
+    with pytest.raises(ValueError, match="initial_simulator"):
+        explore_simulator_macro_beam(
+            FakeSimulator(position=3),
+            (),
+            lambda simulator: False,
+            lambda simulator: simulator.position,
+            state_filter=lambda simulator: simulator.position < 3,
+        )
