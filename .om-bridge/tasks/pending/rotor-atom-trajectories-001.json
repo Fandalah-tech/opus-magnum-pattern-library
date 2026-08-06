@@ -1,0 +1,6 @@
+{
+  "id": "rotor-atom-trajectories-001",
+  "operation": "report_rotor_atom_trajectories",
+  "timeout_seconds": 900,
+  "notes": "Trace the five initial reagent atoms and both piston states through cycle 70."
+}
