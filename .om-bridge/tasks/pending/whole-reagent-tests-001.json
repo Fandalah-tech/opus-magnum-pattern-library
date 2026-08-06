@@ -1,0 +1,10 @@
+{
+  "id": "whole-reagent-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 1800,
+  "pytest_targets": [
+    "tests/test_opus_engine.py",
+    "tests/test_disjoint_output.py"
+  ],
+  "notes": "Validate whole-reagent respawn semantics and disjoint-output behavior before relaunching the Rotor tail search."
+}
