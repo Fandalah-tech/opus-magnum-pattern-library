@@ -48,14 +48,9 @@ class InputSource:
         for first, second, kind in self.bond_templates:
             world.add_bond(Bond(atom_ids[first], atom_ids[second], kind))
 
-        # A reagent is one logical molecule even when its bond graph has
-        # multiple disconnected components. Its parts move together until a
-        # successful debond triggers the game's molecule recalculation rule.
-        world.register_molecule(
-            set(atom_ids),
-            molecule_id=f"{self.id}-spawn-{generation}",
-        )
-
+        # Molecules are defined by their bond graph. Disconnected atoms in one
+        # reagent are independent molecules and may be moved separately. The
+        # singleton groups created by World.add_atom are merged only by bonds.
         self.spawn_count += 1
         world.events.append(WorldEvent("input-spawned", world.cycle, {
             "inputId": self.id,
