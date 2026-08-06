@@ -1,0 +1,6 @@
+{
+  "id": "rotor-post-bonder-shift-001",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Replay A47 almost-solved reference after bonded payload displacement support and identify next divergence."
+}
