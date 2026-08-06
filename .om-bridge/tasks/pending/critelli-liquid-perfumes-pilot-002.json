@@ -1,0 +1,6 @@
+{
+  "id": "critelli-liquid-perfumes-pilot-002",
+  "operation": "import_critelli_liquid_perfumes",
+  "timeout_seconds": 1800,
+  "notes": "Retry the Liquid Perfumes pilot after adding detection for puzzle filenames embedded in buttons, attributes or page scripts. Download the public puzzle and at most 25 public solutions, then commit the provenance report and hashes."
+}
