@@ -1,0 +1,6 @@
+{
+  "id": "rotor-chain-replay-001",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Replay the almost-solved A47 reference using recursive occupied-bonder chain displacement and identify the next divergence."
+}
