@@ -23,52 +23,27 @@ def atom_text(simulator: Simulator) -> str:
     return ";".join(rows)
 
 
-def bond_text(simulator: Simulator) -> str:
-    return ";".join(
-        f"{bond.a}-{bond.b}:{bond.kind}"
-        for bond in simulator.world.bonds.values()
-        if "-wheel-" not in bond.a and "-wheel-" not in bond.b
-    ) or "-"
-
-
-def emit(simulator: Simulator, instructions: dict[str, str], events: list[str], error: str = "-") -> None:
+def emit(simulator: Simulator, instructions: dict[str, str], error: str = "-") -> None:
+    events = ",".join(event.kind for event in simulator.world.events if event.kind != "arm-instruction") or "-"
     instruction_text = ",".join(f"{part}:{value}" for part, value in sorted(instructions.items())) or "-"
     spawn_text = ",".join(f"{source.id}:{source.spawn_count}" for source in simulator.inputs)
-    delivered = json.dumps(dict(getattr(simulator, "delivered_products", {})), separators=(",", ":"))
-    print("|".join((
-        str(simulator.world.cycle),
-        instruction_text,
-        ",".join(events) or "-",
-        spawn_text,
-        bond_text(simulator),
-        atom_text(simulator),
-        delivered,
-        error,
-    )))
+    print("|".join((str(simulator.world.cycle), instruction_text, events, spawn_text, atom_text(simulator), error)))
 
 
 def main() -> None:
     puzzle = json.loads(PUZZLE.read_text(encoding="utf-8"))
-    solution = parse_solution_bytes(
-        base64.b64decode(REFERENCE_B64.read_text(encoding="ascii")),
-        source_name="van-berlos-rotor-area47-almost-solved.solution",
-    )
+    solution = parse_solution_bytes(base64.b64decode(REFERENCE_B64.read_text(encoding="ascii")), source_name="van-berlos-rotor-area47-almost-solved.solution")
     simulator = Simulator.from_models(puzzle, solution)
-    timeline = build_program_timeline(solution)
-    print("cycle|instructions|events|spawnCounts|bonds|atoms|delivered|error")
-    for row in timeline.get("cycles", []):
-        instructions = {
-            str(event.get("partId")): event.get("instruction")
-            for event in row.get("events", [])
-            if event.get("instruction")
-        }
+    print("cycle|instructions|events|spawnCounts|atoms|error")
+    for row in build_program_timeline(solution).get("cycles", []):
+        instructions = {str(event.get("partId")): event.get("instruction") for event in row.get("events", []) if event.get("instruction")}
         try:
             simulator.step(instructions)
         except SimulationError as exc:
-            emit(simulator, instructions, [event.kind for event in simulator.world.events if event.kind != "arm-instruction"], str(exc))
+            emit(simulator, instructions, str(exc))
             break
-        if simulator.world.cycle >= 80:
-            emit(simulator, instructions, [event.kind for event in simulator.world.events if event.kind != "arm-instruction"])
+        if simulator.world.cycle >= 97:
+            emit(simulator, instructions)
 
 
 if __name__ == "__main__":
