@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area47-final-chemistry-002",
+    "operation": "solve_rotor_area47_final_chemistry",
+    "timeout_seconds": 900,
+    "notes": "Re-run the 27 late Van Berlo rotation variants with overlap-aware duplication semantics."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area47-final-chemistry-002.json",
+  "git_sha": "a19bd30cab4c1a855057ba1e51bc7c0e92ddb58b",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:16:09.081983+00:00",
+  "finished_at": "2026-08-06T03:16:10.563839+00:00",
+  "duration_seconds": 1.482,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
