@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-lifecycle-001",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Trace ordinary atom lifecycle through the latest A47 mechanical prefix to locate incorrect consumption or output handling."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-lifecycle-001.json",
+  "git_sha": "13ac750633a7a340a9cc5aece1136fef4e81b601",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:30:27.077012+00:00",
+  "finished_at": "2026-08-06T03:30:27.542813+00:00",
+  "duration_seconds": 0.466,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
