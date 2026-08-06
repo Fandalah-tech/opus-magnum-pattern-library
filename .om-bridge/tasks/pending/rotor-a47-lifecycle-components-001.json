@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a47-lifecycle-components-001",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 900,
+  "notes": "Measure atom/bond lifecycle after correcting disconnected reagent molecule semantics."
+}
