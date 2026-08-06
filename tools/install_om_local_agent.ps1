@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
   [Security.Principal.WindowsBuiltInRole]::Administrator
 )) {
-  throw 'Ouvre PowerShell en tant qu’administrateur, puis relance la commande.'
+  throw "Ouvre PowerShell en tant qu'administrateur, puis relance la commande."
 }
 
 $AgentRoot = Join-Path $env:ProgramData 'OpusMagnumAgent'
@@ -38,7 +38,7 @@ $settings = New-ScheduledTaskSettingsSet `
   -ExecutionTimeLimit (New-TimeSpan -Minutes 4)
 
 $principal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType ServiceAccount -RunLevel Highest
-$task = New-ScheduledTask -Action $action -Trigger $triggers -Settings $settings -Principal $principal -Description 'Maintient le runner OMSIM actif, empêche la veille et synchronise le dépôt lorsqu’il est propre.'
+$task = New-ScheduledTask -Action $action -Trigger $triggers -Settings $settings -Principal $principal -Description "Maintient le runner OMSIM actif, empeche la veille et synchronise le depot lorsqu'il est propre."
 Register-ScheduledTask -TaskName $TaskName -InputObject $task -Force | Out-Null
 Start-ScheduledTask -TaskName $TaskName
 Start-Sleep -Seconds 3
@@ -47,8 +47,8 @@ $runner = Get-Service -Name 'actions.runner.*' -ErrorAction SilentlyContinue | S
 $taskInfo = Get-ScheduledTaskInfo -TaskName $TaskName
 
 Write-Host ''
-Write-Host 'Agent local Opus Magnum installé.' -ForegroundColor Green
-Write-Host "Tâche : $TaskName"
-Write-Host "Dernier résultat : $($taskInfo.LastTaskResult)"
-Write-Host "Runner : $($runner.Name) — $($runner.Status)"
+Write-Host 'Agent local Opus Magnum installe.' -ForegroundColor Green
+Write-Host "Tache : $TaskName"
+Write-Host "Dernier resultat : $($taskInfo.LastTaskResult)"
+Write-Host "Runner : $($runner.Name) - $($runner.Status)"
 Write-Host "Journal : $AgentRoot\agent.log"
