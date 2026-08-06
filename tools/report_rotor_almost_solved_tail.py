@@ -46,9 +46,9 @@ def main() -> None:
             if event.get("instruction")
         }
         simulator.step(instructions)
-        meaningful = [event.kind for event in simulator.world.events if event.kind != "arm-instruction"]
-        if simulator.world.cycle < 110 and not meaningful:
+        if simulator.world.cycle < 119:
             continue
+        meaningful = [event.kind for event in simulator.world.events if event.kind != "arm-instruction"]
         instruction_text = ",".join(f"{part}:{value}" for part, value in sorted(instructions.items())) or "-"
         spawn_text = ",".join(f"{source.id}:{source.spawn_count}" for source in simulator.inputs)
         delivered = json.dumps(dict(getattr(simulator, "delivered_products", {})), separators=(",", ":"))
