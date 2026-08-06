@@ -33,7 +33,7 @@ jobs:
 
       - name: Resolve task file
         id: task
-        shell: pwsh
+        shell: powershell
         run: |
           if ("${{ github.event_name }}" -eq "workflow_dispatch") {
             $task = "${{ inputs.task_file }}"
@@ -48,7 +48,7 @@ jobs:
 
       - name: Execute approved operation
         id: worker
-        shell: pwsh
+        shell: powershell
         run: |
           python --version
           python tools/om_worker.py --task "${{ steps.task.outputs.task_file }}" --results-root ".om-bridge/results"
@@ -57,7 +57,7 @@ jobs:
           exit 0
 
       - name: Commit research result
-        shell: pwsh
+        shell: powershell
         run: |
           git config user.name "om-local-worker"
           git config user.email "om-local-worker@users.noreply.github.com"
@@ -69,5 +69,5 @@ jobs:
 
       - name: Fail workflow when operation failed
         if: steps.worker.outputs.exit_code != '0'
-        shell: pwsh
+        shell: powershell
         run: exit ${{ steps.worker.outputs.exit_code }}
