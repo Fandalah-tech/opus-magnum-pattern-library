@@ -1,0 +1,7 @@
+{
+  "id": "validate-a44-reference-macro-001",
+  "operation": "run_tests",
+  "timeout_seconds": 600,
+  "pytest_targets": ["tests/test_reference_macros.py"],
+  "notes": "Validate compilation of the A44 confined rotation reference into an atomic MechanicalMacro."
+}
