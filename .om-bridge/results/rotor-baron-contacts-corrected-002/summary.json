@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-baron-contacts-corrected-002",
+    "operation": "report_rotor_baron_contacts",
+    "timeout_seconds": 1800,
+    "notes": "Use VanBerloSimulator and trace contacts/bonds around cycles 50-110."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-baron-contacts-corrected-002.json",
+  "git_sha": "bdabbb49699ea84f438108748858639d8a8f6929",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T10:06:46.701195+00:00",
+  "finished_at": "2026-08-06T10:06:47.175895+00:00",
+  "duration_seconds": 0.475,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

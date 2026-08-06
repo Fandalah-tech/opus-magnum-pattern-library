@@ -1,0 +1,6947 @@
+{
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "baronId": "part-1",
+  "rows": [
+    {
+      "cycle": 50,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_ccw"
+        }
+      ],
+      "before": {
+        "rotation": 2,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            -1,
+            4
+          ],
+          "1": [
+            -1,
+            3
+          ],
+          "2": [
+            0,
+            2
+          ],
+          "3": [
+            1,
+            2
+          ],
+          "4": [
+            1,
+            3
+          ],
+          "5": [
+            0,
+            4
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 2,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            -1,
+            4
+          ],
+          "1": [
+            -1,
+            3
+          ],
+          "2": [
+            0,
+            2
+          ],
+          "3": [
+            1,
+            2
+          ],
+          "4": [
+            1,
+            3
+          ],
+          "5": [
+            0,
+            4
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 51,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 2,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            -1,
+            4
+          ],
+          "1": [
+            -1,
+            3
+          ],
+          "2": [
+            0,
+            2
+          ],
+          "3": [
+            1,
+            2
+          ],
+          "4": [
+            1,
+            3
+          ],
+          "5": [
+            0,
+            4
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 2,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            -1,
+            4
+          ],
+          "1": [
+            -1,
+            3
+          ],
+          "2": [
+            0,
+            2
+          ],
+          "3": [
+            1,
+            2
+          ],
+          "4": [
+            1,
+            3
+          ],
+          "5": [
+            0,
+            4
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 52,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-1",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_ccw"
+        }
+      ],
+      "before": {
+        "rotation": 2,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            -1,
+            4
+          ],
+          "1": [
+            -1,
+            3
+          ],
+          "2": [
+            0,
+            2
+          ],
+          "3": [
+            1,
+            2
+          ],
+          "4": [
+            1,
+            3
+          ],
+          "5": [
+            0,
+            4
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 53,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_minus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 54,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 55,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-2-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 56,
+      "instructions": {
+        "part-8": "track_minus"
+      },
+      "events": [
+        {
+          "kind": "input-spawned",
+          "inputId": "part-9",
+          "generation": 3,
+          "atomIds": [
+            "part-9-spawn-3-atom-0"
+          ]
+        },
+        {
+          "kind": "atom-calcified",
+          "glyphPartId": "part-5",
+          "atomId": "part-9-spawn-2-atom-0",
+          "fromElement": "water",
+          "toElement": "salt",
+          "position": [
+            4,
+            -5
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_minus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 8,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 57,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-2-atom-0"
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 58,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_minus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 59,
+      "instructions": {
+        "part-8": "extend"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "extend"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 60,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-2-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 61,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      }
+    },
+    {
+      "cycle": 62,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [
+        {
+          "kind": "atom-bonder-displaced",
+          "glyphPartId": "part-11",
+          "atomId": "part-9-spawn-1-atom-0",
+          "from": [
+            1,
+            -3
+          ],
+          "to": [
+            2,
+            -4
+          ]
+        },
+        {
+          "kind": "bond-created",
+          "glyphPartId": "part-11",
+          "fromAtomId": "part-9-spawn-1-atom-0",
+          "toAtomId": "part-9-spawn-2-atom-0",
+          "type": "normal"
+        },
+        {
+          "kind": "floating-bond-created",
+          "fromAtomId": "part-9-spawn-2-atom-0",
+          "toAtomId": "part-9-spawn-1-atom-0",
+          "rootAtomId": "part-9-spawn-1-atom-0",
+          "type": "normal"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_minus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": []
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": "part-9-spawn-1-atom-0"
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 63,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        },
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-2-atom-0"
+          ]
+        },
+        {
+          "kind": "floating-bond-settled",
+          "fromAtomId": "part-9-spawn-1-atom-0",
+          "toAtomId": "part-9-spawn-2-atom-0",
+          "rootAtomId": "part-9-spawn-1-atom-0",
+          "type": "normal"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": "part-9-spawn-1-atom-0"
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 64,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "retract"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_ccw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 65,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "retract"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_ccw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 66,
+      "instructions": {
+        "part-8": "rotate_ccw",
+        "part-10": "extend"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_ccw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "extend"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 67,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 68,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "retract"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 69,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_ccw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 70,
+      "instructions": {
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 71,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "extend"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "extend"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 72,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 73,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "retract"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "retract"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 74,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 75,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "extend"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "extend"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 76,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 77,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "retract"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 78,
+      "instructions": {
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 79,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 80,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 81,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 82,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 83,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 84,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 85,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 86,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 87,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 88,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 89,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-8": "rotate_cw",
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-1",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 1,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            4
+          ],
+          "1": [
+            -1,
+            4
+          ],
+          "2": [
+            -1,
+            3
+          ],
+          "3": [
+            0,
+            2
+          ],
+          "4": [
+            1,
+            2
+          ],
+          "5": [
+            1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 0,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            1,
+            3
+          ],
+          "1": [
+            0,
+            4
+          ],
+          "2": [
+            -1,
+            4
+          ],
+          "3": [
+            -1,
+            3
+          ],
+          "4": [
+            0,
+            2
+          ],
+          "5": [
+            1,
+            2
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 90,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-1",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 0,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            1,
+            3
+          ],
+          "1": [
+            0,
+            4
+          ],
+          "2": [
+            -1,
+            4
+          ],
+          "3": [
+            -1,
+            3
+          ],
+          "4": [
+            0,
+            2
+          ],
+          "5": [
+            1,
+            2
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 5,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            1,
+            2
+          ],
+          "1": [
+            1,
+            3
+          ],
+          "2": [
+            0,
+            4
+          ],
+          "3": [
+            -1,
+            4
+          ],
+          "4": [
+            -1,
+            3
+          ],
+          "5": [
+            0,
+            2
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 91,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-8": "rotate_cw",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-1",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 5,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            1,
+            2
+          ],
+          "1": [
+            1,
+            3
+          ],
+          "2": [
+            0,
+            4
+          ],
+          "3": [
+            -1,
+            4
+          ],
+          "4": [
+            -1,
+            3
+          ],
+          "5": [
+            0,
+            2
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 92,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 93,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 94,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 95,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 96,
+      "instructions": {
+        "part-8": "rotate_ccw",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_ccw"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 97,
+      "instructions": {
+        "part-8": "extend",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "extend"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 98,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-3-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 99,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "extend"
+      },
+      "events": [
+        {
+          "kind": "input-spawned",
+          "inputId": "part-9",
+          "generation": 4,
+          "atomIds": [
+            "part-9-spawn-4-atom-0"
+          ]
+        },
+        {
+          "kind": "atom-calcified",
+          "glyphPartId": "part-5",
+          "atomId": "part-9-spawn-3-atom-0",
+          "fromElement": "water",
+          "toElement": "salt",
+          "position": [
+            4,
+            -5
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_minus"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "extend"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 9,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 100,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 101,
+      "instructions": {
+        "part-8": "extend"
+      },
+      "events": [
+        {
+          "kind": "bonder-chain-shifted",
+          "rootAtomId": "part-9-spawn-2-atom-0",
+          "atomIds": [
+            "part-9-spawn-1-atom-0",
+            "part-9-spawn-2-atom-0",
+            "part-9-spawn-4-atom-0"
+          ],
+          "delta": [
+            1,
+            -1
+          ]
+        },
+        {
+          "kind": "bonder-payload-shifted",
+          "glyphPartId": "part-11",
+          "rootAtomId": "part-9-spawn-2-atom-0",
+          "from": [
+            1,
+            -3
+          ],
+          "toward": [
+            2,
+            -4
+          ]
+        },
+        {
+          "kind": "bond-created",
+          "glyphPartId": "part-11",
+          "fromAtomId": "part-9-spawn-2-atom-0",
+          "toAtomId": "part-9-spawn-3-atom-0",
+          "type": "normal"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "extend"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 102,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-3-atom-0"
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 103,
+      "instructions": {
+        "part-8": "retract"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "retract"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 104,
+      "instructions": {
+        "part-8": "retract"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "retract"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 105,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 106,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 107,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "track_plus"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 108,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "rotate_cw"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 109,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-8",
+          "instruction": "drop"
+        },
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "grab"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    },
+    {
+      "cycle": 110,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [
+        {
+          "kind": "arm-instruction",
+          "armId": "part-10",
+          "instruction": "retract"
+        }
+      ],
+      "before": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      },
+      "after": {
+        "rotation": 4,
+        "grabbing": true,
+        "tips": {
+          "0": [
+            0,
+            2
+          ],
+          "1": [
+            1,
+            2
+          ],
+          "2": [
+            1,
+            3
+          ],
+          "3": [
+            0,
+            4
+          ],
+          "4": [
+            -1,
+            4
+          ],
+          "5": [
+            -1,
+            3
+          ]
+        },
+        "contacts": {},
+        "ordinaryAtomCount": 10,
+        "bonds": [
+          {
+            "a": "part-9-spawn-1-atom-0",
+            "b": "part-9-spawn-2-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              3,
+              -5
+            ],
+            "bPosition": [
+              2,
+              -4
+            ],
+            "floatingRoot": null
+          },
+          {
+            "a": "part-9-spawn-2-atom-0",
+            "b": "part-9-spawn-3-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ],
+            "floatingRoot": null
+          }
+        ]
+      }
+    }
+  ]
+}
