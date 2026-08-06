@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-baron-structure-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_structure_goal_baron.py"
+    ],
+    "notes": "Validate opt-in matching of atoms held by the Van Berlo rotor."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-baron-structure-tests-001.json",
+  "git_sha": "e39301470f62b3cf12e5425f5329585485393e12",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T01:35:33.577314+00:00",
+  "finished_at": "2026-08-06T01:35:34.946925+00:00",
+  "duration_seconds": 1.37,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
