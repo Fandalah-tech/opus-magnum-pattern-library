@@ -6,27 +6,18 @@
   <meta name="description" content="Carte claire des outils, statuts et prochaines étapes du projet Opus Magnum Codex / OMSIM.">
   <title>Projet · Opus Magnum Codex</title>
   <link rel="stylesheet" href="assets/css/project-hub.css">
+  <link rel="stylesheet" href="assets/css/site-shell.css">
 </head>
-<body>
-  <header class="topbar">
-    <a class="brand" href="project.html"><span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Carte du projet</strong></span></a>
-    <nav aria-label="Navigation principale">
-      <a class="active" href="project.html">Projet</a>
-      <a href="index.html">Codex</a>
-      <a href="inspector.html">Laboratoire</a>
-      <a href="solver-lab.html">Solver</a>
-      <a href="research-monitor.html">Recherche en direct</a>
-    </nav>
-  </header>
+<body data-product="project" data-bilingual="false">
   <main>
     <section class="hero">
-      <div><p class="eyebrow">UN SEUL PROJET · QUATRE ZONES CLAIRES</p><h1>Où en est l’application?</h1><p>Cette page distingue les outils utilisables, les prototypes préliminaires, la recherche active et les développements planifiés. Les anciennes démonstrations restent conservées dans le dépôt, mais ne sont plus présentées comme des fonctions terminées.</p></div>
+      <div><p class="eyebrow">UN SEUL PROJET · QUATRE ZONES CLAIRES</p><h1>Où en est l’application?</h1><p>Cette page distingue les outils utilisables, les fonctions expérimentales, la recherche active et les développements planifiés. Les anciens prototypes restent conservés dans le dépôt, mais ne sont plus présentés comme des destinations principales.</p></div>
       <div class="seal" aria-hidden="true"><span>MAP</span></div>
     </section>
 
     <div class="section-head"><p class="eyebrow">APPLICATION</p><h2>Zones principales</h2><p>Chaque zone a un rôle unique et un niveau de maturité explicite.</p></div>
     <section class="area-grid">
-      <a class="area-card" href="index.html"><div class="area-top"><div><p class="eyebrow">CONNAISSANCE</p><h3>Codex</h3></div><span class="status alpha">Prototype</span></div><p>Première bibliothèque de concepts, patterns, relations et actifs visuels. Son contenu provient en partie des développements exploratoires initiaux et doit être réaudité avant d’être considéré comme canonique.</p><ul><li>Architecture de consultation fonctionnelle</li><li>Contenu encore hétérogène</li><li>Révision future avec OMSIM et le corpus</li></ul><span class="open">Explorer le prototype →</span></a>
+      <a class="area-card" href="index.html"><div class="area-top"><div><p class="eyebrow">CONNAISSANCE</p><h3>Codex</h3></div><span class="status alpha">Prototype documentaire</span></div><p>Bibliothèque préliminaire de concepts, patterns, relations et archives visuelles à réauditer à partir d’OMSIM et du corpus.</p><ul><li>Recherche et filtres</li><li>Fiches exploratoires</li><li>Terminologie provisoire</li></ul><span class="open">Ouvrir le Codex →</span></a>
       <a class="area-card" href="inspector.html"><div class="area-top"><div><p class="eyebrow">ANALYSE</p><h3>Laboratoire</h3></div><span class="status alpha">Alpha</span></div><p>Chargement d’un puzzle et d’une solution pour analyse, validation et replay.</p><ul><li>Inspecteur de solution</li><li>Métriques et diagnostics</li><li>Replay physique OMSIM</li></ul><span class="open">Ouvrir le Laboratoire →</span></a>
       <a class="area-card" href="solver-lab.html"><div class="area-top"><div><p class="eyebrow">RÉSOLUTION</p><h3>Solver Lab</h3></div><span class="status research">Recherche active</span></div><p>Résultats autonomes validés, campagnes expérimentales et suivi du solver.</p><ul><li>Premier solve autonome P007</li><li>Campagne Van Berlo</li><li>Résultats et candidats futurs</li></ul><span class="open">Ouvrir le Solver Lab →</span></a>
       <div class="area-card"><div class="area-top"><div><p class="eyebrow">RENDU</p><h3>OpusJS</h3></div><span class="status future">Développement futur</span></div><p>Engin graphique destiné à devenir la couche de visualisation commune du Codex, du Laboratoire et du solver.</p><ul><li>Snapshot OMSIM → scène</li><li>Meilleur candidat en direct</li><li>Replay unifié</li></ul><span class="open">Non publié comme outil autonome</span></div>
@@ -35,13 +26,13 @@
     <div class="section-head"><p class="eyebrow">PROCHAINES ÉTAPES</p><h2>Ordre de développement</h2></div>
     <section class="roadmap">
       <article><b>1 · Stabiliser la recherche</b><p>Analyser la campagne Van Berlo, conserver les meilleurs candidats et ajouter les checkpoints nécessaires.</p></article>
-      <article><b>2 · Nettoyer l’application</b><p>Uniformiser les en-têtes, les langues et les statuts, puis retirer de la navigation les modules remplacés.</p></article>
-      <article><b>3 · Relier OMSIM à OpusJS</b><p>Créer l’adaptateur de snapshot afin de voir exactement les états produits par le simulateur.</p></article>
-      <article><b>4 · Réviser le Codex</b><p>Reconstruire progressivement son contenu à partir des données vérifiées du moteur, du corpus et des recherches.</p></article>
+      <article><b>2 · Relier OMSIM à OpusJS</b><p>Créer l’adaptateur de snapshot afin de voir exactement les états produits par le simulateur.</p></article>
+      <article><b>3 · Unifier les interfaces</b><p>Réutiliser la même scène et les mêmes contrôles dans le Laboratoire, le Solver Lab et les pages du Codex.</p></article>
     </section>
 
     <aside class="archive-note"><strong>Politique de ménage.</strong> Les pages de test, démonstrations techniques et prototypes remplacés sont conservés dans le dépôt pour référence, mais retirés progressivement de la navigation publique. Une suppression définitive ne sera faite qu’après vérification de leurs dépendances.</aside>
   </main>
   <footer>Projet de recherche non officiel. Opus Magnum a été créé par Zachtronics.</footer>
+  <script src="assets/js/site-shell.js"></script>
 </body>
 </html>
