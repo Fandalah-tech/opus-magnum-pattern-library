@@ -1,0 +1,77 @@
+name: OM local research worker
+
+on:
+  push:
+    branches:
+      - feature/disjoint-solver-readiness
+    paths:
+      - ".om-bridge/tasks/pending/*.json"
+  workflow_dispatch:
+    inputs:
+      task_file:
+        description: "Repository-relative path to one approved task JSON"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: om-local-worker
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    if: github.event_name == 'workflow_dispatch' || github.actor == 'Fandalah-tech'
+    runs-on: [self-hosted, Windows, X64, omsim]
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+          fetch-depth: 50
+
+      - name: Resolve task file
+        id: task
+        shell: cmd
+        env:
+          DISPATCH_TASK: ${{ inputs.task_file }}
+          EVENT_NAME: ${{ github.event_name }}
+          TRIGGER_SHA: ${{ github.sha }}
+        run: |
+          python tools/resolve_om_task.py --event "%EVENT_NAME%" --dispatch-task "%DISPATCH_TASK%" --trigger-sha "%TRIGGER_SHA%" --output "%GITHUB_OUTPUT%"
+
+      - name: Prepare Python test environment
+        shell: cmd
+        run: |
+          python -m pip install --upgrade pip pytest
+
+      - name: Execute approved operation
+        id: worker
+        shell: cmd
+        env:
+          OM_LIVE_STATUS_TOKEN: ${{ github.token }}
+          OM_LIVE_STATUS_BRANCH: feature/disjoint-solver-readiness
+        run: |
+          setlocal EnableDelayedExpansion
+          python --version
+          python tools/om_worker.py --task "${{ steps.task.outputs.task_file }}" --results-root ".om-bridge/results"
+          set code=!ERRORLEVEL!
+          echo exit_code=!code!>>"%GITHUB_OUTPUT%"
+          exit /b 0
+
+      - name: Commit research result
+        shell: cmd
+        run: |
+          git config user.name "om-local-worker"
+          git config user.email "om-local-worker@users.noreply.github.com"
+          git add .om-bridge/results reports packages/opus_engine/final_simulator.py
+          git diff --cached --quiet || git commit -m "Record OMSIM worker result"
+          git fetch origin feature/disjoint-solver-readiness
+          git rebase origin/feature/disjoint-solver-readiness
+          git push origin HEAD:feature/disjoint-solver-readiness
+
+      - name: Fail workflow when operation failed
+        if: steps.worker.outputs.exit_code != '0'
+        shell: cmd
+        run: exit /b ${{ steps.worker.outputs.exit_code }}
