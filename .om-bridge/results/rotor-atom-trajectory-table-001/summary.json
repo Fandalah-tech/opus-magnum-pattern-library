@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-atom-trajectory-table-001",
+    "operation": "report_rotor_atom_trajectories",
+    "timeout_seconds": 900,
+    "notes": "Concise per-instruction trajectory table through cycle 70."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-atom-trajectory-table-001.json",
+  "git_sha": "b129f5bcf7944ef1b887fb57495cc545ee7d525b",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:56:23.685567+00:00",
+  "finished_at": "2026-08-06T03:56:24.062788+00:00",
+  "duration_seconds": 0.377,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
