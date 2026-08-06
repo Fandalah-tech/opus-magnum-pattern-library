@@ -1,0 +1,6 @@
+{
+  "id": "rotor-layout-report-001",
+  "operation": "report_rotor_solution_layout",
+  "timeout_seconds": 900,
+  "notes": "Extract all parts, positions, rotations, track cells, and programs from the latest A47 prefix."
+}
