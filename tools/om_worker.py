@@ -27,6 +27,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_solution_layout": [sys.executable, "tools/report_rotor_solution_layout.py"],
     "report_rotor_duplication_cells": [sys.executable, "tools/report_rotor_duplication_cells.py"],
     "report_rotor_atom_trajectories": [sys.executable, "tools/report_rotor_atom_trajectories.py"],
+    "report_rotor_almost_solved_tail": [sys.executable, "tools/report_rotor_almost_solved_tail.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
 }
