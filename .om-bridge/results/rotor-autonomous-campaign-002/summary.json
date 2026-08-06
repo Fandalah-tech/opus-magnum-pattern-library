@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-autonomous-campaign-002",
+    "operation": "run_rotor_autonomous_campaign",
+    "timeout_seconds": 21600,
+    "notes": "Supersede the stale regression job. Run targeted safety tests, strict replay, then the long last-atom continuation search."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-autonomous-campaign-002.json",
+  "git_sha": "fe75ed14ea8ac8356433bed20cab0a96d492eb07",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T11:17:53.511131+00:00",
+  "finished_at": "2026-08-06T11:17:57.115879+00:00",
+  "duration_seconds": 3.605,
+  "exit_code": 4,
+  "status": "failed",
+  "error": null
+}
