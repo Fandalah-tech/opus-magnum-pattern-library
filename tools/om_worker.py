@@ -30,6 +30,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_almost_solved_tail": [sys.executable, "tools/report_rotor_almost_solved_tail.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
+    "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
 }
 
 
@@ -85,7 +86,6 @@ def main() -> int:
     parser.add_argument("--task", required=True, type=Path)
     parser.add_argument("--results-root", required=True, type=Path)
     args = parser.parse_args()
-
     started_at = datetime.now(timezone.utc)
     started = time.monotonic()
     task: dict[str, Any] | None = None
@@ -93,7 +93,6 @@ def main() -> int:
     stdout = ""
     stderr = ""
     error: str | None = None
-
     try:
         task = _load_task(args.task)
         command = [*ALLOWED_OPERATIONS[task["operation"]], *_pytest_targets(task)]
@@ -118,7 +117,6 @@ def main() -> int:
         exit_code = 2
         error = f"{type(exc).__name__}: {exc}"
         stderr = error + "\n"
-
     task_id = task.get("id") if task else args.task.stem
     result_dir = args.results_root / str(task_id)
     result_dir.mkdir(parents=True, exist_ok=True)
@@ -137,10 +135,7 @@ def main() -> int:
         "status": "success" if exit_code == 0 else "failed",
         "error": error,
     }
-    (result_dir / "summary.json").write_text(
-        json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    (result_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False))
     return exit_code
 
