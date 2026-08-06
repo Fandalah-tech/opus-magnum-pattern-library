@@ -1,0 +1,6 @@
+{
+  "id": "rotor-post-respawn-error-002",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Report only cycles 97 onward and the first collision after independent component respawn."
+}
