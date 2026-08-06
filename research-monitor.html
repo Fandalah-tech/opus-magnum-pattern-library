@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Moniteur en direct des campagnes de recherche OMSIM.">
+  <title>OMSIM Research Monitor</title>
+  <style>
+    :root{color-scheme:dark;--bg:#11100f;--panel:#1a1816;--panel2:#211e1a;--line:#3a342d;--text:#efe7d7;--muted:#a99f90;--accent:#d4a35a;--good:#83c68f;--bad:#e77f73}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#292218 0,var(--bg) 38%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit;text-decoration:none}.topbar{min-height:76px;padding:14px clamp(18px,4vw,56px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(17,16,15,.94);position:sticky;top:0}.brand{display:flex;align-items:center;gap:12px}.mark{width:46px;height:46px;display:grid;place-items:center;border:1px solid var(--accent);clip-path:polygon(25% 6%,75% 6%,100% 50%,75% 94%,25% 94%,0 50%);color:var(--accent);font-weight:800}.brand small,.eyebrow{color:var(--accent);font-size:11px;letter-spacing:.16em;font-weight:800}.brand strong{display:block;font:700 21px Georgia,serif}.topbar a.back{padding:10px 14px;border:1px solid var(--line);color:var(--muted)}
+    main{width:min(1200px,calc(100% - 32px));margin:0 auto;padding:48px 0 80px}.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;margin-bottom:24px}.hero h1{margin:7px 0 10px;font:700 clamp(36px,6vw,68px)/1 Georgia,serif}.hero p{margin:0;color:var(--muted);max-width:760px;line-height:1.6}.badge{padding:10px 14px;border:1px solid var(--line);font-weight:800}.badge.running{color:var(--accent);border-color:var(--accent)}.badge.success{color:var(--good);border-color:var(--good)}.badge.failure{color:var(--bad);border-color:var(--bad)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{min-height:132px;padding:18px;border:1px solid var(--line);background:rgba(26,24,22,.92);display:flex;flex-direction:column;justify-content:center}.card small{color:var(--muted);text-transform:uppercase;letter-spacing:.12em}.card strong{margin-top:8px;font:700 34px Georgia,serif;color:var(--accent);word-break:break-word}.card span{color:var(--muted);font-size:13px}.progress{height:12px;margin:16px 0;background:#0b0a09;border:1px solid var(--line);overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#7e5e32,var(--accent));transition:width .4s ease}.log{min-height:180px;margin:0;padding:18px;border:1px solid var(--line);background:#0b0a09;color:#d8cfbf;white-space:pre-wrap;line-height:1.55;overflow:auto}.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:12px;color:var(--muted)}.foot a{padding:10px 14px;border:1px solid var(--line)}
+    @media(max-width:800px){.hero{display:block}.badge{display:inline-block;margin-top:18px}.grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.grid{grid-template-columns:1fr}.topbar .back{display:none}.foot{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="solver-lab.html"><span class="mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Research Monitor</strong></span></a><a class="back" href="solver-lab.html">Retour au Solver Lab</a></header>
+<main>
+  <section class="hero"><div><p class="eyebrow">VAN BERLO'S ROTOR · CAMPAGNE AUTONOME</p><h1>Recherche OMSIM en direct</h1><p>Le tableau se rafraîchit automatiquement toutes les 15 secondes à partir du runner GitHub et du heartbeat publié par le solver.</p></div><span id="badge" class="badge">Chargement</span></section>
+  <section class="grid">
+    <article class="card"><small>Étape</small><strong id="stage">—</strong><span>phase actuelle</span></article>
+    <article class="card"><small>Temps écoulé</small><strong id="elapsed">—</strong><span>campagne active</span></article>
+    <article class="card"><small>Run</small><strong id="run-number">—</strong><span>GitHub Actions</span></article>
+    <article class="card"><small>Profondeur</small><strong id="depth">—</strong><span>niveau / maximum</span></article>
+    <article class="card"><small>États visités</small><strong id="visited">—</strong><span>états uniques</span></article>
+    <article class="card"><small>États développés</small><strong id="expanded">—</strong><span>branches explorées</span></article>
+    <article class="card"><small>Frontier</small><strong id="frontier">—</strong><span>candidats actifs</span></article>
+    <article class="card"><small>Meilleur score</small><strong id="score">—</strong><span>heuristique</span></article>
+    <article class="card"><small>Dernier heartbeat</small><strong id="heartbeat-age">—</strong><span>fraîcheur des données</span></article>
+  </section>
+  <div class="progress"><span id="bar"></span></div>
+  <pre id="log" class="log" aria-live="polite">Connexion à GitHub…</pre>
+  <div class="foot"><span id="updated">—</span><a id="run-link" href="#" target="_blank" rel="noreferrer">Ouvrir le run GitHub</a></div>
+</main>
+<script>
+(() => {
+  const REPO='Fandalah-tech/opus-magnum-pattern-library';
+  const BRANCH='feature/disjoint-solver-readiness';
+  const WORKFLOW='om-local-worker.yml';
+  const POLL=15000;
+  const q=(id)=>document.getElementById(id);
+  const fmt=(v)=>Number.isFinite(Number(v))?Number(v).toLocaleString('fr-CA'):'—';
+  const duration=(s)=>{if(!Number.isFinite(s)||s<0)return'—';const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=Math.floor(s%60);return h?`${h} h ${String(m).padStart(2,'0')} min`:`${m} min ${String(sec).padStart(2,'0')} s`};
+  async function json(url){const r=await fetch(url,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw new Error(`GitHub ${r.status}`);return r.json()}
+  async function raw(path){const url=`https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(BRANCH)}/${path}?t=${Date.now()}`;const r=await fetch(url,{cache:'no-store'});if(!r.ok)return null;return r.json()}
+  function badge(text,kind=''){q('badge').textContent=text;q('badge').className=`badge ${kind}`.trim()}
+  async function refresh(){try{
+    const runs=await json(`https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/runs?branch=${encodeURIComponent(BRANCH)}&per_page=1`);
+    const run=runs.workflow_runs?.[0];if(!run)throw new Error('Aucune campagne trouvée');
+    const live=await raw('reports/live-search-status.json');
+    const started=new Date(run.run_started_at||run.created_at).getTime();
+    const ended=run.status==='completed'?new Date(run.updated_at).getTime():Date.now();
+    q('elapsed').textContent=duration(Math.max(0,(ended-started)/1000));q('run-number').textContent=`#${run.run_number}`;q('run-link').href=run.html_url;
+    if(run.status==='in_progress'||run.status==='queued')badge('En cours','running');else if(run.conclusion==='success')badge('Terminé','success');else badge('Intervention','failure');
+    q('stage').textContent=live?.stage||(run.status==='queued'?'En file':run.status==='in_progress'?'Opération en cours':run.conclusion==='success'?'Campagne terminée':`Arrêtée · ${run.conclusion||run.status}`);
+    if(live){
+      const d=Number(live.depth),max=Number(live.maxDepth??live.max_depth);q('depth').textContent=Number.isFinite(d)?`${d}${Number.isFinite(max)?` / ${max}`:''}`:'—';
+      q('visited').textContent=fmt(live.visitedStates??live.visited_states);q('expanded').textContent=fmt(live.expandedStates??live.expanded_states);q('frontier').textContent=fmt(live.frontierSize??live.frontier_size);q('score').textContent=fmt(live.bestScore??live.best_score);
+      q('bar').style.width=Number.isFinite(d)&&Number.isFinite(max)&&max>0?`${Math.min(100,Math.max(0,d/max*100))}%`:'0%';
+      const age=Math.max(0,(Date.now()-new Date(live.updatedAt).getTime())/1000);q('heartbeat-age').textContent=duration(age);
+      q('log').textContent=[live.message,`Statut : ${live.status||'—'}`,Number.isFinite(d)?`Profondeur : ${d}${Number.isFinite(max)?` / ${max}`:''}`:null,`États visités : ${fmt(live.visitedStates??live.visited_states)}`,`États développés : ${fmt(live.expandedStates??live.expanded_states)}`,`Meilleur score : ${fmt(live.bestScore??live.best_score)}`,live.stoppedReason?`Arrêt : ${live.stoppedReason}`:null,live.found===true?'Solution trouvée.':null].filter(Boolean).join('\n');
+    } else q('log').textContent='La campagne est visible dans GitHub Actions, mais aucun heartbeat détaillé n’est encore publié.';
+    q('updated').textContent=`Actualisé à ${new Date().toLocaleTimeString('fr-CA')}`;
+  }catch(e){badge('Indisponible','failure');q('log').textContent=`Impossible de lire l’état : ${e.message}`;q('updated').textContent=`Nouvel essai dans ${POLL/1000} s`;}}
+  refresh();setInterval(refresh,POLL);
+})();
+</script>
+</body>
+</html>
