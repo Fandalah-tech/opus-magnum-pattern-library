@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Solver Lab — première solution autonome validée et suivi des recherches OMSIM pour Opus Magnum.">
+  <meta name="description" content="Solver Lab — suivi de la campagne autonome OMSIM sur Van Berlo's Rotor.">
   <title>Solver Lab · Opus Magnum Codex</title>
   <link rel="stylesheet" href="assets/css/solver-lab.css">
   <link rel="stylesheet" href="assets/css/research-monitor.css">
@@ -11,38 +11,22 @@
 </head>
 <body data-product="solver" data-bilingual="false">
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Retour au Codex">
-      <span class="brand-mark">OM</span>
-      <span><small>OPUS MAGNUM CODEX</small><strong>Solver Lab</strong></span>
-    </a>
-    <nav>
-      <a href="project.html">Projet</a>
-      <a href="index.html">Codex</a>
-      <a href="inspector.html">Laboratoire</a>
-      <a class="active" href="solver-lab.html">Solver</a>
-      <a href="research-monitor.html">Recherche en direct</a>
-    </nav>
+    <a class="brand" href="index.html" aria-label="Retour au Codex"><span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Solver Lab</strong></span></a>
+    <nav><a href="project.html">Projet</a><a href="index.html">Codex</a><a href="inspector.html">Laboratoire</a><a class="active" href="solver-lab.html">Solver</a><a href="research-monitor.html">Recherche en direct</a></nav>
   </header>
 
   <main>
     <section class="hero">
       <div>
-        <p class="eyebrow">PREMIER SOLVE AUTONOME · VALIDÉ PAR OMSIM</p>
-        <h1>P007 — Stabilized Water</h1>
-        <p>Le solver a analysé le puzzle, construit un plan de fabrication, généré un mécanisme inédit et produit un véritable fichier <code>.solution</code>.</p>
+        <p class="eyebrow">CAMPAGNE ACTIVE · VAN BERLO'S ROTOR</p>
+        <h1>Du préfixe humain au candidat OMSIM</h1>
+        <p>Le laboratoire suit maintenant la recherche réellement en cours : replay complet du mécanisme Area 47, puis prise en charge du dernier segment par le solver.</p>
       </div>
-      <div class="seal" aria-hidden="true"><span>1</span><small>AUTO SOLVE</small></div>
+      <div class="seal" aria-hidden="true"><span>599</span><small>MEILLEUR SCORE</small></div>
     </section>
 
     <section class="research-monitor" aria-labelledby="monitor-title">
-      <div class="research-monitor__head">
-        <div>
-          <p class="eyebrow">RECHERCHE OMSIM · VAN BERLO'S ROTOR</p>
-          <h2 id="monitor-title">État de la campagne autonome</h2>
-          <p>Lecture automatique du runner GitHub et des rapports de progression publiés par le solver.</p>
-        </div>
-        <span id="monitor-badge" class="monitor-badge">Chargement</span>
-      </div>
+      <div class="research-monitor__head"><div><p class="eyebrow">RECHERCHE OMSIM · ÉTAT COURANT</p><h2 id="monitor-title">État de la campagne autonome</h2><p>Lecture automatique du runner GitHub et des rapports publiés par le solver.</p></div><span id="monitor-badge" class="monitor-badge">Chargement</span></div>
       <div class="monitor-grid">
         <article class="monitor-card"><small>Étape</small><strong id="monitor-stage">—</strong><span>phase actuelle</span></article>
         <article class="monitor-card"><small>Temps écoulé</small><strong id="monitor-elapsed">—</strong><span>campagne active</span></article>
@@ -53,55 +37,40 @@
       </div>
       <div class="monitor-progress" aria-label="Progression de profondeur"><span id="monitor-progress-bar"></span></div>
       <pre id="monitor-log" class="monitor-log" aria-live="polite">Connexion à GitHub…</pre>
-      <div class="monitor-foot">
-        <span id="monitor-updated">—</span>
-        <a id="monitor-run" class="secondary" href="#" target="_blank" rel="noreferrer">Ouvrir le run GitHub</a>
-      </div>
+      <div class="monitor-foot"><span id="monitor-updated">—</span><a id="monitor-run" class="secondary" href="#" target="_blank" rel="noreferrer">Ouvrir le run GitHub</a></div>
     </section>
 
-    <section class="milestone-grid" aria-label="Résultats du solve autonome">
-      <article><small>Statut</small><strong class="good">Validé</strong><span>opus_engine + OMSim</span></article>
-      <article><small>Coût</small><strong>40</strong><span>g</span></article>
-      <article><small>Cycles</small><strong>77</strong><span>c</span></article>
-      <article><small>Aire</small><strong>9</strong><span>a</span></article>
-      <article><small>Instructions</small><strong>13</strong><span>i</span></article>
+    <section class="milestone-grid" aria-label="État du candidat Rotor">
+      <article><small>Statut</small><strong class="candidate">Candidat</strong><span>non livré, non validé</span></article>
+      <article><small>Aire source</small><strong>47</strong><span>cases</span></article>
+      <article><small>Cycle de relais</small><strong>198</strong><span>préfixe</span></article>
+      <article><small>Actions solver</small><strong>19</strong><span>segment exploré</span></article>
+      <article><small>Score</small><strong>599</strong><span>heuristique</span></article>
     </section>
 
     <section class="control-panel">
-      <div>
-        <p class="eyebrow">VALIDATION VISUELLE</p>
-        <h2>Voir le mécanisme fonctionner</h2>
-        <p>Le visualisateur charge automatiquement le puzzle et la solution générée, puis les valide avec le service OMSim en ligne.</p>
-      </div>
-      <div class="actions">
-        <button id="load-demo" type="button">Charger et valider</button>
-        <a class="secondary" href="samples/solver/P007-auto.solution" download>Télécharger la solution</a>
-        <a class="secondary" href="samples/solver/P007.puzzle" download>Télécharger le puzzle</a>
-      </div>
-      <p id="lab-status" role="status">Initialisation du Solver Lab…</p>
+      <div><p class="eyebrow">REPLAY DE CAMPAGNE</p><h2>Voir toute la séquence</h2><p>Le replay commence à l’état initial, déroule le programme humain, puis marque précisément le relais vers le solver.</p></div>
+      <div class="actions"><button id="reload-replay" type="button">Recharger le replay</button><a class="secondary" href="rotor-candidate-replay.html" target="_blank" rel="noreferrer">Ouvrir en plein écran</a></div>
+      <p id="lab-status" role="status">Initialisation du replay Rotor…</p>
     </section>
 
-    <section class="viewer-shell" aria-label="Inspecteur de solution intégré">
-      <div class="viewer-label">
-        <span>Inspecteur intégré</span>
-        <small>Lecture, pause, navigation cycle par cycle, déplacement et zoom</small>
-      </div>
-      <iframe id="solver-inspector" title="Visualisateur de la solution autonome P007" src="inspector.html?embedded=solver-lab" scrolling="no"></iframe>
+    <section class="viewer-shell" aria-label="Replay Rotor intégré">
+      <div class="viewer-label"><span>Replay OMSIM intégré</span><small>Préfixe complet, relais du solver et navigation image par image</small></div>
+      <iframe id="solver-replay" title="Replay de la campagne Van Berlo's Rotor" src="rotor-candidate-replay.html?embedded=solver-lab" scrolling="no"></iframe>
     </section>
 
     <section class="method">
-      <p class="eyebrow">CE QUI A ÉTÉ GÉNÉRÉ</p>
-      <h2>Une solution construite, pas recopiée</h2>
+      <p class="eyebrow">ÉTAT DE LA RECHERCHE</p><h2>Ce que montre réellement le laboratoire</h2>
       <div class="method-grid">
-        <article><b>1</b><strong>Analyse chimique</strong><p>Deux atomes d’eau, dont un doit être calcifié en sel.</p></article>
-        <article><b>2</b><strong>Plan de fabrication</strong><p>Calcification, transport, liaison normale, puis livraison.</p></article>
-        <article><b>3</b><strong>Implantation</strong><p>Un bras, deux entrées, un glyphe et un bonder placés dans un nouveau repère.</p></article>
-        <article><b>4</b><strong>Validation indépendante</strong><p>Six produits livrés en 77 cycles dans notre moteur et dans OMSim.</p></article>
+        <article><b>1</b><strong>Architecture humaine</strong><p>Le mécanisme Area 47 et son programme sont rejoués depuis le cycle initial.</p></article>
+        <article><b>2</b><strong>Relais explicite</strong><p>La timeline distingue le préfixe existant du segment développé automatiquement.</p></article>
+        <article><b>3</b><strong>Recherche physique</strong><p>Chaque action est simulée dans opus_engine avec les collisions et l’état moléculaire.</p></article>
+        <article><b>4</b><strong>Résultat honnête</strong><p>Le score 599 est un meilleur état intermédiaire, pas encore une solution livrée.</p></article>
       </div>
     </section>
   </main>
 
-  <footer>Projet de recherche non officiel. Opus Magnum a été créé par Zachtronics. Validation indépendante par OMSim.</footer>
+  <footer>Projet de recherche non officiel. Opus Magnum a été créé par Zachtronics.</footer>
   <script src="assets/js/research-monitor.js"></script>
   <script src="assets/js/solver-lab.js"></script>
   <script src="assets/js/site-shell.js"></script>
