@@ -1,0 +1,6 @@
+{
+  "id": "rotor-half-geometry-search-001",
+  "operation": "search_rotor_half_geometry",
+  "timeout_seconds": 1200,
+  "notes": "Search confined reorientation and second-half placement from the human A43 checkpoint while keeping the Baron-held half in the structural goal."
+}
