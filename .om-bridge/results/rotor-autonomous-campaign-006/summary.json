@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-autonomous-campaign-006",
+    "operation": "run_rotor_autonomous_campaign",
+    "timeout_seconds": 21600,
+    "notes": "Replay the prefix, run the instrumented tail search, publish live status to Solver Lab, and preserve results with rebased push handling. Supersedes campaign 005 whose computation succeeded but result push was rejected after concurrent development commits."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-autonomous-campaign-006.json",
+  "git_sha": "7aba181aed8951aa20f14655507a28e3950fb0e6",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T12:36:46.892357+00:00",
+  "finished_at": "2026-08-06T12:37:23.364364+00:00",
+  "duration_seconds": 36.47,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

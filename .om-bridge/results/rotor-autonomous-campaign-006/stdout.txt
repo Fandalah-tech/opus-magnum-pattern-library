@@ -1,0 +1,21 @@
+{"stage": "engine-tests", "status": "started"}
+[engine-tests] .........                                                                [100%]
+[engine-tests] 9 passed in 0.22s
+{"stage": "engine-tests", "status": "finished", "exitCode": 0, "durationSeconds": 1.25}
+{"stage": "strict-replay", "status": "started"}
+[strict-replay] {
+[strict-replay]   "completed": true,
+[strict-replay]   "cycle": 167,
+[strict-replay]   "history": []
+[strict-replay] }
+{"stage": "strict-replay", "status": "finished", "exitCode": 0, "durationSeconds": 0.454}
+{"stage": "tail-search", "status": "started"}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:49.420446+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "message": "Pr\u00e9fixe rejou\u00e9. Initialisation du beam search.", "depth": 0, "elapsedSeconds": 0, "visitedStates": 1, "expandedStates": 0, "frontierSize": 1, "bestScore": -56}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:50.887326+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 0, "elapsedSeconds": 0.056, "visitedStates": 1, "expandedStates": 0, "frontierSize": 1, "bestScore": -56, "bestPathLength": 0}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:51.088646+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 1, "elapsedSeconds": 0.257, "visitedStates": 75, "expandedStates": 1, "frontierSize": 74, "bestScore": -56, "bestPathLength": 0}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:51.094281+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 2, "elapsedSeconds": 0.263, "visitedStates": 77, "expandedStates": 2, "frontierSize": 74, "bestScore": 95, "bestPathLength": 2}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:52.316501+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 2, "elapsedSeconds": 1.485, "visitedStates": 346, "expandedStates": 8, "frontierSize": 74, "bestScore": 210, "bestPathLength": 2}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:59.062288+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 2, "elapsedSeconds": 8.23, "visitedStates": 1756, "expandedStates": 75, "frontierSize": 1681, "bestScore": 210, "bestPathLength": 2}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:36:59.074415+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 8.242, "visitedStates": 1758, "expandedStates": 76, "frontierSize": 1681, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T12:37:14.075413+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "maxStates": 750000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 23.242, "visitedStates": 5302, "expandedStates": 204, "frontierSize": 1681, "bestScore": 215, "bestPathLength": 3}}
+{"stage": "tail-search", "status": "finished", "exitCode": 3221225477, "durationSeconds": 34.475}
