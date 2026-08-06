@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-layout-report-001",
+    "operation": "report_rotor_solution_layout",
+    "timeout_seconds": 900,
+    "notes": "Extract all parts, positions, rotations, track cells, and programs from the latest A47 prefix."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-layout-report-001.json",
+  "git_sha": "3ab5ec77138f329f7c01e7af7703dbc775cdd8c0",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:47:42.896927+00:00",
+  "finished_at": "2026-08-06T03:47:43.097141+00:00",
+  "duration_seconds": 0.2,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
