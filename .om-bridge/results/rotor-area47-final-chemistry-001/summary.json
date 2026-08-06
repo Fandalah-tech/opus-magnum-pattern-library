@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area47-final-chemistry-001",
+    "operation": "solve_rotor_area47_final_chemistry",
+    "timeout_seconds": 900,
+    "notes": "Search the three late Van Berlo rotations from the latest almost-solved A47 reference."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area47-final-chemistry-001.json",
+  "git_sha": "f9fae42d8102242a49e72aaf4e891310a892d66c",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:13:03.665076+00:00",
+  "finished_at": "2026-08-06T03:13:05.220062+00:00",
+  "duration_seconds": 1.555,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
