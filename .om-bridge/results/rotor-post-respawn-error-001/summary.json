@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-post-respawn-error-001",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Identify the first simulation collision after enabling independent disconnected-component respawn."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-post-respawn-error-001.json",
+  "git_sha": "35e45f9e6d4896770ae2bebdd62c8f97e6e18e01",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:27:42.118046+00:00",
+  "finished_at": "2026-08-06T08:27:42.591733+00:00",
+  "duration_seconds": 0.474,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
