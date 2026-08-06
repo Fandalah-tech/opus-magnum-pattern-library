@@ -1,0 +1,6 @@
+{
+  "id": "rotor-structure-001",
+  "operation": "search_rotor_structure",
+  "timeout_seconds": 1800,
+  "notes": "Continue the structure-only search from the A42 confined seed."
+}

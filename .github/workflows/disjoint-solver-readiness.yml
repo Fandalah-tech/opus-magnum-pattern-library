@@ -41,6 +41,7 @@ jobs:
             tests/test_macro_explorer.py \
             tests/test_rotor_mechanical_library.py \
             tests/test_path_macro_learning.py \
+            tests/test_om_worker.py \
             tests/test_rotor_template.py \
             tests/test_rotor_prefix.py \
             -q
