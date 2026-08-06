@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a44-guard-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 300,
+  "pytest_targets": ["tests/test_reference_macros.py"],
+  "notes": "Validate the source-state compatibility guard for the A44 confined rotation macro."
+}
