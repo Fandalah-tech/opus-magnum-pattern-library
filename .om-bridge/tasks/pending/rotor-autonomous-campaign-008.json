@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-008",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Replay the validated structural prefix, run the stable memory-bounded tail search, and persist the highest-scoring candidate with its action path and OMSIM snapshot to reports/rotor-tail-best-candidate.json for targeted analysis and visualization."
+}
