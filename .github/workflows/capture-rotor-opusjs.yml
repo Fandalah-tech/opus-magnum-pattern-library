@@ -1,6 +1,8 @@
 name: Capture Rotor OpusJS review set
 
 on:
+  schedule:
+    - cron: "*/10 * * * *"
   push:
     branches:
       - feature/disjoint-solver-readiness
@@ -17,6 +19,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: rotor-opusjs-visual-review
+  cancel-in-progress: true
 
 jobs:
   capture:
