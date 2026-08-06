@@ -1,0 +1,6 @@
+{
+  "id": "rotor-candidate-replay-001",
+  "operation": "build_rotor_candidate_replay",
+  "timeout_seconds": 900,
+  "notes": "Replay the persisted 19-action best candidate from campaign 008 and publish one OMSIM snapshot per action for the interactive viewer."
+}
