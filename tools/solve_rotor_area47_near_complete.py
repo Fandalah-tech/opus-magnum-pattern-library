@@ -6,8 +6,9 @@ from copy import deepcopy
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
-from packages.opus_engine import FinalSimulator, SimulationError
+from packages.opus_engine import SimulationError
 from packages.opus_engine.builder import rotate_hex
+from packages.opus_engine.final_simulator import Simulator as FinalSimulator
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE = Path("fixtures/solutions/van-berlos-rotor-area47-ideal-setup-9-near-complete.parsed.json")
@@ -78,10 +79,8 @@ def score_state(simulator: FinalSimulator, product: dict) -> dict:
             typed = 0
             occupied = 0
             wrong = 0
-            shifted_positions = set()
             for (q, r), element in rotated_atoms:
                 position = (q + tq, r + tr)
-                shifted_positions.add(position)
                 occupants = world_by_position.get(position, [])
                 if occupants:
                     occupied += 1
