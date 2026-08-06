@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area47-near-complete-001",
+    "operation": "solve_rotor_area47_near_complete",
+    "timeout_seconds": 1800,
+    "notes": "Exhaustively solve Van Berlo rotations for the user's near-complete A47 reference."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area47-near-complete-001.json",
+  "git_sha": "e7b0296c7c84d4a68a760abf16a179ba8b49620f",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:54:36.018605+00:00",
+  "finished_at": "2026-08-06T02:54:36.360353+00:00",
+  "duration_seconds": 0.342,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}

@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\solve_rotor_area47_near_complete.py", line 9, in <module>
+    from packages.opus_engine import FinalSimulator, SimulationError
+ImportError: cannot import name 'FinalSimulator' from 'packages.opus_engine' (C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\packages\opus_engine\__init__.py)
