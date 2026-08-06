@@ -13,14 +13,7 @@ from typing import Any
 MAX_TIMEOUT_SECONDS = 6 * 60 * 60
 ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "run_tests": [sys.executable, "-m", "pytest", "-q"],
-    "run_reference_regression": [
-        sys.executable,
-        "tools/run_reference_regression.py",
-        "--manifest", "fixtures/reference/campaign-p007-p015.manifest.json",
-        "--fixtures", ".private-fixtures/files",
-        "--validator-url", "https://opus-validator-6gflgqb25q-nn.a.run.app",
-        "--output", "reports/campaign-p007-p015-local.json",
-    ],
+    "run_reference_regression": [sys.executable, "tools/run_reference_regression.py", "--manifest", "fixtures/reference/campaign-p007-p015.manifest.json", "--fixtures", ".private-fixtures/files", "--validator-url", "https://opus-validator-6gflgqb25q-nn.a.run.app", "--output", "reports/campaign-p007-p015-local.json"],
     "search_rotor_structure": [sys.executable, "tools/search_rotor_structure.py"],
     "search_rotor_half_geometry": [sys.executable, "tools/search_rotor_half_geometry.py"],
     "probe_rotor_half_moves": [sys.executable, "tools/probe_rotor_half_moves.py"],
@@ -41,13 +34,9 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_respawn_models": [sys.executable, "tools/report_rotor_respawn_models.py"],
     "search_rotor_last_atom_tail": [sys.executable, "tools/search_rotor_last_atom_tail.py"],
     "run_rotor_autonomous_campaign": [sys.executable, "tools/run_rotor_autonomous_campaign.py"],
+    "build_rotor_candidate_replay": [sys.executable, "tools/build_rotor_candidate_replay.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
-    "import_critelli_liquid_perfumes": [
-        sys.executable,
-        "tools/import_critelli_event.py",
-        "--max-solutions", "25",
-        "--delay", "0.4",
-    ],
+    "import_critelli_liquid_perfumes": [sys.executable, "tools/import_critelli_event.py", "--max-solutions", "25", "--delay", "0.4"],
 }
 
 
@@ -113,15 +102,7 @@ def main() -> int:
     try:
         task = _load_task(args.task)
         command = [*ALLOWED_OPERATIONS[task["operation"]], *_pytest_targets(task)]
-        completed = subprocess.run(
-            command,
-            cwd=Path.cwd(),
-            text=True,
-            capture_output=True,
-            timeout=task["timeout_seconds"],
-            env={**os.environ, "PYTHONPATH": str(Path.cwd())},
-            check=False,
-        )
+        completed = subprocess.run(command, cwd=Path.cwd(), text=True, capture_output=True, timeout=task["timeout_seconds"], env={**os.environ, "PYTHONPATH": str(Path.cwd())}, check=False)
         exit_code = completed.returncode
         stdout = completed.stdout
         stderr = completed.stderr
@@ -139,19 +120,7 @@ def main() -> int:
     result_dir.mkdir(parents=True, exist_ok=True)
     (result_dir / "stdout.txt").write_text(stdout, encoding="utf-8")
     (result_dir / "stderr.txt").write_text(stderr, encoding="utf-8")
-    summary = {
-        "schema_version": 1,
-        "task": task,
-        "task_file": args.task.as_posix(),
-        "git_sha": _git_sha(),
-        "runner_name": os.environ.get("RUNNER_NAME"),
-        "started_at": started_at.isoformat(),
-        "finished_at": datetime.now(timezone.utc).isoformat(),
-        "duration_seconds": round(time.monotonic() - started, 3),
-        "exit_code": exit_code,
-        "status": "success" if exit_code == 0 else "failed",
-        "error": error,
-    }
+    summary = {"schema_version": 1, "task": task, "task_file": args.task.as_posix(), "git_sha": _git_sha(), "runner_name": os.environ.get("RUNNER_NAME"), "started_at": started_at.isoformat(), "finished_at": datetime.now(timezone.utc).isoformat(), "duration_seconds": round(time.monotonic() - started, 3), "exit_code": exit_code, "status": "success" if exit_code == 0 else "failed", "error": error}
     (result_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False))
     return exit_code
