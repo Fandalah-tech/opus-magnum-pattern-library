@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-008-retry",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Retry campaign 008 after it was cancelled by the previous cancel-in-progress workflow policy. Replay the validated prefix and persist the best candidate, action path and OMSIM snapshot for targeted continuation analysis."
+}
