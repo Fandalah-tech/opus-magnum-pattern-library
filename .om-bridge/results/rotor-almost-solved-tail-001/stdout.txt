@@ -1,0 +1,5188 @@
+{
+  "referenceSha256": "bc11a3134d201f0cd2fcdb274f42b4b2a3ef0383743092cd3b2614ff4857d286",
+  "parts": [
+    {
+      "id": "part-0",
+      "type": "bonder",
+      "position": [
+        0,
+        -1
+      ],
+      "rotation": 4,
+      "length": 1
+    },
+    {
+      "id": "part-1",
+      "type": "baron",
+      "position": [
+        0,
+        3
+      ],
+      "rotation": 2,
+      "length": 1
+    },
+    {
+      "id": "part-2",
+      "type": "glyph-duplication",
+      "position": [
+        0,
+        2
+      ],
+      "rotation": 5,
+      "length": 1
+    },
+    {
+      "id": "part-3",
+      "type": "glyph-duplication",
+      "position": [
+        1,
+        2
+      ],
+      "rotation": 5,
+      "length": 1
+    },
+    {
+      "id": "part-4",
+      "type": "input",
+      "position": [
+        5,
+        -1
+      ],
+      "rotation": 2,
+      "length": 1
+    },
+    {
+      "id": "part-5",
+      "type": "glyph-calcification",
+      "position": [
+        4,
+        -5
+      ],
+      "rotation": 0,
+      "length": 1
+    },
+    {
+      "id": "part-6",
+      "type": "unbonder",
+      "position": [
+        0,
+        0
+      ],
+      "rotation": 1,
+      "length": 1
+    },
+    {
+      "id": "part-7",
+      "type": "track",
+      "position": [
+        3,
+        -2
+      ],
+      "rotation": 0,
+      "length": 1
+    },
+    {
+      "id": "part-8",
+      "type": "piston",
+      "position": [
+        3,
+        -3
+      ],
+      "rotation": 4,
+      "length": 2
+    },
+    {
+      "id": "part-9",
+      "type": "input",
+      "position": [
+        3,
+        -5
+      ],
+      "rotation": 3,
+      "length": 1
+    },
+    {
+      "id": "part-10",
+      "type": "piston",
+      "position": [
+        3,
+        -1
+      ],
+      "rotation": 0,
+      "length": 2
+    },
+    {
+      "id": "part-11",
+      "type": "bonder",
+      "position": [
+        2,
+        -4
+      ],
+      "rotation": 2,
+      "length": 1
+    },
+    {
+      "id": "part-12",
+      "type": "out-std",
+      "position": [
+        3,
+        -2
+      ],
+      "rotation": 1,
+      "length": 1
+    }
+  ],
+  "rows": [
+    {
+      "cycle": 1,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            5,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "water",
+          "position": [
+            3,
+            -5
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 2,
+      "instructions": {
+        "part-8": "track_minus"
+      },
+      "events": [
+        {
+          "kind": "atom-calcified",
+          "glyphPartId": "part-5",
+          "atomId": "part-9-spawn-0-atom-0",
+          "fromElement": "water",
+          "toElement": "salt",
+          "position": [
+            4,
+            -5
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            5,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            4,
+            -5
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 10,
+      "instructions": {
+        "part-8": "pivot_cw",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            5,
+            -1
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            1,
+            0
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 13,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            1,
+            -1
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 17,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        },
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            1,
+            -1
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 20,
+      "instructions": {
+        "part-10": "extend"
+      },
+      "events": [
+        {
+          "kind": "atom-duplicated",
+          "glyphPartId": "part-3",
+          "sourceAtomId": "part-1-wheel-4",
+          "transformedAtomId": "part-9-spawn-0-atom-0",
+          "fromElement": "salt",
+          "toElement": "fire",
+          "position": [
+            2,
+            1
+          ],
+          "sourceLayer": "van-berlo"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            2,
+            1
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 24,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        },
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            1,
+            -1
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 28,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -1
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 29,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "rotate_cw"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 30,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 35,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 46,
+      "instructions": {
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 51,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 63,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 67,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            0
+          ],
+          "heldBy": [
+            "part-10"
+          ]
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 72,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 84,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 87,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 90,
+      "instructions": {
+        "part-1": "rotate_cw",
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 93,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 106,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 109,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "grab"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 112,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 115,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "track_minus"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 120,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 121,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "drop"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            2,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 122,
+      "instructions": {
+        "part-8": "track_plus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": [
+            "part-8"
+          ]
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 123,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "rotate_ccw"
+      },
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 124,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 125,
+      "instructions": {
+        "part-8": "rotate_cw",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 126,
+      "instructions": {
+        "part-8": "grab",
+        "part-10": "retract"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 127,
+      "instructions": {
+        "part-8": "extend"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 128,
+      "instructions": {
+        "part-1": "drop",
+        "part-8": "drop"
+      },
+      "events": [
+        {
+          "kind": "van-berlo-payload-dropped",
+          "armId": "part-1",
+          "retainedWheelAtomIds": [
+            "part-1-wheel-0",
+            "part-1-wheel-1",
+            "part-1-wheel-2",
+            "part-1-wheel-3",
+            "part-1-wheel-4",
+            "part-1-wheel-5"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 129,
+      "instructions": {
+        "part-8": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 130,
+      "instructions": {
+        "part-8": "retract"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 131,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 132,
+      "instructions": {
+        "part-8": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 133,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 134,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 135,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 136,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 137,
+      "instructions": {
+        "part-1": "rotate_ccw",
+        "part-8": "extend"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 138,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 139,
+      "instructions": {
+        "part-8": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 140,
+      "instructions": {
+        "part-8": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 141,
+      "instructions": {
+        "part-8": "drop"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 142,
+      "instructions": {
+        "part-8": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 143,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 144,
+      "instructions": {
+        "part-8": "grab"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 145,
+      "instructions": {
+        "part-1": "rotate_ccw",
+        "part-8": "extend",
+        "part-10": "track_plus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 146,
+      "instructions": {
+        "part-8": "retract",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 147,
+      "instructions": {
+        "part-8": "drop",
+        "part-10": "grab"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 148,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 149,
+      "instructions": {
+        "part-8": "track_plus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 150,
+      "instructions": {
+        "part-10": "rotate_ccw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 151,
+      "instructions": {
+        "part-10": "drop"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 152,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 153,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 154,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 155,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 156,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 157,
+      "instructions": {
+        "part-8": "track_minus",
+        "part-10": "drop"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 158,
+      "instructions": {
+        "part-1": "rotate_ccw",
+        "part-8": "grab",
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 159,
+      "instructions": {
+        "part-8": "extend"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 160,
+      "instructions": {
+        "part-8": "retract"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 161,
+      "instructions": {},
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 162,
+      "instructions": {},
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 163,
+      "instructions": {},
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 164,
+      "instructions": {},
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 165,
+      "instructions": {
+        "part-1": "drop",
+        "part-8": "drop",
+        "part-10": "drop"
+      },
+      "events": [
+        {
+          "kind": "van-berlo-payload-dropped",
+          "armId": "part-1",
+          "retainedWheelAtomIds": [
+            "part-1-wheel-0",
+            "part-1-wheel-1",
+            "part-1-wheel-2",
+            "part-1-wheel-3",
+            "part-1-wheel-4",
+            "part-1-wheel-5"
+          ]
+        }
+      ],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 166,
+      "instructions": {},
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 167,
+      "instructions": {
+        "part-10": "grab"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 168,
+      "instructions": {
+        "part-10": "pivot_ccw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 169,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 170,
+      "instructions": {
+        "part-10": "pivot_ccw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 171,
+      "instructions": {
+        "part-10": "drop"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 172,
+      "instructions": {
+        "part-10": "track_minus"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 173,
+      "instructions": {
+        "part-10": "retract"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    },
+    {
+      "cycle": 174,
+      "instructions": {
+        "part-10": "rotate_cw"
+      },
+      "events": [],
+      "atoms": [
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            3,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "fire",
+          "position": [
+            0,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": []
+        }
+      ],
+      "bonds": [],
+      "inputSpawnCounts": {
+        "part-4": 1,
+        "part-9": 1
+      },
+      "delivered": {}
+    }
+  ]
+}

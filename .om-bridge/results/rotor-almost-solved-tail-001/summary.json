@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-almost-solved-tail-001",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Trace the almost-solved A47 reference from cycle 120 onward, including every ordinary atom, bond, input spawn count and meaningful event, to identify the first remaining semantic divergence after piston correction."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-almost-solved-tail-001.json",
+  "git_sha": "baf3d7ffa87030c82fb2b356e8146577952de9c0",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:22:11.229857+00:00",
+  "finished_at": "2026-08-06T08:22:11.676843+00:00",
+  "duration_seconds": 0.447,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
