@@ -1,0 +1,6 @@
+{
+  "id": "rotor-controlled-transition-search-001",
+  "operation": "search_rotor_structure",
+  "timeout_seconds": 1200,
+  "notes": "Find a controlled 12-to-13 admissible atom transition, lock the target inventory, then continue macro refinement toward the complete 13-position/6-edge product graph."
+}
