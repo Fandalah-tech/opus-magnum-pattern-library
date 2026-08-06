@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a44-reference-replay-001",
+    "operation": "validate_reference_macro_replay",
+    "timeout_seconds": 300,
+    "notes": "Determine exact legal and reference-equivalent application checkpoints for the human A44 confined rotation macro."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a44-reference-replay-001.json",
+  "git_sha": "3b37ccecc2f24b7bc711c9e67197b5bed8275442",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:13:31.788792+00:00",
+  "finished_at": "2026-08-06T02:13:33.209475+00:00",
+  "duration_seconds": 1.421,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
