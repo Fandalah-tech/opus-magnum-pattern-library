@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "disjoint-output-model-001",
+    "operation": "apply_rotor_bonder_chain_patch",
+    "timeout_seconds": 300,
+    "notes": "Apply the disjoint output consumer model after preserving the recursive bonder chain model."
+  },
+  "task_file": ".om-bridge/tasks/pending/disjoint-output-model-001.json",
+  "git_sha": "2457255455730868168ab0cdcd13e54f03c2cb45",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:47:50.291804+00:00",
+  "finished_at": "2026-08-06T09:47:50.494895+00:00",
+  "duration_seconds": 0.203,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

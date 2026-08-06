@@ -1,0 +1,2 @@
+recursive bonder chain displacement already present
+patched disjoint output consumption
