@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-half-checkpoint-report-001",
+    "operation": "report_rotor_prefix",
+    "timeout_seconds": 300,
+    "notes": "Replay Bruno's A43 half-complete solution and report the exact structural checkpoint, including eligible atoms, matched positions, matched bonds, held atoms, and molecule components."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-half-checkpoint-report-001.json",
+  "git_sha": "c8641c4fbe7c835628715f836b0710a52d45edfd",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T01:30:25.112710+00:00",
+  "finished_at": "2026-08-06T01:30:25.664730+00:00",
+  "duration_seconds": 0.552,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
