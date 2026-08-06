@@ -13,6 +13,7 @@ from .state import canonical_state_key
 ScoreFunction = Callable[[Any], int]
 GoalPredicate = Callable[[Any], bool]
 StateFilter = Callable[[Any], bool]
+ProgressCallback = Callable[[dict[str, Any]], None]
 
 _INVERSE_INSTRUCTION = {
     "rotate_cw": "rotate_ccw",
@@ -45,13 +46,7 @@ def _strip_history(simulator: Any) -> Any:
 
 
 def _immediately_reverses(previous: Action, current: Action) -> bool:
-    """Return true only when every active arm exactly undoes its prior motion.
-
-    Grab/drop are intentionally excluded: even consecutive opposites can change
-    which molecule is held after glyph processing or a simultaneous second-arm
-    action. Restricting this to pure kinematic inverses is safe and removes a
-    large family of two-cycle no-op branches.
-    """
+    """Return true only when every active arm exactly undoes its prior motion."""
     if not previous or previous.keys() != current.keys():
         return False
     return all(_INVERSE_INSTRUCTION.get(previous[arm_id]) == instruction for arm_id, instruction in current.items())
@@ -71,6 +66,8 @@ def explore_simulator_beam(
     time_limit_seconds: float | None = None,
     prune_immediate_reversals: bool = True,
     state_filter: StateFilter | None = None,
+    progress_callback: ProgressCallback | None = None,
+    progress_interval_seconds: float = 10.0,
 ) -> BeamExplorationResult:
     if max_depth < 0:
         raise ValueError("max_depth must be non-negative")
@@ -80,8 +77,11 @@ def explore_simulator_beam(
         raise ValueError("max_states must be positive")
     if time_limit_seconds is not None and time_limit_seconds <= 0:
         raise ValueError("time_limit_seconds must be positive")
+    if progress_interval_seconds <= 0:
+        raise ValueError("progress_interval_seconds must be positive")
 
     started = monotonic()
+    last_progress = started
     root = _strip_history(deepcopy(initial_simulator))
     if state_filter is not None and not state_filter(root):
         raise ValueError("initial_simulator does not satisfy state_filter")
@@ -104,18 +104,41 @@ def explore_simulator_beam(
     def timed_out() -> bool:
         return time_limit_seconds is not None and monotonic() - started >= time_limit_seconds
 
+    def emit_progress(depth: int, *, force: bool = False) -> None:
+        nonlocal last_progress
+        if progress_callback is None:
+            return
+        now = monotonic()
+        if not force and now - last_progress < progress_interval_seconds:
+            return
+        last_progress = now
+        progress_callback({
+            "depth": depth,
+            "elapsedSeconds": round(now - started, 3),
+            "visitedStates": len(visited),
+            "expandedStates": expanded,
+            "frontierSize": len(frontier),
+            "bestScore": best_score,
+            "bestPathLength": len(best_path),
+        })
+
+    emit_progress(0, force=True)
     for depth in range(1, max_depth + 1):
         candidates: list[tuple[int, int, Any, list[Action]]] = []
         serial = 0
         for _, _, simulator, path in frontier:
+            emit_progress(depth)
             if timed_out():
+                emit_progress(depth, force=True)
                 return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, depth, "time-limit", best_score)
             expanded += 1
             previous_action = path[-1] if path else None
             for action in actions:
                 if prune_immediate_reversals and previous_action is not None and _immediately_reverses(previous_action, action):
                     continue
+                emit_progress(depth)
                 if timed_out():
+                    emit_progress(depth, force=True)
                     return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, depth, "time-limit", best_score)
                 candidate = _strip_history(deepcopy(simulator))
                 try:
@@ -140,15 +163,21 @@ def explore_simulator_beam(
                     best_score = candidate_score
                     best_simulator = candidate
                     best_path = candidate_path
+                    emit_progress(depth, force=True)
                 if goal(candidate):
+                    emit_progress(depth, force=True)
                     return BeamExplorationResult(True, candidate_path, candidate, len(visited), expanded, depth, "goal", candidate_score)
                 candidates.append((candidate_score, serial, candidate, candidate_path))
                 if len(visited) >= max_states:
+                    emit_progress(depth, force=True)
                     return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, depth, "state-limit", best_score)
 
         if not candidates:
+            emit_progress(depth, force=True)
             return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, depth, "exhausted", best_score)
         candidates.sort(key=lambda item: (item[0], -len(item[3])), reverse=True)
         frontier = candidates[:beam_width]
+        emit_progress(depth, force=True)
 
+    emit_progress(max_depth, force=True)
     return BeamExplorationResult(False, best_path, best_simulator, len(visited), expanded, max_depth, "depth-limit", best_score)
