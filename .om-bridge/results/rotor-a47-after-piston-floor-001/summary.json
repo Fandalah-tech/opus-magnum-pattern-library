@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-after-piston-floor-001",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Measure lifecycle after allowing placed length-2 pistons to retract to length 1."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-after-piston-floor-001.json",
+  "git_sha": "a3df2f23c465896a4ddfdae09f34334ebb6a45ae",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:59:01.817510+00:00",
+  "finished_at": "2026-08-06T03:59:02.290207+00:00",
+  "duration_seconds": 0.473,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
