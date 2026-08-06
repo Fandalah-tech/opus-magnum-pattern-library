@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a44-reference-replay-001",
+  "operation": "validate_reference_macro_replay",
+  "timeout_seconds": 300,
+  "notes": "Determine exact legal and reference-equivalent application checkpoints for the human A44 confined rotation macro."
+}
