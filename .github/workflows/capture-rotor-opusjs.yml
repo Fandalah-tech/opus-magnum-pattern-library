@@ -3,9 +3,15 @@ name: Capture Rotor OpusJS review set
 on:
   push:
     branches:
-      - main
+      - feature/disjoint-solver-readiness
     paths:
-      - ".github/workflows/capture-rotor-opusjs.yml"
+      - "rotor-opus-replay.html"
+      - "assets/js/solution-viewer.js"
+      - "assets/js/viewer-interaction-polish.js"
+      - "assets/js/replay-arm-animation.js"
+      - "assets/js/replay-molecules.js"
+      - "assets/js/rotor-opus-replay.js"
+      - "assets/css/solution-viewer.css"
   workflow_dispatch:
 
 permissions:
@@ -39,8 +45,7 @@ jobs:
 
           url = 'https://raw.githack.com/Fandalah-tech/opus-magnum-pattern-library/feature/disjoint-solver-readiness/rotor-opus-replay.html'
           out = Path('reports/visual/rotor-opusjs')
-          indices = [round(i * 217 / 19) for i in range(20)]
-          manifest = {'url': url, 'indices': indices, 'frames': []}
+          manifest = {'url': url, 'indices': [], 'frames': []}
 
           with sync_playwright() as p:
               browser = p.chromium.launch()
