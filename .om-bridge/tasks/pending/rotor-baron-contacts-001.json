@@ -1,0 +1,6 @@
+{
+  "id": "rotor-baron-contacts-001",
+  "operation": "report_rotor_baron_contacts",
+  "timeout_seconds": 900,
+  "notes": "Trace ordinary atoms on Van Berlo tips and input footprints before and after every rotor instruction."
+}
