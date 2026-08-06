@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-autonomous-campaign-008-retry",
+    "operation": "run_rotor_autonomous_campaign",
+    "timeout_seconds": 21600,
+    "notes": "Retry campaign 008 after it was cancelled by the previous cancel-in-progress workflow policy. Replay the validated prefix and persist the best candidate, action path and OMSIM snapshot for targeted continuation analysis."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-autonomous-campaign-008-retry.json",
+  "git_sha": "9aa511294654896dc7bfed0613320d216688450f",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T14:43:15.009341+00:00",
+  "finished_at": "2026-08-06T15:19:14.970757+00:00",
+  "duration_seconds": 2159.926,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

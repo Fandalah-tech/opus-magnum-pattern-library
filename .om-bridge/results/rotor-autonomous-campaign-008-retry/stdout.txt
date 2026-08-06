@@ -1,0 +1,660 @@
+{"stage": "engine-tests", "status": "started"}
+[engine-tests] .........                                                                [100%]
+[engine-tests] 9 passed in 0.21s
+{"stage": "engine-tests", "status": "finished", "exitCode": 0, "durationSeconds": 1.171}
+{"stage": "strict-replay", "status": "started"}
+[strict-replay] {
+[strict-replay]   "completed": true,
+[strict-replay]   "cycle": 167,
+[strict-replay]   "history": []
+[strict-replay] }
+{"stage": "strict-replay", "status": "finished", "exitCode": 0, "durationSeconds": 0.385}
+{"stage": "tail-search", "status": "started"}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:17.165821+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "message": "Pr\u00e9fixe rejou\u00e9. Initialisation du beam search born\u00e9 en m\u00e9moire.", "depth": 0, "elapsedSeconds": 0, "visitedStates": 1, "expandedStates": 0, "frontierSize": 1, "bestScore": -56}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:18.521410+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 0, "elapsedSeconds": 0.062, "visitedStates": 1, "expandedStates": 0, "frontierSize": 1, "bestScore": -56, "bestPathLength": 0}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:18.719775+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 1, "elapsedSeconds": 0.26, "visitedStates": 75, "expandedStates": 1, "frontierSize": 74, "bestScore": -56, "bestPathLength": 0}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:18.725266+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 2, "elapsedSeconds": 0.265, "visitedStates": 77, "expandedStates": 2, "frontierSize": 74, "bestScore": 95, "bestPathLength": 2}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:19.966801+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 2, "elapsedSeconds": 1.507, "visitedStates": 346, "expandedStates": 8, "frontierSize": 74, "bestScore": 210, "bestPathLength": 2}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:26.410693+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 2, "elapsedSeconds": 7.951, "visitedStates": 1756, "expandedStates": 75, "frontierSize": 750, "bestScore": 210, "bestPathLength": 2}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:26.429134+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 7.969, "visitedStates": 1758, "expandedStates": 76, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:41.429757+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 22.97, "visitedStates": 4977, "expandedStates": 196, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:43:56.430436+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 37.97, "visitedStates": 7890, "expandedStates": 334, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:44:11.431072+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 52.97, "visitedStates": 10026, "expandedStates": 475, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:44:26.432168+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 67.971, "visitedStates": 12121, "expandedStates": 635, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:44:41.432762+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 82.972, "visitedStates": 13488, "expandedStates": 759, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:44:49.026493+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 3, "elapsedSeconds": 90.565, "visitedStates": 14227, "expandedStates": 825, "frontierSize": 750, "bestScore": 215, "bestPathLength": 3}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:45:03.048038+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 104.586, "visitedStates": 16875, "expandedStates": 968, "frontierSize": 750, "bestScore": 238, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:45:03.051806+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 104.59, "visitedStates": 16878, "expandedStates": 968, "frontierSize": 750, "bestScore": 338, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:45:18.052542+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 119.591, "visitedStates": 19390, "expandedStates": 1113, "frontierSize": 750, "bestScore": 338, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:45:33.053224+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 134.591, "visitedStates": 21622, "expandedStates": 1273, "frontierSize": 750, "bestScore": 338, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:45:48.053718+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 149.591, "visitedStates": 23481, "expandedStates": 1397, "frontierSize": 750, "bestScore": 338, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:46:03.054143+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 164.591, "visitedStates": 26075, "expandedStates": 1539, "frontierSize": 750, "bestScore": 338, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:46:08.478554+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 4, "elapsedSeconds": 170.016, "visitedStates": 26943, "expandedStates": 1575, "frontierSize": 750, "bestScore": 338, "bestPathLength": 4}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:46:08.669991+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 170.207, "visitedStates": 26944, "expandedStates": 1576, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:46:23.670355+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 185.207, "visitedStates": 30952, "expandedStates": 1707, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:46:38.670948+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 200.208, "visitedStates": 34395, "expandedStates": 1841, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:46:54.001088+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 215.537, "visitedStates": 37672, "expandedStates": 1956, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:47:09.001531+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 230.538, "visitedStates": 40553, "expandedStates": 2073, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:47:24.002167+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 245.538, "visitedStates": 41926, "expandedStates": 2221, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:47:35.119166+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 5, "elapsedSeconds": 256.655, "visitedStates": 42945, "expandedStates": 2325, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:47:50.119443+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 6, "elapsedSeconds": 271.655, "visitedStates": 45796, "expandedStates": 2451, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:48:05.119971+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 6, "elapsedSeconds": 286.655, "visitedStates": 47967, "expandedStates": 2560, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:48:20.120703+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 6, "elapsedSeconds": 301.656, "visitedStates": 50055, "expandedStates": 2694, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:48:35.121890+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 6, "elapsedSeconds": 316.656, "visitedStates": 52297, "expandedStates": 2845, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:48:50.122500+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 6, "elapsedSeconds": 331.657, "visitedStates": 55190, "expandedStates": 2976, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:49:03.542580+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 6, "elapsedSeconds": 345.077, "visitedStates": 57093, "expandedStates": 3075, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:49:18.543407+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 7, "elapsedSeconds": 360.077, "visitedStates": 59184, "expandedStates": 3216, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:49:33.543685+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 7, "elapsedSeconds": 375.077, "visitedStates": 60312, "expandedStates": 3353, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:49:48.544353+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 7, "elapsedSeconds": 390.078, "visitedStates": 61709, "expandedStates": 3505, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:50:03.544934+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 7, "elapsedSeconds": 405.078, "visitedStates": 62824, "expandedStates": 3646, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:50:18.545202+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 7, "elapsedSeconds": 420.078, "visitedStates": 63527, "expandedStates": 3783, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:50:24.203974+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 7, "elapsedSeconds": 425.737, "visitedStates": 63631, "expandedStates": 3825, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:50:39.204258+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 8, "elapsedSeconds": 440.737, "visitedStates": 65036, "expandedStates": 3965, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:50:54.205108+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 8, "elapsedSeconds": 455.737, "visitedStates": 66144, "expandedStates": 4115, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:51:09.206332+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 8, "elapsedSeconds": 470.738, "visitedStates": 66921, "expandedStates": 4251, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:51:24.206806+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 8, "elapsedSeconds": 485.739, "visitedStates": 67403, "expandedStates": 4379, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:51:39.207163+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 8, "elapsedSeconds": 500.739, "visitedStates": 68383, "expandedStates": 4537, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:51:42.677819+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 8, "elapsedSeconds": 504.209, "visitedStates": 68577, "expandedStates": 4575, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:51:57.678126+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 9, "elapsedSeconds": 519.209, "visitedStates": 69809, "expandedStates": 4726, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:52:12.678460+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 9, "elapsedSeconds": 534.209, "visitedStates": 71063, "expandedStates": 4872, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:52:27.678760+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 9, "elapsedSeconds": 549.21, "visitedStates": 71688, "expandedStates": 4993, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:52:42.680100+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 9, "elapsedSeconds": 564.211, "visitedStates": 72577, "expandedStates": 5114, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:52:57.680709+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 9, "elapsedSeconds": 579.211, "visitedStates": 73717, "expandedStates": 5249, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:53:05.899731+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 9, "elapsedSeconds": 587.43, "visitedStates": 74444, "expandedStates": 5325, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:53:20.900214+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 10, "elapsedSeconds": 602.43, "visitedStates": 75685, "expandedStates": 5470, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:53:35.900862+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 10, "elapsedSeconds": 617.43, "visitedStates": 76389, "expandedStates": 5596, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:53:50.901560+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 10, "elapsedSeconds": 632.431, "visitedStates": 77664, "expandedStates": 5754, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:54:05.902363+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 10, "elapsedSeconds": 647.431, "visitedStates": 78361, "expandedStates": 5889, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:54:20.902901+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 10, "elapsedSeconds": 662.432, "visitedStates": 79404, "expandedStates": 6036, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:54:26.040894+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 10, "elapsedSeconds": 667.57, "visitedStates": 79891, "expandedStates": 6075, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:54:41.041197+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 11, "elapsedSeconds": 682.57, "visitedStates": 80852, "expandedStates": 6229, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:54:56.041765+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 11, "elapsedSeconds": 697.57, "visitedStates": 81797, "expandedStates": 6383, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:55:11.042291+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 11, "elapsedSeconds": 712.57, "visitedStates": 82923, "expandedStates": 6535, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:55:26.043023+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 11, "elapsedSeconds": 727.571, "visitedStates": 84110, "expandedStates": 6682, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:55:41.043820+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 11, "elapsedSeconds": 742.571, "visitedStates": 84676, "expandedStates": 6799, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:55:43.712150+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 11, "elapsedSeconds": 745.24, "visitedStates": 84996, "expandedStates": 6825, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:55:58.712890+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 12, "elapsedSeconds": 760.24, "visitedStates": 86006, "expandedStates": 6952, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:56:13.713532+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 12, "elapsedSeconds": 775.241, "visitedStates": 86667, "expandedStates": 7104, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:56:28.714166+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 12, "elapsedSeconds": 790.241, "visitedStates": 87974, "expandedStates": 7255, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:56:43.714691+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 12, "elapsedSeconds": 805.241, "visitedStates": 89094, "expandedStates": 7383, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:56:58.715037+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 12, "elapsedSeconds": 820.241, "visitedStates": 90834, "expandedStates": 7516, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:57:04.671162+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 12, "elapsedSeconds": 826.197, "visitedStates": 91306, "expandedStates": 7575, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:57:19.871961+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 13, "elapsedSeconds": 841.398, "visitedStates": 92198, "expandedStates": 7728, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:57:34.872163+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 13, "elapsedSeconds": 856.398, "visitedStates": 93276, "expandedStates": 7888, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:57:49.872545+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 13, "elapsedSeconds": 871.398, "visitedStates": 94091, "expandedStates": 8004, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:58:04.873205+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 13, "elapsedSeconds": 886.398, "visitedStates": 95207, "expandedStates": 8133, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:58:19.873514+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 13, "elapsedSeconds": 901.398, "visitedStates": 96163, "expandedStates": 8277, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:58:25.216610+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 13, "elapsedSeconds": 906.741, "visitedStates": 96478, "expandedStates": 8325, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:58:40.217156+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 14, "elapsedSeconds": 921.742, "visitedStates": 97275, "expandedStates": 8491, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:58:55.217852+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 14, "elapsedSeconds": 936.742, "visitedStates": 98027, "expandedStates": 8634, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:59:10.218423+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 14, "elapsedSeconds": 951.743, "visitedStates": 99012, "expandedStates": 8780, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:59:25.218832+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 14, "elapsedSeconds": 966.743, "visitedStates": 100087, "expandedStates": 8917, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:59:40.219447+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 14, "elapsedSeconds": 981.743, "visitedStates": 100968, "expandedStates": 9067, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:59:42.910884+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 14, "elapsedSeconds": 984.434, "visitedStates": 101005, "expandedStates": 9075, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T14:59:57.911571+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 15, "elapsedSeconds": 999.435, "visitedStates": 101567, "expandedStates": 9227, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:00:12.912184+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 15, "elapsedSeconds": 1014.435, "visitedStates": 102514, "expandedStates": 9377, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:00:27.912699+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 15, "elapsedSeconds": 1029.436, "visitedStates": 103257, "expandedStates": 9516, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:00:42.912987+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 15, "elapsedSeconds": 1044.436, "visitedStates": 103654, "expandedStates": 9665, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:00:57.913510+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 15, "elapsedSeconds": 1059.436, "visitedStates": 104145, "expandedStates": 9781, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:01:02.939806+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 15, "elapsedSeconds": 1064.462, "visitedStates": 104394, "expandedStates": 9825, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:01:17.940519+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 16, "elapsedSeconds": 1079.463, "visitedStates": 105825, "expandedStates": 9965, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:01:32.940989+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 16, "elapsedSeconds": 1094.463, "visitedStates": 106949, "expandedStates": 10092, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:01:47.941344+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 16, "elapsedSeconds": 1109.463, "visitedStates": 107542, "expandedStates": 10236, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:02:02.941901+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 16, "elapsedSeconds": 1124.463, "visitedStates": 108623, "expandedStates": 10353, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:02:17.942449+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 16, "elapsedSeconds": 1139.463, "visitedStates": 109566, "expandedStates": 10481, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:02:27.665665+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 16, "elapsedSeconds": 1149.187, "visitedStates": 110569, "expandedStates": 10575, "frontierSize": 750, "bestScore": 343, "bestPathLength": 5}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:02:36.179965+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1157.701, "visitedStates": 110766, "expandedStates": 10651, "frontierSize": 750, "bestScore": 366, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:02:36.183085+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1157.704, "visitedStates": 110768, "expandedStates": 10651, "frontierSize": 750, "bestScore": 466, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:02:51.183804+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1172.704, "visitedStates": 112241, "expandedStates": 10795, "frontierSize": 750, "bestScore": 466, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:03:06.184477+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1187.705, "visitedStates": 112801, "expandedStates": 10923, "frontierSize": 750, "bestScore": 466, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:03:21.184864+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1202.705, "visitedStates": 113647, "expandedStates": 11047, "frontierSize": 750, "bestScore": 466, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:03:36.185521+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1217.705, "visitedStates": 114553, "expandedStates": 11189, "frontierSize": 750, "bestScore": 466, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:03:50.996606+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 17, "elapsedSeconds": 1232.516, "visitedStates": 115793, "expandedStates": 11325, "frontierSize": 750, "bestScore": 466, "bestPathLength": 17}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:03:51.089837+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1232.609, "visitedStates": 115794, "expandedStates": 11326, "frontierSize": 750, "bestScore": 471, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:04:06.090464+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1247.61, "visitedStates": 117367, "expandedStates": 11466, "frontierSize": 750, "bestScore": 471, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:04:12.518332+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1254.037, "visitedStates": 117904, "expandedStates": 11516, "frontierSize": 750, "bestScore": 589, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:04:12.522617+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1254.042, "visitedStates": 117905, "expandedStates": 11516, "frontierSize": 750, "bestScore": 594, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:04:27.524059+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1269.043, "visitedStates": 119841, "expandedStates": 11650, "frontierSize": 750, "bestScore": 594, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:04:42.524487+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1284.043, "visitedStates": 121279, "expandedStates": 11781, "frontierSize": 750, "bestScore": 594, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:04:57.524901+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1299.043, "visitedStates": 122129, "expandedStates": 11909, "frontierSize": 750, "bestScore": 594, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:05:12.525222+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1314.043, "visitedStates": 123400, "expandedStates": 12056, "frontierSize": 750, "bestScore": 594, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:05:16.466888+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 18, "elapsedSeconds": 1317.985, "visitedStates": 123546, "expandedStates": 12075, "frontierSize": 750, "bestScore": 594, "bestPathLength": 18}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:05:16.629243+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1318.147, "visitedStates": 123552, "expandedStates": 12076, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:05:31.629640+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1333.147, "visitedStates": 125696, "expandedStates": 12205, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:05:46.630192+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1348.148, "visitedStates": 127075, "expandedStates": 12357, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:06:01.630662+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1363.148, "visitedStates": 128310, "expandedStates": 12486, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:06:16.631685+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1378.149, "visitedStates": 129664, "expandedStates": 12624, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:06:31.632266+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1393.149, "visitedStates": 130536, "expandedStates": 12747, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:06:39.681828+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 19, "elapsedSeconds": 1401.199, "visitedStates": 131040, "expandedStates": 12825, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:06:54.682229+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1416.199, "visitedStates": 134136, "expandedStates": 12939, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:07:09.682889+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1431.199, "visitedStates": 136059, "expandedStates": 13056, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:07:24.683553+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1446.2, "visitedStates": 138215, "expandedStates": 13188, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:07:39.684008+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1461.2, "visitedStates": 139518, "expandedStates": 13298, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:07:54.684542+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1476.2, "visitedStates": 140525, "expandedStates": 13423, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:08:09.685850+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1491.201, "visitedStates": 141518, "expandedStates": 13555, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:08:12.820915+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 20, "elapsedSeconds": 1494.336, "visitedStates": 141625, "expandedStates": 13575, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:08:27.821148+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 21, "elapsedSeconds": 1509.336, "visitedStates": 144037, "expandedStates": 13714, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:08:42.821752+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 21, "elapsedSeconds": 1524.337, "visitedStates": 145396, "expandedStates": 13851, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:08:57.822257+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 21, "elapsedSeconds": 1539.337, "visitedStates": 147181, "expandedStates": 13995, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:09:12.822919+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 21, "elapsedSeconds": 1554.337, "visitedStates": 148249, "expandedStates": 14135, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:09:27.823607+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 21, "elapsedSeconds": 1569.338, "visitedStates": 150226, "expandedStates": 14278, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:09:35.098410+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 21, "elapsedSeconds": 1576.612, "visitedStates": 150799, "expandedStates": 14325, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:09:50.099725+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 22, "elapsedSeconds": 1591.614, "visitedStates": 152549, "expandedStates": 14459, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:10:05.100583+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 22, "elapsedSeconds": 1606.614, "visitedStates": 153806, "expandedStates": 14615, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:10:20.100961+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 22, "elapsedSeconds": 1621.614, "visitedStates": 154674, "expandedStates": 14747, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:10:35.101609+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 22, "elapsedSeconds": 1636.615, "visitedStates": 155609, "expandedStates": 14891, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:10:50.102282+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 22, "elapsedSeconds": 1651.615, "visitedStates": 156067, "expandedStates": 15005, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:10:58.023743+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 22, "elapsedSeconds": 1659.537, "visitedStates": 156423, "expandedStates": 15075, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:11:13.024262+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 23, "elapsedSeconds": 1674.537, "visitedStates": 157709, "expandedStates": 15214, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:11:28.024825+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 23, "elapsedSeconds": 1689.537, "visitedStates": 158912, "expandedStates": 15353, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:11:43.025082+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 23, "elapsedSeconds": 1704.537, "visitedStates": 159598, "expandedStates": 15481, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:11:58.025632+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 23, "elapsedSeconds": 1719.537, "visitedStates": 160424, "expandedStates": 15603, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:12:13.026566+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 23, "elapsedSeconds": 1734.538, "visitedStates": 161458, "expandedStates": 15735, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:12:22.350263+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 23, "elapsedSeconds": 1743.862, "visitedStates": 162069, "expandedStates": 15825, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:12:37.350808+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 24, "elapsedSeconds": 1758.862, "visitedStates": 163181, "expandedStates": 15972, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:12:52.351199+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 24, "elapsedSeconds": 1773.862, "visitedStates": 163737, "expandedStates": 16104, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:13:07.351578+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 24, "elapsedSeconds": 1788.862, "visitedStates": 164572, "expandedStates": 16237, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:13:22.352165+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 24, "elapsedSeconds": 1803.863, "visitedStates": 165674, "expandedStates": 16370, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:13:37.352431+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 24, "elapsedSeconds": 1818.863, "visitedStates": 166208, "expandedStates": 16501, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:13:45.046545+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 24, "elapsedSeconds": 1826.557, "visitedStates": 167000, "expandedStates": 16575, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:14:00.047213+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 25, "elapsedSeconds": 1841.557, "visitedStates": 168297, "expandedStates": 16715, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:14:15.047664+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 25, "elapsedSeconds": 1856.557, "visitedStates": 169021, "expandedStates": 16846, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:14:30.048347+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 25, "elapsedSeconds": 1871.558, "visitedStates": 170055, "expandedStates": 16997, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:14:45.048704+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 25, "elapsedSeconds": 1886.558, "visitedStates": 171407, "expandedStates": 17145, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:15:00.049067+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 25, "elapsedSeconds": 1901.558, "visitedStates": 172269, "expandedStates": 17281, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:15:07.548948+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 25, "elapsedSeconds": 1909.058, "visitedStates": 172547, "expandedStates": 17325, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:15:22.549430+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 26, "elapsedSeconds": 1924.058, "visitedStates": 173572, "expandedStates": 17474, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:15:37.549813+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 26, "elapsedSeconds": 1939.058, "visitedStates": 174240, "expandedStates": 17601, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:15:52.550040+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 26, "elapsedSeconds": 1954.058, "visitedStates": 175491, "expandedStates": 17756, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:16:07.550400+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 26, "elapsedSeconds": 1969.058, "visitedStates": 176701, "expandedStates": 17901, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:16:22.550847+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 26, "elapsedSeconds": 1984.059, "visitedStates": 177484, "expandedStates": 18024, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:16:28.361779+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 26, "elapsedSeconds": 1989.869, "visitedStates": 177740, "expandedStates": 18075, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:16:43.362074+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 27, "elapsedSeconds": 2004.87, "visitedStates": 178712, "expandedStates": 18211, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:16:58.362549+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 27, "elapsedSeconds": 2019.87, "visitedStates": 179374, "expandedStates": 18343, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:17:13.363215+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 27, "elapsedSeconds": 2034.87, "visitedStates": 180201, "expandedStates": 18483, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:17:28.364169+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 27, "elapsedSeconds": 2049.871, "visitedStates": 180710, "expandedStates": 18596, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:17:43.364784+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 27, "elapsedSeconds": 2064.871, "visitedStates": 181502, "expandedStates": 18732, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:17:53.265157+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 27, "elapsedSeconds": 2074.772, "visitedStates": 181761, "expandedStates": 18825, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:18:08.265591+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2089.772, "visitedStates": 182240, "expandedStates": 18967, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:18:23.266170+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2104.772, "visitedStates": 182778, "expandedStates": 19112, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:18:38.266572+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2119.772, "visitedStates": 183476, "expandedStates": 19236, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:18:53.266988+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2134.772, "visitedStates": 184192, "expandedStates": 19389, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:19:08.267518+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2149.773, "visitedStates": 184788, "expandedStates": 19537, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:19:12.086601+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2153.592, "visitedStates": 184967, "expandedStates": 19575, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:19:12.087281+00:00", "status": "running", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "depth": 28, "elapsedSeconds": 2153.592, "visitedStates": 184967, "expandedStates": 19575, "frontierSize": 750, "bestScore": 599, "bestPathLength": 19}}
+[tail-search] {"heartbeat": {"updatedAt": "2026-08-06T15:19:13.222151+00:00", "status": "stopped", "stage": "tail-search", "maxDepth": 28, "beamWidth": 750, "maxStates": 250000, "timeLimitSeconds": 5400, "message": "Recherche termin\u00e9e.", "depth": 28, "visitedStates": 184967, "expandedStates": 19575, "bestScore": 599, "stoppedReason": "depth-limit", "found": false}}
+[tail-search] {
+[tail-search]   "schemaVersion": 1,
+[tail-search]   "updatedAt": "2026-08-06T15:19:14.494475+00:00",
+[tail-search]   "sourceSha256": "4dde427f013452bf0fae839a6bc05f3f4b93d517607369a200737be7a0ba8444",
+[tail-search]   "search": {
+[tail-search]     "maxDepth": 28,
+[tail-search]     "beamWidth": 750,
+[tail-search]     "maxStates": 250000,
+[tail-search]     "timeLimitSeconds": 5400
+[tail-search]   },
+[tail-search]   "start": {
+[tail-search]     "cycle": 198,
+[tail-search]     "score": -56,
+[tail-search]     "delivered": {},
+[tail-search]     "atoms": [
+[tail-search]       {
+[tail-search]         "id": "part-4-spawn-0-atom-0",
+[tail-search]         "element": "salt",
+[tail-search]         "position": [
+[tail-search]           4,
+[tail-search]           -3
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "id": "part-4-spawn-0-atom-1",
+[tail-search]         "element": "salt",
+[tail-search]         "position": [
+[tail-search]           7,
+[tail-search]           -3
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "id": "part-4-spawn-0-atom-2",
+[tail-search]         "element": "salt",
+[tail-search]         "position": [
+[tail-search]           3,
+[tail-search]           1
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "id": "part-9-spawn-0-atom-0",
+[tail-search]         "element": "salt",
+[tail-search]         "position": [
+[tail-search]           1,
+[tail-search]           -3
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "id": "part-9-spawn-0-atom-1",
+[tail-search]         "element": "salt",
+[tail-search]         "position": [
+[tail-search]           2,
+[tail-search]           -4
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "id": "part-9-spawn-1-atom-0",
+[tail-search]         "element": "water",
+[tail-search]         "position": [
+[tail-search]           3,
+[tail-search]           -5
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "id": "part-9-spawn-1-atom-1",
+[tail-search]         "element": "salt",
+[tail-search]         "position": [
+[tail-search]           2,
+[tail-search]           -5
+[tail-search]         ],
+[tail-search]         "heldBy": []
+[tail-search]       }
+[tail-search]     ],
+[tail-search]     "bonds": [
+[tail-search]       {
+[tail-search]         "a": "part-9-spawn-0-atom-1",
+[tail-search]         "b": "part-9-spawn-0-atom-0",
+[tail-search]         "kind": "normal",
+[tail-search]         "aPosition": [
+[tail-search]           2,
+[tail-search]           -4
+[tail-search]         ],
+[tail-search]         "bPosition": [
+[tail-search]           1,
+[tail-search]           -3
+[tail-search]         ]
+[tail-search]       }
+[tail-search]     ],
+[tail-search]     "arms": {
+[tail-search]       "part-1": {
+[tail-search]         "partId": "part-1",
+[tail-search]         "partType": "baron",
+[tail-search]         "origin": [
+[tail-search]           0,
+[tail-search]           3
+[tail-search]         ],
+[tail-search]         "rotation": 1,
+[tail-search]         "length": 1,
+[tail-search]         "branchCount": 6,
+[tail-search]         "tips": [
+[tail-search]           {
+[tail-search]             "branchIndex": 0,
+[tail-search]             "position": [
+[tail-search]               0,
+[tail-search]               4
+[tail-search]             ]
+[tail-search]           },
+[tail-search]           {
+[tail-search]             "branchIndex": 1,
+[tail-search]             "position": [
+[tail-search]               -1,
+[tail-search]               4
+[tail-search]             ]
+[tail-search]           },
+[tail-search]           {
+[tail-search]             "branchIndex": 2,
+[tail-search]             "position": [
+[tail-search]               -1,
+[tail-search]               3
+[tail-search]             ]
+[tail-search]           },
+[tail-search]           {
+[tail-search]             "branchIndex": 3,
+[tail-search]             "position": [
+[tail-search]               0,
+[tail-search]               2
+[tail-search]             ]
+[tail-search]           },
+[tail-search]           {
+[tail-search]             "branchIndex": 4,
+[tail-search]             "position": [
+[tail-search]               1,
+[tail-search]               2
+[tail-search]             ]
+[tail-search]           },
+[tail-search]           {
+[tail-search]             "branchIndex": 5,
+[tail-search]             "position": [
+[tail-search]               1,
+[tail-search]               3
+[tail-search]             ]
+[tail-search]           }
+[tail-search]         ],
+[tail-search]         "grabbing": false,
+[tail-search]         "heldAtoms": [],
+[tail-search]         "trackIndex": 0,
+[tail-search]         "trackCellCount": 6
+[tail-search]       },
+[tail-search]       "part-8": {
+[tail-search]         "partId": "part-8",
+[tail-search]         "partType": "piston",
+[tail-search]         "origin": [
+[tail-search]           2,
+[tail-search]           -2
+[tail-search]         ],
+[tail-search]         "rotation": 4,
+[tail-search]         "length": 2,
+[tail-search]         "branchCount": 1,
+[tail-search]         "tips": [
+[tail-search]           {
+[tail-search]             "branchIndex": 0,
+[tail-search]             "position": [
+[tail-search]               2,
+[tail-search]               -4
+[tail-search]             ]
+[tail-search]           }
+[tail-search]         ],
+[tail-search]         "grabbing": false,
+[tail-search]         "heldAtoms": [],
+[tail-search]         "trackIndex": 5,
+[tail-search]         "trackCellCount": 6
+[tail-search]       },
+[tail-search]       "part-10": {
+[tail-search]         "partId": "part-10",
+[tail-search]         "partType": "piston",
+[tail-search]         "origin": [
+[tail-search]           3,
+[tail-search]           -3
+[tail-search]         ],
+[tail-search]         "rotation": 3,
+[tail-search]         "length": 2,
+[tail-search]         "branchCount": 1,
+[tail-search]         "tips": [
+[tail-search]           {
+[tail-search]             "branchIndex": 0,
+[tail-search]             "position": [
+[tail-search]               1,
+[tail-search]               -3
+[tail-search]             ]
+[tail-search]           }
+[tail-search]         ],
+[tail-search]         "grabbing": false,
+[tail-search]         "heldAtoms": [],
+[tail-search]         "trackIndex": 4,
+[tail-search]         "trackCellCount": 6
+[tail-search]       }
+[tail-search]     }
+[tail-search]   },
+[tail-search]   "result": {
+[tail-search]     "found": false,
+[tail-search]     "actions": [
+[tail-search]       {
+[tail-search]         "part-10": "grab",
+[tail-search]         "part-8": "rotate_ccw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "rotate_cw",
+[tail-search]         "part-8": "track_plus"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "drop",
+[tail-search]         "part-8": "grab"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "track_plus"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "drop"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "rotate_cw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "grab"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "rotate_cw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "rotate_cw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "extend"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "track_plus"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "rotate_cw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-8": "track_plus"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "rotate_ccw",
+[tail-search]         "part-8": "rotate_cw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "rotate_ccw",
+[tail-search]         "part-8": "grab"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "grab",
+[tail-search]         "part-8": "rotate_ccw"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "rotate_cw",
+[tail-search]         "part-8": "track_plus"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "track_minus",
+[tail-search]         "part-8": "drop"
+[tail-search]       },
+[tail-search]       {
+[tail-search]         "part-10": "drop"
+[tail-search]       }
+[tail-search]     ],
+[tail-search]     "visitedStates": 184967,
+[tail-search]     "expandedStates": 19575,
+[tail-search]     "depth": 28,
+[tail-search]     "stoppedReason": "depth-limit",
+[tail-search]     "bestScore": 599,
+[tail-search]     "best": {
+[tail-search]       "cycle": 217,
+[tail-search]       "score": 599,
+[tail-search]       "delivered": {},
+[tail-search]       "atoms": [
+[tail-search]         {
+[tail-search]           "id": "part-4-spawn-0-atom-0",
+[tail-search]           "element": "salt",
+[tail-search]           "position": [
+[tail-search]             5,
+[tail-search]             -3
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         },
+[tail-search]         {
+[tail-search]           "id": "part-4-spawn-0-atom-1",
+[tail-search]           "element": "salt",
+[tail-search]           "position": [
+[tail-search]             3,
+[tail-search]             0
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         },
+[tail-search]         {
+[tail-search]           "id": "part-4-spawn-0-atom-2",
+[tail-search]           "element": "salt",
+[tail-search]           "position": [
+[tail-search]             3,
+[tail-search]             1
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         },
+[tail-search]         {
+[tail-search]           "id": "part-9-spawn-0-atom-0",
+[tail-search]           "element": "salt",
+[tail-search]           "position": [
+[tail-search]             1,
+[tail-search]             -1
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         },
+[tail-search]         {
+[tail-search]           "id": "part-9-spawn-0-atom-1",
+[tail-search]           "element": "salt",
+[tail-search]           "position": [
+[tail-search]             1,
+[tail-search]             -2
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         },
+[tail-search]         {
+[tail-search]           "id": "part-9-spawn-1-atom-0",
+[tail-search]           "element": "water",
+[tail-search]           "position": [
+[tail-search]             2,
+[tail-search]             -3
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         },
+[tail-search]         {
+[tail-search]           "id": "part-9-spawn-1-atom-1",
+[tail-search]           "element": "salt",
+[tail-search]           "position": [
+[tail-search]             2,
+[tail-search]             -5
+[tail-search]           ],
+[tail-search]           "heldBy": []
+[tail-search]         }
+[tail-search]       ],
+[tail-search]       "bonds": [
+[tail-search]         {
+[tail-search]           "a": "part-9-spawn-0-atom-1",
+[tail-search]           "b": "part-9-spawn-0-atom-0",
+[tail-search]           "kind": "normal",
+[tail-search]           "aPosition": [
+[tail-search]             1,
+[tail-search]             -2
+[tail-search]           ],
+[tail-search]           "bPosition": [
+[tail-search]             1,
+[tail-search]             -1
+[tail-search]           ]
+[tail-search]         }
+[tail-search]       ],
+[tail-search]       "arms": {
+[tail-search]         "part-1": {
+[tail-search]           "partId": "part-1",
+[tail-search]           "partType": "baron",
+[tail-search]           "origin": [
+[tail-search]             0,
+[tail-search]             3
+[tail-search]           ],
+[tail-search]           "rotation": 1,
+[tail-search]           "length": 1,
+[tail-search]           "branchCount": 6,
+[tail-search]           "tips": [
+[tail-search]             {
+[tail-search]               "branchIndex": 0,
+[tail-search]               "position": [
+[tail-search]                 0,
+[tail-search]                 4
+[tail-search]               ]
+[tail-search]             },
+[tail-search]             {
+[tail-search]               "branchIndex": 1,
+[tail-search]               "position": [
+[tail-search]                 -1,
+[tail-search]                 4
+[tail-search]               ]
+[tail-search]             },
+[tail-search]             {
+[tail-search]               "branchIndex": 2,
+[tail-search]               "position": [
+[tail-search]                 -1,
+[tail-search]                 3
+[tail-search]               ]
+[tail-search]             },
+[tail-search]             {
+[tail-search]               "branchIndex": 3,
+[tail-search]               "position": [
+[tail-search]                 0,
+[tail-search]                 2
+[tail-search]               ]
+[tail-search]             },
+[tail-search]             {
+[tail-search]               "branchIndex": 4,
+[tail-search]               "position": [
+[tail-search]                 1,
+[tail-search]                 2
+[tail-search]               ]
+[tail-search]             },
+[tail-search]             {
+[tail-search]               "branchIndex": 5,
+[tail-search]               "position": [
+[tail-search]                 1,
+[tail-search]                 3
+[tail-search]               ]
+[tail-search]             }
+[tail-search]           ],
+[tail-search]           "grabbing": false,
+[tail-search]           "heldAtoms": [],
+[tail-search]           "trackIndex": 0,
+[tail-search]           "trackCellCount": 6
+[tail-search]         },
+[tail-search]         "part-8": {
+[tail-search]           "partId": "part-8",
+[tail-search]           "partType": "piston",
+[tail-search]           "origin": [
+[tail-search]             3,
+[tail-search]             -3
+[tail-search]           ],
+[tail-search]           "rotation": 1,
+[tail-search]           "length": 3,
+[tail-search]           "branchCount": 1,
+[tail-search]           "tips": [
+[tail-search]             {
+[tail-search]               "branchIndex": 0,
+[tail-search]               "position": [
+[tail-search]                 3,
+[tail-search]                 0
+[tail-search]               ]
+[tail-search]             }
+[tail-search]           ],
+[tail-search]           "grabbing": false,
+[tail-search]           "heldAtoms": [],
+[tail-search]           "trackIndex": 4,
+[tail-search]           "trackCellCount": 6
+[tail-search]         },
+[tail-search]         "part-10": {
+[tail-search]           "partId": "part-10",
+[tail-search]           "partType": "piston",
+[tail-search]           "origin": [
+[tail-search]             4,
+[tail-search]             -3
+[tail-search]           ],
+[tail-search]           "rotation": 3,
+[tail-search]           "length": 2,
+[tail-search]           "branchCount": 1,
+[tail-search]           "tips": [
+[tail-search]             {
+[tail-search]               "branchIndex": 0,
+[tail-search]               "position": [
+[tail-search]                 2,
+[tail-search]                 -3
+[tail-search]               ]
+[tail-search]             }
+[tail-search]           ],
+[tail-search]           "grabbing": false,
+[tail-search]           "heldAtoms": [],
+[tail-search]           "trackIndex": 3,
+[tail-search]           "trackCellCount": 6
+[tail-search]         }
+[tail-search]       }
+[tail-search]     }
+[tail-search]   }
+[tail-search] }
+{"stage": "tail-search", "status": "finished", "exitCode": 0, "durationSeconds": 2158.044}

@@ -1,0 +1,16 @@
+{
+  "updatedAt": "2026-08-06T15:19:13.222151+00:00",
+  "status": "stopped",
+  "stage": "tail-search",
+  "maxDepth": 28,
+  "beamWidth": 750,
+  "maxStates": 250000,
+  "timeLimitSeconds": 5400,
+  "message": "Recherche termin\u00e9e.",
+  "depth": 28,
+  "visitedStates": 184967,
+  "expandedStates": 19575,
+  "bestScore": 599,
+  "stoppedReason": "depth-limit",
+  "found": false
+}
