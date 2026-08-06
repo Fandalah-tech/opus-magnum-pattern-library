@@ -1,0 +1,6 @@
+{
+  "id": "rotor-first-bonder-trace-001",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Trace cycles 45 onward to identify the first incorrect bonded-pair placement before cycle 100."
+}
