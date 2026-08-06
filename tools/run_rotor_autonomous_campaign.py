@@ -108,7 +108,7 @@ def main() -> int:
             ),
             flush=True,
         )
-        if name != "tail-search" and result["exitCode"] != 0:
+        if result["exitCode"] != 0:
             return result["exitCode"]
     return 0
 
