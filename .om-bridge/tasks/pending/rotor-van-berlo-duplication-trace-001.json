@@ -1,0 +1,6 @@
+{
+  "id": "rotor-van-berlo-duplication-trace-001",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 300,
+  "notes": "Trace every duplication event and identify whether the source came from the Van Berlo overlap layer."
+}
