@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-half-geometry-search-001",
+    "operation": "search_rotor_half_geometry",
+    "timeout_seconds": 1200,
+    "notes": "Search confined reorientation and second-half placement from the human A43 checkpoint while keeping the Baron-held half in the structural goal."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-half-geometry-search-001.json",
+  "git_sha": "1b6752d665a76926e706dcb3933438a1f86b3f2f",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T01:37:26.086117+00:00",
+  "finished_at": "2026-08-06T01:40:26.799186+00:00",
+  "duration_seconds": 180.713,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

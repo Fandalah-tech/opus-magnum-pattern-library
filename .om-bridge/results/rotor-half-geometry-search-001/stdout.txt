@@ -1,0 +1,17 @@
+{
+  "found": false,
+  "depth": 4,
+  "bestScore": 69994,
+  "visitedStates": 11211,
+  "expandedStates": 1298,
+  "stoppedReason": "time-limit",
+  "actions": [],
+  "matchedPositions": 7,
+  "matchedEdges": 0,
+  "rotation": 0,
+  "translation": [
+    0,
+    0
+  ],
+  "atomCount": 18
+}
