@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-layout-track-audit-001",
+    "operation": "report_rotor_solution_layout",
+    "timeout_seconds": 1800,
+    "notes": "Audit track geometry, arm origins and part IDs for the preserved A47 reference."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-layout-track-audit-001.json",
+  "git_sha": "5079d5fdc6f7762ba20c6d68f3e50cdd8adc696c",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T10:08:26.495559+00:00",
+  "finished_at": "2026-08-06T10:08:26.748071+00:00",
+  "duration_seconds": 0.253,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

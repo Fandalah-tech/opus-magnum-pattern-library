@@ -1,0 +1,1453 @@
+{
+  "name": "IDEAL SETUP 9",
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "parts": [
+    {
+      "id": "part-0",
+      "type": "bonder",
+      "position": [
+        0,
+        -1
+      ],
+      "rotation": 4,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-1",
+      "type": "baron",
+      "position": [
+        0,
+        3
+      ],
+      "rotation": 2,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": [
+        {
+          "cycle": 11,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 35,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 51,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 88,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 89,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 90,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 127,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 136,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 144,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 157,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 166,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    },
+    {
+      "id": "part-2",
+      "type": "glyph-duplication",
+      "position": [
+        0,
+        2
+      ],
+      "rotation": 5,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-3",
+      "type": "glyph-duplication",
+      "position": [
+        1,
+        2
+      ],
+      "rotation": 5,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-4",
+      "type": "input",
+      "position": [
+        5,
+        -1
+      ],
+      "rotation": 2,
+      "length": 1,
+      "which": 1,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-5",
+      "type": "glyph-calcification",
+      "position": [
+        4,
+        -5
+      ],
+      "rotation": 0,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-6",
+      "type": "unbonder",
+      "position": [
+        0,
+        0
+      ],
+      "rotation": 1,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-7",
+      "type": "track",
+      "position": [
+        3,
+        -2
+      ],
+      "rotation": 0,
+      "length": 1,
+      "which": 0,
+      "trackHexes": [
+        [
+          -1,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          -1
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "program": []
+    },
+    {
+      "id": "part-8",
+      "type": "piston",
+      "position": [
+        3,
+        -3
+      ],
+      "rotation": 4,
+      "length": 2,
+      "which": 0,
+      "trackHexes": null,
+      "program": [
+        {
+          "cycle": 0,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 1,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 2,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 3,
+          "instruction": "pivot_ccw",
+          "rawCode": "p"
+        },
+        {
+          "cycle": 4,
+          "instruction": "pivot_ccw",
+          "rawCode": "p"
+        },
+        {
+          "cycle": 5,
+          "instruction": "pivot_ccw",
+          "rawCode": "p"
+        },
+        {
+          "cycle": 6,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 7,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 8,
+          "instruction": "pivot_cw",
+          "rawCode": "P"
+        },
+        {
+          "cycle": 9,
+          "instruction": "pivot_cw",
+          "rawCode": "P"
+        },
+        {
+          "cycle": 10,
+          "instruction": "pivot_cw",
+          "rawCode": "P"
+        },
+        {
+          "cycle": 11,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 12,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 16,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 23,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 24,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 28,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 29,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 30,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 31,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 32,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 33,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 34,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 35,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 36,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 37,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 38,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 39,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 40,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 41,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 42,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 46,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 52,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 53,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 54,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 55,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 56,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 57,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 58,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 59,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 60,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 61,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 62,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 63,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 64,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 65,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 66,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 70,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 71,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 72,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 73,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 74,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 79,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 80,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 81,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 82,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 83,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 84,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 85,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 86,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 87,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 88,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 89,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 90,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 91,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 92,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 93,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 94,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 95,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 96,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 97,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 98,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 99,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 100,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 101,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 102,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 103,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 104,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 105,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 106,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 107,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 108,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 111,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 112,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 113,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 114,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 115,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 116,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 117,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 118,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 119,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 120,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 121,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 122,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 123,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 124,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 125,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 126,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 127,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 128,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 129,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 130,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 131,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 132,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 133,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 134,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 135,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 136,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 137,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 138,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 139,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 140,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 141,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 142,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 143,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 144,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 145,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 146,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 147,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 148,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 155,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 156,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 157,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 158,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 159,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 160,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 161,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 162,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 163,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 164,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 165,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 166,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    },
+    {
+      "id": "part-9",
+      "type": "input",
+      "position": [
+        3,
+        -5
+      ],
+      "rotation": 3,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-10",
+      "type": "piston",
+      "position": [
+        3,
+        -1
+      ],
+      "rotation": 0,
+      "length": 2,
+      "which": 0,
+      "trackHexes": null,
+      "program": [
+        {
+          "cycle": 9,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 10,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 11,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 12,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 13,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 14,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 15,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 16,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 17,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 18,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 19,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 20,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 21,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 22,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 23,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 24,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 25,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 26,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 27,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 28,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 29,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 30,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 31,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 32,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 33,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 34,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 35,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 36,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 37,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 38,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 39,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 40,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 41,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 42,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 43,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 44,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 45,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 46,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 47,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 48,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 49,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 50,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 51,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 52,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 57,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 61,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 62,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 63,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 64,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 65,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 66,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 67,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 68,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 69,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 70,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 71,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 72,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 73,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 74,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 75,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 76,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 77,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 78,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 79,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 80,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 81,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 82,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 84,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 87,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 88,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 90,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 93,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 94,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 95,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 96,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 97,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 98,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 108,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 109,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 110,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 111,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 114,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 115,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 116,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 117,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 118,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 119,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 120,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 121,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 122,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 123,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 124,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 125,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 137,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 144,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 145,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 146,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 149,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 150,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 151,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 152,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 153,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 154,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 155,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 156,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 157,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 166,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    },
+    {
+      "id": "part-11",
+      "type": "bonder",
+      "position": [
+        2,
+        -4
+      ],
+      "rotation": 2,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "id": "part-12",
+      "type": "out-std",
+      "position": [
+        3,
+        -2
+      ],
+      "rotation": 1,
+      "length": 1,
+      "which": 0,
+      "trackHexes": null,
+      "program": []
+    }
+  ]
+}
