@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-lifecycle-summary-001",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Summarize maximum atoms, bonds, conversions, respawns, and final state after piston correction."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-lifecycle-summary-001.json",
+  "git_sha": "a55759aa1a128936fee5f58bc082aaa7eecb6655",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T04:00:14.926571+00:00",
+  "finished_at": "2026-08-06T04:00:15.397307+00:00",
+  "duration_seconds": 0.471,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
