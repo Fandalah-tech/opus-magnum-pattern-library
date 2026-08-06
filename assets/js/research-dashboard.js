@@ -12,7 +12,7 @@
   const api=async u=>{const r=await fetch(u,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw Error(`GitHub ${r.status}`);return r.json()};
   function apply(live){
     const stopped=['stopped','completed','success','finished'].includes(String(live.status||'').toLowerCase());
-    nodes.stage.textContent=stopped?'Campagne terminée':(live.stage||'Inconnu');
+    nodes.stage.textContent=stopped?'Terminée':(live.stage||'Inconnu');
     nodes.elapsed.textContent=duration(live.elapsedSeconds??live.elapsed_seconds??live.timeLimitSeconds);
     nodes.depth.textContent=num(live.depth);nodes.visited.textContent=num(live.visitedStates??live.visited_states);nodes.expanded.textContent=num(live.expandedStates??live.expanded_states);nodes.score.textContent=num(live.bestScore??live.best_score);
     const d=Number(live.depth),m=Number(live.maxDepth??live.max_depth);nodes.progress.style.width=`${Number.isFinite(d)&&Number.isFinite(m)&&m>0?Math.min(100,Math.max(0,d/m*100)):0}%`;
