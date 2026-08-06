@@ -1,0 +1,6 @@
+{
+  "id": "rotor-post-respawn-error-001",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Identify the first simulation collision after enabling independent disconnected-component respawn."
+}
