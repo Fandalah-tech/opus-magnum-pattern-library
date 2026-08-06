@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a47-final-prefix-inspection-001",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 900,
+  "notes": "Replay and inspect the preserved final mechanical prefix before continuation search."
+}
