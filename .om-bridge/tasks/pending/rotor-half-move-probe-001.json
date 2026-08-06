@@ -1,0 +1,6 @@
+{
+  "id": "rotor-half-move-probe-001",
+  "operation": "probe_rotor_half_moves",
+  "timeout_seconds": 900,
+  "notes": "Enumerate every legal one-cycle primitive or two-arm move from the human half checkpoint and identify whether any move improves target geometry."
+}
