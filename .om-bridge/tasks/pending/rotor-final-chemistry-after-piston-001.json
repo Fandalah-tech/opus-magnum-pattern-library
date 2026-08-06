@@ -1,0 +1,6 @@
+{
+  "id": "rotor-final-chemistry-after-piston-001",
+  "operation": "solve_rotor_area47_final_chemistry",
+  "timeout_seconds": 21600,
+  "notes": "Re-run the A47 final chemistry search after correcting piston retract semantics. Treat the known mechanical prefix as authoritative and report any valid completion or the earliest remaining blocker."
+}
