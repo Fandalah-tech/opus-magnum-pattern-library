@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Replay Rotor · OpusJS</title>
+  <link rel="stylesheet" href="assets/css/solution-viewer.css">
+  <style>
+    :root{color-scheme:dark;--bg:#0d0c0b;--panel:#171512;--line:#3d352b;--text:#f1e8d8;--muted:#aa9e8d;--accent:#d5a45d;--blue:#79a9d1}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif}.shell{padding:18px}.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.controls button,.controls select{min-height:39px;padding:0 13px;background:#211d18;color:var(--text);border:1px solid var(--line);font-weight:700}.controls button:hover{border-color:var(--accent)}.controls input{flex:1;min-width:180px}.position{white-space:nowrap}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px}.solution-viewer{margin:0;border:1px solid var(--line);background:#11100e}.viewer-head{display:none}.viewer-layout{grid-template-columns:minmax(0,1fr)!important}.viewer-canvas{min-height:650px}.viewer-canvas svg{height:650px}.viewer-details{display:none!important}.side{border:1px solid var(--line);background:var(--panel);padding:16px}.segment-badge{display:inline-block;border:1px solid var(--line);padding:6px 9px;color:var(--muted);font-size:12px}.segment-badge.solver{border-color:var(--blue);color:#b8dcfb}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0}.metrics div{border:1px solid var(--line);padding:10px}.metrics small{display:block;color:var(--muted)}.metrics strong{display:block;margin-top:3px;color:var(--accent);font:700 22px Georgia,serif}.action{min-height:110px;white-space:pre-wrap;background:#090806;border:1px solid var(--line);padding:12px}.status{color:var(--muted);line-height:1.5}.status.warning{color:#e6b36c}@media(max-width:850px){.layout{grid-template-columns:1fr}.viewer-canvas,.viewer-canvas svg{min-height:520px;height:520px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="controls">
+      <button type="button" data-rotor-start>Début</button>
+      <button type="button" data-rotor-solver-start>Début du solver</button>
+      <button type="button" data-rotor-prev>◀</button>
+      <button type="button" data-rotor-play>Lecture</button>
+      <button type="button" data-rotor-next>▶</button>
+      <select data-rotor-mode><option value="all">Séquence complète</option><option value="solver">Solver seulement</option></select>
+      <input type="range" min="0" max="0" value="0" data-rotor-range>
+      <span class="position" data-rotor-position>—</span>
+    </div>
+    <div class="layout">
+      <article id="solution-viewer" class="solution-viewer">
+        <div class="viewer-head"><div></div><div class="viewer-tools"><button type="button" data-viewer-fit>Ajuster</button><button type="button" data-viewer-reset>Réinitialiser</button><span data-viewer-zoom>100%</span></div></div>
+        <div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Replay OpusJS" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details></aside></div>
+      </article>
+      <aside class="side">
+        <span class="segment-badge" data-rotor-segment>Chargement</span>
+        <div class="metrics"><div><small>Cycle</small><strong data-rotor-cycle>—</strong></div><div><small>Score</small><strong data-rotor-score>—</strong></div><div><small>Étape</small><strong data-rotor-step>—</strong></div></div>
+        <h3>Actions</h3><pre class="action" data-rotor-action>Chargement…</pre>
+        <p class="status" data-rotor-status>Initialisation du rendu OpusJS…</p>
+      </aside>
+    </div>
+  </main>
+  <script src="assets/js/opus-geometry.js"></script>
+  <script src="assets/js/opus-piece-symbols.js"></script>
+  <script src="assets/js/solution-viewer.js"></script>
+  <script src="assets/js/replay-arm-animation.js"></script>
+  <script src="assets/js/replay-molecules.js"></script>
+  <script src="assets/js/rotor-opus-replay.js"></script>
+</body>
+</html>
