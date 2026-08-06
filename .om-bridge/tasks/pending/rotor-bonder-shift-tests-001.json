@@ -1,0 +1,7 @@
+{
+  "id": "rotor-bonder-shift-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 1800,
+  "pytest_targets": ["tests/test_opus_engine.py"],
+  "notes": "Validate occupied-bonder payload shift experiment against engine regressions."
+}
