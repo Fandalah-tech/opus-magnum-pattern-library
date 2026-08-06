@@ -1,0 +1,6 @@
+{
+  "id": "rotor-half-checkpoint-report-001",
+  "operation": "report_rotor_prefix",
+  "timeout_seconds": 300,
+  "notes": "Replay Bruno's A43 half-complete solution and report the exact structural checkpoint, including eligible atoms, matched positions, matched bonds, held atoms, and molecule components."
+}
