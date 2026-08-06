@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name "om-local-worker"
           git config user.email "om-local-worker@users.noreply.github.com"
-          git add .om-bridge/results
+          git add .om-bridge/results packages/opus_engine/final_simulator.py
           git diff --cached --quiet || (git commit -m "Record OMSIM worker result" && git push origin HEAD:feature/disjoint-solver-readiness)
 
       - name: Fail workflow when operation failed
