@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
+from packages.opus_engine.builder import DIRECTIONS
 from packages.opus_engine.van_berlo_simulator import Simulator
 from packages.opus_parser.solution import parse_solution_bytes
 
@@ -12,24 +13,40 @@ PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-ideal-setup-9-final-mechanical-prefix.solution.b64")
 
 
-def occupants(simulator: Simulator, position):
+def ordinary_occupants(simulator: Simulator, position):
     return [
-        {"id": atom.id, "element": atom.element, "wheel": simulator._is_wheel_atom_id(atom.id)}
+        {"id": atom.id, "element": atom.element, "heldBy": sorted(atom.held_by)}
         for atom in simulator._atoms_at(position)
+        if not simulator._is_wheel_atom_id(atom.id)
     ]
 
 
 def cell_state(simulator: Simulator):
-    return [
-        {
+    result = []
+    for source, configured_salt, part_id in simulator.duplication_glyphs:
+        neighbors = []
+        for direction, delta in enumerate(DIRECTIONS):
+            position = (source[0] + delta[0], source[1] + delta[1])
+            atoms = ordinary_occupants(simulator, position)
+            if atoms:
+                neighbors.append({
+                    "direction": direction,
+                    "position": list(position),
+                    "configuredSalt": position == configured_salt,
+                    "atoms": atoms,
+                })
+        result.append({
             "partId": part_id,
             "sourcePosition": list(source),
-            "source": occupants(simulator, source),
-            "saltPosition": list(salt),
-            "salt": occupants(simulator, salt),
-        }
-        for source, salt, part_id in simulator.duplication_glyphs
-    ]
+            "sourceWheel": [
+                {"id": atom.id, "element": atom.element}
+                for atom in simulator._atoms_at(source)
+                if simulator._is_wheel_atom_id(atom.id)
+            ],
+            "configuredSaltPosition": list(configured_salt),
+            "neighbors": neighbors,
+        })
+    return result
 
 
 def main() -> None:
@@ -53,9 +70,10 @@ def main() -> None:
         events = [
             {"kind": event.kind, **event.data}
             for event in simulator.world.events
-            if event.kind in {"atom-duplicated", "input-spawned", "atom-grabbed", "atoms-dropped"}
+            if event.kind in {"atom-duplicated", "input-spawned"}
         ]
-        if current != previous or events:
+        has_neighbor = any(cell["neighbors"] for cell in current)
+        if current != previous and has_neighbor or events:
             rows.append({"cycle": simulator.world.cycle, "cells": current, "events": events})
         previous = current
 
