@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a47-lifecycle-002",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 900,
+  "notes": "Repeat A47 lifecycle trace with permanent native Van Berlo wheel atoms across drop instructions."
+}
