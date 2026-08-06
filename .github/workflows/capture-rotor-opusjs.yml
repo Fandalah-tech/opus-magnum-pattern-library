@@ -1,6 +1,11 @@
 name: Capture Rotor OpusJS review set
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/capture-rotor-opusjs.yml"
   workflow_dispatch:
 
 permissions:
@@ -44,9 +49,12 @@ jobs:
               page.wait_for_selector('[data-rotor-range]', timeout=120000)
               page.wait_for_function("document.querySelector('[data-rotor-position]').textContent.includes('/')", timeout=120000)
               slider = page.locator('[data-rotor-range]')
+              maximum = int(slider.get_attribute('max') or '0')
+              indices = [round(i * maximum / 19) for i in range(20)] if maximum else [0]
+              manifest['indices'] = indices
               for order, index in enumerate(indices):
                   slider.evaluate('(node, value) => { node.value = value; node.dispatchEvent(new Event(\'input\', {bubbles:true})); }', index)
-                  page.wait_for_timeout(300)
+                  page.wait_for_timeout(350)
                   cycle = page.locator('[data-rotor-cycle]').inner_text()
                   score = page.locator('[data-rotor-score]').inner_text()
                   filename = f'img/{order:02d}-frame-{index:03d}-cycle-{cycle}.png'
