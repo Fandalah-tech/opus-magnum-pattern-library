@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-baron-contacts-compact-001",
+    "operation": "report_rotor_baron_contacts",
+    "timeout_seconds": 900,
+    "notes": "Compact contact and input occupancy trace at each Van Berlo instruction."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-baron-contacts-compact-001.json",
+  "git_sha": "add2da1b6a7bb95a0d70e95828828ca816427eee",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:45:02.420968+00:00",
+  "finished_at": "2026-08-06T03:45:02.874835+00:00",
+  "duration_seconds": 0.454,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

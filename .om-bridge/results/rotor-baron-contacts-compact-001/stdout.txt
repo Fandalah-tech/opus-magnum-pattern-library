@@ -1,0 +1,1149 @@
+{
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "baronId": "part-1",
+  "rows": [
+    {
+      "cycle": 0,
+      "phase": "initial",
+      "rotation": 2,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                3,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 11,
+      "phase": "before",
+      "instruction": "rotate_cw",
+      "rotation": 2,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 12,
+      "phase": "after",
+      "instruction": "rotate_cw",
+      "events": [],
+      "rotation": 1,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 35,
+      "phase": "before",
+      "instruction": "rotate_ccw",
+      "rotation": 1,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 36,
+      "phase": "after",
+      "instruction": "rotate_ccw",
+      "events": [],
+      "rotation": 2,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 51,
+      "phase": "before",
+      "instruction": "rotate_cw",
+      "rotation": 2,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 52,
+      "phase": "after",
+      "instruction": "rotate_cw",
+      "events": [],
+      "rotation": 1,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 88,
+      "phase": "before",
+      "instruction": "rotate_cw",
+      "rotation": 1,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 89,
+      "phase": "after",
+      "instruction": "rotate_cw",
+      "events": [],
+      "rotation": 0,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 89,
+      "phase": "before",
+      "instruction": "rotate_cw",
+      "rotation": 0,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 90,
+      "phase": "after",
+      "instruction": "rotate_cw",
+      "events": [],
+      "rotation": 5,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 90,
+      "phase": "before",
+      "instruction": "rotate_cw",
+      "rotation": 5,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 91,
+      "phase": "after",
+      "instruction": "rotate_cw",
+      "events": [],
+      "rotation": 4,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 127,
+      "phase": "before",
+      "instruction": "drop",
+      "rotation": 4,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 128,
+      "phase": "after",
+      "instruction": "drop",
+      "events": [
+        "atoms-dropped"
+      ],
+      "rotation": 4,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 136,
+      "phase": "before",
+      "instruction": "rotate_ccw",
+      "rotation": 4,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 137,
+      "phase": "after",
+      "instruction": "rotate_ccw",
+      "events": [],
+      "rotation": 5,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 144,
+      "phase": "before",
+      "instruction": "rotate_ccw",
+      "rotation": 5,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 145,
+      "phase": "after",
+      "instruction": "rotate_ccw",
+      "events": [],
+      "rotation": 0,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 157,
+      "phase": "before",
+      "instruction": "rotate_ccw",
+      "rotation": 0,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 158,
+      "phase": "after",
+      "instruction": "rotate_ccw",
+      "events": [],
+      "rotation": 1,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 166,
+      "phase": "before",
+      "instruction": "drop",
+      "rotation": 1,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 167,
+      "phase": "after",
+      "instruction": "drop",
+      "events": [],
+      "rotation": 1,
+      "grabbing": false,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    }
+  ]
+}
