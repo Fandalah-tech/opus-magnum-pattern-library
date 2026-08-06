@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-strict-replay-001",
+    "operation": "report_rotor_strict_replay",
+    "timeout_seconds": 1800,
+    "notes": "Replay A47 without synthetic bonder displacement and report the first genuine collision with recent history."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-strict-replay-001.json",
+  "git_sha": "f607d22b197026cd859ab90f4afdfc1153f28210",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T10:10:30.107687+00:00",
+  "finished_at": "2026-08-06T10:10:30.547189+00:00",
+  "duration_seconds": 0.439,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
