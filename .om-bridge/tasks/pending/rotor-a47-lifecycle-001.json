@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a47-lifecycle-001",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 900,
+  "notes": "Trace ordinary atom lifecycle through the latest A47 mechanical prefix to locate incorrect consumption or output handling."
+}
