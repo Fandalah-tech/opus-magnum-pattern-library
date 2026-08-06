@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-final-chemistry-after-component-respawn-001",
+    "operation": "solve_rotor_area47_final_chemistry",
+    "timeout_seconds": 21600,
+    "notes": "Re-run final A47 chemistry search after implementing independent respawn of disconnected reagent components."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-final-chemistry-after-component-respawn-001.json",
+  "git_sha": "9064a5fff0a84fb7a8c457e66da9f4dc8a6466ca",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:26:29.933354+00:00",
+  "finished_at": "2026-08-06T08:26:31.186235+00:00",
+  "duration_seconds": 1.253,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
