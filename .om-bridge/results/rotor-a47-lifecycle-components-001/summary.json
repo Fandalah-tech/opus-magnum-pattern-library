@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-lifecycle-components-001",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Measure atom/bond lifecycle after correcting disconnected reagent molecule semantics."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-lifecycle-components-001.json",
+  "git_sha": "3355f2138ed7770661fc20f8ae5249c442a3a80a",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:42:14.797580+00:00",
+  "finished_at": "2026-08-06T03:42:15.243364+00:00",
+  "duration_seconds": 0.446,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
