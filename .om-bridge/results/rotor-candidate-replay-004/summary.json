@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-candidate-replay-004",
+    "operation": "build_rotor_candidate_replay",
+    "timeout_seconds": 900,
+    "notes": "Regenerate the complete Rotor replay from the initial simulator state through the human prefix and persisted solver segment. Publish all frames plus renderContext puzzle and solution data for the OpusJS replay in reports/rotor-tail-best-candidate-replay.json."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-candidate-replay-004.json",
+  "git_sha": "bf5754c7fe5d00284aad343f5b505d0e004ce9bb",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T17:35:25.716282+00:00",
+  "finished_at": "2026-08-06T17:35:26.412571+00:00",
+  "duration_seconds": 0.696,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

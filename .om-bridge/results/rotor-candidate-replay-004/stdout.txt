@@ -1,0 +1,1 @@
+{"schemaVersion": 3, "frames": 218, "prefixFrames": 199, "solverFrames": 20, "solverStartIndex": 198, "finalCycle": 217, "finalScore": 253, "renderParts": 13}
