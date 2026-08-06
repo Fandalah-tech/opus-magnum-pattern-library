@@ -44,7 +44,7 @@
   };
 
   const rawJson = async (path) => {
-    const url = `https://raw.githubusercontent.com/${REPO}/${encodeURIComponent(BRANCH)}/${path}?t=${Date.now()}`;
+    const url = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${path}?t=${Date.now()}`;
     const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) return null;
     return response.json();
