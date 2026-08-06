@@ -1,0 +1,6 @@
+{
+  "id": "critelli-liquid-perfumes-pilot-003",
+  "operation": "import_critelli_liquid_perfumes",
+  "timeout_seconds": 1800,
+  "notes": "Retry the corrected Liquid Perfumes corpus pilot after fixing queued-task resolution. Download the public puzzle and at most 25 publicly linked submissions into the ignored local dataset directory; commit the provenance report and worker logs only."
+}
