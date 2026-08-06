@@ -40,6 +40,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_strict_replay": [sys.executable, "tools/report_rotor_strict_replay.py"],
     "report_rotor_respawn_models": [sys.executable, "tools/report_rotor_respawn_models.py"],
     "search_rotor_last_atom_tail": [sys.executable, "tools/search_rotor_last_atom_tail.py"],
+    "run_rotor_autonomous_campaign": [sys.executable, "tools/run_rotor_autonomous_campaign.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
 }
 
