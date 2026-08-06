@@ -1,0 +1,5 @@
+usage: run_reference_regression.py [-h] --manifest MANIFEST
+                                   --fixtures FIXTURES
+                                   --validator-url VALIDATOR_URL
+                                   --output OUTPUT
+run_reference_regression.py: error: the following arguments are required: --manifest, --fixtures, --validator-url, --output

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "post-disjoint-reference-regression-001",
+    "operation": "run_reference_regression",
+    "timeout_seconds": 3600,
+    "notes": "Check all saved references after piston, component respawn, bonder-chain, and disjoint-output changes."
+  },
+  "task_file": ".om-bridge/tasks/pending/post-disjoint-reference-regression-001.json",
+  "git_sha": "4d9a19681f746dfe4b3ba1fb319180e27277bc8b",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:49:56.965236+00:00",
+  "finished_at": "2026-08-06T09:49:57.538800+00:00",
+  "duration_seconds": 0.574,
+  "exit_code": 2,
+  "status": "failed",
+  "error": null
+}
