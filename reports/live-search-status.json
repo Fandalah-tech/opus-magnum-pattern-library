@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-08-06T12:49:54.886290+00:00",
+  "updatedAt": "2026-08-06T12:50:55.297243+00:00",
   "status": "running",
   "stage": "tail-search",
   "maxDepth": 28,
   "beamWidth": 750,
   "maxStates": 250000,
   "timeLimitSeconds": 5400,
-  "depth": 3,
-  "elapsedSeconds": 68.238,
-  "visitedStates": 12646,
-  "expandedStates": 686,
+  "depth": 4,
+  "elapsedSeconds": 128.646,
+  "visitedStates": 21622,
+  "expandedStates": 1264,
   "frontierSize": 750,
-  "bestScore": 215,
-  "bestPathLength": 3
+  "bestScore": 338,
+  "bestPathLength": 4
 }
