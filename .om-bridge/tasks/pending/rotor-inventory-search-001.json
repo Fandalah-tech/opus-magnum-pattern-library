@@ -1,0 +1,6 @@
+{
+  "id": "rotor-inventory-search-001",
+  "operation": "search_rotor_structure",
+  "timeout_seconds": 900,
+  "notes": "Rerun the staged A42/A43 structure-only Rotor search with inventory-preserving macro refinement. Compare against baseline: 9 matched positions, 2 matched edges, 20 atoms."
+}
