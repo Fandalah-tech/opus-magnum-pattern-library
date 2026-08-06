@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-009-clean",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Fresh trigger for campaign 009 after repeated pre-start cancellations. Run the current heuristic v2 campaign from the validated Rotor prefix, publish live progress, and persist the best candidate and replay context."
+}
