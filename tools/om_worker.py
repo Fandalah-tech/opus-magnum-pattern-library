@@ -37,6 +37,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_almost_solved_tail": [sys.executable, "tools/report_rotor_almost_solved_tail.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
+    "report_rotor_strict_replay": [sys.executable, "tools/report_rotor_strict_replay.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
 }
 
