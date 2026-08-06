@@ -50,68 +50,91 @@
     return response.json();
   };
 
-  const inferStage = (run, live) => {
+  const campaignState = (live) => {
+    const status = String(live?.status || '').toLowerCase();
+    if (['running', 'in_progress', 'active'].includes(status)) return { label: 'En cours', kind: 'running' };
+    if (['stopped', 'completed', 'success', 'finished'].includes(status)) {
+      return live?.found
+        ? { label: 'Solution trouvée', kind: 'success' }
+        : { label: 'Terminée', kind: 'success' };
+    }
+    if (['failed', 'error'].includes(status)) return { label: 'Intervention', kind: 'failure' };
+    return null;
+  };
+
+  const inferStage = (live) => {
+    if (live?.status === 'stopped' || live?.status === 'completed') return 'Campagne terminée';
     if (live?.stage) return live.stage;
-    if (run.status === 'queued') return 'En file';
-    if (run.status === 'in_progress') return 'Opération OMSIM en cours';
-    if (run.conclusion === 'success') return 'Campagne terminée';
-    if (run.conclusion) return `Arrêtée · ${run.conclusion}`;
     return 'Inconnu';
   };
 
   const applyLive = (live) => {
     if (!live) return;
+    nodes.stage.textContent = inferStage(live);
+    nodes.elapsed.textContent = formatDuration(Number(live.elapsedSeconds ?? live.elapsed_seconds ?? live.timeLimitSeconds));
     nodes.depth.textContent = formatNumber(live.depth);
     nodes.visited.textContent = formatNumber(live.visitedStates ?? live.visited_states);
     nodes.expanded.textContent = formatNumber(live.expandedStates ?? live.expanded_states);
     nodes.score.textContent = formatNumber(live.bestScore ?? live.best_score);
+
     const maxDepth = Number(live.maxDepth ?? live.max_depth);
     const depth = Number(live.depth);
     const pct = Number.isFinite(maxDepth) && maxDepth > 0 && Number.isFinite(depth)
       ? Math.min(100, Math.max(0, (depth / maxDepth) * 100))
       : 0;
     nodes.progress.style.width = `${pct}%`;
+
+    const state = campaignState(live);
+    if (state) setBadge(state.label, state.kind);
+
     const lines = [
       live.message,
       Number.isFinite(depth) ? `Profondeur ${depth}${Number.isFinite(maxDepth) ? ` / ${maxDepth}` : ''}` : null,
-      live.stoppedReason ? `Arrêt : ${live.stoppedReason}` : null
+      live.stoppedReason ? `Arrêt : ${live.stoppedReason}` : null,
+      live.found === false ? 'Aucune solution complète trouvée.' : null
     ].filter(Boolean);
     if (lines.length) nodes.log.textContent = lines.join('\n');
   };
 
-  const refresh = async () => {
+  const enrichWithWorker = async () => {
     try {
       const runsUrl = `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}/runs?branch=${encodeURIComponent(BRANCH)}&per_page=1`;
       const runs = await githubJson(runsUrl);
       const run = runs.workflow_runs?.[0];
-      if (!run) throw new Error('Aucune campagne trouvée');
-
-      const live = await rawJson('reports/live-search-status.json');
-      const summary = await rawJson('reports/rotor-autonomous-campaign.json');
-      const started = new Date(run.run_started_at || run.created_at).getTime();
-      const ended = run.updated_at ? new Date(run.updated_at).getTime() : Date.now();
-      const elapsed = Math.max(0, ((run.status === 'completed' ? ended : Date.now()) - started) / 1000);
-
-      nodes.stage.textContent = inferStage(run, live);
-      nodes.elapsed.textContent = formatDuration(elapsed);
+      if (!run) return;
       nodes.run.textContent = `Run #${run.run_number}`;
       nodes.run.href = run.html_url;
-      nodes.updated.textContent = `Actualisé ${new Date().toLocaleTimeString('fr-CA')}`;
+      const workerLabel = run.status === 'queued'
+        ? 'Worker en file'
+        : run.status === 'in_progress'
+          ? 'Worker actif'
+          : run.conclusion === 'success'
+            ? 'Worker terminé'
+            : `Worker : ${run.conclusion || run.status}`;
+      nodes.updated.textContent = `${workerLabel} · actualisé ${new Date().toLocaleTimeString('fr-CA')}`;
+    } catch {
+      nodes.updated.textContent = `Campagne chargée · actualisé ${new Date().toLocaleTimeString('fr-CA')}`;
+    }
+  };
 
-      if (run.status === 'in_progress' || run.status === 'queued') setBadge('En cours', 'running');
-      else if (run.conclusion === 'success') setBadge('Terminé', 'success');
-      else setBadge('Intervention', 'failure');
+  const refresh = async () => {
+    try {
+      const live = await rawJson('reports/live-search-status.json');
+      const summary = await rawJson('reports/rotor-autonomous-campaign.json');
 
       if (live) {
         applyLive(live);
       } else if (summary?.stages?.length) {
         const last = summary.stages.at(-1);
+        nodes.stage.textContent = last.name || 'Campagne terminée';
         nodes.log.textContent = `${last.name} · code ${last.exitCode}\n${(last.stdout || '').slice(-900)}`.trim();
+        setBadge(last.exitCode === 0 ? 'Terminée' : 'Intervention', last.exitCode === 0 ? 'success' : 'failure');
       } else {
-        nodes.log.textContent = run.status === 'in_progress'
-          ? 'La campagne travaille sur le runner. Les métriques détaillées apparaîtront à partir des campagnes instrumentées avec heartbeat.'
-          : `Dernière conclusion GitHub : ${run.conclusion || run.status}.`;
+        setBadge('Indisponible', 'failure');
+        nodes.log.textContent = 'Aucun rapport de campagne publié.';
       }
+
+      await enrichWithWorker();
     } catch (error) {
       setBadge('Indisponible', 'failure');
       nodes.log.textContent = `Impossible de lire l’état de la recherche : ${error.message}`;
