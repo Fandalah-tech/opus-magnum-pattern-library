@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "disjoint-output-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 1800,
+    "pytest_targets": [
+      "tests/test_opus_engine.py"
+    ],
+    "notes": "Validate the disjoint output consumer and current Van Berlo engine changes."
+  },
+  "task_file": ".om-bridge/tasks/pending/disjoint-output-tests-001.json",
+  "git_sha": "f2d53439620239ad7281f43f70c2d19332bc7aae",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:48:24.544938+00:00",
+  "finished_at": "2026-08-06T09:48:25.671879+00:00",
+  "duration_seconds": 1.127,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
