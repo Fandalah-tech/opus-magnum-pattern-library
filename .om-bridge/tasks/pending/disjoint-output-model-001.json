@@ -1,0 +1,6 @@
+{
+  "id": "disjoint-output-model-001",
+  "operation": "apply_rotor_bonder_chain_patch",
+  "timeout_seconds": 300,
+  "notes": "Apply the disjoint output consumer model after preserving the recursive bonder chain model."
+}
