@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-autonomous-campaign-007",
+    "operation": "run_rotor_autonomous_campaign",
+    "timeout_seconds": 21600,
+    "notes": "Validate the full structural prefix, then run a memory-bounded live-instrumented tail search. Treat any native search crash as a campaign failure instead of a false success. This supersedes campaign 006, which replayed the prefix successfully but crashed at depth 3 with Windows access-violation code 3221225477."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-autonomous-campaign-007.json",
+  "git_sha": "06658a1dda7266aa18aa95ba4eea840217b87ef6",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T12:48:43.107641+00:00",
+  "finished_at": "2026-08-06T13:23:53.115234+00:00",
+  "duration_seconds": 2109.913,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
