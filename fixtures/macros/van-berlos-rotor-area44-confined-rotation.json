@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "area44-confined-rotation",
+  "sourceSolution": "fixtures/solutions/van-berlos-rotor-area44-ideal-setup-6.parsed.json",
+  "startCycle": 42,
+  "endCycle": 55,
+  "tags": ["rotor", "confined", "rotation", "human-reference", "plateau-crossing"],
+  "cycles": [
+    {"cycle": 42, "instructions": {"part-2": "rotate_cw", "part-9": "track_minus", "part-11": "retract"}},
+    {"cycle": 43, "instructions": {"part-9": "track_minus", "part-11": "rotate_ccw"}},
+    {"cycle": 44, "instructions": {"part-9": "grab", "part-11": "drop"}},
+    {"cycle": 45, "instructions": {"part-2": "rotate_ccw", "part-9": "track_plus"}},
+    {"cycle": 46, "instructions": {"part-9": "rotate_ccw"}},
+    {"cycle": 47, "instructions": {"part-9": "track_plus"}},
+    {"cycle": 48, "instructions": {"part-9": "rotate_cw"}},
+    {"cycle": 49, "instructions": {"part-9": "drop"}},
+    {"cycle": 50, "instructions": {"part-9": "track_minus"}},
+    {"cycle": 51, "instructions": {"part-2": "rotate_ccw", "part-9": "grab"}},
+    {"cycle": 52, "instructions": {"part-9": "track_plus"}},
+    {"cycle": 53, "instructions": {"part-9": "rotate_ccw"}},
+    {"cycle": 54, "instructions": {"part-9": "drop"}},
+    {"cycle": 55, "instructions": {"part-2": "rotate_ccw", "part-9": "track_minus"}}
+  ],
+  "properties": {
+    "baronRotationSequence": [1, 0, 1, 2, 3],
+    "netBaronRotation": 2,
+    "requiresIntermediatePlateau": true,
+    "evaluationNote": "OMSIM currently lacks glyph effects for this reference, so geometry score remains flat. Treat the full 14-cycle sequence as atomic until glyph-complete replay is available."
+  }
+}
