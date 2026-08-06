@@ -26,6 +26,24 @@ The project has moved beyond the original static pattern explorer and now includ
 
 The 108-solution result is a regression milestone for the current campaign corpus, not a claim that every custom, production, conduit, or community edge case is already implemented.
 
+## Development preview and hosting
+
+The repository is currently developed as a research platform, not as a production website.
+
+- **GitHub** is the source of truth for code, tasks, reports, and live research status.
+- **The self-hosted runner** performs OMSIM tests and search campaigns.
+- **RawGitHack** is used only for temporary static previews of development branches.
+- **Vercel is not used** and no workflow in this repository deploys to Vercel.
+- Final public hosting will be selected later, once the application structure and API boundaries are stable.
+
+Current development preview:
+
+```text
+https://raw.githack.com/Fandalah-tech/opus-magnum-pattern-library/feature/disjoint-solver-readiness/project.html
+```
+
+RawGitHack is a development convenience, not a production hosting target.
+
 ## First solver strategy
 
 `bonded-pair-v1` is intentionally narrow. It currently accepts puzzles with:
