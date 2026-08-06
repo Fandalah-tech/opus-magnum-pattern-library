@@ -20,40 +20,47 @@ def main() -> None:
     )
     simulator = Simulator.from_models(puzzle, solution)
     timeline = build_program_timeline(solution)
-    simulator.run_timeline(timeline)
-    baron = next(arm for arm in simulator.arms.values() if arm.part_type == "baron")
-    last_cycle = max((row.get("cycle", 0) for row in timeline.get("cycles", [])), default=0)
-    late_programs = {}
-    for part in solution.get("parts", []):
-        rows = [row for row in part.get("program", []) if row.get("cycle", 0) >= max(0, last_cycle - 45)]
-        if rows:
-            late_programs[part["id"]] = {"type": part["type"], "program": rows}
-    atoms = [
-        {
-            "id": atom.id,
-            "element": atom.element,
-            "position": list(atom.position),
-            "heldBy": sorted(atom.held_by),
+    rows = []
+    previous_atoms = None
+    previous_delivered = None
+    for row in timeline.get("cycles", []):
+        instructions = {
+            str(event.get("partId")): event.get("instruction")
+            for event in row.get("events", [])
         }
-        for atom in simulator.world.atoms.values()
-        if "-wheel-" not in atom.id
-    ]
-    bonds = [
-        {"a": bond.a, "b": bond.b, "type": bond.kind}
-        for bond in simulator.world.bonds.values()
-        if "-wheel-" not in bond.a and "-wheel-" not in bond.b
-    ]
+        simulator.step(instructions)
+        ordinary = [atom for atom in simulator.world.atoms.values() if "-wheel-" not in atom.id]
+        atom_count = len(ordinary)
+        delivered = dict(getattr(simulator, "delivered_products", {}))
+        meaningful = [
+            {"kind": event.kind, **event.data}
+            for event in simulator.world.events
+            if event.kind != "arm-instruction"
+        ]
+        if atom_count != previous_atoms or delivered != previous_delivered or meaningful or simulator.world.cycle >= 115:
+            rows.append({
+                "cycle": simulator.world.cycle,
+                "atomCount": atom_count,
+                "bondCount": sum(
+                    1 for bond in simulator.world.bonds.values()
+                    if "-wheel-" not in bond.a and "-wheel-" not in bond.b
+                ),
+                "moleculeCount": len([
+                    molecule for molecule in simulator.world.molecules()
+                    if any("-wheel-" not in atom_id for atom_id in molecule.atom_ids)
+                ]),
+                "delivered": delivered,
+                "events": meaningful,
+                "atoms": [
+                    {"id": atom.id, "element": atom.element, "position": list(atom.position), "heldBy": sorted(atom.held_by)}
+                    for atom in sorted(ordinary, key=lambda item: item.id)
+                ] if simulator.world.cycle >= 120 else None,
+            })
+        previous_atoms = atom_count
+        previous_delivered = delivered
     print(json.dumps({
-        "name": solution.get("name"),
         "sourceSha256": solution.get("source", {}).get("sha256"),
-        "lastProgramCycle": last_cycle,
-        "completedCycle": simulator.world.cycle,
-        "finalBaronRotation": baron.rotation,
-        "baronHeld": list(baron.held_atoms.values()),
-        "latePrograms": late_programs,
-        "atoms": atoms,
-        "bonds": bonds,
-        "finalFrame": simulator.frames[-1] if simulator.frames else None,
+        "rows": rows,
     }, indent=2))
 
 
