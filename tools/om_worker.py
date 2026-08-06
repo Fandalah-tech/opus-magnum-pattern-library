@@ -23,6 +23,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "solve_rotor_area47_near_complete": [sys.executable, "tools/solve_rotor_area47_near_complete.py"],
     "solve_rotor_area47_final_chemistry": [sys.executable, "tools/solve_rotor_area47_final_chemistry.py"],
     "report_rotor_van_berlo_duplication": [sys.executable, "tools/report_rotor_van_berlo_duplication.py"],
+    "report_rotor_baron_contacts": [sys.executable, "tools/report_rotor_baron_contacts.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
 }
