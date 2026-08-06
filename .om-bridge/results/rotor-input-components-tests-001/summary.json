@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-input-components-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_input_source_components.py"
+    ],
+    "notes": "Validate bond-connected component semantics for disjoint reagents."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-input-components-tests-001.json",
+  "git_sha": "f2084f726e3b7283a39bdf7672072d03c3708f32",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:41:46.451218+00:00",
+  "finished_at": "2026-08-06T03:41:47.586545+00:00",
+  "duration_seconds": 1.135,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
