@@ -6,8 +6,8 @@
   <meta name="description" content="Solver Lab — suivi de la campagne autonome OMSIM sur Van Berlo's Rotor.">
   <title>Solver Lab · Opus Magnum Codex</title>
   <link rel="stylesheet" href="assets/css/solver-dashboard-v2.css">
-  <link rel="stylesheet" href="assets/css/research-monitor.css?v=rotor-dashboard-20260806-3">
-  <link rel="stylesheet" href="assets/css/site-shell.css?v=rotor-dashboard-20260806-3">
+  <link rel="stylesheet" href="assets/css/research-monitor.css?v=rotor-dashboard-20260806-4">
+  <link rel="stylesheet" href="assets/css/site-shell.css?v=rotor-dashboard-20260806-4">
 </head>
 <body data-product="solver" data-bilingual="false">
   <header class="topbar">
@@ -18,9 +18,9 @@
   <main>
     <section class="campaign-head">
       <div>
-        <p class="eyebrow">CAMPAGNE 008 · VAN BERLO'S ROTOR</p>
+        <p class="eyebrow">CAMPAGNE 009 · VAN BERLO'S ROTOR</p>
         <h1>Recherche du dernier atome</h1>
-        <p>Le laboratoire regroupe maintenant l’état de recherche, le meilleur candidat sauvegardé et son replay dans une seule interface de travail.</p>
+        <p>Le laboratoire regroupe l’état de recherche, le meilleur candidat sauvegardé et son replay OpusJS dans une seule interface de travail.</p>
       </div>
       <div class="campaign-badge"><div><small>État de référence</small><strong>Score 599</strong></div></div>
     </section>
@@ -37,18 +37,18 @@
       <div class="workspace-main">
         <section class="panel viewer-shell" aria-label="Replay Rotor intégré">
           <div class="panel-head">
-            <div><p class="eyebrow">REPLAY DE CAMPAGNE</p><h2>Préfixe humain → segment solver</h2><p>Lecture complète dès que la timeline régénérée par le runner est publiée.</p></div>
-            <div class="actions"><button id="reload-replay" type="button">Recharger</button><a class="secondary" href="rotor-candidate-replay.html" target="_blank" rel="noreferrer">Plein écran</a></div>
+            <div><p class="eyebrow">REPLAY DE CAMPAGNE</p><h2>Préfixe humain → segment solver</h2><p>Timeline complète rendue par OpusJS avec pièces, glyphes, bras, molécules et liaisons.</p></div>
+            <div class="actions"><button id="reload-replay" type="button">Recharger</button><a class="secondary" href="rotor-opus-replay.html" target="_blank" rel="noreferrer">Plein écran</a></div>
           </div>
-          <div class="viewer-label"><span>Replay OMSIM</span><small>Début, relais solver, lecture et navigation image par image</small></div>
-          <iframe id="solver-replay" title="Replay de la campagne Van Berlo's Rotor" src="rotor-candidate-replay.html?embedded=solver-lab&v=dashboard-20260806-3" scrolling="no" style="display:block;width:100%;height:760px;min-height:760px;border:0"></iframe>
-          <p id="lab-status" role="status">Initialisation du replay Rotor…</p>
+          <div class="viewer-label"><span>Replay OpusJS</span><small>Début, relais solver, lecture et navigation image par image</small></div>
+          <iframe id="solver-replay" title="Replay OpusJS de la campagne Van Berlo's Rotor" src="rotor-opus-replay.html?embedded=solver-lab&v=dashboard-20260806-4" scrolling="no" style="display:block;width:100%;height:760px;min-height:760px;border:0"></iframe>
+          <p id="lab-status" role="status">Initialisation du replay OpusJS…</p>
         </section>
       </div>
 
       <aside class="workspace-side">
         <section class="research-monitor" aria-labelledby="monitor-title">
-          <div class="research-monitor__head"><div><p class="eyebrow">CAMPAGNE OMSIM</p><h2 id="monitor-title">État de la recherche</h2><p>Rapport final du solver; le statut du worker est indiqué séparément.</p></div><span id="monitor-badge" class="monitor-badge">Chargement</span></div>
+          <div class="research-monitor__head"><div><p class="eyebrow">CAMPAGNE OMSIM</p><h2 id="monitor-title">État de la recherche</h2><p>Rapport du solver; le statut du worker est indiqué séparément.</p></div><span id="monitor-badge" class="monitor-badge">Chargement</span></div>
           <div class="monitor-grid">
             <article class="monitor-card"><small>Étape</small><strong id="monitor-stage">—</strong><span>phase actuelle</span></article>
             <article class="monitor-card"><small>Temps</small><strong id="monitor-elapsed">—</strong><span>limite configurée</span></article>
@@ -74,8 +74,8 @@
   </main>
 
   <footer>Projet de recherche non officiel. Opus Magnum a été créé par Zachtronics.</footer>
-  <script src="assets/js/research-dashboard.js?v=rotor-dashboard-20260806-3"></script>
-  <script src="assets/js/solver-lab.js?v=rotor-dashboard-20260806-3"></script>
-  <script src="assets/js/site-shell.js?v=rotor-dashboard-20260806-3"></script>
+  <script src="assets/js/research-dashboard.js?v=rotor-dashboard-20260806-4"></script>
+  <script src="assets/js/solver-lab.js?v=rotor-dashboard-20260806-4"></script>
+  <script src="assets/js/site-shell.js?v=rotor-dashboard-20260806-4"></script>
 </body>
 </html>
