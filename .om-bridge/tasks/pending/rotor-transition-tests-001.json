@@ -1,0 +1,11 @@
+{
+  "id": "rotor-transition-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": [
+    "tests/test_solver_explorer.py",
+    "tests/test_macro_explorer.py",
+    "tests/test_mechanical_macros.py"
+  ],
+  "notes": "Validate primitive beam admissibility filtering before running the 12-to-13 atom transition campaign."
+}
