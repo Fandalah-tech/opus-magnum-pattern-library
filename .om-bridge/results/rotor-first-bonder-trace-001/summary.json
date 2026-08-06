@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-first-bonder-trace-001",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Trace cycles 45 onward to identify the first incorrect bonded-pair placement before cycle 100."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-first-bonder-trace-001.json",
+  "git_sha": "0ee9b7e6cec1c41e24f9adeeac996757e69a361d",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:36:35.041142+00:00",
+  "finished_at": "2026-08-06T09:36:35.473911+00:00",
+  "duration_seconds": 0.433,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
