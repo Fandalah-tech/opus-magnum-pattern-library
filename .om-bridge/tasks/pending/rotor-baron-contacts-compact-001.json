@@ -1,0 +1,6 @@
+{
+  "id": "rotor-baron-contacts-compact-001",
+  "operation": "report_rotor_baron_contacts",
+  "timeout_seconds": 900,
+  "notes": "Compact contact and input occupancy trace at each Van Berlo instruction."
+}
