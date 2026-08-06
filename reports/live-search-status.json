@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-08-06T14:20:35.032061+00:00",
+  "updatedAt": "2026-08-06T14:21:44.596588+00:00",
   "status": "running",
   "stage": "tail-search",
   "maxDepth": 28,
   "beamWidth": 750,
   "maxStates": 250000,
   "timeLimitSeconds": 5400,
-  "message": "Pr\u00e9fixe rejou\u00e9. Initialisation du beam search born\u00e9 en m\u00e9moire.",
-  "depth": 0,
-  "elapsedSeconds": 0,
-  "visitedStates": 1,
-  "expandedStates": 0,
-  "frontierSize": 1,
-  "bestScore": -56
+  "depth": 3,
+  "elapsedSeconds": 68.214,
+  "visitedStates": 12053,
+  "expandedStates": 632,
+  "frontierSize": 750,
+  "bestScore": 215,
+  "bestPathLength": 3
 }
