@@ -1,0 +1,6 @@
+{
+  "id": "rotor-last-atom-tail-002",
+  "operation": "search_rotor_last_atom_tail",
+  "timeout_seconds": 6000,
+  "notes": "Corrected targeted beam search from the preserved last-isolated-atom prefix. Seek delivery first; otherwise preserve the best-scoring continuation."
+}
