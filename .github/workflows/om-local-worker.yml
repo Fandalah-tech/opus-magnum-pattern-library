@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: feature/disjoint-solver-readiness
-          fetch-depth: 2
+          fetch-depth: 20
 
       - name: Resolve task file
         id: task
@@ -48,6 +48,9 @@ jobs:
       - name: Execute approved operation
         id: worker
         shell: cmd
+        env:
+          OM_LIVE_STATUS_TOKEN: ${{ github.token }}
+          OM_LIVE_STATUS_BRANCH: feature/disjoint-solver-readiness
         run: |
           setlocal EnableDelayedExpansion
           python --version
@@ -62,7 +65,10 @@ jobs:
           git config user.name "om-local-worker"
           git config user.email "om-local-worker@users.noreply.github.com"
           git add .om-bridge/results packages/opus_engine/final_simulator.py
-          git diff --cached --quiet || (git commit -m "Record OMSIM worker result" && git push origin HEAD:feature/disjoint-solver-readiness)
+          git diff --cached --quiet || git commit -m "Record OMSIM worker result"
+          git fetch origin feature/disjoint-solver-readiness
+          git rebase origin/feature/disjoint-solver-readiness
+          git push origin HEAD:feature/disjoint-solver-readiness
 
       - name: Fail workflow when operation failed
         if: steps.worker.outputs.exit_code != '0'
