@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {
+    "kind": "solution",
+    "version": 7
+  },
+  "source": {
+    "name": "van-berlo's-rotor-weeklies2026_van-berlos-rotor-43(3).solution",
+    "sha256": "0b3d8dbf24fbf5f71e7d8fb0c654bd3dd418868da90a3ac3ff5d41319870ec9b",
+    "size": 1029
+  },
+  "puzzleFile": "weeklies2026_van-berlos-rotor",
+  "name": "IDEAL SETUP 5 !!!",
+  "metrics": {
+    "cycles": null,
+    "cost": null,
+    "area": null,
+    "instructions": null
+  },
+  "unknownMetrics": [],
+  "parts": [
+    {"id":"part-0","type":"bonder","enabled":true,"position":[0,-1],"length":1,"rotation":4,"which":0,"armNumber":6,"program":[]},
+    {"id":"part-1","type":"out-std","enabled":true,"position":[3,-2],"length":1,"rotation":1,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-2","type":"baron","enabled":true,"position":[0,3],"length":1,"rotation":5,"which":0,"armNumber":2,"program":[]},
+    {"id":"part-3","type":"glyph-duplication","enabled":true,"position":[0,2],"length":1,"rotation":5,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-4","type":"glyph-duplication","enabled":true,"position":[1,2],"length":1,"rotation":5,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-5","type":"input","enabled":true,"position":[5,-1],"length":1,"rotation":2,"which":1,"armNumber":16,"program":[]},
+    {"id":"part-6","type":"glyph-calcification","enabled":true,"position":[4,-5],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-7","type":"unbonder","enabled":true,"position":[0,0],"length":1,"rotation":1,"which":0,"armNumber":0,"program":[]},
+    {"id":"part-8","type":"track","enabled":true,"position":[3,-2],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[],"trackHexes":[[-1,1],[0,1],[1,0],[1,-1],[0,-1],[-1,0]]},
+    {"id":"part-9","type":"piston","enabled":true,"position":[3,-3],"length":2,"rotation":4,"which":0,"armNumber":1,"program":[
+      {"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"track_minus"},{"cycle":2,"instruction":"rotate_cw"},{"cycle":3,"instruction":"pivot_ccw"},{"cycle":4,"instruction":"pivot_ccw"},{"cycle":5,"instruction":"pivot_ccw"},{"cycle":6,"instruction":"extend"},{"cycle":7,"instruction":"rotate_cw"},{"cycle":8,"instruction":"pivot_cw"},{"cycle":9,"instruction":"pivot_cw"},{"cycle":10,"instruction":"pivot_cw"},{"cycle":11,"instruction":"track_plus"},{"cycle":12,"instruction":"drop"},{"cycle":13,"instruction":"retract"},{"cycle":14,"instruction":"retract"},{"cycle":15,"instruction":"rotate_ccw"},{"cycle":16,"instruction":"rotate_ccw"},{"cycle":17,"instruction":"extend"},{"cycle":18,"instruction":"grab"},{"cycle":19,"instruction":"track_minus"},{"cycle":20,"instruction":"rotate_cw"},{"cycle":21,"instruction":"extend"},{"cycle":22,"instruction":"drop"},{"cycle":23,"instruction":"retract"},{"cycle":24,"instruction":"rotate_ccw"},{"cycle":25,"instruction":"track_plus"},{"cycle":26,"instruction":"track_minus"},{"cycle":30,"instruction":"track_minus"},{"cycle":36,"instruction":"track_plus"},{"cycle":37,"instruction":"track_plus"},{"cycle":38,"instruction":"grab"},{"cycle":39,"instruction":"track_minus"},{"cycle":40,"instruction":"drop"},{"cycle":41,"instruction":"track_minus"},{"cycle":42,"instruction":"extend"},{"cycle":43,"instruction":"grab"},{"cycle":44,"instruction":"rotate_cw"},{"cycle":45,"instruction":"track_plus"},{"cycle":46,"instruction":"drop"},{"cycle":47,"instruction":"retract"},{"cycle":48,"instruction":"retract"},{"cycle":49,"instruction":"rotate_ccw"},{"cycle":50,"instruction":"grab"},{"cycle":54,"instruction":"track_plus"}
+    ]},
+    {"id":"part-10","type":"input","enabled":true,"position":[3,-5],"length":1,"rotation":3,"which":0,"armNumber":16,"program":[]},
+    {"id":"part-11","type":"piston","enabled":true,"position":[3,-1],"length":2,"rotation":0,"which":0,"armNumber":0,"program":[
+      {"cycle":9,"instruction":"grab"},{"cycle":10,"instruction":"retract"},{"cycle":11,"instruction":"track_minus"},{"cycle":12,"instruction":"rotate_cw"},{"cycle":13,"instruction":"drop"},{"cycle":14,"instruction":"track_plus"},{"cycle":15,"instruction":"track_plus"},{"cycle":16,"instruction":"rotate_cw"},{"cycle":17,"instruction":"rotate_cw"},{"cycle":18,"instruction":"grab"},{"cycle":19,"instruction":"track_minus"},{"cycle":20,"instruction":"rotate_ccw"},{"cycle":21,"instruction":"rotate_cw"},{"cycle":22,"instruction":"track_plus"},{"cycle":23,"instruction":"extend"},{"cycle":24,"instruction":"retract"},{"cycle":25,"instruction":"track_minus"},{"cycle":26,"instruction":"rotate_ccw"},{"cycle":27,"instruction":"rotate_cw"},{"cycle":28,"instruction":"track_plus"},{"cycle":29,"instruction":"drop"},{"cycle":30,"instruction":"track_minus"},{"cycle":31,"instruction":"track_minus"},{"cycle":32,"instruction":"rotate_ccw"},{"cycle":33,"instruction":"rotate_ccw"},{"cycle":34,"instruction":"grab"},{"cycle":35,"instruction":"rotate_ccw"},{"cycle":36,"instruction":"track_minus"},{"cycle":41,"instruction":"track_plus"},{"cycle":45,"instruction":"track_minus"},{"cycle":46,"instruction":"drop"},{"cycle":47,"instruction":"rotate_ccw"},{"cycle":48,"instruction":"rotate_ccw"},{"cycle":49,"instruction":"extend"},{"cycle":50,"instruction":"grab"},{"cycle":51,"instruction":"retract"},{"cycle":52,"instruction":"rotate_ccw"},{"cycle":53,"instruction":"track_plus"},{"cycle":54,"instruction":"extend"}
+    ]},
+    {"id":"part-12","type":"bonder","enabled":true,"position":[2,-4],"length":1,"rotation":2,"which":0,"armNumber":6,"program":[]}
+  ],
+  "trailingBytes": 0
+}
