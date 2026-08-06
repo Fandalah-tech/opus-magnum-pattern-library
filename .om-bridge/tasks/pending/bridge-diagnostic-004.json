@@ -1,0 +1,11 @@
+{
+  "id": "bridge-diagnostic-004",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": [
+    "tests/test_om_worker.py",
+    "tests/test_mechanical_macros.py",
+    "tests/test_macro_explorer.py"
+  ],
+  "notes": "Validate Python bootstrap and correct failure propagation."
+}
