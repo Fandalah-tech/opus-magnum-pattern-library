@@ -1,0 +1,4 @@
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\search_rotor_last_atom_tail.py", line 59
+    {
+    ^
+SyntaxError: Generator expression must be parenthesized

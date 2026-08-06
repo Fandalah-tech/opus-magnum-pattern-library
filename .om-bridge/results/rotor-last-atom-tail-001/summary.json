@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-last-atom-tail-001",
+    "operation": "search_rotor_last_atom_tail",
+    "timeout_seconds": 6000,
+    "notes": "Replay the preserved last-isolated-atom prefix, then search a coordinated two-arm/Van-Berlo continuation for a delivered product or the best mechanically closer state."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-last-atom-tail-001.json",
+  "git_sha": "6f0efa3e8cc7fabdfb7735875c75dc6fdfa587c5",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T10:48:48.924855+00:00",
+  "finished_at": "2026-08-06T10:48:49.226923+00:00",
+  "duration_seconds": 0.302,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
