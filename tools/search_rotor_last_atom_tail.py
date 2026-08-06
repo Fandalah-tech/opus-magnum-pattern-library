@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import base64
 import json
+import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
@@ -11,6 +13,7 @@ from packages.opus_solver.beam_explorer import explore_simulator_beam
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-last-isolated-atom-prefix.solution.b64")
+HEARTBEAT = Path("reports/rotor-tail-search-heartbeat.json")
 
 
 def ordinary_atoms(simulator: Simulator):
@@ -50,12 +53,7 @@ def output_score(simulator: Simulator) -> int:
 
 def snapshot(simulator: Simulator):
     atoms = [
-        {
-            "id": atom.id,
-            "element": atom.element,
-            "position": list(atom.position),
-            "heldBy": sorted(atom.held_by),
-        }
+        {"id": atom.id, "element": atom.element, "position": list(atom.position), "heldBy": sorted(atom.held_by)}
         for atom in ordinary_atoms(simulator)
     ]
     bonds = [
@@ -77,6 +75,17 @@ def snapshot(simulator: Simulator):
         "bonds": sorted(bonds, key=lambda item: (item["a"], item["b"])),
         "arms": {arm_id: arm.snapshot() for arm_id, arm in simulator.arms.items()},
     }
+
+
+def report_progress(progress: dict) -> None:
+    payload = {
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
+        "stage": "tail-search",
+        **progress,
+    }
+    HEARTBEAT.parent.mkdir(parents=True, exist_ok=True)
+    HEARTBEAT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    print(json.dumps({"heartbeat": payload}), file=sys.stderr, flush=True)
 
 
 def main() -> None:
@@ -106,6 +115,8 @@ def main() -> None:
         max_active_arms=2,
         include_idle=False,
         time_limit_seconds=5400,
+        progress_callback=report_progress,
+        progress_interval_seconds=15.0,
     )
     print(json.dumps({
         "sourceSha256": solution.get("source", {}).get("sha256"),
