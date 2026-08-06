@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-duplication-cells-001",
+    "operation": "report_rotor_duplication_cells",
+    "timeout_seconds": 900,
+    "notes": "Trace source and salt occupants on both duplication glyphs throughout the latest A47 prefix."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-duplication-cells-001.json",
+  "git_sha": "921d30afeafcf30cfbcedb385c8ced50dafa1acc",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:49:26.201710+00:00",
+  "finished_at": "2026-08-06T03:49:26.668499+00:00",
+  "duration_seconds": 0.467,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

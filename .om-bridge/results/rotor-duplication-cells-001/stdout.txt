@@ -1,0 +1,1165 @@
+{
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "rows": [
+    {
+      "cycle": 0,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-2",
+              "element": "air",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ]
+    },
+    {
+      "cycle": 1,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-2",
+              "element": "air",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 10,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-2",
+              "element": "air",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 12,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 13,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 17,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 24,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 28,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 29,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 30,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 36,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-2",
+              "element": "air",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 51,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-2",
+              "element": "air",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 52,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 63,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 84,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 87,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 89,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-5",
+              "element": "earth",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 90,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-5",
+              "element": "earth",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-0",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 91,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-0",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-1",
+              "element": "water",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 119,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-0",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-1",
+              "element": "water",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ]
+    },
+    {
+      "cycle": 121,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-0",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-1",
+              "element": "water",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 137,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-5",
+              "element": "earth",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-0",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 145,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-5",
+              "element": "earth",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    },
+    {
+      "cycle": 158,
+      "cells": [
+        {
+          "partId": "part-2",
+          "sourcePosition": [
+            0,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-3",
+              "element": "salt",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            1,
+            1
+          ],
+          "salt": []
+        },
+        {
+          "partId": "part-3",
+          "sourcePosition": [
+            1,
+            2
+          ],
+          "source": [
+            {
+              "id": "part-1-wheel-4",
+              "element": "fire",
+              "wheel": true
+            }
+          ],
+          "saltPosition": [
+            2,
+            1
+          ],
+          "salt": []
+        }
+      ],
+      "events": []
+    }
+  ]
+}
