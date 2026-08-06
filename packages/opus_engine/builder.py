@@ -34,55 +34,27 @@ class InputSource:
     def is_clear(self, world: World) -> bool:
         return all(world.atom_at(position) is None for position in self.footprint)
 
-    def _components(self) -> tuple[tuple[int, ...], ...]:
-        adjacency = {index: set() for index in range(len(self.atom_templates))}
-        for first, second, _ in self.bond_templates:
-            adjacency[first].add(second)
-            adjacency[second].add(first)
-
-        components: list[tuple[int, ...]] = []
-        unseen = set(adjacency)
-        while unseen:
-            root = min(unseen)
-            stack = [root]
-            component: set[int] = set()
-            while stack:
-                current = stack.pop()
-                if current in component:
-                    continue
-                component.add(current)
-                unseen.discard(current)
-                stack.extend(adjacency[current] - component)
-            components.append(tuple(sorted(component)))
-        return tuple(components)
-
     def spawn(self, world: World) -> bool:
-        clear_components = [
-            component
-            for component in self._components()
-            if all(world.atom_at(self.atom_templates[index][1]) is None for index in component)
-        ]
-        if not clear_components:
+        # Opus Magnum replenishes one complete reagent instance only after its
+        # entire input footprint is clear. Disconnected atoms in the reagent
+        # are still members of the same spawn generation; replenishing a single
+        # vacated component early creates impossible collisions when an old
+        # atom later returns across its source cell.
+        if not self.is_clear(world):
             return False
 
         generation = self.spawn_count
+        atom_ids: dict[int, str] = {}
         spawned_ids: list[str] = []
-        for component in clear_components:
-            atom_ids: dict[int, str] = {}
-            for index in component:
-                element, position = self.atom_templates[index]
-                atom_id = f"{self.id}-spawn-{generation}-atom-{index}"
-                world.add_atom(Atom(atom_id, element, position))
-                atom_ids[index] = atom_id
-                spawned_ids.append(atom_id)
+        for index, (element, position) in enumerate(self.atom_templates):
+            atom_id = f"{self.id}-spawn-{generation}-atom-{index}"
+            world.add_atom(Atom(atom_id, element, position))
+            atom_ids[index] = atom_id
+            spawned_ids.append(atom_id)
 
-            for first, second, kind in self.bond_templates:
-                if first in atom_ids and second in atom_ids:
-                    world.add_bond(Bond(atom_ids[first], atom_ids[second], kind))
+        for first, second, kind in self.bond_templates:
+            world.add_bond(Bond(atom_ids[first], atom_ids[second], kind))
 
-        # A reagent may contain several disconnected molecules. Each connected
-        # component respawns as soon as its own source cells are clear, matching
-        # the game's independent component behaviour.
         self.spawn_count += 1
         world.events.append(WorldEvent("input-spawned", world.cycle, {
             "inputId": self.id,
