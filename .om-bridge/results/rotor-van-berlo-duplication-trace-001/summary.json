@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-van-berlo-duplication-trace-001",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 300,
+    "notes": "Trace every duplication event and identify whether the source came from the Van Berlo overlap layer."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-van-berlo-duplication-trace-001.json",
+  "git_sha": "9a7f675d4719a0984901a27b2ae0b4f15f39e9ac",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:17:26.718606+00:00",
+  "finished_at": "2026-08-06T03:17:27.178793+00:00",
+  "duration_seconds": 0.46,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
