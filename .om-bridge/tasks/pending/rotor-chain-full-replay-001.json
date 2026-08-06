@@ -1,0 +1,6 @@
+{
+  "id": "rotor-chain-full-replay-001",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Run the complete A47 replay after the recursive chain model and report the next failure or delivery."
+}
