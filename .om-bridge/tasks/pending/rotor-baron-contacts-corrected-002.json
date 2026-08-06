@@ -1,0 +1,6 @@
+{
+  "id": "rotor-baron-contacts-corrected-002",
+  "operation": "report_rotor_baron_contacts",
+  "timeout_seconds": 1800,
+  "notes": "Use VanBerloSimulator and trace contacts/bonds around cycles 50-110."
+}
