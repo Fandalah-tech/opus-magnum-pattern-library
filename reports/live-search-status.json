@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-06T19:07:53.873496+00:00",
+  "updatedAt": "2026-08-06T19:08:56.234522+00:00",
   "status": "running",
   "stage": "tail-search-v2",
   "maxDepth": 40,
@@ -7,11 +7,11 @@
   "maxStates": 500000,
   "timeLimitSeconds": 7200,
   "heuristicVersion": 2,
-  "message": "Pr\u00e9fixe rejou\u00e9. Initialisation de la recherche v2 avec priorit\u00e9 \u00e0 la connectivit\u00e9 mol\u00e9culaire.",
-  "depth": 0,
-  "elapsedSeconds": 0,
-  "visitedStates": 1,
-  "expandedStates": 0,
-  "frontierSize": 1,
-  "bestScore": -494
+  "depth": 3,
+  "elapsedSeconds": 61.234,
+  "visitedStates": 6636,
+  "expandedStates": 211,
+  "frontierSize": 1200,
+  "bestScore": -115,
+  "bestPathLength": 3
 }
