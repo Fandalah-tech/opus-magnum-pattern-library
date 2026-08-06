@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-final-prefix-inspection-002",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Inspect the preserved latest A47 mechanical prefix after fixing the binary fixture encoding."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-final-prefix-inspection-002.json",
+  "git_sha": "43228cd77090b797792e7f5319a26d1a62360d7f",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:29:11.073333+00:00",
+  "finished_at": "2026-08-06T03:29:11.526004+00:00",
+  "duration_seconds": 0.453,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

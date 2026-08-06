@@ -1,0 +1,737 @@
+{
+  "name": "IDEAL SETUP 9",
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "lastProgramCycle": 166,
+  "completedCycle": 167,
+  "finalBaronRotation": 1,
+  "baronHeld": [],
+  "latePrograms": {
+    "part-1": {
+      "type": "baron",
+      "program": [
+        {
+          "cycle": 127,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 136,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 144,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 157,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 166,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    },
+    "part-8": {
+      "type": "piston",
+      "program": [
+        {
+          "cycle": 121,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 122,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 123,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 124,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 125,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 126,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 127,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 128,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 129,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 130,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 131,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 132,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 133,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 134,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 135,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 136,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 137,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 138,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 139,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 140,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 141,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 142,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 143,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 144,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 145,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 146,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 147,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 148,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 155,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 156,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 157,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 158,
+          "instruction": "extend",
+          "rawCode": "E"
+        },
+        {
+          "cycle": 159,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 160,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 161,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 162,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 163,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 164,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 165,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 166,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    },
+    "part-10": {
+      "type": "piston",
+      "program": [
+        {
+          "cycle": 121,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 122,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 123,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 124,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 125,
+          "instruction": "retract",
+          "rawCode": "e"
+        },
+        {
+          "cycle": 137,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 144,
+          "instruction": "track_plus",
+          "rawCode": "A"
+        },
+        {
+          "cycle": 145,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 146,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 149,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 150,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 151,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 152,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 153,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 154,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 155,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 156,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 157,
+          "instruction": "track_minus",
+          "rawCode": "a"
+        },
+        {
+          "cycle": 166,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    }
+  },
+  "atoms": [
+    {
+      "id": "part-4-spawn-0-atom-0",
+      "element": "salt",
+      "position": [
+        4,
+        -3
+      ],
+      "heldBy": []
+    },
+    {
+      "id": "part-4-spawn-0-atom-1",
+      "element": "salt",
+      "position": [
+        7,
+        -3
+      ],
+      "heldBy": []
+    },
+    {
+      "id": "part-4-spawn-0-atom-2",
+      "element": "salt",
+      "position": [
+        3,
+        1
+      ],
+      "heldBy": []
+    },
+    {
+      "id": "part-9-spawn-0-atom-0",
+      "element": "salt",
+      "position": [
+        0,
+        -3
+      ],
+      "heldBy": []
+    },
+    {
+      "id": "part-9-spawn-0-atom-1",
+      "element": "salt",
+      "position": [
+        2,
+        -5
+      ],
+      "heldBy": []
+    }
+  ],
+  "bonds": [],
+  "finalFrame": {
+    "cycle": 167,
+    "phase": "after-instructions",
+    "arms": [
+      {
+        "partId": "part-1",
+        "partType": "baron",
+        "origin": [
+          0,
+          3
+        ],
+        "rotation": 1,
+        "length": 1,
+        "branchCount": 6,
+        "tips": [
+          {
+            "branchIndex": 0,
+            "position": [
+              0,
+              4
+            ]
+          },
+          {
+            "branchIndex": 1,
+            "position": [
+              -1,
+              4
+            ]
+          },
+          {
+            "branchIndex": 2,
+            "position": [
+              -1,
+              3
+            ]
+          },
+          {
+            "branchIndex": 3,
+            "position": [
+              0,
+              2
+            ]
+          },
+          {
+            "branchIndex": 4,
+            "position": [
+              1,
+              2
+            ]
+          },
+          {
+            "branchIndex": 5,
+            "position": [
+              1,
+              3
+            ]
+          }
+        ],
+        "grabbing": false,
+        "heldAtoms": [],
+        "trackIndex": 0,
+        "trackCellCount": 6
+      },
+      {
+        "partId": "part-10",
+        "partType": "piston",
+        "origin": [
+          4,
+          -2
+        ],
+        "rotation": 2,
+        "length": 2,
+        "branchCount": 1,
+        "tips": [
+          {
+            "branchIndex": 0,
+            "position": [
+              2,
+              0
+            ]
+          }
+        ],
+        "grabbing": false,
+        "heldAtoms": [],
+        "trackIndex": 2,
+        "trackCellCount": 6
+      },
+      {
+        "partId": "part-8",
+        "partType": "piston",
+        "origin": [
+          3,
+          -1
+        ],
+        "rotation": 4,
+        "length": 2,
+        "branchCount": 1,
+        "tips": [
+          {
+            "branchIndex": 0,
+            "position": [
+              3,
+              -3
+            ]
+          }
+        ],
+        "grabbing": false,
+        "heldAtoms": [],
+        "trackIndex": 1,
+        "trackCellCount": 6
+      }
+    ],
+    "inputs": [
+      {
+        "inputId": "part-4",
+        "spawnCount": 1,
+        "footprint": [
+          [
+            5,
+            -1
+          ],
+          [
+            7,
+            -3
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      },
+      {
+        "inputId": "part-9",
+        "spawnCount": 1,
+        "footprint": [
+          [
+            3,
+            -5
+          ],
+          [
+            2,
+            -5
+          ]
+        ]
+      }
+    ],
+    "world": {
+      "cycle": 167,
+      "atoms": [
+        {
+          "id": "part-1-wheel-0",
+          "element": "salt",
+          "position": [
+            0,
+            2
+          ],
+          "heldBy": [],
+          "moleculeId": null
+        },
+        {
+          "id": "part-1-wheel-1",
+          "element": "water",
+          "position": [
+            1,
+            2
+          ],
+          "heldBy": [],
+          "moleculeId": null
+        },
+        {
+          "id": "part-1-wheel-2",
+          "element": "air",
+          "position": [
+            1,
+            3
+          ],
+          "heldBy": [],
+          "moleculeId": null
+        },
+        {
+          "id": "part-1-wheel-3",
+          "element": "salt",
+          "position": [
+            0,
+            4
+          ],
+          "heldBy": [],
+          "moleculeId": null
+        },
+        {
+          "id": "part-1-wheel-4",
+          "element": "fire",
+          "position": [
+            -1,
+            4
+          ],
+          "heldBy": [],
+          "moleculeId": null
+        },
+        {
+          "id": "part-1-wheel-5",
+          "element": "earth",
+          "position": [
+            -1,
+            3
+          ],
+          "heldBy": [],
+          "moleculeId": null
+        },
+        {
+          "id": "part-4-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            4,
+            -3
+          ],
+          "heldBy": [],
+          "moleculeId": "part-4-spawn-0"
+        },
+        {
+          "id": "part-4-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            7,
+            -3
+          ],
+          "heldBy": [],
+          "moleculeId": "part-4-spawn-0"
+        },
+        {
+          "id": "part-4-spawn-0-atom-2",
+          "element": "salt",
+          "position": [
+            3,
+            1
+          ],
+          "heldBy": [],
+          "moleculeId": "part-4-spawn-0"
+        },
+        {
+          "id": "part-9-spawn-0-atom-0",
+          "element": "salt",
+          "position": [
+            0,
+            -3
+          ],
+          "heldBy": [],
+          "moleculeId": "part-9-spawn-0"
+        },
+        {
+          "id": "part-9-spawn-0-atom-1",
+          "element": "salt",
+          "position": [
+            2,
+            -5
+          ],
+          "heldBy": [],
+          "moleculeId": "part-9-spawn-0"
+        }
+      ],
+      "bonds": [],
+      "molecules": [
+        {
+          "id": "part-4-spawn-0",
+          "atomIds": [
+            "part-4-spawn-0-atom-0",
+            "part-4-spawn-0-atom-1",
+            "part-4-spawn-0-atom-2"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "part-9-spawn-0",
+          "atomIds": [
+            "part-9-spawn-0-atom-0",
+            "part-9-spawn-0-atom-1"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "molecule-2009",
+          "atomIds": [
+            "part-1-wheel-0"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "molecule-2010",
+          "atomIds": [
+            "part-1-wheel-1"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "molecule-2011",
+          "atomIds": [
+            "part-1-wheel-2"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "molecule-2012",
+          "atomIds": [
+            "part-1-wheel-3"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "molecule-2013",
+          "atomIds": [
+            "part-1-wheel-4"
+          ],
+          "bondKeys": []
+        },
+        {
+          "id": "molecule-2014",
+          "atomIds": [
+            "part-1-wheel-5"
+          ],
+          "bondKeys": []
+        }
+      ]
+    },
+    "events": [
+      {
+        "kind": "arm-instruction",
+        "cycle": 166,
+        "armId": "part-1",
+        "instruction": "drop"
+      },
+      {
+        "kind": "arm-instruction",
+        "cycle": 166,
+        "armId": "part-8",
+        "instruction": "drop"
+      },
+      {
+        "kind": "arm-instruction",
+        "cycle": 166,
+        "armId": "part-10",
+        "instruction": "drop"
+      }
+    ]
+  }
+}
