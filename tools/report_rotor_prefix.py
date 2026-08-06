@@ -3,11 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from packages.opus_solver import StructureGoal
 from packages.opus_solver.rotor_prefix import build_locked_prefix_simulator
 
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
-PREFIX = Path("fixtures/solutions/van-berlos-rotor-area42-corrected-prefix.parsed.json")
+PREFIX = Path("fixtures/solutions/van-berlos-rotor-area43-half-complete.parsed.json")
 
 
 def _load(path: Path) -> dict:
@@ -15,8 +16,23 @@ def _load(path: Path) -> dict:
 
 
 def main() -> None:
-    simulator = build_locked_prefix_simulator(_load(PUZZLE), _load(PREFIX))
+    puzzle = _load(PUZZLE)
+    simulator = build_locked_prefix_simulator(puzzle, _load(PREFIX))
+    goal = StructureGoal.from_product(puzzle["products"][0])
+    match = goal.best_match(simulator)
+    eligible = goal._eligible_atom_ids(simulator)
+
     print(f"cycle={simulator.world.cycle}")
+    print(
+        "structure:",
+        f"eligibleAtoms={len(eligible)}",
+        f"targetAtoms={goal.atom_count}",
+        f"matchedPositions={match.occupied_positions}",
+        f"matchedEdges={match.matched_edges}",
+        f"targetEdges={goal.bond_count}",
+        f"rotation={match.rotation}",
+        f"translation={match.translation}",
+    )
     print("arms:")
     for arm in sorted(simulator.arms.values(), key=lambda item: item.id):
         print(
@@ -30,7 +46,13 @@ def main() -> None:
         )
     print("atoms:")
     for atom in sorted(simulator.world.atoms.values(), key=lambda item: (item.position, item.id)):
-        print(atom.id, atom.element, atom.position, f"held={sorted(atom.held_by)}")
+        print(
+            atom.id,
+            atom.element,
+            atom.position,
+            f"eligible={atom.id in eligible}",
+            f"held={sorted(atom.held_by)}",
+        )
     print("bonds:")
     for bond in sorted(simulator.world.bonds.values(), key=lambda item: (item.a, item.b, item.kind)):
         print(bond.a, bond.b, bond.kind)
