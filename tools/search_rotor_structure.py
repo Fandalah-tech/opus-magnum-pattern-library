@@ -73,6 +73,28 @@ def _plateau_score(goal, minimum_edges: int):
     return score
 
 
+def _inventory_transition_score(goal, initial_count: int):
+    def score(simulator) -> int:
+        match = goal.best_match(simulator)
+        eligible_count = len(goal._eligible_atom_ids(simulator))
+        reached_target_inventory = int(eligible_count == goal.atom_count)
+        return (
+            reached_target_inventory * 1_000_000
+            + match.matched_edges * 10_000
+            + match.occupied_positions * 500
+            - abs(eligible_count - goal.atom_count) * 250
+            - max(0, initial_count - eligible_count) * 50_000
+        )
+    return score
+
+
+def _inventory_window(goal, minimum: int, maximum: int):
+    def admissible(simulator) -> bool:
+        count = len(goal._eligible_atom_ids(simulator))
+        return minimum <= count <= maximum
+    return admissible
+
+
 def _fixed_inventory(goal, atom_count: int):
     def admissible(simulator) -> bool:
         return len(goal._eligible_atom_ids(simulator)) == atom_count
@@ -132,33 +154,56 @@ def main() -> None:
         stages.append(_summary("edge-plateau-position-refinement", stage3, goal))
         current = stage3
 
-    if not current.found and current.simulator is not None and current.actions:
+    inventory_locked = False
+    if not current.found and current.simulator is not None:
+        initial_count = len(goal._eligible_atom_ids(current.simulator))
+        if initial_count < goal.atom_count:
+            transition = explore_simulator_beam(
+                current.simulator,
+                _actions(current.simulator),
+                lambda state: len(goal._eligible_atom_ids(state)) == goal.atom_count,
+                _inventory_transition_score(goal, initial_count),
+                max_depth=16,
+                beam_width=220,
+                max_states=50_000,
+                max_active_arms=2,
+                time_limit_seconds=60,
+                state_filter=_inventory_window(goal, initial_count, goal.atom_count),
+            )
+            transition.actions = [*current.actions, *transition.actions]
+            stages.append(_summary("controlled-inventory-transition", transition, goal))
+            current = transition
+            inventory_locked = transition.found
+        else:
+            inventory_locked = initial_count == goal.atom_count
+
+    if not current.found and inventory_locked and current.simulator is not None and current.actions:
         current_match = goal.best_match(current.simulator)
-        inventory_count = len(goal._eligible_atom_ids(current.simulator))
         trajectory_macros = learn_action_windows(
             current.actions,
             lengths=(2, 3, 4, 6, 8),
             tag="rotor-discovered",
         )
         macro_library = (*build_rotor_seed_macro_library(solution), *trajectory_macros)
-        stage4 = explore_simulator_macro_beam(
+        stage5 = explore_simulator_macro_beam(
             current.simulator,
             macro_library,
             goal.reached,
             _plateau_score(goal, current_match.matched_edges),
-            max_depth=8,
-            beam_width=180,
-            max_states=30_000,
-            time_limit_seconds=45,
-            state_filter=_fixed_inventory(goal, inventory_count),
+            max_depth=10,
+            beam_width=220,
+            max_states=40_000,
+            time_limit_seconds=60,
+            state_filter=_fixed_inventory(goal, goal.atom_count),
         )
-        stage4.actions = [*current.actions, *stage4.actions]
-        stages.append(_summary("fixed-inventory-macro-refinement", stage4, goal))
-        current = stage4
+        stage5.actions = [*current.actions, *stage5.actions]
+        stages.append(_summary("target-inventory-macro-refinement", stage5, goal))
+        current = stage5
 
     print(json.dumps({
         "stages": stages,
         "best": stages[-1],
+        "inventoryLocked": inventory_locked,
         "learnedMacroCount": len(learn_action_windows(current.actions)) if current.actions else 0,
     }, indent=2))
 
