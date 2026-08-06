@@ -15,6 +15,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "run_tests": [sys.executable, "-m", "pytest", "-q"],
     "run_reference_regression": [sys.executable, "tools/run_reference_regression.py"],
     "search_rotor_structure": [sys.executable, "tools/search_rotor_structure.py"],
+    "search_rotor_half_geometry": [sys.executable, "tools/search_rotor_half_geometry.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
 }
