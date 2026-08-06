@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-post-bonder-shift-001",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Replay A47 almost-solved reference after bonded payload displacement support and identify next divergence."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-post-bonder-shift-001.json",
+  "git_sha": "4375ebcc364c696b03f385ebc88184af1bc0b361",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:35:18.630107+00:00",
+  "finished_at": "2026-08-06T09:35:19.095772+00:00",
+  "duration_seconds": 0.466,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
