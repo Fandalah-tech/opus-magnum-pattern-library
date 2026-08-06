@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "validate-a44-reference-macro-001",
+    "operation": "run_tests",
+    "timeout_seconds": 600,
+    "pytest_targets": [
+      "tests/test_reference_macros.py"
+    ],
+    "notes": "Validate compilation of the A44 confined rotation reference into an atomic MechanicalMacro."
+  },
+  "task_file": ".om-bridge/tasks/pending/validate-a44-reference-macro-001.json",
+  "git_sha": "67dcba7cbed42a9d6c7f46ff8b01ed065aa73018",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:05:55.069419+00:00",
+  "finished_at": "2026-08-06T02:05:56.494167+00:00",
+  "duration_seconds": 1.425,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
