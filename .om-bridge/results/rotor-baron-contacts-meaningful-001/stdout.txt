@@ -1,0 +1,2711 @@
+{
+  "sourceSha256": "839c744050473bf2f86ea2b1e408b7e58e1099c5200734c73196e0e02bdc6f44",
+  "baronId": "part-1",
+  "rows": [
+    {
+      "cycle": 0,
+      "phase": "initial",
+      "rotation": 2,
+      "grabbing": true,
+      "contacts": {},
+      "inputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                3,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "ordinaryAtomCount": 5
+    },
+    {
+      "cycle": 1,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                3,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                3,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 2,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 2,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-calcified",
+          "glyphPartId": "part-5",
+          "atomId": "part-9-spawn-0-atom-0",
+          "fromElement": "water",
+          "toElement": "salt",
+          "position": [
+            4,
+            -5
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                3,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 2,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 10,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 2,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 12,
+      "baronInstruction": "rotate_cw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 3,
+          "occupied": [
+            {
+              "position": [
+                5,
+                -1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-0"
+              ]
+            },
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 13,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 17,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 24,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 28,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 29,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 30,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 36,
+      "baronInstruction": "rotate_ccw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 2,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 51,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 2,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 52,
+      "baronInstruction": "rotate_cw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 63,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 84,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-8",
+          "branchIndex": 0,
+          "atomId": "part-4-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 87,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-8",
+          "atomIds": [
+            "part-4-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 89,
+      "baronInstruction": "rotate_cw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 0,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 90,
+      "baronInstruction": "rotate_cw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 5,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 91,
+      "baronInstruction": "rotate_cw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 4,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 119,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atom-grabbed",
+          "armId": "part-10",
+          "branchIndex": 0,
+          "atomId": "part-9-spawn-0-atom-0"
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 4,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 121,
+      "baronInstruction": null,
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-10",
+          "atomIds": [
+            "part-9-spawn-0-atom-0"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 4,
+      "baronGrabbing": true
+    },
+    {
+      "cycle": 128,
+      "baronInstruction": "drop",
+      "events": [
+        {
+          "kind": "atoms-dropped",
+          "armId": "part-1",
+          "atomIds": [
+            "part-1-wheel-0",
+            "part-1-wheel-1",
+            "part-1-wheel-2",
+            "part-1-wheel-3",
+            "part-1-wheel-4",
+            "part-1-wheel-5"
+          ]
+        }
+      ],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 4,
+      "baronGrabbing": false
+    },
+    {
+      "cycle": 137,
+      "baronInstruction": "rotate_ccw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 5,
+      "baronGrabbing": false
+    },
+    {
+      "cycle": 145,
+      "baronInstruction": "rotate_ccw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 0,
+      "baronGrabbing": false
+    },
+    {
+      "cycle": 158,
+      "baronInstruction": "rotate_ccw",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": false
+    },
+    {
+      "cycle": 167,
+      "baronInstruction": "drop",
+      "events": [],
+      "beforeContacts": {},
+      "afterContacts": {},
+      "beforeInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "afterInputs": {
+        "part-4": {
+          "spawnCount": 1,
+          "occupiedCount": 2,
+          "occupied": [
+            {
+              "position": [
+                7,
+                -3
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-1"
+              ]
+            },
+            {
+              "position": [
+                3,
+                1
+              ],
+              "atoms": [
+                "part-4-spawn-0-atom-2"
+              ]
+            }
+          ]
+        },
+        "part-9": {
+          "spawnCount": 1,
+          "occupiedCount": 1,
+          "occupied": [
+            {
+              "position": [
+                2,
+                -5
+              ],
+              "atoms": [
+                "part-9-spawn-0-atom-1"
+              ]
+            }
+          ]
+        }
+      },
+      "beforeAtomCount": 5,
+      "afterAtomCount": 5,
+      "baronRotation": 1,
+      "baronGrabbing": false
+    }
+  ]
+}

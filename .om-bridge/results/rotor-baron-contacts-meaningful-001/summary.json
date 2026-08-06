@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-baron-contacts-meaningful-001",
+    "operation": "report_rotor_baron_contacts",
+    "timeout_seconds": 900,
+    "notes": "Only emit cycles with contact, input occupancy, atom-count, or conversion changes."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-baron-contacts-meaningful-001.json",
+  "git_sha": "a9bccf7add77b1e8b13a7ba6e487bdf025d1c83a",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:45:55.198618+00:00",
+  "finished_at": "2026-08-06T03:45:55.645607+00:00",
+  "duration_seconds": 0.447,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
