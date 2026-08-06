@@ -81,6 +81,24 @@
     if (play) play.textContent = 'Lecture';
   }
 
+  function applyInitialView() {
+    if (!viewer) return;
+    viewer.fit();
+    const svg = root.querySelector('svg');
+    const width = svg?.clientWidth || 900;
+    const height = svg?.clientHeight || 650;
+    const oldScale = viewer.scale;
+    const nextScale = Math.max(.25, oldScale * .86);
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const worldX = (centerX - viewer.tx) / oldScale;
+    const worldY = (centerY - viewer.ty) / oldScale;
+    viewer.scale = nextScale;
+    viewer.tx = centerX - worldX * nextScale;
+    viewer.ty = centerY - worldY * nextScale;
+    viewer.applyTransform();
+  }
+
   function show(nextIndex, duration = 140) {
     if (!data) return;
     const [min, max] = bounds();
@@ -121,9 +139,11 @@
       if (!data.renderContext?.solution || !window.OpusSolutionViewer) throw new Error('Le contexte OpusJS n’est pas encore publié par le runner.');
       viewer = window.OpusSolutionViewer.create(root);
       viewer.render(data.renderContext.solution, null, data.renderContext.puzzle, null);
+      applyInitialView();
+      root.dispatchEvent(new CustomEvent('opus:viewerready', { bubbles: true, detail: { solution: data.renderContext.solution, puzzle: data.renderContext.puzzle, viewer } }));
       window.dispatchEvent(new CustomEvent('opus:analysisready'));
       slider.max = data.frames.length - 1;
-      statusNode.textContent = `${data.frames.length} images · rendu OpusJS · relais au cycle ${data.frames[data.solverStartIndex]?.state?.cycle ?? '—'}.`;
+      statusNode.textContent = `${data.frames.length} images · rendu OpusJS unifié · relais au cycle ${data.frames[data.solverStartIndex]?.state?.cycle ?? '—'}.`;
       bind();
       show(0, 0);
     })
