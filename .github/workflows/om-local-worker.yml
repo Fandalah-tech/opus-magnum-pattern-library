@@ -40,13 +40,20 @@ jobs:
         run: |
           python tools/resolve_om_task.py --event "%EVENT_NAME%" --dispatch-task "%DISPATCH_TASK%" --output "%GITHUB_OUTPUT%"
 
+      - name: Prepare Python test environment
+        shell: cmd
+        run: |
+          python -m pip install --upgrade pip pytest
+
       - name: Execute approved operation
         id: worker
         shell: cmd
         run: |
+          setlocal EnableDelayedExpansion
           python --version
           python tools/om_worker.py --task "${{ steps.task.outputs.task_file }}" --results-root ".om-bridge/results"
-          echo exit_code=%ERRORLEVEL%>>"%GITHUB_OUTPUT%"
+          set code=!ERRORLEVEL!
+          echo exit_code=!code!>>"%GITHUB_OUTPUT%"
           exit /b 0
 
       - name: Commit research result
