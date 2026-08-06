@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "disjoint-output-specific-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_disjoint_output_consumer.py"
+    ],
+    "notes": "Validate delivery and rejection semantics for a disconnected product graph."
+  },
+  "task_file": ".om-bridge/tasks/pending/disjoint-output-specific-tests-001.json",
+  "git_sha": "6b3e75d36f290db18a39aeb23dcb3bcb991b104e",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:49:19.534762+00:00",
+  "finished_at": "2026-08-06T09:49:20.673912+00:00",
+  "duration_seconds": 1.139,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
