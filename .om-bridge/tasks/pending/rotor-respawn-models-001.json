@@ -1,0 +1,6 @@
+{
+  "id": "rotor-respawn-models-001",
+  "operation": "report_rotor_respawn_models",
+  "timeout_seconds": 900,
+  "notes": "Compare independent-component and whole-reagent input respawn semantics against the preserved last-isolated-atom prefix."
+}
