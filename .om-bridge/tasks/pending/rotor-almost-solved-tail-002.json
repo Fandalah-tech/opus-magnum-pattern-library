@@ -1,0 +1,6 @@
+{
+  "id": "rotor-almost-solved-tail-002",
+  "operation": "report_rotor_almost_solved_tail",
+  "timeout_seconds": 900,
+  "notes": "Produce the compact tail trace after piston correction."
+}
