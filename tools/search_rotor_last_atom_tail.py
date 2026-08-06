@@ -15,6 +15,7 @@ from tools.github_live_status import GitHubLiveStatusPublisher
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-last-isolated-atom-prefix.solution.b64")
 HEARTBEAT = Path("reports/rotor-tail-search-heartbeat.json")
+BEST_CANDIDATE = Path("reports/rotor-tail-best-candidate.json")
 MAX_DEPTH = 28
 BEAM_WIDTH = 750
 MAX_STATES = 250_000
@@ -150,8 +151,16 @@ def main() -> None:
         "found": result.found,
     }, force_publish=True, status="completed" if result.found else "stopped")
 
-    print(json.dumps({
+    payload = {
+        "schemaVersion": 1,
+        "updatedAt": datetime.now(timezone.utc).isoformat(),
         "sourceSha256": solution.get("source", {}).get("sha256"),
+        "search": {
+            "maxDepth": MAX_DEPTH,
+            "beamWidth": BEAM_WIDTH,
+            "maxStates": MAX_STATES,
+            "timeLimitSeconds": TIME_LIMIT_SECONDS,
+        },
         "start": snapshot(simulator),
         "result": {
             "found": result.found,
@@ -163,7 +172,10 @@ def main() -> None:
             "bestScore": result.best_score,
             "best": snapshot(result.simulator) if result.simulator is not None else None,
         },
-    }, indent=2))
+    }
+    BEST_CANDIDATE.parent.mkdir(parents=True, exist_ok=True)
+    BEST_CANDIDATE.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(json.dumps(payload, indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":
