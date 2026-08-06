@@ -1,0 +1,6 @@
+{
+  "id": "rotor-half-full-structure-report-001",
+  "operation": "report_rotor_prefix",
+  "timeout_seconds": 900,
+  "notes": "Measure the human half-completion while including atoms held by the Van Berlo rotor in the structural goal."
+}
