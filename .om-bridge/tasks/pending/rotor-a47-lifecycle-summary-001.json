@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a47-lifecycle-summary-001",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 900,
+  "notes": "Summarize maximum atoms, bonds, conversions, respawns, and final state after piston correction."
+}
