@@ -1,0 +1,6 @@
+{
+  "id": "rotor-structure-baseline-001",
+  "operation": "search_rotor_structure",
+  "timeout_seconds": 900,
+  "notes": "Establish a local-runner baseline for the current A42/A43 structure-only Rotor search before extending the mechanical macro VM. Capture the complete staged search output for analysis."
+}
