@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-lifecycle-002",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Repeat A47 lifecycle trace with permanent native Van Berlo wheel atoms across drop instructions."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-lifecycle-002.json",
+  "git_sha": "bd6c8527ec024af15a2e38d7455ede44299cec3c",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:32:40.276068+00:00",
+  "finished_at": "2026-08-06T03:32:40.761171+00:00",
+  "duration_seconds": 0.485,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
