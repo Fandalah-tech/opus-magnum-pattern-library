@@ -1,4 +1,7 @@
+import pytest
+
 from packages.opus_engine import ArmState, Atom, Simulator, World
+from packages.opus_solver import explore_simulator_beam
 from packages.opus_solver.beam_explorer import _immediately_reverses
 from packages.opus_solver.explorer import enumerate_joint_actions, explore_simulator_states
 
@@ -93,3 +96,40 @@ def test_explorer_preserves_disjoint_components_during_search() -> None:
 
     assert result.found is True
     assert result.simulator.world.atoms["remote"].position == (4, 0)
+
+
+def test_beam_filter_rejects_candidate_before_goal_and_state_budget() -> None:
+    world = World()
+    world.add_atom(Atom("target", "salt", (1, 0)))
+    simulator = Simulator(
+        world,
+        {"arm": ArmState("arm", "arm1", (0, 0), 0, 1)},
+    )
+
+    result = explore_simulator_beam(
+        simulator,
+        {"arm": (None, "grab", "rotate_ccw")},
+        lambda state: state.world.atoms["target"].position == (0, 1),
+        lambda state: int(state.world.atoms["target"].position == (0, 1)),
+        max_depth=3,
+        beam_width=10,
+        state_filter=lambda state: state.world.atoms["target"].position != (0, 1),
+    )
+
+    assert not result.found
+    assert result.visited_states < 10
+
+
+def test_beam_filter_requires_admissible_initial_state() -> None:
+    world = World()
+    world.add_atom(Atom("target", "salt", (1, 0)))
+    simulator = Simulator(world, {})
+
+    with pytest.raises(ValueError, match="initial_simulator"):
+        explore_simulator_beam(
+            simulator,
+            {},
+            lambda state: False,
+            lambda state: 0,
+            state_filter=lambda state: False,
+        )
