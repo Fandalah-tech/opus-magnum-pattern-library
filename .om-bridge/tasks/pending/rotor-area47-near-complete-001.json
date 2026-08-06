@@ -1,0 +1,6 @@
+{
+  "id": "rotor-area47-near-complete-001",
+  "operation": "solve_rotor_area47_near_complete",
+  "timeout_seconds": 1800,
+  "notes": "Exhaustively solve Van Berlo rotations for the user's near-complete A47 reference."
+}
