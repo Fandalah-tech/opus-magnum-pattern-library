@@ -73,9 +73,9 @@ def _plateau_score(goal, minimum_edges: int):
     return score
 
 
-def _exact_target_inventory(goal):
+def _fixed_inventory(goal, atom_count: int):
     def admissible(simulator) -> bool:
-        return len(goal._eligible_atom_ids(simulator)) == goal.atom_count
+        return len(goal._eligible_atom_ids(simulator)) == atom_count
     return admissible
 
 
@@ -134,6 +134,7 @@ def main() -> None:
 
     if not current.found and current.simulator is not None and current.actions:
         current_match = goal.best_match(current.simulator)
+        inventory_count = len(goal._eligible_atom_ids(current.simulator))
         trajectory_macros = learn_action_windows(
             current.actions,
             lengths=(2, 3, 4, 6, 8),
@@ -149,10 +150,10 @@ def main() -> None:
             beam_width=180,
             max_states=30_000,
             time_limit_seconds=45,
-            state_filter=_exact_target_inventory(goal),
+            state_filter=_fixed_inventory(goal, inventory_count),
         )
         stage4.actions = [*current.actions, *stage4.actions]
-        stages.append(_summary("inventory-preserving-macro-refinement", stage4, goal))
+        stages.append(_summary("fixed-inventory-macro-refinement", stage4, goal))
         current = stage4
 
     print(json.dumps({
