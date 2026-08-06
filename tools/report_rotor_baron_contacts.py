@@ -14,38 +14,41 @@ REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-ideal-setup-9-f
 
 def ordinary_at(simulator: Simulator, position):
     return [
-        {"id": atom.id, "element": atom.element, "heldBy": sorted(atom.held_by)}
+        atom.id
         for atom in simulator._atoms_at(position)
         if not simulator._is_wheel_atom_id(atom.id)
     ]
 
 
 def baron_state(simulator: Simulator, baron):
+    contacts = {
+        str(branch): {
+            "position": list(position),
+            "atoms": ordinary_at(simulator, position),
+        }
+        for branch, position in baron.tips().items()
+        if ordinary_at(simulator, position)
+    }
+    inputs = {
+        source.id: {
+            "spawnCount": source.spawn_count,
+            "occupied": [
+                {"position": list(position), "atoms": ordinary_at(simulator, position)}
+                for position in source.footprint
+                if ordinary_at(simulator, position)
+            ],
+        }
+        for source in simulator.inputs
+    }
     return {
         "rotation": baron.rotation,
         "grabbing": baron.grabbing,
-        "tips": [
-            {
-                "branch": branch,
-                "position": list(position),
-                "ordinary": ordinary_at(simulator, position),
-            }
-            for branch, position in baron.tips().items()
-        ],
-        "inputs": [
-            {
-                "id": source.id,
-                "spawnCount": source.spawn_count,
-                "footprint": [
-                    {
-                        "position": list(position),
-                        "ordinary": ordinary_at(simulator, position),
-                    }
-                    for position in source.footprint
-                ],
-            }
-            for source in simulator.inputs
-        ],
+        "contacts": contacts,
+        "inputs": inputs,
+        "ordinaryAtomCount": sum(
+            1 for atom in simulator.world.atoms.values()
+            if not simulator._is_wheel_atom_id(atom.id)
+        ),
     }
 
 
@@ -79,11 +82,7 @@ def main() -> None:
                 "cycle": simulator.world.cycle,
                 "phase": "after",
                 "instruction": baron_instruction,
-                "events": [
-                    {"kind": event.kind, **event.data}
-                    for event in simulator.world.events
-                    if event.kind != "arm-instruction"
-                ],
+                "events": [event.kind for event in simulator.world.events if event.kind != "arm-instruction"],
                 **baron_state(simulator, baron),
             })
 
