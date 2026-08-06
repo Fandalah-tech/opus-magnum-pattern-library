@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-structure-baseline-001",
+    "operation": "search_rotor_structure",
+    "timeout_seconds": 900,
+    "notes": "Establish a local-runner baseline for the current A42/A43 structure-only Rotor search before extending the mechanical macro VM. Capture the complete staged search output for analysis."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-structure-baseline-001.json",
+  "git_sha": "eaa70de93b30a57f769ae93a034ea7ece9641a20",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T00:48:31.869983+00:00",
+  "finished_at": "2026-08-06T00:51:33.061967+00:00",
+  "duration_seconds": 181.192,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

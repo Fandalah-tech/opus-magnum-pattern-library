@@ -1,0 +1,430 @@
+{
+  "stages": [
+    {
+      "label": "single-arm-frontier",
+      "found": false,
+      "depth": 13,
+      "bestScore": 336,
+      "visitedStates": 12717,
+      "expandedStates": 1772,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "retract"
+        },
+        {
+          "part-10": "rotate_ccw"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "rotate_cw"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "drop"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "grab"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-12": "rotate_ccw"
+        }
+      ],
+      "matchedPositions": 8,
+      "matchedEdges": 1,
+      "matchRotation": 0,
+      "matchTranslation": [
+        0,
+        -3
+      ],
+      "bestAtomCount": 18,
+      "bestBondCount": 1
+    },
+    {
+      "label": "coordinated-refinement",
+      "found": false,
+      "depth": 6,
+      "bestScore": 456,
+      "visitedStates": 7253,
+      "expandedStates": 424,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "retract"
+        },
+        {
+          "part-10": "rotate_ccw"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "rotate_cw"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "drop"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "grab"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-10": "extend",
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "track_minus",
+          "part-12": "pivot_cw"
+        },
+        {
+          "part-10": "track_minus",
+          "part-12": "track_plus"
+        }
+      ],
+      "matchedPositions": 7,
+      "matchedEdges": 2,
+      "matchRotation": 0,
+      "matchTranslation": [
+        0,
+        -1
+      ],
+      "bestAtomCount": 18,
+      "bestBondCount": 2
+    },
+    {
+      "label": "edge-plateau-position-refinement",
+      "found": false,
+      "depth": 5,
+      "bestScore": 24000,
+      "visitedStates": 7244,
+      "expandedStates": 385,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "retract"
+        },
+        {
+          "part-10": "rotate_ccw"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "rotate_cw"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "drop"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "grab"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-10": "extend",
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "track_minus",
+          "part-12": "pivot_cw"
+        },
+        {
+          "part-10": "track_minus",
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "retract",
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "rotate_cw"
+        }
+      ],
+      "matchedPositions": 8,
+      "matchedEdges": 2,
+      "matchRotation": 0,
+      "matchTranslation": [
+        1,
+        -1
+      ],
+      "bestAtomCount": 18,
+      "bestBondCount": 2
+    },
+    {
+      "label": "learned-macro-refinement",
+      "found": false,
+      "depth": 3,
+      "bestScore": 24475,
+      "visitedStates": 2852,
+      "expandedStates": 98,
+      "stoppedReason": "time-limit",
+      "macros": [
+        "rotor-discovered-007-008",
+        "rotor-discovered-008-011",
+        "rotor-discovered-011-012"
+      ],
+      "actions": [
+        {
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "retract"
+        },
+        {
+          "part-10": "rotate_ccw"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "rotate_cw"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "drop"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "grab"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-10": "extend",
+          "part-12": "rotate_cw"
+        },
+        {
+          "part-10": "track_minus",
+          "part-12": "pivot_cw"
+        },
+        {
+          "part-10": "track_minus",
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "retract",
+          "part-12": "track_plus"
+        },
+        {
+          "part-10": "rotate_cw"
+        },
+        {
+          "part-12": "drop"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "track_minus"
+        },
+        {
+          "part-12": "grab"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-12": "track_plus"
+        },
+        {
+          "part-12": "rotate_ccw"
+        }
+      ],
+      "matchedPositions": 9,
+      "matchedEdges": 2,
+      "matchRotation": 0,
+      "matchTranslation": [
+        1,
+        -1
+      ],
+      "bestAtomCount": 20,
+      "bestBondCount": 2
+    }
+  ],
+  "best": {
+    "label": "learned-macro-refinement",
+    "found": false,
+    "depth": 3,
+    "bestScore": 24475,
+    "visitedStates": 2852,
+    "expandedStates": 98,
+    "stoppedReason": "time-limit",
+    "macros": [
+      "rotor-discovered-007-008",
+      "rotor-discovered-008-011",
+      "rotor-discovered-011-012"
+    ],
+    "actions": [
+      {
+        "part-12": "rotate_cw"
+      },
+      {
+        "part-10": "grab"
+      },
+      {
+        "part-10": "retract"
+      },
+      {
+        "part-10": "rotate_ccw"
+      },
+      {
+        "part-12": "track_plus"
+      },
+      {
+        "part-10": "rotate_cw"
+      },
+      {
+        "part-12": "track_minus"
+      },
+      {
+        "part-12": "drop"
+      },
+      {
+        "part-12": "track_minus"
+      },
+      {
+        "part-12": "track_minus"
+      },
+      {
+        "part-12": "grab"
+      },
+      {
+        "part-12": "track_plus"
+      },
+      {
+        "part-12": "rotate_ccw"
+      },
+      {
+        "part-10": "extend",
+        "part-12": "rotate_cw"
+      },
+      {
+        "part-10": "track_minus",
+        "part-12": "pivot_cw"
+      },
+      {
+        "part-10": "track_minus",
+        "part-12": "track_plus"
+      },
+      {
+        "part-10": "retract",
+        "part-12": "track_plus"
+      },
+      {
+        "part-10": "rotate_cw"
+      },
+      {
+        "part-12": "drop"
+      },
+      {
+        "part-12": "track_minus"
+      },
+      {
+        "part-12": "track_minus"
+      },
+      {
+        "part-12": "track_minus"
+      },
+      {
+        "part-12": "grab"
+      },
+      {
+        "part-12": "track_plus"
+      },
+      {
+        "part-12": "track_plus"
+      },
+      {
+        "part-12": "rotate_ccw"
+      }
+    ],
+    "matchedPositions": 9,
+    "matchedEdges": 2,
+    "matchRotation": 0,
+    "matchTranslation": [
+      1,
+      -1
+    ],
+    "bestAtomCount": 20,
+    "bestBondCount": 2
+  },
+  "learnedMacroCount": 102
+}
