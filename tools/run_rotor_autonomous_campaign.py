@@ -20,7 +20,7 @@ STAGES = [
             "-q",
             "tests/test_engine_disjoint.py",
             "tests/test_disjoint_output_consumer.py",
-            "tests/test_input_component_respawn.py",
+            "tests/test_input_source_components.py",
         ],
         900,
     ),
