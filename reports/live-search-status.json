@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-06T20:21:16.603216+00:00",
+  "updatedAt": "2026-08-06T20:22:16.606690+00:00",
   "status": "running",
   "stage": "tail-search-v2",
   "maxDepth": 40,
@@ -8,9 +8,9 @@
   "timeLimitSeconds": 7200,
   "heuristicVersion": 2,
   "depth": 15,
-  "elapsedSeconds": 4401.524,
-  "visitedStates": 154401,
-  "expandedStates": 14895,
+  "elapsedSeconds": 4461.527,
+  "visitedStates": 155353,
+  "expandedStates": 15062,
   "frontierSize": 1200,
   "bestScore": 201,
   "bestPathLength": 15
