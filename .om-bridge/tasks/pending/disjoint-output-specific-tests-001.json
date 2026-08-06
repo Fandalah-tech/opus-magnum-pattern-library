@@ -1,0 +1,7 @@
+{
+  "id": "disjoint-output-specific-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": ["tests/test_disjoint_output_consumer.py"],
+  "notes": "Validate delivery and rejection semantics for a disconnected product graph."
+}
