@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a44-guard-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 300,
+    "pytest_targets": [
+      "tests/test_reference_macros.py"
+    ],
+    "notes": "Validate the source-state compatibility guard for the A44 confined rotation macro."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a44-guard-tests-001.json",
+  "git_sha": "121560b28ad89816e876c9cc5f2731e1d186af63",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:15:08.996908+00:00",
+  "finished_at": "2026-08-06T02:15:10.325050+00:00",
+  "duration_seconds": 1.328,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
