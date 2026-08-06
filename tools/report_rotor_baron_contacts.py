@@ -20,7 +20,7 @@ def ordinary_at(simulator: Simulator, position):
     ]
 
 
-def baron_state(simulator: Simulator, baron):
+def state(simulator: Simulator, baron):
     contacts = {
         str(branch): {
             "position": list(position),
@@ -32,6 +32,7 @@ def baron_state(simulator: Simulator, baron):
     inputs = {
         source.id: {
             "spawnCount": source.spawn_count,
+            "occupiedCount": sum(bool(ordinary_at(simulator, position)) for position in source.footprint),
             "occupied": [
                 {"position": list(position), "atoms": ordinary_at(simulator, position)}
                 for position in source.footprint
@@ -61,7 +62,9 @@ def main() -> None:
     simulator = Simulator.from_models(puzzle, solution)
     timeline = build_program_timeline(solution)
     baron = next(arm for arm in simulator.arms.values() if arm.part_type == "baron")
-    rows = [{"cycle": 0, "phase": "initial", **baron_state(simulator, baron)}]
+    rows = []
+    previous = state(simulator, baron)
+    rows.append({"cycle": 0, "phase": "initial", **previous})
 
     for row in timeline.get("cycles", []):
         instructions = {
@@ -69,22 +72,32 @@ def main() -> None:
             for event in row.get("events", [])
         }
         baron_instruction = instructions.get(baron.id)
-        if baron_instruction:
-            rows.append({
-                "cycle": simulator.world.cycle,
-                "phase": "before",
-                "instruction": baron_instruction,
-                **baron_state(simulator, baron),
-            })
+        before = state(simulator, baron)
         simulator.step(instructions)
-        if baron_instruction:
+        after = state(simulator, baron)
+        meaningful_events = [
+            {"kind": event.kind, **event.data}
+            for event in simulator.world.events
+            if event.kind != "arm-instruction"
+        ]
+        changed_inputs = before["inputs"] != after["inputs"]
+        changed_contacts = before["contacts"] != after["contacts"]
+        changed_atom_count = before["ordinaryAtomCount"] != after["ordinaryAtomCount"]
+        if baron_instruction or changed_inputs or changed_contacts or changed_atom_count or meaningful_events:
             rows.append({
                 "cycle": simulator.world.cycle,
-                "phase": "after",
-                "instruction": baron_instruction,
-                "events": [event.kind for event in simulator.world.events if event.kind != "arm-instruction"],
-                **baron_state(simulator, baron),
+                "baronInstruction": baron_instruction,
+                "events": meaningful_events,
+                "beforeContacts": before["contacts"],
+                "afterContacts": after["contacts"],
+                "beforeInputs": before["inputs"],
+                "afterInputs": after["inputs"],
+                "beforeAtomCount": before["ordinaryAtomCount"],
+                "afterAtomCount": after["ordinaryAtomCount"],
+                "baronRotation": after["rotation"],
+                "baronGrabbing": after["grabbing"],
             })
+        previous = after
 
     print(json.dumps({
         "sourceSha256": solution.get("source", {}).get("sha256"),
