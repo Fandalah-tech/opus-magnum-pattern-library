@@ -94,6 +94,11 @@ def main() -> int:
             ),
             flush=True,
         )
+        if result["exitCode"] != 0:
+            if result["stdout"]:
+                print(f"--- {name} stdout ---\n{result['stdout']}", flush=True)
+            if result["stderr"]:
+                print(f"--- {name} stderr ---\n{result['stderr']}", file=sys.stderr, flush=True)
         if name != "tail-search" and result["exitCode"] != 0:
             return result["exitCode"]
     return 0
