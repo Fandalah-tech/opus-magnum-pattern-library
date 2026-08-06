@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-half-move-probe-001",
+    "operation": "probe_rotor_half_moves",
+    "timeout_seconds": 900,
+    "notes": "Enumerate every legal one-cycle primitive or two-arm move from the human half checkpoint and identify whether any move improves target geometry."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-half-move-probe-001.json",
+  "git_sha": "2fd3fe0f34535d098168da1df10d77ab70ac1736",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T01:42:05.860734+00:00",
+  "finished_at": "2026-08-06T01:42:08.861101+00:00",
+  "duration_seconds": 3.0,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

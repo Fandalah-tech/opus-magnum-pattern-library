@@ -1,0 +1,573 @@
+{
+  "root": {
+    "matchedPositions": 7,
+    "matchedEdges": 0,
+    "rotation": 0,
+    "translation": [
+      0,
+      0
+    ]
+  },
+  "legalSuccessors": 162,
+  "improvingSuccessors": 0,
+  "top": [
+    {
+      "action": {
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "grab"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "drop"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "pivot_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "pivot_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "extend"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "retract"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "track_plus"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_cw",
+        "part-9": "track_minus"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "grab"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "drop"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "pivot_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "pivot_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "extend"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "retract"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "track_plus"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-2": "rotate_ccw",
+        "part-9": "track_minus"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "grab",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "grab",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "drop",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "drop",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "rotate_cw",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "rotate_cw",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "rotate_ccw",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "rotate_ccw",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "pivot_cw",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "pivot_cw",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "pivot_ccw",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "pivot_ccw",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "extend",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "extend",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "retract",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "retract",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    },
+    {
+      "action": {
+        "part-11": "track_plus",
+        "part-2": "rotate_cw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 4
+    },
+    {
+      "action": {
+        "part-11": "track_plus",
+        "part-2": "rotate_ccw"
+      },
+      "matchedPositions": 7,
+      "matchedEdges": 0,
+      "rotation": 0,
+      "translation": [
+        0,
+        0
+      ],
+      "baronRotation": 0
+    }
+  ]
+}
