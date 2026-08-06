@@ -58,11 +58,16 @@ def main() -> int:
 
     solver_end_index = len(frames) - 1
     payload = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "title": "Van Berlo's Rotor — candidat score 599",
         "isCompleteSolution": False,
         "source": "reports/rotor-tail-best-candidate.json",
         "bestScore": candidate["result"]["bestScore"],
+        "renderContext": {
+            "puzzle": puzzle,
+            "solution": solution,
+            "renderer": "OpusSolutionViewer",
+        },
         "segments": [
             {
                 "id": "prefix",
@@ -91,12 +96,14 @@ def main() -> int:
     print(
         json.dumps(
             {
+                "schemaVersion": payload["schemaVersion"],
                 "frames": len(frames),
                 "prefixFrames": solver_start_index + 1,
                 "solverFrames": solver_end_index - solver_start_index + 1,
                 "solverStartIndex": solver_start_index,
                 "finalCycle": frames[-1]["state"]["cycle"],
                 "finalScore": frames[-1]["state"]["score"],
+                "renderParts": len(solution.get("parts", [])),
             }
         )
     )
