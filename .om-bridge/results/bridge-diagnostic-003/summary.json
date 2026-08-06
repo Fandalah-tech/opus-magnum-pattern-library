@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "bridge-diagnostic-003",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_om_worker.py",
+      "tests/test_mechanical_macros.py",
+      "tests/test_macro_explorer.py"
+    ],
+    "notes": "Cross-shell bridge diagnostic using cmd and Python resolver."
+  },
+  "task_file": ".om-bridge/tasks/pending/bridge-diagnostic-003.json",
+  "git_sha": "1f089ffa63dc6afb5121d2b62ae570816c9f11d9",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T00:44:11.136996+00:00",
+  "finished_at": "2026-08-06T00:44:11.299480+00:00",
+  "duration_seconds": 0.162,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
