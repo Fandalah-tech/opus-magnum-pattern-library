@@ -1,0 +1,6 @@
+{
+  "id": "rotor-candidate-replay-002",
+  "operation": "build_rotor_candidate_replay",
+  "timeout_seconds": 900,
+  "notes": "Regenerate the score-599 replay with the complete human prefix, explicit solver segment metadata, and all 19 solver actions."
+}
