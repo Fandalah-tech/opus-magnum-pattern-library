@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-almost-solved-tail-003",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Trace only cycles 119 onward for the almost-solved A47 reference."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-almost-solved-tail-003.json",
+  "git_sha": "2cac792a16964b906b9fd1d1ccbe8ba426215a1b",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:24:13.142889+00:00",
+  "finished_at": "2026-08-06T08:24:13.535391+00:00",
+  "duration_seconds": 0.392,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
