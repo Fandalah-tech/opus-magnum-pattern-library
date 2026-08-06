@@ -1,0 +1,6 @@
+{
+  "id": "rotor-baron-contacts-post-chain-001",
+  "operation": "report_rotor_baron_contacts",
+  "timeout_seconds": 1800,
+  "notes": "Trace Van Berlo wheel tips, ordinary atom contacts, held state, and bonds around cycles 55-110 to locate the first divergence before the artificial bonder-chain displacement."
+}
