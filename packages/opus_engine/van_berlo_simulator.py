@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from .builder import DIRECTIONS
 from .final_simulator import Simulator as FinalSimulator
+from .simulator import ArmMutation, RETRACT
 from .world import WorldEvent
 
 
@@ -33,6 +35,20 @@ class Simulator(FinalSimulator):
             arm.grabbing = True
             return
         return super()._grab(arm)
+
+    def _plan_motion(self, arm, instruction):
+        # A piston's placed length is its initial extension, not its minimum.
+        # RETRACT always moves one hex inward down to length 1. The generic
+        # simulator incorrectly used base_length as the lower bound, which
+        # broke the first piston handoff in this reference at cycle 17.
+        if arm.part_type == "piston" and instruction in RETRACT:
+            next_length = max(1, arm.length - 1)
+            direction = DIRECTIONS[arm.rotation % 6]
+            delta_units = next_length - arm.length
+            delta = (direction[0] * delta_units, direction[1] * delta_units)
+            proposal = self._translate_proposal(arm, delta, instruction)
+            return ([proposal] if proposal else []), ArmMutation(arm, length=next_length)
+        return super()._plan_motion(arm, instruction)
 
     def _process_duplication(self) -> None:
         classical = {"air", "earth", "fire", "water"}
