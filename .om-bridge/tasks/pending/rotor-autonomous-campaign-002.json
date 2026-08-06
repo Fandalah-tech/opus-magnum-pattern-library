@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-002",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Supersede the stale regression job. Run targeted safety tests, strict replay, then the long last-atom continuation search."
+}
