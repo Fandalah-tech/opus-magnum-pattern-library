@@ -1,0 +1,6 @@
+{
+  "id": "critelli-liquid-perfumes-pilot-001",
+  "operation": "import_critelli_liquid_perfumes",
+  "timeout_seconds": 1800,
+  "notes": "Pilot the provenance-safe Critelli importer on Liquid Perfumes. Download the public puzzle and at most 25 publicly linked submissions into the ignored local dataset directory; commit only the import report and bridge logs."
+}
