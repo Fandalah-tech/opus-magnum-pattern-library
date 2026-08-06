@@ -5,13 +5,34 @@ from .world import WorldEvent
 
 
 class Simulator(FinalSimulator):
-    """Final simulator with Van Berlo-aware duplication semantics.
+    """Final simulator with Van Berlo-specific overlap and wheel semantics."""
 
-    Van Berlo wheel atoms live on a deliberate overlap layer.  A duplication
-    glyph whose source cell is covered by the wheel must read the wheel atom,
-    not whichever ordinary atom happens to be returned first by World.atom_at.
-    The transformed salt remains an ordinary, non-wheel atom.
-    """
+    def _drop(self, arm) -> None:
+        if arm.part_type != "baron":
+            return super()._drop(arm)
+
+        # Van Berlo's six native wheel atoms are permanent parts of the wheel.
+        # DROP releases any ordinary payload overlapping its grabbers, but must
+        # never detach the wheel atoms themselves or disable future rotations.
+        wheel_atoms = {
+            branch: atom_id
+            for branch, atom_id in arm.held_atoms.items()
+            if self._is_wheel_atom_id(atom_id)
+        }
+        arm.held_atoms = wheel_atoms
+        arm.grabbing = True
+        self.world.events.append(WorldEvent("van-berlo-payload-dropped", self.world.cycle, {
+            "armId": arm.id,
+            "retainedWheelAtomIds": sorted(wheel_atoms.values()),
+        }))
+
+    def _grab(self, arm) -> None:
+        if arm.part_type == "baron":
+            # Payload capture is positional and evaluated by
+            # _baron_attached_atom_ids; native wheel atoms stay retained.
+            arm.grabbing = True
+            return
+        return super()._grab(arm)
 
     def _process_duplication(self) -> None:
         classical = {"air", "earth", "fire", "water"}
