@@ -1,0 +1,6 @@
+{
+  "id": "rotor-final-chemistry-after-component-respawn-001",
+  "operation": "solve_rotor_area47_final_chemistry",
+  "timeout_seconds": 21600,
+  "notes": "Re-run final A47 chemistry search after implementing independent respawn of disconnected reagent components."
+}
