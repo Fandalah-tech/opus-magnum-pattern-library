@@ -32,35 +32,47 @@ STAGES = [
 def run_stage(name: str, command: list[str], timeout: int) -> dict:
     started = datetime.now(timezone.utc)
     tick = time.monotonic()
+    output_lines: list[str] = []
+    process = subprocess.Popen(
+        command,
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        bufsize=1,
+    )
     try:
-        completed = subprocess.run(
-            command,
-            cwd=ROOT,
-            text=True,
-            capture_output=True,
-            timeout=timeout,
-            env=None,
-            check=False,
-        )
-        return {
-            "name": name,
-            "command": command,
-            "startedAt": started.isoformat(),
-            "durationSeconds": round(time.monotonic() - tick, 3),
-            "exitCode": completed.returncode,
-            "stdout": completed.stdout,
-            "stderr": completed.stderr,
-        }
-    except subprocess.TimeoutExpired as exc:
-        return {
-            "name": name,
-            "command": command,
-            "startedAt": started.isoformat(),
-            "durationSeconds": round(time.monotonic() - tick, 3),
-            "exitCode": 124,
-            "stdout": exc.stdout or "",
-            "stderr": (exc.stderr or "") + "\nTIMEOUT\n",
-        }
+        assert process.stdout is not None
+        while True:
+            if time.monotonic() - tick >= timeout:
+                process.kill()
+                output_lines.append("TIMEOUT\n")
+                process.wait()
+                exit_code = 124
+                break
+            line = process.stdout.readline()
+            if line:
+                output_lines.append(line)
+                print(f"[{name}] {line}", end="", flush=True)
+                continue
+            exit_code = process.poll()
+            if exit_code is not None:
+                break
+            time.sleep(0.1)
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.wait()
+
+    return {
+        "name": name,
+        "command": command,
+        "startedAt": started.isoformat(),
+        "durationSeconds": round(time.monotonic() - tick, 3),
+        "exitCode": exit_code,
+        "stdout": "".join(output_lines),
+        "stderr": "",
+    }
 
 
 def write_report(stages: list[dict]) -> None:
@@ -81,6 +93,7 @@ def write_report(stages: list[dict]) -> None:
 def main() -> int:
     stages: list[dict] = []
     for name, command, timeout in STAGES:
+        print(json.dumps({"stage": name, "status": "started"}), flush=True)
         result = run_stage(name, command, timeout)
         stages.append(result)
         write_report(stages)
@@ -88,17 +101,13 @@ def main() -> int:
             json.dumps(
                 {
                     "stage": name,
+                    "status": "finished",
                     "exitCode": result["exitCode"],
                     "durationSeconds": result["durationSeconds"],
                 }
             ),
             flush=True,
         )
-        if result["exitCode"] != 0:
-            if result["stdout"]:
-                print(f"--- {name} stdout ---\n{result['stdout']}", flush=True)
-            if result["stderr"]:
-                print(f"--- {name} stderr ---\n{result['stderr']}", file=sys.stderr, flush=True)
         if name != "tail-search" and result["exitCode"] != 0:
             return result["exitCode"]
     return 0
