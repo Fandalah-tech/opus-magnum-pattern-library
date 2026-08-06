@@ -10,39 +10,36 @@ from packages.opus_parser.solution import parse_solution_bytes
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-ideal-setup-9-final-mechanical-prefix.solution.b64")
-WATCH = {
+WATCH = (
     "part-9-spawn-0-atom-0",
-    "part-9-spawn-0-atom-1",
     "part-4-spawn-0-atom-0",
-    "part-4-spawn-0-atom-1",
-    "part-4-spawn-0-atom-2",
-}
+)
 
 
-def snapshot(simulator: Simulator):
+def atom_state(simulator: Simulator):
     return {
-        "atoms": {
-            atom_id: {
-                "position": list(simulator.world.atoms[atom_id].position),
-                "element": simulator.world.atoms[atom_id].element,
-                "heldBy": sorted(simulator.world.atoms[atom_id].held_by),
-            }
-            for atom_id in sorted(WATCH)
-            if atom_id in simulator.world.atoms
-        },
-        "arms": {
-            arm_id: {
-                "origin": list(arm.origin),
-                "rotation": arm.rotation,
-                "length": arm.length,
-                "tip": list(arm.tip()),
-                "grabbing": arm.grabbing,
-                "held": sorted(set(arm.held_atoms.values())),
-                "trackIndex": arm.track_index,
-            }
-            for arm_id, arm in simulator.arms.items()
-            if arm.part_type == "piston"
-        },
+        atom_id: {
+            "position": list(simulator.world.atoms[atom_id].position),
+            "element": simulator.world.atoms[atom_id].element,
+            "heldBy": sorted(simulator.world.atoms[atom_id].held_by),
+        }
+        for atom_id in WATCH
+        if atom_id in simulator.world.atoms
+    }
+
+
+def arm_state(simulator: Simulator):
+    return {
+        arm_id: {
+            "origin": list(arm.origin),
+            "rotation": arm.rotation,
+            "length": arm.length,
+            "tip": list(arm.tip()),
+            "held": sorted(set(arm.held_atoms.values())),
+            "trackIndex": arm.track_index,
+        }
+        for arm_id, arm in simulator.arms.items()
+        if arm.part_type == "piston"
     }
 
 
@@ -54,8 +51,8 @@ def main() -> None:
     )
     simulator = Simulator.from_models(puzzle, solution)
     timeline = build_program_timeline(solution)
-    rows = [{"cycle": 0, **snapshot(simulator)}]
-    previous = snapshot(simulator)
+    rows = []
+    previous_atoms = atom_state(simulator)
 
     for row in timeline.get("cycles", []):
         if simulator.world.cycle >= 70:
@@ -65,21 +62,21 @@ def main() -> None:
             for event in row.get("events", [])
         }
         simulator.step(instructions)
-        current = snapshot(simulator)
-        if current != previous or any(
-            event.kind != "arm-instruction" for event in simulator.world.events
-        ):
+        current_atoms = atom_state(simulator)
+        watched_changed = current_atoms != previous_atoms
+        relevant_instruction = any(
+            part_id in {"part-8", "part-10", "part-1"} and value
+            for part_id, value in instructions.items()
+        )
+        if watched_changed or relevant_instruction:
             rows.append({
                 "cycle": simulator.world.cycle,
                 "instructions": {key: value for key, value in instructions.items() if value},
-                "events": [
-                    {"kind": event.kind, **event.data}
-                    for event in simulator.world.events
-                    if event.kind != "arm-instruction"
-                ],
-                **current,
+                "atoms": current_atoms,
+                "arms": arm_state(simulator),
+                "events": [event.kind for event in simulator.world.events if event.kind != "arm-instruction"],
             })
-        previous = current
+        previous_atoms = current_atoms
 
     print(json.dumps({
         "sourceSha256": solution.get("source", {}).get("sha256"),
