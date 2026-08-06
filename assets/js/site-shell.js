@@ -2,6 +2,15 @@
   const body = document.body;
   const page = body.dataset.product || 'project';
   const bilingual = body.dataset.bilingual === 'true';
+  const embedded = new URLSearchParams(window.location.search).has('embedded');
+  const oldHeader = document.querySelector('body > header');
+
+  if (embedded) {
+    if (oldHeader) oldHeader.remove();
+    body.classList.add('is-embedded');
+    return;
+  }
+
   const labels = {
     project: 'Carte du projet',
     codex: 'Codex',
@@ -15,7 +24,6 @@
     ['laboratory', 'inspector.html', 'Laboratoire'],
     ['solver', 'solver-lab.html', 'Solver']
   ];
-  const oldHeader = document.querySelector('body > header');
   const header = document.createElement('header');
   header.className = 'site-shell';
   header.innerHTML = `
