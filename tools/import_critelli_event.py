@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import mimetypes
 import re
 import time
 from dataclasses import asdict, dataclass
@@ -14,7 +13,7 @@ from typing import Iterable
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
-USER_AGENT = "OpusMagnumCodexResearch/0.1 (+https://github.com/Fandalah-tech/opus-magnum-pattern-library)"
+USER_AGENT = "OpusMagnumCodexResearch/0.2 (+https://github.com/Fandalah-tech/opus-magnum-pattern-library)"
 DEFAULT_EVENT = "https://events.critelli.technology/OM2026Weeklies1_LiquidPerfumes"
 DEFAULT_SUBMISSIONS = "https://events.critelli.technology/submissions/19f7ad44e24b92dbe47c4b6536a35aa1"
 
@@ -32,12 +31,16 @@ class LinkParser(HTMLParser):
         self.base_url = base_url
         self.links: list[Link] = []
         self.forms: list[str] = []
+        self.embedded_urls: list[str] = []
         self._href: str | None = None
         self._download: str | None = None
         self._text: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = dict(attrs)
+        for _, value in attrs:
+            if value and (".puzzle" in value.lower() or ".solution" in value.lower()):
+                self.embedded_urls.append(urljoin(self.base_url, value))
         if tag == "a" and values.get("href"):
             self._href = urljoin(self.base_url, values["href"] or "")
             self._download = values.get("download")
@@ -64,10 +67,14 @@ def fetch(url: str, timeout: int = 30) -> tuple[bytes, str]:
         return response.read(), response.headers.get_content_type()
 
 
-def parse_links(html: bytes, base_url: str) -> tuple[list[Link], list[str]]:
+def parse_links(html: bytes, base_url: str) -> tuple[list[Link], list[str], list[str]]:
     parser = LinkParser(base_url)
-    parser.feed(html.decode("utf-8", errors="replace"))
-    return parser.links, parser.forms
+    text = html.decode("utf-8", errors="replace")
+    parser.feed(text)
+    embedded = list(parser.embedded_urls)
+    for match in re.finditer(r"(?:https?://[^\s\"'<>]+|[A-Za-z0-9_./-]+\.(?:puzzle|solution))(?:\?[^\s\"'<>]*)?", text, re.I):
+        embedded.append(urljoin(base_url, match.group(0)))
+    return parser.links, parser.forms, embedded
 
 
 def same_origin(url: str, origin: str) -> bool:
@@ -80,11 +87,15 @@ def looks_like_file(link: Link, suffix: str) -> bool:
     return suffix in haystack
 
 
-def discover_file_links(links: Iterable[Link], suffix: str, origin: str) -> list[Link]:
+def discover_file_links(links: Iterable[Link], embedded_urls: Iterable[str], suffix: str, origin: str) -> list[Link]:
     found: dict[str, Link] = {}
     for link in links:
         if same_origin(link.url, origin) and looks_like_file(link, suffix):
             found.setdefault(link.url, link)
+    for url in embedded_urls:
+        candidate = Link(url=url, text=Path(urlparse(url).path).name)
+        if same_origin(url, origin) and looks_like_file(candidate, suffix):
+            found.setdefault(url, candidate)
     return list(found.values())
 
 
@@ -110,6 +121,28 @@ def write_binary(root: Path, category: str, link: Link, data: bytes, suffix: str
     return {"url": link.url, "path": path.as_posix(), "sha256": digest, "bytes": len(data)}
 
 
+def download_candidates(links: Iterable[Link], root: Path, category: str, suffix: str, delay: float) -> tuple[list[dict], list[dict]]:
+    downloaded: list[dict] = []
+    failures: list[dict] = []
+    seen_hashes: set[str] = set()
+    for link in links:
+        try:
+            data, content_type = fetch(link.url)
+            if content_type == "text/html" or not data:
+                raise ValueError(f"unexpected content type {content_type!r}")
+            digest = hashlib.sha256(data).hexdigest()
+            if digest in seen_hashes:
+                continue
+            seen_hashes.add(digest)
+            item = write_binary(root, category, link, data, suffix)
+            item["contentType"] = content_type
+            downloaded.append(item)
+        except Exception as exc:
+            failures.append({"url": link.url, "error": f"{type(exc).__name__}: {exc}"})
+        time.sleep(max(0.0, delay))
+    return downloaded, failures
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Import one public Critelli event and its public submissions with provenance.")
     parser.add_argument("--event-url", default=DEFAULT_EVENT)
@@ -122,18 +155,18 @@ def main() -> int:
     args = parser.parse_args()
 
     event_html, event_type = fetch(args.event_url)
-    event_links, event_forms = parse_links(event_html, args.event_url)
-    puzzle_links = discover_file_links(event_links, ".puzzle", args.event_url)
+    event_links, event_forms, event_embedded = parse_links(event_html, args.event_url)
+    puzzle_links = discover_file_links(event_links, event_embedded, ".puzzle", args.event_url)
 
     time.sleep(max(0.0, args.delay))
     submissions_html, submissions_type = fetch(args.submissions_url)
-    submission_links, submission_forms = parse_links(submissions_html, args.submissions_url)
-    solution_links = discover_file_links(submission_links, ".solution", args.submissions_url)
+    submission_links, submission_forms, submission_embedded = parse_links(submissions_html, args.submissions_url)
+    solution_links = discover_file_links(submission_links, submission_embedded, ".solution", args.submissions_url)
     if args.max_solutions > 0:
         solution_links = solution_links[: args.max_solutions]
 
     report: dict = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "source": "events.critelli.technology",
         "retrievedAt": datetime.now(timezone.utc).isoformat(),
         "event": {
@@ -149,6 +182,7 @@ def main() -> int:
             "solutionLinks": [asdict(link) for link in solution_links],
         },
         "downloaded": {"puzzles": [], "solutions": []},
+        "failures": {"puzzles": [], "solutions": []},
         "policy": {
             "sameOriginOnly": True,
             "userAgent": USER_AGENT,
@@ -158,25 +192,26 @@ def main() -> int:
     }
 
     if not args.discover_only:
-        for link in puzzle_links:
-            data, _ = fetch(link.url)
-            report["downloaded"]["puzzles"].append(write_binary(args.dataset_root, "puzzles", link, data, ".puzzle"))
-            time.sleep(max(0.0, args.delay))
-        for link in solution_links:
-            data, _ = fetch(link.url)
-            report["downloaded"]["solutions"].append(write_binary(args.dataset_root, "solutions", link, data, ".solution"))
-            time.sleep(max(0.0, args.delay))
+        puzzles, puzzle_failures = download_candidates(puzzle_links, args.dataset_root, "puzzles", ".puzzle", args.delay)
+        solutions, solution_failures = download_candidates(solution_links, args.dataset_root, "solutions", ".solution", args.delay)
+        report["downloaded"]["puzzles"] = puzzles
+        report["downloaded"]["solutions"] = solutions
+        report["failures"]["puzzles"] = puzzle_failures
+        report["failures"]["solutions"] = solution_failures
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(json.dumps({
+    summary = {
         "puzzleLinks": len(puzzle_links),
         "solutionLinks": len(solution_links),
         "downloadedPuzzles": len(report["downloaded"]["puzzles"]),
         "downloadedSolutions": len(report["downloaded"]["solutions"]),
+        "puzzleFailures": len(report["failures"]["puzzles"]),
+        "solutionFailures": len(report["failures"]["solutions"]),
         "report": args.report.as_posix(),
-    }, ensure_ascii=False))
-    return 0 if puzzle_links else 3
+    }
+    print(json.dumps(summary, ensure_ascii=False))
+    return 0 if report["downloaded"]["puzzles"] and report["downloaded"]["solutions"] else 3
 
 
 if __name__ == "__main__":
