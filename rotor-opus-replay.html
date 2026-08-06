@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Replay Rotor · OpusJS</title>
-  <link rel="stylesheet" href="assets/css/solution-viewer.css?v=opusjs-unified-20260806-1">
+  <link rel="stylesheet" href="assets/css/solution-viewer.css?v=opusjs-unified-20260806-2">
   <style>
-    :root{color-scheme:dark;--bg:#0d0c0b;--panel:#171512;--line:#3d352b;--text:#f1e8d8;--muted:#aa9e8d;--accent:#d5a45d;--blue:#79a9d1}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif}.shell{padding:18px}.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.controls button,.controls select{min-height:39px;padding:0 13px;background:#211d18;color:var(--text);border:1px solid var(--line);font-weight:700}.controls button:hover{border-color:var(--accent)}.controls input{flex:1;min-width:180px}.position{white-space:nowrap}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px}.solution-viewer{margin:0;border:1px solid var(--line);background:#11100e}.viewer-head{display:none}.viewer-layout{grid-template-columns:minmax(0,1fr)!important}.viewer-canvas{min-height:650px}.viewer-canvas svg{height:650px}.viewer-details{display:none!important}.side{border:1px solid var(--line);background:var(--panel);padding:16px}.segment-badge{display:inline-block;border:1px solid var(--line);padding:6px 9px;color:var(--muted);font-size:12px}.segment-badge.solver{border-color:var(--blue);color:#b8dcfb}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0}.metrics div{border:1px solid var(--line);padding:10px}.metrics small{display:block;color:var(--muted)}.metrics strong{display:block;margin-top:3px;color:var(--accent);font:700 22px Georgia,serif}.action{min-height:110px;white-space:pre-wrap;background:#090806;border:1px solid var(--line);padding:12px}.status{color:var(--muted);line-height:1.5}.status.warning{color:#e6b36c}@media(max-width:850px){.layout{grid-template-columns:1fr}.viewer-canvas,.viewer-canvas svg{min-height:520px;height:520px}}
+    :root{color-scheme:dark;--bg:#0d0c0b;--panel:#171512;--line:#3d352b;--text:#f1e8d8;--muted:#aa9e8d;--accent:#d5a45d;--blue:#79a9d1}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif}.shell{padding:14px}.controls{display:grid;grid-template-columns:auto auto auto auto auto minmax(170px,auto) minmax(220px,1fr) auto;gap:7px;align-items:center;margin-bottom:10px}.controls button,.controls select{min-height:36px;padding:0 11px;background:#211d18;color:var(--text);border:1px solid var(--line);font-weight:700}.controls button:hover{border-color:var(--accent)}.controls input{width:100%}.position{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums}.layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:10px}.solution-viewer{position:relative;margin:0;border:1px solid var(--line);background:#11100e;overflow:hidden}.viewer-head{display:flex!important;position:absolute;z-index:8;top:10px;right:10px;width:auto!important;padding:0!important;border:0!important;background:transparent!important;pointer-events:none}.viewer-head>div:first-child{display:none}.viewer-tools{display:flex!important;gap:5px;align-items:center;padding:5px;background:rgba(18,16,14,.86);border:1px solid var(--line);backdrop-filter:blur(8px);pointer-events:auto}.viewer-tools button{min-height:30px;padding:0 9px;border:1px solid var(--line);background:#211d18;color:var(--text);font-size:12px;font-weight:700}.viewer-tools span{min-width:45px;text-align:center;color:var(--muted);font-variant-numeric:tabular-nums}.viewer-layout{grid-template-columns:minmax(0,1fr)!important}.viewer-canvas{min-height:690px}.viewer-canvas svg{height:690px;cursor:grab}.viewer-canvas svg:active{cursor:grabbing}.viewer-details{display:none!important}.side{border:1px solid var(--line);background:var(--panel);padding:14px}.segment-badge{display:inline-block;border:1px solid var(--line);padding:5px 8px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}.segment-badge.solver{border-color:var(--blue);color:#b8dcfb}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}.metrics div{border:1px solid var(--line);padding:8px}.metrics small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}.metrics strong{display:block;margin-top:2px;color:var(--accent);font:700 20px Georgia,serif}.side h3{margin:14px 0 7px;font-size:13px}.action{min-height:92px;max-height:230px;overflow:auto;white-space:pre-wrap;background:#090806;border:1px solid var(--line);padding:10px;font-size:12px}.status{color:var(--muted);line-height:1.45;font-size:12px}.status.warning{color:#e6b36c}@media(max-width:1050px){.controls{grid-template-columns:repeat(5,auto) minmax(150px,1fr);}.controls select{grid-column:1/3}.controls input{grid-column:3/6}.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:auto minmax(240px,1fr);gap:10px 18px;align-items:start}.metrics{margin:0}.side h3,.action,.status{grid-column:2}.viewer-canvas,.viewer-canvas svg{min-height:610px;height:610px}}@media(max-width:700px){.shell{padding:8px}.controls{display:flex;flex-wrap:wrap}.controls input{flex:1 1 100%}.layout{display:block}.viewer-canvas,.viewer-canvas svg{min-height:500px;height:500px}.side{display:block;margin-top:8px}}
   </style>
 </head>
 <body>
@@ -23,23 +23,23 @@
     </div>
     <div class="layout">
       <article id="solution-viewer" class="solution-viewer">
-        <div class="viewer-head"><div></div><div class="viewer-tools"><button type="button" data-viewer-fit>Ajuster</button><button type="button" data-viewer-reset>Réinitialiser</button><span data-viewer-zoom>100%</span></div></div>
+        <div class="viewer-head"><div></div><div class="viewer-tools"><button type="button" data-viewer-fit>Ajuster</button><button type="button" data-viewer-reset>100 %</button><span data-viewer-zoom>100%</span></div></div>
         <div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Replay OpusJS" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details></aside></div>
       </article>
       <aside class="side">
         <span class="segment-badge" data-rotor-segment>Chargement</span>
         <div class="metrics"><div><small>Cycle</small><strong data-rotor-cycle>—</strong></div><div><small>Score</small><strong data-rotor-score>—</strong></div><div><small>Étape</small><strong data-rotor-step>—</strong></div></div>
-        <h3>Actions</h3><pre class="action" data-rotor-action>Chargement…</pre>
+        <h3>Action</h3><pre class="action" data-rotor-action>Chargement…</pre>
         <p class="status" data-rotor-status>Initialisation du rendu OpusJS…</p>
       </aside>
     </div>
   </main>
-  <script src="assets/js/opus-geometry.js?v=opusjs-unified-20260806-1"></script>
-  <script src="assets/js/opus-piece-symbols.js?v=opusjs-unified-20260806-1"></script>
-  <script src="assets/js/solution-viewer.js?v=opusjs-unified-20260806-1"></script>
-  <script src="assets/js/viewer-interaction-polish.js?v=opusjs-unified-20260806-1"></script>
-  <script src="assets/js/replay-arm-animation.js?v=opusjs-unified-20260806-1"></script>
-  <script src="assets/js/replay-molecules.js?v=opusjs-unified-20260806-1"></script>
-  <script src="assets/js/rotor-opus-replay.js?v=opusjs-unified-20260806-1"></script>
+  <script src="assets/js/opus-geometry.js?v=opusjs-unified-20260806-2"></script>
+  <script src="assets/js/opus-piece-symbols.js?v=opusjs-unified-20260806-2"></script>
+  <script src="assets/js/solution-viewer.js?v=opusjs-unified-20260806-2"></script>
+  <script src="assets/js/viewer-interaction-polish.js?v=opusjs-unified-20260806-2"></script>
+  <script src="assets/js/replay-arm-animation.js?v=opusjs-unified-20260806-2"></script>
+  <script src="assets/js/replay-molecules.js?v=opusjs-unified-20260806-2"></script>
+  <script src="assets/js/rotor-opus-replay.js?v=opusjs-unified-20260806-2"></script>
 </body>
 </html>
