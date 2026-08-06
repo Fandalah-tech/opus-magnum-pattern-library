@@ -27,9 +27,15 @@ class StructureGoal:
     bond_count: int
     position_variants: tuple[tuple[Hex, ...], ...]
     edge_variants: tuple[tuple[Edge, ...], ...]
+    include_baron_held: bool = False
 
     @classmethod
-    def from_product(cls, product: dict[str, Any]) -> "StructureGoal":
+    def from_product(
+        cls,
+        product: dict[str, Any],
+        *,
+        include_baron_held: bool = False,
+    ) -> "StructureGoal":
         positions = [tuple(atom["position"]) for atom in product.get("atoms", [])]
         known = set(positions)
         edges = [
@@ -51,9 +57,17 @@ class StructureGoal:
                 _canon_edge(shift(rotate_hex(a, steps)), shift(rotate_hex(b, steps)))
                 for a, b in edges
             )))
-        return cls(len(positions), len(edges), tuple(position_variants), tuple(edge_variants))
+        return cls(
+            len(positions),
+            len(edges),
+            tuple(position_variants),
+            tuple(edge_variants),
+            include_baron_held,
+        )
 
     def _eligible_atom_ids(self, simulator: Any) -> set[str]:
+        if self.include_baron_held:
+            return set(simulator.world.atoms)
         baron_ids = {
             arm_id for arm_id, arm in getattr(simulator, "arms", {}).items()
             if getattr(arm, "part_type", "") == "baron"
@@ -112,9 +126,6 @@ class StructureGoal:
             if bond.a in eligible and bond.b in eligible
         )
         excess_atoms = max(0, len(eligible) - self.atom_count)
-        # Preserve target-aligned geometry. Incidental bonds provide only a
-        # weak gradient. Excess spawned reagents are mildly penalized so the
-        # beam does not fill the compact A42 workspace with unusable clutter.
         return (
             match.occupied_positions * 24
             + match.matched_edges * 140
