@@ -1,0 +1,6 @@
+{
+  "id": "fix-piston-retract-floor-001",
+  "operation": "report_rotor_prefix",
+  "timeout_seconds": 900,
+  "notes": "Correct piston retract semantics: every piston may retract to length 1 regardless of placed/base length."
+}
