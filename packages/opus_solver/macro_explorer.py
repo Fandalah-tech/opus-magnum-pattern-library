@@ -9,6 +9,7 @@ from .state import canonical_state_key
 
 ScoreFunction = Callable[[Any], int]
 GoalPredicate = Callable[[Any], bool]
+StatePredicate = Callable[[Any], bool]
 
 
 @dataclass(slots=True)
@@ -34,12 +35,18 @@ def explore_simulator_macro_beam(
     beam_width: int = 500,
     max_states: int = 100_000,
     time_limit_seconds: float | None = None,
+    state_filter: StatePredicate | None = None,
 ) -> MacroExplorationResult:
     """Search complete mechanical transformations instead of individual cycles.
 
     Each edge is an atomically validated macro. This lets the structural search
     cross long score plateaus such as a confined rotation or temporary nucleus
     storage without requiring every intermediate cycle to survive beam pruning.
+
+    ``state_filter`` can reject mechanically valid but strategically inadmissible
+    terminal states, for example states that spawned more atoms than the target
+    structure can contain. The filter is applied before canonical-state
+    deduplication so rejected clutter never consumes the visited-state budget.
     """
     if max_depth < 0:
         raise ValueError("max_depth must be non-negative")
@@ -47,6 +54,8 @@ def explore_simulator_macro_beam(
         raise ValueError("beam_width and max_states must be positive")
     if time_limit_seconds is not None and time_limit_seconds <= 0:
         raise ValueError("time_limit_seconds must be positive")
+    if state_filter is not None and not state_filter(initial_simulator):
+        raise ValueError("initial_simulator does not satisfy state_filter")
 
     macro_set = tuple(macros)
     started = monotonic()
@@ -75,6 +84,8 @@ def explore_simulator_macro_beam(
                 return MacroExplorationResult(False, best_macros, best_actions, best_simulator, len(visited), expanded, depth, "time-limit", best_score)
             expanded += 1
             for successor in enumerate_macro_successors(simulator, macro_set):
+                if state_filter is not None and not state_filter(successor.simulator):
+                    continue
                 key = canonical_state_key(successor.simulator)
                 if key in visited:
                     continue
