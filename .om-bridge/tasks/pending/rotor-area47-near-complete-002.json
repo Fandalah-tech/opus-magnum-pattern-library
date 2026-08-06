@@ -1,0 +1,6 @@
+{
+  "id": "rotor-area47-near-complete-002",
+  "operation": "solve_rotor_area47_near_complete",
+  "timeout_seconds": 1800,
+  "notes": "Retry targeted near-complete A47 chemistry search after simulator import fix."
+}
