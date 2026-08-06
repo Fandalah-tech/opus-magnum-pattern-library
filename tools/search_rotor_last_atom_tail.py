@@ -40,9 +40,7 @@ def output_score(simulator: Simulator) -> int:
         b = simulator.world.atoms[bond.b].position
         signature = (bond.kind, tuple(sorted((a, b))))
         score += 80 if signature in expected_bond_set else -35
-    # Reward the isolated central salt while preserving a modest incentive for
-    # keeping the remaining payload compact around the output footprint.
-    central = atoms_by_pos.get(next(pos for pos, element in expected.items() if element == "salt" and pos == (3, -2)), [])
+    central = atoms_by_pos.get((3, -2), [])
     if len(central) == 1 and central[0].element == "salt":
         score += 150
     output_cells = set(expected)
@@ -51,30 +49,32 @@ def output_score(simulator: Simulator) -> int:
 
 
 def snapshot(simulator: Simulator):
+    atoms = [
+        {
+            "id": atom.id,
+            "element": atom.element,
+            "position": list(atom.position),
+            "heldBy": sorted(atom.held_by),
+        }
+        for atom in ordinary_atoms(simulator)
+    ]
+    bonds = [
+        {
+            "a": bond.a,
+            "b": bond.b,
+            "kind": bond.kind,
+            "aPosition": list(simulator.world.atoms[bond.a].position),
+            "bPosition": list(simulator.world.atoms[bond.b].position),
+        }
+        for bond in simulator.world.bonds.values()
+        if not simulator._is_wheel_atom_id(bond.a) and not simulator._is_wheel_atom_id(bond.b)
+    ]
     return {
         "cycle": simulator.world.cycle,
         "score": output_score(simulator),
         "delivered": dict(simulator.delivered_products),
-        "atoms": sorted(
-            {
-                "id": atom.id,
-                "element": atom.element,
-                "position": list(atom.position),
-                "heldBy": sorted(atom.held_by),
-            }
-            for atom in ordinary_atoms(simulator)
-        , key=lambda item: item["id"]),
-        "bonds": sorted(
-            {
-                "a": bond.a,
-                "b": bond.b,
-                "kind": bond.kind,
-                "aPosition": list(simulator.world.atoms[bond.a].position),
-                "bPosition": list(simulator.world.atoms[bond.b].position),
-            }
-            for bond in simulator.world.bonds.values()
-            if not simulator._is_wheel_atom_id(bond.a) and not simulator._is_wheel_atom_id(bond.b)
-        , key=lambda item: (item["a"], item["b"])),
+        "atoms": sorted(atoms, key=lambda item: item["id"]),
+        "bonds": sorted(bonds, key=lambda item: (item["a"], item["b"])),
         "arms": {arm_id: arm.snapshot() for arm_id, arm in simulator.arms.items()},
     }
 
