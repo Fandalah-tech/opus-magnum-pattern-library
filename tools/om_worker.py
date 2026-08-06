@@ -18,6 +18,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "search_rotor_half_geometry": [sys.executable, "tools/search_rotor_half_geometry.py"],
     "probe_rotor_half_moves": [sys.executable, "tools/probe_rotor_half_moves.py"],
     "validate_reference_macro_replay": [sys.executable, "tools/validate_reference_macro_replay.py"],
+    "report_rotor_area46_fragments": [sys.executable, "tools/report_rotor_area46_fragments.py"],
     "report_rotor_prefix": [sys.executable, "tools/report_rotor_prefix.py"],
     "report_rotor_macros": [sys.executable, "tools/report_rotor_macros.py"],
 }
