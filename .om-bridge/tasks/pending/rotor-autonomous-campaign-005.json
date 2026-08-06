@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-005",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Run current safety tests, strict replay, then the long last-atom continuation search."
+}
