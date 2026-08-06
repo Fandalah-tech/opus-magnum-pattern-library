@@ -1,0 +1,6 @@
+{
+  "id": "rotor-duplication-cells-001",
+  "operation": "report_rotor_duplication_cells",
+  "timeout_seconds": 900,
+  "notes": "Trace source and salt occupants on both duplication glyphs throughout the latest A47 prefix."
+}
