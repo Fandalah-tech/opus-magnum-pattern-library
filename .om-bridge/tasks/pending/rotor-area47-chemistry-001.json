@@ -1,0 +1,6 @@
+{
+  "id": "rotor-area47-chemistry-001",
+  "operation": "solve_rotor_area47_chemistry",
+  "timeout_seconds": 1800,
+  "notes": "Exhaustively search the six current Van Berlo rotation decision points in IDEAL SETUP 9 while preserving all piston mechanics."
+}
