@@ -1,0 +1,6 @@
+{
+  "id": "rotor-strict-replay-001",
+  "operation": "report_rotor_strict_replay",
+  "timeout_seconds": 1800,
+  "notes": "Replay A47 without synthetic bonder displacement and report the first genuine collision with recent history."
+}
