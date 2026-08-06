@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-chain-model-001",
+    "operation": "apply_rotor_bonder_chain_patch",
+    "timeout_seconds": 300,
+    "notes": "Run the approved rotor chain model operation."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-chain-model-001.json",
+  "git_sha": "335e304f3d4151f24533edc9a46ece11a699a095",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:41:50.015950+00:00",
+  "finished_at": "2026-08-06T09:41:50.177690+00:00",
+  "duration_seconds": 0.162,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
