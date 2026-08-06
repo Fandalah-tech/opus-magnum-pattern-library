@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-autonomous-campaign-004",
+    "operation": "run_rotor_autonomous_campaign",
+    "timeout_seconds": 21600,
+    "notes": "Expose exact failing safety test, then continue strict replay and tail search when green."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-autonomous-campaign-004.json",
+  "git_sha": "78da01f895da82b02f6b18c15cc67b416965c470",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T11:34:47.082748+00:00",
+  "finished_at": "2026-08-06T11:34:48.445679+00:00",
+  "duration_seconds": 1.363,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}

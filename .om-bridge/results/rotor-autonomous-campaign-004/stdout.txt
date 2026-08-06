@@ -1,0 +1,57 @@
+{"stage": "engine-tests", "exitCode": 1, "durationSeconds": 1.124}
+--- engine-tests stdout ---
+.......FF                                                                [100%]
+================================== FAILURES ===================================
+__________ test_disconnected_input_components_respawn_independently ___________
+
+    def test_disconnected_input_components_respawn_independently() -> None:
+        source = InputSource(
+            id="input-a",
+            atom_templates=(("salt", (0, 0)), ("salt", (2, 0)), ("water", (4, 0))),
+            bond_templates=(),
+        )
+        world = World()
+    
+        assert source.spawn(world)
+        assert len(world.atoms) == 3
+        assert source.spawn_count == 1
+    
+        world.remove_atom("input-a-spawn-0-atom-1")
+>       assert source.spawn(world)
+E       AssertionError: assert False
+E        +  where False = spawn(World(cycle=0, atoms={'input-a-spawn-0-atom-0': Atom(id='input-a-spawn-0-atom-0', element='salt', position=(0, 0), hel...atom_molecule={'input-a-spawn-0-atom-0': 'molecule-0', 'input-a-spawn-0-atom-2': 'molecule-2'}, _molecule_generation=3))
+E        +    where spawn = InputSource(id='input-a', atom_templates=(('salt', (0, 0)), ('salt', (2, 0)), ('water', (4, 0))), bond_templates=(), spawn_count=1).spawn
+
+tests\test_input_component_respawn.py:18: AssertionError
+____ test_bonded_input_component_waits_until_all_component_cells_are_clear ____
+
+    def test_bonded_input_component_waits_until_all_component_cells_are_clear() -> None:
+        source = InputSource(
+            id="input-b",
+            atom_templates=(("water", (0, 0)), ("salt", (1, 0)), ("salt", (3, 0))),
+            bond_templates=((0, 1, "normal"),),
+        )
+        world = World()
+    
+        assert source.spawn(world)
+        world.remove_atom("input-b-spawn-0-atom-0")
+    
+        assert not source.spawn(world)
+        assert "input-b-spawn-1-atom-0" not in world.atoms
+    
+        world.remove_atom("input-b-spawn-0-atom-1")
+>       assert source.spawn(world)
+E       AssertionError: assert False
+E        +  where False = spawn(World(cycle=0, atoms={'input-b-spawn-0-atom-2': Atom(id='input-b-spawn-0-atom-2', element='salt', position=(3, 0), hel...lecule-2': {'input-b-spawn-0-atom-2'}}, atom_molecule={'input-b-spawn-0-atom-2': 'molecule-2'}, _molecule_generation=4))
+E        +    where spawn = InputSource(id='input-b', atom_templates=(('water', (0, 0)), ('salt', (1, 0)), ('salt', (3, 0))), bond_templates=((0, 1, 'normal'),), spawn_count=1).spawn
+
+tests\test_input_component_respawn.py:42: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_input_component_respawn.py::test_disconnected_input_components_respawn_independently - AssertionError: assert False
+ +  where False = spawn(World(cycle=0, atoms={'input-a-spawn-0-atom-0': Atom(id='input-a-spawn-0-atom-0', element='salt', position=(0, 0), hel...atom_molecule={'input-a-spawn-0-atom-0': 'molecule-0', 'input-a-spawn-0-atom-2': 'molecule-2'}, _molecule_generation=3))
+ +    where spawn = InputSource(id='input-a', atom_templates=(('salt', (0, 0)), ('salt', (2, 0)), ('water', (4, 0))), bond_templates=(), spawn_count=1).spawn
+FAILED tests/test_input_component_respawn.py::test_bonded_input_component_waits_until_all_component_cells_are_clear - AssertionError: assert False
+ +  where False = spawn(World(cycle=0, atoms={'input-b-spawn-0-atom-2': Atom(id='input-b-spawn-0-atom-2', element='salt', position=(3, 0), hel...lecule-2': {'input-b-spawn-0-atom-2'}}, atom_molecule={'input-b-spawn-0-atom-2': 'molecule-2'}, _molecule_generation=4))
+ +    where spawn = InputSource(id='input-b', atom_templates=(('water', (0, 0)), ('salt', (1, 0)), ('salt', (3, 0))), bond_templates=((0, 1, 'normal'),), spawn_count=1).spawn
+2 failed, 7 passed in 0.27s
+
