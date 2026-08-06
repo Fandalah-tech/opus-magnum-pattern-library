@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-chain-full-replay-001",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Run the complete A47 replay after the recursive chain model and report the next failure or delivery."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-chain-full-replay-001.json",
+  "git_sha": "0071f50560330295cf3a29270a237e3a055d35cf",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:43:29.557709+00:00",
+  "finished_at": "2026-08-06T09:43:30.023184+00:00",
+  "duration_seconds": 0.465,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
