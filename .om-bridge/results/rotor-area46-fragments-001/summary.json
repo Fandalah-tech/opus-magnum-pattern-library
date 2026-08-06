@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area46-fragments-001",
+    "operation": "report_rotor_area46_fragments",
+    "timeout_seconds": 300,
+    "notes": "Determine whether the A46 ending inserts a disconnected dimer or requires final attachment to the main product."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area46-fragments-001.json",
+  "git_sha": "b80eb0923d9895fad05dcb6095c8a7f4047bcb00",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:32:13.492397+00:00",
+  "finished_at": "2026-08-06T02:32:13.917320+00:00",
+  "duration_seconds": 0.425,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
