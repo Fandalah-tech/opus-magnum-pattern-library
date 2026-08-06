@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-009",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Campaign 009 after analysis of candidate 599. Use heuristic v2 with smooth target-distance rewards, explicit molecular-connectivity incentives, isolated-atom penalties, three-arm coordination, depth 40, beam 1200 and a 500000-state budget. Persist the best candidate for replay and continuation analysis."
+}
