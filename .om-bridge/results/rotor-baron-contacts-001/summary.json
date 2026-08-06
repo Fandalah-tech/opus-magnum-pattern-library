@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-baron-contacts-001",
+    "operation": "report_rotor_baron_contacts",
+    "timeout_seconds": 900,
+    "notes": "Trace ordinary atoms on Van Berlo tips and input footprints before and after every rotor instruction."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-baron-contacts-001.json",
+  "git_sha": "31071dcb1c9ddcfef2b6e9246134c9ab0a1b4b6d",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:44:01.616541+00:00",
+  "finished_at": "2026-08-06T03:44:02.056750+00:00",
+  "duration_seconds": 0.44,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
