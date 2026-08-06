@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-trajectory-after-piston-floor-001",
+    "operation": "report_rotor_atom_trajectories",
+    "timeout_seconds": 900,
+    "notes": "Locate next mechanical divergence after fixing the cycle-17 piston handoff."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-trajectory-after-piston-floor-001.json",
+  "git_sha": "e6bd6e4efe0463b682f1acda5c5cc743ceb1c912",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T04:00:53.879114+00:00",
+  "finished_at": "2026-08-06T04:00:54.333796+00:00",
+  "duration_seconds": 0.455,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
