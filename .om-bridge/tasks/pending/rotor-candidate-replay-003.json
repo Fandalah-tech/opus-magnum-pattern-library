@@ -1,0 +1,6 @@
+{
+  "id": "rotor-candidate-replay-003",
+  "operation": "build_rotor_candidate_replay",
+  "timeout_seconds": 900,
+  "notes": "Regenerate the full Rotor replay from the initial simulator state through the complete human prefix, then append the persisted 19-action solver segment. Publish all frames to reports/rotor-tail-best-candidate-replay.json."
+}
