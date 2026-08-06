@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
+from packages.opus_engine.simulator import SimulationError
 from packages.opus_engine.van_berlo_simulator import Simulator
 from packages.opus_parser.solution import parse_solution_bytes
 
@@ -30,6 +31,22 @@ def bond_text(simulator: Simulator) -> str:
     ) or "-"
 
 
+def emit(simulator: Simulator, instructions: dict[str, str], events: list[str], error: str = "-") -> None:
+    instruction_text = ",".join(f"{part}:{value}" for part, value in sorted(instructions.items())) or "-"
+    spawn_text = ",".join(f"{source.id}:{source.spawn_count}" for source in simulator.inputs)
+    delivered = json.dumps(dict(getattr(simulator, "delivered_products", {})), separators=(",", ":"))
+    print("|".join((
+        str(simulator.world.cycle),
+        instruction_text,
+        ",".join(events) or "-",
+        spawn_text,
+        bond_text(simulator),
+        atom_text(simulator),
+        delivered,
+        error,
+    )))
+
+
 def main() -> None:
     puzzle = json.loads(PUZZLE.read_text(encoding="utf-8"))
     solution = parse_solution_bytes(
@@ -38,29 +55,20 @@ def main() -> None:
     )
     simulator = Simulator.from_models(puzzle, solution)
     timeline = build_program_timeline(solution)
-    print("cycle|instructions|events|spawnCounts|bonds|atoms|delivered")
+    print("cycle|instructions|events|spawnCounts|bonds|atoms|delivered|error")
     for row in timeline.get("cycles", []):
         instructions = {
             str(event.get("partId")): event.get("instruction")
             for event in row.get("events", [])
             if event.get("instruction")
         }
-        simulator.step(instructions)
-        if simulator.world.cycle < 119:
-            continue
-        meaningful = [event.kind for event in simulator.world.events if event.kind != "arm-instruction"]
-        instruction_text = ",".join(f"{part}:{value}" for part, value in sorted(instructions.items())) or "-"
-        spawn_text = ",".join(f"{source.id}:{source.spawn_count}" for source in simulator.inputs)
-        delivered = json.dumps(dict(getattr(simulator, "delivered_products", {})), separators=(",", ":"))
-        print("|".join((
-            str(simulator.world.cycle),
-            instruction_text,
-            ",".join(meaningful) or "-",
-            spawn_text,
-            bond_text(simulator),
-            atom_text(simulator),
-            delivered,
-        )))
+        try:
+            simulator.step(instructions)
+        except SimulationError as exc:
+            emit(simulator, instructions, [event.kind for event in simulator.world.events if event.kind != "arm-instruction"], str(exc))
+            break
+        if simulator.world.cycle >= 80:
+            emit(simulator, instructions, [event.kind for event in simulator.world.events if event.kind != "arm-instruction"])
 
 
 if __name__ == "__main__":
