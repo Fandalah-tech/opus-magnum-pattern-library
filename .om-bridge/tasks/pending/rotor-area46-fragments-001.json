@@ -1,0 +1,6 @@
+{
+  "id": "rotor-area46-fragments-001",
+  "operation": "report_rotor_area46_fragments",
+  "timeout_seconds": 300,
+  "notes": "Determine whether the A46 ending inserts a disconnected dimer or requires final attachment to the main product."
+}
