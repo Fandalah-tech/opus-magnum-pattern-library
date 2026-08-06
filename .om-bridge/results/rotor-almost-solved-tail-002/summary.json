@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-almost-solved-tail-002",
+    "operation": "report_rotor_almost_solved_tail",
+    "timeout_seconds": 900,
+    "notes": "Produce the compact tail trace after piston correction."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-almost-solved-tail-002.json",
+  "git_sha": "1d466362b3c9a891217a53df07cb883a0ab528a2",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:23:20.704279+00:00",
+  "finished_at": "2026-08-06T08:23:21.144279+00:00",
+  "duration_seconds": 0.44,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
