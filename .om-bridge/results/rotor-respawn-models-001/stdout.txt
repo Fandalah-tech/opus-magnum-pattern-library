@@ -1,0 +1,204 @@
+{
+  "independentComponents": {
+    "completed": false,
+    "cycle": 121,
+    "instructions": {
+      "part-10": "extend"
+    },
+    "error": "Atom part-4-spawn-1-atom-0 collides with stationary atom part-4-spawn-2-atom-0 at (5, -1); activeArms={'part-1': {'instruction': None, 'heldAtoms': ['part-1-wheel-0', 'part-1-wheel-1', 'part-1-wheel-2', 'part-1-wheel-3', 'part-1-wheel-4', 'part-1-wheel-5']}, 'part-10': {'instruction': 'extend', 'heldAtoms': ['part-4-spawn-1-atom-0']}}; atomHolders={'part-4-spawn-1-atom-0': ['part-10']}; outputs=[{'outputId': 'part-12', 'productIndex': 0, 'atoms': [((1, -2), 'air'), ((1, -1), 'salt'), ((1, 0), 'water'), ((2, -3), 'water'), ((2, 0), 'earth'), ((3, -4), 'salt'), ((3, -2), 'salt'), ((3, 0), 'salt'), ((4, -4), 'air'), ((4, -1), 'fire'), ((5, -4), 'fire'), ((5, -3), 'salt'), ((5, -2), 'earth')], 'bonds': [('normal', (1, -2), (1, -1)), ('normal', (1, 0), (2, 0)), ('normal', (2, -3), (3, -4)), ('normal', (3, 0), (4, -1)), ('normal', (4, -4), (5, -4)), ('normal', (5, -3), (5, -2))]}]; delivered={}; bonders=[((0, -1), (0, -2), 'part-0'), ((2, -4), (1, -3), 'part-11')]; unbonders=[((0, 0), (0, 1), 'part-6')]; calcification=[((4, -5), 'part-5')]; purification=[]; projection=[]; motionState=[{'armId': 'part-10', 'instruction': 'extend', 'sources': {'part-4-spawn-1-atom-0': [4, -1]}, 'destinations': {'part-4-spawn-1-atom-0': [5, -1]}, 'arm': {'partId': 'part-10', 'partType': 'piston', 'origin': [2, -1], 'rotation': 0, 'length': 2, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [4, -1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-4-spawn-1-atom-0'}], 'trackIndex': 0, 'trackCellCount': 6}}]; outputCandidates=[{'atomIds': ['part-4-spawn-1-atom-0'], 'atoms': [((4, -1), 'salt')], 'bonds': [], 'heldBy': {'part-4-spawn-1-atom-0': ['part-10']}}]",
+    "atomCount": 9,
+    "bondCount": 0,
+    "history": [
+      {
+        "cycle": 113,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 114,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 115,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 116,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 117,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 118,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 119,
+        "instructions": {
+          "part-10": "grab"
+        },
+        "events": [
+          {
+            "kind": "atom-grabbed",
+            "armId": "part-10",
+            "branchIndex": 0,
+            "atomId": "part-4-spawn-1-atom-0"
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-10",
+            "instruction": "grab"
+          }
+        ]
+      },
+      {
+        "cycle": 120,
+        "instructions": {
+          "part-10": "retract"
+        },
+        "events": [
+          {
+            "kind": "input-spawned",
+            "inputId": "part-4",
+            "generation": 2,
+            "atomIds": [
+              "part-4-spawn-2-atom-0"
+            ]
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-10",
+            "instruction": "retract"
+          }
+        ]
+      }
+    ]
+  },
+  "wholeReagent": {
+    "completed": true,
+    "cycle": 198,
+    "atomCount": 7,
+    "bondCount": 1,
+    "delivered": {},
+    "history": [
+      {
+        "cycle": 191,
+        "instructions": {
+          "part-8": "drop",
+          "part-10": "grab"
+        },
+        "events": [
+          {
+            "kind": "atom-grabbed",
+            "armId": "part-10",
+            "branchIndex": 0,
+            "atomId": "part-9-spawn-0-atom-0"
+          },
+          {
+            "kind": "atoms-dropped",
+            "armId": "part-8",
+            "atomIds": [
+              "part-9-spawn-0-atom-1"
+            ]
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-8",
+            "instruction": "drop"
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-10",
+            "instruction": "grab"
+          }
+        ]
+      },
+      {
+        "cycle": 192,
+        "instructions": {
+          "part-10": "retract"
+        },
+        "events": [
+          {
+            "kind": "bond-created",
+            "glyphPartId": "part-11",
+            "fromAtomId": "part-9-spawn-0-atom-1",
+            "toAtomId": "part-9-spawn-0-atom-0",
+            "type": "normal"
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-10",
+            "instruction": "retract"
+          }
+        ]
+      },
+      {
+        "cycle": 193,
+        "instructions": {
+          "part-10": "drop"
+        },
+        "events": [
+          {
+            "kind": "atoms-dropped",
+            "armId": "part-10",
+            "atomIds": [
+              "part-9-spawn-0-atom-0"
+            ]
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-10",
+            "instruction": "drop"
+          }
+        ]
+      },
+      {
+        "cycle": 194,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 195,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 196,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 197,
+        "instructions": {},
+        "events": []
+      },
+      {
+        "cycle": 198,
+        "instructions": {
+          "part-1": "drop",
+          "part-8": "drop"
+        },
+        "events": [
+          {
+            "kind": "arm-instruction",
+            "armId": "part-1",
+            "instruction": "drop"
+          },
+          {
+            "kind": "arm-instruction",
+            "armId": "part-8",
+            "instruction": "drop"
+          }
+        ]
+      }
+    ]
+  }
+}

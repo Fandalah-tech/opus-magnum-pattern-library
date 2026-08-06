@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-respawn-models-001",
+    "operation": "report_rotor_respawn_models",
+    "timeout_seconds": 900,
+    "notes": "Compare independent-component and whole-reagent input respawn semantics against the preserved last-isolated-atom prefix."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-respawn-models-001.json",
+  "git_sha": "fbdbfa2ed8b7476d0d7603f252469746ab561ea7",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T10:51:51.070747+00:00",
+  "finished_at": "2026-08-06T10:51:51.609333+00:00",
+  "duration_seconds": 0.539,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
