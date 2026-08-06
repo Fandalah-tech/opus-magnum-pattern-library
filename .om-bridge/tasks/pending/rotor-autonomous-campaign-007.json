@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-007",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Validate the full structural prefix, then run a memory-bounded live-instrumented tail search. Treat any native search crash as a campaign failure instead of a false success. This supersedes campaign 006, which replayed the prefix successfully but crashed at depth 3 with Windows access-violation code 3221225477."
+}
