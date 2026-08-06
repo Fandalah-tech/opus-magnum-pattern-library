@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-006",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Replay the prefix, run the instrumented tail search, publish live status to Solver Lab, and preserve results with rebased push handling. Supersedes campaign 005 whose computation succeeded but result push was rejected after concurrent development commits."
+}
