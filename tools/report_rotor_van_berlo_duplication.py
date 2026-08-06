@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
-from packages.opus_engine.final_simulator import Simulator
+from packages.opus_engine.van_berlo_simulator import Simulator
 from packages.opus_parser.solution import parse_solution_bytes
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
