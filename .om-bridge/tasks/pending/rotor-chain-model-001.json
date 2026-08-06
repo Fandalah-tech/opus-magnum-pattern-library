@@ -1,0 +1,6 @@
+{
+  "id": "rotor-chain-model-001",
+  "operation": "apply_rotor_bonder_chain_patch",
+  "timeout_seconds": 300,
+  "notes": "Run the approved rotor chain model operation."
+}
