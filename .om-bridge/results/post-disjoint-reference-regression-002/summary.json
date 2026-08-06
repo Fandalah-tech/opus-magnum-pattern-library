@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "post-disjoint-reference-regression-002",
+    "operation": "run_reference_regression",
+    "timeout_seconds": 3600,
+    "notes": "Run campaign P007-P015 regression with fixed required arguments after disjoint-output and bonder-chain changes."
+  },
+  "task_file": ".om-bridge/tasks/pending/post-disjoint-reference-regression-002.json",
+  "git_sha": "87eca38b95e01579e56158308dabb9984815f61c",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T09:53:55.523280+00:00",
+  "finished_at": "2026-08-06T09:53:56.036578+00:00",
+  "duration_seconds": 0.513,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
