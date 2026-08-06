@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr-CA">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="The Opus Magnum Codex: an unofficial fan research project exploring concepts, patterns, implementations, and theory.">
-  <title>Opus Magnum Codex</title>
+  <meta name="description" content="Prototype préliminaire du Codex Opus Magnum : concepts, patterns, relations et actifs issus des premières phases de recherche.">
+  <title>Codex préliminaire · Opus Magnum</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/knowledge.css">
   <link rel="stylesheet" href="assets/css/fidelity.css">
@@ -14,25 +14,25 @@
   <header class="topbar">
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 72 72" aria-hidden="true"><path d="M36 4 64 20v32L36 68 8 52V20Z"/><circle cx="36" cy="36" r="13"/><circle cx="36" cy="36" r="4"/><path d="M36 15v11M36 46v11M15 36h11M46 36h11"/><path d="m22 22 8 8m12 12 8 8m0-28-8 8M30 42l-8 8"/></svg>
-      <div><p class="eyebrow">UNOFFICIAL FAN RESEARCH PROJECT</p><h1>Opus Magnum <em>Codex</em></h1></div>
+      <div><p class="eyebrow">PROJET DE RECHERCHE NON OFFICIEL</p><h1>Opus Magnum <em>Codex</em></h1></div>
     </div>
-    <div class="header-tools"><a href="project.html" style="color:inherit;text-decoration:none;border:1px solid currentColor;padding:8px 11px;font-size:12px">Project map</a><select id="locale-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option></select><div class="status"><span></span><strong id="pattern-count">0</strong> <b data-i18n="nav.patterns">Patterns</b> · <strong id="concept-count">0</strong> <b data-i18n="nav.concepts">Concepts</b></div></div>
+    <div class="header-tools"><a href="project.html" style="color:inherit;text-decoration:none;border:1px solid currentColor;padding:8px 11px;font-size:12px">Carte du projet</a><select id="locale-select" aria-label="Langue"><option value="fr">Français</option><option value="en">English</option></select><div class="status"><span></span><strong id="pattern-count">0</strong> <b data-i18n="nav.patterns">Patterns</b> · <strong id="concept-count">0</strong> <b data-i18n="nav.concepts">Concepts</b></div></div>
   </header>
-  <nav class="product-tabs" aria-label="Product area">
-    <a class="product-tab" href="project.html"><span class="sigil">⌂</span><span><strong>Project</strong><small>Map · status · roadmap</small></span></a>
-    <button class="product-tab active"><span class="sigil">◈</span><span><strong>Codex</strong><small>Knowledge · active</small></span></button>
-    <a class="product-tab" href="inspector.html"><span class="sigil">⌬</span><span><strong>Laboratory</strong><small>Solution Inspector · alpha</small></span></a>
-    <a class="product-tab" href="solver-lab.html"><span class="sigil">⚗</span><span><strong>Solver Lab</strong><small>Autonomous research · active</small></span></a>
+  <nav class="product-tabs" aria-label="Zones du projet">
+    <a class="product-tab" href="project.html"><span class="sigil">⌂</span><span><strong>Projet</strong><small>Carte · statuts · feuille de route</small></span></a>
+    <button class="product-tab active"><span class="sigil">◈</span><span><strong>Codex</strong><small>Prototype documentaire</small></span></button>
+    <a class="product-tab" href="inspector.html"><span class="sigil">⌬</span><span><strong>Laboratoire</strong><small>Inspecteur · alpha</small></span></a>
+    <a class="product-tab" href="solver-lab.html"><span class="sigil">⚗</span><span><strong>Solver</strong><small>Recherche active</small></span></a>
   </nav>
   <section class="codex-intro">
-    <div><p class="eyebrow">THE SCIENCE BEHIND EVERY SOLUTION</p><p>Explore verified game terminology, reusable structures, measured implementations, and the emerging theory of Opus Magnum.</p><small>Not affiliated with or endorsed by Zachtronics. Game terminology and visual references remain the property of their respective rights holders.</small></div>
+    <div><p class="eyebrow">CONTENU PRÉLIMINAIRE À RÉAUDITER</p><p>Cette interface rassemble les premiers concepts, patterns et essais visuels du projet. Elle demeure utile comme archive de recherche, mais son contenu n’est pas encore entièrement réaligné sur OMSIM, le corpus et les découvertes récentes.</p><small>Les termes officiels du jeu restent canoniques. Les notions inventées par le projet doivent être considérées comme provisoires jusqu’à validation.</small></div>
     <div class="codex-seal" aria-hidden="true"><span>OM</span></div>
   </section>
-  <nav class="mode-tabs" aria-label="Knowledge type"><button class="mode-tab active" data-mode="patterns" data-i18n="nav.patterns">Patterns</button><button class="mode-tab" data-mode="concepts" data-i18n="nav.concepts">Concepts</button><button class="mode-tab" data-mode="graph" data-i18n="nav.relations">Relations</button><button class="mode-tab" data-mode="assets">Assets</button></nav>
-  <main class="layout"><aside class="sidebar"><label class="search"><span>⌕</span><input id="search-input" type="search" data-i18n-placeholder="search.placeholder" placeholder="Search…" autocomplete="off"></label><section><h2 data-i18n="filters.categories">Categories</h2><nav id="category-filters" class="filters"></nav></section><section><h2 data-i18n="filters.objectives">Objectives</h2><nav id="metric-filters" class="filters"></nav></section><section class="project-note"><strong>Terminology policy</strong><p>Official game terms remain canonical. Research vocabulary invented by this project is visibly marked provisional until community adoption or stronger evidence.</p></section></aside>
-    <section class="workspace"><div class="workspace-head"><div><p class="eyebrow" id="view-kicker" data-i18n="view.explorer">Explorer</p><h2 id="view-title" data-i18n="view.allPatterns">All patterns</h2></div><button id="reset-filters" class="ghost" data-i18n="actions.reset">Reset</button></div><div id="pattern-grid" class="pattern-grid" aria-live="polite"></div><div id="concept-grid" class="concept-grid" hidden></div><div id="graph-view" class="graph-view" hidden></div><div id="asset-gallery" class="asset-gallery" hidden></div><div id="empty-state" class="empty" hidden><div>◇</div><h3 data-i18n="empty.title">No result</h3><p data-i18n="empty.body">Change the filters or search term.</p></div></section></main>
-  <footer class="site-attribution">Scenes are rendered locally by OpusJS from declarative data. Canonical terminology and object behavior are verified against public Opus Magnum references; visual assets remain original adaptations.</footer>
-  <dialog id="pattern-dialog"><button class="dialog-close" aria-label="Close">×</button><div id="pattern-detail"></div></dialog><template id="pattern-card-template"><article class="pattern-card" tabindex="0"><div class="card-visual"></div><div class="card-body"><div class="card-kicker"></div><h3></h3><p class="card-summary"></p><div class="metric-row"></div><div class="tag-row"></div></article></template>
+  <nav class="mode-tabs" aria-label="Type de contenu"><button class="mode-tab active" data-mode="patterns" data-i18n="nav.patterns">Patterns</button><button class="mode-tab" data-mode="concepts" data-i18n="nav.concepts">Concepts</button><button class="mode-tab" data-mode="graph" data-i18n="nav.relations">Relations</button><button class="mode-tab" data-mode="assets">Archives visuelles</button></nav>
+  <main class="layout"><aside class="sidebar"><label class="search"><span>⌕</span><input id="search-input" type="search" data-i18n-placeholder="search.placeholder" placeholder="Rechercher…" autocomplete="off"></label><section><h2 data-i18n="filters.categories">Catégories</h2><nav id="category-filters" class="filters"></nav></section><section><h2 data-i18n="filters.objectives">Objectifs</h2><nav id="metric-filters" class="filters"></nav></section><section class="project-note"><strong>Statut du contenu</strong><p>Les données de cette section proviennent en partie des développements exploratoires initiaux. Une révision structurée sera faite à partir du moteur, des tests et du corpus.</p></section></aside>
+    <section class="workspace"><div class="workspace-head"><div><p class="eyebrow" id="view-kicker" data-i18n="view.explorer">Explorateur</p><h2 id="view-title" data-i18n="view.allPatterns">Tous les patterns</h2></div><button id="reset-filters" class="ghost" data-i18n="actions.reset">Réinitialiser</button></div><div id="pattern-grid" class="pattern-grid" aria-live="polite"></div><div id="concept-grid" class="concept-grid" hidden></div><div id="graph-view" class="graph-view" hidden></div><div id="asset-gallery" class="asset-gallery" hidden></div><div id="empty-state" class="empty" hidden><div>◇</div><h3 data-i18n="empty.title">Aucun résultat</h3><p data-i18n="empty.body">Modifiez les filtres ou le terme de recherche.</p></div></section></main>
+  <footer class="site-attribution">Prototype documentaire non officiel. Les scènes sont rendues localement par OpusJS; elles servent de matériel de recherche et non de référence visuelle définitive.</footer>
+  <dialog id="pattern-dialog"><button class="dialog-close" aria-label="Fermer">×</button><div id="pattern-detail"></div></dialog><template id="pattern-card-template"><article class="pattern-card" tabindex="0"><div class="card-visual"></div><div class="card-body"><div class="card-kicker"></div><h3></h3><p class="card-summary"></p><div class="metric-row"></div><div class="tag-row"></div></article></template>
   <script src="data/i18n.js"></script><script src="data/patterns.js"></script><script src="data/knowledge.js"></script><script src="data/content.en.js"></script><script src="opusjs/opusjs.js?v=1.5.0-shared-arm-hubs"></script><script src="opusjs/arm-groups.js?v=1.5.0"></script><script src="data/scenes.js?v=1.9.1-loop-control"></script><script src="data/assets-gallery.js"></script><script src="opusjs/piston-v1.js?v=1.7.1-restored"></script><script src="opusjs/track-v1.js?v=1.9.1-loop-control-node"></script><script src="opusjs/glyph-v1.js?v=2.0.0-master-glyph-v1"></script><script src="assets/js/app.js"></script>
 </body>
 </html>
