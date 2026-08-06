@@ -1,0 +1,6 @@
+{
+  "id": "rotor-duplication-neighbors-001",
+  "operation": "report_rotor_duplication_cells",
+  "timeout_seconds": 900,
+  "notes": "Identify which adjacent direction ordinary salts actually occupy around each Van Berlo duplication source."
+}
