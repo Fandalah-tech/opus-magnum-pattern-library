@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 2,
+  "source": "events.critelli.technology",
+  "retrievedAt": "2026-08-06T15:25:50.991728+00:00",
+  "event": {
+    "url": "https://events.critelli.technology/OM2026Weeklies1_LiquidPerfumes",
+    "contentType": "text/html",
+    "forms": [
+      "https://events.critelli.technology/OM2026Weeklies1_LiquidPerfumes"
+    ],
+    "puzzleLinks": [
+      {
+        "url": "https://events.critelli.technology/weeklies2026_liquid-perfumes.puzzle",
+        "text": "weeklies2026_liquid-perfumes.puzzle",
+        "download_name": null
+      }
+    ]
+  },
+  "submissions": {
+    "url": "https://events.critelli.technology/submissions/19f7ad44e24b92dbe47c4b6536a35aa1",
+    "contentType": "text/html",
+    "forms": [],
+    "solutionLinks": [
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=3f819a461d7c7ca6bf53783b0b313dceb6a77eef4d0c9d80ef0253c4eab5760c",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783095246509303575_OVERLAP _Greenfield.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=77370638d7ba1920bedf32a5c790418d7c41172b21f4ad005decc3f735e96d85",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783095555536965011_H1 V1_WingedPearl.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=c1f4315c65a73427eb0c354efe7b39a76d6aef54ab130b7b6d2e01225ef3d90c",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783096304511850332_MIN H@0 TODO IMPROVE C_Hoekri.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=6d42c3ae694c035dec218dc12a073ebc842df46679cf26d15181733e2793e2e0",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783097151119743553_SWISS ARMY KNIFE_Greenfield.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=fc85efc27535631a20962429fb301d74cbb1d14ebac298f251c0f9a8c711a760",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783097240590940114_NEW SOLATENCY 1_Hoekri.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=625567dfe50d2fefd71d882edee6d76eef18d3e5411b25b51e1268973a61f827",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783097736940985498_LATENCY FIRST TRY_Awesomeguy22.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d044a08cd321b4a861853821efee1658586804b247c0cce4214855f83c2e3018",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783100356679178412_SPEEEEEN_Awfulbananas.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=3854803796719d751b58d3ac3413afe0697c57295f2f3cd1032dd5f451997297",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783100356914810221_PROBABLY MIN LATENCY_Awfulbananas.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=bceec16da3402283a2320b56e0b9aa264d3b0b3ec61618a883c1ce58600b091e",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783100972629911555_ACTUAL MIN LATENCY_Awfulbananas.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d4cb9c9f5b8e203ef5375e8752c99b21fcff4d44b641ad062ae3be10c9c38f0d",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783102223633278493_MIN LATENCY FIRST PASS_Kazyan.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=22fdbed3b508ad4248ea32179b21215b69b1522155f3109de7fd37c1e593e471",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783102267587746934_P10 STEIGHT_Kazyan.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=2e3ad1d7d224f8186af042d5905d4c80780981471fdc07ac6394e3690a9ba549",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783102665847514797_LOW S. HEIGHT LOW CYCLES 1_MinerMan60101.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d31760b9fddc175a4a58fbf61a9625e7f4e2db48ebbae49506f0442f4e1ba265",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783103668671438717_LOW S. HEIGHT LOW CYCLES 2_MinerMan60101.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=cff31d5e8f872dbe06682830b52de4ce908efd66ca9f5d6b3dde1fa1a13133b3",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783103976433719472_HC_Awesomeguy22.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=9a0122f7ed1a806797fd7cc807f4db166ca46985f0501ec5a7f2b31e8dd173de",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783104381086380295_NEW SOLUTION 1_Zuule.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=709f049b30f2b5bf0fd2be39b37a8667c882533f38c7ed186ae3eba8a44e0b75",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783105873816593801_LOW LATENCY LOW COST 1_MinerMan60101.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=87fb45bd5925d35f26ac32bcd22516d288797aaca0d5980949e68af3f4900485",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783116255242676656_L8ENCY_Hoekri.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=1a8a5f3a18ddf9bbb2169abc9cdc5d991a8f88e8347120baeba31d30031923d9",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783120099747193482_MIN LATENCY FEWER GLYPHS_Kazyan.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=ac34ed73c6256f5be95bc1310fad8d6cf2a0ddeb70d6d614bc67dea625ac4093",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783122533808481732_NEW SOLUTION 1_UltraShortPulse.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=f1c9346e0faade4e8138d63ddd5bc759ff97450c010a62cf6e8b94f5b7cfc804",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783122876960384686_SHORT BABY_Boogey.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=541832118040777f33f12c08be037125beb611b3cb3e7775a77bab662fbb7d0a",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783127640037742849_HC  89_Awesomeguy22.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=2c3ceba2a28ee79795d6b1116be7c3cd19004495767d6270e4fb83ed4075b554",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783129275244510589_LOW LATENCY LOW COST 2_MinerMan60101.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d8bb1e495b42d0730ad27a3d7ba3fdadf616f1302abc81d71bbaa0951a0859f9",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783129809704796189_HC  70_Awesomeguy22.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=28fbd027be6cd07c138e2d88660987157ef97d3bfaa60be9db19f492c7e3cb8f",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783129989289612284_FEMININE PISTON_Boogey.solution"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=baf481434a360076c8db863e428754468d40455b2da7d2bf6a033b0435513a28",
+        "text": "solution file",
+        "download_name": "LIQUID PERFUMES_1783132315332073117_MIN LATENCY 2_Awfulbananas.solution"
+      }
+    ]
+  },
+  "downloaded": {
+    "puzzles": [],
+    "solutions": [
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=3f819a461d7c7ca6bf53783b0b313dceb6a77eef4d0c9d80ef0253c4eab5760c",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783095246509303575_OVERLAP-_Greenfield.solution",
+        "sha256": "2a8e1b405b0944ab95db18b9d8b8614a4134d6efbd7e2541f60328ef5a8e6cdf",
+        "bytes": 829,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=77370638d7ba1920bedf32a5c790418d7c41172b21f4ad005decc3f735e96d85",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783095555536965011_H1-V1_WingedPearl.solution",
+        "sha256": "bcdb80bd4b734cb9ac10ab60635a74f2f136c8ec55dff3b48cc780fe0ba0e27f",
+        "bytes": 1346,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=c1f4315c65a73427eb0c354efe7b39a76d6aef54ab130b7b6d2e01225ef3d90c",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783096304511850332_MIN-H-0-TODO-IMPROVE-C_Hoekri.solution",
+        "sha256": "78abb170db350c9a3eaad4f68c8287bbfde2c5bdbd6cefc4b78e86cb08177a92",
+        "bytes": 1508,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=6d42c3ae694c035dec218dc12a073ebc842df46679cf26d15181733e2793e2e0",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783097151119743553_SWISS-ARMY-KNIFE_Greenfield.solution",
+        "sha256": "65172ee60e1a17990f0604eec1f845d2f7e28481621bbb1e9d3e63253adf37ec",
+        "bytes": 1237,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=fc85efc27535631a20962429fb301d74cbb1d14ebac298f251c0f9a8c711a760",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783097240590940114_NEW-SOLATENCY-1_Hoekri.solution",
+        "sha256": "965f69ed244f6a56c8bb8ed347b5f3923674ca3b55cb03fbdfde7b5fa9a5872d",
+        "bytes": 1085,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=625567dfe50d2fefd71d882edee6d76eef18d3e5411b25b51e1268973a61f827",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783097736940985498_LATENCY-FIRST-TRY_Awesomeguy22.solution",
+        "sha256": "ae2452355685fc5309accec1e65b3a91c7d2d94082dfb3e96d513ebb21a3bb09",
+        "bytes": 1732,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d044a08cd321b4a861853821efee1658586804b247c0cce4214855f83c2e3018",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783100356679178412_SPEEEEEN_Awfulbananas.solution",
+        "sha256": "302c2928360995983033f484ee1a6adb95fee2a6f779029b291882620cd9d12a",
+        "bytes": 1512,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=3854803796719d751b58d3ac3413afe0697c57295f2f3cd1032dd5f451997297",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783100356914810221_PROBABLY-MIN-LATENCY_Awfulbananas.solution",
+        "sha256": "31bda96c55b293d0e49c7d2bbbd942750ace208d384d350a299d7322d7c77980",
+        "bytes": 1295,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=bceec16da3402283a2320b56e0b9aa264d3b0b3ec61618a883c1ce58600b091e",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783100972629911555_ACTUAL-MIN-LATENCY_Awfulbananas.solution",
+        "sha256": "9315844bc0b68e50c134701f03bb306016cdb0f28c42066ff228311c4538d1b6",
+        "bytes": 1150,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d4cb9c9f5b8e203ef5375e8752c99b21fcff4d44b641ad062ae3be10c9c38f0d",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783102223633278493_MIN-LATENCY-FIRST-PASS_Kazyan.solution",
+        "sha256": "e62f6f50ff1c8be51bfff43b4097457a2e3afec08ee52e6aaec6f28815d34aaf",
+        "bytes": 1913,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=22fdbed3b508ad4248ea32179b21215b69b1522155f3109de7fd37c1e593e471",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783102267587746934_P10-STEIGHT_Kazyan.solution",
+        "sha256": "dc6981f396014764b923f73a5c4a7cf4de4cb786de83499bac37548fd32676b4",
+        "bytes": 1653,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=2e3ad1d7d224f8186af042d5905d4c80780981471fdc07ac6394e3690a9ba549",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783102665847514797_LOW-S.-HEIGHT-LOW-CYCLES-1_MinerMan60101.solution",
+        "sha256": "f71899ef60f7215dfd5d4f87f237d44e0fd577a1fd779251ec5d95c43a4249d6",
+        "bytes": 1240,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d31760b9fddc175a4a58fbf61a9625e7f4e2db48ebbae49506f0442f4e1ba265",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783103668671438717_LOW-S.-HEIGHT-LOW-CYCLES-2_MinerMan60101.solution",
+        "sha256": "9900adab9ee5b11992177c51d319d7a8336db3d71332b61e6a3d3d0d665d37b0",
+        "bytes": 1250,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=cff31d5e8f872dbe06682830b52de4ce908efd66ca9f5d6b3dde1fa1a13133b3",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783103976433719472_HC_Awesomeguy22.solution",
+        "sha256": "04ae142875c2941e55066b41447ccb3017f6fe545453102ae62340145ed24c76",
+        "bytes": 1920,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=9a0122f7ed1a806797fd7cc807f4db166ca46985f0501ec5a7f2b31e8dd173de",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783104381086380295_NEW-SOLUTION-1_Zuule.solution",
+        "sha256": "2c02befbf8a65cc4473727f36e8652ad1cbc057f80257f2747c40826e1e545a5",
+        "bytes": 1734,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=709f049b30f2b5bf0fd2be39b37a8667c882533f38c7ed186ae3eba8a44e0b75",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783105873816593801_LOW-LATENCY-LOW-COST-1_MinerMan60101.solution",
+        "sha256": "7a805bd541222b7382e82bdcd94ed3f4ba8e6b01cdf09f39a61a3f1bd9bd8d22",
+        "bytes": 1612,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=87fb45bd5925d35f26ac32bcd22516d288797aaca0d5980949e68af3f4900485",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783116255242676656_L8ENCY_Hoekri.solution",
+        "sha256": "1772b59131a78d3f97eb902394509fe7e24718155863ab87f9ab13bc1705b5b5",
+        "bytes": 2420,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=1a8a5f3a18ddf9bbb2169abc9cdc5d991a8f88e8347120baeba31d30031923d9",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783120099747193482_MIN-LATENCY-FEWER-GLYPHS_Kazyan.solution",
+        "sha256": "b81e60bdcdee0400e72c86c11fb86dc9ffbda9e830140b3a886df36ae025a656",
+        "bytes": 1513,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=ac34ed73c6256f5be95bc1310fad8d6cf2a0ddeb70d6d614bc67dea625ac4093",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783122533808481732_NEW-SOLUTION-1_UltraShortPulse.solution",
+        "sha256": "a5a4abfde162b68898901f690b23d9b1ff635545018254efc411a30feaefded8",
+        "bytes": 1272,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=f1c9346e0faade4e8138d63ddd5bc759ff97450c010a62cf6e8b94f5b7cfc804",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783122876960384686_SHORT-BABY_Boogey.solution",
+        "sha256": "53806aac697cc0a1ed940928f5be2256012876b3f2c20a5ba9d3fa064313494c",
+        "bytes": 1258,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=541832118040777f33f12c08be037125beb611b3cb3e7775a77bab662fbb7d0a",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783127640037742849_HC-89_Awesomeguy22.solution",
+        "sha256": "cc5e63ad48afbdb88b7b94c99bb0f40d451a96c481e814affd2bf603f6502967",
+        "bytes": 2037,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=2c3ceba2a28ee79795d6b1116be7c3cd19004495767d6270e4fb83ed4075b554",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783129275244510589_LOW-LATENCY-LOW-COST-2_MinerMan60101.solution",
+        "sha256": "8b62b54418c80b6e3eff58a7bfbaf3dfc044d9de7f6aa1859958404a0321fbcd",
+        "bytes": 1617,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=d8bb1e495b42d0730ad27a3d7ba3fdadf616f1302abc81d71bbaa0951a0859f9",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783129809704796189_HC-70_Awesomeguy22.solution",
+        "sha256": "fd069a0049cef673ccdedc6bf1b7e0964a7a7cae938ffebbd7416a5a906afabd",
+        "bytes": 2028,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=28fbd027be6cd07c138e2d88660987157ef97d3bfaa60be9db19f492c7e3cb8f",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783129989289612284_FEMININE-PISTON_Boogey.solution",
+        "sha256": "f2887984601cc833e768f576b196495d9cd4dcf8941274f067c25c5b9fffcf9b",
+        "bytes": 1631,
+        "contentType": "application/octet-stream"
+      },
+      {
+        "url": "https://events.critelli.technology/download/19f7ad44e24b92dbe47c4b6536a35aa1?submission=baf481434a360076c8db863e428754468d40455b2da7d2bf6a033b0435513a28",
+        "path": ".datasets/critelli-events/liquid-perfumes/solutions/LIQUID-PERFUMES_1783132315332073117_MIN-LATENCY-2_Awfulbananas.solution",
+        "sha256": "ac29205aac30540c3b5f1e19c3ec40934acd9ddb19d6975f4d4af544838939f3",
+        "bytes": 1051,
+        "contentType": "application/octet-stream"
+      }
+    ]
+  },
+  "failures": {
+    "puzzles": [
+      {
+        "url": "https://events.critelli.technology/weeklies2026_liquid-perfumes.puzzle",
+        "error": "ValueError: unexpected content type 'text/html'"
+      }
+    ],
+    "solutions": []
+  },
+  "policy": {
+    "sameOriginOnly": true,
+    "userAgent": "OpusMagnumCodexResearch/0.2 (+https://github.com/Fandalah-tech/opus-magnum-pattern-library)",
+    "rawFilesStoredUnderIgnoredDatasetDirectory": true,
+    "publicReportContainsProvenanceAndHashesOnly": true
+  }
+}

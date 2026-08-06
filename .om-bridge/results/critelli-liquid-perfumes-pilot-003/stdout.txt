@@ -1,0 +1,1 @@
+{"puzzleLinks": 1, "solutionLinks": 25, "downloadedPuzzles": 0, "downloadedSolutions": 25, "puzzleFailures": 1, "solutionFailures": 0, "report": "reports/critelli-liquid-perfumes-import.json"}

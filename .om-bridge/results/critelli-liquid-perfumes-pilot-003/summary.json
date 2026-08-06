@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "critelli-liquid-perfumes-pilot-003",
+    "operation": "import_critelli_liquid_perfumes",
+    "timeout_seconds": 1800,
+    "notes": "Retry the corrected Liquid Perfumes corpus pilot after fixing queued-task resolution. Download the public puzzle and at most 25 publicly linked submissions into the ignored local dataset directory; commit the provenance report and worker logs only."
+  },
+  "task_file": ".om-bridge/tasks/pending/critelli-liquid-perfumes-pilot-003.json",
+  "git_sha": "4f1218ef86732e693b015028e04c2ace7a47ad0a",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T15:25:49.131197+00:00",
+  "finished_at": "2026-08-06T15:26:09.515251+00:00",
+  "duration_seconds": 20.384,
+  "exit_code": 3,
+  "status": "failed",
+  "error": null
+}
