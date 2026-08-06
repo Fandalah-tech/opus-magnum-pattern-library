@@ -11,7 +11,19 @@ ROOT = Path.cwd()
 REPORT = ROOT / "reports" / "rotor-autonomous-campaign.json"
 
 STAGES = [
-    ("engine-tests", [sys.executable, "-m", "pytest", "-q", "tests/test_opus_engine.py", "tests/test_disjoint_output.py", "tests/test_input_respawn.py"], 900),
+    (
+        "engine-tests",
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "tests/test_engine_disjoint.py",
+            "tests/test_disjoint_output_consumer.py",
+            "tests/test_input_component_respawn.py",
+        ],
+        900,
+    ),
     ("strict-replay", [sys.executable, "tools/report_rotor_strict_replay.py"], 900),
     ("tail-search", [sys.executable, "tools/search_rotor_last_atom_tail.py"], 6000),
 ]
@@ -53,11 +65,17 @@ def run_stage(name: str, command: list[str], timeout: int) -> dict:
 
 def write_report(stages: list[dict]) -> None:
     REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text(json.dumps({
-        "schemaVersion": 1,
-        "updatedAt": datetime.now(timezone.utc).isoformat(),
-        "stages": stages,
-    }, indent=2), encoding="utf-8")
+    REPORT.write_text(
+        json.dumps(
+            {
+                "schemaVersion": 1,
+                "updatedAt": datetime.now(timezone.utc).isoformat(),
+                "stages": stages,
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
 
 def main() -> int:
@@ -66,13 +84,16 @@ def main() -> int:
         result = run_stage(name, command, timeout)
         stages.append(result)
         write_report(stages)
-        print(json.dumps({
-            "stage": name,
-            "exitCode": result["exitCode"],
-            "durationSeconds": result["durationSeconds"],
-        }), flush=True)
-        # Tests and replay are safety gates. A failed tail search is still a
-        # useful completed campaign because its best state is preserved.
+        print(
+            json.dumps(
+                {
+                    "stage": name,
+                    "exitCode": result["exitCode"],
+                    "durationSeconds": result["durationSeconds"],
+                }
+            ),
+            flush=True,
+        )
         if name != "tail-search" and result["exitCode"] != 0:
             return result["exitCode"]
     return 0
