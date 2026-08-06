@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from packages.opus_analysis import build_program_timeline
-from packages.opus_engine.final_simulator import Simulator
+from packages.opus_engine.van_berlo_simulator import Simulator
 from packages.opus_parser.solution import parse_solution_bytes
 
 PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
@@ -29,27 +29,26 @@ def state(simulator: Simulator, baron):
         for branch, position in baron.tips().items()
         if ordinary_at(simulator, position)
     }
-    inputs = {
-        source.id: {
-            "spawnCount": source.spawn_count,
-            "occupiedCount": sum(bool(ordinary_at(simulator, position)) for position in source.footprint),
-            "occupied": [
-                {"position": list(position), "atoms": ordinary_at(simulator, position)}
-                for position in source.footprint
-                if ordinary_at(simulator, position)
-            ],
-        }
-        for source in simulator.inputs
-    }
     return {
         "rotation": baron.rotation,
         "grabbing": baron.grabbing,
+        "tips": {str(branch): list(position) for branch, position in baron.tips().items()},
         "contacts": contacts,
-        "inputs": inputs,
         "ordinaryAtomCount": sum(
             1 for atom in simulator.world.atoms.values()
             if not simulator._is_wheel_atom_id(atom.id)
         ),
+        "bonds": [
+            {
+                "a": bond.a,
+                "b": bond.b,
+                "kind": bond.kind,
+                "aPosition": list(simulator.world.atoms[bond.a].position),
+                "bPosition": list(simulator.world.atoms[bond.b].position),
+                "floatingRoot": simulator.floating_bond_roots.get(key),
+            }
+            for key, bond in sorted(simulator.world.bonds.items())
+        ],
     }
 
 
@@ -63,41 +62,29 @@ def main() -> None:
     timeline = build_program_timeline(solution)
     baron = next(arm for arm in simulator.arms.values() if arm.part_type == "baron")
     rows = []
-    previous = state(simulator, baron)
-    rows.append({"cycle": 0, "phase": "initial", **previous})
 
     for row in timeline.get("cycles", []):
         instructions = {
             str(event.get("partId")): event.get("instruction")
             for event in row.get("events", [])
         }
-        baron_instruction = instructions.get(baron.id)
         before = state(simulator, baron)
         simulator.step(instructions)
         after = state(simulator, baron)
-        meaningful_events = [
-            {"kind": event.kind, **event.data}
-            for event in simulator.world.events
-            if event.kind != "arm-instruction"
-        ]
-        changed_inputs = before["inputs"] != after["inputs"]
-        changed_contacts = before["contacts"] != after["contacts"]
-        changed_atom_count = before["ordinaryAtomCount"] != after["ordinaryAtomCount"]
-        if baron_instruction or changed_inputs or changed_contacts or changed_atom_count or meaningful_events:
+        cycle = simulator.world.cycle
+        if 50 <= cycle <= 110 and (
+            instructions.get(baron.id)
+            or before["contacts"] != after["contacts"]
+            or before["bonds"] != after["bonds"]
+            or simulator.world.events
+        ):
             rows.append({
-                "cycle": simulator.world.cycle,
-                "baronInstruction": baron_instruction,
-                "events": meaningful_events,
-                "beforeContacts": before["contacts"],
-                "afterContacts": after["contacts"],
-                "beforeInputs": before["inputs"],
-                "afterInputs": after["inputs"],
-                "beforeAtomCount": before["ordinaryAtomCount"],
-                "afterAtomCount": after["ordinaryAtomCount"],
-                "baronRotation": after["rotation"],
-                "baronGrabbing": after["grabbing"],
+                "cycle": cycle,
+                "instructions": instructions,
+                "events": [{"kind": event.kind, **event.data} for event in simulator.world.events],
+                "before": before,
+                "after": after,
             })
-        previous = after
 
     print(json.dumps({
         "sourceSha256": solution.get("source", {}).get("sha256"),
