@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: om-local-worker
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   execute:
@@ -64,7 +64,7 @@ jobs:
         run: |
           git config user.name "om-local-worker"
           git config user.email "om-local-worker@users.noreply.github.com"
-          git add .om-bridge/results packages/opus_engine/final_simulator.py
+          git add .om-bridge/results reports packages/opus_engine/final_simulator.py
           git diff --cached --quiet || git commit -m "Record OMSIM worker result"
           git fetch origin feature/disjoint-solver-readiness
           git rebase origin/feature/disjoint-solver-readiness
