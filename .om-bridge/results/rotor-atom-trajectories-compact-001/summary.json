@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-atom-trajectories-compact-001",
+    "operation": "report_rotor_atom_trajectories",
+    "timeout_seconds": 900,
+    "notes": "Compact route of the first processed water/salt atoms and both pistons through cycle 70."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-atom-trajectories-compact-001.json",
+  "git_sha": "addc4bd96928e1a76d74c0e0db0ebd7330930c0a",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:54:56.164425+00:00",
+  "finished_at": "2026-08-06T03:54:56.610444+00:00",
+  "duration_seconds": 0.446,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
