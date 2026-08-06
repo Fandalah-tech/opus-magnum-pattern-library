@@ -1,0 +1,6 @@
+{
+  "id": "rotor-fixed-inventory-search-001",
+  "operation": "search_rotor_structure",
+  "timeout_seconds": 900,
+  "notes": "Rerun staged Rotor structural search while preserving the stage-3 eligible atom inventory instead of forcing target-product inventory. This blocks reagent spawning without rejecting the valid frontier state."
+}
