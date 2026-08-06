@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\report_rotor_van_berlo_duplication.py", line 61, in <module>
+    main()
+    ~~~~^^
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\report_rotor_van_berlo_duplication.py", line 17, in main
+    solution = parse_solution_bytes(
+        base64.b64decode(REFERENCE_B64.read_text(encoding="ascii")),
+        source_name="van-berlos-rotor-area47-final-mechanical-prefix.solution",
+    )
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\packages\opus_parser\solution.py", line 29, in parse_solution_bytes
+    raise ParseError(f"Unsupported solution version {version}; expected 6 or 7")
+packages.opus_parser.binary.ParseError: Unsupported solution version 1330859343; expected 6 or 7

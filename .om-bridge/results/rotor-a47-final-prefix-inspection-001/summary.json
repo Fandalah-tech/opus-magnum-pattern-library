@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a47-final-prefix-inspection-001",
+    "operation": "report_rotor_van_berlo_duplication",
+    "timeout_seconds": 900,
+    "notes": "Replay and inspect the preserved final mechanical prefix before continuation search."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a47-final-prefix-inspection-001.json",
+  "git_sha": "85e97e6a8504a6094cf6a220257846197dd8bade",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T03:26:57.913788+00:00",
+  "finished_at": "2026-08-06T03:26:58.421112+00:00",
+  "duration_seconds": 0.507,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
