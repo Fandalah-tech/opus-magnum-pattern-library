@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-half-full-structure-report-001",
+    "operation": "report_rotor_prefix",
+    "timeout_seconds": 900,
+    "notes": "Measure the human half-completion while including atoms held by the Van Berlo rotor in the structural goal."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-half-full-structure-report-001.json",
+  "git_sha": "09205e0586c5e2460b95754b70c56ea1b2cb470f",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T01:36:00.721687+00:00",
+  "finished_at": "2026-08-06T01:36:01.264928+00:00",
+  "duration_seconds": 0.543,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
