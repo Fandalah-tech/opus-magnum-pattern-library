@@ -1,0 +1,6 @@
+{
+  "id": "rotor-a47-after-piston-floor-001",
+  "operation": "report_rotor_van_berlo_duplication",
+  "timeout_seconds": 900,
+  "notes": "Measure lifecycle after allowing placed length-2 pistons to retract to length 1."
+}
