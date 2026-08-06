@@ -1,0 +1,6 @@
+{
+  "id": "post-disjoint-reference-regression-001",
+  "operation": "run_reference_regression",
+  "timeout_seconds": 3600,
+  "notes": "Check all saved references after piston, component respawn, bonder-chain, and disjoint-output changes."
+}
