@@ -1,0 +1,6 @@
+{
+  "id": "rotor-last-atom-tail-001",
+  "operation": "search_rotor_last_atom_tail",
+  "timeout_seconds": 6000,
+  "notes": "Replay the preserved last-isolated-atom prefix, then search a coordinated two-arm/Van-Berlo continuation for a delivered product or the best mechanically closer state."
+}
