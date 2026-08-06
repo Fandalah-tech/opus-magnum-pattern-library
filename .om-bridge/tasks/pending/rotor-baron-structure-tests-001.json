@@ -1,0 +1,9 @@
+{
+  "id": "rotor-baron-structure-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": [
+    "tests/test_structure_goal_baron.py"
+  ],
+  "notes": "Validate opt-in matching of atoms held by the Van Berlo rotor."
+}
