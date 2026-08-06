@@ -1,0 +1,7 @@
+{
+  "id": "rotor-input-components-tests-001",
+  "operation": "run_tests",
+  "timeout_seconds": 900,
+  "pytest_targets": ["tests/test_input_source_components.py"],
+  "notes": "Validate bond-connected component semantics for disjoint reagents."
+}
