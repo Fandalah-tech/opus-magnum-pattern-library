@@ -1,0 +1,6 @@
+{
+  "id": "rotor-autonomous-campaign-004",
+  "operation": "run_rotor_autonomous_campaign",
+  "timeout_seconds": 21600,
+  "notes": "Expose exact failing safety test, then continue strict replay and tail search when green."
+}
