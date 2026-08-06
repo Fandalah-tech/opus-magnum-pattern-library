@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "input-component-respawn-tests-001",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_input_component_respawn.py"
+    ],
+    "notes": "Validate independent respawn of disconnected reagent components and all-or-nothing respawn of bonded components."
+  },
+  "task_file": ".om-bridge/tasks/pending/input-component-respawn-tests-001.json",
+  "git_sha": "471028f67425a2360f547e45d8e26434161d5755",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T08:25:54.559193+00:00",
+  "finished_at": "2026-08-06T08:25:55.808406+00:00",
+  "duration_seconds": 1.249,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
