@@ -16,7 +16,8 @@ PUZZLE = Path("fixtures/puzzles/van-berlos-rotor.parsed.json")
 REFERENCE_B64 = Path("fixtures/solutions/van-berlos-rotor-area47-last-isolated-atom-prefix.solution.b64")
 HEARTBEAT = Path("reports/rotor-tail-search-heartbeat.json")
 MAX_DEPTH = 28
-MAX_STATES = 750_000
+BEAM_WIDTH = 750
+MAX_STATES = 250_000
 TIME_LIMIT_SECONDS = 5_400
 PUBLISHER = GitHubLiveStatusPublisher(min_interval_seconds=60.0)
 
@@ -88,6 +89,7 @@ def report_progress(progress: dict, *, force_publish: bool = False, status: str 
         "status": status,
         "stage": "tail-search",
         "maxDepth": MAX_DEPTH,
+        "beamWidth": BEAM_WIDTH,
         "maxStates": MAX_STATES,
         "timeLimitSeconds": TIME_LIMIT_SECONDS,
         **progress,
@@ -115,7 +117,7 @@ def main() -> None:
             action_options[arm_id] = (None, "rotate_cw", "rotate_ccw", "drop")
 
     report_progress({
-        "message": "Préfixe rejoué. Initialisation du beam search.",
+        "message": "Préfixe rejoué. Initialisation du beam search borné en mémoire.",
         "depth": 0,
         "elapsedSeconds": 0,
         "visitedStates": 1,
@@ -130,7 +132,7 @@ def main() -> None:
         lambda state: state.delivered_products.get(output_id, 0) > 0,
         output_score,
         max_depth=MAX_DEPTH,
-        beam_width=3000,
+        beam_width=BEAM_WIDTH,
         max_states=MAX_STATES,
         max_active_arms=2,
         include_idle=False,
