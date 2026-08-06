@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-area47-chemistry-001",
+    "operation": "solve_rotor_area47_chemistry",
+    "timeout_seconds": 1800,
+    "notes": "Exhaustively search the six current Van Berlo rotation decision points in IDEAL SETUP 9 while preserving all piston mechanics."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-area47-chemistry-001.json",
+  "git_sha": "dc0c298bb229ec6c8c3a08a97197a8a2c30f04e5",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T02:44:14.034801+00:00",
+  "finished_at": "2026-08-06T02:44:36.510730+00:00",
+  "duration_seconds": 22.476,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}
