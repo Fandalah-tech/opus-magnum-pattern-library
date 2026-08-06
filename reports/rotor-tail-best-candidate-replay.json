@@ -1,0 +1,4085 @@
+{
+  "schemaVersion": 1,
+  "title": "Van Berlo's Rotor — candidat score 599",
+  "isCompleteSolution": false,
+  "source": "reports/rotor-tail-best-candidate.json",
+  "bestScore": 599,
+  "frames": [
+    {
+      "index": 0,
+      "action": {},
+      "state": {
+        "cycle": 198,
+        "score": -56,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              4,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -4
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              2,
+              -2
+            ],
+            "rotation": 4,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  2,
+                  -4
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 5,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "action": {
+        "part-10": "grab",
+        "part-8": "rotate_ccw"
+      },
+      "state": {
+        "cycle": 199,
+        "score": -56,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              4,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -3
+            ],
+            "heldBy": [
+              "part-10"
+            ]
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -4
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              2,
+              -4
+            ],
+            "bPosition": [
+              1,
+              -3
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              2,
+              -2
+            ],
+            "rotation": 5,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  4,
+                  -4
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 5,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-9-spawn-0-atom-0"
+              }
+            ],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "action": {
+        "part-10": "rotate_cw",
+        "part-8": "track_plus"
+      },
+      "state": {
+        "cycle": 200,
+        "score": 210,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              4,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": [
+              "part-10"
+            ]
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              2,
+              -1
+            ],
+            "rotation": 5,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  4,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-9-spawn-0-atom-0"
+              }
+            ],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 3,
+      "action": {
+        "part-10": "drop",
+        "part-8": "grab"
+      },
+      "state": {
+        "cycle": 201,
+        "score": 215,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              4,
+              -3
+            ],
+            "heldBy": [
+              "part-8"
+            ]
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              2,
+              -1
+            ],
+            "rotation": 5,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  4,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-4-spawn-0-atom-0"
+              }
+            ],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "action": {
+        "part-8": "track_plus"
+      },
+      "state": {
+        "cycle": 202,
+        "score": 338,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": [
+              "part-8"
+            ]
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 5,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  5,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-4-spawn-0-atom-0"
+              }
+            ],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 5,
+      "action": {
+        "part-8": "drop"
+      },
+      "state": {
+        "cycle": 203,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 5,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  5,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 6,
+      "action": {
+        "part-8": "rotate_cw"
+      },
+      "state": {
+        "cycle": 204,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 4,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 7,
+      "action": {
+        "part-8": "grab"
+      },
+      "state": {
+        "cycle": 205,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 4,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 8,
+      "action": {
+        "part-8": "rotate_cw"
+      },
+      "state": {
+        "cycle": 206,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 9,
+      "action": {
+        "part-8": "rotate_cw"
+      },
+      "state": {
+        "cycle": 207,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 10,
+      "action": {
+        "part-8": "extend"
+      },
+      "state": {
+        "cycle": 208,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -1
+            ],
+            "rotation": 2,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  2
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 1,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 11,
+      "action": {
+        "part-8": "track_plus"
+      },
+      "state": {
+        "cycle": 209,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              4,
+              -2
+            ],
+            "rotation": 2,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 2,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 12,
+      "action": {
+        "part-8": "rotate_cw"
+      },
+      "state": {
+        "cycle": 210,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              4,
+              -2
+            ],
+            "rotation": 1,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  4,
+                  1
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 2,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 13,
+      "action": {
+        "part-8": "track_plus"
+      },
+      "state": {
+        "cycle": 211,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              4,
+              -3
+            ],
+            "rotation": 1,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  4,
+                  0
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 3,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 2,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -1
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 14,
+      "action": {
+        "part-10": "rotate_ccw",
+        "part-8": "rotate_cw"
+      },
+      "state": {
+        "cycle": 212,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              4,
+              -3
+            ],
+            "rotation": 0,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  7,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [],
+            "trackIndex": 3,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 15,
+      "action": {
+        "part-10": "rotate_ccw",
+        "part-8": "grab"
+      },
+      "state": {
+        "cycle": 213,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              7,
+              -3
+            ],
+            "heldBy": [
+              "part-8"
+            ]
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              4,
+              -3
+            ],
+            "rotation": 0,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  7,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-4-spawn-0-atom-1"
+              }
+            ],
+            "trackIndex": 3,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 4,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  -5
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 16,
+      "action": {
+        "part-10": "grab",
+        "part-8": "rotate_ccw"
+      },
+      "state": {
+        "cycle": 214,
+        "score": 343,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              4,
+              0
+            ],
+            "heldBy": [
+              "part-8"
+            ]
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              3,
+              -5
+            ],
+            "heldBy": [
+              "part-10"
+            ]
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              4,
+              -3
+            ],
+            "rotation": 1,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  4,
+                  0
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-4-spawn-0-atom-1"
+              }
+            ],
+            "trackIndex": 3,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 4,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  -5
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-9-spawn-1-atom-0"
+              }
+            ],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 17,
+      "action": {
+        "part-10": "rotate_cw",
+        "part-8": "track_plus"
+      },
+      "state": {
+        "cycle": 215,
+        "score": 466,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              3,
+              0
+            ],
+            "heldBy": [
+              "part-8"
+            ]
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              1,
+              -3
+            ],
+            "heldBy": [
+              "part-10"
+            ]
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 1,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  0
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-4-spawn-0-atom-1"
+              }
+            ],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  1,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-9-spawn-1-atom-0"
+              }
+            ],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 18,
+      "action": {
+        "part-10": "track_minus",
+        "part-8": "drop"
+      },
+      "state": {
+        "cycle": 216,
+        "score": 594,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              3,
+              0
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              2,
+              -3
+            ],
+            "heldBy": [
+              "part-10"
+            ]
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 1,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  0
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              4,
+              -3
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  2,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": true,
+            "heldAtoms": [
+              {
+                "branchIndex": 0,
+                "atomId": "part-9-spawn-1-atom-0"
+              }
+            ],
+            "trackIndex": 3,
+            "trackCellCount": 6
+          }
+        }
+      }
+    },
+    {
+      "index": 19,
+      "action": {
+        "part-10": "drop"
+      },
+      "state": {
+        "cycle": 217,
+        "score": 599,
+        "delivered": {},
+        "atoms": [
+          {
+            "id": "part-4-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              5,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              3,
+              0
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-4-spawn-0-atom-2",
+            "element": "salt",
+            "position": [
+              3,
+              1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-0",
+            "element": "salt",
+            "position": [
+              1,
+              -1
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-0-atom-1",
+            "element": "salt",
+            "position": [
+              1,
+              -2
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-0",
+            "element": "water",
+            "position": [
+              2,
+              -3
+            ],
+            "heldBy": []
+          },
+          {
+            "id": "part-9-spawn-1-atom-1",
+            "element": "salt",
+            "position": [
+              2,
+              -5
+            ],
+            "heldBy": []
+          }
+        ],
+        "bonds": [
+          {
+            "a": "part-9-spawn-0-atom-1",
+            "b": "part-9-spawn-0-atom-0",
+            "kind": "normal",
+            "aPosition": [
+              1,
+              -2
+            ],
+            "bPosition": [
+              1,
+              -1
+            ]
+          }
+        ],
+        "arms": {
+          "part-1": {
+            "partId": "part-1",
+            "partType": "baron",
+            "origin": [
+              0,
+              3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "branchCount": 6,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  0,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 1,
+                "position": [
+                  -1,
+                  4
+                ]
+              },
+              {
+                "branchIndex": 2,
+                "position": [
+                  -1,
+                  3
+                ]
+              },
+              {
+                "branchIndex": 3,
+                "position": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 4,
+                "position": [
+                  1,
+                  2
+                ]
+              },
+              {
+                "branchIndex": 5,
+                "position": [
+                  1,
+                  3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 0,
+            "trackCellCount": 6
+          },
+          "part-8": {
+            "partId": "part-8",
+            "partType": "piston",
+            "origin": [
+              3,
+              -3
+            ],
+            "rotation": 1,
+            "length": 3,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  3,
+                  0
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 4,
+            "trackCellCount": 6
+          },
+          "part-10": {
+            "partId": "part-10",
+            "partType": "piston",
+            "origin": [
+              4,
+              -3
+            ],
+            "rotation": 3,
+            "length": 2,
+            "branchCount": 1,
+            "tips": [
+              {
+                "branchIndex": 0,
+                "position": [
+                  2,
+                  -3
+                ]
+              }
+            ],
+            "grabbing": false,
+            "heldAtoms": [],
+            "trackIndex": 3,
+            "trackCellCount": 6
+          }
+        }
+      }
+    }
+  ]
+}
