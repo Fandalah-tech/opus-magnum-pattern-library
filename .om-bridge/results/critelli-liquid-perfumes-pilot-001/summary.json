@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "critelli-liquid-perfumes-pilot-001",
+    "operation": "import_critelli_liquid_perfumes",
+    "timeout_seconds": 1800,
+    "notes": "Pilot the provenance-safe Critelli importer on Liquid Perfumes. Download the public puzzle and at most 25 publicly linked submissions into the ignored local dataset directory; commit only the import report and bridge logs."
+  },
+  "task_file": ".om-bridge/tasks/pending/critelli-liquid-perfumes-pilot-001.json",
+  "git_sha": "4f94e7716740a319ae7ea32ac387ba7637a3758d",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-06T14:41:34.274693+00:00",
+  "finished_at": "2026-08-06T14:41:53.974428+00:00",
+  "duration_seconds": 19.699,
+  "exit_code": 3,
+  "status": "failed",
+  "error": null
+}
