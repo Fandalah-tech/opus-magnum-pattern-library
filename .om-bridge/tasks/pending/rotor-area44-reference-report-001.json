@@ -1,0 +1,6 @@
+{
+  "id": "rotor-area44-reference-report-001",
+  "operation": "report_rotor_prefix",
+  "timeout_seconds": 300,
+  "notes": "Replay the uploaded A44 IDEAL SETUP 6 reference cycle by cycle and report structural transitions, especially Baron rotations and plateau crossings."
+}
