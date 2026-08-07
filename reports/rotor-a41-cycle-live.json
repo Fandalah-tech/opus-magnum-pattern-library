@@ -3,7 +3,7 @@
   "campaignId": "rotor-a41-cycle-001",
   "stage": "analysis-complete",
   "status": "completed",
-  "updatedAt": "2026-08-07T01:52:37.276392+00:00",
+  "updatedAt": "2026-08-07T01:56:02.634559+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -38,7 +38,7 @@
     }
   ],
   "message": "Passe de retiming A41 terminee; aucun gain n'est declare sans validation OMSIM complete.",
-  "elapsedSeconds": 60.4,
+  "elapsedSeconds": 60.3,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
   "referenceMatch": "embedded-fixture",
   "referenceSource": "embedded-reference",
