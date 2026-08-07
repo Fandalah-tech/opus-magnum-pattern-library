@@ -13,6 +13,7 @@ from typing import Any
 MAX_TIMEOUT_SECONDS = 6 * 60 * 60
 ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "run_tests": [sys.executable, "-m", "pytest", "-q"],
+    "diagnose_local_opus_access": [sys.executable, "tools/diagnose_local_opus_access.py"],
     "run_reference_regression": [sys.executable, "tools/run_reference_regression.py", "--manifest", "fixtures/reference/campaign-p007-p015.manifest.json", "--fixtures", ".private-fixtures/files", "--validator-url", "https://opus-validator-6gflgqb25q-nn.a.run.app", "--output", "reports/campaign-p007-p015-local.json"],
     "search_rotor_structure": [sys.executable, "tools/search_rotor_structure.py"],
     "search_rotor_half_geometry": [sys.executable, "tools/search_rotor_half_geometry.py"],
