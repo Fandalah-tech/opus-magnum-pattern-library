@@ -189,9 +189,32 @@ function Stop-ProcessTree {
   try { & taskkill.exe /PID $ProcessId /T /F 2>$null | Out-Null } catch {}
 }
 
+function Get-WorkerExitCode {
+  param([System.Diagnostics.Process]$Process, [string]$Repo, [string]$TaskId)
+  try { $Process.WaitForExit() } catch {}
+  try {
+    $code = [int]$Process.ExitCode
+    if ($code -ge 0) { return $code }
+  } catch {}
+  $summaryPath = Join-Path $Repo ".om-bridge\results\$TaskId\summary.json"
+  if (Test-Path $summaryPath) {
+    try {
+      $summary = Get-Content -Raw -Path $summaryPath | ConvertFrom-Json
+      if ($null -ne $summary.exit_code) {
+        Write-AgentLog "ExitCode recupere du summary worker: $($summary.exit_code)"
+        return [int]$summary.exit_code
+      }
+    } catch { Write-AgentLog "Summary worker illisible: $($_.Exception.Message)" }
+  }
+  Write-AgentLog 'ExitCode worker indisponible; classification en echec par securite.'
+  return 1
+}
+
 function Invoke-Task {
   param([string]$Repo, [object]$Selected, [string]$ResolvedOpusRoot)
   $task = $Selected.File
+  $taskData = Get-Content -Raw -Path $task.FullName | ConvertFrom-Json
+  $taskId = if ($taskData.id) { [string]$taskData.id } else { $task.BaseName }
   $stdoutPath = Join-Path $AgentRoot 'worker.stdout.log'
   $stderrPath = Join-Path $AgentRoot 'worker.stderr.log'
   Remove-Item $stdoutPath,$stderrPath -Force -ErrorAction SilentlyContinue
@@ -220,14 +243,14 @@ function Invoke-Task {
       if ($desired -ne 'running') {
         Write-AgentLog "Interruption worker demandee: $desired"
         Stop-ProcessTree -ProcessId $proc.Id
-        $proc.WaitForExit()
+        try { $proc.WaitForExit() } catch {}
         return [PSCustomObject]@{ Interrupted = $true; ExitCode = 130 }
       }
     }
 
+    $exitCode = Get-WorkerExitCode -Process $proc -Repo $Repo -TaskId $taskId
     if (Test-Path $stdoutPath) { Get-Content $stdoutPath | ForEach-Object { Write-AgentLog "worker: $_" } }
     if (Test-Path $stderrPath) { Get-Content $stderrPath | ForEach-Object { Write-AgentLog "worker-err: $_" } }
-    $exitCode = $proc.ExitCode
     $destinationFolder = if ($exitCode -eq 0) { '.om-bridge\tasks\completed' } else { '.om-bridge\tasks\failed' }
     New-Item -ItemType Directory -Force -Path $destinationFolder | Out-Null
     Invoke-GitLogged -Arguments @('mv','--',$task.FullName,(Join-Path $destinationFolder $task.Name)) | Out-Null
