@@ -9,6 +9,7 @@ on:
       - "data/viewer-demo-payload.json"
       - "data/viewer-arm-gallery-payload.json"
       - "data/viewer-piece-gallery-payload.json"
+      - "data/viewer-io-gallery-payload.json"
       - "assets/js/pair-library.js"
       - "assets/js/viewer-pair-library.js"
       - "assets/js/opus-geometry.js"
@@ -18,6 +19,7 @@ on:
       - "assets/js/solution-viewer.js"
       - "assets/js/opus-viewer-runtime.js"
       - "assets/js/viewer-app.js"
+      - "assets/js/output-product-preview.js"
       - "assets/js/replay-controls.js"
       - "assets/js/replay-arm-animation.js"
       - "assets/js/replay-molecules.js"
@@ -68,7 +70,6 @@ jobs:
               page.wait_for_selector('#solution-viewer [data-part-id="arm-six"]')
               page.wait_for_selector('#solution-viewer [data-atom-id="atom-salt"]', state='attached')
               page.wait_for_timeout(240)
-
               assert page.locator('#viewer-metric-area').inner_text() == '18'
               assert page.locator('[data-replay-range]').get_attribute('max') == '3'
               atom = page.locator('#solution-viewer [data-atom-id="atom-salt"] .replay-atom-core')
@@ -155,6 +156,20 @@ jobs:
               assert track.locator('.viewer-track-rail').count() == 1
               assert track.locator(':scope > circle').count() == 4
               page.locator('#solution-viewer').screenshot(path=str(out / '20-piece-gallery.png'))
+
+              # Reagent/product molecule previews.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=io', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              input_group = page.locator('#solution-viewer [data-part-id="io-input"]')
+              output_group = page.locator('#solution-viewer [data-part-id="io-output"]')
+              assert input_group.locator('[data-input-preview]').count() == 1
+              assert output_group.locator('[data-output-preview]').count() == 1
+              assert input_group.locator('.viewer-input-atom-core').count() == 2
+              assert output_group.locator('.viewer-output-atom-core').count() == 3
+              assert input_group.locator('.viewer-input-bond-normal').count() == 1
+              assert output_group.locator('.viewer-output-bond-normal').count() == 1
+              assert output_group.locator('.viewer-output-bond-triplex').count() == 1
+              page.locator('#solution-viewer').screenshot(path=str(out / '25-io-molecule-previews.png'))
 
               # Browser-private Library -> Viewer bridge.
               page.goto('http://127.0.0.1:8765/viewer.html', wait_until='networkidle', timeout=120000)
