@@ -68,38 +68,46 @@ def _part(part_id: str, part_type: str, position, *, rotation=0, length=1, which
 def _solution() -> dict:
     return {
         "parts": [
-            _part("out", "out-std", (0, 0), which=0),
-            _part("salt-arm", "arm1", (-2, 0), rotation=4, length=2),
-            _part("water-arm", "arm1", (2, -2), rotation=0, length=1),
+            # After the second cross-bond, the complete molecule has been
+            # pivoted +60 degrees around w0. This output matches that pose.
+            _part("out", "out-std", (1, -1), rotation=1, which=0),
+            _part("a-salt-arm", "arm1", (-2, 0), rotation=4, length=2),
+            _part("b-water-arm", "arm1", (2, -2), rotation=0, length=1),
+            # This arm's tip is fixed on the shared water atom (1, 0). It takes
+            # over after the feed arms release and pivots the assembled molecule
+            # so the same standard bonder can make the second cross-bond.
+            _part("z-pivot-arm", "arm1", (2, 0), rotation=3, length=1),
             _part("salt-input", "input", (-2, -2), rotation=4, which=0),
             _part("water-input", "input", (3, -2), rotation=5, which=1),
             _part("calc-0", "glyph-calcification", (0, -2)),
             _part("calc-1", "glyph-calcification", (1, -2)),
             _part("calc-2", "glyph-calcification", (0, -1)),
-            # Deliberately engine-first: these two bonders share the water cell.
-            # This proves the manufacturing schedule before enforcing physical
-            # part-overlap legality in the layout search.
-            _part("bond-0", "bonder", (0, 0), rotation=0),
-            _part("bond-1", "bonder", (0, 1), rotation=5),
+            # One physical bonder only. In the initial assembly pose it creates
+            # s0-w0. After pivot_ccw around w0, s2 occupies the same salt cell
+            # and the glyph creates s2-w0.
+            _part("bond", "bonder", (0, 0), rotation=0),
         ]
     }
 
 
 PERIOD = [
-    {"salt-arm": "grab", "water-arm": "grab"},
-    {"salt-arm": "rotate_ccw"},
-    {"salt-arm": "rotate_ccw"},
-    {"salt-arm": "drop", "water-arm": "rotate_ccw"},
-    {"salt-arm": "rotate_cw", "water-arm": "drop"},
-    {"salt-arm": "rotate_cw", "water-arm": "rotate_cw"},
+    {"a-salt-arm": "grab", "b-water-arm": "grab"},
+    {"a-salt-arm": "rotate_ccw"},
+    {"a-salt-arm": "rotate_ccw"},
+    {"a-salt-arm": "drop", "b-water-arm": "rotate_ccw"},
+    # Arm IDs deliberately sort in feed->pivot order, so b-water-arm drops
+    # before z-pivot-arm grabs the shared atom in this same cycle.
+    {"a-salt-arm": "rotate_cw", "b-water-arm": "drop", "z-pivot-arm": "grab"},
+    {"a-salt-arm": "rotate_cw", "b-water-arm": "rotate_cw", "z-pivot-arm": "pivot_ccw"},
+    {"z-pivot-arm": "drop"},
 ]
 
 
-def test_engine_first_candidate_delivers_six_products() -> None:
+def test_single_bonder_candidate_delivers_six_products() -> None:
     simulator = Simulator.from_models(_puzzle(), _solution())
     for _ in range(6):
         for instructions in PERIOD:
             simulator.step(instructions)
 
     assert simulator.delivered_products == {"out": 6}
-    assert simulator.world.cycle == 36
+    assert simulator.world.cycle == 42
