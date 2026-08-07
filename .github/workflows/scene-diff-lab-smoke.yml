@@ -1,0 +1,110 @@
+name: Scene Diff Lab smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scene-diff.html"
+      - "assets/css/scene-diff.css"
+      - "assets/js/scene-diff-app.js"
+      - "assets/js/opus-scene.js"
+      - "assets/js/opus-scene-diff.js"
+      - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-svg-diff-overlay.js"
+      - "assets/js/opus-viewer-runtime.js"
+      - ".github/workflows/scene-diff-lab-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scene-diff-lab-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Validate standalone Scene Diff Lab
+        run: |
+          python -m http.server 8765 >/tmp/scene-diff-lab-http.log 2>&1 &
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          before_payload = json.loads(Path('data/viewer-piece-gallery-payload.json').read_text(encoding='utf-8'))
+          after_payload = json.loads(json.dumps(before_payload))
+          parts = after_payload['solution']['parts']
+          parts[0]['position'] = [parts[0]['position'][0] + 2, parts[0]['position'][1] - 1]
+          parts[1]['rotation'] = (parts[1].get('rotation', 0) + 1) % 6
+          parts.pop(2)
+          added = json.loads(json.dumps(parts[0]))
+          added['id'] = 'lab-added-part'
+          added['position'] = [10, -7]
+          parts.append(added)
+          after_payload.setdefault('validation', {}).setdefault('metrics', {})['cost'] = 777
+          after_payload['solution'].setdefault('metrics', {})['cost'] = 777
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1440, 'height': 1000})
+              errors = []
+              requests = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+
+              def fulfill(route):
+                  requests.append(route.request.url)
+                  payload = before_payload if len(requests) == 1 else after_payload
+                  route.fulfill(status=200, content_type='application/json', body=json.dumps(payload))
+
+              page.route('**/api/v1/analyze', fulfill)
+              page.goto('http://127.0.0.1:8765/scene-diff.html', wait_until='networkidle', timeout=120000)
+              page.set_input_files('#diff-puzzle-file', 'samples/solver/P007.puzzle')
+              page.set_input_files('#diff-solution-before', 'samples/solver/P007-auto.solution')
+              page.set_input_files('#diff-solution-after', 'samples/solver/P007-auto.solution')
+              assert page.locator('#diff-analyze').is_enabled()
+              page.locator('#diff-analyze').click()
+              page.wait_for_function("window.__OPUS_SCENE_DIFF__?.kind === 'opus-scene-diff'", timeout=30000)
+              page.wait_for_selector('#diff-result:not([hidden])')
+
+              state = page.evaluate("""() => ({
+                requestCount: 2,
+                diffKind: window.__OPUS_SCENE_DIFF__.kind,
+                beforeKind: window.__OPUS_SCENE_DIFF_BEFORE__.kind,
+                afterKind: window.__OPUS_SCENE_DIFF_AFTER__.kind,
+                summary: window.__OPUS_SCENE_DIFF__.summary,
+                renderedParts: document.querySelectorAll('#diff-svg [data-part-id]').length,
+                moveLines: document.querySelectorAll('#diff-svg [data-diff-kind="moved"]').length,
+                changedRings: document.querySelectorAll('#diff-svg [data-diff-kind="changed"]').length,
+                viewBox: document.querySelector('#diff-svg').getAttribute('viewBox'),
+                hasSolutionViewerRoot: Boolean(document.querySelector('#solution-viewer')),
+                status: document.querySelector('#diff-status').textContent
+              })""")
+              state['requestCount'] = len(requests)
+              assert state['requestCount'] == 2, state
+              assert state['diffKind'] == 'opus-scene-diff', state
+              assert state['beforeKind'] == 'opus-scene' and state['afterKind'] == 'opus-scene', state
+              assert state['summary']['addedParts'] == 1, state
+              assert state['summary']['removedParts'] == 1, state
+              assert state['summary']['movedParts'] >= 1, state
+              assert state['renderedParts'] == len(after_payload['solution']['parts']), state
+              assert state['moveLines'] >= 1, state
+              assert state['changedRings'] >= 1, state
+              assert state['viewBox'], state
+              assert state['hasSolutionViewerRoot'] is False, state
+              assert state['status'] == 'Comparison complete.', state
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
