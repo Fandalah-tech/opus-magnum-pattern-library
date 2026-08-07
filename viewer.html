@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Standalone Opus Magnum puzzle and solution viewer.">
+  <title>Viewer · Opus Magnum Codex</title>
+  <link rel="stylesheet" href="assets/css/inspector.css">
+  <link rel="stylesheet" href="assets/css/solution-viewer.css">
+  <link rel="stylesheet" href="assets/css/replay-controls.css">
+  <link rel="stylesheet" href="assets/css/validation-status.css">
+  <link rel="stylesheet" href="assets/css/viewer-replay-enhancements.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Back to the Codex"><span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Viewer</strong></span></a>
+    <nav><a href="index.html">Codex</a><a href="library.html">Library</a><a href="inspector.html">Laboratory</a><a class="active" href="viewer.html">Viewer</a></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">GRAPHICS ENGINE · REUSABLE VIEWER</p>
+      <h1>Render a solution</h1>
+      <p>A lightweight viewer focused on the machine itself: geometry, parts, replay, molecules and inspection.</p>
+    </section>
+
+    <section class="upload-panel">
+      <label class="file-card"><span class="file-icon">⬡</span><strong>Puzzle file</strong><small>Choose a .puzzle file</small><input id="viewer-puzzle-file" type="file" accept=".puzzle,application/octet-stream"></label>
+      <label class="file-card"><span class="file-icon">⌬</span><strong>Solution file</strong><small>Choose a .solution file</small><input id="viewer-solution-file" type="file" accept=".solution,application/octet-stream"></label>
+      <button id="viewer-analyze" disabled>Render pair</button>
+      <p id="viewer-status" role="status">Choose a matching .puzzle and .solution file.</p>
+    </section>
+
+    <section id="viewer-result" hidden>
+      <div class="summary-head"><div><p class="eyebrow">RENDER</p><h2 id="viewer-solution-title">Solution</h2><p id="viewer-puzzle-title"></p></div><span id="viewer-validity" class="status-badge"></span></div>
+      <div class="metrics" aria-label="Metrics"><article><small>Cycles</small><strong id="viewer-metric-cycles">—</strong></article><article><small>Cost</small><strong id="viewer-metric-cost">—</strong></article><article><small>Area</small><strong id="viewer-metric-area">—</strong></article><article><small>Instructions</small><strong id="viewer-metric-instructions">—</strong></article></div>
+
+      <article id="solution-viewer" class="solution-viewer">
+        <div class="viewer-head"><div><h3>Solution viewer</h3><p class="hint">Select a part to inspect it. Drag to pan and use the mouse wheel to zoom.</p></div><div class="viewer-tools"><button type="button" data-viewer-fit>Fit</button><button type="button" data-viewer-reset>Reset</button><span data-viewer-zoom>100%</span></div></div>
+        <div class="replay-controls" aria-label="Replay controls"><button type="button" data-replay-previous disabled aria-label="Previous cycle">◀</button><button type="button" data-replay-play disabled>Play</button><button type="button" data-replay-next disabled aria-label="Next cycle">▶</button><input type="range" data-replay-range min="0" max="0" value="0" disabled aria-label="Replay cycle"><span class="replay-cycle" data-replay-cycle>Cycle —</span><select data-replay-speed disabled aria-label="Replay speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><p class="replay-note" data-replay-note>Render a pair to initialize replay.</p></div>
+        <div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Interactive solution map" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details><p class="hint">Select a part on the map.</p></aside></div>
+      </article>
+    </section>
+  </main>
+  <footer>Unofficial research project. Validation powered by omsim; Opus Magnum was created by Zachtronics.</footer>
+
+  <script src="assets/js/opus-geometry.js"></script>
+  <script src="assets/js/opus-piece-symbols.js"></script>
+  <script src="assets/js/opus-renderer-core.js"></script>
+  <script src="assets/js/solution-viewer.js"></script>
+  <script src="assets/js/opus-viewer-runtime.js"></script>
+  <script src="assets/js/replay-controls.js"></script>
+  <script src="assets/js/replay-arm-animation.js"></script>
+  <script src="assets/js/replay-molecules.js"></script>
+  <script src="assets/js/solution-viewer-symbols.js"></script>
+  <script src="assets/js/output-product-preview.js"></script>
+  <script src="assets/js/viewer-interactions.js"></script>
+  <script src="assets/js/used-area-overlay.js"></script>
+  <script src="assets/js/product-delivery-animation.js"></script>
+  <script src="assets/js/viewer-polish.js"></script>
+  <script src="assets/js/viewer-app.js"></script>
+</body>
+</html>
