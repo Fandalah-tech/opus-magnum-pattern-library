@@ -56,12 +56,36 @@ jobs:
               page.wait_for_selector('#solution-viewer [data-part-id="arm-main"]')
               page.wait_for_selector('#solution-viewer [data-part-id="arm-six"]')
               page.wait_for_selector('#solution-viewer [data-atom-id="atom-salt"]', state='attached')
+              page.wait_for_timeout(240)
+
               assert page.locator('#viewer-metric-area').inner_text() == '18'
               assert page.locator('[data-replay-range]').get_attribute('max') == '3'
+
+              atom = page.locator('#solution-viewer [data-atom-id="atom-salt"] .replay-atom-core')
+              arm_shaft = page.locator('#solution-viewer [data-part-id="arm-main"] [data-arm-shaft="0"]')
+              initial_atom = (float(atom.get_attribute('cx')), float(atom.get_attribute('cy')))
+              initial_tip = (float(arm_shaft.get_attribute('x2')), float(arm_shaft.get_attribute('y2')))
+              page.locator('#solution-viewer').screenshot(path=str(out / '00-initial.png'))
+
               page.locator('[data-replay-next]').click()
-              page.wait_for_timeout(300)
+              page.wait_for_timeout(260)
               assert 'Cycle 1' in page.locator('[data-replay-cycle]').inner_text()
-              page.locator('#solution-viewer').screenshot(path=str(out / 'viewer-demo.png'))
+              cycle1_atom = (float(atom.get_attribute('cx')), float(atom.get_attribute('cy')))
+              assert abs(cycle1_atom[0] - initial_atom[0]) + abs(cycle1_atom[1] - initial_atom[1]) > 80
+              page.locator('#solution-viewer').screenshot(path=str(out / '01-cycle-1.png'))
+
+              page.locator('[data-replay-next]').click()
+              page.wait_for_timeout(260)
+              assert 'Cycle 2' in page.locator('[data-replay-cycle]').inner_text()
+              cycle2_tip = (float(arm_shaft.get_attribute('x2')), float(arm_shaft.get_attribute('y2')))
+              assert abs(cycle2_tip[0] - initial_tip[0]) + abs(cycle2_tip[1] - initial_tip[1]) > 50
+              page.locator('#solution-viewer').screenshot(path=str(out / '02-cycle-2.png'))
+
+              page.locator('[data-replay-next]').click()
+              page.wait_for_timeout(260)
+              assert 'Cycle 3' in page.locator('[data-replay-cycle]').inner_text()
+              page.locator('#solution-viewer').screenshot(path=str(out / '03-cycle-3.png'))
+
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
               browser.close()
