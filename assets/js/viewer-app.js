@@ -11,7 +11,8 @@
   const FIXTURES = {
     demo: 'data/viewer-demo-payload.json',
     arms: 'data/viewer-arm-gallery-payload.json',
-    pieces: 'data/viewer-piece-gallery-payload.json'
+    pieces: 'data/viewer-piece-gallery-payload.json',
+    io: 'data/viewer-io-gallery-payload.json'
   };
 
   function updateReady() {
