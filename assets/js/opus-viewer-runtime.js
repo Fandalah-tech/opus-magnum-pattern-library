@@ -28,6 +28,14 @@
     return viewer;
   }
 
+  async function loadPayload(url, options = {}) {
+    const response = await fetch(url, { cache: options.cache || "no-store", signal: options.signal });
+    if (!response.ok) throw new Error(`GET payload → ${response.status}: ${await response.text()}`);
+    const payload = await response.json();
+    if (options.render !== false) renderPayload(payload, options.root || "#solution-viewer");
+    return payload;
+  }
+
   async function analyzeFiles(puzzleFile, solutionFile, options = {}) {
     if (!puzzleFile || !solutionFile) throw new Error("Puzzle and solution files are required");
     const api = String(options.api || DEFAULT_API).replace(/\/$/, "");
@@ -53,6 +61,7 @@
     ANALYZE_ENDPOINT,
     mount,
     renderPayload,
+    loadPayload,
     analyzeFiles,
     fit
   });
