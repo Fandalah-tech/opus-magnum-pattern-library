@@ -140,11 +140,22 @@ function Test-RuntimeDirtyPath {
   )
 }
 
+function Restore-RuntimeStash {
+  $restore = Invoke-GitLogged -Arguments @('stash','pop')
+  if ($restore.ExitCode -ne 0) {
+    Write-AgentLog 'Conflit lors de la restauration du checkpoint/runtime; stash conserve pour recuperation manuelle.'
+    return $false
+  }
+  Write-AgentLog 'Checkpoint/runtime OMSIM restaure.'
+  return $true
+}
+
 function Sync-Repository {
   param([string]$Repo)
   if (-not $Repo) { Write-AgentLog 'Depot local introuvable.'; return $false }
   Push-Location $Repo
   $runtimeStashed = $false
+  $restoreAttempted = $false
   try {
     $statusResult = Invoke-GitLogged -Arguments @('status','--porcelain','--untracked-files=all')
     if ($statusResult.ExitCode -ne 0) { Write-AgentLog 'Git inaccessible ou depot invalide.'; return $false }
@@ -187,15 +198,19 @@ function Sync-Repository {
     if ($pull.ExitCode -ne 0) { return $false }
 
     if ($runtimeStashed) {
-      $restore = Invoke-GitLogged -Arguments @('stash','pop')
-      if ($restore.ExitCode -ne 0) {
-        Write-AgentLog 'Conflit lors de la restauration du checkpoint/runtime; stash conserve pour recuperation manuelle.'
-        return $false
-      }
-      Write-AgentLog 'Checkpoint/runtime OMSIM restaure; reprise de la file autorisee.'
+      $restoreAttempted = $true
+      if (-not (Restore-RuntimeStash)) { return $false }
+      $runtimeStashed = $false
+      Write-AgentLog 'Reprise de la file autorisee avec checkpoint/runtime preserve.'
     }
     return $true
-  } finally { Pop-Location }
+  } finally {
+    if ($runtimeStashed -and -not $restoreAttempted) {
+      $restoreAttempted = $true
+      [void](Restore-RuntimeStash)
+    }
+    Pop-Location
+  }
 }
 
 function Get-TaskPriority {
