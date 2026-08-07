@@ -45,7 +45,7 @@ def _load_task(path: Path) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError("task must be a JSON object")
-    allowed_keys = {"id", "operation", "timeout_seconds", "pytest_targets", "notes"}
+    allowed_keys = {"id", "operation", "priority", "timeout_seconds", "pytest_targets", "notes"}
     unknown = set(data) - allowed_keys
     if unknown:
         raise ValueError(f"unknown task fields: {sorted(unknown)}")
@@ -55,6 +55,10 @@ def _load_task(path: Path) -> dict[str, Any]:
     operation = data.get("operation")
     if operation not in ALLOWED_OPERATIONS:
         raise ValueError(f"unsupported operation: {operation!r}")
+    priority = int(data.get("priority", 0))
+    if priority < -10000 or priority > 10000:
+        raise ValueError("priority must be between -10000 and 10000")
+    data["priority"] = priority
     timeout = int(data.get("timeout_seconds", 900))
     if timeout < 1 or timeout > MAX_TIMEOUT_SECONDS:
         raise ValueError(f"timeout_seconds must be between 1 and {MAX_TIMEOUT_SECONDS}")
