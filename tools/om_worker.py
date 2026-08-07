@@ -37,6 +37,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "run_rotor_autonomous_campaign": [sys.executable, "tools/run_rotor_autonomous_campaign.py"],
     "run_rotor_a41_cycle_campaign": [sys.executable, "tools/run_rotor_a41_cycle_campaign.py"],
     "run_rotor_a41_remote_cycle_campaign": [sys.executable, "tools/run_rotor_a41_remote_cached.py"],
+    "run_rotor_a41_remote_fresh_campaign": [sys.executable, "tools/run_rotor_a41_remote_fresh.py"],
     "analyze_a41_retiming_results": [sys.executable, "tools/analyze_a41_retiming_results.py"],
     "build_rotor_candidate_replay": [sys.executable, "tools/build_rotor_candidate_replay.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
