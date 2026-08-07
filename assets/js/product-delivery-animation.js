@@ -1,22 +1,19 @@
 (() => {
   const root = document.querySelector('#solution-viewer');
-  if (!root || !window.OpusGeometry || !window.OpusSolutionViewer) return;
+  const core = window.OpusRendererCore;
+  const geometry = window.OpusGeometry;
+  if (!root || !core || !geometry) return;
 
-  const { axialToPixel, svgEl } = window.OpusSolutionViewer.constants;
-  const COLORS = {
-    salt: '#f0eee5', air: '#9ed9e8', earth: '#8f7149', fire: '#e66c4d', water: '#5ea9d6',
-    quicksilver: '#b9c0c9', gold: '#d8ae45', silver: '#c4ccd4', copper: '#b87445', iron: '#777b80',
-    tin: '#aeb3b4', lead: '#6f6578', vitae: '#f0d46a', mors: '#a48bb9', quintessence: '#e8c2ff'
-  };
-
+  const { axialToPixel, svgEl, ELEMENT_COLORS: COLORS } = core;
   let viewer = null;
+  let scene = null;
   let outputs = new Map();
   let deliveryLayer = null;
   let animationFrame = null;
 
   const transform = (local, part) => {
-    const rotated = window.OpusGeometry.rotateCell(local || [0, 0], Number(part.rotation || 0));
-    return window.OpusGeometry.add(part.position || [0, 0], rotated);
+    const rotated = geometry.rotateCell(local || [0, 0], Number(part.rotation || 0));
+    return geometry.add(part.position || [0, 0], rotated);
   };
 
   function ensureLayer() {
@@ -33,11 +30,11 @@
     return deliveryLayer;
   }
 
-  function buildOutputs(payload) {
+  function buildOutputs(nextScene) {
+    scene = nextScene || null;
     outputs = new Map();
-    const puzzle = payload?.puzzle;
-    const solution = payload?.solution;
-    for (const part of solution?.parts || []) {
+    const puzzle = scene?.source?.puzzle;
+    for (const part of scene?.static?.parts || []) {
       if (!String(part.type || '').startsWith('out-')) continue;
       const product = puzzle?.products?.[Number(part.which || 0)];
       if (!product) continue;
@@ -54,10 +51,11 @@
     }
   }
 
-  function previousAtomsFor(event, frame, trace) {
-    const index = trace?.frames?.indexOf(frame) ?? -1;
-    const previous = index > 0 ? trace.frames[index - 1] : null;
-    const wanted = new Set((event.atomIds || []).map(String));
+  function previousAtomsFor(deliveryEvent, frameScene) {
+    const timeline = frameScene?.timeline || scene?.timeline;
+    const index = Number(frameScene?.timeline?.frameIndex ?? timeline?.frameIndex ?? -1);
+    const previous = index > 0 ? timeline?.frames?.[index - 1] : null;
+    const wanted = new Set((deliveryEvent.atomIds || []).map(String));
     const atoms = [];
     const bonds = [];
     for (const molecule of previous?.molecules || []) {
@@ -87,21 +85,17 @@
       if (target) {
         target.used = true;
         result.set(String(atom.id), target.position);
-      } else {
-        result.set(String(atom.id), output.centroid);
-      }
+      } else result.set(String(atom.id), output.centroid);
     }
     return result;
   }
 
-  function mix(a, b, t) {
-    return a + (b - a) * t;
-  }
+  function mix(a, b, t) { return a + (b - a) * t; }
 
-  function animateDelivery(event, frame, trace, context = {}) {
-    const output = outputs.get(String(event.consumerPartId));
+  function animateDelivery(deliveryEvent, frameScene, context = {}) {
+    const output = outputs.get(String(deliveryEvent.consumerPartId));
     if (!output) return;
-    const delivered = previousAtomsFor(event, frame, trace);
+    const delivered = previousAtomsFor(deliveryEvent, frameScene);
     if (!delivered.atoms.length) return;
     const targets = assignTargets(delivered.atoms, output);
     const layer = ensureLayer();
@@ -111,7 +105,7 @@
 
     const group = svgEl('g', {
       class: 'product-delivery-animation',
-      'data-output-id': String(event.consumerPartId)
+      'data-output-id': String(deliveryEvent.consumerPartId)
     });
     layer.append(group);
     const playing = Boolean(context.isPlaying);
@@ -132,55 +126,36 @@
         if (!first || !second) continue;
         const firstTarget = targets.get(String(first.id)) || output.centroid;
         const secondTarget = targets.get(String(second.id)) || output.centroid;
-        const startA = axialToPixel(first.position);
-        const startB = axialToPixel(second.position);
-        const endA = axialToPixel(firstTarget);
-        const endB = axialToPixel(secondTarget);
+        const startA = axialToPixel(first.position), startB = axialToPixel(second.position);
+        const endA = axialToPixel(firstTarget), endB = axialToPixel(secondTarget);
         group.append(svgEl('line', {
-          x1: mix(startA[0], endA[0], moveT),
-          y1: mix(startA[1], endA[1], moveT),
-          x2: mix(startB[0], endB[0], moveT),
-          y2: mix(startB[1], endB[1], moveT),
+          x1: mix(startA[0], endA[0], moveT), y1: mix(startA[1], endA[1], moveT),
+          x2: mix(startB[0], endB[0], moveT), y2: mix(startB[1], endB[1], moveT),
           stroke: bond.type === 'triplex' ? '#f0c56f' : '#f4dfb2',
           'stroke-width': mix(bond.type === 'triplex' ? 7 : 4.5, 1, fadeT),
-          'stroke-linecap': 'round',
-          opacity: 1 - fadeT,
-          class: 'product-delivery-bond'
+          'stroke-linecap': 'round', opacity: 1 - fadeT, class: 'product-delivery-bond'
         }));
       }
 
       for (const atom of delivered.atoms) {
         const target = targets.get(String(atom.id)) || output.centroid;
-        const start = axialToPixel(atom.position);
-        const end = axialToPixel(target);
-        const x = mix(start[0], end[0], moveT);
-        const y = mix(start[1], end[1], moveT);
+        const start = axialToPixel(atom.position), end = axialToPixel(target);
+        const x = mix(start[0], end[0], moveT), y = mix(start[1], end[1], moveT);
         const radius = mix(13, 2.5, fadeT);
         group.append(svgEl('circle', {
-          cx: x, cy: y, r: radius + 4,
-          fill: '#1a140d',
-          stroke: '#ffe39a',
-          'stroke-width': mix(4, 1, fadeT),
-          opacity: 1 - fadeT * .9,
-          class: 'product-delivery-ring'
+          cx: x, cy: y, r: radius + 4, fill: '#1a140d', stroke: '#ffe39a',
+          'stroke-width': mix(4, 1, fadeT), opacity: 1 - fadeT * .9, class: 'product-delivery-ring'
         }));
         group.append(svgEl('circle', {
-          cx: x, cy: y, r: radius,
-          fill: COLORS[atom.element] || '#ddd',
-          opacity: 1 - fadeT,
-          class: 'product-delivery-atom'
+          cx: x, cy: y, r: radius, fill: COLORS[atom.element] || '#ddd',
+          opacity: 1 - fadeT, class: 'product-delivery-atom'
         }));
       }
 
       const [cx, cy] = axialToPixel(output.centroid);
       group.append(svgEl('circle', {
-        cx, cy,
-        r: 18 + raw * 22,
-        fill: 'none',
-        stroke: '#ffd783',
-        'stroke-width': 3 - raw * 2,
-        opacity: Math.max(0, 1 - raw),
-        class: 'product-delivery-pulse'
+        cx, cy, r: 18 + raw * 22, fill: 'none', stroke: '#ffd783',
+        'stroke-width': 3 - raw * 2, opacity: Math.max(0, 1 - raw), class: 'product-delivery-pulse'
       }));
 
       if (raw < 1) animationFrame = requestAnimationFrame(tick);
@@ -189,26 +164,25 @@
         layer.replaceChildren();
         root.dispatchEvent(new CustomEvent('opus:productdeliverycomplete', {
           bubbles: true,
-          detail: { event, outputId: event.consumerPartId }
+          detail: { event: deliveryEvent, outputId: deliveryEvent.consumerPartId }
         }));
       }
     };
-
     animationFrame = requestAnimationFrame(tick);
   }
 
-  window.addEventListener('opus:analysisready', (event) => {
+  window.addEventListener('opus:sceneready', (event) => {
     viewer = event.detail?.viewer || viewer;
     deliveryLayer = null;
-    buildOutputs(event.detail?.payload);
+    buildOutputs(event.detail?.scene);
     ensureLayer();
   });
 
   root.addEventListener('opus:replayframe', (event) => {
-    const frame = event.detail?.frame;
-    const trace = event.detail?.trace;
+    const frameScene = event.detail?.scene || scene;
+    const frame = frameScene?.timeline?.frame || event.detail?.frame;
     const delivery = (frame?.events || []).find((item) => item.kind === 'product-delivered');
-    if (delivery) animateDelivery(delivery, frame, trace, event.detail || {});
+    if (delivery) animateDelivery(delivery, frameScene, event.detail || {});
     else if (deliveryLayer) deliveryLayer.replaceChildren();
   });
 })();
