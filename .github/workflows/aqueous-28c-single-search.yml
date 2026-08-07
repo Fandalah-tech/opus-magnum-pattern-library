@@ -1,0 +1,56 @@
+name: Aqueous 28c single search
+
+on:
+  pull_request:
+    paths:
+      - tools/search_aqueous_28c_single.py
+      - fixtures/weeklies2026/aqueous-dagger-28c-single-reference.solution.b64
+      - fixtures/weeklies2026/aqueous-dagger-19c-double-reference.solution.b64
+      - .github/workflows/aqueous-28c-single-search.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize references
+        run: |
+          mkdir -p reports
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          for src,dst in [
+            ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64','reports/aqueous-dagger.puzzle'),
+            ('fixtures/weeklies2026/aqueous-dagger-28c-single-reference.solution.b64','reports/single28.solution'),
+            ('fixtures/weeklies2026/aqueous-dagger-19c-double-reference.solution.b64','reports/double19.solution')]:
+              Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
+          PY
+      - name: Validate exact references
+        run: |
+          for f in single28 double19; do
+            curl --fail-with-body -sS -F "puzzle=@reports/aqueous-dagger.puzzle" -F "solution=@reports/${f}.solution" "${VALIDATOR_URL}/api/v1/analyze" > "reports/${f}.json"
+            python - "$f" <<'PY'
+          import json,sys
+          from pathlib import Path
+          f=sys.argv[1]
+          v=json.loads(Path(f'reports/{f}.json').read_text()).get('validation',{})
+          print(f, json.dumps(v, indent=2))
+          if not v.get('valid'): raise SystemExit(f'{f} invalid')
+          PY
+          done
+      - name: Generate targeted 28c variants
+        run: python tools/search_aqueous_28c_single.py
+      - name: Search for 27c or 26c
+        run: >-
+          python tools/validate_aqueous_offsets.py
+          --validator-url "${VALIDATOR_URL}"
+          --variants reports/aqueous-28c-single-search
+          --workers 24
