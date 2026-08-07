@@ -3,7 +3,7 @@
   "campaignId": "rotor-a41-cycle-001",
   "stage": "puzzle-required",
   "status": "blocked",
-  "updatedAt": "2026-08-07T02:17:17.255217+00:00",
+  "updatedAt": "2026-08-07T02:30:04.399355+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,7 +37,7 @@
       }
     }
   ],
-  "message": "Puzzle binaire weeklies2026_van-berlos-rotor introuvable dans le dossier Opus Magnum/custom.",
+  "message": "Puzzle binaire weeklies2026_van-berlos-rotor introuvable sous le dossier Opus Magnum, y compris les profils Steam/custom.",
   "elapsedSeconds": 0,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
   "referenceMatch": "embedded-fixture",
