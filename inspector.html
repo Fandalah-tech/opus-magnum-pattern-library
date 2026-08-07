@@ -15,7 +15,7 @@
 <body>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="Back to the Codex" data-i18n-aria-label="inspector.back"><span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Solution Inspector</strong></span></a>
-    <nav><a href="index.html">Codex</a><a href="library.html">Library</a><a class="active" href="inspector.html" data-i18n="inspector.lab">Laboratory</a><select id="locale-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option></select></nav>
+    <nav><a href="index.html">Codex</a><a href="library.html">Library</a><a href="viewer.html">Viewer</a><a href="scene-diff.html">Diff</a><a class="active" href="inspector.html" data-i18n="inspector.lab">Laboratory</a><select id="locale-select" aria-label="Language"><option value="en">English</option><option value="fr">Français</option></select></nav>
   </header>
   <main>
     <section class="hero"><p class="eyebrow" data-i18n="inspector.kicker">REAL ANALYSIS · OMSIM</p><h1 data-i18n="inspector.title">Inspect a solution</h1><p data-i18n="inspector.intro">Upload a matching puzzle and solution to parse, validate, and explore their structure.</p></section>
@@ -50,6 +50,8 @@
   <script src="assets/js/opus-renderer-core.js"></script>
   <script src="assets/js/opus-scene.js"></script>
   <script src="assets/js/opus-svg-renderer.js"></script>
+  <script src="assets/js/opus-svg-overlay-host.js"></script>
+  <script src="assets/js/opus-svg-diagnostics-overlay.js"></script>
   <script src="assets/js/solution-viewer.js"></script>
   <script src="assets/js/static-arm-fidelity.js"></script>
   <script src="assets/js/opus-viewer-runtime.js"></script>
@@ -62,6 +64,7 @@
   <script src="assets/js/used-area-overlay.js"></script>
   <script src="assets/js/product-delivery-animation.js"></script>
   <script src="assets/js/viewer-polish.js"></script>
+  <script src="assets/js/inspector-diagnostics-overlay.js"></script>
   <script src="assets/js/inspector.js"></script>
 </body>
 </html>
