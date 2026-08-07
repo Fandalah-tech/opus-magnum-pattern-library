@@ -71,7 +71,7 @@
         'stroke-width': 3.2,
         class: 'opus-diff-changed-ring',
         'data-diff-kind': 'changed',
-        'data-part-id': item.after?.id || item.before?.id || ''
+        'data-diff-part-id': item.after?.id || item.before?.id || ''
       }));
     }
 
