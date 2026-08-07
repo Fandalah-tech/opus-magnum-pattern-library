@@ -1,0 +1,56 @@
+name: Critelli public catalog inventory
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_submissions:
+        description: "Inventory public solution links too"
+        required: false
+        default: true
+        type: boolean
+  push:
+    branches:
+      - feature/disjoint-solver-readiness
+    paths:
+      - "tools/crawl_critelli_catalog.py"
+      - "tools/import_critelli_event.py"
+      - "tests/test_import_critelli_event.py"
+      - ".github/workflows/critelli-catalog.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+          fetch-depth: 20
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run Critelli importer tests
+        run: python -m pip install pytest && pytest -q tests/test_import_critelli_event.py
+
+      - name: Inventory public catalog
+        run: |
+          python tools/crawl_critelli_catalog.py \
+            --include-submissions \
+            --delay 0.30 \
+            --output reports/critelli-event-catalog.json
+
+      - name: Commit metadata report
+        run: |
+          git config user.name "codex-catalog-bot"
+          git config user.email "codex-catalog-bot@users.noreply.github.com"
+          git add reports/critelli-event-catalog.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Refresh Critelli public event catalog"
+          git pull --rebase origin feature/disjoint-solver-readiness
+          git push origin HEAD:feature/disjoint-solver-readiness
