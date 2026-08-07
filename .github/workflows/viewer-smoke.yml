@@ -1,0 +1,70 @@
+name: Viewer visual smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "viewer.html"
+      - "data/viewer-demo-payload.json"
+      - "assets/js/opus-renderer-core.js"
+      - "assets/js/solution-viewer.js"
+      - "assets/js/opus-viewer-runtime.js"
+      - "assets/js/viewer-app.js"
+      - "assets/js/replay-controls.js"
+      - "assets/js/replay-arm-animation.js"
+      - "assets/js/replay-molecules.js"
+      - "assets/css/solution-viewer.css"
+      - ".github/workflows/viewer-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Run standalone viewer demo
+        run: |
+          mkdir -p reports/visual/viewer-smoke
+          python -m http.server 8765 >/tmp/viewer-http.log 2>&1 &
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          out = Path('reports/visual/viewer-smoke')
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1500, 'height': 960}, device_scale_factor=1)
+              errors = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+              page.goto('http://127.0.0.1:8765/viewer.html?demo=1', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              page.wait_for_selector('#solution-viewer [data-part-id="arm-main"]')
+              page.wait_for_selector('#solution-viewer [data-part-id="arm-six"]')
+              page.wait_for_selector('#solution-viewer [data-atom-id="atom-salt"]')
+              assert page.locator('#viewer-metric-area').inner_text() == '18'
+              assert page.locator('[data-replay-range]').get_attribute('max') == '3'
+              page.locator('[data-replay-next]').click()
+              page.wait_for_timeout(300)
+              assert 'Cycle 1' in page.locator('[data-replay-cycle]').inner_text()
+              page.locator('#solution-viewer').screenshot(path=str(out / 'viewer-demo.png'))
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: viewer-smoke-${{ github.run_id }}
+          path: reports/visual/viewer-smoke/
+          if-no-files-found: error
+          retention-days: 14
