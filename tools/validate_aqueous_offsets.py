@@ -4,6 +4,7 @@ import argparse
 import json
 import subprocess
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 
@@ -34,32 +35,46 @@ def main() -> int:
     parser.add_argument("--validator-url", required=True)
     parser.add_argument("--puzzle", default="reports/aqueous-dagger.puzzle")
     parser.add_argument("--variants", default="reports/aqueous-offset-search")
+    parser.add_argument("--workers", type=int, default=12)
     args = parser.parse_args()
 
     root = Path(args.variants)
     manifest = json.loads((root / "manifest.json").read_text())
     variant_meta = {item["file"]: item for item in manifest["variants"]}
+    solutions = sorted(root.glob("variant-*.solution"))
     best = None
     valid_results = []
     failures = Counter()
     tested = 0
 
-    for solution in sorted(root.glob("variant-*.solution")):
-        tested += 1
-        validation = validate(args.validator_url, Path(args.puzzle), solution)
-        metrics = validation.get("metrics") or {}
-        if validation.get("valid") is True:
-            record = {**variant_meta[solution.name], "metrics": metrics}
-            valid_results.append(record)
-            cycles = metrics.get("cycles")
-            if cycles is not None and (best is None or cycles < best["metrics"]["cycles"]):
-                best = record
-                print("NEW BEST", json.dumps(best, sort_keys=True))
-            if cycles is not None and cycles <= 15:
-                break
-        else:
-            failures[issue_signature(validation)] += 1
+    with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
+        futures = {
+            pool.submit(validate, args.validator_url, Path(args.puzzle), solution): solution
+            for solution in solutions
+        }
+        for future in as_completed(futures):
+            solution = futures[future]
+            tested += 1
+            try:
+                validation = future.result()
+            except Exception as exc:
+                validation = {"valid": False, "issues": [{"message": f"validator exception: {exc}"}]}
+            metrics = validation.get("metrics") or {}
+            if validation.get("valid") is True:
+                record = {**variant_meta[solution.name], "metrics": metrics}
+                valid_results.append(record)
+                cycles = metrics.get("cycles")
+                if cycles is not None and (best is None or cycles < best["metrics"]["cycles"]):
+                    best = record
+                    print("NEW BEST", json.dumps(best, sort_keys=True), flush=True)
+            else:
+                failures[issue_signature(validation)] += 1
 
+    valid_results.sort(key=lambda r: (
+        r.get("metrics", {}).get("cycles", 10**9),
+        r.get("metrics", {}).get("cost", 10**9),
+        r.get("file", ""),
+    ))
     report = {
         "candidateCount": manifest["candidateCount"],
         "tested": tested,
@@ -67,11 +82,13 @@ def main() -> int:
         "best": best,
         "failureSignatures": failures.most_common(20),
     }
-    Path("reports/aqueous-offset-results.json").write_text(json.dumps(report, indent=2))
+    report_path = root / "results.json"
+    report_path.write_text(json.dumps(report, indent=2))
     print(json.dumps({
         "best": best,
         "validCount": len(valid_results),
         "tested": tested,
+        "topValid": valid_results[:10],
         "topFailures": failures.most_common(10),
     }, indent=2))
     return 0
