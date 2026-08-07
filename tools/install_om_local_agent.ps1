@@ -8,6 +8,7 @@ $ErrorActionPreference = 'Stop'
 $AgentRoot = Join-Path $env:LOCALAPPDATA 'OpusMagnumAgent'
 $AgentScript = Join-Path $AgentRoot 'om_local_agent.ps1'
 $WatchdogScript = Join-Path $AgentRoot 'om_agent_watchdog.ps1'
+$PidPath = Join-Path $AgentRoot 'agent.pid'
 $TaskName = 'Opus Magnum User Agent'
 $OldTaskName = 'Opus Magnum Local Agent'
 $AgentRawUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_local_agent.ps1'
@@ -15,7 +16,6 @@ $WatchdogRawUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-p
 $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 
 New-Item -ItemType Directory -Force -Path $AgentRoot | Out-Null
-
 if ($RepositoryPath) { $RepositoryPath = (Resolve-Path $RepositoryPath).Path }
 
 function Install-AgentFile {
@@ -35,6 +35,40 @@ function Install-AgentFile {
   }
   $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
   Invoke-WebRequest -Uri ($FallbackUrl + '?t=' + $stamp) -OutFile $Destination -UseBasicParsing
+}
+
+function Wait-AgentExit {
+  param([int]$TimeoutSeconds = 20)
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  while ((Get-Date) -lt $deadline) {
+    if (-not (Test-Path $PidPath)) { return $true }
+    try {
+      $pidValue = [int](Get-Content -Raw $PidPath)
+      Get-Process -Id $pidValue -ErrorAction Stop | Out-Null
+    } catch {
+      Remove-Item $PidPath -Force -ErrorAction SilentlyContinue
+      return $true
+    }
+    Start-Sleep -Milliseconds 500
+  }
+  return $false
+}
+
+# Stop the currently loaded agent before replacing its script. Otherwise an
+# existing PowerShell process keeps executing the old in-memory code forever.
+if (Test-Path $AgentScript) {
+  try {
+    & PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File $AgentScript -Command Stop | Out-Null
+    if (-not (Wait-AgentExit -TimeoutSeconds 20)) {
+      if (Test-Path $PidPath) {
+        try {
+          $oldPid = [int](Get-Content -Raw $PidPath)
+          & taskkill.exe /PID $oldPid /T /F 2>$null | Out-Null
+        } catch {}
+        Remove-Item $PidPath -Force -ErrorAction SilentlyContinue
+      }
+    }
+  } catch {}
 }
 
 Install-AgentFile -RepoRelativePath 'tools/om_local_agent.ps1' -Destination $AgentScript -FallbackUrl $AgentRawUrl
@@ -81,6 +115,11 @@ foreach ($entry in $commands.GetEnumerator()) {
   Set-Content -Path $path -Value $line -Encoding ASCII
 }
 
+# Start the freshly installed agent explicitly, then start the watchdog that
+# owns sleep prevention and crash recovery from this point onward.
+$startArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$AgentScript,'-Command','Start','-MaxCpuPercent',$MaxCpuPercent,'-IdleSeconds',$IdleSeconds)
+if ($RepositoryPath) { $startArgs += @('-RepositoryPath',$RepositoryPath) }
+& PowerShell.exe @startArgs | Out-Null
 Start-ScheduledTask -TaskName $TaskName
 Start-Sleep -Seconds 4
 $status = & PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File $AgentScript -Command Status
