@@ -4,6 +4,7 @@
   const DEFAULT_API = "https://opus-validator-6gflgqb25q-nn.a.run.app";
   const ANALYZE_ENDPOINT = "/api/v1/analyze";
   const instances = new WeakMap();
+  const scenes = new WeakMap();
 
   function resolveRoot(rootOrSelector = "#solution-viewer") {
     if (typeof rootOrSelector === "string") return document.querySelector(rootOrSelector);
@@ -20,13 +21,26 @@
     return viewer;
   }
 
+  function buildScene(payload, options = {}) {
+    if (!window.OpusScene?.build) throw new Error("OpusScene must load before OpusViewerRuntime");
+    return window.OpusScene.build(payload, options);
+  }
+
+  function renderScene(scene, rootOrSelector = "#solution-viewer") {
+    if (!scene?.source?.solution) throw new Error("Invalid Opus scene");
+    const root = resolveRoot(rootOrSelector);
+    const viewer = mount(root);
+    scenes.set(root, scene);
+    viewer.render(scene.source.solution, scene.source.graph, scene.source.puzzle, scene.source.replay);
+    window.OpusStaticArmFidelity?.apply?.(viewer, scene.source.solution);
+    window.dispatchEvent(new CustomEvent("opus:sceneready", { detail: { scene, viewer } }));
+    window.dispatchEvent(new CustomEvent("opus:analysisready", { detail: { payload: scene.source, scene, viewer } }));
+    return viewer;
+  }
+
   function renderPayload(payload, rootOrSelector = "#solution-viewer") {
     if (!payload?.solution) throw new Error("Analysis payload does not contain a solution");
-    const viewer = mount(rootOrSelector);
-    viewer.render(payload.solution, payload.graph, payload.puzzle, payload.replay);
-    window.OpusStaticArmFidelity?.apply?.(viewer, payload.solution);
-    window.dispatchEvent(new CustomEvent("opus:analysisready", { detail: { payload, viewer } }));
-    return viewer;
+    return renderScene(buildScene(payload), rootOrSelector);
   }
 
   async function loadPayload(url, options = {}) {
@@ -51,6 +65,16 @@
     return payload;
   }
 
+  function currentScene(rootOrSelector = "#solution-viewer") {
+    const root = resolveRoot(rootOrSelector);
+    return root ? scenes.get(root) || null : null;
+  }
+
+  function sceneAtFrame(frameIndex, rootOrSelector = "#solution-viewer") {
+    const scene = currentScene(rootOrSelector);
+    return scene && window.OpusScene?.atFrame ? window.OpusScene.atFrame(scene, frameIndex) : scene;
+  }
+
   function fit(rootOrSelector = "#solution-viewer") {
     const root = resolveRoot(rootOrSelector);
     const viewer = root ? instances.get(root) : null;
@@ -61,9 +85,13 @@
     DEFAULT_API,
     ANALYZE_ENDPOINT,
     mount,
+    buildScene,
+    renderScene,
     renderPayload,
     loadPayload,
     analyzeFiles,
+    currentScene,
+    sceneAtFrame,
     fit
   });
 })();
