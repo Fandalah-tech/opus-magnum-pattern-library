@@ -108,7 +108,8 @@ jobs:
                   parts: scene?.static?.parts?.length || 0,
                   frames: scene?.timeline?.frames?.length || 0,
                   areaOverlay: root.querySelectorAll('[data-opus-overlay="area"]').length,
-                  armSixBranches: root.querySelectorAll('[data-part-id="arm-six"] [data-arm-branch]').length,
+                  armSixBranches: root.querySelectorAll('[data-part-id="arm-six"] [data-arm-shaft]').length,
+                  armSixContract: root.querySelector('[data-part-id="arm-six"]')?.dataset.branchCount,
                   iframeCount: document.querySelectorAll('iframe').length,
                   status: document.querySelector('#solver-status')?.textContent || '',
                   score: document.querySelector('#solver-score')?.textContent || '',
@@ -120,7 +121,7 @@ jobs:
               assert state['parts'] == len(payload['solution']['parts']), state
               assert state['frames'] == 4, state
               assert state['areaOverlay'] == 1, state
-              assert state['armSixBranches'] == 6, state
+              assert state['armSixBranches'] == 6 and state['armSixContract'] == '6', state
               assert state['iframeCount'] == 0, state
               assert 'Scene canonique chargée' in state['status'], state
               assert state['score'] == '599', state
