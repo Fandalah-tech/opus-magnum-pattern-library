@@ -15,7 +15,7 @@
     "parts": [
       {"id":"arm-main","type":"arm1","enabled":true,"position":[0,0],"length":2,"rotation":0,"which":0,"armNumber":1,"program":[{"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"rotate_cw"},{"cycle":2,"instruction":"drop"}]},
       {"id":"arm-six","type":"arm6","enabled":true,"position":[3,-1],"length":1,"rotation":0,"which":0,"armNumber":2,"program":[{"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"rotate_ccw"}]},
-      {"id":"track-main","type":"track","enabled":true,"position":[-2,1],"length":1,"rotation":0,"which":0,"armNumber":0,"trackHexes":[[-2,1],[-1,1],[0,1],[1,0]],"program":[]},
+      {"id":"track-main","type":"track","enabled":true,"position":[-2,1],"length":1,"rotation":0,"which":0,"armNumber":0,"trackHexes":[[0,0],[1,0],[2,0],[3,-1]],"program":[]},
       {"id":"glyph-bond","type":"bonder","enabled":true,"position":[1,-2],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
       {"id":"input-a","type":"input","enabled":true,"position":[-3,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
       {"id":"output-a","type":"out-std","enabled":true,"position":[4,-2],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]}
