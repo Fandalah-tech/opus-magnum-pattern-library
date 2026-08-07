@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-010",
+  "operation": "run_rotor_a41_remote_fresh_campaign",
+  "priority": 9300,
+  "timeout_seconds": 21600,
+  "notes": "Run after rotor-a41-learning-001. Archive the previous checkpoint, reset the 300-candidate budget, start from the best validated Area 41 solution if one exists, retain validator cache and learned ordering, and explore a fresh adaptive retiming generation."
+}
