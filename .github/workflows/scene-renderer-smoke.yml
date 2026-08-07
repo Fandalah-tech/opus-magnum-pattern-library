@@ -84,8 +84,12 @@ jobs:
                   assert result['sceneKind'] == 'opus-scene'
                   assert result['sceneVersion'] == '0.1.0'
                   assert result['sceneParts'] == result['native']['parts']
-                  for key in ('parts', 'arms', 'shafts', 'tracks', 'footprintPolygons', 'layers'):
+                  for key in ('parts', 'arms', 'shafts', 'tracks', 'footprintPolygons'):
                       assert result['native'][key] == result['scene'][key], (name, key, result)
+                  # The standalone static renderer owns eight canonical layers.
+                  # Replay modules may add dynamic layers to the Viewer afterwards.
+                  assert result['scene']['layers'] == 8, (name, result)
+                  assert result['native']['layers'] >= result['scene']['layers'], (name, result)
                   return result
 
               arms = render_fixture('arms')
