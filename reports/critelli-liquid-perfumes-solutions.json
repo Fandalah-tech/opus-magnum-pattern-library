@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "sourceCatalog": "reports/critelli-event-catalog.json",
-  "retrievedAt": "2026-08-07T14:09:23.457810+00:00",
+  "retrievedAt": "2026-08-07T14:14:10.934143+00:00",
   "policy": {
     "publicSolutionsOnly": true,
     "binaryRetention": "none",
@@ -18,7 +18,20 @@
     "completeEmbeddedMetrics": 252,
     "zeroTrailingBytes": 367,
     "puzzleFileMatches": 367,
-    "failures": 237
+    "failures": 237,
+    "formatVersions": {
+      "7": 367
+    },
+    "metricCoverage": {
+      "complete": 252,
+      "cycles,cost,area,instructions": 115
+    },
+    "failureSignatures": [
+      {
+        "error": "HTTPError: HTTP Error 404: Not Found",
+        "count": 237
+      }
+    ]
   },
   "events": [
     {
@@ -41,6 +54,7 @@
           "bytes": 829,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "OVERLAP ",
           "metrics": {
             "cycles": 41,
@@ -61,6 +75,7 @@
           "bytes": 1346,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H1 V1",
           "metrics": {
             "cycles": 139,
@@ -81,6 +96,7 @@
           "bytes": 1508,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN H@0 TODO IMPROVE C",
           "metrics": {
             "cycles": 384,
@@ -101,6 +117,7 @@
           "bytes": 1237,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SWISS ARMY KNIFE",
           "metrics": {
             "cycles": 254,
@@ -121,6 +138,7 @@
           "bytes": 1085,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLATENCY 1",
           "metrics": {
             "cycles": 61,
@@ -141,6 +159,7 @@
           "bytes": 1732,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY FIRST TRY",
           "metrics": {
             "cycles": 163,
@@ -161,6 +180,7 @@
           "bytes": 1512,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEEEEEN",
           "metrics": {
             "cycles": 134,
@@ -181,6 +201,7 @@
           "bytes": 1295,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "PROBABLY MIN LATENCY?",
           "metrics": {
             "cycles": 82,
@@ -201,6 +222,7 @@
           "bytes": 1150,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ACTUAL MIN LATENCY",
           "metrics": {
             "cycles": 71,
@@ -221,6 +243,7 @@
           "bytes": 1913,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LATENCY FIRST PASS",
           "metrics": {
             "cycles": 118,
@@ -241,6 +264,7 @@
           "bytes": 1653,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P10 STEIGHT",
           "metrics": {
             "cycles": 74,
@@ -261,6 +285,7 @@
           "bytes": 1240,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW S. HEIGHT LOW CYCLES 1",
           "metrics": {
             "cycles": 249,
@@ -281,6 +306,7 @@
           "bytes": 1250,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW S. HEIGHT LOW CYCLES 2",
           "metrics": {
             "cycles": 212,
@@ -301,6 +327,7 @@
           "bytes": 1920,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HC",
           "metrics": {
             "cycles": 118,
@@ -321,6 +348,7 @@
           "bytes": 1734,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 233,
@@ -341,6 +369,7 @@
           "bytes": 1612,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW LATENCY LOW COST 1",
           "metrics": {
             "cycles": 320,
@@ -361,6 +390,7 @@
           "bytes": 2420,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8ENCY",
           "metrics": {
             "cycles": 171,
@@ -381,6 +411,7 @@
           "bytes": 1513,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LATENCY FEWER GLYPHS",
           "metrics": {
             "cycles": 298,
@@ -401,6 +432,7 @@
           "bytes": 1272,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 407,
@@ -421,6 +453,7 @@
           "bytes": 1258,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SHORT BABY",
           "metrics": {
             "cycles": 165,
@@ -441,6 +474,7 @@
           "bytes": 2037,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HC  89",
           "metrics": {
             "cycles": 89,
@@ -461,6 +495,7 @@
           "bytes": 1617,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW LATENCY LOW COST 2",
           "metrics": {
             "cycles": 318,
@@ -481,6 +516,7 @@
           "bytes": 2028,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HC  70",
           "metrics": {
             "cycles": 70,
@@ -501,6 +537,7 @@
           "bytes": 1631,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FEMININE PISTON",
           "metrics": {
             "cycles": 145,
@@ -521,6 +558,7 @@
           "bytes": 1051,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LATENCY 2",
           "metrics": {
             "cycles": 81,
@@ -541,6 +579,7 @@
           "bytes": 1894,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P8 STEIGHT",
           "metrics": {
             "cycles": 66,
@@ -561,6 +600,7 @@
           "bytes": 1371,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I LIKE MY PRECISION MACHINE OIL WITH LOW QUIX",
           "metrics": {
             "cycles": 66,
@@ -581,6 +621,7 @@
           "bytes": 1915,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 155,
@@ -601,6 +642,7 @@
           "bytes": 2104,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "REAL ACTUAL MIN LATENCY (FINAL)",
           "metrics": {
             "cycles": 298,
@@ -621,6 +663,7 @@
           "bytes": 1243,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H@0",
           "metrics": {
             "cycles": 225,
@@ -641,6 +684,7 @@
           "bytes": 2620,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 121,
@@ -661,6 +705,7 @@
           "bytes": 1277,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H@0 CYCLES OPTIMIZATION 1",
           "metrics": {
             "cycles": 173,
@@ -681,6 +726,7 @@
           "bytes": 1277,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H@0 CYCLES OPTIMIZATION 1",
           "metrics": {
             "cycles": 143,
@@ -701,6 +747,7 @@
           "bytes": 1845,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FEMININE PISTON",
           "metrics": {
             "cycles": 134,
@@ -721,6 +768,7 @@
           "bytes": 1375,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TIN OCEAN",
           "metrics": {
             "cycles": 82,
@@ -741,6 +789,7 @@
           "bytes": 1074,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEED TINY",
           "metrics": {
             "cycles": 63,
@@ -761,6 +810,7 @@
           "bytes": 1600,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEEEEEN (Copy)",
           "metrics": {
             "cycles": 89,
@@ -781,6 +831,7 @@
           "bytes": 1411,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "COOLER TIN OCEAN",
           "metrics": {
             "cycles": 82,
@@ -801,6 +852,7 @@
           "bytes": 1852,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEEEEEN (Copy) (Copy)",
           "metrics": {
             "cycles": 70,
@@ -821,6 +873,7 @@
           "bytes": 1421,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "COOLER TIN OCEAN",
           "metrics": {
             "cycles": 82,
@@ -841,6 +894,7 @@
           "bytes": 1448,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "EVEN COOLER TIN OCEAN",
           "metrics": {
             "cycles": 107,
@@ -861,6 +915,7 @@
           "bytes": 1847,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEEEEEN (Copy) (Copy)",
           "metrics": {
             "cycles": 65,
@@ -881,6 +936,7 @@
           "bytes": 1972,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEEEEEN (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 60,
@@ -901,6 +957,7 @@
           "bytes": 1979,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SPEEEEEN (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 59,
@@ -921,6 +978,7 @@
           "bytes": 2204,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 20",
           "metrics": {
             "cycles": 103,
@@ -941,6 +999,7 @@
           "bytes": 1305,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 5",
           "metrics": {
             "cycles": 437,
@@ -961,6 +1020,7 @@
           "bytes": 1756,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 7",
           "metrics": {
             "cycles": 313,
@@ -981,6 +1041,7 @@
           "bytes": 1706,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 7",
           "metrics": {
             "cycles": 313,
@@ -1001,6 +1062,7 @@
           "bytes": 1340,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 8",
           "metrics": {
             "cycles": 180,
@@ -1021,6 +1083,7 @@
           "bytes": 1503,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930",
           "metrics": {
             "cycles": 132,
@@ -1041,6 +1104,7 @@
           "bytes": 1182,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY THING?",
           "metrics": {
             "cycles": 61,
@@ -1061,6 +1125,7 @@
           "bytes": 1242,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN H@0 BETTER CYCLES",
           "metrics": {
             "cycles": 223,
@@ -1081,6 +1146,7 @@
           "bytes": 1649,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy)",
           "metrics": {
             "cycles": 108,
@@ -1101,6 +1167,7 @@
           "bytes": 1127,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY THING?",
           "metrics": {
             "cycles": 61,
@@ -1121,6 +1188,7 @@
           "bytes": 1351,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN H@0 BETTER CYCLES (Copy)",
           "metrics": {
             "cycles": 212,
@@ -1141,6 +1209,7 @@
           "bytes": 1064,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY THING?",
           "metrics": {
             "cycles": 51,
@@ -1161,6 +1230,7 @@
           "bytes": 1382,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN H@0 BETTER CYCLES (Copy) (Copy)",
           "metrics": {
             "cycles": 193,
@@ -1181,6 +1251,7 @@
           "bytes": 1247,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "STAR TIDE",
           "metrics": {
             "cycles": 288,
@@ -1201,6 +1272,7 @@
           "bytes": 1817,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 129,
@@ -1221,6 +1293,7 @@
           "bytes": 1771,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 129,
@@ -1241,6 +1314,7 @@
           "bytes": 1650,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 94,
@@ -1261,6 +1335,7 @@
           "bytes": 1108,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY",
           "metrics": {
             "cycles": 70,
@@ -1281,6 +1356,7 @@
           "bytes": 1691,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "10 L",
           "metrics": {
             "cycles": 60,
@@ -1301,6 +1377,7 @@
           "bytes": 1782,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING",
           "metrics": {
             "cycles": 98,
@@ -1321,6 +1398,7 @@
           "bytes": 1748,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING",
           "metrics": {
             "cycles": 98,
@@ -1341,6 +1419,7 @@
           "bytes": 1730,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING",
           "metrics": {
             "cycles": 98,
@@ -1361,6 +1440,7 @@
           "bytes": 1718,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING",
           "metrics": {
             "cycles": 133,
@@ -1381,6 +1461,7 @@
           "bytes": 1894,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P8 STEIGHT",
           "metrics": {
             "cycles": 65,
@@ -1401,6 +1482,7 @@
           "bytes": 1695,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING",
           "metrics": {
             "cycles": 118,
@@ -1421,6 +1503,7 @@
           "bytes": 1736,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FEMININE PISTON",
           "metrics": {
             "cycles": 111,
@@ -1441,6 +1524,7 @@
           "bytes": 1428,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "EVEN COOLER TIN OCEAN",
           "metrics": {
             "cycles": 107,
@@ -1461,6 +1545,7 @@
           "bytes": 1706,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING",
           "metrics": {
             "cycles": 178,
@@ -1481,6 +1566,7 @@
           "bytes": 1333,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H@0 CYCLES OPTIMIZATION 1",
           "metrics": {
             "cycles": 143,
@@ -1501,6 +1587,7 @@
           "bytes": 1229,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "EVEN COOLER TIN OCEAN",
           "metrics": {
             "cycles": 107,
@@ -1521,6 +1608,7 @@
           "bytes": 1324,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING (CRASHES AFTER 1P)",
           "metrics": {
             "cycles": null,
@@ -1541,6 +1629,7 @@
           "bytes": 1349,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING (CRASHES AFTER 1P)",
           "metrics": {
             "cycles": null,
@@ -1561,6 +1650,7 @@
           "bytes": 1307,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING (CRASHES AFTER 1P)",
           "metrics": {
             "cycles": null,
@@ -1581,6 +1671,7 @@
           "bytes": 932,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "5 REJECTORS",
           "metrics": {
             "cycles": null,
@@ -1601,6 +1692,7 @@
           "bytes": 1258,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING (CRASHES AFTER 1P)",
           "metrics": {
             "cycles": null,
@@ -1621,6 +1713,7 @@
           "bytes": 1262,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NOW WITH NO LOOPING!",
           "metrics": {
             "cycles": null,
@@ -1641,6 +1734,7 @@
           "bytes": 1268,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 11",
           "metrics": {
             "cycles": null,
@@ -1661,6 +1755,7 @@
           "bytes": 1071,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "G@8L 3",
           "metrics": {
             "cycles": null,
@@ -1681,6 +1776,7 @@
           "bytes": 1301,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THIS WAS NAMED AFTER A WASTE CHAIN BUT THE RULES CHANGED AND IDK WHAT TO CALL IT ANYMORE",
           "metrics": {
             "cycles": 107,
@@ -1701,6 +1797,7 @@
           "bytes": 985,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "G@8L 4",
           "metrics": {
             "cycles": null,
@@ -1721,6 +1818,7 @@
           "bytes": 1351,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY UPDATED",
           "metrics": {
             "cycles": null,
@@ -1741,6 +1839,7 @@
           "bytes": 2311,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 20",
           "metrics": {
             "cycles": 98,
@@ -1761,6 +1860,7 @@
           "bytes": 986,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 280",
           "metrics": {
             "cycles": null,
@@ -1781,6 +1881,7 @@
           "bytes": 1316,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW LATENCY LOW COST 3 (NO LOOP)",
           "metrics": {
             "cycles": null,
@@ -1801,6 +1902,7 @@
           "bytes": 1289,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW S. HEIGHT LOW CYCLES 3",
           "metrics": {
             "cycles": 205,
@@ -1821,6 +1923,7 @@
           "bytes": 1075,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 2",
           "metrics": {
             "cycles": 72,
@@ -1841,6 +1944,7 @@
           "bytes": 1325,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOW S. HEIGHT LOW CYCLES 4",
           "metrics": {
             "cycles": 204,
@@ -1861,6 +1965,7 @@
           "bytes": 3507,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 19",
           "metrics": {
             "cycles": 327,
@@ -1881,6 +1986,7 @@
           "bytes": 986,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 280  67",
           "metrics": {
             "cycles": null,
@@ -1901,6 +2007,7 @@
           "bytes": 959,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SILLYTRACK",
           "metrics": {
             "cycles": null,
@@ -1921,6 +2028,7 @@
           "bytes": 976,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SO CLOSE TO TRACKLESS GARBLE GARBLE",
           "metrics": {
             "cycles": null,
@@ -1941,6 +2049,7 @@
           "bytes": 901,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TRACKLESS 4-REJECTOR",
           "metrics": {
             "cycles": null,
@@ -1961,6 +2070,7 @@
           "bytes": 891,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TRACKLESS 4-REJECTOR",
           "metrics": {
             "cycles": null,
@@ -1981,6 +2091,7 @@
           "bytes": 1314,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8ENCY (Copy)",
           "metrics": {
             "cycles": null,
@@ -2001,6 +2112,7 @@
           "bytes": 1130,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8ENCY REDONE 5 REJECTION",
           "metrics": {
             "cycles": null,
@@ -2021,6 +2133,7 @@
           "bytes": 1312,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TEST 1",
           "metrics": {
             "cycles": 547,
@@ -2041,6 +2154,7 @@
           "bytes": 1358,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TEST 2",
           "metrics": {
             "cycles": 169,
@@ -2061,6 +2175,7 @@
           "bytes": 968,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8ENCY REUSE REJECTION",
           "metrics": {
             "cycles": null,
@@ -2081,6 +2196,7 @@
           "bytes": 1617,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 77,
@@ -2101,6 +2217,7 @@
           "bytes": 4949,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "COUNTERCLOCKWISE",
           "metrics": {
             "cycles": 266,
@@ -2121,6 +2238,7 @@
           "bytes": 1601,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 75,
@@ -2141,6 +2259,7 @@
           "bytes": 1609,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SILLY HEIGHT 2",
           "metrics": {
             "cycles": 577,
@@ -2161,6 +2280,7 @@
           "bytes": 1199,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L V1.1",
           "metrics": {
             "cycles": null,
@@ -2181,6 +2301,7 @@
           "bytes": 1601,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 74,
@@ -2201,6 +2322,7 @@
           "bytes": 1295,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1 (Copy)",
           "metrics": {
             "cycles": 233,
@@ -2221,6 +2343,7 @@
           "bytes": 1502,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H V1.0",
           "metrics": {
             "cycles": 134,
@@ -2241,6 +2364,7 @@
           "bytes": 1338,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN H@0",
           "metrics": {
             "cycles": 164,
@@ -2261,6 +2385,7 @@
           "bytes": 2129,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "RPO'S WATCHING YOU",
           "metrics": {
             "cycles": 64,
@@ -2281,6 +2406,7 @@
           "bytes": 1446,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEOM",
           "metrics": {
             "cycles": 122,
@@ -2301,6 +2427,7 @@
           "bytes": 1221,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "9 LATENCY 340/72",
           "metrics": {
             "cycles": null,
@@ -2321,6 +2448,7 @@
           "bytes": 1199,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NINE",
           "metrics": {
             "cycles": null,
@@ -2341,6 +2469,7 @@
           "bytes": 1121,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 12 (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 87,
@@ -2361,6 +2490,7 @@
           "bytes": 1490,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "BASIC SOLUTION (Copy)",
           "metrics": {
             "cycles": 359,
@@ -2381,6 +2511,7 @@
           "bytes": 1903,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN HEIGHT",
           "metrics": {
             "cycles": 135,
@@ -2401,6 +2532,7 @@
           "bytes": 1070,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 2",
           "metrics": {
             "cycles": 59,
@@ -2421,6 +2553,7 @@
           "bytes": 1502,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 73,
@@ -2441,6 +2574,7 @@
           "bytes": 1054,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L/300G/77A",
           "metrics": {
             "cycles": null,
@@ -2461,6 +2595,7 @@
           "bytes": 1741,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IVAN LEONIDOV'S 'LINEAR CITY' PLAN FOR MAGNITOGORSK 1930 (Copy)",
           "metrics": {
             "cycles": 67,
@@ -2481,6 +2616,7 @@
           "bytes": 1198,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NINE (Copy)",
           "metrics": {
             "cycles": null,
@@ -2501,6 +2637,7 @@
           "bytes": 6307,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SILLINESS LEVEL MAX",
           "metrics": {
             "cycles": 161,
@@ -2521,6 +2658,7 @@
           "bytes": 1327,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ELLIE'S FIRST SUBMISSION :)",
           "metrics": {
             "cycles": 67,
@@ -2541,6 +2679,7 @@
           "bytes": 1671,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "DAY 3 -- POPCORN",
           "metrics": {
             "cycles": 71,
@@ -2561,6 +2700,7 @@
           "bytes": 1705,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FEMININE PISTON",
           "metrics": {
             "cycles": 93,
@@ -2581,6 +2721,7 @@
           "bytes": 1116,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "REJECTION REUSE",
           "metrics": {
             "cycles": null,
@@ -2601,6 +2742,7 @@
           "bytes": 1279,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ELLIE'S THIRD ATTEMPT",
           "metrics": {
             "cycles": 137,
@@ -2621,6 +2763,7 @@
           "bytes": 1152,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ELLIE'S SECOND SUBMISSION :)",
           "metrics": {
             "cycles": 144,
@@ -2641,6 +2784,7 @@
           "bytes": 937,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L/260G/89A",
           "metrics": {
             "cycles": null,
@@ -2661,6 +2805,7 @@
           "bytes": 3567,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "G@8L 5",
           "metrics": {
             "cycles": null,
@@ -2681,6 +2826,7 @@
           "bytes": 1163,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FIRST L",
           "metrics": {
             "cycles": null,
@@ -2701,6 +2847,7 @@
           "bytes": 1749,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FEMININE PISTON",
           "metrics": {
             "cycles": 87,
@@ -2721,6 +2868,7 @@
           "bytes": 1116,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "REJECTION REUSE",
           "metrics": {
             "cycles": null,
@@ -2741,6 +2889,7 @@
           "bytes": 1064,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "REJECTION REUSE",
           "metrics": {
             "cycles": null,
@@ -2761,6 +2910,7 @@
           "bytes": 1004,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "REJECTION REUSE",
           "metrics": {
             "cycles": null,
@@ -2781,6 +2931,7 @@
           "bytes": 1011,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "DAY 4 -- SWITCHBACK",
           "metrics": {
             "cycles": 61,
@@ -2801,6 +2952,7 @@
           "bytes": 797,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "OVERLAP (DOESN'T CRASH, DON'T WORRY) (Copy)",
           "metrics": {
             "cycles": 25,
@@ -2821,6 +2973,7 @@
           "bytes": 1401,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY",
           "metrics": {
             "cycles": 62,
@@ -2841,6 +2994,7 @@
           "bytes": 1407,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT",
           "metrics": {
             "cycles": 320,
@@ -2861,6 +3015,7 @@
           "bytes": 1322,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 1",
           "metrics": {
             "cycles": 299,
@@ -2881,6 +3036,7 @@
           "bytes": 1280,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING II",
           "metrics": {
             "cycles": null,
@@ -2901,6 +3057,7 @@
           "bytes": 1636,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE  NOODLE",
           "metrics": {
             "cycles": 378,
@@ -2921,6 +3078,7 @@
           "bytes": 1636,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE  NOODLE",
           "metrics": {
             "cycles": 378,
@@ -2941,6 +3099,7 @@
           "bytes": 1636,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE  NOODLE",
           "metrics": {
             "cycles": 378,
@@ -2961,6 +3120,7 @@
           "bytes": 1238,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING II",
           "metrics": {
             "cycles": null,
@@ -2981,6 +3141,7 @@
           "bytes": 1326,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 2.0",
           "metrics": {
             "cycles": null,
@@ -3001,6 +3162,7 @@
           "bytes": 2205,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "PM",
           "metrics": {
             "cycles": 174,
@@ -3021,6 +3183,7 @@
           "bytes": 1198,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "BTW",
           "metrics": {
             "cycles": 83,
@@ -3041,6 +3204,7 @@
           "bytes": 1300,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 2.1",
           "metrics": {
             "cycles": null,
@@ -3061,6 +3225,7 @@
           "bytes": 1131,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING III",
           "metrics": {
             "cycles": null,
@@ -3081,6 +3246,7 @@
           "bytes": 1212,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 3",
           "metrics": {
             "cycles": 51,
@@ -3101,6 +3267,7 @@
           "bytes": 1297,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 2.3",
           "metrics": {
             "cycles": null,
@@ -3121,6 +3288,7 @@
           "bytes": 1169,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING IV",
           "metrics": {
             "cycles": null,
@@ -3141,6 +3309,7 @@
           "bytes": 932,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L/260G/73A",
           "metrics": {
             "cycles": null,
@@ -3161,6 +3330,7 @@
           "bytes": 891,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TRACKLESS 4-REJECTOR",
           "metrics": {
             "cycles": null,
@@ -3181,6 +3351,7 @@
           "bytes": 1328,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H@0 2",
           "metrics": {
             "cycles": 281,
@@ -3201,6 +3372,7 @@
           "bytes": 1052,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING V",
           "metrics": {
             "cycles": null,
@@ -3221,6 +3393,7 @@
           "bytes": 1889,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MY FIRST TRY (HEIGHT)",
           "metrics": {
             "cycles": 442,
@@ -3241,6 +3414,7 @@
           "bytes": 1640,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 0",
           "metrics": {
             "cycles": 258,
@@ -3261,6 +3435,7 @@
           "bytes": 1795,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MY SECOND TRY (HEIGHT)",
           "metrics": {
             "cycles": 391,
@@ -3281,6 +3456,7 @@
           "bytes": 1285,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MY FIRST TRY (LATENCY)",
           "metrics": {
             "cycles": 88,
@@ -3301,6 +3477,7 @@
           "bytes": 951,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING VI",
           "metrics": {
             "cycles": null,
@@ -3321,6 +3498,7 @@
           "bytes": 976,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LGA 280 70",
           "metrics": {
             "cycles": null,
@@ -3341,6 +3519,7 @@
           "bytes": 4989,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FEMININE PISTON",
           "metrics": {
             "cycles": 83,
@@ -3361,6 +3540,7 @@
           "bytes": 2152,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ADHESIVE PERFUME",
           "metrics": {
             "cycles": 60,
@@ -3381,6 +3561,7 @@
           "bytes": 1417,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ANGLED START",
           "metrics": {
             "cycles": 323,
@@ -3401,6 +3582,7 @@
           "bytes": 1448,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATE",
           "metrics": {
             "cycles": 75,
@@ -3421,6 +3603,7 @@
           "bytes": 1653,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE LOOOOOONG ELK (OMG AN INSCRYPTION REFERENCE)",
           "metrics": {
             "cycles": 99,
@@ -3441,6 +3624,7 @@
           "bytes": 1429,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 3",
           "metrics": {
             "cycles": 90,
@@ -3461,6 +3645,7 @@
           "bytes": 1203,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NINE (Copy)",
           "metrics": {
             "cycles": null,
@@ -3481,6 +3666,7 @@
           "bytes": 1331,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 3 (Copy)",
           "metrics": {
             "cycles": 130,
@@ -3501,6 +3687,7 @@
           "bytes": 2085,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "1X41",
           "metrics": {
             "cycles": 91,
@@ -3521,6 +3708,7 @@
           "bytes": 1333,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY11",
           "metrics": {
             "cycles": 76,
@@ -3541,6 +3729,7 @@
           "bytes": 1088,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "DAY 5 -- BACC ON 4 TRACC",
           "metrics": {
             "cycles": 71,
@@ -3561,6 +3750,7 @@
           "bytes": 1857,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY - NOW WITH WASTE",
           "metrics": {
             "cycles": 213,
@@ -3581,6 +3771,7 @@
           "bytes": 1097,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 2.1",
           "metrics": {
             "cycles": 271,
@@ -3601,6 +3792,7 @@
           "bytes": 4088,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LEAD",
           "metrics": {
             "cycles": 75,
@@ -3621,6 +3813,7 @@
           "bytes": 1217,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 5",
           "metrics": {
             "cycles": null,
@@ -3641,6 +3834,7 @@
           "bytes": 1130,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT 1",
           "metrics": {
             "cycles": 215,
@@ -3661,6 +3855,7 @@
           "bytes": 1073,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 310G",
           "metrics": {
             "cycles": null,
@@ -3681,6 +3876,7 @@
           "bytes": 1692,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 93,
@@ -3701,6 +3897,7 @@
           "bytes": 958,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 290G",
           "metrics": {
             "cycles": null,
@@ -3721,6 +3918,7 @@
           "bytes": 965,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 290G (Copy)",
           "metrics": {
             "cycles": null,
@@ -3741,6 +3939,7 @@
           "bytes": 1260,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 3.2",
           "metrics": {
             "cycles": null,
@@ -3761,6 +3960,7 @@
           "bytes": 1080,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HOW TO DEAL WITH REJECTION",
           "metrics": {
             "cycles": null,
@@ -3781,6 +3981,7 @@
           "bytes": 1398,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HOW TO DEAL WITH REJECTION",
           "metrics": {
             "cycles": 278,
@@ -3801,6 +4002,7 @@
           "bytes": 1306,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "1 DIMENSION + EXTENSION",
           "metrics": {
             "cycles": 264,
@@ -3821,6 +4023,7 @@
           "bytes": 1278,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 2",
           "metrics": {
             "cycles": null,
@@ -3841,6 +4044,7 @@
           "bytes": 2526,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FLATTY",
           "metrics": {
             "cycles": 109,
@@ -3861,6 +4065,7 @@
           "bytes": 946,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 1 BONDER 280G",
           "metrics": {
             "cycles": null,
@@ -3881,6 +4086,7 @@
           "bytes": 946,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 1 BONDER 280G",
           "metrics": {
             "cycles": null,
@@ -3901,6 +4107,7 @@
           "bytes": 953,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 1 BONDER 280G (Copy)",
           "metrics": {
             "cycles": null,
@@ -3921,6 +4128,7 @@
           "bytes": 1642,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY (FIRST DRAFT)",
           "metrics": {
             "cycles": 82,
@@ -3941,6 +4149,7 @@
           "bytes": 1565,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WHO NEEDS THE BOTTOM HALF",
           "metrics": {
             "cycles": 226,
@@ -3961,6 +4170,7 @@
           "bytes": 1074,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8... TO THE PARTY! (8?)",
           "metrics": {
             "cycles": null,
@@ -3981,6 +4191,7 @@
           "bytes": 1859,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P7 STEIGHT",
           "metrics": {
             "cycles": 61,
@@ -4001,6 +4212,7 @@
           "bytes": 1333,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I'M MISSING SOMETHING",
           "metrics": {
             "cycles": 341,
@@ -4021,6 +4233,7 @@
           "bytes": 1814,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P7 STEIGHT",
           "metrics": {
             "cycles": 60,
@@ -4041,6 +4254,7 @@
           "bytes": 1430,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 122,
@@ -4061,6 +4275,7 @@
           "bytes": 1793,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "1H/74C/555G",
           "metrics": {
             "cycles": 74,
@@ -4081,6 +4296,7 @@
           "bytes": 2007,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H SOLUTION 1",
           "metrics": {
             "cycles": 503,
@@ -4101,6 +4317,7 @@
           "bytes": 1110,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "JUSTMAKETHELEADWORKJUSTMAKETHELEADWORKJUSTMAKETHELEADWORKJUSTMAKETHELEADWORK",
           "metrics": {
             "cycles": null,
@@ -4121,6 +4338,7 @@
           "bytes": 1949,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8",
           "metrics": {
             "cycles": 323,
@@ -4141,6 +4359,7 @@
           "bytes": 1309,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 1 - WEAK",
           "metrics": {
             "cycles": 77,
@@ -4161,6 +4380,7 @@
           "bytes": 1326,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "STARTING HEIGHT1 - CYCLES BAD",
           "metrics": {
             "cycles": 223,
@@ -4181,6 +4401,7 @@
           "bytes": 1315,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY>COST>AREA",
           "metrics": {
             "cycles": null,
@@ -4201,6 +4422,7 @@
           "bytes": 1526,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT>CYCLES>COST",
           "metrics": {
             "cycles": 268,
@@ -4221,6 +4443,7 @@
           "bytes": 4598,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN OUTPUT",
           "metrics": {
             "cycles": 71,
@@ -4241,6 +4464,7 @@
           "bytes": 1116,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MOST PERFUMES ARE LIQUID",
           "metrics": {
             "cycles": 62,
@@ -4261,6 +4485,7 @@
           "bytes": 1459,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "VANITY PROJECT",
           "metrics": {
             "cycles": 145,
@@ -4281,6 +4506,7 @@
           "bytes": 1754,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "STEIGHT V1",
           "metrics": {
             "cycles": null,
@@ -4301,6 +4527,7 @@
           "bytes": 3253,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 19",
           "metrics": {
             "cycles": 223,
@@ -4321,6 +4548,7 @@
           "bytes": 2449,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 2",
           "metrics": {
             "cycles": 94,
@@ -4341,6 +4569,7 @@
           "bytes": 2484,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "RPO'S WATCHING YOU",
           "metrics": {
             "cycles": 64,
@@ -4361,6 +4590,7 @@
           "bytes": 2313,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 3",
           "metrics": {
             "cycles": 76,
@@ -4381,6 +4611,7 @@
           "bytes": 1229,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LEADEN SEA",
           "metrics": {
             "cycles": 66,
@@ -4401,6 +4632,7 @@
           "bytes": 1294,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 5",
           "metrics": {
             "cycles": null,
@@ -4421,6 +4653,7 @@
           "bytes": 1075,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 6(8)",
           "metrics": {
             "cycles": null,
@@ -4441,6 +4674,7 @@
           "bytes": 11499,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WE MIN THIS CITY, WE MIN THIS CITY ON AZURI AND PAW",
           "metrics": {
             "cycles": null,
@@ -4461,6 +4695,7 @@
           "bytes": 1650,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "DODGE",
           "metrics": {
             "cycles": 88,
@@ -4481,6 +4716,7 @@
           "bytes": 1449,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THIS HAS TO BE MIN PRIMARY RIGHT?",
           "metrics": {
             "cycles": null,
@@ -4501,6 +4737,7 @@
           "bytes": 8000,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P7 STEIGHT",
           "metrics": {
             "cycles": 59,
@@ -4521,6 +4758,7 @@
           "bytes": 1480,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "PLAYING WITH MY WORM",
           "metrics": {
             "cycles": 74,
@@ -4541,6 +4779,7 @@
           "bytes": 975,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "DAY 5 -- LASER RIFLE",
           "metrics": {
             "cycles": 71,
@@ -4561,6 +4800,7 @@
           "bytes": 986,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 280  66",
           "metrics": {
             "cycles": null,
@@ -4581,6 +4821,7 @@
           "bytes": 1059,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY SOLUTION 2",
           "metrics": {
             "cycles": null,
@@ -4601,6 +4842,7 @@
           "bytes": 1456,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THIS HAS TO BE MIN PRIMARY RIGHT? (Copy)",
           "metrics": {
             "cycles": null,
@@ -4621,6 +4863,7 @@
           "bytes": 4971,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FREEDOM I",
           "metrics": {
             "cycles": 2691,
@@ -4641,6 +4884,7 @@
           "bytes": 961,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING VI-ALT.",
           "metrics": {
             "cycles": null,
@@ -4661,6 +4905,7 @@
           "bytes": 961,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTEMAXXING VI-ALT.",
           "metrics": {
             "cycles": null,
@@ -4681,6 +4926,7 @@
           "bytes": 1476,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IF THIS ISN'T MIN I QUIT",
           "metrics": {
             "cycles": null,
@@ -4701,6 +4947,7 @@
           "bytes": 1199,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LEADEN SEA (COPY)",
           "metrics": {
             "cycles": 71,
@@ -4721,6 +4968,7 @@
           "bytes": 1103,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "300, 2TRACK, GOOD",
           "metrics": {
             "cycles": null,
@@ -4741,6 +4989,7 @@
           "bytes": 2020,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H1 (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 208,
@@ -4761,6 +5010,7 @@
           "bytes": 1856,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FLATPAK GONE WRONG",
           "metrics": {
             "cycles": 152,
@@ -4781,6 +5031,7 @@
           "bytes": 2581,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WASTE NOT",
           "metrics": {
             "cycles": 229,
@@ -4801,6 +5052,7 @@
           "bytes": 1578,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H2 TRACKMANIA",
           "metrics": {
             "cycles": 293,
@@ -4821,6 +5073,7 @@
           "bytes": 3187,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 83,
@@ -4841,6 +5094,7 @@
           "bytes": 1060,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 270 70",
           "metrics": {
             "cycles": null,
@@ -4861,6 +5115,7 @@
           "bytes": 3187,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 82,
@@ -4881,6 +5136,7 @@
           "bytes": 3222,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 77,
@@ -4901,6 +5157,7 @@
           "bytes": 6711,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "P6",
           "metrics": {
             "cycles": 74,
@@ -4921,6 +5178,7 @@
           "bytes": 1344,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "CHIIIKA'S WORKSHOP",
           "metrics": {
             "cycles": 67,
@@ -4941,6 +5199,7 @@
           "bytes": 1683,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ESTELLE'S WORKSHOP",
           "metrics": {
             "cycles": 101,
@@ -4961,6 +5220,7 @@
           "bytes": 1233,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "CHIIIKA'S WORKSHOP",
           "metrics": {
             "cycles": 68,
@@ -4981,6 +5241,7 @@
           "bytes": 1670,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "POOL SHALLOW BIARM CROWD",
           "metrics": {
             "cycles": 75,
@@ -5001,6 +5262,7 @@
           "bytes": 1717,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ESTELLE'S WORKSHOP",
           "metrics": {
             "cycles": 256,
@@ -5021,6 +5283,7 @@
           "bytes": 993,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L 270G 78A",
           "metrics": {
             "cycles": null,
@@ -5041,6 +5304,7 @@
           "bytes": 1835,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN SH 58C 685G",
           "metrics": {
             "cycles": 58,
@@ -5061,6 +5325,7 @@
           "bytes": 1005,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L 265G 88A",
           "metrics": {
             "cycles": null,
@@ -5081,6 +5346,7 @@
           "bytes": 1278,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LEADEN SEAS GET LEADEN DEGREES",
           "metrics": {
             "cycles": null,
@@ -5101,6 +5367,7 @@
           "bytes": 1098,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY: REDESIGN 8/290/84",
           "metrics": {
             "cycles": null,
@@ -5121,6 +5388,7 @@
           "bytes": 4477,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT: 1/67/1285",
           "metrics": {
             "cycles": 67,
@@ -5141,6 +5409,7 @@
           "bytes": 942,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TRACKLESS NORMIE ARMS",
           "metrics": {
             "cycles": null,
@@ -5161,6 +5430,7 @@
           "bytes": 991,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEUROTOXIC ANVIL (AREA)",
           "metrics": {
             "cycles": 537,
@@ -5181,6 +5451,7 @@
           "bytes": 1814,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN SH 58C 670G",
           "metrics": {
             "cycles": 58,
@@ -5201,6 +5472,7 @@
           "bytes": 1846,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "STAR TIDE, SEE? GEE...",
           "metrics": {
             "cycles": 224,
@@ -5221,6 +5493,7 @@
           "bytes": 1846,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "STAR TIDE, SEE? GEE...",
           "metrics": {
             "cycles": 224,
@@ -5241,6 +5514,7 @@
           "bytes": 1552,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IF THIS ISN'T MIN I QUIT (5 COST SAVED)",
           "metrics": {
             "cycles": null,
@@ -5261,6 +5535,7 @@
           "bytes": 4837,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H1 V2 89C",
           "metrics": {
             "cycles": 89,
@@ -5281,6 +5556,7 @@
           "bytes": 1849,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I DID QS ON THE WRONG SIDE DIDN'T I",
           "metrics": {
             "cycles": 76,
@@ -5301,6 +5577,7 @@
           "bytes": 1792,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I DID QS ON THE WRONG SIDE DIDN'T I (FIXED)",
           "metrics": {
             "cycles": 74,
@@ -5321,6 +5598,7 @@
           "bytes": 2042,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "PROPELLER BOTTLENECK",
           "metrics": {
             "cycles": 106,
@@ -5341,6 +5619,7 @@
           "bytes": 4161,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT: 1/60/1185",
           "metrics": {
             "cycles": 60,
@@ -5361,6 +5640,7 @@
           "bytes": 1245,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L MIN?",
           "metrics": {
             "cycles": null,
@@ -5381,6 +5661,7 @@
           "bytes": 1102,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "GLYPH OF DIVISION LATENCY",
           "metrics": {
             "cycles": 71,
@@ -5401,6 +5682,7 @@
           "bytes": 3108,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MEAN TRY MARIE",
           "metrics": {
             "cycles": 65,
@@ -5421,6 +5703,7 @@
           "bytes": 1790,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I DID QS ON THE WRONG SIDE DIDN'T I (FIXED)",
           "metrics": {
             "cycles": 74,
@@ -5441,6 +5724,7 @@
           "bytes": 1128,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8L 310G",
           "metrics": {
             "cycles": null,
@@ -5461,6 +5745,7 @@
           "bytes": 3230,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HAND IN HAND THROUGH THEIR... STAR TIDE",
           "metrics": {
             "cycles": 84,
@@ -5481,6 +5766,7 @@
           "bytes": 1257,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 3.2",
           "metrics": {
             "cycles": 158,
@@ -5501,6 +5787,7 @@
           "bytes": 1332,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN START HEIGHT CYCLES BULLSHIT",
           "metrics": {
             "cycles": 139,
@@ -5521,6 +5808,7 @@
           "bytes": 1370,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAST STICK",
           "metrics": {
             "cycles": 119,
@@ -5541,6 +5829,7 @@
           "bytes": 1472,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAST STICK",
           "metrics": {
             "cycles": 111,
@@ -5561,6 +5850,7 @@
           "bytes": 1016,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "280G",
           "metrics": {
             "cycles": null,
@@ -5581,6 +5871,7 @@
           "bytes": 1606,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAST STICK (Copy)",
           "metrics": {
             "cycles": 93,
@@ -5601,6 +5892,7 @@
           "bytes": 1588,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAST STICK (Copy)",
           "metrics": {
             "cycles": 93,
@@ -5621,6 +5913,7 @@
           "bytes": 1536,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8 305 61",
           "metrics": {
             "cycles": 248,
@@ -5641,6 +5934,7 @@
           "bytes": 1544,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAST STICK (Copy)",
           "metrics": {
             "cycles": 90,
@@ -5661,6 +5955,7 @@
           "bytes": 1607,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAST STICK (Copy)",
           "metrics": {
             "cycles": 90,
@@ -5681,6 +5976,7 @@
           "bytes": 1252,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 3.5",
           "metrics": {
             "cycles": null,
@@ -5701,6 +5997,7 @@
           "bytes": 1733,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I DID QS ON THE WRONG SIDE DIDN'T I (FIXED)",
           "metrics": {
             "cycles": 71,
@@ -5721,6 +6018,7 @@
           "bytes": 1153,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 4.0",
           "metrics": {
             "cycles": null,
@@ -5741,6 +6039,7 @@
           "bytes": 1135,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE WHALE",
           "metrics": {
             "cycles": 62,
@@ -5761,6 +6060,7 @@
           "bytes": 1153,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 4.2",
           "metrics": {
             "cycles": null,
@@ -5781,6 +6081,7 @@
           "bytes": 1302,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT 3.3",
           "metrics": {
             "cycles": 158,
@@ -5801,6 +6102,7 @@
           "bytes": 1072,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 5.0",
           "metrics": {
             "cycles": null,
@@ -5821,6 +6123,7 @@
           "bytes": 2487,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 75,
@@ -5841,6 +6144,7 @@
           "bytes": 944,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "KNEW SOUL OCEAN WON (CHOPPY)",
           "metrics": {
             "cycles": null,
@@ -5861,6 +6165,7 @@
           "bytes": 2567,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 74,
@@ -5881,6 +6186,7 @@
           "bytes": 2492,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 73,
@@ -5901,6 +6207,7 @@
           "bytes": 1453,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ONE DIMENSIONAL GEOMETRIC OBJECT",
           "metrics": {
             "cycles": 111,
@@ -5921,6 +6228,7 @@
           "bytes": 1070,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "7 8",
           "metrics": {
             "cycles": null,
@@ -5941,6 +6249,7 @@
           "bytes": 1402,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H1 O 144C",
           "metrics": {
             "cycles": 144,
@@ -5961,6 +6270,7 @@
           "bytes": 1583,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "2 TALL 63 LATENCY",
           "metrics": {
             "cycles": 369,
@@ -5981,6 +6291,7 @@
           "bytes": 1701,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ROTATED FOR VISIBILITY (I LIVE ON AN ALTERNATIVE PLANET WHERE ALL SCREENS ARE ROTATED BY 60 DEGREES COUNTERCLOCKWISE)",
           "metrics": {
             "cycles": 100,
@@ -6001,6 +6312,7 @@
           "bytes": 1020,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "280G 67A",
           "metrics": {
             "cycles": null,
@@ -6021,6 +6333,7 @@
           "bytes": 2751,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "START HEIGHT (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy) (Copy)",
           "metrics": {
             "cycles": 66,
@@ -6041,6 +6354,7 @@
           "bytes": 2819,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 65,
@@ -6061,6 +6375,7 @@
           "bytes": 2769,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 65,
@@ -6081,6 +6396,7 @@
           "bytes": 2717,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 64,
@@ -6101,6 +6417,7 @@
           "bytes": 2737,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 63,
@@ -6121,6 +6438,7 @@
           "bytes": 2658,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 63,
@@ -6141,6 +6459,7 @@
           "bytes": 2650,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 63,
@@ -6161,6 +6480,7 @@
           "bytes": 1967,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H SOLUTION 2",
           "metrics": {
             "cycles": 263,
@@ -6181,6 +6501,7 @@
           "bytes": 1748,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MAYBE NOT HORRIBLE",
           "metrics": {
             "cycles": 277,
@@ -6201,6 +6522,7 @@
           "bytes": 7386,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MERGED SOLUTION",
           "metrics": {
             "cycles": 70,
@@ -6221,6 +6543,7 @@
           "bytes": 1772,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "H@0CG",
           "metrics": {
             "cycles": 75,
@@ -6241,6 +6564,7 @@
           "bytes": 1291,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "2 (TWO) PRODUCTS",
           "metrics": {
             "cycles": null,
@@ -6261,6 +6585,7 @@
           "bytes": 1519,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "CHEAPER STICK",
           "metrics": {
             "cycles": 223,
@@ -6281,6 +6606,7 @@
           "bytes": 1519,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "CHEAPER STICK",
           "metrics": {
             "cycles": 223,
@@ -6301,6 +6627,7 @@
           "bytes": 1889,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FLATPAK GONE WRONG",
           "metrics": {
             "cycles": 119,
@@ -6321,6 +6648,7 @@
           "bytes": 7601,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE UNFUNNY NUMBER",
           "metrics": {
             "cycles": 68,
@@ -6341,6 +6669,7 @@
           "bytes": 991,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LGA@1",
           "metrics": {
             "cycles": null,
@@ -6361,6 +6690,7 @@
           "bytes": 7701,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THE UNFUNNY NUMBER",
           "metrics": {
             "cycles": 68,
@@ -6381,6 +6711,7 @@
           "bytes": 1461,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "EXPIRED WARRANTY",
           "metrics": {
             "cycles": null,
@@ -6401,6 +6732,7 @@
           "bytes": 1575,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FAVORITE SOLUTION",
           "metrics": {
             "cycles": 106,
@@ -6421,6 +6753,7 @@
           "bytes": 1526,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8 305 58",
           "metrics": {
             "cycles": 248,
@@ -6441,6 +6774,7 @@
           "bytes": 1106,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "SLIGHTLY LESS SPAGETTI THAN PREVIOUSLY",
           "metrics": {
             "cycles": null,
@@ -6461,6 +6795,7 @@
           "bytes": 1042,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LANTENCY 11 (FINAL) :)",
           "metrics": {
             "cycles": 56,
@@ -6481,6 +6816,7 @@
           "bytes": 873,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HACKETY HAX",
           "metrics": {
             "cycles": 6,
@@ -6501,6 +6837,7 @@
           "bytes": 1053,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IT CAME TO ME IN A DREAM...",
           "metrics": {
             "cycles": null,
@@ -6521,6 +6858,7 @@
           "bytes": 1443,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8 300 51",
           "metrics": {
             "cycles": 183,
@@ -6541,6 +6879,7 @@
           "bytes": 1443,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8 300 51",
           "metrics": {
             "cycles": 178,
@@ -6561,6 +6900,7 @@
           "bytes": 1521,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TOO MANY PISTONS",
           "metrics": {
             "cycles": 408,
@@ -6581,6 +6921,7 @@
           "bytes": 2515,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 59,
@@ -6601,6 +6942,7 @@
           "bytes": 1334,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "IT WORKS",
           "metrics": {
             "cycles": 264,
@@ -6621,6 +6963,7 @@
           "bytes": 2568,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "ALMOST 1P",
           "metrics": {
             "cycles": 59,
@@ -6641,6 +6984,7 @@
           "bytes": 2996,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WAVE COLLAPSE",
           "metrics": {
             "cycles": 55,
@@ -6661,6 +7005,7 @@
           "bytes": 922,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FALLING SNOWFLAKE",
           "metrics": {
             "cycles": null,
@@ -6681,6 +7026,7 @@
           "bytes": 1879,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FLATPAK GONE WRONG",
           "metrics": {
             "cycles": 114,
@@ -6701,6 +7047,7 @@
           "bytes": 2198,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "I DID QS ON THE WRONG SIDE DIDN'T I (FIXED & P8)",
           "metrics": {
             "cycles": 63,
@@ -6721,6 +7068,7 @@
           "bytes": 987,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TEMPLE SMALL WASTE BLOW HARD",
           "metrics": {
             "cycles": null,
@@ -6741,6 +7089,7 @@
           "bytes": 1122,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "(8L) SKOWYT [ŁKA01]",
           "metrics": {
             "cycles": null,
@@ -6761,6 +7110,7 @@
           "bytes": 1368,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 2",
           "metrics": {
             "cycles": null,
@@ -6781,6 +7131,7 @@
           "bytes": 1481,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "11 LATE",
           "metrics": {
             "cycles": 71,
@@ -6801,6 +7152,7 @@
           "bytes": 1237,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 8/G350",
           "metrics": {
             "cycles": null,
@@ -6821,6 +7173,7 @@
           "bytes": 1043,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 6.0",
           "metrics": {
             "cycles": null,
@@ -6841,6 +7194,7 @@
           "bytes": 1166,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "MIN LATENCY???",
           "metrics": {
             "cycles": null,
@@ -6861,6 +7215,7 @@
           "bytes": 1529,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT-456",
           "metrics": {
             "cycles": 456,
@@ -6881,6 +7236,7 @@
           "bytes": 1606,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "a piece of c... solution",
           "metrics": {
             "cycles": 71,
@@ -6901,6 +7257,7 @@
           "bytes": 934,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "AWEURHGH",
           "metrics": {
             "cycles": null,
@@ -6921,6 +7278,7 @@
           "bytes": 1271,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "NEW SOLUTION 1",
           "metrics": {
             "cycles": 136,
@@ -6941,6 +7299,7 @@
           "bytes": 1292,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "10",
           "metrics": {
             "cycles": null,
@@ -6961,6 +7320,7 @@
           "bytes": 1911,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LOOSE QUICKSILVER \"GOOD FOR THE MIND\", SOURCES SAY",
           "metrics": {
             "cycles": null,
@@ -6981,6 +7341,7 @@
           "bytes": 1261,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "9",
           "metrics": {
             "cycles": null,
@@ -7001,6 +7362,7 @@
           "bytes": 1383,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT 4",
           "metrics": {
             "cycles": 114,
@@ -7021,6 +7383,7 @@
           "bytes": 2972,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WAVE COLLAPSE",
           "metrics": {
             "cycles": 55,
@@ -7041,6 +7404,7 @@
           "bytes": 1077,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 7.1",
           "metrics": {
             "cycles": null,
@@ -7061,6 +7425,7 @@
           "bytes": 1476,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT 6",
           "metrics": {
             "cycles": 82,
@@ -7081,6 +7446,7 @@
           "bytes": 1343,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8",
           "metrics": {
             "cycles": null,
@@ -7101,6 +7467,7 @@
           "bytes": 1073,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "285G",
           "metrics": {
             "cycles": null,
@@ -7121,6 +7488,7 @@
           "bytes": 1135,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "8",
           "metrics": {
             "cycles": null,
@@ -7141,6 +7509,7 @@
           "bytes": 1032,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L 7.3",
           "metrics": {
             "cycles": null,
@@ -7161,6 +7530,7 @@
           "bytes": 1187,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8NCY 8  350G",
           "metrics": {
             "cycles": null,
@@ -7181,6 +7551,7 @@
           "bytes": 1490,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "HEIGHT 6 (Copy)",
           "metrics": {
             "cycles": 82,
@@ -7201,6 +7572,7 @@
           "bytes": 5544,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "T MINUS 35 MINUTES",
           "metrics": {
             "cycles": 92,
@@ -7221,6 +7593,7 @@
           "bytes": 1270,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "L8NCY 8  345G (Copy)",
           "metrics": {
             "cycles": null,
@@ -7241,6 +7614,7 @@
           "bytes": 1334,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "THING",
           "metrics": {
             "cycles": null,
@@ -7261,6 +7635,7 @@
           "bytes": 2972,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "WAVE COLLAPSE",
           "metrics": {
             "cycles": 55,
@@ -7281,6 +7656,7 @@
           "bytes": 922,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "FALLING SNOWFLAKE",
           "metrics": {
             "cycles": null,
@@ -7301,6 +7677,7 @@
           "bytes": 1243,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 8/G325",
           "metrics": {
             "cycles": null,
@@ -7321,6 +7698,7 @@
           "bytes": 1240,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "LATENCY 8/G320",
           "metrics": {
             "cycles": null,
@@ -7341,6 +7719,7 @@
           "bytes": 1389,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "AUTHOR SOLVE",
           "metrics": {
             "cycles": null,
@@ -7361,6 +7740,7 @@
           "bytes": 1544,
           "formatVersion": 7,
           "puzzleFile": "weeklies2026_liquid-perfumes",
+          "eventPuzzleFile": "weeklies2026_liquid-perfumes.puzzle",
           "solutionName": "TINY WABU SOLVIE",
           "metrics": {
             "cycles": 98,
