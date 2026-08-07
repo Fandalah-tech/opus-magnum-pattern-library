@@ -31,7 +31,8 @@
     const root = resolveRoot(rootOrSelector);
     const viewer = mount(root);
     scenes.set(root, scene);
-    viewer.render(scene.source.solution, scene.source.graph, scene.source.puzzle, scene.source.replay);
+    if (typeof viewer.renderScene === "function") viewer.renderScene(scene);
+    else viewer.render(scene.source.solution, scene.source.graph, scene.source.puzzle, scene.source.replay);
     window.OpusStaticArmFidelity?.apply?.(viewer, scene.source.solution);
     window.dispatchEvent(new CustomEvent("opus:sceneready", { detail: { scene, viewer } }));
     window.dispatchEvent(new CustomEvent("opus:analysisready", { detail: { payload: scene.source, scene, viewer } }));
