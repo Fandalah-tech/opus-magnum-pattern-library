@@ -12,6 +12,7 @@ from packages.opus_parser.solution import parse_solution
 
 ROOT = Path.cwd()
 LIVE = ROOT / "reports" / "rotor-a41-cycle-live.json"
+GENERIC_LIVE = ROOT / "reports" / "live-search-status.json"
 ANALYSIS = ROOT / "reports" / "rotor-a41-cycle-analysis.json"
 REFERENCE_SHA = "435b31d9366f90bb5217ea45faebb392ae761fe3740050c2ffa56e847174ab47"
 
@@ -44,6 +45,28 @@ def publish(data: dict[str, Any], *, stage: str, status: str, message: str, extr
     LIVE.parent.mkdir(parents=True, exist_ok=True)
     LIVE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
+    metrics = data.get("metrics", {})
+    baseline = metrics.get("baseline", {})
+    best = metrics.get("best", baseline)
+    generic = {
+        "updatedAt": data["updatedAt"],
+        "status": status,
+        "stage": stage,
+        "campaignId": data.get("campaignId", "rotor-a41-cycle-001"),
+        "mode": "a41-cycle-retiming",
+        "depth": 0,
+        "maxDepth": 0,
+        "elapsedSeconds": data.get("elapsedSeconds", 0),
+        "visitedStates": metrics.get("testedCandidates", 0),
+        "expandedStates": metrics.get("validCandidates", 0),
+        "frontierSize": 0,
+        "bestScore": best.get("cycles", baseline.get("cycles", 1112)),
+        "bestPathLength": 0,
+        "metrics": metrics,
+        "message": message,
+    }
+    GENERIC_LIVE.write_text(json.dumps(generic, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
 
 def candidate_roots() -> list[Path]:
     roots = [ROOT]
@@ -66,13 +89,11 @@ def candidate_roots() -> list[Path]:
 def locate_reference() -> Path | None:
     for root in candidate_roots():
         try:
-            files = root.rglob("*.solution")
-            for path in files:
+            for path in root.rglob("*.solution"):
                 try:
                     if path.stat().st_size > 10_000_000:
                         continue
-                    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-                    if digest == REFERENCE_SHA:
+                    if hashlib.sha256(path.read_bytes()).hexdigest() == REFERENCE_SHA:
                         return path
                 except (OSError, PermissionError):
                     continue
@@ -127,19 +148,17 @@ def analyze_program(solution: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> int:
+    started = time.monotonic()
     live = load_live()
-    publish(live, stage="reference-discovery", status="running", message="Recherche locale de la nouvelle solution A41 par SHA-256.")
+    live["elapsedSeconds"] = 0
+    publish(live, stage="reference-discovery", status="running", message="Campagne A41 active: recherche locale de la reference verrouillee par SHA-256.")
     reference = locate_reference()
     if reference is None:
-        publish(
-            live,
-            stage="reference-required",
-            status="blocked",
-            message="La solution A41 de référence n'a pas été trouvée dans le dépôt, Téléchargements, Bureau ou Documents du PC.",
-        )
+        publish(live, stage="reference-required", status="blocked", message="Reference A41 introuvable sur le PC; recherche bloquee avant toute mutation.")
         return 3
 
-    publish(live, stage="program-analysis", status="running", message=f"Référence trouvée: {reference.name}. Analyse exacte des programmes en cours.")
+    live["elapsedSeconds"] = round(time.monotonic() - started, 1)
+    publish(live, stage="program-analysis", status="running", message=f"Reference trouvee: {reference.name}. Analyse des fenetres de retiming.")
     solution = parse_solution(reference)
     analysis = analyze_program(solution)
     ANALYSIS.write_text(json.dumps({"schemaVersion": 1, "updatedAt": now(), **analysis}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -147,36 +166,26 @@ def main() -> int:
     metrics = live.setdefault("metrics", {})
     metrics["testedCandidates"] = analysis["candidateCount"]
     metrics["validCandidates"] = 0
+    live["elapsedSeconds"] = round(time.monotonic() - started, 1)
     publish(
         live,
         stage="validation-queue",
         status="running",
-        message=(
-            f"{analysis['candidateCount']} déplacements d'une instruction vers la gauche ont été identifiés. "
-            "Ils doivent maintenant être rejoués dans OMSIM avant qu'un résultat soit déclaré valide."
-        ),
+        message=f"{analysis['candidateCount']} retimings elementaires identifies; preparation de la validation OMSIM.",
         extra={"analysisReport": "reports/rotor-a41-cycle-analysis.json", "referencePath": str(reference)},
     )
 
-    # Keep a visible heartbeat while the next validator/mutator stage is being developed.
-    # This avoids falsely presenting unvalidated static retimings as cycle improvements.
-    for remaining in range(20, 0, -1):
-        live = load_live()
-        publish(
-            live,
-            stage="validation-queue",
-            status="running",
-            message=f"Analyse terminée; préparation de la validation OMSIM des candidats. Heartbeat {remaining}/20.",
-        )
+    # Short heartbeat only. The campaign now yields quickly instead of occupying the
+    # machine for hours while no validated mutator is running.
+    for remaining in range(4, 0, -1):
         time.sleep(15)
+        live = load_live()
+        live["elapsedSeconds"] = round(time.monotonic() - started, 1)
+        publish(live, stage="validation-queue", status="running", message=f"A41 prioritaire: validation OMSIM en preparation ({remaining}/4).")
 
     live = load_live()
-    publish(
-        live,
-        stage="analysis-complete",
-        status="completed",
-        message="Audit de minutage terminé. Aucun meilleur score n'est publié avant validation complète dans OMSIM.",
-    )
+    live["elapsedSeconds"] = round(time.monotonic() - started, 1)
+    publish(live, stage="analysis-complete", status="completed", message="Passe de retiming A41 terminee; aucun gain n'est declare sans validation OMSIM complete.")
     return 0
 
 
