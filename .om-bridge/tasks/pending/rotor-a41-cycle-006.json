@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-006",
+  "operation": "run_rotor_a41_remote_cycle_campaign",
+  "priority": 6000,
+  "timeout_seconds": 7200,
+  "notes": "Use the official remote validator as the authority because the local engine cannot yet reproduce the A41 baseline. Validate the baseline, then test and greedily chain retiming candidates while preserving Area 41. Publish live metrics and save the best playable .solution."
+}
