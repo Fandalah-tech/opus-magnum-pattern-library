@@ -1,0 +1,115 @@
+name: Viewer Scene integration smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "viewer.html"
+      - "assets/js/opus-scene.js"
+      - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-viewer-runtime.js"
+      - "assets/js/replay-controls.js"
+      - "assets/js/replay-arm-animation.js"
+      - "assets/js/replay-molecules.js"
+      - "assets/js/used-area-overlay.js"
+      - "assets/js/output-product-preview.js"
+      - "assets/js/product-delivery-animation.js"
+      - "assets/js/viewer-interactions.js"
+      - "assets/js/viewer-polish.js"
+      - ".github/workflows/viewer-scene-integration-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: viewer-scene-integration-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Validate Scene-driven graphics integrations
+        run: |
+          python -m http.server 8765 >/tmp/viewer-scene-http.log 2>&1 &
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1500, 'height': 960})
+              errors = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=demo', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              page.wait_for_timeout(260)
+
+              state = page.evaluate("""() => {
+                const root = document.querySelector('#solution-viewer');
+                const scene = window.OpusViewerRuntime.currentScene(root);
+                return {
+                  kind: scene?.kind,
+                  frameCount: scene?.timeline?.frames?.length || 0,
+                  currentFrame: scene?.timeline?.frameIndex,
+                  staticParts: scene?.static?.parts?.length || 0,
+                  hasLastScene: window.__OPUS_LAST_SCENE__ === scene,
+                  areaFrames: window.__OPUS_USED_AREA__?.cumulativeByFrame?.length || 0,
+                  armLabels: root.querySelectorAll('[data-arm-number-label]').length,
+                  hitTargets: root.querySelectorAll('[data-part-hit-targets]').length,
+                  atomLabels: root.querySelectorAll('[data-viewer-layer="atom-labels"] .viewer-atom-symbol').length,
+                  areaLayer: root.querySelectorAll('[data-viewer-layer="area"]').length
+                };
+              }""")
+              assert state['kind'] == 'opus-scene', state
+              assert state['frameCount'] == 4, state
+              assert state['currentFrame'] == 0, state
+              assert state['staticParts'] >= 6, state
+              assert state['hasLastScene'], state
+              assert state['areaFrames'] == state['frameCount'], state
+              assert state['armLabels'] >= 2, state
+              assert state['hitTargets'] == state['staticParts'], state
+              assert state['atomLabels'] >= 2, state
+              assert state['areaLayer'] == 1, state
+
+              # Move one cycle and require all dynamic consumers to follow the frame Scene.
+              before = page.locator('#solution-viewer [data-part-id="arm-main"] [data-arm-shaft="0"]').get_attribute('x2')
+              page.locator('[data-replay-next]').click()
+              page.wait_for_timeout(300)
+              after_state = page.evaluate("""() => {
+                const root = document.querySelector('#solution-viewer');
+                return {
+                  cycle: root.querySelector('[data-replay-cycle]')?.textContent,
+                  atoms: root.querySelectorAll('[data-atom-id]').length,
+                  labels: root.querySelectorAll('.viewer-atom-symbol').length,
+                  badge: root.querySelector('.viewer-area-badge')?.textContent || '',
+                  replaySpeed: root.dataset.replaySpeed
+                };
+              }""")
+              assert 'Cycle 1' in after_state['cycle'], after_state
+              assert after_state['atoms'] >= 2, after_state
+              assert after_state['labels'] >= 2, after_state
+              assert 'Used area' in after_state['badge'], after_state
+              assert after_state['replaySpeed'], after_state
+
+              # Scene-backed station previews remain available without reading raw analysis payloads.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=io', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              page.wait_for_timeout(160)
+              assert page.locator('#solution-viewer [data-part-id="io-input"] [data-input-preview]').count() == 1
+              assert page.locator('#solution-viewer [data-part-id="io-output"] [data-output-preview]').count() == 1
+
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
