@@ -1,3 +1,4 @@
+from packages.opus_solver.cycle_bounds import overlap_cycle_bound
 from packages.opus_solver.fragment_planner import analyze_two_fragment_assembly
 
 
@@ -25,8 +26,6 @@ def _aqueous_dagger_family_puzzle() -> dict:
     reagent1 = _triangle("water")
     reagent1["id"] = "reagent-1"
 
-    # Geometry reconstructed from the published puzzle image: a salt triangle
-    # on the left and a water triangle on the right, joined by two normal bonds.
     return {
         "name": "AQUEOUS DAGGER FAMILY",
         "availableParts": {
@@ -82,3 +81,13 @@ def test_aqueous_family_classical_bound_is_fifteen_when_l_is_two() -> None:
     plan = analyze_two_fragment_assembly(_aqueous_dagger_family_puzzle())
 
     assert plan.classical_cycle_bound(latency=2, target_products=6) == 15
+
+
+def test_aqueous_family_overlap_bound_is_eight_when_n_six_l_two_d_zero() -> None:
+    plan = analyze_two_fragment_assembly(_aqueous_dagger_family_puzzle())
+    bound = overlap_cycle_bound(plan, latency=2, double_consumptions=0, target_products=6)
+
+    assert bound.n == 6
+    assert bound.d == 0
+    assert bound.latency == 2
+    assert bound.cycles == 8
