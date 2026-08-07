@@ -1,0 +1,7 @@
+{
+  "id": "opus-filesystem-diagnostic-001",
+  "operation": "diagnose_local_opus_access",
+  "priority": 9000,
+  "timeout_seconds": 300,
+  "notes": "Inspect the effective Windows account, profile paths and recursively visible Opus Magnum puzzle/solution files from Bruno-OMSIM."
+}
