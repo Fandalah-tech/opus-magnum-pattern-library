@@ -44,7 +44,12 @@ class LinkParser(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = dict(attrs)
-        for _, value in attrs:
+        for attr_name, value in attrs:
+            # download= is a filename hint, not a network location. Critelli's
+            # puzzle anchors combine href="data:..." with download="x.puzzle";
+            # treating both attributes as URLs creates a phantom second puzzle.
+            if attr_name == "download":
+                continue
             if value and (".puzzle" in value.lower() or ".solution" in value.lower()):
                 self.embedded_urls.append(self._resolve(self.base_url, value))
         if tag == "a" and values.get("href"):
