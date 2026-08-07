@@ -28,6 +28,11 @@ def test_a41_remote_operation_uses_cached_wrapper():
     assert command[-1] == "tools/run_rotor_a41_remote_cached.py"
 
 
+def test_a41_fresh_operation_uses_generation_wrapper():
+    command = ALLOWED_OPERATIONS["run_rotor_a41_remote_fresh_campaign"]
+    assert command[-1] == "tools/run_rotor_a41_remote_fresh.py"
+
+
 def test_load_task_rejects_shell_command(tmp_path):
     with pytest.raises(ValueError, match="unknown task fields"):
         _load_task(_write(tmp_path, {
