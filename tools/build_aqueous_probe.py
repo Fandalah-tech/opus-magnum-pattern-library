@@ -44,9 +44,10 @@ def build_probe_solution() -> dict:
             _part("b-water-arm", "arm1", (2, -2), rotation=0,
                   program=_program([(0, "grab"), (3, "rotate_ccw"), (4, "drop"), (5, "rotate_cw")])),
             # Length two keeps the arm base clear of both the incoming water
-            # triangle and the completed product while retaining the same pivot.
+            # triangle and the completed product. The explicit drop at cycle 6
+            # releases the completed molecule before the next 7-cycle feed.
             _part("z-pivot-arm", "arm1", (3, 0), rotation=3, length=2,
-                  program=_program([(4, "grab"), (5, "pivot_ccw")])),
+                  program=_program([(4, "grab"), (5, "pivot_ccw"), (6, "drop")])),
             _part("salt-input", "input", (-2, -2), rotation=3, which=0),
             _part("water-input", "input", (3, -2), rotation=4, which=1),
             _part("calc-0", "glyph-calcification", (0, -2)),
@@ -76,14 +77,17 @@ def main() -> int:
     Path(args.puzzle_out).write_bytes(puzzle_bytes)
     write_solution(solution, args.solution_out)
 
-    timeline = build_program_timeline(solution, max_cycles=37)
+    timeline = build_program_timeline(solution, max_cycles=43)
     simulator = Simulator.from_models(puzzle, solution)
     replay = simulator.run_timeline(timeline)
     if replay["summary"]["terminatedWithError"]:
         raise SystemExit("internal engine rejected Aqueous probe")
     if simulator.delivered_products != {"out": 6}:
         raise SystemExit(f"expected six products, got {simulator.delivered_products}")
-    print(f"internal-engine products=6 completedCycles={replay['summary']['completedCycles']}")
+    print(
+        f"internal-engine products=6 period={timeline['summary']['globalPeriod']} "
+        f"completedCycles={replay['summary']['completedCycles']}"
+    )
     return 0
 
 
