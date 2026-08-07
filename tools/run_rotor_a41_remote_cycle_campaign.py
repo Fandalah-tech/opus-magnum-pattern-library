@@ -16,6 +16,7 @@ from tools.run_rotor_a41_cycle_campaign import (
 
 ROOT = Path.cwd()
 VALIDATOR_URL = os.environ.get("OM_VALIDATOR_URL", "https://opus-validator-6gflgqb25q-nn.a.run.app")
+ANALYZE_ENDPOINT = "/api/v1/analyze"
 MAX_ROUNDS = 8
 MAX_CANDIDATES = 300
 
@@ -47,26 +48,17 @@ def locate_puzzle(solution: dict[str, Any]) -> Path | None:
         if key in seen or not root.exists():
             continue
         seen.add(key)
-
-        # Opus Magnum stores custom puzzles below the Steam-id directory, e.g.
-        # <Opus Magnum>/<steam-id>/custom/weeklies2026_van-berlos-rotor.puzzle.
-        # Search recursively instead of assuming custom/ is directly below the root.
         try:
             candidates = list(root.rglob("*.puzzle"))
         except (OSError, PermissionError):
             continue
-
         for path in candidates:
             if path.name.lower() in wanted_names:
                 return path
-
-        # Fallback for historical solution headers that omit/add the .puzzle suffix
-        # or differ only by path components.
         wanted_stems = {Path(name).stem.lower() for name in wanted_names}
         for path in candidates:
             if path.stem.lower() in wanted_stems:
                 return path
-
     return None
 
 
@@ -88,11 +80,31 @@ def multipart_bytes(puzzle_path: Path, solution_bytes: bytes, solution_name: str
     return b"".join(chunks), boundary
 
 
+def _normalize_analyze_response(data: dict[str, Any]) -> dict[str, Any]:
+    validation = data.get("validation") if isinstance(data, dict) else None
+    if not isinstance(validation, dict):
+        return {"valid": False, "metrics": {}, "message": "Analyze response missing validation object", "raw": data}
+    status = str(validation.get("status") or "").lower()
+    valid = validation.get("valid") is True or status == "valid"
+    metrics = validation.get("metrics") if isinstance(validation.get("metrics"), dict) else {}
+    issues = validation.get("issues") if isinstance(validation.get("issues"), list) else []
+    message = validation.get("message")
+    if not message and issues:
+        message = "; ".join(str(item.get("message") or item.get("code") or item) for item in issues[:4] if isinstance(item, dict))
+    return {
+        "valid": valid,
+        "metrics": metrics,
+        "message": message or status or "unknown",
+        "validation": validation,
+        "raw": data,
+    }
+
+
 def validate_remote(puzzle_path: Path, solution: dict[str, Any], name: str) -> dict[str, Any]:
     payload = encode_solution(solution)
     body, boundary = multipart_bytes(puzzle_path, payload, name)
     request = urllib.request.Request(
-        f"{VALIDATOR_URL.rstrip('/')}/validate",
+        f"{VALIDATOR_URL.rstrip('/')}{ANALYZE_ENDPOINT}",
         data=body,
         method="POST",
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
@@ -100,7 +112,7 @@ def validate_remote(puzzle_path: Path, solution: dict[str, Any], name: str) -> d
     try:
         with urllib.request.urlopen(request, timeout=120) as response:
             data = json.load(response)
-        return {"ok": True, "response": data, "error": None}
+        return {"ok": True, "response": _normalize_analyze_response(data), "error": None}
     except urllib.error.HTTPError as exc:
         return {"ok": False, "response": None, "error": f"HTTP {exc.code}: {exc.read().decode('utf-8', errors='replace')[:1200]}"}
     except Exception as exc:
@@ -134,14 +146,14 @@ def main() -> int:
         publish(live, stage="puzzle-required", status="blocked", message=f"Puzzle binaire {solution.get('puzzleFile')} introuvable sous le dossier Opus Magnum, y compris les profils Steam/custom.")
         return 4
 
-    publish(live, stage="baseline-validation", status="running", message=f"Validation distante de {reference_file} avec {puzzle_path.name}.", extra={"validatorUrl": VALIDATOR_URL, "puzzlePath": str(puzzle_path), "referenceMatch": match_kind})
+    publish(live, stage="baseline-validation", status="running", message=f"Validation distante de {reference_file} avec {puzzle_path.name} via {ANALYZE_ENDPOINT}.", extra={"validatorUrl": VALIDATOR_URL, "validatorEndpoint": ANALYZE_ENDPOINT, "puzzlePath": str(puzzle_path), "referenceMatch": match_kind})
     baseline = validate_remote(puzzle_path, solution, "a41-reference.solution")
     if not baseline["ok"]:
         publish(live, stage="validator-unavailable", status="blocked", message=f"Validateur inaccessible: {baseline['error']}")
         return 5
     base_response = baseline["response"] or {}
     if not base_response.get("valid"):
-        publish(live, stage="baseline-rejected", status="blocked", message="Le validateur distant rejette la reference A41 encodee.", extra={"baselineResponse": base_response})
+        publish(live, stage="baseline-rejected", status="blocked", message=f"Le validateur distant rejette la reference A41 encodee: {base_response.get('message')}", extra={"baselineResponse": base_response})
         return 6
     base_metrics = base_response.get("metrics") or {}
     baseline_cycles = int(base_metrics.get("cycles") or REFERENCE_METRICS["cycles"])
@@ -201,7 +213,7 @@ def main() -> int:
         save_best(current, current_cycles, mutations, winning_metrics)
         publish(live, stage="improvement-found", status="running", message=f"Nouveau meilleur valide: {current_cycles} cycles (-{baseline_cycles-current_cycles}).", extra={"round": round_index, "frontierSize": 0, "bestMutations": mutations, "bestSolution": "reports/rotor-a41-cycle-best.solution"})
 
-    ANALYSIS.write_text(json.dumps({"schemaVersion": 3, "updatedAt": now(), "validatorUrl": VALIDATOR_URL, "puzzlePath": str(puzzle_path), "baselineResponse": base_response, "rounds": rounds, "testedCandidates": tested, "validCandidates": valid, "bestCycles": current_cycles, "mutations": mutations}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    ANALYSIS.write_text(json.dumps({"schemaVersion": 4, "updatedAt": now(), "validatorUrl": VALIDATOR_URL, "validatorEndpoint": ANALYZE_ENDPOINT, "puzzlePath": str(puzzle_path), "baselineResponse": base_response, "rounds": rounds, "testedCandidates": tested, "validCandidates": valid, "bestCycles": current_cycles, "mutations": mutations}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     metrics["testedCandidates"] = tested
     metrics["validCandidates"] = valid
     live["elapsedSeconds"] = round(time.monotonic() - started, 1)
