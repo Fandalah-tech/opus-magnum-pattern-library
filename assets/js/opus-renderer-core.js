@@ -12,6 +12,22 @@
   const normalizeRotation = rotation => ((Number(rotation)||0)%6+6)%6;
   const axialToPixel = ([q=0,r=0]) => [HEX_SIZE * SQRT3 * (q + r / 2), -HEX_SIZE * 1.5 * r];
   const direction = rotation => DIRECTIONS[normalizeRotation(rotation)];
+  const branchOffsets = type => {
+    if (type === 'arm2') return [0,3];
+    if (type === 'arm3') return [0,2,4];
+    if (type === 'arm6' || type === 'baron') return [0,1,2,3,4,5];
+    return [0];
+  };
+  const armTips = state => {
+    const origin = state?.origin || state?.position || [0,0];
+    const rotation = normalizeRotation(state?.rotation);
+    const length = Math.max(1, Number(state?.length || 1));
+    const type = state?.partType || state?.type || 'arm1';
+    return branchOffsets(type).map((offset, branchIndex) => {
+      const [dq,dr] = direction(rotation + offset);
+      return {branchIndex, offset, position:[origin[0] + dq * length, origin[1] + dr * length]};
+    });
+  };
   const hexPoints = (x, y, radius = HEX_SIZE * .9) => Array.from({ length: 6 }, (_, i) => {
     const angle = Math.PI / 180 * (60 * i - 30);
     return `${x + radius * Math.cos(angle)},${y + radius * Math.sin(angle)}`;
@@ -32,12 +48,11 @@
     return {minX:Math.min(...xs),maxX:Math.max(...xs),minY:Math.min(...ys),maxY:Math.max(...ys)};
   };
   const armGeometry = state => {
-    const origin = state?.origin || [0,0];
-    const [dq,dr] = direction(state?.rotation);
-    const length = Math.max(1, Number(state?.length || 1));
-    const tip = [origin[0] + dq * length, origin[1] + dr * length];
-    const [x1,y1] = axialToPixel(origin), [x2,y2] = axialToPixel(tip);
-    return {origin,tip,x1,y1,x2,y2};
+    const origin = state?.origin || state?.position || [0,0];
+    const tips = armTips(state);
+    const first = tips[0]?.position || origin;
+    const [x1,y1] = axialToPixel(origin), [x2,y2] = axialToPixel(first);
+    return {origin,tip:first,tips,x1,y1,x2,y2};
   };
   const svgEl = (name, attrs={}) => {
     const node = document.createElementNS(NS,name);
@@ -50,5 +65,5 @@
     return [sx + (ex-sx)*t, sy + (ey-sy)*t];
   };
   const easeOutCubic = t => 1 - Math.pow(1 - Math.max(0,Math.min(1,t)),3);
-  window.OpusRendererCore = Object.freeze({NS,HEX_SIZE,SQRT3,DIRECTIONS,ELEMENT_COLORS,normalizeRotation,axialToPixel,direction,hexPoints,partKind,boundsForHexes,armGeometry,svgEl,interpolateHex,easeOutCubic});
+  window.OpusRendererCore = Object.freeze({NS,HEX_SIZE,SQRT3,DIRECTIONS,ELEMENT_COLORS,normalizeRotation,axialToPixel,direction,branchOffsets,armTips,hexPoints,partKind,boundsForHexes,armGeometry,svgEl,interpolateHex,easeOutCubic});
 })();
