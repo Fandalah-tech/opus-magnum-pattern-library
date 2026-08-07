@@ -3,77 +3,90 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Solver Lab — première solution autonome validée pour Opus Magnum.">
+  <meta name="description" content="Solver Lab — recherche OMSIM A41 rendue par le moteur graphique canonique OpusScene.">
   <title>Solver Lab · Opus Magnum Codex</title>
-  <link rel="stylesheet" href="assets/css/solver-lab.css">
+  <link rel="stylesheet" href="assets/css/inspector.css">
+  <link rel="stylesheet" href="assets/css/solution-viewer.css">
+  <link rel="stylesheet" href="assets/css/replay-controls.css">
+  <link rel="stylesheet" href="assets/css/viewer-replay-enhancements.css">
+  <link rel="stylesheet" href="assets/css/solver-workspace.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Retour au Codex">
-      <span class="brand-mark">OM</span>
-      <span><small>OPUS MAGNUM CODEX</small><strong>Solver Lab</strong></span>
-    </a>
-    <nav>
-      <a href="index.html">Codex</a>
-      <a href="inspector.html">Laboratoire</a>
-      <a class="active" href="solver-lab.html">Solver Lab</a>
-      <a href="a41-live.html">A41 Live</a>
-    </nav>
+    <a class="brand" href="index.html" aria-label="Retour au Codex"><span class="brand-mark"><span>OM</span></span><span><small>OPUS MAGNUM CODEX</small><strong>Solver Lab</strong></span></a>
+    <nav><a href="index.html">Codex</a><a href="library.html">Library</a><a href="viewer.html">Viewer</a><a href="inspector.html">Laboratoire</a><a href="scene-diff.html">Diff</a><a class="active" href="solver-lab.html">Solver</a><a href="a41-live.html">A41 Live</a></nav>
   </header>
 
   <main>
-    <section class="hero">
-      <div>
-        <p class="eyebrow">PREMIER SOLVE AUTONOME · VALIDÉ PAR OMSIM</p>
-        <h1>P007 — Stabilized Water</h1>
-        <p>Le solver a analysé le puzzle, construit un plan de fabrication, généré un mécanisme inédit et produit un véritable fichier <code>.solution</code>.</p>
-      </div>
-      <div class="seal" aria-hidden="true"><span>1</span><small>AUTO SOLVE</small></div>
+    <section class="solver-hero">
+      <div><p class="eyebrow">VAN BERLO'S ROTOR · RECHERCHE OMSIM</p><h1>Solver Workspace</h1><p>La recherche A41 reste exécutée sur sa branche dédiée, mais son meilleur état publié est maintenant rendu directement par le moteur graphique canonique du Codex.</p></div>
+      <div class="source-pill">Source recherche · <b>feature/disjoint-solver-readiness</b></div>
     </section>
 
-    <section class="milestone-grid" aria-label="Résultats du solve autonome">
-      <article><small>Statut</small><strong class="good">Validé</strong><span>opus_engine + OMSim</span></article>
-      <article><small>Coût</small><strong>40</strong><span>g</span></article>
-      <article><small>Cycles</small><strong>77</strong><span>c</span></article>
-      <article><small>Aire</small><strong>9</strong><span>a</span></article>
-      <article><small>Instructions</small><strong>13</strong><span>i</span></article>
+    <section class="metric-strip" aria-label="Résumé du solver">
+      <article><small>Candidat</small><strong id="solver-score">—</strong><span>score heuristique</span></article>
+      <article><small>Frames</small><strong id="solver-frames">—</strong><span>timeline publiée</span></article>
+      <article><small>Relais solver</small><strong id="solver-relay">—</strong><span>cycle</span></article>
+      <article><small>Actions solver</small><strong id="solver-actions">—</strong><span>segment généré</span></article>
+      <article><small>Référence A41</small><strong>1112</strong><span>220 / 41 / 302</span></article>
     </section>
 
-    <section class="control-panel">
-      <div>
-        <p class="eyebrow">VALIDATION VISUELLE</p>
-        <h2>Voir le mécanisme fonctionner</h2>
-        <p>Le visualisateur charge automatiquement le puzzle et la solution générée, puis les valide avec le service OMSim en ligne.</p>
-      </div>
-      <div class="actions">
-        <button id="load-demo" type="button">Charger et valider</button>
-        <a class="secondary" href="samples/solver/P007-auto.solution" download>Télécharger la solution</a>
-        <a class="secondary" href="samples/solver/P007.puzzle" download>Télécharger le puzzle</a>
-      </div>
-      <p id="lab-status" role="status">Initialisation du Solver Lab…</p>
-    </section>
+    <div class="workspace">
+      <section class="solver-panel">
+        <div class="panel-head">
+          <div><p class="eyebrow">SCENE ENGINE · REPLAY</p><h2 id="solver-candidate">Van Berlo's Rotor</h2><p id="solver-status" role="status">Initialisation du moteur graphique…</p></div>
+          <div class="panel-actions"><button id="jump-solver" type="button">Début du solver</button><button id="refresh-solver" type="button">Actualiser</button></div>
+        </div>
+        <div class="viewer-wrap loading">
+          <div id="solver-loading" class="loading-cover">Construction de la Scene A41…</div>
+          <article id="solution-viewer" class="solution-viewer">
+            <div class="viewer-head"><div><h3>Machine</h3><p class="hint">Même renderer que Viewer, Inspector et Diff.</p></div><div class="viewer-tools"><button type="button" data-viewer-fit>Ajuster</button><button type="button" data-viewer-reset>100 %</button><span data-viewer-zoom>100%</span></div></div>
+            <div class="replay-controls" aria-label="Contrôles de replay"><button type="button" data-replay-previous disabled aria-label="Cycle précédent">◀</button><button type="button" data-replay-play disabled>Play</button><button type="button" data-replay-next disabled aria-label="Cycle suivant">▶</button><input type="range" data-replay-range min="0" max="0" value="0" disabled aria-label="Cycle de replay"><span class="replay-cycle" data-replay-cycle>Cycle —</span><select data-replay-speed disabled aria-label="Vitesse"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><p class="replay-note" data-replay-note>Chargement de la timeline physique…</p></div>
+            <div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Replay du meilleur candidat solver" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details><p class="hint">Sélectionnez une pièce pour l'inspecter.</p></aside></div>
+          </article>
+        </div>
+      </section>
 
-    <section class="viewer-shell" aria-label="Inspecteur de solution intégré">
-      <div class="viewer-label">
-        <span>Inspecteur intégré</span>
-        <small>Lecture, pause, navigation cycle par cycle, déplacement et zoom</small>
-      </div>
-      <iframe id="solver-inspector" title="Visualisateur de la solution autonome P007" src="inspector.html?embedded=solver-lab" scrolling="no"></iframe>
-    </section>
-
-    <section class="method">
-      <p class="eyebrow">CE QUI A ÉTÉ GÉNÉRÉ</p>
-      <h2>Une solution construite, pas recopiée</h2>
-      <div class="method-grid">
-        <article><b>1</b><strong>Analyse chimique</strong><p>Deux atomes d’eau, dont un doit être calcifié en sel.</p></article>
-        <article><b>2</b><strong>Plan de fabrication</strong><p>Calcification, transport, liaison normale, puis livraison.</p></article>
-        <article><b>3</b><strong>Implantation</strong><p>Un bras, deux entrées, un glyphe et un bonder placés dans un nouveau repère.</p></article>
-        <article><b>4</b><strong>Validation indépendante</strong><p>Six produits livrés en 77 cycles dans notre moteur et dans OMSim.</p></article>
-      </div>
-    </section>
+      <aside class="solver-side">
+        <section class="telemetry-card">
+          <div class="status-line"><div><p class="eyebrow">ÉTAT DE RECHERCHE</p><h3>Campagne A41</h3></div><span id="solver-live-badge" class="badge warn">Chargement</span></div>
+          <div class="telemetry-grid"><div><small>Étape</small><strong id="solver-stage">—</strong></div><div><small>Visités</small><strong id="solver-visited">—</strong></div><div><small>Profondeur</small><strong id="solver-depth">—</strong></div><div><small>Frontière</small><strong id="solver-frontier">—</strong></div></div>
+          <pre id="solver-log" class="solver-log">Connexion au rapport de recherche…</pre>
+          <p class="source-note">Branche : <code id="solver-source">—</code></p>
+        </section>
+        <section class="telemetry-card">
+          <p class="eyebrow">FRAME COURANTE</p><h3>Lecture de la scène</h3>
+          <div class="telemetry-grid"><div><small>Image</small><strong id="solver-frame">—</strong></div><div><small>Cycle</small><strong id="solver-cycle">—</strong></div><div><small>Segment</small><strong id="solver-segment">—</strong></div><div><small>Score</small><strong id="solver-frame-score">—</strong></div></div>
+        </section>
+        <section class="telemetry-card">
+          <p class="eyebrow">PIPELINE GRAPHIQUE</p><h3>Une seule scène</h3>
+          <div class="overlay-list"><span class="scene"><i></i>OpusScene canonique</span><span><i></i>OpusSvgRenderer</span><span class="area"><i></i>Used Area overlay</span><span class="scene"><i></i>Replay bras + molécules</span></div>
+          <p class="source-note">Le Solver n'utilise plus son ancien renderer OpusJS séparé sur cette surface.</p>
+        </section>
+      </aside>
+    </div>
   </main>
 
-  <footer>Projet de recherche non officiel. Opus Magnum a été créé par Zachtronics. Validation indépendante par OMSim.</footer>
-  <script src="assets/js/solver-lab.js"></script>
+  <footer>Projet de recherche non officiel. Opus Magnum a été créé par Zachtronics. La branche de recherche et la surface produit restent volontairement séparées.</footer>
+
+  <script src="assets/js/opus-geometry.js"></script>
+  <script src="assets/js/opus-piece-symbols.js"></script>
+  <script src="assets/js/opus-renderer-core.js"></script>
+  <script src="assets/js/opus-scene.js"></script>
+  <script src="assets/js/opus-svg-renderer.js"></script>
+  <script src="assets/js/solution-viewer.js"></script>
+  <script src="assets/js/static-arm-fidelity.js"></script>
+  <script src="assets/js/opus-svg-overlay-host.js"></script>
+  <script src="assets/js/opus-viewer-runtime.js"></script>
+  <script src="assets/js/replay-controls.js"></script>
+  <script src="assets/js/replay-arm-animation.js"></script>
+  <script src="assets/js/replay-molecules.js"></script>
+  <script src="assets/js/solution-viewer-symbols.js"></script>
+  <script src="assets/js/output-product-preview.js"></script>
+  <script src="assets/js/viewer-interactions.js"></script>
+  <script src="assets/js/used-area-overlay.js"></script>
+  <script src="assets/js/product-delivery-animation.js"></script>
+  <script src="assets/js/viewer-polish.js"></script>
+  <script src="assets/js/solver-workspace.js"></script>
 </body>
 </html>
