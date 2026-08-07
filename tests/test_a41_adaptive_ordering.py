@@ -2,7 +2,12 @@ import json
 from pathlib import Path
 
 import tools.run_rotor_a41_remote_cached as cached
-from tools.run_rotor_a41_remote_cached import load_generated_best, load_learned_ranks, reorder_shifts
+from tools.run_rotor_a41_remote_cached import (
+    expand_idle_window_shifts,
+    load_generated_best,
+    load_learned_ranks,
+    reorder_shifts,
+)
 
 
 def test_reorder_shifts_uses_learned_group_order_stably():
@@ -17,6 +22,50 @@ def test_reorder_shifts_uses_learned_group_order_stably():
     ordered = reorder_shifts(shifts, ranks)
 
     assert [row["cycle"] for row in ordered] == [20, 30, 10, 40]
+
+
+def test_expand_idle_window_shifts_never_crosses_previous_instruction():
+    solution = {
+        "parts": [
+            {
+                "id": "part-1",
+                "program": [
+                    {"cycle": 10, "instruction": "grab"},
+                    {"cycle": 15, "instruction": "rotate_cw"},
+                ],
+            }
+        ]
+    }
+    base = [
+        {
+            "part": "part-1",
+            "cycle": 15,
+            "targetCycle": 14,
+            "instruction": "rotate_cw",
+        }
+    ]
+
+    expanded = expand_idle_window_shifts(solution, base, max_jump=8)
+
+    assert [row["targetCycle"] for row in expanded] == [14, 13, 12, 11]
+    assert [row["jump"] for row in expanded] == [1, 2, 3, 4]
+
+
+def test_expand_idle_window_shifts_respects_jump_cap():
+    solution = {
+        "parts": [
+            {
+                "id": "part-1",
+                "program": [
+                    {"cycle": 1, "instruction": "grab"},
+                    {"cycle": 20, "instruction": "rotate_cw"},
+                ],
+            }
+        ]
+    }
+    base = [{"part": "part-1", "cycle": 20, "targetCycle": 19, "instruction": "rotate_cw"}]
+    expanded = expand_idle_window_shifts(solution, base, max_jump=3)
+    assert [row["targetCycle"] for row in expanded] == [19, 18, 17]
 
 
 def test_load_learned_ranks_ignores_invalid_file(tmp_path: Path):
