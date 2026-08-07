@@ -9,14 +9,17 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 
 from tools.import_critelli_event import (
     Link,
     USER_AGENT,
     decode_data_uri,
+    discover_file_links,
+    discover_submissions_url,
     fetch,
     parse_links,
+    public_source_url,
 )
 
 ROOT_URL = "https://events.critelli.technology/"
@@ -73,28 +76,21 @@ def public_event_links(index_html: bytes, root_url: str) -> list[IndexedLink]:
     links, _, _ = parse_links(index_html, root_url)
     seen: set[str] = set()
     out: list[IndexedLink] = []
+    root_host = urlparse(root_url).netloc
     for link in links:
         url = link.url
         parsed = urlparse(url)
-        if parsed.scheme not in {"http", "https"} or parsed.netloc != urlparse(root_url).netloc:
+        if parsed.scheme not in {"http", "https"} or parsed.netloc != root_host:
             continue
         if url.rstrip("/") == root_url.rstrip("/") or "/submissions/" in parsed.path or "/download/" in parsed.path:
+            continue
+        if "." in Path(parsed.path).name:
             continue
         if url in seen:
             continue
         seen.add(url)
         out.append(IndexedLink(url=url, text=link.text.strip()))
     return out
-
-
-def find_submissions_link(links: list[Link], event_url: str) -> str | None:
-    for link in links:
-        path = urlparse(link.url).path
-        if path.startswith("/submissions/"):
-            return link.url
-        if "view all submissions" in link.text.lower():
-            return link.url
-    return None
 
 
 def find_inline_puzzle(links: list[Link]) -> Link | None:
@@ -118,7 +114,7 @@ def event_metadata(event_url: str, html: bytes) -> dict | None:
     title = text.h1[0] if text.h1 else text.title or puzzle.download_name or event_url.rsplit("/", 1)[-1]
     puzzle_title = text.h2[0] if text.h2 else None
     author = None
-    match = re.search(r"\bby\s+([^\n]+)", joined, re.I)
+    match = re.search(r"^by\s+(.+)$", joined, re.I | re.M)
     if match:
         author = match.group(1).strip()
 
@@ -130,7 +126,7 @@ def event_metadata(event_url: str, html: bytes) -> dict | None:
     metrics: list[str] = []
     if "METRICS" in text.text:
         start = text.text.index("METRICS") + 1
-        for item in text.text[start: start + 8]:
+        for item in text.text[start: start + 12]:
             if item in {"REAGENTS", "PRODUCTS", "NOTES"}:
                 break
             metrics.append(item)
@@ -141,7 +137,7 @@ def event_metadata(event_url: str, html: bytes) -> dict | None:
         "puzzleTitle": puzzle_title,
         "author": author,
         "ended": ended,
-        "submissionsUrl": find_submissions_link(links, event_url),
+        "submissionsUrl": discover_submissions_url(links, event_url),
         "puzzle": {
             "file": puzzle.download_name,
             "sha256": digest,
@@ -154,12 +150,30 @@ def event_metadata(event_url: str, html: bytes) -> dict | None:
     }
 
 
+def inventory_submissions(url: str) -> dict:
+    html, content_type = fetch(url)
+    links, _, embedded = parse_links(html, url)
+    solutions = discover_file_links(links, embedded, ".solution", url)
+    records = []
+    for link in solutions:
+        records.append({
+            "downloadName": link.download_name,
+            "url": public_source_url(link),
+        })
+    return {
+        "contentType": content_type,
+        "count": len(records),
+        "solutions": records,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Discover Critelli Opus Magnum events and build a metadata-only inventory.")
     parser.add_argument("--root-url", default=ROOT_URL)
     parser.add_argument("--output", type=Path, default=Path("reports/critelli-event-catalog.json"))
     parser.add_argument("--delay", type=float, default=0.25)
     parser.add_argument("--max-pages", type=int, default=0, help="0 visits every same-origin index link.")
+    parser.add_argument("--include-submissions", action="store_true", help="Visit public submissions pages and inventory solution links without downloading binaries.")
     args = parser.parse_args()
 
     index_html, _ = fetch(args.root_url)
@@ -179,6 +193,12 @@ def main() -> int:
                 metadata = event_metadata(candidate.url, html)
                 if metadata:
                     metadata["indexText"] = candidate.text
+                    if args.include_submissions and metadata.get("submissionsUrl"):
+                        time.sleep(max(0.0, args.delay))
+                        try:
+                            metadata["submissions"] = inventory_submissions(metadata["submissionsUrl"])
+                        except Exception as exc:
+                            metadata["submissions"] = {"error": f"{type(exc).__name__}: {exc}", "count": None, "solutions": []}
                     events.append(metadata)
                 else:
                     skipped.append({"url": candidate.url, "reason": "no-inline-puzzle"})
@@ -192,16 +212,12 @@ def main() -> int:
     for event in events:
         digest = event["puzzle"]["sha256"]
         if digest in by_hash:
-            duplicate_events.append({
-                "sha256": digest,
-                "canonicalEvent": by_hash[digest]["eventUrl"],
-                "duplicateEvent": event["eventUrl"],
-            })
+            duplicate_events.append({"sha256": digest, "canonicalEvent": by_hash[digest]["eventUrl"], "duplicateEvent": event["eventUrl"]})
         else:
             by_hash[digest] = event
 
     report = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "source": args.root_url,
         "retrievedAt": datetime.now(timezone.utc).isoformat(),
         "userAgent": USER_AGENT,
@@ -209,6 +225,7 @@ def main() -> int:
             "sameOriginOnly": True,
             "metadataOnly": True,
             "inlinePuzzlePayloadOmitted": True,
+            "solutionBinariesDownloaded": False,
             "crawlDelaySeconds": args.delay,
         },
         "summary": {
@@ -216,6 +233,8 @@ def main() -> int:
             "puzzleEvents": len(events),
             "uniquePuzzles": len(by_hash),
             "duplicatePuzzleEvents": len(duplicate_events),
+            "eventsWithPublicSubmissions": sum(1 for event in events if event.get("submissionsUrl")),
+            "publicSolutionLinks": sum(int((event.get("submissions") or {}).get("count") or 0) for event in events),
             "skippedPages": len(skipped),
             "failures": len(failures),
         },
