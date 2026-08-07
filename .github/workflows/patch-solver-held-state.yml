@@ -1,0 +1,46 @@
+name: Patch Solver held state
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/patch-solver-held-state.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Preserve heldBy when building Solver molecules
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('assets/js/solver-workspace.js')
+          text = path.read_text(encoding='utf-8')
+          old_atom = """      element: normalizeElement(atom.element),\n      position: [...(atom.position || [0, 0])]\n"""
+          new_atom = """      element: normalizeElement(atom.element),\n      position: [...(atom.position || [0, 0])],\n      heldBy: [...(atom.heldBy || [])]\n"""
+          if old_atom not in text:
+              raise SystemExit('atom normalization contract not found')
+          text = text.replace(old_atom, new_atom, 1)
+          old_molecule = """      const moleculeAtoms = atoms.filter((item) => component.has(item.id));\n      const moleculeBonds = bonds.filter((bond) => component.has(bond.atomA) && component.has(bond.atomB));\n      molecules.push({ id: `molecule-${molecules.length + 1}`, atoms: moleculeAtoms, bonds: moleculeBonds, heldBy: [] });\n"""
+          new_molecule = """      const moleculeAtoms = atoms.filter((item) => component.has(item.id));\n      const moleculeBonds = bonds.filter((bond) => component.has(bond.atomA) && component.has(bond.atomB));\n      const heldBy = [...new Set(moleculeAtoms.flatMap((atom) => atom.heldBy || []))];\n      molecules.push({ id: `molecule-${molecules.length + 1}`, atoms: moleculeAtoms, bonds: moleculeBonds, heldBy });\n"""
+          if old_molecule not in text:
+              raise SystemExit('molecule normalization contract not found')
+          text = text.replace(old_molecule, new_molecule, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+          git diff --check
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/js/solver-workspace.js
+          git commit -m "Preserve molecule held state in Solver Scene"
+          git push origin HEAD:main
