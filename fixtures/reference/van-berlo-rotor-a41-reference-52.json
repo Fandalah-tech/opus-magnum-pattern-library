@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "rotor-a41-cycle-001",
+  "reference": {
+    "file": "fixtures/private/van-berlo-rotor-a41-reference-52.solution.b64",
+    "uploadedName": "van-berlo's-rotor-weeklies2026_van-berlos-rotor-52.solution",
+    "sha256": "435b31d9366f90bb5217ea45faebb392ae761fe3740050c2ffa56e847174ab47",
+    "size": 2180,
+    "solutionVersion": 7,
+    "puzzleFile": "weeklies2026_van-berlos-rotor",
+    "solutionName": "A41!!! - DONT MIND THE CYCLES (Copy)",
+    "metrics": {
+      "cycles": 1112,
+      "cost": 220,
+      "area": 41,
+      "instructions": 302
+    }
+  },
+  "constraints": {
+    "area": 41,
+    "preserveLayout": true,
+    "objective": [
+      "cycles",
+      "instructions"
+    ]
+  }
+}
