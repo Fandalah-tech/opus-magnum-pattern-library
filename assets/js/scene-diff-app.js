@@ -15,10 +15,12 @@
   const sceneDiff = window.OpusSceneDiff;
   const svgRenderer = window.OpusSvgRenderer;
   const diffOverlay = window.OpusSvgDiffOverlay;
-  if (!runtime || !sceneDiff || !svgRenderer || !diffOverlay) {
-    throw new Error('Scene Diff Lab requires OpusViewerRuntime, OpusSceneDiff, OpusSvgRenderer and OpusSvgDiffOverlay');
+  const overlayHostFactory = window.OpusSvgOverlayHost;
+  if (!runtime || !sceneDiff || !svgRenderer || !diffOverlay || !overlayHostFactory) {
+    throw new Error('Scene Diff Lab requires runtime, Scene diff, SVG renderer, diff overlay and overlay host');
   }
 
+  const overlayHost = overlayHostFactory.create(world);
   const allFilesReady = () => Boolean(puzzleInput.files[0] && beforeInput.files[0] && afterInput.files[0]);
 
   function updateReadyState() {
@@ -67,11 +69,10 @@
     const diff = sceneDiff.diff(beforeScene, afterScene);
     const renderer = svgRenderer.create(world);
     renderer.render(afterScene);
-    const overlayLayer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    overlayLayer.setAttribute('class', 'viewer-layer viewer-layer-scene-diff');
-    overlayLayer.setAttribute('data-viewer-layer', 'scene-diff');
-    overlayLayer.setAttribute('pointer-events', 'none');
-    world.append(overlayLayer);
+    const overlayLayer = overlayHost.ensure('scene-diff', {
+      before: 'overlay',
+      className: 'viewer-layer viewer-layer-scene-diff'
+    });
     diffOverlay.create(overlayLayer).render(diff);
     renderSummary(diff);
     result.hidden = false;
@@ -79,7 +80,8 @@
     window.__OPUS_SCENE_DIFF__ = diff;
     window.__OPUS_SCENE_DIFF_BEFORE__ = beforeScene;
     window.__OPUS_SCENE_DIFF_AFTER__ = afterScene;
-    window.dispatchEvent(new CustomEvent('opus:scenediffready', { detail: { diff, beforeScene, afterScene } }));
+    window.__OPUS_OVERLAY_HOST__ = overlayHost;
+    window.dispatchEvent(new CustomEvent('opus:scenediffready', { detail: { diff, beforeScene, afterScene, overlayHost } }));
     return diff;
   }
 
@@ -107,5 +109,5 @@
   button.addEventListener('click', compareFiles);
   updateReadyState();
 
-  window.OpusSceneDiffLab = Object.freeze({ renderDiff, fitWorld });
+  window.OpusSceneDiffLab = Object.freeze({ renderDiff, fitWorld, overlayHost });
 })();
