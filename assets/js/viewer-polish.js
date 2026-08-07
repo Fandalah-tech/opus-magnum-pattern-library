@@ -1,9 +1,9 @@
 (() => {
   const root = document.querySelector('#solution-viewer');
-  if (!root || !window.OpusSolutionViewer) return;
+  const core = window.OpusRendererCore;
+  if (!root || !core) return;
 
-  const { axialToPixel, svgEl } = window.OpusSolutionViewer.constants;
-  const SIZE = 34;
+  const { axialToPixel, svgEl, hexPoints, HEX_SIZE: SIZE } = core;
   const ATOM_LABELS = {
     salt: 'S', air: 'A', earth: 'E', fire: 'F', water: 'W',
     quicksilver: 'Q', gold: 'Au', silver: 'Ag', copper: 'Cu', iron: 'Fe',
@@ -11,17 +11,11 @@
   };
 
   let viewer = null;
+  let scene = null;
   let atomLabelLayer = null;
   let previousAtomPositions = new Map();
   let atomAnimationFrame = null;
   const armLabelFrames = new Map();
-
-  function hexPoints(x, y, radius = SIZE * .86) {
-    return Array.from({ length: 6 }, (_, index) => {
-      const angle = Math.PI / 180 * (60 * index - 30);
-      return `${x + radius * Math.cos(angle)},${y + radius * Math.sin(angle)}`;
-    }).join(' ');
-  }
 
   function reorderDynamicLayers() {
     const world = viewer?.world || root.querySelector('[data-viewer-world]');
@@ -95,7 +89,7 @@
     const started = performance.now();
     const tick = (now) => {
       const raw = duration <= 0 ? 1 : Math.min(1, (now - started) / duration);
-      const eased = 1 - Math.pow(1 - raw, 3);
+      const eased = core.easeOutCubic(raw);
       drawAtomLabels(atoms, eased);
       if (raw < 1) atomAnimationFrame = requestAnimationFrame(tick);
       else {
@@ -106,18 +100,18 @@
     atomAnimationFrame = requestAnimationFrame(tick);
   }
 
-  function installFullHexHitTargets(solution) {
-    for (const part of solution?.parts || []) {
+  function installFullHexHitTargets(parts) {
+    for (const part of parts || []) {
       const group = root.querySelector(`[data-part-id="${CSS.escape(String(part.id))}"]`);
       if (!group || group.querySelector('[data-part-hit-targets]')) continue;
       const hits = svgEl('g', {
         'data-part-hit-targets': String(part.id),
         class: 'viewer-part-hit-targets'
       });
-      for (const cell of window.OpusGeometry?.occupiedCells(part) || [part.position || [0, 0]]) {
+      for (const cell of part.occupiedCells || [part.position || [0, 0]]) {
         const [x, y] = axialToPixel(cell);
         hits.append(svgEl('polygon', {
-          points: hexPoints(x, y),
+          points: hexPoints(x, y, SIZE * .86),
           fill: '#fff',
           'fill-opacity': .001,
           stroke: 'none',
@@ -134,9 +128,9 @@
     return Number.isFinite(raw) ? raw + 1 : 1;
   }
 
-  function installArmLabels(solution) {
-    for (const part of solution?.parts || []) {
-      if (!/^(arm|piston|baron)/.test(String(part.type || ''))) continue;
+  function installArmLabels(parts) {
+    for (const part of parts || []) {
+      if (part.kind !== 'arm' && !/^(arm|piston|baron)/.test(String(part.type || ''))) continue;
       const group = root.querySelector(`[data-part-id="${CSS.escape(String(part.id))}"]`);
       if (!group) continue;
 
@@ -178,7 +172,7 @@
     const started = performance.now();
     const tick = (now) => {
       const raw = duration <= 0 ? 1 : Math.min(1, (now - started) / duration);
-      const t = 1 - Math.pow(1 - raw, 3);
+      const t = core.easeOutCubic(raw);
       label.setAttribute('x', sx + (tx - sx) * t);
       label.setAttribute('y', sy + (ty - sy) * t + 5);
       if (raw < 1) armLabelFrames.set(String(state.partId), requestAnimationFrame(tick));
@@ -226,14 +220,15 @@
     requestAnimationFrame(() => requestAnimationFrame(() => viewer?.fit?.()));
   }
 
-  window.addEventListener('opus:analysisready', (event) => {
+  window.addEventListener('opus:sceneready', (event) => {
     viewer = event.detail?.viewer || viewer;
+    scene = event.detail?.scene || scene;
     atomLabelLayer = null;
     previousAtomPositions = new Map();
     reorderDynamicLayers();
     ensureAtomLabelLayer();
-    installFullHexHitTargets(event.detail?.payload?.solution);
-    installArmLabels(event.detail?.payload?.solution);
+    installFullHexHitTargets(scene?.static?.parts || []);
+    installArmLabels(scene?.static?.parts || []);
     installContentFit();
     window.__OPUS_VIEWER_FIT_CONTENT__ = () => viewer?.fit?.();
     fitAfterLayout();
@@ -243,7 +238,8 @@
   root.addEventListener('opus:replayframe', (event) => {
     reorderDynamicLayers();
     const duration = Number(event.detail?.animationDuration ?? 160);
-    animateAtomLabels(event.detail?.frame, duration);
-    for (const state of event.detail?.frame?.armStates || []) moveArmLabel(state, duration);
+    const frame = event.detail?.scene?.timeline?.frame || event.detail?.frame || null;
+    animateAtomLabels(frame, duration);
+    for (const state of frame?.armStates || frame?.arms || []) moveArmLabel(state, duration);
   });
 })();
