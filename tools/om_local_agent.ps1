@@ -30,6 +30,20 @@ function Write-JsonAtomic {
   Move-Item -Path $temp -Destination $Path -Force
 }
 
+function Invoke-GitLogged {
+  param([string[]]$Arguments)
+  $previousPreference = $ErrorActionPreference
+  try {
+    $script:ErrorActionPreference = 'Continue'
+    $output = & git @Arguments 2>&1
+    $code = $LASTEXITCODE
+  } finally {
+    $script:ErrorActionPreference = $previousPreference
+  }
+  foreach ($line in @($output)) { Write-AgentLog ([string]$line) }
+  return [PSCustomObject]@{ ExitCode = $code; Output = @($output) }
+}
+
 function Get-DesiredState {
   if (-not (Test-Path $StatePath)) { return 'running' }
   try {
@@ -93,6 +107,7 @@ function Find-Repository {
     return (Resolve-Path $RepositoryPath).Path
   }
   $candidates = @(
+    'C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library',
     'C:\GitHub\opus-magnum-pattern-library',
     'C:\Repos\opus-magnum-pattern-library',
     (Join-Path $env:USERPROFILE 'opus-magnum-pattern-library'),
@@ -110,18 +125,24 @@ function Sync-Repository {
   if (-not $Repo) { Write-AgentLog 'Depot local introuvable.'; return $false }
   Push-Location $Repo
   try {
-    $dirty = git status --porcelain 2>$null
-    if ($LASTEXITCODE -ne 0) { Write-AgentLog 'Git inaccessible ou depot invalide.'; return $false }
-    if ($dirty) { Write-AgentLog 'Depot modifie localement; synchronisation/file suspendue.'; return $false }
-    git fetch origin $ResearchBranch --prune 2>&1 | ForEach-Object { Write-AgentLog $_ }
-    if ($LASTEXITCODE -ne 0) { return $false }
-    $branch = git branch --show-current
+    $statusResult = Invoke-GitLogged -Arguments @('status','--porcelain')
+    if ($statusResult.ExitCode -ne 0) { Write-AgentLog 'Git inaccessible ou depot invalide.'; return $false }
+    $dirty = @($statusResult.Output | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
+    if ($dirty.Count -gt 0) { Write-AgentLog 'Depot modifie localement; synchronisation/file suspendue.'; return $false }
+
+    $fetch = Invoke-GitLogged -Arguments @('fetch','origin',$ResearchBranch,'--prune')
+    if ($fetch.ExitCode -ne 0) { return $false }
+
+    $branchResult = Invoke-GitLogged -Arguments @('branch','--show-current')
+    if ($branchResult.ExitCode -ne 0) { return $false }
+    $branch = ([string]($branchResult.Output | Select-Object -First 1)).Trim()
     if ($branch -ne $ResearchBranch) {
-      git checkout $ResearchBranch 2>&1 | ForEach-Object { Write-AgentLog $_ }
-      if ($LASTEXITCODE -ne 0) { return $false }
+      $checkout = Invoke-GitLogged -Arguments @('checkout',$ResearchBranch)
+      if ($checkout.ExitCode -ne 0) { return $false }
     }
-    git pull --ff-only origin $ResearchBranch 2>&1 | ForEach-Object { Write-AgentLog $_ }
-    return ($LASTEXITCODE -eq 0)
+
+    $pull = Invoke-GitLogged -Arguments @('pull','--ff-only','origin',$ResearchBranch)
+    return ($pull.ExitCode -eq 0)
   } finally { Pop-Location }
 }
 
@@ -209,15 +230,17 @@ function Invoke-Task {
     $exitCode = $proc.ExitCode
     $destinationFolder = if ($exitCode -eq 0) { '.om-bridge\tasks\completed' } else { '.om-bridge\tasks\failed' }
     New-Item -ItemType Directory -Force -Path $destinationFolder | Out-Null
-    git mv -- $task.FullName (Join-Path $destinationFolder $task.Name) 2>&1 | ForEach-Object { Write-AgentLog $_ }
-    git config user.name 'om-local-agent'
-    git config user.email 'om-local-agent@users.noreply.github.com'
-    git add .om-bridge reports 2>&1 | ForEach-Object { Write-AgentLog $_ }
-    git diff --cached --quiet
-    if ($LASTEXITCODE -ne 0) {
-      git commit -m "Process OMSIM queue task $($task.BaseName)" 2>&1 | ForEach-Object { Write-AgentLog $_ }
-      git pull --rebase origin $ResearchBranch 2>&1 | ForEach-Object { Write-AgentLog $_ }
-      if ($LASTEXITCODE -eq 0) { git push origin "HEAD:$ResearchBranch" 2>&1 | ForEach-Object { Write-AgentLog $_ } }
+    Invoke-GitLogged -Arguments @('mv','--',$task.FullName,(Join-Path $destinationFolder $task.Name)) | Out-Null
+    Invoke-GitLogged -Arguments @('config','user.name','om-local-agent') | Out-Null
+    Invoke-GitLogged -Arguments @('config','user.email','om-local-agent@users.noreply.github.com') | Out-Null
+    Invoke-GitLogged -Arguments @('add','.om-bridge','reports') | Out-Null
+    $diffCheck = Invoke-GitLogged -Arguments @('diff','--cached','--quiet')
+    if ($diffCheck.ExitCode -ne 0) {
+      $commit = Invoke-GitLogged -Arguments @('commit','-m',"Process OMSIM queue task $($task.BaseName)")
+      if ($commit.ExitCode -eq 0) {
+        $pull = Invoke-GitLogged -Arguments @('pull','--rebase','origin',$ResearchBranch)
+        if ($pull.ExitCode -eq 0) { Invoke-GitLogged -Arguments @('push','origin',"HEAD:$ResearchBranch") | Out-Null }
+      }
     }
     Write-AgentLog "Tache terminee code=${exitCode}: $($task.Name)"
     return [PSCustomObject]@{ Interrupted = $false; ExitCode = $exitCode }
