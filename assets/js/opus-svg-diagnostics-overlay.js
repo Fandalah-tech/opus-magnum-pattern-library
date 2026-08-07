@@ -1,7 +1,9 @@
 (() => {
   if (window.OpusSvgDiagnosticsOverlay) return;
   const CORE = window.OpusRendererCore;
+  const SCENE = window.OpusScene;
   if (!CORE) throw new Error('OpusRendererCore must load before opus-svg-diagnostics-overlay.js');
+  if (!SCENE) throw new Error('OpusScene must load before opus-svg-diagnostics-overlay.js');
 
   const SIZE = CORE.HEX_SIZE;
   const COLORS = Object.freeze({
@@ -29,29 +31,24 @@
     render(scene, options = {}) {
       if (scene?.kind !== 'opus-scene') throw new Error('SvgDiagnosticsOverlay.render requires an Opus scene');
       this.clear();
-      const diagnostics = scene.annotations?.diagnostics?.items || [];
-      const allowed = options.severities ? new Set(options.severities.map(String)) : null;
-      const filtered = diagnostics.filter(item => !allowed || allowed.has(String(item.severity)));
-      const parts = new Map((scene.static?.parts || []).map(part => [String(part.id), part]));
+      const query = { severities: options.severities, confidences: options.confidences };
+      const filtered = SCENE.diagnostics(scene, query);
+      const targeted = SCENE.targetedDiagnostics(scene, query);
+      const global = SCENE.globalDiagnostics(scene, query);
       const byPart = new Map();
-      let globalCount = 0;
 
-      for (const diagnostic of filtered) {
-        const targets = (diagnostic.targets || []).filter(target => parts.has(String(target)));
-        if (!targets.length) {
-          globalCount += 1;
-          continue;
-        }
-        for (const target of targets) {
-          const key = String(target);
-          if (!byPart.has(key)) byPart.set(key, []);
-          byPart.get(key).push(diagnostic);
+      for (const diagnostic of targeted) {
+        for (const target of diagnostic.targets || []) {
+          const part = SCENE.part(scene, target);
+          if (!part) continue;
+          const key = String(part.id);
+          if (!byPart.has(key)) byPart.set(key, { part, items: [] });
+          byPart.get(key).items.push(diagnostic);
         }
       }
 
-      for (const [partId, items] of byPart.entries()) {
-        const part = parts.get(partId);
-        if (!part) continue;
+      for (const [partId, entry] of byPart.entries()) {
+        const { part, items } = entry;
         const severity = items.reduce((best, item) => {
           const current = String(item.severity || 'unknown');
           return (PRIORITY[current] ?? 0) > (PRIORITY[best] ?? 0) ? current : best;
@@ -102,14 +99,15 @@
         this.layer.append(group);
       }
 
+      const targetedCount = [...byPart.values()].reduce((sum, entry) => sum + entry.items.length, 0);
       this.layer.dataset.diagnosticCount = String(filtered.length);
-      this.layer.dataset.targetedDiagnosticCount = String([...byPart.values()].reduce((sum, items) => sum + items.length, 0));
-      this.layer.dataset.globalDiagnosticCount = String(globalCount);
+      this.layer.dataset.targetedDiagnosticCount = String(targetedCount);
+      this.layer.dataset.globalDiagnosticCount = String(global.length);
       return {
         diagnostics: filtered.length,
         targetedParts: byPart.size,
-        targetedDiagnostics: Number(this.layer.dataset.targetedDiagnosticCount),
-        globalDiagnostics: globalCount
+        targetedDiagnostics: targetedCount,
+        globalDiagnostics: global.length
       };
     }
   }
