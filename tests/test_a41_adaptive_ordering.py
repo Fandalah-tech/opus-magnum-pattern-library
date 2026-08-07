@@ -68,6 +68,16 @@ def test_expand_idle_window_shifts_respects_jump_cap():
     assert [row["targetCycle"] for row in expanded] == [19, 18, 17]
 
 
+def test_real_a41_fixture_expands_search_without_exceeding_campaign_budget():
+    solution, _, _ = cached.campaign.load_reference()
+    assert solution is not None
+    base = cached.campaign.candidate_shifts(solution)
+    expanded = expand_idle_window_shifts(solution, base, max_jump=cached.MAX_IDLE_JUMP)
+    assert len(base) == 34
+    assert len(expanded) > len(base)
+    assert len(expanded) <= cached.campaign.MAX_CANDIDATES
+
+
 def test_load_learned_ranks_ignores_invalid_file(tmp_path: Path):
     path = tmp_path / "learning.json"
     path.write_text("not-json", encoding="utf-8")
