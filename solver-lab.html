@@ -39,7 +39,7 @@
         </div>
         <div class="viewer-wrap loading">
           <div id="solver-loading" class="loading-cover">Construction de la Scene A41…</div>
-          <article id="solution-viewer" class="solution-viewer">
+          <article id="solution-viewer" class="solution-viewer" data-station-previews="hidden">
             <div class="viewer-head"><div><h3>Machine</h3><p class="hint">Même renderer que Viewer, Inspector et Diff.</p></div><div class="viewer-tools"><button type="button" data-viewer-fit>Ajuster</button><button type="button" data-viewer-reset>100 %</button><span data-viewer-zoom>100%</span></div></div>
             <div class="replay-controls" aria-label="Contrôles de replay"><button type="button" data-replay-previous disabled aria-label="Cycle précédent">◀</button><button type="button" data-replay-play disabled>Play</button><button type="button" data-replay-next disabled aria-label="Cycle suivant">▶</button><input type="range" data-replay-range min="0" max="0" value="0" disabled aria-label="Cycle de replay"><span class="replay-cycle" data-replay-cycle>Cycle —</span><select data-replay-speed disabled aria-label="Vitesse"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><p class="replay-note" data-replay-note>Chargement de la timeline physique…</p></div>
             <div class="viewer-layout"><div class="viewer-canvas"><svg aria-label="Replay du meilleur candidat solver" role="img"><g data-viewer-world></g></svg></div><aside class="viewer-details" data-viewer-details><p class="hint">Sélectionnez une pièce pour l'inspecter.</p></aside></div>
@@ -61,7 +61,7 @@
         <section class="telemetry-card">
           <p class="eyebrow">PIPELINE GRAPHIQUE</p><h3>Une seule scène</h3>
           <div class="overlay-list"><span class="scene"><i></i>OpusScene canonique</span><span><i></i>OpusSvgRenderer</span><span class="area"><i></i>Used Area overlay</span><span class="scene"><i></i>Replay bras + molécules</span></div>
-          <p class="source-note">Le Solver n'utilise plus son ancien renderer OpusJS séparé sur cette surface.</p>
+          <p class="source-note">Le Solver n'utilise plus son ancien renderer OpusJS séparé sur cette surface. Les previews statiques IN/OUT sont masquées ici pour ne montrer que l'état physique courant.</p>
         </section>
       </aside>
     </div>
@@ -82,7 +82,6 @@
   <script src="assets/js/replay-arm-animation.js"></script>
   <script src="assets/js/replay-molecules.js"></script>
   <script src="assets/js/solution-viewer-symbols.js"></script>
-  <script src="assets/js/output-product-preview.js"></script>
   <script src="assets/js/viewer-interactions.js"></script>
   <script src="assets/js/used-area-overlay.js"></script>
   <script src="assets/js/product-delivery-animation.js"></script>
