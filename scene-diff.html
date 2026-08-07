@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare two Opus Magnum solutions through the canonical Scene graphics engine.">
+  <title>Scene Diff Lab · Opus Magnum Codex</title>
+  <link rel="stylesheet" href="assets/css/inspector.css">
+  <link rel="stylesheet" href="assets/css/solution-viewer.css">
+  <link rel="stylesheet" href="assets/css/scene-diff.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Back to the Codex"><span class="brand-mark">OM</span><span><small>OPUS MAGNUM CODEX</small><strong>Scene Diff Lab</strong></span></a>
+    <nav><a href="index.html">Codex</a><a href="library.html">Library</a><a href="inspector.html">Laboratory</a><a href="viewer.html">Viewer</a><a class="active" href="scene-diff.html">Diff</a></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">SCENE ENGINE · COMPARISON</p>
+      <h1>Compare two solutions</h1>
+      <p>Analyze two solutions for the same puzzle, render Solution B, and overlay the structural changes from A → B.</p>
+    </section>
+
+    <section class="upload-panel">
+      <div class="scene-diff-upload">
+        <label class="file-card"><span class="file-icon">⬡</span><strong>Puzzle</strong><small>Common .puzzle file</small><input id="diff-puzzle-file" type="file" accept=".puzzle,application/octet-stream"></label>
+        <label class="file-card"><span class="file-icon">A</span><strong>Solution A</strong><small>Baseline .solution file</small><input id="diff-solution-before" type="file" accept=".solution,application/octet-stream"></label>
+        <label class="file-card"><span class="file-icon">B</span><strong>Solution B</strong><small>Candidate .solution file</small><input id="diff-solution-after" type="file" accept=".solution,application/octet-stream"></label>
+      </div>
+      <div class="scene-diff-actions"><button id="diff-analyze" disabled>Compare A → B</button><p id="diff-status" role="status">Choose one puzzle and two solutions to compare.</p></div>
+    </section>
+
+    <section id="diff-result" class="scene-diff-result" hidden>
+      <div id="diff-summary" class="scene-diff-summary" aria-label="Scene diff summary"></div>
+      <div class="scene-diff-layout">
+        <div class="scene-diff-canvas"><svg id="diff-svg" aria-label="Solution difference map" role="img"><g data-diff-world></g></svg></div>
+        <aside class="scene-diff-metrics">
+          <h3>Metric delta</h3>
+          <div id="diff-metrics"></div>
+          <div class="scene-diff-legend" aria-label="Difference legend">
+            <span class="added"><i></i>Added footprint / target</span>
+            <span class="removed"><i></i>Removed footprint / origin</span>
+            <span class="moved"><i></i>Moved part</span>
+            <span class="changed"><i></i>Changed configuration/program</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <footer>Unofficial research project. Validation powered by omsim; Opus Magnum was created by Zachtronics.</footer>
+
+  <script src="assets/js/opus-geometry.js"></script>
+  <script src="assets/js/opus-piece-symbols.js"></script>
+  <script src="assets/js/opus-renderer-core.js"></script>
+  <script src="assets/js/opus-scene.js"></script>
+  <script src="assets/js/opus-svg-renderer.js"></script>
+  <script src="assets/js/opus-viewer-runtime.js"></script>
+  <script src="assets/js/opus-scene-diff.js"></script>
+  <script src="assets/js/opus-svg-diff-overlay.js"></script>
+  <script src="assets/js/scene-diff-app.js"></script>
+</body>
+</html>
