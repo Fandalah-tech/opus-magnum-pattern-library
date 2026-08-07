@@ -4,6 +4,7 @@ import argparse
 import json
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+from math import sqrt
 from pathlib import Path
 
 METRICS = ("cycles", "cost", "area", "instructions")
@@ -21,7 +22,7 @@ def dominates(a: dict, b: dict) -> bool:
 
 
 def pareto_front(items: list[dict]) -> list[dict]:
-    # O(n^2), intentionally simple and deterministic; Critelli event sets are modest.
+    # O(n^2), intentionally simple and deterministic; individual event sets are modest.
     return [x for x in items if not any(y is not x and dominates(y, x) for y in items)]
 
 
@@ -30,6 +31,34 @@ def player_name(solution: dict) -> str | None:
     if isinstance(value, str) and value.strip():
         return value.strip()
     return None
+
+
+def normalized_distance_to_ideal(solution: dict, items: list[dict]) -> float:
+    if not items:
+        return float("inf")
+    total = 0.0
+    for metric in METRICS:
+        values = [s["metrics"][metric] for s in items]
+        lo, hi = min(values), max(values)
+        if hi == lo:
+            continue
+        z = (solution["metrics"][metric] - lo) / (hi - lo)
+        total += z * z
+    return sqrt(total)
+
+
+def representative_archetypes(front: list[dict]) -> dict:
+    if not front:
+        return {"balanced": None, **{f"{m}Focused": None for m in METRICS}}
+    out = {}
+    balanced = min(front, key=lambda s: (normalized_distance_to_ideal(s, front), s["id"]))
+    out["balanced"] = balanced["id"]
+    for metric in METRICS:
+        best = min(s["metrics"][metric] for s in front)
+        candidates = [s for s in front if s["metrics"][metric] == best]
+        chosen = min(candidates, key=lambda s: (normalized_distance_to_ideal(s, front), s["id"]))
+        out[f"{metric}Focused"] = chosen["id"]
+    return out
 
 
 def build(manifest: dict) -> dict:
@@ -52,13 +81,17 @@ def build(manifest: dict) -> dict:
         front = pareto_front(complete)
         front_ids = {s["id"] for s in front}
         records = {}
+        ranges = {}
         for metric in METRICS:
             if not complete:
                 records[metric] = {"value": None, "solutionIds": []}
+                ranges[metric] = {"min": None, "max": None}
                 continue
-            best = min(s["metrics"][metric] for s in complete)
+            values = [s["metrics"][metric] for s in complete]
+            best = min(values)
             ids = [s["id"] for s in complete if s["metrics"][metric] == best]
             records[metric] = {"value": best, "solutionIds": ids}
+            ranges[metric] = {"min": min(values), "max": max(values)}
 
         for s in solutions:
             player = player_name(s)
@@ -85,6 +118,8 @@ def build(manifest: dict) -> dict:
             "paretoCount": len(front),
             "paretoSolutionIds": sorted(front_ids),
             "records": records,
+            "metricRanges": ranges,
+            "representatives": representative_archetypes(front),
         })
 
     players = []
@@ -103,7 +138,7 @@ def build(manifest: dict) -> dict:
     complete_total = sum(p["completeMetricSolutionCount"] for p in puzzle_reports)
     pareto_total = sum(p["paretoCount"] for p in puzzle_reports)
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "sourceManifest": manifest.get("id"),
         "summary": {
