@@ -72,7 +72,10 @@ class Simulator:
         world.events = []
 
         track_cells: tuple[Hex, ...] = tuple(
-            tuple(cell)
+            (
+                int((part.get("position") or (0, 0))[0]) + int(cell[0]),
+                int((part.get("position") or (0, 0))[1]) + int(cell[1]),
+            )
             for part in solution.get("parts", [])
             if part.get("type") == "track"
             for cell in (part.get("trackHexes") or [])
