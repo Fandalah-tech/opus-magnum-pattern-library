@@ -32,6 +32,9 @@ jobs:
             tests/test_a41_adaptive_ordering.py \
             -q
 
+      - name: Report A41 expanded search plan
+        run: python tools/report_a41_search_plan.py
+
       - name: Run required disjoint and Rotor solver tests
         run: |
           python -m pytest \
