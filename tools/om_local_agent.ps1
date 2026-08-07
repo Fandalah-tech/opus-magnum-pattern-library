@@ -10,6 +10,7 @@ $InstalledScript = Join-Path $AgentRoot 'om_local_agent.ps1'
 $RawSelfUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_local_agent.ps1'
 $ResearchBranch = 'feature/disjoint-solver-readiness'
 $TaskName = 'Opus Magnum Local Agent'
+$OpusRoot = 'C:\Users\bruno\Documents\My Games\Opus Magnum'
 New-Item -ItemType Directory -Force -Path $AgentRoot | Out-Null
 
 function Write-AgentLog {
@@ -138,6 +139,12 @@ function Process-NextTask {
   try {
     Write-AgentLog "Execution directe PRIORITE=$($selected.Priority): $($task.Name)"
     $env:PYTHONPATH = $Repo
+    $env:OM_OPUS_MAGNUM_ROOT = $OpusRoot
+    if (Test-Path $OpusRoot) {
+      Write-AgentLog "Source Opus Magnum: $OpusRoot"
+    } else {
+      Write-AgentLog "ATTENTION source Opus Magnum introuvable: $OpusRoot"
+    }
     & python tools/om_worker.py --task $task.FullName --results-root '.om-bridge/results'
     $exitCode = $LASTEXITCODE
     $destinationFolder = if ($exitCode -eq 0) { '.om-bridge\tasks\completed' } else { '.om-bridge\tasks\failed' }
