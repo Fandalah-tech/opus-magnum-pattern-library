@@ -8,6 +8,7 @@ on:
       - "library.html"
       - "data/viewer-demo-payload.json"
       - "data/viewer-arm-gallery-payload.json"
+      - "data/viewer-dynamic-arm-gallery-payload.json"
       - "data/viewer-piece-gallery-payload.json"
       - "data/viewer-io-gallery-payload.json"
       - "assets/js/pair-library.js"
@@ -63,6 +64,9 @@ jobs:
               errors = []
               page.on('pageerror', lambda exc: errors.append(str(exc)))
 
+              def point(locator):
+                  return (float(locator.get_attribute('x2')), float(locator.get_attribute('y2')))
+
               # Physical replay fixture.
               page.goto('http://127.0.0.1:8765/viewer.html?fixture=demo', wait_until='networkidle', timeout=120000)
               page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
@@ -75,7 +79,7 @@ jobs:
               atom = page.locator('#solution-viewer [data-atom-id="atom-salt"] .replay-atom-core')
               arm_shaft = page.locator('#solution-viewer [data-part-id="arm-main"] [data-arm-shaft="0"]')
               initial_atom = (float(atom.get_attribute('cx')), float(atom.get_attribute('cy')))
-              initial_tip = (float(arm_shaft.get_attribute('x2')), float(arm_shaft.get_attribute('y2')))
+              initial_tip = point(arm_shaft)
               page.locator('#solution-viewer').screenshot(path=str(out / '00-initial.png'))
 
               page.locator('[data-replay-next]').click(); page.wait_for_timeout(260)
@@ -86,7 +90,7 @@ jobs:
 
               page.locator('[data-replay-next]').click(); page.wait_for_timeout(260)
               assert 'Cycle 2' in page.locator('[data-replay-cycle]').inner_text()
-              cycle2_tip = (float(arm_shaft.get_attribute('x2')), float(arm_shaft.get_attribute('y2')))
+              cycle2_tip = point(arm_shaft)
               assert abs(cycle2_tip[0] - initial_tip[0]) + abs(cycle2_tip[1] - initial_tip[1]) > 50
               page.locator('#solution-viewer').screenshot(path=str(out / '02-cycle-2.png'))
 
@@ -114,6 +118,46 @@ jobs:
               assert piston.locator('[data-piston-sleeve]').count() == 1
               assert piston.locator('[data-piston-rod]').count() == 1
               page.locator('#solution-viewer').screenshot(path=str(out / '10-arm-family.png'))
+
+              # Dynamic multi-arm and piston replay fixture.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=dynamicArms', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              page.wait_for_timeout(240)
+              dyn_arm2 = page.locator('#solution-viewer [data-part-id="dyn-arm2"]')
+              dyn_arm3 = page.locator('#solution-viewer [data-part-id="dyn-arm3"]')
+              dyn_baron = page.locator('#solution-viewer [data-part-id="dyn-baron"]')
+              dyn_piston = page.locator('#solution-viewer [data-part-id="dyn-piston"]')
+              assert dyn_arm2.locator('[data-arm-shaft]').count() == 2
+              assert dyn_arm3.locator('[data-arm-shaft]').count() == 3
+              assert dyn_baron.locator('[data-arm-shaft]').count() == 6
+              a2_initial = [point(dyn_arm2.locator(f'[data-arm-shaft="{i}"]')) for i in range(2)]
+              a3_initial = [point(dyn_arm3.locator(f'[data-arm-shaft="{i}"]')) for i in range(3)]
+              baron_initial = [point(dyn_baron.locator(f'[data-arm-shaft="{i}"]')) for i in range(6)]
+              piston_tip_initial = point(dyn_piston.locator('[data-arm-shaft="0"]'))
+              piston_sleeve_initial = point(dyn_piston.locator('[data-piston-sleeve]'))
+
+              page.locator('[data-replay-next]').click(); page.wait_for_timeout(280)
+              a2_cycle1 = [point(dyn_arm2.locator(f'[data-arm-shaft="{i}"]')) for i in range(2)]
+              a3_cycle1 = [point(dyn_arm3.locator(f'[data-arm-shaft="{i}"]')) for i in range(3)]
+              baron_cycle1 = [point(dyn_baron.locator(f'[data-arm-shaft="{i}"]')) for i in range(6)]
+              for before, after in zip(a2_initial, a2_cycle1): assert abs(after[0]-before[0]) + abs(after[1]-before[1]) > 25
+              for before, after in zip(a3_initial, a3_cycle1): assert abs(after[0]-before[0]) + abs(after[1]-before[1]) > 25
+              for before, after in zip(baron_initial, baron_cycle1): assert abs(after[0]-before[0]) + abs(after[1]-before[1]) > 25
+              piston_tip_extended = point(dyn_piston.locator('[data-arm-shaft="0"]'))
+              piston_sleeve_extended = point(dyn_piston.locator('[data-piston-sleeve]'))
+              assert abs(piston_tip_extended[0]-piston_tip_initial[0]) + abs(piston_tip_extended[1]-piston_tip_initial[1]) > 90
+              assert abs(piston_sleeve_extended[0]-piston_sleeve_initial[0]) + abs(piston_sleeve_extended[1]-piston_sleeve_initial[1]) > 35
+              page.locator('#solution-viewer').screenshot(path=str(out / '12-dynamic-arms-cycle-1.png'))
+
+              page.locator('[data-replay-next]').click(); page.wait_for_timeout(280)
+              piston_tip_rotated = point(dyn_piston.locator('[data-arm-shaft="0"]'))
+              assert abs(piston_tip_rotated[0]-piston_tip_extended[0]) + abs(piston_tip_rotated[1]-piston_tip_extended[1]) > 90
+              page.locator('#solution-viewer').screenshot(path=str(out / '13-dynamic-arms-cycle-2.png'))
+
+              page.locator('[data-replay-next]').click(); page.wait_for_timeout(280)
+              piston_tip_retracted = point(dyn_piston.locator('[data-arm-shaft="0"]'))
+              assert abs(piston_tip_retracted[0]-piston_tip_rotated[0]) + abs(piston_tip_retracted[1]-piston_tip_rotated[1]) > 40
+              page.locator('#solution-viewer').screenshot(path=str(out / '14-dynamic-arms-cycle-3.png'))
 
               # Canonical stations/glyphs/track fixture.
               page.goto('http://127.0.0.1:8765/viewer.html?fixture=pieces', wait_until='networkidle', timeout=120000)
