@@ -34,7 +34,6 @@ def build_probe_solution() -> dict:
         "source": {"name": None, "generator": "opus_solver/aqueous-probe-v1"},
         "puzzleFile": "weeklies2026_aqueous-dagger",
         "name": "Codex Aqueous Dagger probe",
-        # Leave the metric block empty: OMSim will calculate authoritative metrics.
         "metrics": {},
         "unknownMetrics": [],
         "parts": [
@@ -44,7 +43,9 @@ def build_probe_solution() -> dict:
                                     (3, "drop"), (4, "rotate_cw"), (5, "rotate_cw")])),
             _part("b-water-arm", "arm1", (2, -2), rotation=0,
                   program=_program([(0, "grab"), (3, "rotate_ccw"), (4, "drop"), (5, "rotate_cw")])),
-            _part("z-pivot-arm", "arm1", (2, 0), rotation=3,
+            # Length two keeps the arm base clear of both the incoming water
+            # triangle and the completed product while retaining the same pivot.
+            _part("z-pivot-arm", "arm1", (3, 0), rotation=3, length=2,
                   program=_program([(4, "grab"), (5, "pivot_ccw")])),
             _part("salt-input", "input", (-2, -2), rotation=3, which=0),
             _part("water-input", "input", (3, -2), rotation=4, which=1),
