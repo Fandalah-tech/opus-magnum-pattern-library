@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "title": "Van Berlo's Rotor — candidat score 599",
   "isCompleteSolution": false,
   "source": "reports/rotor-tail-best-candidate.json",
@@ -1935,7 +1935,11 @@
       ],
       "trailingBytes": 0
     },
-    "renderer": "OpusSolutionViewer"
+    "renderer": "OpusScene/OpusSvgRenderer"
+  },
+  "replayFixes": {
+    "trackCoordinates": "world",
+    "trackOriginIncludedOnlyIfExplicit": true
   },
   "segments": [
     {
