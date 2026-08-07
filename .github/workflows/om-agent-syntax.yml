@@ -1,0 +1,49 @@
+name: Validate OM Agent PowerShell
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "tools/om_local_agent.ps1"
+      - "tools/om_agent_watchdog.ps1"
+      - "tools/install_om_local_agent.ps1"
+      - "tools/upgrade_om_local_agent.ps1"
+      - ".github/workflows/om-agent-syntax.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse OM Agent PowerShell scripts
+        shell: pwsh
+        run: |
+          $files = @(
+            'tools/om_local_agent.ps1',
+            'tools/om_agent_watchdog.ps1',
+            'tools/install_om_local_agent.ps1',
+            'tools/upgrade_om_local_agent.ps1'
+          )
+          $failed = $false
+          foreach ($file in $files) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $file),
+              [ref]$tokens,
+              [ref]$errors
+            )
+            if ($errors.Count -gt 0) {
+              $failed = $true
+              Write-Host "::error file=$file::PowerShell parse errors detected"
+              $errors | ForEach-Object { Write-Host $_.Message }
+            } else {
+              Write-Host "OK: $file"
+            }
+          }
+          if ($failed) { exit 1 }
