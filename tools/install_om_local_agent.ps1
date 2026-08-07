@@ -15,13 +15,32 @@ $WatchdogRawUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-p
 $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 
 New-Item -ItemType Directory -Force -Path $AgentRoot | Out-Null
-$stamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
-Invoke-WebRequest -Uri ($AgentRawUrl + '?t=' + $stamp) -OutFile $AgentScript -UseBasicParsing
-Invoke-WebRequest -Uri ($WatchdogRawUrl + '?t=' + $stamp) -OutFile $WatchdogScript -UseBasicParsing
-Unblock-File -Path $AgentScript -ErrorAction SilentlyContinue
-Unblock-File -Path $WatchdogScript -ErrorAction SilentlyContinue
 
 if ($RepositoryPath) { $RepositoryPath = (Resolve-Path $RepositoryPath).Path }
+
+function Install-AgentFile {
+  param([string]$RepoRelativePath,[string]$Destination,[string]$FallbackUrl)
+  if ($RepositoryPath -and (Test-Path (Join-Path $RepositoryPath '.git'))) {
+    Push-Location $RepositoryPath
+    try {
+      & git fetch origin main --prune 2>$null | Out-Null
+      if ($LASTEXITCODE -eq 0) {
+        $content = & git show "origin/main:$RepoRelativePath" 2>$null
+        if ($LASTEXITCODE -eq 0 -and $null -ne $content) {
+          $content | Set-Content -Path $Destination -Encoding UTF8
+          return
+        }
+      }
+    } finally { Pop-Location }
+  }
+  $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+  Invoke-WebRequest -Uri ($FallbackUrl + '?t=' + $stamp) -OutFile $Destination -UseBasicParsing
+}
+
+Install-AgentFile -RepoRelativePath 'tools/om_local_agent.ps1' -Destination $AgentScript -FallbackUrl $AgentRawUrl
+Install-AgentFile -RepoRelativePath 'tools/om_agent_watchdog.ps1' -Destination $WatchdogScript -FallbackUrl $WatchdogRawUrl
+Unblock-File -Path $AgentScript -ErrorAction SilentlyContinue
+Unblock-File -Path $WatchdogScript -ErrorAction SilentlyContinue
 
 if (Get-ScheduledTask -TaskName $OldTaskName -ErrorAction SilentlyContinue) {
   try { Stop-ScheduledTask -TaskName $OldTaskName -ErrorAction SilentlyContinue } catch {}
