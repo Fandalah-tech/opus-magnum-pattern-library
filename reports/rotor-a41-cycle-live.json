@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "queued",
-  "status": "queued",
-  "updatedAt": "2026-08-06T14:00:00Z",
+  "stage": "reference-required",
+  "status": "blocked",
+  "updatedAt": "2026-08-07T01:22:32.211158+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,5 +37,5 @@
       }
     }
   ],
-  "message": "Nouvelle référence A41 enregistrée; campagne mise en file pour le worker OMSIM."
+  "message": "La solution A41 de référence n'a pas été trouvée dans le dépôt, Téléchargements, Bureau ou Documents du PC."
 }
