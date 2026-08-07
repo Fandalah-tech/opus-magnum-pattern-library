@@ -23,8 +23,8 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip pytest
 
-      - name: Test A41 checkpoint resume
-        run: python -m pytest tests/test_rotor_a41_remote_checkpoint.py -q
+      - name: Test A41 checkpoint and validator cache
+        run: python -m pytest tests/test_rotor_a41_remote_checkpoint.py tests/test_a41_validator_cache.py -q
 
       - name: Run required disjoint and Rotor solver tests
         run: |
