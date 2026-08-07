@@ -1,0 +1,57 @@
+name: Fix engine track coordinates
+
+on:
+  push:
+    branches: [feature/disjoint-solver-readiness]
+    paths:
+      - ".github/workflows/fix-engine-track-coordinates.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+          fetch-depth: 0
+      - name: Patch engine track cells to world coordinates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('packages/opus_engine/simulator.py')
+          text = path.read_text(encoding='utf-8')
+          old = '''        track_cells: tuple[Hex, ...] = tuple(\n            tuple(cell)\n            for part in solution.get("parts", [])\n            if part.get("type") == "track"\n            for cell in (part.get("trackHexes") or [])\n        )\n'''
+          new = '''        track_cells: tuple[Hex, ...] = tuple(\n            (\n                int((part.get("position") or (0, 0))[0]) + int(cell[0]),\n                int((part.get("position") or (0, 0))[1]) + int(cell[1]),\n            )\n            for part in solution.get("parts", [])\n            if part.get("type") == "track"\n            for cell in (part.get("trackHexes") or [])\n        )\n'''
+          if old not in text:
+              raise SystemExit('track_cells construction not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+          git diff --check
+      - name: Regression check
+        env:
+          PYTHONPATH: .
+        run: |
+          python - <<'PY'
+          from packages.opus_engine.simulator import Simulator
+          puzzle = {'reagents': []}
+          solution = {'parts': [
+              {'id':'track','type':'track','position':[3,-2],'trackHexes':[[-1,1],[0,1],[1,0],[1,-1],[0,-1],[-1,0]]},
+              {'id':'p','type':'piston','position':[3,-3],'rotation':0,'length':1},
+          ]}
+          sim = Simulator.from_models(puzzle, solution)
+          expected = ((2,-1),(3,-1),(4,-2),(4,-3),(3,-3),(2,-2))
+          assert sim.arms['p'].track_cells == expected, sim.arms['p'].track_cells
+          assert sim.arms['p'].track_index == 4, sim.arms['p'].track_index
+          print({'trackCells': sim.arms['p'].track_cells, 'trackIndex': sim.arms['p'].track_index})
+          PY
+      - name: Commit engine fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add packages/opus_engine/simulator.py
+          git commit -m "Use world coordinates for engine track cells"
+          git push origin HEAD:feature/disjoint-solver-readiness
