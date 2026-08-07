@@ -4,14 +4,15 @@
     "id": "rotor-controlled-transition-search-001",
     "operation": "search_rotor_structure",
     "timeout_seconds": 1200,
-    "notes": "Find a controlled 12-to-13 admissible atom transition, lock the target inventory, then continue macro refinement toward the complete 13-position/6-edge product graph."
+    "notes": "Find a controlled 12-to-13 admissible atom transition, lock the target inventory, then continue macro refinement toward the complete 13-position/6-edge product graph.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-controlled-transition-search-001.json",
-  "git_sha": "9a3b2702b69d945f862c6cbb2de0120fe834bddc",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T01:15:44.830868+00:00",
-  "finished_at": "2026-08-06T01:19:00.599970+00:00",
-  "duration_seconds": 195.769,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-controlled-transition-search-001.json",
+  "git_sha": "f714d63af18998dc174325a19fcc5dba71d68c77",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T21:12:26.263857+00:00",
+  "finished_at": "2026-08-07T21:15:41.718914+00:00",
+  "duration_seconds": 195.455,
   "exit_code": 0,
   "status": "success",
   "error": null
