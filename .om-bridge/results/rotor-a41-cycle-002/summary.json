@@ -7,13 +7,13 @@
     "timeout_seconds": 7200,
     "notes": "Prefer C:\\Users\\bruno\\Documents\\My Games\\Opus Magnum. Match exact SHA first, then Van Berlo A41 metrics 1112/220/41/302. Preserve geometry and validate before publishing improvements."
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-002.json",
-  "git_sha": "de57b4cbf103a8a11ef0d503cd60875ec2ba6481",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-07T01:46:41.956901+00:00",
-  "finished_at": "2026-08-07T01:46:42.259898+00:00",
-  "duration_seconds": 0.303,
-  "exit_code": 3,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-cycle-002.json",
+  "git_sha": "6fbb6e5314c6101d02868aa53cd196b305bad7ab",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:34:36.967647+00:00",
+  "finished_at": "2026-08-07T10:34:37.807590+00:00",
+  "duration_seconds": 0.84,
+  "exit_code": 6,
   "status": "failed",
   "error": null
 }
