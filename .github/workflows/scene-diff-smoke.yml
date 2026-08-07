@@ -1,0 +1,120 @@
+name: Scene diff smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "assets/js/opus-scene.js"
+      - "assets/js/opus-scene-diff.js"
+      - "assets/js/opus-svg-diff-overlay.js"
+      - "assets/js/opus-renderer-core.js"
+      - "assets/js/opus-geometry.js"
+      - "data/viewer-piece-gallery-payload.json"
+      - ".github/workflows/scene-diff-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scene-diff-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Validate Scene diff model and SVG overlay
+        run: |
+          python -m http.server 8765 >/tmp/scene-diff-http.log 2>&1 &
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1200, 'height': 800})
+              errors = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=pieces', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              page.add_script_tag(url='http://127.0.0.1:8765/assets/js/opus-scene-diff.js')
+              page.add_script_tag(url='http://127.0.0.1:8765/assets/js/opus-svg-diff-overlay.js')
+
+              result = page.evaluate("""async () => {
+                const payload = await fetch('data/viewer-piece-gallery-payload.json').then(r => r.json());
+                const before = window.OpusScene.build(payload);
+                const changedPayload = structuredClone(payload);
+                const parts = changedPayload.solution.parts;
+                const moved = parts[0];
+                moved.position = [Number(moved.position?.[0] || 0) + 3, Number(moved.position?.[1] || 0) - 1];
+                const changed = parts[1];
+                changed.rotation = (Number(changed.rotation || 0) + 1) % 6;
+                const removed = parts.splice(2, 1)[0];
+                const added = structuredClone(parts[0]);
+                added.id = 'scene-diff-added-piece';
+                added.position = [12, -8];
+                parts.push(added);
+                changedPayload.solution.metrics = { ...(changedPayload.solution.metrics || {}), cost: 321 };
+                changedPayload.validation = {
+                  ...(changedPayload.validation || {}),
+                  metrics: { ...(changedPayload.validation?.metrics || {}), cost: 321 }
+                };
+                const after = window.OpusScene.build(changedPayload);
+                const diff = window.OpusSceneDiff.diff(before, after);
+
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                const layer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                svg.append(layer);
+                document.body.append(svg);
+                window.OpusSvgDiffOverlay.create(layer).render(diff);
+
+                return {
+                  summary: diff.summary,
+                  metricCost: diff.metrics.cost,
+                  movedBefore: diff.parts.moved.map(item => String(item.before.id)),
+                  changedBefore: diff.parts.changed.map(item => String(item.before.id)),
+                  removed: diff.parts.removed.map(item => String(item.id)),
+                  added: diff.parts.added.map(item => String(item.id)),
+                  expected: {
+                    moved: String(moved.id), changed: String(changed.id),
+                    removed: String(removed.id), added: String(added.id)
+                  },
+                  overlay: {
+                    addedCells: layer.querySelectorAll('[data-diff-kind="added"]').length,
+                    removedCells: layer.querySelectorAll('[data-diff-kind="removed"]').length,
+                    moveLines: layer.querySelectorAll('[data-diff-kind="moved"]').length,
+                    changedRings: layer.querySelectorAll('[data-diff-kind="changed"]').length,
+                    movedDataset: Number(layer.dataset.diffMovedParts),
+                    changedDataset: Number(layer.dataset.diffChangedParts)
+                  }
+                };
+              }""")
+
+              assert result['summary']['addedParts'] == 1, result
+              assert result['summary']['removedParts'] == 1, result
+              assert result['summary']['movedParts'] >= 1, result
+              assert result['summary']['changedParts'] >= 1, result
+              assert result['expected']['moved'] in result['movedBefore'], result
+              assert result['expected']['changed'] in result['changedBefore'], result
+              assert result['expected']['removed'] in result['removed'], result
+              assert result['expected']['added'] in result['added'], result
+              assert result['metricCost']['after'] == 321, result
+              assert result['overlay']['addedCells'] > 0, result
+              assert result['overlay']['removedCells'] > 0, result
+              assert result['overlay']['moveLines'] >= 1, result
+              assert result['overlay']['changedRings'] >= 1, result
+              assert result['overlay']['movedDataset'] == result['summary']['movedParts'], result
+              assert result['overlay']['changedDataset'] == result['summary']['changedParts'], result
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
