@@ -1,4 +1,6 @@
+from packages.opus_analysis import build_program_timeline
 from packages.opus_engine import Simulator
+from packages.opus_parser import parse_solution_bytes, write_solution_bytes
 
 
 def _triangle(element: str) -> dict:
@@ -51,7 +53,20 @@ def _puzzle() -> dict:
     }
 
 
-def _part(part_id: str, part_type: str, position, *, rotation=0, length=1, which=0) -> dict:
+def _program(entries: list[tuple[int, str]]) -> list[dict]:
+    return [{"cycle": cycle, "instruction": instruction} for cycle, instruction in entries]
+
+
+def _part(
+    part_id: str,
+    part_type: str,
+    position,
+    *,
+    rotation=0,
+    length=1,
+    which=0,
+    program=None,
+) -> dict:
     return {
         "id": part_id,
         "type": part_type,
@@ -61,22 +76,44 @@ def _part(part_id: str, part_type: str, position, *, rotation=0, length=1, which
         "length": length,
         "which": which,
         "armNumber": 0,
-        "program": [],
+        "program": list(program or []),
     }
 
 
 def _solution() -> dict:
     return {
+        "schemaVersion": "0.2.0",
+        "format": {"kind": "solution", "version": 7},
+        "source": {"name": None, "generator": "opus_solver/two-fragment-probe-v1"},
+        "puzzleFile": "weeklies2026_aqueous-dagger",
+        "name": "Codex Aqueous Dagger probe - 7-cycle period",
+        "metrics": {},
+        "unknownMetrics": [],
         "parts": [
             # After the second cross-bond, the complete molecule has been
             # pivoted +60 degrees around w0. This output matches that pose.
             _part("out", "out-std", (1, -1), rotation=1, which=0),
-            _part("a-salt-arm", "arm1", (-2, 0), rotation=4, length=2),
-            _part("b-water-arm", "arm1", (2, -2), rotation=0, length=1),
+            _part(
+                "a-salt-arm", "arm1", (-2, 0), rotation=4, length=2,
+                program=_program([
+                    (0, "grab"), (1, "rotate_ccw"), (2, "rotate_ccw"),
+                    (3, "drop"), (4, "rotate_cw"), (5, "rotate_cw"),
+                ]),
+            ),
+            _part(
+                "b-water-arm", "arm1", (2, -2), rotation=0, length=1,
+                program=_program([
+                    (0, "grab"), (3, "rotate_ccw"), (4, "drop"),
+                    (5, "rotate_cw"),
+                ]),
+            ),
             # This arm's tip is fixed on the shared water atom (1, 0). It takes
             # over after the feed arms release and pivots the assembled molecule
             # so the same standard bonder can make the second cross-bond.
-            _part("z-pivot-arm", "arm1", (2, 0), rotation=3, length=1),
+            _part(
+                "z-pivot-arm", "arm1", (2, 0), rotation=3, length=1,
+                program=_program([(4, "grab"), (5, "pivot_ccw"), (6, "drop")]),
+            ),
             _part("salt-input", "input", (-2, -2), rotation=4, which=0),
             _part("water-input", "input", (3, -2), rotation=5, which=1),
             _part("calc-0", "glyph-calcification", (0, -2)),
@@ -86,7 +123,8 @@ def _solution() -> dict:
             # s0-w0. After pivot_ccw around w0, s2 occupies the same salt cell
             # and the glyph creates s2-w0.
             _part("bond", "bonder", (0, 0), rotation=0),
-        ]
+        ],
+        "trailingBytes": 0,
     }
 
 
@@ -111,3 +149,15 @@ def test_single_bonder_candidate_delivers_six_products() -> None:
 
     assert simulator.delivered_products == {"out": 6}
     assert simulator.world.cycle == 42
+
+
+def test_candidate_round_trips_and_replays_from_real_program_tapes() -> None:
+    encoded = write_solution_bytes(_solution())
+    parsed = parse_solution_bytes(encoded, source_name="aqueous-probe.solution")
+    timeline = build_program_timeline(parsed, max_cycles=42)
+    simulator = Simulator.from_models(_puzzle(), parsed)
+    replay = simulator.run_timeline(timeline)
+
+    assert replay["summary"]["terminatedWithError"] is False
+    assert simulator.delivered_products == {"out": 6}
+    assert parsed["puzzleFile"] == "weeklies2026_aqueous-dagger"
