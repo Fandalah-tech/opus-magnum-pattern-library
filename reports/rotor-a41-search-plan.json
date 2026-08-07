@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "referenceSource": "van-berlos-rotor-a41-1112.solution",
+  "referenceMatch": "embedded-fixture",
+  "referenceMetrics": {
+    "cycles": 1112,
+    "cost": 220,
+    "area": 41,
+    "instructions": 302
+  },
+  "maxIdleJump": 8,
+  "baseCandidateCount": 34,
+  "expandedCandidateCount": 150,
+  "campaignBudget": 300,
+  "budgetRemaining": 150,
+  "byPart": {
+    "part-1": 75,
+    "part-12": 28,
+    "part-9": 47
+  },
+  "byInstruction": {
+    "drop": 5,
+    "grab": 18,
+    "period_override": 1,
+    "rotate_ccw": 57,
+    "rotate_cw": 41,
+    "track_minus": 19,
+    "track_plus": 9
+  },
+  "byJump": {
+    "1": 34,
+    "2": 28,
+    "3": 20,
+    "4": 19,
+    "5": 16,
+    "6": 14,
+    "7": 12,
+    "8": 7
+  },
+  "byPartInstruction": {
+    "part-12::drop": 5,
+    "part-12::rotate_cw": 5,
+    "part-12::track_minus": 9,
+    "part-12::track_plus": 9,
+    "part-1::rotate_ccw": 52,
+    "part-1::rotate_cw": 23,
+    "part-9::grab": 18,
+    "part-9::period_override": 1,
+    "part-9::rotate_ccw": 5,
+    "part-9::rotate_cw": 13,
+    "part-9::track_minus": 10
+  },
+  "ciValidation": {
+    "workflowRun": 458,
+    "status": "success",
+    "targetedTests": 13,
+    "requiredTests": 52
+  }
+}
