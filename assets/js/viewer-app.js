@@ -10,7 +10,8 @@
   const fixtureName = params.get('fixture') || (params.has('demo') ? 'demo' : '');
   const FIXTURES = {
     demo: 'data/viewer-demo-payload.json',
-    arms: 'data/viewer-arm-gallery-payload.json'
+    arms: 'data/viewer-arm-gallery-payload.json',
+    pieces: 'data/viewer-piece-gallery-payload.json'
   };
 
   function updateReady() {
