@@ -10,12 +10,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   PYTHONPATH: ${{ github.workspace }}
   VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
   SEARCH_DIR: reports/aqueous-27c-evolution
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
   search:
@@ -24,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Materialize puzzle + 27c seed
+      - name: Materialize puzzle + canonical 27c seed
         run: |
           mkdir -p reports
           python - <<'PY'
@@ -57,15 +58,21 @@ jobs:
           --fixture fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
           --out "${SEARCH_DIR}"
 
-      - name: 🔴 LIVE SEARCH — watch this step
+      - name: 🔴 LIVE SEARCH — dashboard updates every 10 candidates
         run: >-
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
           --variants "${SEARCH_DIR}"
           --workers 24
           --progress-every 10
+          --seed-cycles 27
+          --target-cycles 26
+          --generation 1
+          --live-repo "${GITHUB_REPOSITORY}"
+          --live-branch aqueous-dashboard-live
+          --live-path aqueous-dashboard/status.json
 
-      - name: Build visual dashboard
+      - name: Build GitHub summary
         if: always()
         run: |
           python - <<'PY'
@@ -78,36 +85,20 @@ jobs:
               raise SystemExit(0)
           r=json.loads(p.read_text())
           best=r.get('best') or {}
-          m=best.get('metrics') or {}
           tested=r.get('tested',0)
           valid=len(r.get('valid') or [])
           target=26
-          bestc=m.get('cycles','—')
+          bestc=r.get('bestCycles',27)
           hit = isinstance(bestc,int) and bestc <= target
           status='✅ TARGET REACHED' if hit else '🟡 SEARCH COMPLETE'
-          mutation=best.get('kind','—')
+          mutation=best.get('kind','seed')
           lines=[
-            '# Aqueous Dagger — Evolution Dashboard',
-            '',
-            f'## {status}',
-            '',
-            '| Metric | Value |',
-            '|---|---:|',
-            f'| Seed | **27 cycles** |',
-            f'| Best | **{bestc} cycles** |',
-            f'| Target | **{target} cycles** |',
-            f'| Candidates tested | **{tested}** |',
-            f'| Valid candidates | **{valid}** |',
-            f'| Valid rate | **{(100*valid/tested if tested else 0):.1f}%** |',
-            f'| Best mutation | `{mutation}` |',
-            '',
-            '### Best candidate',
-            '',
-            '```json',
-            json.dumps(best, indent=2),
-            '```',
-            '',
-            'The downloadable best `.solution` is attached to this workflow run as **aqueous-best-solution**.'
+            '# Aqueous Dagger — Evolution Dashboard','',f'## {status}','',
+            '| Metric | Value |','|---|---:|',
+            '| Seed | **27 cycles** |',f'| Best | **{bestc} cycles** |',f'| Target | **{target} cycles** |',
+            f'| Candidates tested | **{tested}** |',f'| Valid candidates | **{valid}** |',
+            f'| Valid rate | **{(100*valid/tested if tested else 0):.1f}%** |',f'| Best mutation | `{mutation}` |','',
+            'Live HTML: https://htmlpreview.github.io/?https://github.com/Fandalah-tech/opus-magnum-pattern-library/blob/aqueous-dashboard-live/aqueous-dashboard/index.html'
           ]
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
           PY
