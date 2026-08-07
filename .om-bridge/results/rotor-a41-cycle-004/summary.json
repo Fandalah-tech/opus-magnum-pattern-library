@@ -7,13 +7,13 @@
     "timeout_seconds": 7200,
     "notes": "Rescan after confirming Steam profile solutions under C:/Users/bruno/Documents/My Games/Opus Magnum/76561197961630013. Prefer exact A41 1112/220/41/302; otherwise best local Area 41 candidate."
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-004.json",
-  "git_sha": "210e6dd0215690c4898f48604973363be8d9c882",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-07T01:55:02.163075+00:00",
-  "finished_at": "2026-08-07T01:56:02.702553+00:00",
-  "duration_seconds": 60.535,
-  "exit_code": 0,
-  "status": "success",
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-cycle-004.json",
+  "git_sha": "edaf33013ad0eecb9b9377066f7a09d74544edf5",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:34:19.246044+00:00",
+  "finished_at": "2026-08-07T10:34:19.995098+00:00",
+  "duration_seconds": 0.749,
+  "exit_code": 6,
+  "status": "failed",
   "error": null
 }
