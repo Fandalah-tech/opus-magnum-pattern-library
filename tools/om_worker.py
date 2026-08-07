@@ -36,7 +36,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "search_rotor_last_atom_tail": [sys.executable, "tools/search_rotor_last_atom_tail.py"],
     "run_rotor_autonomous_campaign": [sys.executable, "tools/run_rotor_autonomous_campaign.py"],
     "run_rotor_a41_cycle_campaign": [sys.executable, "tools/run_rotor_a41_cycle_campaign.py"],
-    "run_rotor_a41_remote_cycle_campaign": [sys.executable, "tools/run_rotor_a41_remote_cycle_campaign.py"],
+    "run_rotor_a41_remote_cycle_campaign": [sys.executable, "tools/run_rotor_a41_remote_cached.py"],
     "build_rotor_candidate_replay": [sys.executable, "tools/build_rotor_candidate_replay.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
     "import_critelli_liquid_perfumes": [sys.executable, "tools/import_critelli_event.py", "--max-solutions", "25", "--delay", "0.4"],
