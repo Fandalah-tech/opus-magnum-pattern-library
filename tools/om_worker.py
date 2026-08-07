@@ -94,6 +94,40 @@ def _git_sha() -> str | None:
         return None
 
 
+def _pending_count() -> int | None:
+    try:
+        pending = Path(".om-bridge/tasks/pending")
+        return len(list(pending.glob("*.json"))) if pending.is_dir() else 0
+    except Exception:
+        return None
+
+
+def _write_agent_status(*, task: dict[str, Any] | None, task_id: str, started_at: datetime, finished_at: datetime, duration_seconds: float, exit_code: int, error: str | None) -> None:
+    reports = Path("reports")
+    reports.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schemaVersion": 1,
+        "status": "idle" if exit_code == 0 else "task-failed",
+        "desired_state": "running",
+        "current_task": None,
+        "last_task": task_id,
+        "last_operation": task.get("operation") if task else None,
+        "last_priority": task.get("priority") if task else None,
+        "last_result": "success" if exit_code == 0 else "failed",
+        "last_exit_code": exit_code,
+        "last_error": error,
+        "last_started_at": started_at.isoformat(),
+        "last_finished_at": finished_at.isoformat(),
+        "last_duration_seconds": duration_seconds,
+        "pending_tasks": _pending_count(),
+        "runner_name": os.environ.get("RUNNER_NAME") or os.environ.get("COMPUTERNAME"),
+        "git_sha": _git_sha(),
+        "heartbeat": finished_at.isoformat(),
+        "message": f"Dernière tâche: {task_id} — {'succès' if exit_code == 0 else 'échec'} ({duration_seconds:.1f}s)",
+    }
+    (reports / "om-agent-status.json").write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Execute one allow-listed OMSIM research task.")
     parser.add_argument("--task", required=True, type=Path)
@@ -127,8 +161,11 @@ def main() -> int:
     result_dir.mkdir(parents=True, exist_ok=True)
     (result_dir / "stdout.txt").write_text(stdout, encoding="utf-8")
     (result_dir / "stderr.txt").write_text(stderr, encoding="utf-8")
-    summary = {"schema_version": 1, "task": task, "task_file": args.task.as_posix(), "git_sha": _git_sha(), "runner_name": os.environ.get("RUNNER_NAME") or os.environ.get("COMPUTERNAME"), "started_at": started_at.isoformat(), "finished_at": datetime.now(timezone.utc).isoformat(), "duration_seconds": round(time.monotonic() - started, 3), "exit_code": exit_code, "status": "success" if exit_code == 0 else "failed", "error": error}
+    finished_at = datetime.now(timezone.utc)
+    duration_seconds = round(time.monotonic() - started, 3)
+    summary = {"schema_version": 1, "task": task, "task_file": args.task.as_posix(), "git_sha": _git_sha(), "runner_name": os.environ.get("RUNNER_NAME") or os.environ.get("COMPUTERNAME"), "started_at": started_at.isoformat(), "finished_at": finished_at.isoformat(), "duration_seconds": duration_seconds, "exit_code": exit_code, "status": "success" if exit_code == 0 else "failed", "error": error}
     (result_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    _write_agent_status(task=task, task_id=str(task_id), started_at=started_at, finished_at=finished_at, duration_seconds=duration_seconds, exit_code=exit_code, error=error)
     print(json.dumps(summary, ensure_ascii=False))
     return exit_code
 
