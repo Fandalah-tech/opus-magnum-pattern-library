@@ -7,6 +7,7 @@ import time
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from packages.opus_parser.solution import parse_solution_bytes
 from tools.import_critelli_event import fetch
@@ -19,13 +20,53 @@ def choose_events(catalog: dict, event_url: str | None) -> list[dict]:
     return events
 
 
+def derive_filename_metadata(download_name: str | None, solution_name: str | None) -> dict:
+    value = str(download_name or "")
+    stem = value[:-9] if value.lower().endswith(".solution") else value
+    submitter = None
+    sequence = None
+    confidence = "none"
+
+    # Critelli filenames observed in public submissions are normally:
+    # PUZZLE_<opaque numeric sequence>_<solution name>_<submitter>.solution
+    # Use the parsed internal solution name as an anchor where possible, then
+    # fall back to the final underscore only. This remains derived metadata.
+    if solution_name:
+        marker = f"_{solution_name}_"
+        index = stem.rfind(marker)
+        if index >= 0:
+            submitter = stem[index + len(marker):].strip() or None
+            confidence = "high" if submitter else "none"
+    if submitter is None and "_" in stem:
+        submitter = stem.rsplit("_", 1)[-1].strip() or None
+        confidence = "medium" if submitter else "none"
+
+    match = re.search(r"_(\d{12,})_", stem)
+    if match:
+        sequence = match.group(1)
+    return {
+        "submitter": submitter,
+        "submitterSource": "download-filename" if submitter else None,
+        "submitterConfidence": confidence,
+        "filenameSequence": sequence,
+    }
+
+
+def submission_id(source_url: str) -> str | None:
+    values = parse_qs(urlparse(source_url).query).get("submission") or []
+    return values[0] if values else None
+
+
 def enrich_solution(event: dict, source: dict) -> dict:
     data, content_type = fetch(source["url"])
     parsed = parse_solution_bytes(data, source_name=source.get("downloadName"))
     puzzle_file = (event.get("puzzle") or {}).get("file")
+    derived = derive_filename_metadata(source.get("downloadName"), parsed["name"])
     return {
         "downloadName": source.get("downloadName"),
         "sourceUrl": source["url"],
+        "submissionId": submission_id(source["url"]),
+        **derived,
         "contentType": content_type,
         "sha256": parsed["source"]["sha256"],
         "bytes": parsed["source"]["size"],
@@ -95,6 +136,7 @@ def main() -> int:
                     "eventUrl": event.get("eventUrl"),
                     "downloadName": source.get("downloadName"),
                     "sourceUrl": source.get("url"),
+                    "submissionId": submission_id(source.get("url") or ""),
                     "error": f"{type(exc).__name__}: {exc}",
                 })
             time.sleep(max(0.0, args.delay))
@@ -113,12 +155,13 @@ def main() -> int:
     trailing_clean = sum(1 for r in all_records if r["trailingBytes"] == 0)
     duplicate_count = sum(1 for r in all_records if r.get("duplicateOf"))
     match_count = sum(1 for r in all_records if puzzle_matches(r))
+    submitter_count = sum(1 for r in all_records if r.get("submitter"))
     failure_counts = Counter(failure_signature(f["error"]) for f in failures)
     gap_counts = Counter(metric_gap(r) for r in all_records)
     version_counts = Counter(str(r.get("formatVersion")) for r in all_records)
 
     result = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "sourceCatalog": args.catalog.as_posix(),
         "retrievedAt": datetime.now(timezone.utc).isoformat(),
         "policy": {
@@ -127,6 +170,7 @@ def main() -> int:
             "metadataCommitted": True,
             "identity": "sha256",
             "downloadDelaySeconds": args.delay,
+            "submitterMetadata": "derived-from-public-download-filename",
         },
         "summary": {
             "selectedEvents": len(records),
@@ -137,6 +181,7 @@ def main() -> int:
             "completeEmbeddedMetrics": complete_metrics,
             "zeroTrailingBytes": trailing_clean,
             "puzzleFileMatches": match_count,
+            "solutionsWithDerivedSubmitter": submitter_count,
             "failures": len(failures),
             "formatVersions": dict(sorted(version_counts.items())),
             "metricCoverage": dict(sorted(gap_counts.items())),
