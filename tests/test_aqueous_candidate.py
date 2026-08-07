@@ -86,7 +86,7 @@ def _solution() -> dict:
         "format": {"kind": "solution", "version": 7},
         "source": {"name": None, "generator": "opus_solver/two-fragment-probe-v1"},
         "puzzleFile": "weeklies2026_aqueous-dagger",
-        "name": "Codex Aqueous Dagger probe - 7-cycle period",
+        "name": "Codex Aqueous Dagger probe - 6-cycle pipeline",
         "metrics": {},
         "unknownMetrics": [],
         "parts": [
@@ -96,8 +96,6 @@ def _solution() -> dict:
                 program=_program([
                     (0, "grab"), (1, "rotate_ccw"), (2, "rotate_ccw"),
                     (3, "drop"), (4, "rotate_cw"), (5, "rotate_cw"),
-                    # A no-op reset pins the global tape period to seven cells.
-                    (6, "reset"),
                 ]),
             ),
             _part(
@@ -129,11 +127,11 @@ PERIOD = [
     {"a-salt-arm": "drop", "b-water-arm": "rotate_ccw"},
     {"a-salt-arm": "rotate_cw", "b-water-arm": "drop", "z-pivot-arm": "grab"},
     {"a-salt-arm": "rotate_cw", "b-water-arm": "rotate_cw", "z-pivot-arm": "pivot_ccw"},
-    {"a-salt-arm": "reset", "z-pivot-arm": "drop"},
+    {"z-pivot-arm": "drop"},
 ]
 
 
-def test_single_bonder_candidate_delivers_six_products() -> None:
+def test_single_bonder_candidate_delivers_six_products_without_pipeline_overlap() -> None:
     simulator = Simulator.from_models(_puzzle(), _solution())
     for _ in range(6):
         for instructions in PERIOD:
@@ -143,14 +141,14 @@ def test_single_bonder_candidate_delivers_six_products() -> None:
     assert simulator.world.cycle == 42
 
 
-def test_candidate_round_trips_and_replays_from_real_program_tapes() -> None:
+def test_serialized_tapes_pipeline_at_six_cycles_and_deliver_six() -> None:
     encoded = write_solution_bytes(_solution())
     parsed = parse_solution_bytes(encoded, source_name="aqueous-probe.solution")
-    timeline = build_program_timeline(parsed, max_cycles=42)
+    timeline = build_program_timeline(parsed, max_cycles=37)
     simulator = Simulator.from_models(_puzzle(), parsed)
     replay = simulator.run_timeline(timeline)
 
-    assert timeline["summary"]["globalPeriod"] == 7
+    assert timeline["summary"]["globalPeriod"] == 6
     assert replay["summary"]["terminatedWithError"] is False
     assert simulator.delivered_products == {"part-0": 6}
     assert parsed["puzzleFile"] == "weeklies2026_aqueous-dagger"
