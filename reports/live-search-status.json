@@ -1,17 +1,23 @@
 {
-  "updatedAt": "2026-08-06T20:46:56.536445+00:00",
-  "status": "running",
-  "stage": "tail-search-v2",
-  "maxDepth": 40,
-  "beamWidth": 1200,
-  "maxStates": 500000,
-  "timeLimitSeconds": 7200,
-  "heuristicVersion": 2,
-  "depth": 19,
-  "elapsedSeconds": 5941.431,
-  "visitedStates": 195063,
-  "expandedStates": 19443,
-  "frontierSize": 1200,
-  "bestScore": 201,
-  "bestPathLength": 15
+  "updatedAt": "2026-08-07T01:15:00+00:00",
+  "status": "queued",
+  "stage": "a41-cycle-optimization",
+  "campaignId": "rotor-a41-cycle-001",
+  "mode": "retiming",
+  "depth": 0,
+  "maxDepth": 0,
+  "elapsedSeconds": 0,
+  "visitedStates": 0,
+  "expandedStates": 0,
+  "frontierSize": 0,
+  "bestScore": 1112,
+  "bestPathLength": 0,
+  "metrics": {
+    "baseline": {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302},
+    "best": {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302},
+    "improvement": {"cycles": 0, "instructions": 0},
+    "testedCandidates": 0,
+    "validCandidates": 0
+  },
+  "message": "Ancienne recherche tail-search-v2 retiree. Bascule vers l'optimisation cycles de la reference A41 prioritaire."
 }
