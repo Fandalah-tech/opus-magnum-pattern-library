@@ -5,9 +5,12 @@ on:
     branches: [main]
     paths:
       - "viewer.html"
+      - "library.html"
       - "data/viewer-demo-payload.json"
       - "data/viewer-arm-gallery-payload.json"
       - "data/viewer-piece-gallery-payload.json"
+      - "assets/js/pair-library.js"
+      - "assets/js/viewer-pair-library.js"
       - "assets/js/opus-geometry.js"
       - "assets/js/opus-piece-symbols.js"
       - "assets/js/opus-renderer-core.js"
@@ -51,6 +54,7 @@ jobs:
           from playwright.sync_api import sync_playwright
 
           out = Path('reports/visual/viewer-smoke')
+          demo_payload = Path('data/viewer-demo-payload.json').read_text(encoding='utf-8')
           with sync_playwright() as p:
               browser = p.chromium.launch()
               page = browser.new_page(viewport={'width': 1500, 'height': 960}, device_scale_factor=1)
@@ -105,6 +109,9 @@ jobs:
                   assert int(group.get_attribute('data-branch-count')) == branch_count
                   assert group.locator('[data-arm-shaft]').count() == branch_count
                   assert group.locator('[data-arm-tip]').count() == branch_count
+              piston = page.locator('#solution-viewer [data-part-id="gallery-piston"]')
+              assert piston.locator('[data-piston-sleeve]').count() == 1
+              assert piston.locator('[data-piston-rod]').count() == 1
               page.locator('#solution-viewer').screenshot(path=str(out / '10-arm-family.png'))
 
               # Canonical stations/glyphs/track fixture.
@@ -134,11 +141,42 @@ jobs:
                   assert group.count() == 1
                   assert group.locator('.viewer-piece-footprint > polygon').count() == cell_count * 2
                   assert group.locator('title').count() == 1
+              specialized = [
+                  'piece-multibonder','piece-equilibrium','piece-disposal','piece-projection',
+                  'piece-purification','piece-duplication','piece-life-death',
+                  'piece-prisma-bonder','piece-prisma-unbonder'
+              ]
+              for part_id in specialized:
+                  group = page.locator(f'#solution-viewer [data-part-id="{part_id}"]')
+                  assert group.locator(':scope > text').count() == 0
+                  assert group.locator(':scope > path, :scope > line, :scope > circle').count() > 0
               track = page.locator('#solution-viewer [data-part-id="piece-track"]')
               assert track.get_attribute('data-part-kind') == 'track'
               assert track.locator('.viewer-track-rail').count() == 1
               assert track.locator(':scope > circle').count() == 4
               page.locator('#solution-viewer').screenshot(path=str(out / '20-piece-gallery.png'))
+
+              # Browser-private Library -> Viewer bridge.
+              page.goto('http://127.0.0.1:8765/viewer.html', wait_until='networkidle', timeout=120000)
+              pair_id = page.evaluate("""async () => {
+                const puzzle = new File(['fixture puzzle'], 'local-fixture.puzzle', {type:'application/octet-stream'});
+                const solution = new File(['fixture solution'], 'local-fixture.solution', {type:'application/octet-stream'});
+                const record = await window.OpusPairLibrary.save(puzzle, solution, 'Local Viewer Fixture');
+                return record.id;
+              }""")
+              page.goto('http://127.0.0.1:8765/library.html', wait_until='networkidle', timeout=120000)
+              page.wait_for_selector('#local-rows .viewer-link')
+              local_row = page.locator('#local-rows tr').filter(has_text='Local Viewer Fixture')
+              assert local_row.count() == 1
+              href = local_row.locator('.viewer-link').get_attribute('href')
+              assert 'viewer.html?pair=' in href
+
+              page.route('**/api/v1/analyze', lambda route: route.fulfill(status=200, content_type='application/json', body=demo_payload))
+              page.goto(f'http://127.0.0.1:8765/viewer.html?pair={pair_id}', wait_until='networkidle', timeout=120000)
+              page.wait_for_selector('#viewer-result:not([hidden])', timeout=30000)
+              page.wait_for_function("document.querySelector('#viewer-solution-title').textContent === 'Renderer Demo Machine'", timeout=30000)
+              assert page.locator('#viewer-saved-pair').input_value() == pair_id
+              page.screenshot(path=str(out / '30-library-viewer-bridge.png'), full_page=True)
 
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
