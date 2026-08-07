@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "campaignId": "rotor-a41-cycle-001",
+  "stage": "queued",
+  "status": "queued",
+  "updatedAt": "2026-08-06T14:00:00Z",
+  "metrics": {
+    "baseline": {
+      "cycles": 1112,
+      "cost": 220,
+      "area": 41,
+      "instructions": 302
+    },
+    "best": {
+      "cycles": 1112,
+      "cost": 220,
+      "area": 41,
+      "instructions": 302
+    },
+    "improvement": {
+      "cycles": 0,
+      "instructions": 0
+    },
+    "testedCandidates": 0,
+    "validCandidates": 0
+  },
+  "bestResults": [
+    {
+      "rank": 1,
+      "kind": "reference",
+      "sha256": "435b31d9366f90bb5217ea45faebb392ae761fe3740050c2ffa56e847174ab47",
+      "metrics": {
+        "cycles": 1112,
+        "cost": 220,
+        "area": 41,
+        "instructions": 302
+      }
+    }
+  ],
+  "message": "Nouvelle référence A41 enregistrée; campagne mise en file pour le worker OMSIM."
+}
