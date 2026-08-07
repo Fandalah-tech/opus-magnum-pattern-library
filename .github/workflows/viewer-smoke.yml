@@ -20,6 +20,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: viewer-visual-smoke
+  cancel-in-progress: true
+
 jobs:
   smoke:
     runs-on: ubuntu-latest
@@ -51,7 +55,7 @@ jobs:
               page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
               page.wait_for_selector('#solution-viewer [data-part-id="arm-main"]')
               page.wait_for_selector('#solution-viewer [data-part-id="arm-six"]')
-              page.wait_for_selector('#solution-viewer [data-atom-id="atom-salt"]')
+              page.wait_for_selector('#solution-viewer [data-atom-id="atom-salt"]', state='attached')
               assert page.locator('#viewer-metric-area').inner_text() == '18'
               assert page.locator('[data-replay-range]').get_attribute('max') == '3'
               page.locator('[data-replay-next]').click()
