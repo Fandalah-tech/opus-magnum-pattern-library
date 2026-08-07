@@ -10,16 +10,42 @@ CHECKPOINT = Path("reports/rotor-a41-cycle-checkpoint.json")
 OUTPUT = Path("reports/rotor-a41-retiming-learning.json")
 
 
+def _read_json(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _is_remote_analysis(data: dict[str, Any] | None) -> bool:
+    if not data:
+        return False
+    return (
+        int(data.get("schemaVersion") or 0) >= 5
+        and str(data.get("validatorEndpoint") or "") == "/api/v1/analyze"
+    )
+
+
+def _is_remote_checkpoint(data: dict[str, Any] | None) -> bool:
+    if not data:
+        return False
+    return (
+        int(data.get("schemaVersion") or 0) >= 2
+        and str(data.get("validatorEndpoint") or "") == "/api/v1/analyze"
+    )
+
+
 def _load_source() -> dict[str, Any]:
-    for path in (ANALYSIS, CHECKPOINT):
-        if path.is_file():
-            try:
-                data = json.loads(path.read_text(encoding="utf-8"))
-            except Exception:
-                continue
-            if isinstance(data, dict):
-                return data
-    raise FileNotFoundError("No A41 analysis/checkpoint report is available")
+    analysis = _read_json(ANALYSIS)
+    if _is_remote_analysis(analysis):
+        return analysis
+    checkpoint = _read_json(CHECKPOINT)
+    if _is_remote_checkpoint(checkpoint):
+        return checkpoint
+    raise FileNotFoundError("No remote A41 validation analysis/checkpoint is available")
 
 
 def _iter_results(data: dict[str, Any]):
@@ -100,7 +126,7 @@ def summarize(data: dict[str, Any]) -> dict[str, Any]:
     by_part.sort(key=lambda row: (-row["improved"], -row["validRate"], row["bestCycles"] or 10**9, row["part"]))
 
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "baselineCycles": baseline,
         "observations": seen,
         "byPart": by_part,
@@ -112,6 +138,8 @@ def summarize(data: dict[str, Any]) -> dict[str, Any]:
 def main() -> int:
     data = _load_source()
     output = summarize(data)
+    if output["observations"] <= 0:
+        raise RuntimeError("Remote A41 source contains no candidate validation observations")
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({"observations": output["observations"], "recommendation": output["recommendation"][:3]}, ensure_ascii=False))
