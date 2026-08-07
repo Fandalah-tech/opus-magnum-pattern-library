@@ -3,7 +3,19 @@
 
   const hexKey = value => `${Number(value?.[0] || 0)},${Number(value?.[1] || 0)}`;
   const sameHex = (a, b) => hexKey(a) === hexKey(b);
-  const stable = value => JSON.stringify(value, Object.keys(value || {}).sort());
+
+  function canonical(value) {
+    if (Array.isArray(value)) return value.map(canonical);
+    if (value && typeof value === 'object') {
+      return Object.keys(value).sort().reduce((result, key) => {
+        result[key] = canonical(value[key]);
+        return result;
+      }, {});
+    }
+    return value;
+  }
+
+  const stable = value => JSON.stringify(canonical(value));
 
   function partSignature(part) {
     return [
@@ -53,7 +65,6 @@
   }
 
   function pairParts(beforeScene, afterScene) {
-    const beforeIndex = indexParts(beforeScene);
     const afterIndex = indexParts(afterScene);
     const usedAfter = new Set();
     const pairs = [];
