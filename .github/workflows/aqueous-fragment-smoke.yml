@@ -11,6 +11,7 @@ on:
       - tools/search_aqueous_16c_offsets.py
       - tools/search_aqueous_16c_structural.py
       - tools/search_aqueous_output_capture.py
+      - tools/trace_aqueous_16c.py
       - tools/validate_aqueous_offsets.py
       - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
       - fixtures/weeklies2026/aqueous-dagger-16c-reference.solution.b64
@@ -43,6 +44,8 @@ jobs:
           tests/test_aqueous_candidate.py
           tests/test_aqueous_exact_puzzle.py
           -q
+      - name: Trace exact 16c reference
+        run: python tools/trace_aqueous_16c.py
       - name: Build exact binary probe
         run: python tools/build_aqueous_probe.py
       - name: Validate probe with OMSim service
