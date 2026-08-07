@@ -122,7 +122,7 @@ def test_existing_pipeline_runs_on_exact_official_geometry() -> None:
     replay = simulator.run_timeline(timeline)
 
     last_frame = simulator.frames[-1]
-    errors = [event for event in last_frame.get("events", []) if event.get("type") == "simulation-error"]
+    errors = [event for event in last_frame.get("events", []) if event.get("kind") == "simulation-error"]
     assert replay["summary"]["terminatedWithError"] is False, errors
     assert simulator.delivered_products == {"out": 6}, {
         "delivered": simulator.delivered_products,
