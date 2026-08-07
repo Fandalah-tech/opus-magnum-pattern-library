@@ -175,8 +175,12 @@
 
   async function load() {
     status.textContent = 'Lecture du rapport A41 et construction de la Scene…';
+    status.classList.remove('error');
     viewerWrap?.classList.add('loading');
-    if (loading) loading.hidden = false;
+    if (loading) {
+      loading.hidden = false;
+      loading.textContent = 'Construction de la Scene A41…';
+    }
     try {
       const [data, live] = await Promise.all([fetchJson(replayUrl), fetchJson(liveUrl, true)]);
       if (!data?.renderContext?.solution || !data?.renderContext?.puzzle) throw new Error('Le rapport ne contient pas de contexte graphique complet.');
@@ -200,7 +204,7 @@
 
   jumpSolver?.addEventListener('click', jumpToSolver);
   refresh?.addEventListener('click', load);
-  window.addEventListener('opus:replayframe', event => {
+  root.addEventListener('opus:replayframe', event => {
     const frame = event.detail?.scene?.timeline?.frame;
     const index = Number(event.detail?.scene?.timeline?.frameIndex ?? 0);
     const meta = research?.frames?.[index];
