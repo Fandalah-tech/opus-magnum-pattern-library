@@ -8,7 +8,10 @@ on:
       - tests/test_aqueous_candidate.py
       - tests/test_aqueous_exact_puzzle.py
       - tools/build_aqueous_probe.py
+      - tools/search_aqueous_16c_offsets.py
+      - tools/validate_aqueous_offsets.py
       - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
+      - fixtures/weeklies2026/aqueous-dagger-16c-reference.solution.b64
       - .github/workflows/aqueous-fragment-smoke.yml
   workflow_dispatch:
 
@@ -55,3 +58,9 @@ jobs:
           if validation.get('valid') is not True:
               raise SystemExit('OMSim rejected the exact Aqueous probe')
           PY
+      - name: Generate one-cycle-earlier variants from 16c reference
+        run: python tools/search_aqueous_16c_offsets.py
+      - name: Search 16c reference for a valid 15c offset
+        run: >-
+          python tools/validate_aqueous_offsets.py
+          --validator-url "${VALIDATOR_URL}"
