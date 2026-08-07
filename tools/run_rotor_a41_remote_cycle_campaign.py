@@ -19,6 +19,7 @@ VALIDATOR_URL = os.environ.get("OM_VALIDATOR_URL", "https://opus-validator-6gflg
 ANALYZE_ENDPOINT = "/api/v1/analyze"
 MAX_ROUNDS = 8
 MAX_CANDIDATES = 300
+CHECKPOINT = ROOT / "reports/rotor-a41-cycle-checkpoint.json"
 
 
 def locate_puzzle(solution: dict[str, Any]) -> Path | None:
@@ -133,6 +134,68 @@ def save_best(solution: dict[str, Any], cycles: int, mutations: list[dict[str, A
     BEST_SOLUTION.write_bytes(encode_solution(model))
 
 
+def write_checkpoint(*, baseline_cycles: int, current: dict[str, Any], current_cycles: int,
+                     mutations: list[dict[str, Any]], tested: int, valid: int,
+                     rounds: list[dict[str, Any]], round_index: int,
+                     next_candidate_index: int, active_round_results: list[dict[str, Any]]) -> None:
+    CHECKPOINT.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schemaVersion": 2,
+        "updatedAt": now(),
+        "validatorUrl": VALIDATOR_URL,
+        "validatorEndpoint": ANALYZE_ENDPOINT,
+        "baselineCycles": baseline_cycles,
+        "currentCycles": current_cycles,
+        "current": current,
+        "mutations": mutations,
+        "testedCandidates": tested,
+        "validCandidates": valid,
+        "rounds": rounds,
+        "roundIndex": round_index,
+        "nextCandidateIndex": next_candidate_index,
+        "activeRoundResults": active_round_results,
+    }
+    temp = CHECKPOINT.with_suffix(".json.tmp")
+    temp.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    temp.replace(CHECKPOINT)
+
+
+def load_checkpoint(baseline_cycles: int) -> dict[str, Any] | None:
+    if not CHECKPOINT.is_file():
+        return None
+    try:
+        data = json.loads(CHECKPOINT.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if not isinstance(data, dict) or int(data.get("schemaVersion") or 0) != 2:
+        return None
+    if data.get("validatorEndpoint") != ANALYZE_ENDPOINT:
+        return None
+    if int(data.get("baselineCycles") or -1) != baseline_cycles:
+        return None
+    if not isinstance(data.get("current"), dict):
+        return None
+    return data
+
+
+def best_from_partial(current: dict[str, Any], current_cycles: int,
+                      results: list[dict[str, Any]]) -> tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]] | None:
+    best: tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]] | None = None
+    for result in results:
+        if not result.get("valid") or result.get("cycles") is None or not isinstance(result.get("shift"), dict):
+            continue
+        cycles = int(result["cycles"])
+        if cycles >= current_cycles:
+            continue
+        candidate = apply_shift(current, result["shift"])
+        if candidate is None:
+            continue
+        metrics = result.get("metrics") if isinstance(result.get("metrics"), dict) else {}
+        if best is None or cycles < best[0]:
+            best = (cycles, result["shift"], candidate, metrics)
+    return best
+
+
 def main() -> int:
     started = time.monotonic()
     live = load_live()
@@ -157,30 +220,54 @@ def main() -> int:
         return 6
     base_metrics = base_response.get("metrics") or {}
     baseline_cycles = int(base_metrics.get("cycles") or REFERENCE_METRICS["cycles"])
-    current = copy.deepcopy(solution)
-    current_cycles = baseline_cycles
-    mutations: list[dict[str, Any]] = []
-    tested = 0
-    valid = 0
-    rounds: list[dict[str, Any]] = []
+
+    checkpoint = load_checkpoint(baseline_cycles)
+    if checkpoint:
+        current = checkpoint["current"]
+        current_cycles = int(checkpoint.get("currentCycles") or baseline_cycles)
+        mutations = list(checkpoint.get("mutations") or [])
+        tested = int(checkpoint.get("testedCandidates") or 0)
+        valid = int(checkpoint.get("validCandidates") or 0)
+        rounds = list(checkpoint.get("rounds") or [])
+        resume_round = max(1, int(checkpoint.get("roundIndex") or (len(rounds) + 1)))
+        resume_candidate = max(1, int(checkpoint.get("nextCandidateIndex") or 1))
+        resume_results = list(checkpoint.get("activeRoundResults") or [])
+        publish(live, stage="checkpoint-resume", status="running", message=f"Reprise checkpoint: round {resume_round}, candidat {resume_candidate}, {tested} deja testes; meilleur {current_cycles} cycles.", extra={"checkpoint": str(CHECKPOINT), "round": resume_round, "bestMutations": mutations})
+    else:
+        current = copy.deepcopy(solution)
+        current_cycles = baseline_cycles
+        mutations: list[dict[str, Any]] = []
+        tested = 0
+        valid = 0
+        rounds: list[dict[str, Any]] = []
+        resume_round = 1
+        resume_candidate = 1
+        resume_results: list[dict[str, Any]] = []
 
     metrics = live.setdefault("metrics", {})
     metrics["baseline"] = {"cycles": baseline_cycles, "cost": int(base_metrics.get("cost") or 220), "area": int(base_metrics.get("area") or 41), "instructions": int(base_metrics.get("instructions") or 302)}
-    metrics["best"] = dict(metrics["baseline"])
-    publish(live, stage="candidate-validation", status="running", message=f"Reference validee a {baseline_cycles} cycles. Recherche de retimings.", extra={"baselineResponse": base_response})
+    metrics["best"] = {"cycles": current_cycles, "cost": int(base_metrics.get("cost") or 220), "area": int(base_metrics.get("area") or 41), "instructions": int(base_metrics.get("instructions") or 302)}
+    metrics["testedCandidates"] = tested
+    metrics["validCandidates"] = valid
+    publish(live, stage="candidate-validation", status="running", message=f"Reference validee a {baseline_cycles} cycles. Recherche de retimings; meilleur courant {current_cycles}.", extra={"baselineResponse": base_response})
 
-    for round_index in range(1, MAX_ROUNDS + 1):
+    for round_index in range(resume_round, MAX_ROUNDS + 1):
         shifts = candidate_shifts(current)
         if not shifts or tested >= MAX_CANDIDATES:
             break
-        best_round: tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]] | None = None
-        round_results = []
-        publish(live, stage="candidate-validation", status="running", message=f"Round {round_index}: {len(shifts)} candidats a valider.", extra={"round": round_index, "frontierSize": len(shifts), "bestMutations": mutations})
+        start_index = resume_candidate if round_index == resume_round else 1
+        round_results = resume_results if round_index == resume_round else []
+        best_round = best_from_partial(current, current_cycles, round_results)
+        publish(live, stage="candidate-validation", status="running", message=f"Round {round_index}: reprise au candidat {start_index}/{len(shifts)}; {tested} deja testes.", extra={"round": round_index, "frontierSize": max(0, len(shifts) - start_index + 1), "bestMutations": mutations})
+
         for index, shift in enumerate(shifts, start=1):
+            if index < start_index:
+                continue
             if tested >= MAX_CANDIDATES:
                 break
             candidate = apply_shift(current, shift)
             if candidate is None:
+                write_checkpoint(baseline_cycles=baseline_cycles, current=current, current_cycles=current_cycles, mutations=mutations, tested=tested, valid=valid, rounds=rounds, round_index=round_index, next_candidate_index=index + 1, active_round_results=round_results)
                 continue
             tested += 1
             response = validate_remote(puzzle_path, candidate, f"a41-r{round_index}-c{index}.solution")
@@ -198,10 +285,15 @@ def main() -> int:
             metrics["testedCandidates"] = tested
             metrics["validCandidates"] = valid
             live["elapsedSeconds"] = round(time.monotonic() - started, 1)
+            write_checkpoint(baseline_cycles=baseline_cycles, current=current, current_cycles=current_cycles, mutations=mutations, tested=tested, valid=valid, rounds=rounds, round_index=round_index, next_candidate_index=index + 1, active_round_results=round_results)
             if tested % 2 == 0 or (cycles is not None and cycles < current_cycles):
-                publish(live, stage="candidate-validation", status="running", message=f"Round {round_index}: {tested} testes, {valid} valides; meilleur {current_cycles} cycles.", extra={"round": round_index, "frontierSize": max(0, len(shifts) - index), "bestMutations": mutations})
+                publish(live, stage="candidate-validation", status="running", message=f"Round {round_index}: {tested} testes, {valid} valides; meilleur {current_cycles} cycles.", extra={"round": round_index, "frontierSize": max(0, len(shifts) - index), "bestMutations": mutations, "checkpointCandidate": index + 1})
+
         rounds.append({"round": round_index, "sourceCycles": current_cycles, "candidates": round_results})
+        resume_candidate = 1
+        resume_results = []
         if best_round is None:
+            write_checkpoint(baseline_cycles=baseline_cycles, current=current, current_cycles=current_cycles, mutations=mutations, tested=tested, valid=valid, rounds=rounds, round_index=round_index + 1, next_candidate_index=1, active_round_results=[])
             break
         current_cycles, winning_shift, current, winning_metrics = best_round
         mutations.append(winning_shift)
@@ -211,16 +303,17 @@ def main() -> int:
         metrics["validCandidates"] = valid
         live["bestResults"] = [{"rank": 1, "kind": "validated-retiming", "metrics": dict(metrics["best"]), "mutations": list(mutations)}]
         save_best(current, current_cycles, mutations, winning_metrics)
-        publish(live, stage="improvement-found", status="running", message=f"Nouveau meilleur valide: {current_cycles} cycles (-{baseline_cycles-current_cycles}).", extra={"round": round_index, "frontierSize": 0, "bestMutations": mutations, "bestSolution": "reports/rotor-a41-cycle-best.solution"})
+        write_checkpoint(baseline_cycles=baseline_cycles, current=current, current_cycles=current_cycles, mutations=mutations, tested=tested, valid=valid, rounds=rounds, round_index=round_index + 1, next_candidate_index=1, active_round_results=[])
+        publish(live, stage="improvement-found", status="running", message=f"Nouveau meilleur valide: {current_cycles} cycles (-{baseline_cycles-current_cycles}). Checkpoint sauvegarde.", extra={"round": round_index, "frontierSize": 0, "bestMutations": mutations, "bestSolution": "reports/rotor-a41-cycle-best.solution", "checkpoint": str(CHECKPOINT)})
 
-    ANALYSIS.write_text(json.dumps({"schemaVersion": 4, "updatedAt": now(), "validatorUrl": VALIDATOR_URL, "validatorEndpoint": ANALYZE_ENDPOINT, "puzzlePath": str(puzzle_path), "baselineResponse": base_response, "rounds": rounds, "testedCandidates": tested, "validCandidates": valid, "bestCycles": current_cycles, "mutations": mutations}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    ANALYSIS.write_text(json.dumps({"schemaVersion": 5, "updatedAt": now(), "validatorUrl": VALIDATOR_URL, "validatorEndpoint": ANALYZE_ENDPOINT, "puzzlePath": str(puzzle_path), "baselineResponse": base_response, "rounds": rounds, "testedCandidates": tested, "validCandidates": valid, "bestCycles": current_cycles, "mutations": mutations, "checkpoint": str(CHECKPOINT)}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     metrics["testedCandidates"] = tested
     metrics["validCandidates"] = valid
     live["elapsedSeconds"] = round(time.monotonic() - started, 1)
     if current_cycles < baseline_cycles:
-        publish(live, stage="completed", status="completed", message=f"Campagne terminee: meilleur resultat valide {current_cycles} cycles, gain {baseline_cycles-current_cycles}.", extra={"round": len(rounds), "frontierSize": 0, "bestMutations": mutations, "bestSolution": "reports/rotor-a41-cycle-best.solution", "analysisReport": "reports/rotor-a41-cycle-analysis.json"})
+        publish(live, stage="completed", status="completed", message=f"Campagne terminee: meilleur resultat valide {current_cycles} cycles, gain {baseline_cycles-current_cycles}.", extra={"round": len(rounds), "frontierSize": 0, "bestMutations": mutations, "bestSolution": "reports/rotor-a41-cycle-best.solution", "analysisReport": "reports/rotor-a41-cycle-analysis.json", "checkpoint": str(CHECKPOINT)})
     else:
-        publish(live, stage="completed", status="completed", message=f"Campagne terminee: {tested} candidats testes, {valid} valides, aucun gain sous {baseline_cycles}.", extra={"round": len(rounds), "frontierSize": 0, "analysisReport": "reports/rotor-a41-cycle-analysis.json"})
+        publish(live, stage="completed", status="completed", message=f"Campagne terminee: {tested} candidats testes, {valid} valides, aucun gain sous {baseline_cycles}.", extra={"round": len(rounds), "frontierSize": 0, "analysisReport": "reports/rotor-a41-cycle-analysis.json", "checkpoint": str(CHECKPOINT)})
     return 0
 
 
