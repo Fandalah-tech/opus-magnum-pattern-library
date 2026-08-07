@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "mode": "fresh-generation",
+  "status": "failed",
+  "checkpointArchived": false,
+  "checkpointArchive": null,
+  "searchStrategy": "a41-adaptive-idle-retiming-v1",
+  "maxIdleJump": 8,
+  "startCycles": 1112,
+  "finalCycles": 1112,
+  "cycleGain": 0,
+  "improved": false,
+  "recommendedNextGeneration": false,
+  "exitCode": 5
+}
