@@ -1,16 +1,20 @@
 param(
-  [string]$RepositoryPath = "",
-  [int]$IntervalMinutes = 1
+  [ValidateSet('Run','Start','Pause','Stop','Status')]
+  [string]$Command = 'Run',
+  [string]$RepositoryPath = '',
+  [int]$MaxCpuPercent = 50,
+  [int]$IdleSeconds = 15,
+  [string]$ResearchBranch = 'feature/disjoint-solver-readiness',
+  [string]$OpusRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
-$AgentRoot = Join-Path $env:ProgramData 'OpusMagnumAgent'
+$AgentRoot = Join-Path $env:LOCALAPPDATA 'OpusMagnumAgent'
 $LogPath = Join-Path $AgentRoot 'agent.log'
+$StatePath = Join-Path $AgentRoot 'state.json'
+$StatusPath = Join-Path $AgentRoot 'status.json'
+$PidPath = Join-Path $AgentRoot 'agent.pid'
 $InstalledScript = Join-Path $AgentRoot 'om_local_agent.ps1'
-$RawSelfUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_local_agent.ps1'
-$ResearchBranch = 'feature/disjoint-solver-readiness'
-$TaskName = 'Opus Magnum Local Agent'
-$OpusRoot = 'C:\Users\bruno\Documents\My Games\Opus Magnum'
 New-Item -ItemType Directory -Force -Path $AgentRoot | Out-Null
 
 function Write-AgentLog {
@@ -19,83 +23,98 @@ function Write-AgentLog {
   Add-Content -Path $LogPath -Value $line -Encoding UTF8
 }
 
-function Update-Self {
+function Write-JsonAtomic {
+  param([string]$Path, [object]$Value)
+  $temp = "$Path.tmp"
+  $Value | ConvertTo-Json -Depth 8 | Set-Content -Path $temp -Encoding UTF8
+  Move-Item -Path $temp -Destination $Path -Force
+}
+
+function Get-DesiredState {
+  if (-not (Test-Path $StatePath)) { return 'running' }
   try {
-    $temp = Join-Path $AgentRoot 'om_local_agent.next.ps1'
-    Invoke-WebRequest -Uri ($RawSelfUrl + '?t=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()) -OutFile $temp -UseBasicParsing
-    if ((Get-Item $temp).Length -lt 500) { throw 'Telechargement incomplet.' }
-    $currentHash = if (Test-Path $InstalledScript) { (Get-FileHash $InstalledScript -Algorithm SHA256).Hash } else { '' }
-    $nextHash = (Get-FileHash $temp -Algorithm SHA256).Hash
-    if ($currentHash -ne $nextHash) {
-      Copy-Item $temp $InstalledScript -Force
-      Unblock-File $InstalledScript
-      Write-AgentLog 'Agent local mis a jour; la nouvelle version sera utilisee au prochain passage.'
-    }
-    Remove-Item $temp -Force -ErrorAction SilentlyContinue
+    $state = Get-Content -Raw -Path $StatePath | ConvertFrom-Json
+    if ($state.desired_state -in @('running','paused','stopped')) { return [string]$state.desired_state }
+  } catch {}
+  return 'running'
+}
+
+function Set-DesiredState {
+  param([ValidateSet('running','paused','stopped')][string]$State)
+  Write-JsonAtomic -Path $StatePath -Value ([ordered]@{
+    desired_state = $State
+    changed_at = (Get-Date).ToUniversalTime().ToString('o')
+    changed_by = $env:USERNAME
+  })
+}
+
+function Get-AgentProcess {
+  if (-not (Test-Path $PidPath)) { return $null }
+  try {
+    $pidValue = [int](Get-Content -Raw -Path $PidPath)
+    return Get-Process -Id $pidValue -ErrorAction Stop
   } catch {
-    Write-AgentLog "Mise a jour autonome ignoree: $($_.Exception.Message)"
+    Remove-Item $PidPath -Force -ErrorAction SilentlyContinue
+    return $null
   }
 }
 
-function Ensure-TaskSettings {
-  try {
-    $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
-    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 6)
-    $triggers = @(
-      (New-ScheduledTaskTrigger -AtStartup),
-      (New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes))
-    )
-    Set-ScheduledTask -TaskName $TaskName -Action $task.Actions -Trigger $triggers -Settings $settings -Principal $task.Principal | Out-Null
-  } catch {
-    Write-AgentLog "Reglage de la tache ignore: $($_.Exception.Message)"
+function Show-AgentStatus {
+  $proc = Get-AgentProcess
+  if (Test-Path $StatusPath) {
+    try {
+      $status = Get-Content -Raw -Path $StatusPath | ConvertFrom-Json
+      $status | Add-Member -NotePropertyName process_alive -NotePropertyValue ([bool]$proc) -Force
+      $status | ConvertTo-Json -Depth 8
+      return
+    } catch {}
   }
+  [ordered]@{
+    process_alive = [bool]$proc
+    desired_state = Get-DesiredState
+    status = if ($proc) { 'starting' } else { 'stopped' }
+  } | ConvertTo-Json
+}
+
+function Resolve-OpusRoot {
+  if ($OpusRoot -and (Test-Path $OpusRoot)) { return (Resolve-Path $OpusRoot).Path }
+  $candidates = @(
+    (Join-Path $env:USERPROFILE 'Documents\My Games\Opus Magnum'),
+    (Join-Path $env:USERPROFILE 'OneDrive\Documents\My Games\Opus Magnum')
+  ) | Select-Object -Unique
+  foreach ($candidate in $candidates) {
+    if (Test-Path $candidate) { return (Resolve-Path $candidate).Path }
+  }
+  return $candidates[0]
 }
 
 function Find-Repository {
   if ($RepositoryPath -and (Test-Path (Join-Path $RepositoryPath '.git'))) {
     return (Resolve-Path $RepositoryPath).Path
   }
-  $profiles = @($env:USERPROFILE, 'C:\Users\bruno') | Where-Object { $_ -and (Test-Path $_) } | Select-Object -Unique
-  $candidates = @('C:\GitHub\opus-magnum-pattern-library', 'C:\Repos\opus-magnum-pattern-library')
-  foreach ($profile in $profiles) {
-    $candidates += Join-Path $profile 'opus-magnum-pattern-library'
-    $candidates += Join-Path $profile 'Documents\GitHub\opus-magnum-pattern-library'
-    $candidates += Join-Path $profile 'source\repos\opus-magnum-pattern-library'
-  }
+  $candidates = @(
+    'C:\GitHub\opus-magnum-pattern-library',
+    'C:\Repos\opus-magnum-pattern-library',
+    (Join-Path $env:USERPROFILE 'opus-magnum-pattern-library'),
+    (Join-Path $env:USERPROFILE 'Documents\GitHub\opus-magnum-pattern-library'),
+    (Join-Path $env:USERPROFILE 'source\repos\opus-magnum-pattern-library')
+  ) | Select-Object -Unique
   foreach ($candidate in $candidates) {
     if (Test-Path (Join-Path $candidate '.git')) { return (Resolve-Path $candidate).Path }
-  }
-  foreach ($profile in $profiles) {
-    $found = Get-ChildItem -Path $profile -Directory -Filter 'opus-magnum-pattern-library' -Recurse -ErrorAction SilentlyContinue |
-      Where-Object { Test-Path (Join-Path $_.FullName '.git') } | Select-Object -First 1
-    if ($found) { return $found.FullName }
   }
   return $null
 }
 
-function Ensure-RunnerService {
-  $service = Get-Service -Name 'actions.runner.*' -ErrorAction SilentlyContinue |
-    Where-Object { $_.Name -match 'opus-magnum-pattern-library|Bruno-OMSIM|Fandalah' } | Select-Object -First 1
-  if (-not $service) { $service = Get-Service -Name 'actions.runner.*' -ErrorAction SilentlyContinue | Select-Object -First 1 }
-  if (-not $service) { Write-AgentLog 'Aucun service GitHub Actions Runner detecte.'; return }
-  Set-Service -Name $service.Name -StartupType Automatic
-  if ($service.Status -ne 'Running') {
-    Start-Service -Name $service.Name
-    Write-AgentLog "Runner redemarre: $($service.Name)"
-  }
-  & sc.exe failure $service.Name reset= 86400 actions= restart/60000/restart/60000/restart/60000 | Out-Null
-  & sc.exe failureflag $service.Name 1 | Out-Null
-}
-
 function Sync-Repository {
   param([string]$Repo)
-  if (-not $Repo) { Write-AgentLog 'Depot local introuvable; synchronisation ignoree.'; return $false }
+  if (-not $Repo) { Write-AgentLog 'Depot local introuvable.'; return $false }
   Push-Location $Repo
   try {
     $dirty = git status --porcelain 2>$null
-    if ($LASTEXITCODE -ne 0) { Write-AgentLog 'Git est inaccessible ou le depot est invalide.'; return $false }
+    if ($LASTEXITCODE -ne 0) { Write-AgentLog 'Git inaccessible ou depot invalide.'; return $false }
+    if ($dirty) { Write-AgentLog 'Depot modifie localement; synchronisation/file suspendue.'; return $false }
     git fetch origin $ResearchBranch --prune 2>&1 | ForEach-Object { Write-AgentLog $_ }
-    if ($dirty) { Write-AgentLog 'Modifications locales detectees; traitement de file ignore.'; return $false }
+    if ($LASTEXITCODE -ne 0) { return $false }
     $branch = git branch --show-current
     if ($branch -ne $ResearchBranch) {
       git checkout $ResearchBranch 2>&1 | ForEach-Object { Write-AgentLog $_ }
@@ -117,14 +136,12 @@ function Get-TaskPriority {
   return 0
 }
 
-function Process-NextTask {
+function Get-NextTask {
   param([string]$Repo)
   $pending = Join-Path $Repo '.om-bridge\tasks\pending'
-  if (-not (Test-Path $pending)) { return }
-
+  if (-not (Test-Path $pending)) { return $null }
   $tasks = @(Get-ChildItem -Path $pending -Filter '*.json' -File)
-  if ($tasks.Count -eq 0) { Write-AgentLog 'File locale vide.'; return }
-
+  if ($tasks.Count -eq 0) { return $null }
   $ranked = foreach ($candidate in $tasks) {
     [PSCustomObject]@{
       File = $candidate
@@ -132,21 +149,64 @@ function Process-NextTask {
       Modified = $candidate.LastWriteTimeUtc
     }
   }
-  $selected = $ranked | Sort-Object @{Expression='Priority';Descending=$true}, @{Expression='Modified';Descending=$false}, @{Expression={ $_.File.Name };Descending=$false} | Select-Object -First 1
-  $task = $selected.File
+  return ($ranked | Sort-Object @{Expression='Priority';Descending=$true}, @{Expression='Modified';Descending=$false}, @{Expression={ $_.File.Name };Descending=$false} | Select-Object -First 1)
+}
+
+function Get-CpuAffinityMask {
+  $logical = [Environment]::ProcessorCount
+  if ($MaxCpuPercent -lt 5) { $script:MaxCpuPercent = 5 }
+  if ($MaxCpuPercent -gt 100) { $script:MaxCpuPercent = 100 }
+  $cores = [Math]::Max(1, [Math]::Floor($logical * $MaxCpuPercent / 100.0))
+  $usable = [Math]::Min($cores, 63)
+  [UInt64]$mask = 0
+  for ($i = 0; $i -lt $usable; $i++) { $mask = $mask -bor ([UInt64]1 -shl $i) }
+  return [PSCustomObject]@{ Mask = $mask; Cores = $usable; Logical = $logical }
+}
+
+function Stop-ProcessTree {
+  param([int]$ProcessId)
+  try { & taskkill.exe /PID $ProcessId /T /F 2>$null | Out-Null } catch {}
+}
+
+function Invoke-Task {
+  param([string]$Repo, [object]$Selected, [string]$ResolvedOpusRoot)
+  $task = $Selected.File
+  $stdoutPath = Join-Path $AgentRoot 'worker.stdout.log'
+  $stderrPath = Join-Path $AgentRoot 'worker.stderr.log'
+  Remove-Item $stdoutPath,$stderrPath -Force -ErrorAction SilentlyContinue
 
   Push-Location $Repo
   try {
-    Write-AgentLog "Execution directe PRIORITE=$($selected.Priority): $($task.Name)"
     $env:PYTHONPATH = $Repo
-    $env:OM_OPUS_MAGNUM_ROOT = $OpusRoot
-    if (Test-Path $OpusRoot) {
-      Write-AgentLog "Source Opus Magnum: $OpusRoot"
-    } else {
-      Write-AgentLog "ATTENTION source Opus Magnum introuvable: $OpusRoot"
+    $env:OM_OPUS_MAGNUM_ROOT = $ResolvedOpusRoot
+    Write-AgentLog "Execution PRIORITE=$($Selected.Priority): $($task.Name)"
+
+    $args = @('tools/om_worker.py','--task',$task.FullName,'--results-root','.om-bridge/results')
+    $proc = Start-Process -FilePath 'python' -ArgumentList $args -WorkingDirectory $Repo -PassThru -NoNewWindow -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
+    try {
+      $affinity = Get-CpuAffinityMask
+      $proc.PriorityClass = 'BelowNormal'
+      $proc.ProcessorAffinity = [IntPtr]([Int64]$affinity.Mask)
+      Write-AgentLog "Worker PID=$($proc.Id), CPU cap~$MaxCpuPercent% ($($affinity.Cores)/$($affinity.Logical) logical CPUs), priority=BelowNormal."
+    } catch {
+      Write-AgentLog "Controle CPU partiel: $($_.Exception.Message)"
     }
-    & python tools/om_worker.py --task $task.FullName --results-root '.om-bridge/results'
-    $exitCode = $LASTEXITCODE
+
+    while (-not $proc.HasExited) {
+      Start-Sleep -Seconds 2
+      $proc.Refresh()
+      $desired = Get-DesiredState
+      if ($desired -ne 'running') {
+        Write-AgentLog "Interruption worker demandee: $desired"
+        Stop-ProcessTree -ProcessId $proc.Id
+        $proc.WaitForExit()
+        return [PSCustomObject]@{ Interrupted = $true; ExitCode = 130 }
+      }
+    }
+
+    if (Test-Path $stdoutPath) { Get-Content $stdoutPath | ForEach-Object { Write-AgentLog "worker: $_" } }
+    if (Test-Path $stderrPath) { Get-Content $stderrPath | ForEach-Object { Write-AgentLog "worker-err: $_" } }
+    $exitCode = $proc.ExitCode
     $destinationFolder = if ($exitCode -eq 0) { '.om-bridge\tasks\completed' } else { '.om-bridge\tasks\failed' }
     New-Item -ItemType Directory -Force -Path $destinationFolder | Out-Null
     git mv -- $task.FullName (Join-Path $destinationFolder $task.Name) 2>&1 | ForEach-Object { Write-AgentLog $_ }
@@ -157,30 +217,129 @@ function Process-NextTask {
     if ($LASTEXITCODE -ne 0) {
       git commit -m "Process OMSIM queue task $($task.BaseName)" 2>&1 | ForEach-Object { Write-AgentLog $_ }
       git pull --rebase origin $ResearchBranch 2>&1 | ForEach-Object { Write-AgentLog $_ }
-      git push origin "HEAD:$ResearchBranch" 2>&1 | ForEach-Object { Write-AgentLog $_ }
+      if ($LASTEXITCODE -eq 0) { git push origin "HEAD:$ResearchBranch" 2>&1 | ForEach-Object { Write-AgentLog $_ } }
     }
-    Write-AgentLog "Tache terminee avec code $exitCode: $($task.Name)"
-  } catch {
-    Write-AgentLog "ERREUR pendant la tache $($task.Name): $($_.Exception.Message)"
+    Write-AgentLog "Tache terminee code=$exitCode: $($task.Name)"
+    return [PSCustomObject]@{ Interrupted = $false; ExitCode = $exitCode }
   } finally { Pop-Location }
 }
 
-function Prevent-Sleep {
-  & powercfg.exe /change standby-timeout-ac 0 | Out-Null
-  & powercfg.exe /change hibernate-timeout-ac 0 | Out-Null
-  & powercfg.exe /change monitor-timeout-ac 20 | Out-Null
+function New-OpusWatcher {
+  param([string]$ResolvedOpusRoot)
+  if (-not (Test-Path $ResolvedOpusRoot)) {
+    Write-AgentLog "Dossier Opus Magnum introuvable: $ResolvedOpusRoot"
+    return $null
+  }
+  $watcher = New-Object System.IO.FileSystemWatcher
+  $watcher.Path = $ResolvedOpusRoot
+  $watcher.Filter = '*.*'
+  $watcher.IncludeSubdirectories = $true
+  $watcher.NotifyFilter = [IO.NotifyFilters]'FileName, LastWrite, Size, DirectoryName'
+  $watcher.EnableRaisingEvents = $true
+  Write-AgentLog "Surveillance Opus Magnum active: $ResolvedOpusRoot"
+  return $watcher
 }
 
-try {
-  Update-Self
-  Ensure-TaskSettings
-  Prevent-Sleep
-  Ensure-RunnerService
-  $repo = Find-Repository
-  if (Sync-Repository -Repo $repo) { Process-NextTask -Repo $repo }
-  Write-AgentLog "Verification terminee. Repo=$repo"
+function Write-RuntimeStatus {
+  param([string]$RuntimeStatus, [string]$Repo, [string]$ResolvedOpusRoot, [string]$CurrentTask, [Nullable[datetime]]$LastOpusChange)
+  $affinity = Get-CpuAffinityMask
+  Write-JsonAtomic -Path $StatusPath -Value ([ordered]@{
+    status = $RuntimeStatus
+    desired_state = Get-DesiredState
+    pid = $PID
+    user = $env:USERNAME
+    repository = $Repo
+    research_branch = $ResearchBranch
+    opus_root = $ResolvedOpusRoot
+    current_task = $CurrentTask
+    max_cpu_percent = $MaxCpuPercent
+    logical_cpus_allowed = $affinity.Cores
+    logical_cpus_total = $affinity.Logical
+    last_opus_change = if ($LastOpusChange) { $LastOpusChange.Value.ToUniversalTime().ToString('o') } else { $null }
+    heartbeat = (Get-Date).ToUniversalTime().ToString('o')
+  })
+}
+
+function Start-AgentProcess {
+  Set-DesiredState -State 'running'
+  $existing = Get-AgentProcess
+  if ($existing) { Write-Host "OM Agent deja actif (PID $($existing.Id))."; return }
+  $scriptPath = if (Test-Path $InstalledScript) { $InstalledScript } else { $PSCommandPath }
+  $args = @('-NoProfile','-ExecutionPolicy','Bypass','-File',"`"$scriptPath`"",'-Command','Run','-MaxCpuPercent',$MaxCpuPercent,'-IdleSeconds',$IdleSeconds)
+  if ($RepositoryPath) { $args += @('-RepositoryPath',"`"$RepositoryPath`"") }
+  if ($ResearchBranch) { $args += @('-ResearchBranch',"`"$ResearchBranch`"") }
+  if ($OpusRoot) { $args += @('-OpusRoot',"`"$OpusRoot`"") }
+  $p = Start-Process -FilePath 'PowerShell.exe' -ArgumentList $args -WindowStyle Hidden -PassThru
+  Write-Host "OM Agent demarre (PID $($p.Id))."
+}
+
+if ($Command -eq 'Start') { Start-AgentProcess; exit 0 }
+if ($Command -eq 'Pause') { Set-DesiredState -State 'paused'; Write-Host 'OM Agent en pause demandee.'; exit 0 }
+if ($Command -eq 'Stop') { Set-DesiredState -State 'stopped'; Write-Host 'Arret OM Agent demande.'; exit 0 }
+if ($Command -eq 'Status') { Show-AgentStatus; exit 0 }
+
+$existing = Get-AgentProcess
+if ($existing -and $existing.Id -ne $PID) {
+  Write-AgentLog "Une instance existe deja PID=$($existing.Id); sortie."
   exit 0
+}
+Set-Content -Path $PidPath -Value $PID -Encoding ASCII
+if (-not (Test-Path $StatePath)) { Set-DesiredState -State 'running' }
+$repo = Find-Repository
+$resolvedOpusRoot = Resolve-OpusRoot
+$watcher = New-OpusWatcher -ResolvedOpusRoot $resolvedOpusRoot
+$lastOpusChange = $null
+$currentTask = ''
+Write-AgentLog "OM Agent session utilisateur demarre. User=$env:USERNAME PID=$PID Repo=$repo"
+
+try {
+  while ($true) {
+    $desired = Get-DesiredState
+    if ($desired -eq 'stopped') { break }
+
+    if ($watcher) {
+      $change = $watcher.WaitForChanged([IO.WatcherChangeTypes]::All, 1)
+      if (-not $change.TimedOut) {
+        $lastOpusChange = Get-Date
+        Write-AgentLog "Opus change: $($change.ChangeType) $($change.Name)"
+      }
+    }
+
+    if ($desired -eq 'paused') {
+      Write-RuntimeStatus -RuntimeStatus 'paused' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask '' -LastOpusChange $lastOpusChange
+      Start-Sleep -Seconds 2
+      continue
+    }
+
+    if (-not $repo) { $repo = Find-Repository }
+    Write-RuntimeStatus -RuntimeStatus 'syncing' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask '' -LastOpusChange $lastOpusChange
+    if (-not (Sync-Repository -Repo $repo)) {
+      Write-RuntimeStatus -RuntimeStatus 'blocked' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask '' -LastOpusChange $lastOpusChange
+      Start-Sleep -Seconds $IdleSeconds
+      continue
+    }
+
+    $selected = Get-NextTask -Repo $repo
+    if (-not $selected) {
+      Write-RuntimeStatus -RuntimeStatus 'idle' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask '' -LastOpusChange $lastOpusChange
+      Start-Sleep -Seconds $IdleSeconds
+      continue
+    }
+
+    $currentTask = $selected.File.Name
+    Write-RuntimeStatus -RuntimeStatus 'working' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask $currentTask -LastOpusChange $lastOpusChange
+    $result = Invoke-Task -Repo $repo -Selected $selected -ResolvedOpusRoot $resolvedOpusRoot
+    $currentTask = ''
+    if ($result.Interrupted) { continue }
+    Start-Sleep -Seconds 2
+  }
 } catch {
-  Write-AgentLog "ERREUR: $($_.Exception.Message)"
+  Write-AgentLog "ERREUR AGENT: $($_.Exception.Message)"
+  Write-RuntimeStatus -RuntimeStatus 'error' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask $currentTask -LastOpusChange $lastOpusChange
   exit 1
+} finally {
+  if ($watcher) { $watcher.Dispose() }
+  Remove-Item $PidPath -Force -ErrorAction SilentlyContinue
+  Write-RuntimeStatus -RuntimeStatus 'stopped' -Repo $repo -ResolvedOpusRoot $resolvedOpusRoot -CurrentTask '' -LastOpusChange $lastOpusChange
+  Write-AgentLog 'OM Agent arrete.'
 }
