@@ -1,0 +1,145 @@
+name: Solver workspace smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "solver-lab.html"
+      - "assets/css/solver-workspace.css"
+      - "assets/js/solver-workspace.js"
+      - "assets/js/opus-scene.js"
+      - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-svg-overlay-host.js"
+      - "assets/js/solution-viewer.js"
+      - "assets/js/replay-controls.js"
+      - "assets/js/replay-arm-animation.js"
+      - "assets/js/replay-molecules.js"
+      - "assets/js/used-area-overlay.js"
+      - ".github/workflows/solver-workspace-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: solver-workspace-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Validate A41 through canonical Scene engine
+        run: |
+          python -m http.server 8765 >/tmp/solver-workspace-http.log 2>&1 &
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          payload = json.loads(Path('data/viewer-demo-payload.json').read_text(encoding='utf-8'))
+          frames = []
+          for idx, frame in enumerate(payload['replay']['frames']):
+              atoms, bonds = [], []
+              for molecule in frame.get('molecules', []):
+                  atoms.extend(molecule.get('atoms', []))
+                  bonds.extend(molecule.get('bonds', []))
+              arms = {}
+              for arm in frame.get('armStates', []):
+                  arms[arm['partId']] = arm
+              frames.append({
+                  'segment': 'solver' if idx >= 2 else 'human',
+                  'state': {
+                      'cycle': frame.get('cycle', idx - 1),
+                      'score': 590 + idx,
+                      'atoms': atoms,
+                      'bonds': bonds,
+                      'arms': arms,
+                  },
+                  'action': ({'partId': 'arm-main', 'instruction': 'rotate_cw'} if idx == 2 else {})
+              })
+          research = {
+              'schemaVersion': 3,
+              'title': "Van Berlo's Rotor — smoke candidate",
+              'isCompleteSolution': False,
+              'bestScore': 599,
+              'solverStartIndex': 2,
+              'solverEndIndex': 3,
+              'solverActionCount': 2,
+              'renderContext': {'puzzle': payload['puzzle'], 'solution': payload['solution']},
+              'frames': frames,
+          }
+          live = {'stage': 'searching', 'visited': 1234, 'depth': 7, 'frontier': 42, 'message': 'Smoke research active'}
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1500, 'height': 1050})
+              errors = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+
+              def route_handler(route):
+                  url = route.request.url
+                  if 'rotor-tail-best-candidate-replay.json' in url:
+                      route.fulfill(status=200, content_type='application/json', body=json.dumps(research))
+                  elif 'rotor-a41-cycle-live.json' in url:
+                      route.fulfill(status=200, content_type='application/json', body=json.dumps(live))
+                  else:
+                      route.continue_()
+
+              page.route('https://raw.githubusercontent.com/**', route_handler)
+              page.goto('http://127.0.0.1:8765/solver-lab.html', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.solverSceneReady === 'true'", timeout=30000)
+              page.wait_for_timeout(300)
+
+              state = page.evaluate("""() => {
+                const root = document.querySelector('#solution-viewer');
+                const scene = window.OpusViewerRuntime.currentScene(root);
+                return {
+                  sceneKind: scene?.kind,
+                  parts: scene?.static?.parts?.length || 0,
+                  frames: scene?.timeline?.frames?.length || 0,
+                  areaOverlay: root.querySelectorAll('[data-opus-overlay="area"]').length,
+                  armSixBranches: root.querySelectorAll('[data-part-id="arm-six"] [data-arm-branch]').length,
+                  iframeCount: document.querySelectorAll('iframe').length,
+                  status: document.querySelector('#solver-status')?.textContent || '',
+                  score: document.querySelector('#solver-score')?.textContent || '',
+                  stage: document.querySelector('#solver-stage')?.textContent || '',
+                  rangeMax: root.querySelector('[data-replay-range]')?.max
+                };
+              }""")
+              assert state['sceneKind'] == 'opus-scene', state
+              assert state['parts'] == len(payload['solution']['parts']), state
+              assert state['frames'] == 4, state
+              assert state['areaOverlay'] == 1, state
+              assert state['armSixBranches'] == 6, state
+              assert state['iframeCount'] == 0, state
+              assert 'Scene canonique chargée' in state['status'], state
+              assert state['score'] == '599', state
+              assert state['stage'] == 'searching', state
+              assert state['rangeMax'] == '3', state
+
+              page.locator('#jump-solver').click()
+              page.wait_for_timeout(250)
+              jumped = page.evaluate("""() => ({
+                range: document.querySelector('#solution-viewer [data-replay-range]')?.value,
+                frame: document.querySelector('#solver-frame')?.textContent,
+                segment: document.querySelector('#solver-segment')?.textContent,
+                frameScore: document.querySelector('#solver-frame-score')?.textContent
+              })""")
+              assert jumped['range'] == '2', jumped
+              assert jumped['frame'] == '3 / 4', jumped
+              assert jumped['segment'] == 'Solver', jumped
+              assert jumped['frameScore'] == '592', jumped
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
