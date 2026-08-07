@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a41-cycle-005",
+    "operation": "run_rotor_a41_cycle_campaign",
+    "priority": 5000,
+    "timeout_seconds": 7200,
+    "notes": "Validate baseline in final OMSIM, test retiming mutations, greedily chain validated cycle improvements, publish live metrics and write a playable .solution for the best result."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-005.json",
+  "git_sha": "655a997be62ad52b320b0df10e94c93cff9a8129",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-07T02:12:31.563250+00:00",
+  "finished_at": "2026-08-07T02:12:33.159855+00:00",
+  "duration_seconds": 1.597,
+  "exit_code": 6,
+  "status": "failed",
+  "error": null
+}

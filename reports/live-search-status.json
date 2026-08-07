@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-08-07T01:56:02.634559+00:00",
-  "status": "completed",
-  "stage": "analysis-complete",
+  "updatedAt": "2026-08-07T02:12:33.075500+00:00",
+  "status": "blocked",
+  "stage": "engine-validation-blocked",
   "campaignId": "rotor-a41-cycle-001",
   "mode": "a41-cycle-retiming",
   "depth": 0,
-  "maxDepth": 0,
-  "elapsedSeconds": 60.3,
+  "maxDepth": 8,
+  "elapsedSeconds": 0,
   "visitedStates": 34,
   "expandedStates": 0,
   "frontierSize": 0,
@@ -32,5 +32,5 @@
     "testedCandidates": 34,
     "validCandidates": 0
   },
-  "message": "Passe de retiming A41 terminee; aucun gain n'est declare sans validation OMSIM complete."
+  "message": "OMSIM ne reproduit pas encore la reference A41: did-not-complete"
 }

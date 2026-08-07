@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "analysis-complete",
-  "status": "completed",
-  "updatedAt": "2026-08-07T01:56:02.634559+00:00",
+  "stage": "engine-validation-blocked",
+  "status": "blocked",
+  "updatedAt": "2026-08-07T02:12:33.075500+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,10 +37,16 @@
       }
     }
   ],
-  "message": "Passe de retiming A41 terminee; aucun gain n'est declare sans validation OMSIM complete.",
-  "elapsedSeconds": 60.3,
+  "message": "OMSIM ne reproduit pas encore la reference A41: did-not-complete",
+  "elapsedSeconds": 0,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
   "referenceMatch": "embedded-fixture",
   "referenceSource": "embedded-reference",
-  "analysisReport": "reports/rotor-a41-cycle-analysis.json"
+  "analysisReport": "reports/rotor-a41-cycle-analysis.json",
+  "baselineValidation": {
+    "valid": false,
+    "completed": false,
+    "simCycle": 1136,
+    "error": "did-not-complete"
+  }
 }
