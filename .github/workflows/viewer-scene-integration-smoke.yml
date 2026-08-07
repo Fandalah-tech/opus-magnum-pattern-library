@@ -7,6 +7,7 @@ on:
       - "viewer.html"
       - "assets/js/opus-scene.js"
       - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-svg-overlay-host.js"
       - "assets/js/opus-viewer-runtime.js"
       - "assets/js/replay-controls.js"
       - "assets/js/replay-arm-animation.js"
@@ -58,6 +59,9 @@ jobs:
               state = page.evaluate("""() => {
                 const root = document.querySelector('#solution-viewer');
                 const scene = window.OpusViewerRuntime.currentScene(root);
+                const world = root.querySelector('[data-viewer-world]');
+                const area = world.querySelector('[data-opus-overlay="area"]');
+                const track = world.querySelector('[data-viewer-layer="track"]');
                 return {
                   kind: scene?.kind,
                   frameCount: scene?.timeline?.frames?.length || 0,
@@ -68,7 +72,9 @@ jobs:
                   armLabels: root.querySelectorAll('[data-arm-number-label]').length,
                   hitTargets: root.querySelectorAll('[data-part-hit-targets]').length,
                   atomLabels: root.querySelectorAll('[data-viewer-layer="atom-labels"] .viewer-atom-symbol').length,
-                  areaLayer: root.querySelectorAll('[data-viewer-layer="area"]').length
+                  areaLayer: root.querySelectorAll('[data-viewer-layer="area"]').length,
+                  areaOverlay: Boolean(area),
+                  areaBeforeTrack: Boolean(area && track && (area.compareDocumentPosition(track) & Node.DOCUMENT_POSITION_FOLLOWING))
                 };
               }""")
               assert state['kind'] == 'opus-scene', state
@@ -81,9 +87,10 @@ jobs:
               assert state['hitTargets'] == state['staticParts'], state
               assert state['atomLabels'] >= 2, state
               assert state['areaLayer'] == 1, state
+              assert state['areaOverlay'], state
+              assert state['areaBeforeTrack'], state
 
               # Move one cycle and require all dynamic consumers to follow the frame Scene.
-              before = page.locator('#solution-viewer [data-part-id="arm-main"] [data-arm-shaft="0"]').get_attribute('x2')
               page.locator('[data-replay-next]').click()
               page.wait_for_timeout(300)
               after_state = page.evaluate("""() => {
