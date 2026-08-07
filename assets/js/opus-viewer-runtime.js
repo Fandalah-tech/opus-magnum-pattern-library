@@ -24,6 +24,7 @@
     if (!payload?.solution) throw new Error("Analysis payload does not contain a solution");
     const viewer = mount(rootOrSelector);
     viewer.render(payload.solution, payload.graph, payload.puzzle, payload.replay);
+    window.OpusStaticArmFidelity?.apply?.(viewer, payload.solution);
     window.dispatchEvent(new CustomEvent("opus:analysisready", { detail: { payload, viewer } }));
     return viewer;
   }
