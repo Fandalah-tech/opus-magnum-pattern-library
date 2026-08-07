@@ -9,6 +9,7 @@ on:
       - tests/test_aqueous_exact_puzzle.py
       - tools/build_aqueous_probe.py
       - tools/search_aqueous_16c_offsets.py
+      - tools/search_aqueous_16c_structural.py
       - tools/validate_aqueous_offsets.py
       - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
       - fixtures/weeklies2026/aqueous-dagger-16c-reference.solution.b64
@@ -60,7 +61,14 @@ jobs:
           PY
       - name: Generate one-cycle-earlier variants from 16c reference
         run: python tools/search_aqueous_16c_offsets.py
-      - name: Search 16c reference for a valid 15c offset
+      - name: Diagnose simple one-cycle offsets
         run: >-
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
+      - name: Generate structural compression variants
+        run: python tools/search_aqueous_16c_structural.py
+      - name: Search structural variants for 15 cycles
+        run: >-
+          python tools/validate_aqueous_offsets.py
+          --validator-url "${VALIDATOR_URL}"
+          --variants reports/aqueous-structural-search
