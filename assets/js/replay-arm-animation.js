@@ -31,6 +31,12 @@
     node.setAttribute('cx', x); node.setAttribute('cy', y);
   }
 
+  function updatePiston(group, x1, y1, x2, y2) {
+    if (!group.classList.contains('viewer-piston')) return;
+    const fidelity = window.OpusStaticArmFidelity;
+    if (fidelity?.applyPistonGeometry) fidelity.applyPistonGeometry(group, x1, y1, x2, y2);
+  }
+
   function applyArmState(state, duration) {
     const group = root.querySelector(`[data-part-id="${CSS.escape(state.partId)}"]`);
     if (!group || !group.classList.contains('viewer-arm')) return;
@@ -59,13 +65,16 @@
       const raw = duration <= 0 ? 1 : Math.min(1, (now - started) / duration);
       const t = core.easeOutCubic(raw);
       const mix = (a, b) => a + (b - a) * t;
+      let pistonGeometry = null;
       for (const item of starts) {
         const { target, shaft, shadow, tip, grip } = item;
         const x1 = mix(item.x1, target.x1), y1 = mix(item.y1, target.y1);
         const x2 = mix(item.x2, target.x2), y2 = mix(item.y2, target.y2);
         setLine(shadow, x1, y1, x2, y2); setLine(shaft, x1, y1, x2, y2);
         setCircle(tip, x2, y2); setCircle(grip, x2, y2);
+        if (target.branchIndex === 0) pistonGeometry = { x1, y1, x2, y2 };
       }
+      if (pistonGeometry) updatePiston(group, pistonGeometry.x1, pistonGeometry.y1, pistonGeometry.x2, pistonGeometry.y2);
       const baseX = mix(baseStart.x, baseTarget.x1), baseY = mix(baseStart.y, baseTarget.y1);
       setCircle(baseShadow, baseX, baseY); setCircle(base, baseX, baseY); setCircle(hub, baseX, baseY);
       group.classList.toggle('replay-grabbing', Boolean(state.grabbing));
