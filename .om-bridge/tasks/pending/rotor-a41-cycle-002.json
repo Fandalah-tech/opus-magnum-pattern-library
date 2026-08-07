@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-002",
+  "operation": "run_rotor_a41_cycle_campaign",
+  "priority": 2000,
+  "timeout_seconds": 7200,
+  "notes": "Prefer C:\\Users\\bruno\\Documents\\My Games\\Opus Magnum. Match exact SHA first, then Van Berlo A41 metrics 1112/220/41/302. Preserve geometry and validate before publishing improvements."
+}
