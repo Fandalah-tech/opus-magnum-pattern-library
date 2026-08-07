@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "puzzle-required",
+  "stage": "validator-unavailable",
   "status": "blocked",
-  "updatedAt": "2026-08-07T02:30:04.399355+00:00",
+  "updatedAt": "2026-08-07T10:33:52.921884+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,10 +37,10 @@
       }
     }
   ],
-  "message": "Puzzle binaire weeklies2026_van-berlos-rotor introuvable sous le dossier Opus Magnum, y compris les profils Steam/custom.",
+  "message": "Validateur inaccessible: HTTP 422: {\"detail\":\"Invalid UTF-8 string at byte 35\"}",
   "elapsedSeconds": 0,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
-  "referenceMatch": "embedded-fixture",
+  "referenceMatch": "metrics",
   "referenceSource": "embedded-reference",
   "analysisReport": "reports/rotor-a41-cycle-analysis.json",
   "baselineValidation": {
@@ -48,5 +48,7 @@
     "completed": false,
     "simCycle": 1136,
     "error": "did-not-complete"
-  }
+  },
+  "validatorUrl": "https://opus-validator-6gflgqb25q-nn.a.run.app",
+  "puzzlePath": "C:\\Users\\bruno\\Documents\\My Games\\Opus Magnum\\76561197961630013\\custom\\weeklies2026_van-berlos-rotor.puzzle"
 }

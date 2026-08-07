@@ -7,13 +7,13 @@
     "timeout_seconds": 21600,
     "notes": "Retry A41 remote validation after fixing recursive Steam-profile custom puzzle discovery and .puzzle suffix normalization."
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-007.json",
-  "git_sha": "b728ad76b497d96529c95d851dca9fcd8239204c",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-07T02:30:03.959143+00:00",
-  "finished_at": "2026-08-07T02:30:04.482265+00:00",
-  "duration_seconds": 0.523,
-  "exit_code": 4,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-cycle-007.json",
+  "git_sha": "fa79ac50823550a3781fef0ee5577fd0b1920ba0",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:33:48.326474+00:00",
+  "finished_at": "2026-08-07T10:33:53.035535+00:00",
+  "duration_seconds": 4.709,
+  "exit_code": 5,
   "status": "failed",
   "error": null
 }
