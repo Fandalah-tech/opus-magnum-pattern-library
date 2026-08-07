@@ -219,7 +219,7 @@ function Invoke-Task {
       git pull --rebase origin $ResearchBranch 2>&1 | ForEach-Object { Write-AgentLog $_ }
       if ($LASTEXITCODE -eq 0) { git push origin "HEAD:$ResearchBranch" 2>&1 | ForEach-Object { Write-AgentLog $_ } }
     }
-    Write-AgentLog "Tache terminee code=$exitCode: $($task.Name)"
+    Write-AgentLog "Tache terminee code=${exitCode}: $($task.Name)"
     return [PSCustomObject]@{ Interrupted = $false; ExitCode = $exitCode }
   } finally { Pop-Location }
 }
