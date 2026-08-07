@@ -77,6 +77,33 @@ jobs:
                 document.body.append(svg);
                 window.OpusSvgDiffOverlay.create(layer).render(diff);
 
+                const duplicateBase = {
+                  puzzle: { name: 'Duplicate matching fixture' },
+                  solution: {
+                    name: 'Duplicate before',
+                    parts: [
+                      { id: 'before-left', type: 'marker', position: [0,0], rotation: 0, which: 0, armNumber: 0, program: [] },
+                      { id: 'before-right', type: 'marker', position: [8,0], rotation: 0, which: 0, armNumber: 0, program: [] }
+                    ]
+                  }
+                };
+                const duplicateAfter = structuredClone(duplicateBase);
+                duplicateAfter.solution.name = 'Duplicate after';
+                duplicateAfter.solution.parts = [
+                  { id: 'after-right', type: 'marker', position: [8,1], rotation: 0, which: 0, armNumber: 0, program: [] },
+                  { id: 'after-left', type: 'marker', position: [1,0], rotation: 0, which: 0, armNumber: 0, program: [] }
+                ];
+                const duplicateDiff = window.OpusSceneDiff.diff(
+                  window.OpusScene.build(duplicateBase),
+                  window.OpusScene.build(duplicateAfter)
+                );
+                const duplicatePairs = Object.fromEntries(
+                  duplicateDiff.parts.pairs.map(item => [String(item.before.id), {
+                    after: String(item.after.id),
+                    cost: item.pairingCost
+                  }])
+                );
+
                 return {
                   summary: diff.summary,
                   metricCost: diff.metrics.cost,
@@ -95,6 +122,12 @@ jobs:
                     changedRings: layer.querySelectorAll('[data-diff-kind="changed"]').length,
                     movedDataset: Number(layer.dataset.diffMovedParts),
                     changedDataset: Number(layer.dataset.diffChangedParts)
+                  },
+                  duplicate: {
+                    summary: duplicateDiff.summary,
+                    pairs: duplicatePairs,
+                    leftToLeftDistance: window.OpusSceneDiff.hexDistance([0,0], [1,0]),
+                    leftToRightDistance: window.OpusSceneDiff.hexDistance([0,0], [8,1])
                   }
                 };
               }""")
@@ -114,6 +147,15 @@ jobs:
               assert result['overlay']['changedRings'] >= 1, result
               assert result['overlay']['movedDataset'] == result['summary']['movedParts'], result
               assert result['overlay']['changedDataset'] == result['summary']['changedParts'], result
+
+              # Duplicate semantic parts with unrelated IDs must pair by geometry,
+              # not by array order or lexical ID order.
+              assert result['duplicate']['summary']['addedParts'] == 0, result
+              assert result['duplicate']['summary']['removedParts'] == 0, result
+              assert result['duplicate']['pairs']['before-left']['after'] == 'after-left', result
+              assert result['duplicate']['pairs']['before-right']['after'] == 'after-right', result
+              assert result['duplicate']['leftToLeftDistance'] < result['duplicate']['leftToRightDistance'], result
+
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
               browser.close()
