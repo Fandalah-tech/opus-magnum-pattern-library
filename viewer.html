@@ -23,6 +23,12 @@
       <p>A lightweight viewer focused on the machine itself: geometry, parts, replay, molecules and inspection.</p>
     </section>
 
+    <section class="pair-library" aria-labelledby="viewer-local-library-title">
+      <div><p class="eyebrow" id="viewer-local-library-title">LOCAL LIBRARY</p><p class="hint">Pairs previously opened in this browser remain private and can be rendered again directly.</p></div>
+      <select id="viewer-saved-pair" aria-label="Saved local pair"><option value="">No local pair saved yet</option></select>
+      <button id="viewer-open-pair" class="secondary-button" disabled>Open in Viewer</button>
+    </section>
+
     <section class="upload-panel">
       <label class="file-card"><span class="file-icon">⬡</span><strong>Puzzle file</strong><small>Choose a .puzzle file</small><input id="viewer-puzzle-file" type="file" accept=".puzzle,application/octet-stream"></label>
       <label class="file-card"><span class="file-icon">⌬</span><strong>Solution file</strong><small>Choose a .solution file</small><input id="viewer-solution-file" type="file" accept=".solution,application/octet-stream"></label>
@@ -43,6 +49,7 @@
   </main>
   <footer>Unofficial research project. Validation powered by omsim; Opus Magnum was created by Zachtronics.</footer>
 
+  <script src="assets/js/pair-library.js"></script>
   <script src="assets/js/opus-geometry.js"></script>
   <script src="assets/js/opus-piece-symbols.js"></script>
   <script src="assets/js/opus-renderer-core.js"></script>
@@ -59,5 +66,6 @@
   <script src="assets/js/product-delivery-animation.js"></script>
   <script src="assets/js/viewer-polish.js"></script>
   <script src="assets/js/viewer-app.js"></script>
+  <script src="assets/js/viewer-pair-library.js"></script>
 </body>
 </html>
