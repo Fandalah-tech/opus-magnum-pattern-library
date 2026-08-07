@@ -6,7 +6,9 @@ on:
     paths:
       - "viewer.html"
       - "data/viewer-demo-payload.json"
+      - "data/viewer-arm-gallery-payload.json"
       - "assets/js/opus-renderer-core.js"
+      - "assets/js/static-arm-fidelity.js"
       - "assets/js/solution-viewer.js"
       - "assets/js/opus-viewer-runtime.js"
       - "assets/js/viewer-app.js"
@@ -37,7 +39,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip playwright
           python -m playwright install --with-deps chromium
-      - name: Run standalone viewer demo
+      - name: Run standalone viewer fixtures
         run: |
           mkdir -p reports/visual/viewer-smoke
           python -m http.server 8765 >/tmp/viewer-http.log 2>&1 &
@@ -51,7 +53,9 @@ jobs:
               page = browser.new_page(viewport={'width': 1500, 'height': 960}, device_scale_factor=1)
               errors = []
               page.on('pageerror', lambda exc: errors.append(str(exc)))
-              page.goto('http://127.0.0.1:8765/viewer.html?demo=1', wait_until='networkidle', timeout=120000)
+
+              # Physical replay fixture.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=demo', wait_until='networkidle', timeout=120000)
               page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
               page.wait_for_selector('#solution-viewer [data-part-id="arm-main"]')
               page.wait_for_selector('#solution-viewer [data-part-id="arm-six"]')
@@ -60,31 +64,45 @@ jobs:
 
               assert page.locator('#viewer-metric-area').inner_text() == '18'
               assert page.locator('[data-replay-range]').get_attribute('max') == '3'
-
               atom = page.locator('#solution-viewer [data-atom-id="atom-salt"] .replay-atom-core')
               arm_shaft = page.locator('#solution-viewer [data-part-id="arm-main"] [data-arm-shaft="0"]')
               initial_atom = (float(atom.get_attribute('cx')), float(atom.get_attribute('cy')))
               initial_tip = (float(arm_shaft.get_attribute('x2')), float(arm_shaft.get_attribute('y2')))
               page.locator('#solution-viewer').screenshot(path=str(out / '00-initial.png'))
 
-              page.locator('[data-replay-next]').click()
-              page.wait_for_timeout(260)
+              page.locator('[data-replay-next]').click(); page.wait_for_timeout(260)
               assert 'Cycle 1' in page.locator('[data-replay-cycle]').inner_text()
               cycle1_atom = (float(atom.get_attribute('cx')), float(atom.get_attribute('cy')))
               assert abs(cycle1_atom[0] - initial_atom[0]) + abs(cycle1_atom[1] - initial_atom[1]) > 80
               page.locator('#solution-viewer').screenshot(path=str(out / '01-cycle-1.png'))
 
-              page.locator('[data-replay-next]').click()
-              page.wait_for_timeout(260)
+              page.locator('[data-replay-next]').click(); page.wait_for_timeout(260)
               assert 'Cycle 2' in page.locator('[data-replay-cycle]').inner_text()
               cycle2_tip = (float(arm_shaft.get_attribute('x2')), float(arm_shaft.get_attribute('y2')))
               assert abs(cycle2_tip[0] - initial_tip[0]) + abs(cycle2_tip[1] - initial_tip[1]) > 50
               page.locator('#solution-viewer').screenshot(path=str(out / '02-cycle-2.png'))
 
-              page.locator('[data-replay-next]').click()
-              page.wait_for_timeout(260)
+              page.locator('[data-replay-next]').click(); page.wait_for_timeout(260)
               assert 'Cycle 3' in page.locator('[data-replay-cycle]').inner_text()
               page.locator('#solution-viewer').screenshot(path=str(out / '03-cycle-3.png'))
+
+              # Canonical static arm-family fixture.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=arms', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              expected = {
+                  'gallery-arm1': 1,
+                  'gallery-arm2': 2,
+                  'gallery-arm3': 3,
+                  'gallery-arm6': 6,
+                  'gallery-baron': 6,
+                  'gallery-piston': 1,
+              }
+              for part_id, branch_count in expected.items():
+                  group = page.locator(f'#solution-viewer [data-part-id="{part_id}"]')
+                  assert int(group.get_attribute('data-branch-count')) == branch_count
+                  assert group.locator('[data-arm-shaft]').count() == branch_count
+                  assert group.locator('[data-arm-tip]').count() == branch_count
+              page.locator('#solution-viewer').screenshot(path=str(out / '10-arm-family.png'))
 
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
