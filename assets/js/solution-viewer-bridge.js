@@ -38,6 +38,8 @@
 
   loadStylesheet('assets/css/viewer-replay-enhancements.css');
   Promise.resolve()
+    .then(() => loadScript('assets/js/opus-scene.js'))
+    .then(() => loadScript('assets/js/opus-svg-renderer.js'))
     .then(() => loadScript('assets/js/static-arm-fidelity.js'))
     .then(() => loadScript('assets/js/opus-viewer-runtime.js'))
     .then(() => loadScript('assets/js/solution-viewer-symbols.js'))
