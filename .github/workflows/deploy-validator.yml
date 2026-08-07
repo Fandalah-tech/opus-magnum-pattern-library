@@ -1,4 +1,4 @@
-name: Deploy validator and Solver Lab to Cloud Run
+name: Deploy validator API to Cloud Run
 
 on:
   push:
@@ -13,11 +13,6 @@ on:
       - packages/opus_validator/**
       - services/validator/**
       - tools/omsim_adapter/**
-      - "*.html"
-      - assets/**
-      - data/**
-      - opusjs/**
-      - samples/**
   workflow_dispatch:
 
 permissions:
