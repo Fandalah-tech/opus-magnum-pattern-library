@@ -41,9 +41,10 @@
 
   function footprint(part) {
     if (part.type === "track") {
-      const raw = part.trackHexes || [];
-      const includesOrigin = raw.some(([q, r]) => q === 0 && r === 0);
-      return includesOrigin ? raw : [[0, 0], ...raw];
+      // trackHexes are the canonical cells occupied by the rail, expressed
+      // relative to part.position. The part origin is NOT implicitly a rail
+      // cell; adding it invents a spur through circular/offset tracks.
+      return (part.trackHexes || []).map((cell) => [...cell]);
     }
     const base = FOOTPRINTS[part.type] || [[0, 0]];
     return base.map((cell) => rotateCell(cell, part.rotation || 0));
