@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aqueous Dagger — Live Solver</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#121a2e;--panel2:#0f1628;--text:#eef3ff;--muted:#8ea0c0;--line:#273553;--accent:#69d2ff;--good:#55e39f;--warn:#ffd166;--bad:#ff6b7a}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0,#172544 0,#0b1020 42%,#070b14 100%);font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100vh}.wrap{max-width:1100px;margin:auto;padding:28px 18px 44px}.top{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px}.title{font-size:30px;font-weight:800;margin:5px 0 4px}.sub{color:var(--muted)}.badge{border:1px solid var(--line);background:#111a2c;border-radius:999px;padding:8px 12px;font-weight:700;display:inline-flex;align-items:center;gap:8px}.dot{width:9px;height:9px;border-radius:50%;background:var(--warn);box-shadow:0 0 14px currentColor}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px}.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.value{font-size:31px;font-weight:800;margin-top:5px}.small{font-size:13px;color:var(--muted)}.progress-wrap{margin:18px 0}.bar{height:14px;background:#08101f;border:1px solid var(--line);border-radius:999px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,#4fb4ff,#69e6c2);transition:width .35s ease}.row{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.section-title{font-size:17px;font-weight:750;margin:0 0 13px}.timeline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.node{padding:10px 14px;border:1px solid var(--line);background:#0c1425;border-radius:12px;font-weight:750}.node.best{border-color:#2d9c78;color:var(--good)}.arrow{color:var(--muted);font-size:20px}.kv{display:grid;grid-template-columns:140px 1fr;gap:8px 12px}.kv div:nth-child(odd){color:var(--muted)}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.footer{margin-top:14px;color:var(--muted);font-size:12px}.pulse{animation:pulse 1.2s infinite}@keyframes pulse{50%{opacity:.45}}@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}}@media(max-width:430px){.grid{grid-template-columns:1fr}.value{font-size:27px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><div class="eyebrow">Opus Magnum Codex</div><div class="title">Aqueous Dagger — Live Solver</div><div class="sub">Recherche mono-réactif 27c → 26c, validation OMSim.</div></div>
+    <div class="badge"><span id="dot" class="dot pulse"></span><span id="state">chargement…</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="label">Meilleur</div><div class="value"><span id="best">27</span>c</div><div class="small" id="mutation">seed</div></div>
+    <div class="card"><div class="label">Cible</div><div class="value"><span id="target">26</span>c</div><div class="small">minimum recherché</div></div>
+    <div class="card"><div class="label">Testés</div><div class="value" id="tested">0</div><div class="small"><span id="total">0</span> candidats</div></div>
+    <div class="card"><div class="label">Valides</div><div class="value" id="valid">0</div><div class="small"><span id="rate">0.0</span>% de validation</div></div>
+  </div>
+
+  <div class="card progress-wrap">
+    <div class="section-title">Progression de la génération <span id="generation">0</span></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="small" style="margin-top:8px"><span id="progressText">0 / 0</span> • mise à jour automatique toutes les 2 secondes</div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <div class="section-title">Descente actuelle</div>
+      <div class="timeline"><div class="node">28c</div><div class="arrow">→</div><div class="node">27c</div><div class="arrow">→</div><div class="node best" id="goalNode">26c</div></div>
+      <div class="footer" id="updated">Dernière mise à jour : —</div>
+    </div>
+    <div class="card">
+      <div class="section-title">Run</div>
+      <div class="kv"><div>État</div><div id="runState">—</div><div>Meilleure mutation</div><div id="bestMut">seed</div><div>GitHub Actions</div><div><a id="runLink" href="https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions" target="_blank" rel="noreferrer">ouvrir le run</a></div></div>
+    </div>
+  </div>
+</div>
+<script>
+const statusUrl='https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/status.json';
+const runsApi='https://api.github.com/repos/Fandalah-tech/opus-magnum-pattern-library/actions/workflows/aqueous-28c-single-search.yml/runs?per_page=1';
+const el=id=>document.getElementById(id);
+function setState(s){const map={running:['EN COURS','#ffd166'],completed:['TERMINÉ','#55e39f'],target_reached:['CIBLE ATTEINTE','#55e39f'],failed:['ÉCHEC','#ff6b7a'],preparing:['PRÉPARATION','#69d2ff']};const m=map[s]||[String(s||'—').toUpperCase(),'#8ea0c0'];el('state').textContent=m[0];el('dot').style.background=m[1];if(s==='completed'||s==='target_reached'||s==='failed')el('dot').classList.remove('pulse')}
+async function refresh(){
+  try{
+    const r=await fetch(statusUrl+'?t='+Date.now(),{cache:'no-store'}); if(!r.ok)throw new Error(r.status); const s=await r.json();
+    el('best').textContent=s.bestCycles??'—'; el('target').textContent=s.targetCycles??26; el('tested').textContent=s.tested??0; el('total').textContent=s.total??0; el('valid').textContent=s.valid??0; el('generation').textContent=s.generation??0;
+    const rate=s.tested?100*(s.valid||0)/s.tested:0; el('rate').textContent=rate.toFixed(1); el('mutation').textContent=s.bestMutation||'—'; el('bestMut').textContent=s.bestMutation||'—';
+    const pct=s.total?100*(s.tested||0)/s.total:0; el('fill').style.width=Math.max(0,Math.min(100,pct))+'%'; el('progressText').textContent=`${s.tested||0} / ${s.total||0}`; el('updated').textContent='Dernière mise à jour : '+(s.updatedAt?new Date(s.updatedAt).toLocaleString('fr-CA'):'—');
+    if(s.runUrl){el('runLink').href=s.runUrl} setState(s.state);
+    if((s.bestCycles??99)<=26){el('goalNode').textContent=(s.bestCycles)+'c ✓';}
+  }catch(e){el('state').textContent='DONNÉES INDISPONIBLES';el('dot').style.background='#ff6b7a'}
+  try{const r=await fetch(runsApi+'&_='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();const run=j.workflow_runs&&j.workflow_runs[0];if(run){el('runState').textContent=run.status+(run.conclusion?` / ${run.conclusion}`:'');el('runLink').href=run.html_url}}}catch(e){}
+}
+refresh(); setInterval(refresh,2000);
+</script>
+</body>
+</html>
