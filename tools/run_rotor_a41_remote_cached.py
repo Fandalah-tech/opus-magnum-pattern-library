@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,7 @@ CACHE_STATS_PATH = Path("reports/rotor-a41-validator-cache-stats.json")
 LEARNING_PATH = Path("reports/rotor-a41-retiming-learning.json")
 CACHE_NAMESPACE = f"{campaign.VALIDATOR_URL.rstrip('/')}{campaign.ANALYZE_ENDPOINT}"
 MAX_IDLE_JUMP = 8
+SEARCH_STRATEGY = "a41-adaptive-idle-retiming-v1"
 
 
 def load_learned_ranks(path: Path = LEARNING_PATH) -> dict[tuple[str, str], int]:
@@ -92,6 +94,16 @@ def reorder_shifts(shifts: list[dict[str, Any]], ranks: dict[tuple[str, str], in
     return [shift for _, shift in indexed]
 
 
+def search_space_signature(shifts: list[dict[str, Any]]) -> str:
+    payload = {
+        "strategy": SEARCH_STRATEGY,
+        "maxIdleJump": MAX_IDLE_JUMP,
+        "candidates": shifts,
+    }
+    raw = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
+
+
 def load_generated_best() -> tuple[dict[str, Any] | None, str | None, str | None]:
     path = campaign.BEST_PARSED
     if not path.is_file():
@@ -137,6 +149,8 @@ def main() -> int:
     original_validate = campaign.validate_remote
     original_candidate_shifts = campaign.candidate_shifts
     original_load_reference = campaign.load_reference
+    original_write_checkpoint = campaign.write_checkpoint
+    original_load_checkpoint = campaign.load_checkpoint
     learned_ranks = load_learned_ranks()
 
     def validate_cached(puzzle_path: Path, solution: dict[str, Any], name: str) -> dict[str, Any]:
@@ -171,9 +185,48 @@ def main() -> int:
             return generated
         return original_load_reference()
 
+    def write_checkpoint_bound(**kwargs: Any) -> None:
+        original_write_checkpoint(**kwargs)
+        current = kwargs.get("current")
+        if not isinstance(current, dict):
+            return
+        try:
+            data = json.loads(campaign.CHECKPOINT.read_text(encoding="utf-8"))
+        except Exception:
+            return
+        shifts = candidate_shifts_learned(current)
+        data["searchStrategy"] = SEARCH_STRATEGY
+        data["maxIdleJump"] = MAX_IDLE_JUMP
+        data["candidateCount"] = len(shifts)
+        data["searchSpaceSignature"] = search_space_signature(shifts)
+        temp = campaign.CHECKPOINT.with_suffix(".json.bound.tmp")
+        temp.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        temp.replace(campaign.CHECKPOINT)
+
+    def load_checkpoint_bound(baseline_cycles: int) -> dict[str, Any] | None:
+        data = original_load_checkpoint(baseline_cycles)
+        if data is None:
+            return None
+        current = data.get("current")
+        if not isinstance(current, dict):
+            return None
+        shifts = candidate_shifts_learned(current)
+        expected = search_space_signature(shifts)
+        if data.get("searchStrategy") != SEARCH_STRATEGY:
+            return None
+        if int(data.get("maxIdleJump") or -1) != MAX_IDLE_JUMP:
+            return None
+        if int(data.get("candidateCount") or -1) != len(shifts):
+            return None
+        if data.get("searchSpaceSignature") != expected:
+            return None
+        return data
+
     campaign.validate_remote = validate_cached
     campaign.candidate_shifts = candidate_shifts_learned
     campaign.load_reference = load_reference_prefer_best
+    campaign.write_checkpoint = write_checkpoint_bound
+    campaign.load_checkpoint = load_checkpoint_bound
     try:
         return campaign.main()
     finally:
