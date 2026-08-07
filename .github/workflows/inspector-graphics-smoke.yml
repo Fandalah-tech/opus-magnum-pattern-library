@@ -1,0 +1,112 @@
+name: Inspector graphics smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "inspector.html"
+      - "assets/js/inspector.js"
+      - "assets/js/opus-scene.js"
+      - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-viewer-runtime.js"
+      - "assets/js/solution-viewer.js"
+      - "assets/js/replay-controls.js"
+      - "assets/js/replay-arm-animation.js"
+      - "assets/js/replay-molecules.js"
+      - "assets/js/used-area-overlay.js"
+      - "assets/js/output-product-preview.js"
+      - "assets/js/product-delivery-animation.js"
+      - "assets/js/viewer-interactions.js"
+      - "assets/js/viewer-polish.js"
+      - ".github/workflows/inspector-graphics-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: inspector-graphics-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Validate explicit Inspector runtime flow
+        run: |
+          python -m http.server 8765 >/tmp/inspector-http.log 2>&1 &
+          python - <<'PY'
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+
+          payload = Path('data/viewer-demo-payload.json').read_text(encoding='utf-8')
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1500, 'height': 1000})
+              errors = []
+              requests = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+
+              def fulfill(route):
+                  requests.append(route.request.url)
+                  route.fulfill(status=200, content_type='application/json', body=payload)
+
+              page.route('**/api/v1/analyze', fulfill)
+              page.goto('http://127.0.0.1:8765/inspector.html', wait_until='networkidle', timeout=120000)
+
+              # The deprecated bridge must not participate in the canonical Inspector.
+              assert page.locator('script[src="assets/js/solution-viewer-bridge.js"]').count() == 0
+              assert page.evaluate("typeof window.OpusViewerRuntime === 'object'")
+              assert page.evaluate("typeof window.OpusScene === 'object'")
+              assert page.evaluate("typeof window.OpusSvgRenderer === 'object'")
+
+              page.set_input_files('#puzzle-file', files=[{
+                  'name': 'fixture.puzzle', 'mimeType': 'application/octet-stream', 'buffer': b'puzzle'
+              }])
+              page.set_input_files('#solution-file', files=[{
+                  'name': 'fixture.solution', 'mimeType': 'application/octet-stream', 'buffer': b'solution'
+              }])
+              assert page.locator('#analyze-button').is_enabled()
+              page.locator('#analyze-button').click()
+              page.wait_for_selector('#results:not([hidden])', timeout=30000)
+              page.wait_for_function("document.querySelector('#solution-viewer [data-part-id=\"arm-main\"]') !== null", timeout=30000)
+              page.wait_for_timeout(260)
+
+              assert len(requests) == 1, requests
+              assert page.locator('#solution-title').inner_text() == 'Renderer Demo Machine'
+              assert page.locator('#puzzle-title').inner_text() == 'Renderer Demo'
+              assert page.locator('#metric-area').inner_text() == '18'
+              assert page.locator('[data-replay-range]').get_attribute('max') == '3'
+              assert page.locator('#solution-viewer [data-part-id]').count() >= 6
+              assert page.locator('#solution-viewer [data-atom-id]').count() >= 2
+              assert page.locator('#solution-viewer [data-viewer-layer="area"]').count() == 1
+
+              scene_state = page.evaluate("""() => {
+                const scene = window.OpusViewerRuntime.currentScene('#solution-viewer');
+                return {
+                  kind: scene?.kind,
+                  parts: scene?.static?.parts?.length || 0,
+                  frames: scene?.timeline?.frames?.length || 0,
+                  captureReady: window.__OPUS_CAPTURE_READY__ === true,
+                  lastSceneMatches: window.__OPUS_LAST_SCENE__ === scene
+                };
+              }""")
+              assert scene_state['kind'] == 'opus-scene', scene_state
+              assert scene_state['parts'] >= 6, scene_state
+              assert scene_state['frames'] == 4, scene_state
+              assert scene_state['captureReady'], scene_state
+              assert scene_state['lastSceneMatches'], scene_state
+
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
