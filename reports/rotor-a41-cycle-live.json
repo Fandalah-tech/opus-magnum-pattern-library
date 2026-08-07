@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "validator-unavailable",
+  "stage": "engine-validation-blocked",
   "status": "blocked",
-  "updatedAt": "2026-08-07T10:34:01.908411+00:00",
+  "updatedAt": "2026-08-07T10:34:10.994178+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,7 +37,7 @@
       }
     }
   ],
-  "message": "Validateur inaccessible: HTTP 422: {\"detail\":\"Invalid UTF-8 string at byte 35\"}",
+  "message": "OMSIM ne reproduit pas encore la reference A41: did-not-complete",
   "elapsedSeconds": 0,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
   "referenceMatch": "metrics",
