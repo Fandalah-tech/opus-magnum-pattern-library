@@ -1,7 +1,6 @@
 (() => {
-  const API = "https://opus-validator-6gflgqb25q-nn.a.run.app";
-  const ANALYZE_ENDPOINT = "/api/v1/analyze";
   const i18n = window.OpusI18n;
+  const runtime = window.OpusViewerRuntime;
   const puzzleInput = document.querySelector("#puzzle-file");
   const solutionInput = document.querySelector("#solution-file");
   const button = document.querySelector("#analyze-button");
@@ -11,6 +10,8 @@
   const byId = (id) => document.getElementById(id);
   const text = (id, value) => { const node = byId(id); if (node) node.textContent = value ?? "—"; };
   const t = (key) => i18n.t(key);
+
+  if (!runtime) throw new Error("OpusViewerRuntime must load before inspector.js");
 
   function applyTranslations() {
     document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
@@ -111,7 +112,7 @@
   }
 
   function render(payload) {
-    const { validation, puzzle, solution, graph, timeline, patterns, diagnostics } = payload;
+    const { validation = {}, puzzle = {}, solution = {}, graph = {}, timeline = {}, patterns = {}, diagnostics = {} } = payload;
     text("solution-title", solution.name || solution.source?.name || "Solution");
     text("puzzle-title", puzzle.name || solution.puzzleFile || "Puzzle");
 
@@ -132,21 +133,22 @@
     renderRelations(graph);
     byId("raw-json").textContent = JSON.stringify(payload, null, 2);
     results.hidden = false;
-    results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   button.addEventListener("click", async () => {
     button.disabled = true;
     results.hidden = true;
     status.textContent = t("inspector.running");
-    const form = new FormData();
-    form.append("puzzle", puzzleInput.files[0]);
-    form.append("solution", solutionInput.files[0]);
-    const endpoint = `${API}${ANALYZE_ENDPOINT}`;
     try {
-      const response = await fetch(endpoint, { method: "POST", body: form });
-      if (!response.ok) throw new Error(`POST ${ANALYZE_ENDPOINT} → ${response.status}: ${await response.text()}`);
-      render(await response.json());
+      const payload = await runtime.analyzeFiles(
+        puzzleInput.files[0],
+        solutionInput.files[0],
+        { render: false }
+      );
+      render(payload);
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      runtime.renderPayload(payload, "#solution-viewer");
+      results.scrollIntoView({ behavior: "smooth", block: "start" });
       status.textContent = t("inspector.complete");
     } catch (error) {
       console.error(error);
