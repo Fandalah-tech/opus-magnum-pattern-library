@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a41-cycle-003",
+    "operation": "run_rotor_a41_cycle_campaign",
+    "priority": 3000,
+    "timeout_seconds": 7200,
+    "notes": "Use local Opus Magnum saves first. If unavailable, use the exact embedded A41 1112/220/41/302 reference fixture. Preserve Area 41 geometry and validate before publishing improvements."
+  },
+  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-003.json",
+  "git_sha": "68ed6fdf38e68fc8176e711834df1a31931d4f7d",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-07T01:51:36.754861+00:00",
+  "finished_at": "2026-08-07T01:52:37.347831+00:00",
+  "duration_seconds": 60.589,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

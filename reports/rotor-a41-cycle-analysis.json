@@ -1,0 +1,448 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-07T01:51:37.031864+00:00",
+  "reference": {
+    "file": "van-berlos-rotor-a41-1112.solution",
+    "sha256": "435b31d9366f90bb5217ea45faebb392ae761fe3740050c2ffa56e847174ab47",
+    "metrics": {
+      "cycles": 1112,
+      "cost": 220,
+      "area": 41,
+      "instructions": 302
+    },
+    "name": "A41!!! - DONT MIND THE CYCLES (Copy)"
+  },
+  "programmedParts": [
+    {
+      "part": "part-1",
+      "type": "baron",
+      "armNumber": 2,
+      "instructionCount": 16,
+      "firstCycle": 12,
+      "lastCycle": 185,
+      "idleWindows": [
+        {
+          "after": 12,
+          "before": 14,
+          "size": 1
+        },
+        {
+          "after": 15,
+          "before": 34,
+          "size": 18
+        },
+        {
+          "after": 34,
+          "before": 68,
+          "size": 33
+        },
+        {
+          "after": 68,
+          "before": 91,
+          "size": 22
+        },
+        {
+          "after": 93,
+          "before": 144,
+          "size": 50
+        },
+        {
+          "after": 144,
+          "before": 152,
+          "size": 7
+        },
+        {
+          "after": 152,
+          "before": 160,
+          "size": 7
+        },
+        {
+          "after": 160,
+          "before": 168,
+          "size": 7
+        },
+        {
+          "after": 168,
+          "before": 176,
+          "size": 7
+        },
+        {
+          "after": 176,
+          "before": 183,
+          "size": 6
+        }
+      ]
+    },
+    {
+      "part": "part-9",
+      "type": "piston",
+      "armNumber": 1,
+      "instructionCount": 129,
+      "firstCycle": 12,
+      "lastCycle": 185,
+      "idleWindows": [
+        {
+          "after": 35,
+          "before": 37,
+          "size": 1
+        },
+        {
+          "after": 37,
+          "before": 43,
+          "size": 5
+        },
+        {
+          "after": 57,
+          "before": 59,
+          "size": 1
+        },
+        {
+          "after": 64,
+          "before": 69,
+          "size": 4
+        },
+        {
+          "after": 77,
+          "before": 82,
+          "size": 4
+        },
+        {
+          "after": 84,
+          "before": 87,
+          "size": 2
+        },
+        {
+          "after": 99,
+          "before": 114,
+          "size": 14
+        },
+        {
+          "after": 135,
+          "before": 139,
+          "size": 3
+        },
+        {
+          "after": 140,
+          "before": 143,
+          "size": 2
+        },
+        {
+          "after": 148,
+          "before": 151,
+          "size": 2
+        },
+        {
+          "after": 156,
+          "before": 159,
+          "size": 2
+        },
+        {
+          "after": 164,
+          "before": 167,
+          "size": 2
+        },
+        {
+          "after": 172,
+          "before": 175,
+          "size": 2
+        },
+        {
+          "after": 183,
+          "before": 185,
+          "size": 1
+        }
+      ]
+    },
+    {
+      "part": "part-12",
+      "type": "piston",
+      "armNumber": 0,
+      "instructionCount": 158,
+      "firstCycle": 0,
+      "lastCycle": 185,
+      "idleWindows": [
+        {
+          "after": 19,
+          "before": 22,
+          "size": 2
+        },
+        {
+          "after": 32,
+          "before": 35,
+          "size": 2
+        },
+        {
+          "after": 49,
+          "before": 57,
+          "size": 7
+        },
+        {
+          "after": 69,
+          "before": 75,
+          "size": 5
+        },
+        {
+          "after": 91,
+          "before": 93,
+          "size": 1
+        },
+        {
+          "after": 114,
+          "before": 119,
+          "size": 4
+        },
+        {
+          "after": 124,
+          "before": 131,
+          "size": 6
+        },
+        {
+          "after": 133,
+          "before": 135,
+          "size": 1
+        }
+      ]
+    }
+  ],
+  "candidateSingleCycleShifts": [
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 12,
+      "targetCycle": 11,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 14,
+      "targetCycle": 13,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 34,
+      "targetCycle": 33,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 68,
+      "targetCycle": 67,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 91,
+      "targetCycle": 90,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 144,
+      "targetCycle": 143,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 152,
+      "targetCycle": 151,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 160,
+      "targetCycle": 159,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 168,
+      "targetCycle": 167,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 176,
+      "targetCycle": 175,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-1",
+      "armNumber": 2,
+      "cycle": 183,
+      "targetCycle": 182,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 12,
+      "targetCycle": 11,
+      "instruction": "grab"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 37,
+      "targetCycle": 36,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 43,
+      "targetCycle": 42,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 59,
+      "targetCycle": 58,
+      "instruction": "track_minus"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 69,
+      "targetCycle": 68,
+      "instruction": "track_minus"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 82,
+      "targetCycle": 81,
+      "instruction": "rotate_ccw"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 87,
+      "targetCycle": 86,
+      "instruction": "track_minus"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 114,
+      "targetCycle": 113,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 139,
+      "targetCycle": 138,
+      "instruction": "track_minus"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 143,
+      "targetCycle": 142,
+      "instruction": "grab"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 151,
+      "targetCycle": 150,
+      "instruction": "grab"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 159,
+      "targetCycle": 158,
+      "instruction": "grab"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 167,
+      "targetCycle": 166,
+      "instruction": "grab"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 175,
+      "targetCycle": 174,
+      "instruction": "grab"
+    },
+    {
+      "part": "part-9",
+      "armNumber": 1,
+      "cycle": 185,
+      "targetCycle": 184,
+      "instruction": "period_override"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 22,
+      "targetCycle": 21,
+      "instruction": "track_minus"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 35,
+      "targetCycle": 34,
+      "instruction": "track_plus"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 57,
+      "targetCycle": 56,
+      "instruction": "track_minus"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 75,
+      "targetCycle": 74,
+      "instruction": "rotate_cw"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 93,
+      "targetCycle": 92,
+      "instruction": "track_plus"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 119,
+      "targetCycle": 118,
+      "instruction": "drop"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 131,
+      "targetCycle": 130,
+      "instruction": "track_plus"
+    },
+    {
+      "part": "part-12",
+      "armNumber": 0,
+      "cycle": 135,
+      "targetCycle": 134,
+      "instruction": "drop"
+    }
+  ],
+  "candidateCount": 34
+}

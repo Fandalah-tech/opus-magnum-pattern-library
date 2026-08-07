@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "reference-required",
-  "status": "blocked",
-  "updatedAt": "2026-08-07T01:46:42.181968+00:00",
+  "stage": "analysis-complete",
+  "status": "completed",
+  "updatedAt": "2026-08-07T01:52:37.276392+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -21,7 +21,7 @@
       "cycles": 0,
       "instructions": 0
     },
-    "testedCandidates": 0,
+    "testedCandidates": 34,
     "validCandidates": 0
   },
   "bestResults": [
@@ -37,6 +37,10 @@
       }
     }
   ],
-  "message": "Reference A41 1112/220/41/302 introuvable dans le dossier Opus Magnum et les sources de secours.",
-  "elapsedSeconds": 0
+  "message": "Passe de retiming A41 terminee; aucun gain n'est declare sans validation OMSIM complete.",
+  "elapsedSeconds": 60.4,
+  "referenceFile": "van-berlos-rotor-a41-1112.solution",
+  "referenceMatch": "embedded-fixture",
+  "referenceSource": "embedded-reference",
+  "analysisReport": "reports/rotor-a41-cycle-analysis.json"
 }

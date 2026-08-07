@@ -1,13 +1,13 @@
 {
-  "updatedAt": "2026-08-07T01:46:42.181968+00:00",
-  "status": "blocked",
-  "stage": "reference-required",
+  "updatedAt": "2026-08-07T01:52:37.276392+00:00",
+  "status": "completed",
+  "stage": "analysis-complete",
   "campaignId": "rotor-a41-cycle-001",
   "mode": "a41-cycle-retiming",
   "depth": 0,
   "maxDepth": 0,
-  "elapsedSeconds": 0,
-  "visitedStates": 0,
+  "elapsedSeconds": 60.4,
+  "visitedStates": 34,
   "expandedStates": 0,
   "frontierSize": 0,
   "bestScore": 1112,
@@ -29,8 +29,8 @@
       "cycles": 0,
       "instructions": 0
     },
-    "testedCandidates": 0,
+    "testedCandidates": 34,
     "validCandidates": 0
   },
-  "message": "Reference A41 1112/220/41/302 introuvable dans le dossier Opus Magnum et les sources de secours."
+  "message": "Passe de retiming A41 terminee; aucun gain n'est declare sans validation OMSIM complete."
 }
