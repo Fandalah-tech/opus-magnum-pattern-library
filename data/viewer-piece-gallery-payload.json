@@ -1,0 +1,33 @@
+{
+  "validation": {"status":"fixture","metrics":{"cycles":0,"cost":0,"area":0,"instructions":0}},
+  "puzzle": {"name":"Piece Gallery Renderer Fixture","reagents":[],"products":[]},
+  "solution": {
+    "name":"Canonical Piece Gallery",
+    "puzzleFile":"renderer-piece-gallery",
+    "metrics":{"cycles":0,"cost":0,"area":0,"instructions":0},
+    "parts":[
+      {"id":"piece-input","type":"input","enabled":true,"position":[-6,3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-output","type":"out-std","enabled":true,"position":[-3,3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-output-repeat","type":"out-rep","enabled":true,"position":[0,3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-bonder","type":"bonder","enabled":true,"position":[3,3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-unbonder","type":"unbonder","enabled":true,"position":[6,3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-multibonder","type":"bonder-speed","enabled":true,"position":[9,3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+
+      {"id":"piece-calcification","type":"glyph-calcification","enabled":true,"position":[-6,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-equilibrium","type":"glyph-equilibrium","enabled":true,"position":[-3,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-disposal","type":"glyph-disposal","enabled":true,"position":[0,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-projection","type":"glyph-projection","enabled":true,"position":[4,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-purification","type":"glyph-purification","enabled":true,"position":[7,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-duplication","type":"glyph-duplication","enabled":true,"position":[11,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+
+      {"id":"piece-life-death","type":"glyph-life-and-death","enabled":true,"position":[-6,-3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-marker","type":"glyph-marker","enabled":true,"position":[-3,-3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-prisma-bonder","type":"glyph-bonder-prisma","enabled":true,"position":[0,-3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-prisma-unbonder","type":"glyph-unbonder-prisma","enabled":true,"position":[4,-3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-conduit","type":"conduit","enabled":true,"position":[8,-3],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"piece-track","type":"track","enabled":true,"position":[11,-3],"length":1,"rotation":0,"which":0,"armNumber":0,"trackHexes":[[0,0],[1,0],[2,-1],[3,-1]],"program":[]}
+    ]
+  },
+  "graph":{"nodes":[],"edges":[]},
+  "replay":null
+}
