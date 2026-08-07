@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "namespace": "https://opus-validator-6gflgqb25q-nn.a.run.app/api/v1/analyze",
+  "entriesBefore": 0,
+  "entriesAfter": 0,
+  "hits": 0,
+  "misses": 1,
+  "requests": 1,
+  "hitRate": 0.0,
+  "remoteCallsAvoided": 0
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a41-cycle-009",
+    "operation": "run_rotor_a41_remote_cycle_campaign",
+    "priority": 9500,
+    "timeout_seconds": 21600,
+    "notes": "Canonical A41 remote campaign. Validate via /api/v1/analyze; preserve area 41; start from 1112/220/41/302 or a strictly better validated OMSIM A41 result; cache exact solution validations by SHA-256; checkpoint after every candidate; explore bounded idle-window retimings up to 8 cycles without crossing the previous instruction; resume safely after interruption."
+  },
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-cycle-009.json",
+  "git_sha": "831eb93fd957fbef52d5a873fdbbf48df4d3337f",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T21:11:45.796293+00:00",
+  "finished_at": "2026-08-07T21:11:50.059404+00:00",
+  "duration_seconds": 4.263,
+  "exit_code": 5,
+  "status": "failed",
+  "error": null
+}

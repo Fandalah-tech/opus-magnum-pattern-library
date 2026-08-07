@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "engine-validation-blocked",
+  "stage": "validator-unavailable",
   "status": "blocked",
-  "updatedAt": "2026-08-07T10:34:46.604431+00:00",
+  "updatedAt": "2026-08-07T21:11:50.029298+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,7 +37,7 @@
       }
     }
   ],
-  "message": "OMSIM ne reproduit pas encore la reference A41: did-not-complete",
+  "message": "Validateur inaccessible: HTTP 422: {\"detail\":\"Invalid UTF-8 string at byte 35\"}",
   "elapsedSeconds": 0,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
   "referenceMatch": "metrics",
@@ -50,5 +50,6 @@
     "error": "did-not-complete"
   },
   "validatorUrl": "https://opus-validator-6gflgqb25q-nn.a.run.app",
-  "puzzlePath": "C:\\Users\\bruno\\Documents\\My Games\\Opus Magnum\\76561197961630013\\custom\\weeklies2026_van-berlos-rotor.puzzle"
+  "puzzlePath": "C:\\Users\\bruno\\Documents\\My Games\\Opus Magnum\\76561197961630013\\custom\\weeklies2026_van-berlos-rotor.puzzle",
+  "validatorEndpoint": "/api/v1/analyze"
 }

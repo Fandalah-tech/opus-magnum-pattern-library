@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-07T10:34:46.604431+00:00",
+  "updatedAt": "2026-08-07T21:11:50.029298+00:00",
   "status": "blocked",
-  "stage": "engine-validation-blocked",
+  "stage": "validator-unavailable",
   "campaignId": "rotor-a41-cycle-001",
   "mode": "a41-cycle-retiming",
   "depth": 0,
@@ -32,5 +32,5 @@
     "testedCandidates": 34,
     "validCandidates": 0
   },
-  "message": "OMSIM ne reproduit pas encore la reference A41: did-not-complete"
+  "message": "Validateur inaccessible: HTTP 422: {\"detail\":\"Invalid UTF-8 string at byte 35\"}"
 }
