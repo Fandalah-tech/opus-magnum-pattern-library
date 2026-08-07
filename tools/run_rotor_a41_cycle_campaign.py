@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
@@ -8,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from packages.opus_parser.solution import parse_solution
+from packages.opus_parser.solution import parse_solution, parse_solution_bytes
 
 ROOT = Path.cwd()
 LIVE = ROOT / "reports" / "rotor-a41-cycle-live.json"
@@ -17,6 +18,7 @@ ANALYSIS = ROOT / "reports" / "rotor-a41-cycle-analysis.json"
 REFERENCE_SHA = "435b31d9366f90bb5217ea45faebb392ae761fe3740050c2ffa56e847174ab47"
 REFERENCE_METRICS = {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302}
 DEFAULT_OPUS_ROOT = Path("C:/Users/bruno/Documents/My Games/Opus Magnum")
+REFERENCE_FIXTURE = ROOT / "fixtures" / "solutions" / "van-berlos-rotor-a41-1112.solution.b64"
 
 
 def now() -> str:
@@ -46,7 +48,6 @@ def publish(data: dict[str, Any], *, stage: str, status: str, message: str, extr
         data.update(extra)
     LIVE.parent.mkdir(parents=True, exist_ok=True)
     LIVE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-
     metrics = data.get("metrics", {})
     baseline = metrics.get("baseline", {})
     best = metrics.get("best", baseline)
@@ -75,18 +76,11 @@ def candidate_roots() -> list[Path]:
     configured = os.environ.get("OM_OPUS_MAGNUM_ROOT")
     if configured:
         roots.append(Path(configured))
-    roots.append(DEFAULT_OPUS_ROOT)
-    roots.append(ROOT / "fixtures" / "solutions")
-    roots.append(ROOT / "datasets" / "solutions")
-    roots.append(ROOT)
-
+    roots.extend([DEFAULT_OPUS_ROOT, ROOT / "fixtures" / "solutions", ROOT / "datasets" / "solutions", ROOT])
     for value in (os.environ.get("USERPROFILE"), "C:/Users/bruno"):
-        if not value:
-            continue
-        base = Path(value)
-        for child in ("Downloads", "Desktop", "Documents"):
-            roots.append(base / child)
-
+        if value:
+            base = Path(value)
+            roots.extend([base / "Downloads", base / "Desktop", base / "Documents"])
     unique: list[Path] = []
     seen: set[str] = set()
     for root in roots:
@@ -102,10 +96,9 @@ def candidate_roots() -> list[Path]:
 
 
 def _looks_like_rotor(solution: dict[str, Any]) -> bool:
-    puzzle = str(solution.get("puzzleFile") or "").lower()
-    name = str(solution.get("name") or "").lower()
-    source = str(solution.get("source", {}).get("name") or "").lower()
-    text = " ".join((puzzle, name, source))
+    text = " ".join(str(value or "").lower() for value in (
+        solution.get("puzzleFile"), solution.get("name"), solution.get("source", {}).get("name")
+    ))
     return "van berlo" in text or "van-berlo" in text or "rotor" in text
 
 
@@ -114,25 +107,29 @@ def _metrics_match(solution: dict[str, Any]) -> bool:
     return all(metrics.get(key) == value for key, value in REFERENCE_METRICS.items())
 
 
-def locate_reference() -> tuple[Path | None, str | None]:
+def locate_local_reference() -> tuple[Path | None, str | None]:
     metric_matches: list[Path] = []
+    area_matches: list[tuple[int, float, Path]] = []
     for root in candidate_roots():
         try:
-            files = root.rglob("*.solution")
-            for path in files:
+            for path in root.rglob("*.solution"):
                 try:
                     if path.stat().st_size > 10_000_000:
                         continue
                     raw = path.read_bytes()
-                    digest = hashlib.sha256(raw).hexdigest()
-                    if digest == REFERENCE_SHA:
+                    if hashlib.sha256(raw).hexdigest() == REFERENCE_SHA:
                         return path, "sha256"
                     try:
                         solution = parse_solution(path)
                     except Exception:
                         continue
-                    if _metrics_match(solution) and _looks_like_rotor(solution):
+                    if not _looks_like_rotor(solution):
+                        continue
+                    if _metrics_match(solution):
                         metric_matches.append(path)
+                    elif (solution.get("metrics") or {}).get("area") == 41:
+                        cycles = int((solution.get("metrics") or {}).get("cycles") or 10**9)
+                        area_matches.append((cycles, -path.stat().st_mtime, path))
                 except (OSError, PermissionError):
                     continue
         except (OSError, PermissionError):
@@ -140,7 +137,22 @@ def locate_reference() -> tuple[Path | None, str | None]:
     if metric_matches:
         metric_matches.sort(key=lambda item: item.stat().st_mtime, reverse=True)
         return metric_matches[0], "metrics"
+    if area_matches:
+        area_matches.sort()
+        return area_matches[0][2], "area41-best-local"
     return None, None
+
+
+def load_reference() -> tuple[dict[str, Any] | None, str | None, str | None]:
+    path, match_kind = locate_local_reference()
+    if path is not None:
+        return parse_solution(path), path.name, match_kind
+    if REFERENCE_FIXTURE.exists():
+        raw = base64.b64decode(REFERENCE_FIXTURE.read_text(encoding="ascii"))
+        solution = parse_solution_bytes(raw, source_name="van-berlos-rotor-a41-1112.solution")
+        if solution.get("source", {}).get("sha256") == REFERENCE_SHA:
+            return solution, "van-berlos-rotor-a41-1112.solution", "embedded-fixture"
+    return None, None, None
 
 
 def analyze_program(solution: dict[str, Any]) -> dict[str, Any]:
@@ -167,13 +179,9 @@ def analyze_program(solution: dict[str, Any]) -> dict[str, Any]:
                     "instruction": item["instruction"],
                 })
         programmed.append({
-            "part": part["id"],
-            "type": part["type"],
-            "armNumber": part.get("armNumber"),
-            "instructionCount": len(program),
-            "firstCycle": int(program[0]["cycle"]),
-            "lastCycle": int(program[-1]["cycle"]),
-            "idleWindows": gaps,
+            "part": part["id"], "type": part["type"], "armNumber": part.get("armNumber"),
+            "instructionCount": len(program), "firstCycle": int(program[0]["cycle"]),
+            "lastCycle": int(program[-1]["cycle"]), "idleWindows": gaps,
         })
     return {
         "reference": {
@@ -192,31 +200,26 @@ def main() -> int:
     started = time.monotonic()
     live = load_live()
     live["elapsedSeconds"] = 0
-    publish(
-        live,
-        stage="reference-discovery",
-        status="running",
-        message="Campagne A41 active: scan prioritaire du dossier local Opus Magnum.",
-    )
-    reference, match_kind = locate_reference()
-    if reference is None:
-        publish(
-            live,
-            stage="reference-required",
-            status="blocked",
-            message="Reference A41 1112/220/41/302 introuvable dans le dossier Opus Magnum et les sources de secours.",
-        )
+    publish(live, stage="reference-discovery", status="running", message="Campagne A41 active: dossier Opus Magnum prioritaire, fixture exacte en secours.")
+    solution, reference_file, match_kind = load_reference()
+    if solution is None:
+        publish(live, stage="reference-required", status="blocked", message="Reference A41 introuvable localement et fixture de secours indisponible.")
         return 3
+
+    source_label = "local-opus-folder" if match_kind != "embedded-fixture" else "embedded-reference"
+    actual_metrics = solution.get("metrics") or {}
+    if actual_metrics.get("area") != 41:
+        publish(live, stage="reference-invalid", status="blocked", message="La reference detectee n'est pas Area 41.")
+        return 4
 
     live["elapsedSeconds"] = round(time.monotonic() - started, 1)
     publish(
         live,
         stage="program-analysis",
         status="running",
-        message=f"Reference trouvee automatiquement ({match_kind}): {reference.name}. Analyse des fenetres de retiming.",
-        extra={"referenceFile": reference.name, "referenceMatch": match_kind, "referenceSource": "local-opus-folder"},
+        message=f"Reference trouvee ({match_kind}): {reference_file}. Analyse des fenetres de retiming.",
+        extra={"referenceFile": reference_file, "referenceMatch": match_kind, "referenceSource": source_label},
     )
-    solution = parse_solution(reference)
     analysis = analyze_program(solution)
     ANALYSIS.write_text(json.dumps({"schemaVersion": 1, "updatedAt": now(), **analysis}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
@@ -229,12 +232,7 @@ def main() -> int:
         stage="validation-queue",
         status="running",
         message=f"{analysis['candidateCount']} retimings elementaires identifies; preparation de la validation OMSIM.",
-        extra={
-            "analysisReport": "reports/rotor-a41-cycle-analysis.json",
-            "referenceFile": reference.name,
-            "referenceMatch": match_kind,
-            "referenceSource": "local-opus-folder",
-        },
+        extra={"analysisReport": "reports/rotor-a41-cycle-analysis.json", "referenceFile": reference_file, "referenceMatch": match_kind, "referenceSource": source_label},
     )
 
     for remaining in range(4, 0, -1):
