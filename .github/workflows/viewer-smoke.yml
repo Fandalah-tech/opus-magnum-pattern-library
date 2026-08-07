@@ -7,6 +7,9 @@ on:
       - "viewer.html"
       - "data/viewer-demo-payload.json"
       - "data/viewer-arm-gallery-payload.json"
+      - "data/viewer-piece-gallery-payload.json"
+      - "assets/js/opus-geometry.js"
+      - "assets/js/opus-piece-symbols.js"
       - "assets/js/opus-renderer-core.js"
       - "assets/js/static-arm-fidelity.js"
       - "assets/js/solution-viewer.js"
@@ -103,6 +106,39 @@ jobs:
                   assert group.locator('[data-arm-shaft]').count() == branch_count
                   assert group.locator('[data-arm-tip]').count() == branch_count
               page.locator('#solution-viewer').screenshot(path=str(out / '10-arm-family.png'))
+
+              # Canonical stations/glyphs/track fixture.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=pieces', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              footprint_cells = {
+                  'piece-input': 1,
+                  'piece-output': 1,
+                  'piece-output-repeat': 1,
+                  'piece-bonder': 2,
+                  'piece-unbonder': 2,
+                  'piece-multibonder': 4,
+                  'piece-calcification': 1,
+                  'piece-equilibrium': 1,
+                  'piece-disposal': 7,
+                  'piece-projection': 2,
+                  'piece-purification': 3,
+                  'piece-duplication': 2,
+                  'piece-life-death': 2,
+                  'piece-marker': 1,
+                  'piece-prisma-bonder': 3,
+                  'piece-prisma-unbonder': 3,
+                  'piece-conduit': 1,
+              }
+              for part_id, cell_count in footprint_cells.items():
+                  group = page.locator(f'#solution-viewer [data-part-id="{part_id}"]')
+                  assert group.count() == 1
+                  assert group.locator('.viewer-piece-footprint > polygon').count() == cell_count * 2
+                  assert group.locator('title').count() == 1
+              track = page.locator('#solution-viewer [data-part-id="piece-track"]')
+              assert track.get_attribute('data-part-kind') == 'track'
+              assert track.locator('.viewer-track-rail').count() == 1
+              assert track.locator(':scope > circle').count() == 4
+              page.locator('#solution-viewer').screenshot(path=str(out / '20-piece-gallery.png'))
 
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
