@@ -4,14 +4,15 @@
     "id": "rotor-structure-baseline-001",
     "operation": "search_rotor_structure",
     "timeout_seconds": 900,
-    "notes": "Establish a local-runner baseline for the current A42/A43 structure-only Rotor search before extending the mechanical macro VM. Capture the complete staged search output for analysis."
+    "notes": "Establish a local-runner baseline for the current A42/A43 structure-only Rotor search before extending the mechanical macro VM. Capture the complete staged search output for analysis.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-structure-baseline-001.json",
-  "git_sha": "eaa70de93b30a57f769ae93a034ea7ece9641a20",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T00:48:31.869983+00:00",
-  "finished_at": "2026-08-06T00:51:33.061967+00:00",
-  "duration_seconds": 181.192,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-structure-baseline-001.json",
+  "git_sha": "0040a1f2caafb4ce63ccea0797307b0efbb80b61",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:35:40.484445+00:00",
+  "finished_at": "2026-08-07T10:38:57.108014+00:00",
+  "duration_seconds": 196.624,
   "exit_code": 0,
   "status": "success",
   "error": null
