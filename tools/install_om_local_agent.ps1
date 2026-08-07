@@ -56,7 +56,9 @@ foreach ($entry in $commands.GetEnumerator()) {
 }
 
 # Start immediately in this user's session.
-& PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File $AgentScript -Command Start -MaxCpuPercent $MaxCpuPercent -IdleSeconds $IdleSeconds -RepositoryPath $RepositoryPath
+$startArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$AgentScript,'-Command','Start','-MaxCpuPercent',$MaxCpuPercent,'-IdleSeconds',$IdleSeconds)
+if ($RepositoryPath) { $startArgs += @('-RepositoryPath',$RepositoryPath) }
+& PowerShell.exe @startArgs
 Start-Sleep -Seconds 2
 $status = & PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File $AgentScript -Command Status
 
