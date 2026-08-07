@@ -90,14 +90,14 @@ def _solution() -> dict:
         "metrics": {},
         "unknownMetrics": [],
         "parts": [
-            # After the second cross-bond, the complete molecule has been
-            # pivoted +60 degrees around w0. This output matches that pose.
             _part("out", "out-std", (1, -1), rotation=1, which=0),
             _part(
                 "a-salt-arm", "arm1", (-2, 0), rotation=4, length=2,
                 program=_program([
                     (0, "grab"), (1, "rotate_ccw"), (2, "rotate_ccw"),
                     (3, "drop"), (4, "rotate_cw"), (5, "rotate_cw"),
+                    # A no-op reset pins the global tape period to seven cells.
+                    (6, "reset"),
                 ]),
             ),
             _part(
@@ -107,9 +107,6 @@ def _solution() -> dict:
                     (5, "rotate_cw"),
                 ]),
             ),
-            # This arm's tip is fixed on the shared water atom (1, 0). It takes
-            # over after the feed arms release and pivots the assembled molecule
-            # so the same standard bonder can make the second cross-bond.
             _part(
                 "z-pivot-arm", "arm1", (2, 0), rotation=3, length=1,
                 program=_program([(4, "grab"), (5, "pivot_ccw"), (6, "drop")]),
@@ -119,9 +116,6 @@ def _solution() -> dict:
             _part("calc-0", "glyph-calcification", (0, -2)),
             _part("calc-1", "glyph-calcification", (1, -2)),
             _part("calc-2", "glyph-calcification", (0, -1)),
-            # One physical bonder only. In the initial assembly pose it creates
-            # s0-w0. After pivot_ccw around w0, s2 occupies the same salt cell
-            # and the glyph creates s2-w0.
             _part("bond", "bonder", (0, 0), rotation=0),
         ],
         "trailingBytes": 0,
@@ -133,11 +127,9 @@ PERIOD = [
     {"a-salt-arm": "rotate_ccw"},
     {"a-salt-arm": "rotate_ccw"},
     {"a-salt-arm": "drop", "b-water-arm": "rotate_ccw"},
-    # Arm IDs deliberately sort in feed->pivot order, so b-water-arm drops
-    # before z-pivot-arm grabs the shared atom in this same cycle.
     {"a-salt-arm": "rotate_cw", "b-water-arm": "drop", "z-pivot-arm": "grab"},
     {"a-salt-arm": "rotate_cw", "b-water-arm": "rotate_cw", "z-pivot-arm": "pivot_ccw"},
-    {"z-pivot-arm": "drop"},
+    {"a-salt-arm": "reset", "z-pivot-arm": "drop"},
 ]
 
 
@@ -158,6 +150,7 @@ def test_candidate_round_trips_and_replays_from_real_program_tapes() -> None:
     simulator = Simulator.from_models(_puzzle(), parsed)
     replay = simulator.run_timeline(timeline)
 
+    assert timeline["summary"]["globalPeriod"] == 7
     assert replay["summary"]["terminatedWithError"] is False
-    assert simulator.delivered_products == {"out": 6}
+    assert simulator.delivered_products == {"part-0": 6}
     assert parsed["puzzleFile"] == "weeklies2026_aqueous-dagger"
