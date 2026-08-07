@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-08-07T01:15:00+00:00",
-  "status": "queued",
-  "stage": "a41-cycle-optimization",
+  "updatedAt": "2026-08-07T01:46:42.181968+00:00",
+  "status": "blocked",
+  "stage": "reference-required",
   "campaignId": "rotor-a41-cycle-001",
-  "mode": "retiming",
+  "mode": "a41-cycle-retiming",
   "depth": 0,
   "maxDepth": 0,
   "elapsedSeconds": 0,
@@ -13,11 +13,24 @@
   "bestScore": 1112,
   "bestPathLength": 0,
   "metrics": {
-    "baseline": {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302},
-    "best": {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302},
-    "improvement": {"cycles": 0, "instructions": 0},
+    "baseline": {
+      "cycles": 1112,
+      "cost": 220,
+      "area": 41,
+      "instructions": 302
+    },
+    "best": {
+      "cycles": 1112,
+      "cost": 220,
+      "area": 41,
+      "instructions": 302
+    },
+    "improvement": {
+      "cycles": 0,
+      "instructions": 0
+    },
     "testedCandidates": 0,
     "validCandidates": 0
   },
-  "message": "Ancienne recherche tail-search-v2 retiree. Bascule vers l'optimisation cycles de la reference A41 prioritaire."
+  "message": "Reference A41 1112/220/41/302 introuvable dans le dossier Opus Magnum et les sources de secours."
 }

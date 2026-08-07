@@ -3,7 +3,7 @@
   "campaignId": "rotor-a41-cycle-001",
   "stage": "reference-required",
   "status": "blocked",
-  "updatedAt": "2026-08-07T01:22:32.211158+00:00",
+  "updatedAt": "2026-08-07T01:46:42.181968+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,5 +37,6 @@
       }
     }
   ],
-  "message": "La solution A41 de référence n'a pas été trouvée dans le dépôt, Téléchargements, Bureau ou Documents du PC."
+  "message": "Reference A41 1112/220/41/302 introuvable dans le dossier Opus Magnum et les sources de secours.",
+  "elapsedSeconds": 0
 }
