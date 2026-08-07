@@ -10,6 +10,7 @@ import tools.run_rotor_a41_remote_cycle_campaign as campaign
 CACHE_PATH = Path("reports/rotor-a41-validator-cache.json")
 LEARNING_PATH = Path("reports/rotor-a41-retiming-learning.json")
 CACHE_NAMESPACE = f"{campaign.VALIDATOR_URL.rstrip('/')}{campaign.ANALYZE_ENDPOINT}"
+MAX_IDLE_JUMP = 8
 
 
 def load_learned_ranks(path: Path = LEARNING_PATH) -> dict[tuple[str, str], int]:
@@ -31,6 +32,51 @@ def load_learned_ranks(path: Path = LEARNING_PATH) -> dict[tuple[str, str], int]
         if part and instruction:
             ranks.setdefault((part, instruction), index)
     return ranks
+
+
+def expand_idle_window_shifts(
+    solution: dict[str, Any],
+    base_shifts: list[dict[str, Any]],
+    max_jump: int = MAX_IDLE_JUMP,
+) -> list[dict[str, Any]]:
+    """Expand one-cycle shifts within the existing idle gap of the same arm.
+
+    No candidate crosses the previous programmed instruction, so instruction
+    order is preserved. This exposes multi-cycle compression that a greedy
+    one-cycle hill climb can miss when intermediate shifts do not improve the
+    final cycle metric.
+    """
+    if max_jump <= 1:
+        return list(base_shifts)
+
+    parts = {str(part.get("id")): part for part in solution.get("parts", [])}
+    expanded: list[dict[str, Any]] = []
+    seen: set[tuple[str, int, int, str]] = set()
+
+    for shift in base_shifts:
+        part_id = str(shift.get("part") or "")
+        cycle = int(shift.get("cycle") or 0)
+        instruction = str(shift.get("instruction") or "")
+        part = parts.get(part_id)
+        if part is None:
+            continue
+
+        program = sorted(part.get("program", []), key=lambda item: int(item["cycle"]))
+        previous_cycles = [int(item["cycle"]) for item in program if int(item["cycle"]) < cycle]
+        previous_cycle = max(previous_cycles) if previous_cycles else -1
+        available_gap = max(0, cycle - previous_cycle - 1)
+        limit = min(max_jump, available_gap)
+
+        for jump in range(1, limit + 1):
+            candidate = dict(shift)
+            candidate["targetCycle"] = cycle - jump
+            candidate["jump"] = jump
+            key = (part_id, cycle, int(candidate["targetCycle"]), instruction)
+            if key not in seen:
+                seen.add(key)
+                expanded.append(candidate)
+
+    return expanded
 
 
 def reorder_shifts(shifts: list[dict[str, Any]], ranks: dict[tuple[str, str], int]) -> list[dict[str, Any]]:
@@ -93,7 +139,9 @@ def main() -> int:
         return result
 
     def candidate_shifts_learned(solution: dict[str, Any]) -> list[dict[str, Any]]:
-        return reorder_shifts(original_candidate_shifts(solution), learned_ranks)
+        base = original_candidate_shifts(solution)
+        expanded = expand_idle_window_shifts(solution, base)
+        return reorder_shifts(expanded, learned_ranks)
 
     def load_reference_prefer_best():
         generated = load_generated_best()
