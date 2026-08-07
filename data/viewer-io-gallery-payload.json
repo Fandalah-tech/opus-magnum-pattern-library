@@ -1,0 +1,35 @@
+{
+  "validation": {"status":"fixture","metrics":{"cycles":0,"cost":0,"area":0,"instructions":0}},
+  "puzzle": {
+    "name":"Input Output Molecule Preview Fixture",
+    "reagents":[{
+      "atoms":[
+        {"element":"salt","position":[0,0]},
+        {"element":"fire","position":[1,0]}
+      ],
+      "bonds":[{"from":[0,0],"to":[1,0],"type":"normal"}]
+    }],
+    "products":[{
+      "atoms":[
+        {"element":"water","position":[0,0]},
+        {"element":"air","position":[1,0]},
+        {"element":"quintessence","position":[0,1]}
+      ],
+      "bonds":[
+        {"from":[0,0],"to":[1,0],"type":"normal"},
+        {"from":[0,0],"to":[0,1],"type":"triplex"}
+      ]
+    }]
+  },
+  "solution": {
+    "name":"Station Molecule Preview Gallery",
+    "puzzleFile":"renderer-io-gallery",
+    "metrics":{"cycles":0,"cost":0,"area":0,"instructions":0},
+    "parts":[
+      {"id":"io-input","type":"input","enabled":true,"position":[-3,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"io-output","type":"out-std","enabled":true,"position":[3,0],"length":1,"rotation":1,"which":0,"armNumber":0,"program":[]}
+    ]
+  },
+  "graph":{"nodes":[],"edges":[]},
+  "replay":null
+}
