@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "campaignId": "rotor-a41-cycle-001",
-  "stage": "engine-validation-blocked",
+  "stage": "puzzle-required",
   "status": "blocked",
-  "updatedAt": "2026-08-07T02:12:33.075500+00:00",
+  "updatedAt": "2026-08-07T02:17:17.255217+00:00",
   "metrics": {
     "baseline": {
       "cycles": 1112,
@@ -37,7 +37,7 @@
       }
     }
   ],
-  "message": "OMSIM ne reproduit pas encore la reference A41: did-not-complete",
+  "message": "Puzzle binaire weeklies2026_van-berlos-rotor introuvable dans le dossier Opus Magnum/custom.",
   "elapsedSeconds": 0,
   "referenceFile": "van-berlos-rotor-a41-1112.solution",
   "referenceMatch": "embedded-fixture",
