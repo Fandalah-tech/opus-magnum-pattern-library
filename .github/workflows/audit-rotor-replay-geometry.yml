@@ -1,0 +1,26 @@
+name: Audit Rotor replay geometry
+
+on:
+  push:
+    branches: [feature/disjoint-solver-readiness]
+    paths:
+      - "tools/audit_rotor_replay_geometry.py"
+      - "reports/rotor-tail-best-candidate-replay.json"
+      - ".github/workflows/audit-rotor-replay-geometry.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit replay geometry
+        run: python tools/audit_rotor_replay_geometry.py
