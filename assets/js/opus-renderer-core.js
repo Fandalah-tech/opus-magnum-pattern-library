@@ -9,8 +9,28 @@
     quicksilver:'#b9c0c9',gold:'#d8ae45',silver:'#c4ccd4',copper:'#b87445',iron:'#777b80',
     tin:'#aeb3b4',lead:'#6f6578',vitae:'#f0d46a',mors:'#a48bb9',quintessence:'#e8c2ff',repeat:'#d7d7d7'
   };
+  const normalizeRotation = rotation => ((Number(rotation)||0)%6+6)%6;
   const axialToPixel = ([q=0,r=0]) => [HEX_SIZE * SQRT3 * (q + r / 2), -HEX_SIZE * 1.5 * r];
-  const direction = rotation => DIRECTIONS[((Number(rotation)||0)%6+6)%6];
+  const direction = rotation => DIRECTIONS[normalizeRotation(rotation)];
+  const hexPoints = (x, y, radius = HEX_SIZE * .9) => Array.from({ length: 6 }, (_, i) => {
+    const angle = Math.PI / 180 * (60 * i - 30);
+    return `${x + radius * Math.cos(angle)},${y + radius * Math.sin(angle)}`;
+  }).join(' ');
+  const partKind = (type='') => {
+    if (/^(arm|piston|baron)/.test(type)) return 'arm';
+    if (type === 'input') return 'input';
+    if (type.startsWith('out-')) return 'output';
+    if (type === 'track') return 'track';
+    if (type === 'conduit') return 'conduit';
+    if (type.startsWith('glyph-') || type === 'bonder' || type === 'unbonder') return 'glyph';
+    return 'part';
+  };
+  const boundsForHexes = (hexes=[]) => {
+    if (!hexes.length) return null;
+    const points = hexes.map(axialToPixel);
+    const xs = points.map(([x]) => x), ys = points.map(([,y]) => y);
+    return {minX:Math.min(...xs),maxX:Math.max(...xs),minY:Math.min(...ys),maxY:Math.max(...ys)};
+  };
   const armGeometry = state => {
     const origin = state?.origin || [0,0];
     const [dq,dr] = direction(state?.rotation);
@@ -30,5 +50,5 @@
     return [sx + (ex-sx)*t, sy + (ey-sy)*t];
   };
   const easeOutCubic = t => 1 - Math.pow(1 - Math.max(0,Math.min(1,t)),3);
-  window.OpusRendererCore = Object.freeze({NS,HEX_SIZE,SQRT3,DIRECTIONS,ELEMENT_COLORS,axialToPixel,direction,armGeometry,svgEl,interpolateHex,easeOutCubic});
+  window.OpusRendererCore = Object.freeze({NS,HEX_SIZE,SQRT3,DIRECTIONS,ELEMENT_COLORS,normalizeRotation,axialToPixel,direction,hexPoints,partKind,boundsForHexes,armGeometry,svgEl,interpolateHex,easeOutCubic});
 })();
