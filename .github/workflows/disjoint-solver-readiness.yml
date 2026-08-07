@@ -30,6 +30,7 @@ jobs:
             tests/test_a41_validator_cache.py \
             tests/test_a41_retiming_learning.py \
             tests/test_a41_adaptive_ordering.py \
+            tests/test_a41_fresh_generation.py \
             -q
 
       - name: Report A41 expanded search plan
