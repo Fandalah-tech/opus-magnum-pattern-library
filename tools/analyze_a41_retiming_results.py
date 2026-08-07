@@ -48,6 +48,17 @@ def _load_source() -> dict[str, Any]:
     raise FileNotFoundError("No remote A41 validation analysis/checkpoint is available")
 
 
+def _baseline_cycles(data: dict[str, Any]) -> int:
+    if data.get("baselineCycles") is not None:
+        return int(data["baselineCycles"])
+    baseline_response = data.get("baselineResponse")
+    if isinstance(baseline_response, dict):
+        metrics = baseline_response.get("metrics")
+        if isinstance(metrics, dict) and metrics.get("cycles") is not None:
+            return int(metrics["cycles"])
+    return 1112
+
+
 def _iter_results(data: dict[str, Any]):
     for round_data in data.get("rounds") or []:
         if not isinstance(round_data, dict):
@@ -61,7 +72,7 @@ def _iter_results(data: dict[str, Any]):
 
 
 def summarize(data: dict[str, Any]) -> dict[str, Any]:
-    baseline = int(data.get("baselineCycles") or 1112)
+    baseline = _baseline_cycles(data)
     groups: dict[tuple[str, str], dict[str, Any]] = defaultdict(
         lambda: {"tested": 0, "valid": 0, "improved": 0, "bestCycles": None, "cycleTotal": 0}
     )
