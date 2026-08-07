@@ -1,6 +1,6 @@
 param(
   [string]$RepositoryPath = "",
-  [int]$IntervalMinutes = 5
+  [int]$IntervalMinutes = 1
 )
 
 $ErrorActionPreference = 'Stop'
@@ -40,7 +40,11 @@ function Ensure-TaskSettings {
   try {
     $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Hours 6)
-    Set-ScheduledTask -TaskName $TaskName -Action $task.Actions -Trigger $task.Triggers -Settings $settings -Principal $task.Principal | Out-Null
+    $triggers = @(
+      (New-ScheduledTaskTrigger -AtStartup),
+      (New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes))
+    )
+    Set-ScheduledTask -TaskName $TaskName -Action $task.Actions -Trigger $triggers -Settings $settings -Principal $task.Principal | Out-Null
   } catch {
     Write-AgentLog "Reglage de la tache ignore: $($_.Exception.Message)"
   }
@@ -101,16 +105,38 @@ function Sync-Repository {
   } finally { Pop-Location }
 }
 
+function Get-TaskPriority {
+  param([System.IO.FileInfo]$TaskFile)
+  try {
+    $data = Get-Content -Raw -Path $TaskFile.FullName | ConvertFrom-Json
+    if ($null -ne $data.priority) { return [int]$data.priority }
+  } catch {
+    Write-AgentLog "Priorite illisible pour $($TaskFile.Name): $($_.Exception.Message)"
+  }
+  return 0
+}
+
 function Process-NextTask {
   param([string]$Repo)
   $pending = Join-Path $Repo '.om-bridge\tasks\pending'
   if (-not (Test-Path $pending)) { return }
-  $task = Get-ChildItem -Path $pending -Filter '*.json' -File | Sort-Object LastWriteTime, Name | Select-Object -First 1
-  if (-not $task) { Write-AgentLog 'File locale vide.'; return }
+
+  $tasks = @(Get-ChildItem -Path $pending -Filter '*.json' -File)
+  if ($tasks.Count -eq 0) { Write-AgentLog 'File locale vide.'; return }
+
+  $ranked = foreach ($candidate in $tasks) {
+    [PSCustomObject]@{
+      File = $candidate
+      Priority = Get-TaskPriority -TaskFile $candidate
+      Modified = $candidate.LastWriteTimeUtc
+    }
+  }
+  $selected = $ranked | Sort-Object @{Expression='Priority';Descending=$true}, @{Expression='Modified';Descending=$false}, @{Expression={ $_.File.Name };Descending=$false} | Select-Object -First 1
+  $task = $selected.File
 
   Push-Location $Repo
   try {
-    Write-AgentLog "Execution directe de la tache: $($task.Name)"
+    Write-AgentLog "Execution directe PRIORITE=$($selected.Priority): $($task.Name)"
     $env:PYTHONPATH = $Repo
     & python tools/om_worker.py --task $task.FullName --results-root '.om-bridge/results'
     $exitCode = $LASTEXITCODE
