@@ -1,0 +1,124 @@
+name: Scene renderer smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "viewer.html"
+      - "assets/js/opus-scene.js"
+      - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-renderer-core.js"
+      - "assets/js/opus-geometry.js"
+      - "assets/js/opus-piece-symbols.js"
+      - "assets/js/opus-viewer-runtime.js"
+      - "data/viewer-arm-gallery-payload.json"
+      - "data/viewer-piece-gallery-payload.json"
+      - ".github/workflows/scene-renderer-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scene-renderer-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip playwright
+          python -m playwright install --with-deps chromium
+      - name: Compare canonical scene renderer with Viewer structure
+        run: |
+          python -m http.server 8765 >/tmp/scene-renderer-http.log 2>&1 &
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page(viewport={'width': 1500, 'height': 960})
+              errors = []
+              page.on('pageerror', lambda exc: errors.append(str(exc)))
+
+              def render_fixture(name):
+                  page.goto(f'http://127.0.0.1:8765/viewer.html?fixture={name}', wait_until='networkidle', timeout=120000)
+                  page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+                  page.wait_for_timeout(180)
+                  result = page.evaluate("""() => {
+                    const root = document.querySelector('#solution-viewer');
+                    const scene = window.OpusViewerRuntime.currentScene(root);
+                    if (!scene) throw new Error('runtime did not retain a canonical scene');
+                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    const world = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                    svg.append(world);
+                    document.body.append(svg);
+                    const renderer = window.OpusSvgRenderer.create(world);
+                    renderer.render(scene);
+                    const summarize = scope => ({
+                      parts: scope.querySelectorAll('[data-part-id]').length,
+                      arms: scope.querySelectorAll('[data-part-kind="arm"]').length,
+                      shafts: scope.querySelectorAll('[data-arm-shaft]').length,
+                      tracks: scope.querySelectorAll('.viewer-track-rail').length,
+                      footprintPolygons: scope.querySelectorAll('.viewer-piece-footprint > polygon').length,
+                      layers: scope.querySelectorAll('[data-viewer-layer]').length
+                    });
+                    const nativeWorld = root.querySelector('[data-viewer-world]');
+                    return {
+                      native: summarize(nativeWorld),
+                      scene: summarize(world),
+                      sceneKind: scene.kind,
+                      sceneVersion: scene.schemaVersion,
+                      sceneParts: scene.static.parts.length,
+                      occupied: scene.static.occupiedCells.length,
+                      frameCount: scene.timeline.frames.length
+                    };
+                  }""")
+                  assert result['sceneKind'] == 'opus-scene'
+                  assert result['sceneVersion'] == '0.1.0'
+                  assert result['sceneParts'] == result['native']['parts']
+                  for key in ('parts', 'arms', 'shafts', 'tracks', 'footprintPolygons', 'layers'):
+                      assert result['native'][key] == result['scene'][key], (name, key, result)
+                  return result
+
+              arms = render_fixture('arms')
+              assert arms['sceneParts'] == 6
+              assert arms['scene']['shafts'] == 19
+
+              pieces = render_fixture('pieces')
+              assert pieces['sceneParts'] >= 17
+              assert pieces['scene']['tracks'] == 1
+              assert pieces['occupied'] > pieces['sceneParts']
+
+              # Scene frame selection is state-only and must not mutate the source scene.
+              page.goto('http://127.0.0.1:8765/viewer.html?fixture=demo', wait_until='networkidle', timeout=120000)
+              page.wait_for_function("document.body.dataset.viewerDemoReady === 'true'", timeout=30000)
+              frame_state = page.evaluate("""() => {
+                const root = document.querySelector('#solution-viewer');
+                const original = window.OpusViewerRuntime.currentScene(root);
+                const selected = window.OpusViewerRuntime.sceneAtFrame(2, root);
+                return {
+                  originalIndex: original.timeline.frameIndex,
+                  selectedIndex: selected.timeline.frameIndex,
+                  selectedCycle: selected.timeline.frame.displayCycle,
+                  armCount: selected.timeline.frame.arms.length,
+                  moleculeCount: selected.timeline.frame.molecules.length
+                };
+              }""")
+              assert frame_state['originalIndex'] == 0
+              assert frame_state['selectedIndex'] == 2
+              assert frame_state['selectedCycle'] == 2
+              assert frame_state['armCount'] >= 2
+              assert frame_state['moleculeCount'] >= 1
+
+              if errors:
+                  raise AssertionError('Browser errors: ' + ' | '.join(errors))
+              browser.close()
+          PY
