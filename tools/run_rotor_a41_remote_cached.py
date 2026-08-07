@@ -45,10 +45,32 @@ def reorder_shifts(shifts: list[dict[str, Any]], ranks: dict[tuple[str, str], in
     return [shift for _, shift in indexed]
 
 
+def load_generated_best() -> tuple[dict[str, Any] | None, str | None, str | None]:
+    path = campaign.BEST_PARSED
+    if not path.is_file():
+        return None, None, None
+    try:
+        model = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None, None, None
+    if not isinstance(model, dict):
+        return None, None, None
+    metrics = model.get("metrics") if isinstance(model.get("metrics"), dict) else {}
+    try:
+        cycles = int(metrics.get("cycles"))
+        area = int(metrics.get("area"))
+    except (TypeError, ValueError):
+        return None, None, None
+    if area != 41 or cycles >= int(campaign.REFERENCE_METRICS["cycles"]):
+        return None, None, None
+    return model, campaign.BEST_SOLUTION.name, "validated-omsim-best"
+
+
 def main() -> int:
     cache = ValidatorCache(CACHE_PATH, CACHE_NAMESPACE)
     original_validate = campaign.validate_remote
     original_candidate_shifts = campaign.candidate_shifts
+    original_load_reference = campaign.load_reference
     learned_ranks = load_learned_ranks()
 
     def validate_cached(puzzle_path: Path, solution: dict[str, Any], name: str) -> dict[str, Any]:
@@ -73,8 +95,15 @@ def main() -> int:
     def candidate_shifts_learned(solution: dict[str, Any]) -> list[dict[str, Any]]:
         return reorder_shifts(original_candidate_shifts(solution), learned_ranks)
 
+    def load_reference_prefer_best():
+        generated = load_generated_best()
+        if generated[0] is not None:
+            return generated
+        return original_load_reference()
+
     campaign.validate_remote = validate_cached
     campaign.candidate_shifts = candidate_shifts_learned
+    campaign.load_reference = load_reference_prefer_best
     return campaign.main()
 
 
