@@ -32,14 +32,13 @@
     return Boolean(target?.closest?.('[data-part-id], [data-atom-id], [data-molecule-id]'));
   }
 
-  window.addEventListener('opus:analysisready', (event) => {
+  window.addEventListener('opus:sceneready', (event) => {
     viewer = event.detail?.viewer || viewer;
     window.__OPUS_VIEWER__ = viewer;
-    window.__OPUS_LAST_ANALYSIS__ = event.detail?.payload || null;
+    window.__OPUS_LAST_SCENE__ = event.detail?.scene || null;
     window.__OPUS_CLEAR_SELECTION__ = clearSelection;
     window.__OPUS_CAPTURE_READY__ = true;
 
-    // The board is the useful default state: no dimming and no selection glow.
     clearSelection();
 
     const svg = viewer?.svg || root.querySelector('svg');
