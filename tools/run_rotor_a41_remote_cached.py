@@ -8,6 +8,7 @@ from tools.a41_validator_cache import ValidatorCache, solution_fingerprint
 import tools.run_rotor_a41_remote_cycle_campaign as campaign
 
 CACHE_PATH = Path("reports/rotor-a41-validator-cache.json")
+CACHE_STATS_PATH = Path("reports/rotor-a41-validator-cache-stats.json")
 LEARNING_PATH = Path("reports/rotor-a41-retiming-learning.json")
 CACHE_NAMESPACE = f"{campaign.VALIDATOR_URL.rstrip('/')}{campaign.ANALYZE_ENDPOINT}"
 MAX_IDLE_JUMP = 8
@@ -112,8 +113,27 @@ def load_generated_best() -> tuple[dict[str, Any] | None, str | None, str | None
     return model, campaign.BEST_SOLUTION.name, "validated-omsim-best"
 
 
+def write_cache_stats(*, entries_before: int, cache: ValidatorCache, hits: int, misses: int) -> None:
+    total = hits + misses
+    payload = {
+        "schemaVersion": 1,
+        "namespace": CACHE_NAMESPACE,
+        "entriesBefore": entries_before,
+        "entriesAfter": len(cache),
+        "hits": hits,
+        "misses": misses,
+        "requests": total,
+        "hitRate": round(hits / total, 4) if total else 0,
+        "remoteCallsAvoided": hits,
+    }
+    CACHE_STATS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_STATS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     cache = ValidatorCache(CACHE_PATH, CACHE_NAMESPACE)
+    entries_before = len(cache)
+    stats = {"hits": 0, "misses": 0}
     original_validate = campaign.validate_remote
     original_candidate_shifts = campaign.candidate_shifts
     original_load_reference = campaign.load_reference
@@ -123,10 +143,12 @@ def main() -> int:
         fingerprint = solution_fingerprint(campaign.encode_solution(solution))
         cached = cache.get(fingerprint)
         if cached is not None:
+            stats["hits"] += 1
             cached["cacheHit"] = True
             cached["fingerprint"] = fingerprint
             return cached
 
+        stats["misses"] += 1
         result = original_validate(puzzle_path, solution, name)
         result["cacheHit"] = False
         result["fingerprint"] = fingerprint
@@ -152,7 +174,15 @@ def main() -> int:
     campaign.validate_remote = validate_cached
     campaign.candidate_shifts = candidate_shifts_learned
     campaign.load_reference = load_reference_prefer_best
-    return campaign.main()
+    try:
+        return campaign.main()
+    finally:
+        write_cache_stats(
+            entries_before=entries_before,
+            cache=cache,
+            hits=stats["hits"],
+            misses=stats["misses"],
+        )
 
 
 if __name__ == "__main__":
