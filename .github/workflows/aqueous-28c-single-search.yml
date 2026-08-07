@@ -1,11 +1,11 @@
-name: Aqueous 28c single search
+name: Aqueous 27c Evolution Dashboard
 
 on:
   pull_request:
     paths:
       - tools/search_aqueous_28c_single.py
-      - fixtures/weeklies2026/aqueous-dagger-28c-single-reference.solution.b64
-      - fixtures/weeklies2026/aqueous-dagger-19c-double-reference.solution.b64
+      - tools/validate_aqueous_offsets.py
+      - fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
       - .github/workflows/aqueous-28c-single-search.yml
   workflow_dispatch:
 
@@ -15,13 +15,16 @@ permissions:
 env:
   PYTHONPATH: ${{ github.workspace }}
   VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-27c-evolution
 
 jobs:
   search:
+    name: 27c → 26c search
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Materialize references
+
+      - name: Materialize puzzle + 27c seed
         run: |
           mkdir -p reports
           python - <<'PY'
@@ -29,28 +32,92 @@ jobs:
           from pathlib import Path
           for src,dst in [
             ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64','reports/aqueous-dagger.puzzle'),
-            ('fixtures/weeklies2026/aqueous-dagger-28c-single-reference.solution.b64','reports/single28.solution'),
-            ('fixtures/weeklies2026/aqueous-dagger-19c-double-reference.solution.b64','reports/double19.solution')]:
+            ('fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64','reports/single27.solution')]:
               Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
           PY
-      - name: Validate exact references
+
+      - name: Validate 27c seed
         run: |
-          for f in single28 double19; do
-            curl --fail-with-body -sS -F "puzzle=@reports/aqueous-dagger.puzzle" -F "solution=@reports/${f}.solution" "${VALIDATOR_URL}/api/v1/analyze" > "reports/${f}.json"
-            python - "$f" <<'PY'
-          import json,sys
+          curl --fail-with-body -sS \
+            -F "puzzle=@reports/aqueous-dagger.puzzle" \
+            -F "solution=@reports/single27.solution" \
+            "${VALIDATOR_URL}/api/v1/analyze" > reports/single27.json
+          python - <<'PY'
+          import json
           from pathlib import Path
-          f=sys.argv[1]
-          v=json.loads(Path(f'reports/{f}.json').read_text()).get('validation',{})
-          print(f, json.dumps(v, indent=2))
-          if not v.get('valid'): raise SystemExit(f'{f} invalid')
+          v=json.loads(Path('reports/single27.json').read_text()).get('validation',{})
+          print(json.dumps(v, indent=2))
+          if not v.get('valid') or v.get('metrics',{}).get('cycles') != 27:
+              raise SystemExit('27c seed did not validate as expected')
           PY
-          done
-      - name: Generate targeted 28c variants
-        run: python tools/search_aqueous_28c_single.py
-      - name: Search for 27c or 26c
+
+      - name: Generate mutations from 27c
+        run: >-
+          python tools/search_aqueous_28c_single.py
+          --fixture fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
+          --out "${SEARCH_DIR}"
+
+      - name: 🔴 LIVE SEARCH — watch this step
         run: >-
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
-          --variants reports/aqueous-28c-single-search
+          --variants "${SEARCH_DIR}"
           --workers 24
+          --progress-every 10
+
+      - name: Build visual dashboard
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          p=root/'results.json'
+          if not p.exists():
+              Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('# Aqueous Dagger — Evolution Dashboard\n\nSearch did not produce results.json.\n')
+              raise SystemExit(0)
+          r=json.loads(p.read_text())
+          best=r.get('best') or {}
+          m=best.get('metrics') or {}
+          tested=r.get('tested',0)
+          valid=len(r.get('valid') or [])
+          target=26
+          bestc=m.get('cycles','—')
+          hit = isinstance(bestc,int) and bestc <= target
+          status='✅ TARGET REACHED' if hit else '🟡 SEARCH COMPLETE'
+          mutation=best.get('kind','—')
+          lines=[
+            '# Aqueous Dagger — Evolution Dashboard',
+            '',
+            f'## {status}',
+            '',
+            '| Metric | Value |',
+            '|---|---:|',
+            f'| Seed | **27 cycles** |',
+            f'| Best | **{bestc} cycles** |',
+            f'| Target | **{target} cycles** |',
+            f'| Candidates tested | **{tested}** |',
+            f'| Valid candidates | **{valid}** |',
+            f'| Valid rate | **{(100*valid/tested if tested else 0):.1f}%** |',
+            f'| Best mutation | `{mutation}` |',
+            '',
+            '### Best candidate',
+            '',
+            '```json',
+            json.dumps(best, indent=2),
+            '```',
+            '',
+            'The downloadable best `.solution` is attached to this workflow run as **aqueous-best-solution**.'
+          ]
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
+          PY
+
+      - name: Upload best solution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-best-solution
+          path: |
+            ${{ env.SEARCH_DIR }}/best.solution
+            ${{ env.SEARCH_DIR }}/results.json
+          if-no-files-found: warn
