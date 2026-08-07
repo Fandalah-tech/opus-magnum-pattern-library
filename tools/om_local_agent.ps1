@@ -6,12 +6,32 @@ param(
 $ErrorActionPreference = 'Stop'
 $AgentRoot = Join-Path $env:ProgramData 'OpusMagnumAgent'
 $LogPath = Join-Path $AgentRoot 'agent.log'
+$InstalledScript = Join-Path $AgentRoot 'om_local_agent.ps1'
+$RawSelfUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_local_agent.ps1'
 New-Item -ItemType Directory -Force -Path $AgentRoot | Out-Null
 
 function Write-AgentLog {
   param([string]$Message)
   $line = "{0:u} {1}" -f (Get-Date), $Message
   Add-Content -Path $LogPath -Value $line -Encoding UTF8
+}
+
+function Update-Self {
+  try {
+    $temp = Join-Path $AgentRoot 'om_local_agent.next.ps1'
+    Invoke-WebRequest -Uri ($RawSelfUrl + '?t=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()) -OutFile $temp -UseBasicParsing
+    if ((Get-Item $temp).Length -lt 500) { throw 'Téléchargement incomplet.' }
+    $currentHash = if (Test-Path $InstalledScript) { (Get-FileHash $InstalledScript -Algorithm SHA256).Hash } else { '' }
+    $nextHash = (Get-FileHash $temp -Algorithm SHA256).Hash
+    if ($currentHash -ne $nextHash) {
+      Copy-Item $temp $InstalledScript -Force
+      Unblock-File $InstalledScript
+      Write-AgentLog 'Agent local mis à jour; la nouvelle version sera utilisée au prochain passage.'
+    }
+    Remove-Item $temp -Force -ErrorAction SilentlyContinue
+  } catch {
+    Write-AgentLog "Mise à jour autonome ignorée: $($_.Exception.Message)"
+  }
 }
 
 function Find-Repository {
@@ -43,14 +63,8 @@ function Ensure-RunnerService {
     Where-Object { $_.Name -match 'opus-magnum-pattern-library|Bruno-OMSIM|Fandalah' } |
     Select-Object -First 1
 
-  if (-not $service) {
-    $service = Get-Service -Name 'actions.runner.*' -ErrorAction SilentlyContinue | Select-Object -First 1
-  }
-
-  if (-not $service) {
-    Write-AgentLog 'Aucun service GitHub Actions Runner détecté.'
-    return
-  }
+  if (-not $service) { $service = Get-Service -Name 'actions.runner.*' -ErrorAction SilentlyContinue | Select-Object -First 1 }
+  if (-not $service) { Write-AgentLog 'Aucun service GitHub Actions Runner détecté.'; return }
 
   Set-Service -Name $service.Name -StartupType Automatic
   if ($service.Status -ne 'Running') {
@@ -64,19 +78,12 @@ function Ensure-RunnerService {
 
 function Sync-Repository {
   param([string]$Repo)
-  if (-not $Repo) {
-    Write-AgentLog 'Dépôt local introuvable; synchronisation ignorée.'
-    return
-  }
+  if (-not $Repo) { Write-AgentLog 'Dépôt local introuvable; synchronisation ignorée.'; return }
 
   Push-Location $Repo
   try {
     $dirty = git status --porcelain 2>$null
-    if ($LASTEXITCODE -ne 0) {
-      Write-AgentLog 'Git est inaccessible ou le dépôt est invalide.'
-      return
-    }
-
+    if ($LASTEXITCODE -ne 0) { Write-AgentLog 'Git est inaccessible ou le dépôt est invalide.'; return }
     git fetch origin feature/disjoint-solver-readiness --prune 2>&1 | ForEach-Object { Write-AgentLog $_ }
     if (-not $dirty) {
       $branch = git branch --show-current
@@ -86,9 +93,7 @@ function Sync-Repository {
     } else {
       Write-AgentLog 'Modifications locales détectées; pull automatique ignoré.'
     }
-  } finally {
-    Pop-Location
-  }
+  } finally { Pop-Location }
 }
 
 function Prevent-Sleep {
@@ -98,6 +103,7 @@ function Prevent-Sleep {
 }
 
 try {
+  Update-Self
   Prevent-Sleep
   Ensure-RunnerService
   $repo = Find-Repository
