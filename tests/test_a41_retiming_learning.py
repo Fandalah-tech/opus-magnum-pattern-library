@@ -1,4 +1,4 @@
-from tools.analyze_a41_retiming_results import summarize
+from tools.analyze_a41_retiming_results import _baseline_cycles, summarize
 
 
 def test_summarize_ranks_improving_instruction_groups_first():
@@ -19,3 +19,17 @@ def test_summarize_ranks_improving_instruction_groups_first():
     assert result["byPartInstruction"][0]["instruction"] == "rotate_cw"
     assert result["byPartInstruction"][0]["improved"] == 1
     assert result["byPartInstruction"][0]["bestCycles"] == 1108
+
+
+def test_remote_analysis_baseline_comes_from_validator_metrics():
+    data = {
+        "baselineResponse": {"metrics": {"cycles": 1100}},
+        "rounds": [{"candidates": [
+            {"shift": {"part": "part-1", "instruction": "rotate_cw", "cycle": 100}, "valid": True, "cycles": 1105},
+            {"shift": {"part": "part-1", "instruction": "rotate_cw", "cycle": 120}, "valid": True, "cycles": 1099},
+        ]}],
+    }
+    assert _baseline_cycles(data) == 1100
+    result = summarize(data)
+    assert result["baselineCycles"] == 1100
+    assert result["byPartInstruction"][0]["improved"] == 1
