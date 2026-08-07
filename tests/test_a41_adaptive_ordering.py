@@ -2,11 +2,13 @@ import json
 from pathlib import Path
 
 import tools.run_rotor_a41_remote_cached as cached
+from tools.a41_validator_cache import ValidatorCache
 from tools.run_rotor_a41_remote_cached import (
     expand_idle_window_shifts,
     load_generated_best,
     load_learned_ranks,
     reorder_shifts,
+    write_cache_stats,
 )
 
 
@@ -74,7 +76,7 @@ def test_real_a41_fixture_expands_search_without_exceeding_campaign_budget():
     base = cached.campaign.candidate_shifts(solution)
     expanded = expand_idle_window_shifts(solution, base, max_jump=cached.MAX_IDLE_JUMP)
     assert len(base) == 34
-    assert len(expanded) > len(base)
+    assert len(expanded) == 150
     assert len(expanded) <= cached.campaign.MAX_CANDIDATES
 
 
@@ -101,3 +103,20 @@ def test_generated_best_is_preferred_only_when_it_improves_a41(tmp_path: Path, m
 
     best.write_text(json.dumps({"metrics": {"cycles": 1090, "area": 42}}), encoding="utf-8")
     assert load_generated_best() == (None, None, None)
+
+
+def test_cache_stats_report_counts_avoided_remote_calls(tmp_path: Path, monkeypatch):
+    cache = ValidatorCache(tmp_path / "cache.json", cached.CACHE_NAMESPACE)
+    cache.put("a", {"ok": True})
+    cache.put("b", {"ok": True})
+    output = tmp_path / "stats.json"
+    monkeypatch.setattr(cached, "CACHE_STATS_PATH", output)
+
+    write_cache_stats(entries_before=1, cache=cache, hits=3, misses=2)
+
+    stats = json.loads(output.read_text(encoding="utf-8"))
+    assert stats["entriesBefore"] == 1
+    assert stats["entriesAfter"] == 2
+    assert stats["requests"] == 5
+    assert stats["hitRate"] == 0.6
+    assert stats["remoteCallsAvoided"] == 3
