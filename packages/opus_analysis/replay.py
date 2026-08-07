@@ -41,7 +41,13 @@ def _rotate_point(point: list[int], center: list[int], steps: int) -> list[int]:
 
 
 def _branch_offsets(part_type: str) -> list[int]:
-    return list(range(6)) if part_type == "arm6" else [0]
+    if part_type == "arm2":
+        return [0, 3]
+    if part_type == "arm3":
+        return [0, 2, 4]
+    if part_type in {"arm6", "baron"}:
+        return [0, 1, 2, 3, 4, 5]
+    return [0]
 
 
 def _tips(state: dict[str, Any]) -> list[dict[str, Any]]:
@@ -55,7 +61,11 @@ def _tips(state: dict[str, Any]) -> list[dict[str, Any]]:
 
 def _track_cells(solution: dict[str, Any]) -> list[list[int]]:
     tracks = [part for part in solution.get("parts", []) if part.get("type") == "track"]
-    return [list(cell) for cell in (tracks[0].get("trackHexes") or [])] if tracks else []
+    if not tracks:
+        return []
+    track = tracks[0]
+    origin = list(track.get("position") or [0, 0])
+    return [_add(origin, list(cell)) for cell in (track.get("trackHexes") or [])]
 
 
 def _initial_arm_state(part: dict[str, Any], track: list[list[int]]) -> dict[str, Any]:
