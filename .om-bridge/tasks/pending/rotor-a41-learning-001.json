@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-learning-001",
+  "operation": "analyze_a41_retiming_results",
+  "priority": 9400,
+  "timeout_seconds": 300,
+  "notes": "Run immediately after canonical A41-009 to learn which parts/instruction classes yield valid or improving retimings. Produces reports/rotor-a41-retiming-learning.json for the next campaign."
+}
