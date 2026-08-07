@@ -7,25 +7,31 @@ param(
 $ErrorActionPreference = 'Stop'
 $AgentRoot = Join-Path $env:LOCALAPPDATA 'OpusMagnumAgent'
 $AgentScript = Join-Path $AgentRoot 'om_local_agent.ps1'
+$WatchdogScript = Join-Path $AgentRoot 'om_agent_watchdog.ps1'
 $TaskName = 'Opus Magnum User Agent'
 $OldTaskName = 'Opus Magnum Local Agent'
-$RawUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_local_agent.ps1'
+$AgentRawUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_local_agent.ps1'
+$WatchdogRawUrl = 'https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/main/tools/om_agent_watchdog.ps1'
 $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 
 New-Item -ItemType Directory -Force -Path $AgentRoot | Out-Null
-Invoke-WebRequest -Uri ($RawUrl + '?t=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()) -OutFile $AgentScript -UseBasicParsing
-Unblock-File -Path $AgentScript
+$stamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+Invoke-WebRequest -Uri ($AgentRawUrl + '?t=' + $stamp) -OutFile $AgentScript -UseBasicParsing
+Invoke-WebRequest -Uri ($WatchdogRawUrl + '?t=' + $stamp) -OutFile $WatchdogScript -UseBasicParsing
+Unblock-File -Path $AgentScript -ErrorAction SilentlyContinue
+Unblock-File -Path $WatchdogScript -ErrorAction SilentlyContinue
 
 if ($RepositoryPath) { $RepositoryPath = (Resolve-Path $RepositoryPath).Path }
 
-# Remove the previous SYSTEM-based scheduled task if it exists. This does not
-# remove or disable the legacy GitHub Actions Runner service; migration remains reversible.
 if (Get-ScheduledTask -TaskName $OldTaskName -ErrorAction SilentlyContinue) {
   try { Stop-ScheduledTask -TaskName $OldTaskName -ErrorAction SilentlyContinue } catch {}
   Unregister-ScheduledTask -TaskName $OldTaskName -Confirm:$false
 }
+if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
+  try { Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue } catch {}
+}
 
-$arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$AgentScript`" -Command Run -MaxCpuPercent $MaxCpuPercent -IdleSeconds $IdleSeconds"
+$arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$WatchdogScript`" -MaxCpuPercent $MaxCpuPercent -IdleSeconds $IdleSeconds"
 if ($RepositoryPath) { $arguments += " -RepositoryPath `"$RepositoryPath`"" }
 
 $action = New-ScheduledTaskAction -Execute 'PowerShell.exe' -Argument $arguments
@@ -34,13 +40,14 @@ $settings = New-ScheduledTaskSettingsSet `
   -AllowStartIfOnBatteries `
   -DontStopIfGoingOnBatteries `
   -StartWhenAvailable `
+  -RestartCount 999 `
+  -RestartInterval (New-TimeSpan -Minutes 1) `
   -MultipleInstances IgnoreNew `
   -ExecutionTimeLimit ([TimeSpan]::Zero)
 $principal = New-ScheduledTaskPrincipal -UserId $CurrentUser -LogonType Interactive -RunLevel Limited
-$task = New-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description 'OM Agent interactif: surveille Opus Magnum, traite la file OMSIM et respecte la limite CPU configuree.'
+$task = New-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description 'OM Agent watchdog interactif: relance automatiquement l agent, empeche la veille pendant le calcul et traite la file OMSIM.'
 Register-ScheduledTask -TaskName $TaskName -InputObject $task -Force | Out-Null
 
-# Convenience launchers. They execute in the signed-in user session and require no elevation.
 $commands = @{
   'OM Agent - Start.cmd' = 'Start'
   'OM Agent - Pause.cmd' = 'Pause'
@@ -55,24 +62,23 @@ foreach ($entry in $commands.GetEnumerator()) {
   Set-Content -Path $path -Value $line -Encoding ASCII
 }
 
-# Start immediately in this user's session.
-$startArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File',$AgentScript,'-Command','Start','-MaxCpuPercent',$MaxCpuPercent,'-IdleSeconds',$IdleSeconds)
-if ($RepositoryPath) { $startArgs += @('-RepositoryPath',$RepositoryPath) }
-& PowerShell.exe @startArgs
-Start-Sleep -Seconds 2
+Start-ScheduledTask -TaskName $TaskName
+Start-Sleep -Seconds 4
 $status = & PowerShell.exe -NoProfile -ExecutionPolicy Bypass -File $AgentScript -Command Status
 
 $runner = Get-Service -Name 'actions.runner.*' -ErrorAction SilentlyContinue | Select-Object -First 1
 Write-Host ''
 Write-Host 'OM Agent utilisateur installe.' -ForegroundColor Green
 Write-Host "Utilisateur : $CurrentUser"
-Write-Host "Tache au logon : $TaskName"
+Write-Host "Tache watchdog au logon : $TaskName"
 Write-Host "Agent : $AgentScript"
+Write-Host "Watchdog : $WatchdogScript"
 Write-Host "Commandes : $AgentRoot\OM Agent - Start/Pause/Stop/Status.cmd"
 Write-Host "CPU max configure : $MaxCpuPercent%"
-Write-Host "Journal : $AgentRoot\agent.log"
+Write-Host "Journal agent : $AgentRoot\agent.log"
+Write-Host "Journal watchdog : $AgentRoot\watchdog.log"
 if ($runner) {
-  Write-Host "Runner historique : $($runner.Status) ($($runner.Name)) - laisse intact pendant la migration."
+  Write-Host "Runner historique : $($runner.Status) ($($runner.Name)) - non requis par l OM Agent."
 }
 Write-Host ''
 Write-Host 'Etat courant :'
