@@ -4,386 +4,183 @@
       "label": "single-arm-frontier",
       "found": false,
       "depth": 13,
-      "bestScore": 336,
-      "visitedStates": 12968,
-      "expandedStates": 1828,
+      "bestScore": 96,
+      "visitedStates": 7987,
+      "expandedStates": 1722,
       "stoppedReason": "time-limit",
       "macros": [],
       "actions": [
         {
-          "part-12": "rotate_cw"
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
         },
         {
           "part-10": "grab"
         },
         {
-          "part-10": "retract"
-        },
-        {
-          "part-10": "rotate_ccw"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
           "part-10": "rotate_cw"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "drop"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "grab"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
-          "part-12": "rotate_ccw"
         }
       ],
-      "matchedPositions": 8,
-      "matchedEdges": 1,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
       "matchRotation": 0,
       "matchTranslation": [
-        0,
-        -3
+        3,
+        -1
       ],
-      "eligibleAtomCount": 12,
+      "eligibleAtomCount": 5,
       "targetAtomCount": 13,
       "targetBondCount": 6,
-      "bestAtomCount": 18,
-      "bestBondCount": 1
+      "bestAtomCount": 11,
+      "bestBondCount": 0
     },
     {
       "label": "coordinated-refinement",
       "found": false,
       "depth": 5,
-      "bestScore": 456,
-      "visitedStates": 6528,
-      "expandedStates": 371,
+      "bestScore": 96,
+      "visitedStates": 3862,
+      "expandedStates": 309,
       "stoppedReason": "time-limit",
       "macros": [],
       "actions": [
         {
-          "part-12": "rotate_cw"
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
         },
         {
           "part-10": "grab"
         },
         {
-          "part-10": "retract"
-        },
-        {
-          "part-10": "rotate_ccw"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
           "part-10": "rotate_cw"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "drop"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "grab"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
-          "part-12": "rotate_ccw"
-        },
-        {
-          "part-10": "extend",
-          "part-12": "rotate_cw"
-        },
-        {
-          "part-10": "track_minus",
-          "part-12": "pivot_cw"
-        },
-        {
-          "part-10": "track_minus",
-          "part-12": "track_plus"
         }
       ],
-      "matchedPositions": 7,
-      "matchedEdges": 2,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
       "matchRotation": 0,
       "matchTranslation": [
-        0,
+        3,
         -1
       ],
-      "eligibleAtomCount": 12,
+      "eligibleAtomCount": 5,
       "targetAtomCount": 13,
       "targetBondCount": 6,
-      "bestAtomCount": 18,
-      "bestBondCount": 2
+      "bestAtomCount": 11,
+      "bestBondCount": 0
     },
     {
       "label": "edge-plateau-position-refinement",
       "found": false,
-      "depth": 5,
-      "bestScore": 23750,
-      "visitedStates": 6967,
-      "expandedStates": 358,
+      "depth": 4,
+      "bestScore": 0,
+      "visitedStates": 3987,
+      "expandedStates": 309,
       "stoppedReason": "time-limit",
       "macros": [],
       "actions": [
         {
-          "part-12": "rotate_cw"
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
         },
         {
           "part-10": "grab"
         },
         {
-          "part-10": "retract"
-        },
-        {
-          "part-10": "rotate_ccw"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
-          "part-10": "rotate_cw"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "drop"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "grab"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
-          "part-12": "rotate_ccw"
-        },
-        {
-          "part-10": "extend",
-          "part-12": "rotate_cw"
-        },
-        {
-          "part-10": "track_minus",
-          "part-12": "pivot_cw"
-        },
-        {
-          "part-10": "track_minus",
-          "part-12": "track_plus"
-        },
-        {
-          "part-10": "retract",
-          "part-12": "track_plus"
-        },
-        {
           "part-10": "rotate_cw"
         }
       ],
-      "matchedPositions": 8,
-      "matchedEdges": 2,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
       "matchRotation": 0,
       "matchTranslation": [
-        1,
+        3,
         -1
       ],
-      "eligibleAtomCount": 12,
+      "eligibleAtomCount": 5,
       "targetAtomCount": 13,
       "targetBondCount": 6,
-      "bestAtomCount": 18,
-      "bestBondCount": 2
+      "bestAtomCount": 11,
+      "bestBondCount": 0
     },
     {
-      "label": "fixed-inventory-macro-refinement",
+      "label": "controlled-inventory-transition",
       "found": false,
-      "depth": 3,
-      "bestScore": 23750,
-      "visitedStates": 2660,
-      "expandedStates": 94,
+      "depth": 4,
+      "bestScore": 0,
+      "visitedStates": 5267,
+      "expandedStates": 432,
       "stoppedReason": "time-limit",
       "macros": [],
       "actions": [
         {
-          "part-12": "rotate_cw"
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
         },
         {
           "part-10": "grab"
         },
         {
-          "part-10": "retract"
-        },
-        {
-          "part-10": "rotate_ccw"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
-          "part-10": "rotate_cw"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "drop"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "track_minus"
-        },
-        {
-          "part-12": "grab"
-        },
-        {
-          "part-12": "track_plus"
-        },
-        {
-          "part-12": "rotate_ccw"
-        },
-        {
-          "part-10": "extend",
-          "part-12": "rotate_cw"
-        },
-        {
-          "part-10": "track_minus",
-          "part-12": "pivot_cw"
-        },
-        {
-          "part-10": "track_minus",
-          "part-12": "track_plus"
-        },
-        {
-          "part-10": "retract",
-          "part-12": "track_plus"
-        },
-        {
           "part-10": "rotate_cw"
         }
       ],
-      "matchedPositions": 8,
-      "matchedEdges": 2,
+      "matchedPositions": 4,
+      "matchedEdges": 0,
       "matchRotation": 0,
       "matchTranslation": [
-        1,
+        3,
         -1
       ],
-      "eligibleAtomCount": 12,
+      "eligibleAtomCount": 5,
       "targetAtomCount": 13,
       "targetBondCount": 6,
-      "bestAtomCount": 18,
-      "bestBondCount": 2
+      "bestAtomCount": 11,
+      "bestBondCount": 0
     }
   ],
   "best": {
-    "label": "fixed-inventory-macro-refinement",
+    "label": "controlled-inventory-transition",
     "found": false,
-    "depth": 3,
-    "bestScore": 23750,
-    "visitedStates": 2660,
-    "expandedStates": 94,
+    "depth": 4,
+    "bestScore": 0,
+    "visitedStates": 5267,
+    "expandedStates": 432,
     "stoppedReason": "time-limit",
     "macros": [],
     "actions": [
       {
-        "part-12": "rotate_cw"
+        "part-12": "rotate_ccw"
+      },
+      {
+        "part-12": "extend"
       },
       {
         "part-10": "grab"
       },
       {
-        "part-10": "retract"
-      },
-      {
-        "part-10": "rotate_ccw"
-      },
-      {
-        "part-12": "track_plus"
-      },
-      {
-        "part-10": "rotate_cw"
-      },
-      {
-        "part-12": "track_minus"
-      },
-      {
-        "part-12": "drop"
-      },
-      {
-        "part-12": "track_minus"
-      },
-      {
-        "part-12": "track_minus"
-      },
-      {
-        "part-12": "grab"
-      },
-      {
-        "part-12": "track_plus"
-      },
-      {
-        "part-12": "rotate_ccw"
-      },
-      {
-        "part-10": "extend",
-        "part-12": "rotate_cw"
-      },
-      {
-        "part-10": "track_minus",
-        "part-12": "pivot_cw"
-      },
-      {
-        "part-10": "track_minus",
-        "part-12": "track_plus"
-      },
-      {
-        "part-10": "retract",
-        "part-12": "track_plus"
-      },
-      {
         "part-10": "rotate_cw"
       }
     ],
-    "matchedPositions": 8,
-    "matchedEdges": 2,
+    "matchedPositions": 4,
+    "matchedEdges": 0,
     "matchRotation": 0,
     "matchTranslation": [
-      1,
+      3,
       -1
     ],
-    "eligibleAtomCount": 12,
+    "eligibleAtomCount": 5,
     "targetAtomCount": 13,
     "targetBondCount": 6,
-    "bestAtomCount": 18,
-    "bestBondCount": 2
+    "bestAtomCount": 11,
+    "bestBondCount": 0
   },
-  "learnedMacroCount": 72
+  "inventoryLocked": false,
+  "learnedMacroCount": 6
 }

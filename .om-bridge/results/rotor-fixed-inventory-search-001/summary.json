@@ -4,14 +4,15 @@
     "id": "rotor-fixed-inventory-search-001",
     "operation": "search_rotor_structure",
     "timeout_seconds": 900,
-    "notes": "Rerun staged Rotor structural search while preserving the stage-3 eligible atom inventory instead of forcing target-product inventory. This blocks reagent spawning without rejecting the valid frontier state."
+    "notes": "Rerun staged Rotor structural search while preserving the stage-3 eligible atom inventory instead of forcing target-product inventory. This blocks reagent spawning without rejecting the valid frontier state.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-fixed-inventory-search-001.json",
-  "git_sha": "cf34b81e54f94cda3291bb5028cf6189aba6b121",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T00:58:07.121281+00:00",
-  "finished_at": "2026-08-06T01:01:08.086752+00:00",
-  "duration_seconds": 180.965,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-fixed-inventory-search-001.json",
+  "git_sha": "7c8b527b3a06925aef5177c8754e9dc4d01042b6",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:42:38.396886+00:00",
+  "finished_at": "2026-08-07T10:45:53.870464+00:00",
+  "duration_seconds": 195.474,
   "exit_code": 0,
   "status": "success",
   "error": null
