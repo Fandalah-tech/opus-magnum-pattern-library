@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import time
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,6 +22,7 @@ def choose_events(catalog: dict, event_url: str | None) -> list[dict]:
 def enrich_solution(event: dict, source: dict) -> dict:
     data, content_type = fetch(source["url"])
     parsed = parse_solution_bytes(data, source_name=source.get("downloadName"))
+    puzzle_file = (event.get("puzzle") or {}).get("file")
     return {
         "downloadName": source.get("downloadName"),
         "sourceUrl": source["url"],
@@ -28,12 +31,33 @@ def enrich_solution(event: dict, source: dict) -> dict:
         "bytes": parsed["source"]["size"],
         "formatVersion": parsed["format"]["version"],
         "puzzleFile": parsed["puzzleFile"],
+        "eventPuzzleFile": puzzle_file,
         "solutionName": parsed["name"],
         "metrics": parsed["metrics"],
         "partCount": len(parsed["parts"]),
         "trailingBytes": parsed["trailingBytes"],
         "eventPuzzleSha256": (event.get("puzzle") or {}).get("sha256"),
     }
+
+
+def failure_signature(error: str) -> str:
+    text = re.sub(r"https?://\S+", "<url>", error)
+    text = re.sub(r"submission=[0-9a-f]+", "submission=<id>", text, flags=re.I)
+    text = re.sub(r"\b[0-9a-f]{32,}\b", "<hash>", text, flags=re.I)
+    return text[:240]
+
+
+def metric_gap(record: dict) -> str:
+    missing = [key for key, value in (record.get("metrics") or {}).items() if value is None]
+    return ",".join(missing) if missing else "complete"
+
+
+def puzzle_matches(record: dict) -> bool:
+    actual = record.get("puzzleFile")
+    expected = record.get("eventPuzzleFile")
+    if not actual or not expected:
+        return False
+    return actual in {expected, Path(expected).stem}
 
 
 def main() -> int:
@@ -85,19 +109,16 @@ def main() -> int:
             break
 
     all_records = [s for e in records for s in e["solutions"]]
-    complete_metrics = sum(1 for r in all_records if all(v is not None for v in r["metrics"].values()))
+    complete_metrics = sum(1 for r in all_records if metric_gap(r) == "complete")
     trailing_clean = sum(1 for r in all_records if r["trailingBytes"] == 0)
     duplicate_count = sum(1 for r in all_records if r.get("duplicateOf"))
-    puzzle_matches = sum(
-        1 for r in all_records
-        if r.get("puzzleFile") and any(
-            r["puzzleFile"] in {Path((e.get("puzzle") or {}).get("file") or "").stem, (e.get("puzzle") or {}).get("file")}
-            for e in records if e.get("eventUrl") == next((x.get("eventUrl") for x in records if r in x["solutions"]), None)
-        )
-    )
+    match_count = sum(1 for r in all_records if puzzle_matches(r))
+    failure_counts = Counter(failure_signature(f["error"]) for f in failures)
+    gap_counts = Counter(metric_gap(r) for r in all_records)
+    version_counts = Counter(str(r.get("formatVersion")) for r in all_records)
 
     result = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "sourceCatalog": args.catalog.as_posix(),
         "retrievedAt": datetime.now(timezone.utc).isoformat(),
         "policy": {
@@ -115,8 +136,14 @@ def main() -> int:
             "duplicateSolutionHashes": duplicate_count,
             "completeEmbeddedMetrics": complete_metrics,
             "zeroTrailingBytes": trailing_clean,
-            "puzzleFileMatches": puzzle_matches,
+            "puzzleFileMatches": match_count,
             "failures": len(failures),
+            "formatVersions": dict(sorted(version_counts.items())),
+            "metricCoverage": dict(sorted(gap_counts.items())),
+            "failureSignatures": [
+                {"error": signature, "count": count}
+                for signature, count in failure_counts.most_common(12)
+            ],
         },
         "events": records,
         "failures": failures,
