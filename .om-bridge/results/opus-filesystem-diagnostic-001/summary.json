@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "opus-filesystem-diagnostic-001",
+    "operation": "diagnose_local_opus_access",
+    "priority": 9000,
+    "timeout_seconds": 300,
+    "notes": "Inspect the effective Windows account, profile paths and recursively visible Opus Magnum puzzle/solution files from Bruno-OMSIM."
+  },
+  "task_file": ".om-bridge/tasks/pending/opus-filesystem-diagnostic-001.json",
+  "git_sha": "ffee0f478aab23a0a84ab8c758d4fd2656f183d1",
+  "runner_name": "Bruno-OMSIM",
+  "started_at": "2026-08-07T02:53:31.929728+00:00",
+  "finished_at": "2026-08-07T02:53:32.350261+00:00",
+  "duration_seconds": 0.421,
+  "exit_code": 0,
+  "status": "success",
+  "error": null
+}

@@ -1,0 +1,32 @@
+{
+  "computer": "Bruno-PC",
+  "python": "3.14.6",
+  "getpassUser": "BRUNO-PC$",
+  "environment": {
+    "USERNAME": "BRUNO-PC$",
+    "USERPROFILE": "C:\\Windows\\ServiceProfiles\\NetworkService",
+    "HOMEDRIVE": null,
+    "HOMEPATH": null,
+    "RUNNER_NAME": "Bruno-OMSIM",
+    "OM_OPUS_MAGNUM_ROOT": null
+  },
+  "home": "C:\\Windows\\ServiceProfiles\\NetworkService",
+  "paths": [
+    {
+      "path": "C:\\Users\\bruno\\Documents\\My Games\\Opus Magnum",
+      "exists": false,
+      "isDir": false,
+      "puzzles": [],
+      "solutions": [],
+      "error": null
+    },
+    {
+      "path": "C:\\Windows\\ServiceProfiles\\NetworkService\\Documents\\My Games\\Opus Magnum",
+      "exists": false,
+      "isDir": false,
+      "puzzles": [],
+      "solutions": [],
+      "error": null
+    }
+  ]
+}
