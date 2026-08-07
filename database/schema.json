@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "0.1.0",
+  "description": "Canonical puzzle/solution catalog for Opus Magnum Codex.",
+  "identity": {
+    "puzzleId": "puz-<first16 sha256>",
+    "solutionId": "sol-<first16 sha256>",
+    "rule": "Hashes are authoritative; filenames and display names are metadata only."
+  },
+  "puzzle": {
+    "required": ["id", "sha256", "name", "version", "sourceDataset"],
+    "fields": {
+      "id": "string",
+      "sha256": "hex64",
+      "name": "string",
+      "file": "string|null",
+      "version": "integer|null",
+      "size": "integer|null",
+      "sourceDataset": "string",
+      "redistribution": "string",
+      "tags": "string[]"
+    }
+  },
+  "solution": {
+    "required": ["id", "sha256", "puzzleId", "metrics", "sourceDataset"],
+    "fields": {
+      "id": "string",
+      "sha256": "hex64",
+      "puzzleId": "string",
+      "file": "string|null",
+      "version": "integer|null",
+      "size": "integer|null",
+      "metrics": {
+        "cycles": "integer|null",
+        "cost": "integer|null",
+        "area": "integer|null",
+        "instructions": "integer|null"
+      },
+      "validation": {
+        "parserClean": "boolean|null",
+        "omsim": "string|null",
+        "replayEquivalent": "boolean|null"
+      },
+      "sourceDataset": "string",
+      "redistribution": "string",
+      "tags": "string[]"
+    }
+  },
+  "catalog": {
+    "fields": {
+      "generatedAt": "iso8601|null",
+      "puzzles": "puzzle[]",
+      "solutions": "solution[]",
+      "summary": {
+        "puzzleCount": "integer",
+        "solutionCount": "integer",
+        "validatedSolutionCount": "integer"
+      }
+    }
+  }
+}
