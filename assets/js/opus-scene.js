@@ -25,22 +25,24 @@
 
   function normalizeFrame(frame, index) {
     if (!frame) return null;
+    const armStates = (frame.armStates || []).map(state => ({
+      ...state,
+      origin: cloneHex(state.origin),
+      tips: (state.tips || []).map((tip, branchIndex) => ({
+        ...tip,
+        branchIndex: Number(tip.branchIndex ?? branchIndex),
+        position: cloneHex(tip.position)
+      })),
+      heldMoleculeIds: [...(state.heldMoleculeIds || [])]
+    }));
     return {
       index,
       cycle: Number(frame.cycle ?? -1),
       displayCycle: Number(frame.displayCycle ?? Math.max(0, Number(frame.cycle ?? -1) + 1)),
       phaseLabel: frame.phaseLabel || null,
       events: (frame.events || []).map(event => ({ ...event })),
-      arms: (frame.armStates || []).map(state => ({
-        ...state,
-        origin: cloneHex(state.origin),
-        tips: (state.tips || []).map((tip, branchIndex) => ({
-          ...tip,
-          branchIndex: Number(tip.branchIndex ?? branchIndex),
-          position: cloneHex(tip.position)
-        })),
-        heldMoleculeIds: [...(state.heldMoleculeIds || [])]
-      })),
+      arms: armStates,
+      armStates,
       molecules: (frame.molecules || []).map(molecule => ({
         ...molecule,
         heldBy: [...(molecule.heldBy || [])],
@@ -96,7 +98,8 @@
         frames,
         frameIndex,
         frame: frameIndex >= 0 ? frames[frameIndex] : null,
-        cycleCount: Number(payload.replay?.summary?.cycleCount ?? Math.max(0, frames.length - 1))
+        cycleCount: Number(payload.replay?.summary?.cycleCount ?? Math.max(0, frames.length - 1)),
+        capabilities: { ...(payload.replay?.capabilities || {}) }
       }
     };
   }
