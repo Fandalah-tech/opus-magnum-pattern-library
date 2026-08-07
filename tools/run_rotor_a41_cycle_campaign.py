@@ -15,6 +15,8 @@ LIVE = ROOT / "reports" / "rotor-a41-cycle-live.json"
 GENERIC_LIVE = ROOT / "reports" / "live-search-status.json"
 ANALYSIS = ROOT / "reports" / "rotor-a41-cycle-analysis.json"
 REFERENCE_SHA = "435b31d9366f90bb5217ea45faebb392ae761fe3740050c2ffa56e847174ab47"
+REFERENCE_METRICS = {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302}
+DEFAULT_OPUS_ROOT = Path("C:/Users/bruno/Documents/My Games/Opus Magnum")
 
 
 def now() -> str:
@@ -28,8 +30,8 @@ def load_live() -> dict[str, Any]:
         "schemaVersion": 2,
         "campaignId": "rotor-a41-cycle-001",
         "metrics": {
-            "baseline": {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302},
-            "best": {"cycles": 1112, "cost": 220, "area": 41, "instructions": 302},
+            "baseline": dict(REFERENCE_METRICS),
+            "best": dict(REFERENCE_METRICS),
             "improvement": {"cycles": 0, "instructions": 0},
             "testedCandidates": 0,
             "validCandidates": 0,
@@ -69,37 +71,76 @@ def publish(data: dict[str, Any], *, stage: str, status: str, message: str, extr
 
 
 def candidate_roots() -> list[Path]:
-    roots = [ROOT]
+    roots: list[Path] = []
+    configured = os.environ.get("OM_OPUS_MAGNUM_ROOT")
+    if configured:
+        roots.append(Path(configured))
+    roots.append(DEFAULT_OPUS_ROOT)
+    roots.append(ROOT / "fixtures" / "solutions")
+    roots.append(ROOT / "datasets" / "solutions")
+    roots.append(ROOT)
+
     for value in (os.environ.get("USERPROFILE"), "C:/Users/bruno"):
         if not value:
             continue
         base = Path(value)
         for child in ("Downloads", "Desktop", "Documents"):
-            path = base / child
-            if path.exists():
-                roots.append(path)
+            roots.append(base / child)
+
     unique: list[Path] = []
+    seen: set[str] = set()
     for root in roots:
-        resolved = root.resolve()
-        if resolved not in unique:
+        try:
+            resolved = root.resolve()
+        except OSError:
+            continue
+        key = str(resolved).lower()
+        if key not in seen and resolved.exists():
+            seen.add(key)
             unique.append(resolved)
     return unique
 
 
-def locate_reference() -> Path | None:
+def _looks_like_rotor(solution: dict[str, Any]) -> bool:
+    puzzle = str(solution.get("puzzleFile") or "").lower()
+    name = str(solution.get("name") or "").lower()
+    source = str(solution.get("source", {}).get("name") or "").lower()
+    text = " ".join((puzzle, name, source))
+    return "van berlo" in text or "van-berlo" in text or "rotor" in text
+
+
+def _metrics_match(solution: dict[str, Any]) -> bool:
+    metrics = solution.get("metrics") or {}
+    return all(metrics.get(key) == value for key, value in REFERENCE_METRICS.items())
+
+
+def locate_reference() -> tuple[Path | None, str | None]:
+    metric_matches: list[Path] = []
     for root in candidate_roots():
         try:
-            for path in root.rglob("*.solution"):
+            files = root.rglob("*.solution")
+            for path in files:
                 try:
                     if path.stat().st_size > 10_000_000:
                         continue
-                    if hashlib.sha256(path.read_bytes()).hexdigest() == REFERENCE_SHA:
-                        return path
+                    raw = path.read_bytes()
+                    digest = hashlib.sha256(raw).hexdigest()
+                    if digest == REFERENCE_SHA:
+                        return path, "sha256"
+                    try:
+                        solution = parse_solution(path)
+                    except Exception:
+                        continue
+                    if _metrics_match(solution) and _looks_like_rotor(solution):
+                        metric_matches.append(path)
                 except (OSError, PermissionError):
                     continue
         except (OSError, PermissionError):
             continue
-    return None
+    if metric_matches:
+        metric_matches.sort(key=lambda item: item.stat().st_mtime, reverse=True)
+        return metric_matches[0], "metrics"
+    return None, None
 
 
 def analyze_program(solution: dict[str, Any]) -> dict[str, Any]:
@@ -136,7 +177,7 @@ def analyze_program(solution: dict[str, Any]) -> dict[str, Any]:
         })
     return {
         "reference": {
-            "path": str(solution.get("source", {}).get("name")),
+            "file": solution.get("source", {}).get("name"),
             "sha256": solution.get("source", {}).get("sha256"),
             "metrics": solution.get("metrics"),
             "name": solution.get("name"),
@@ -151,14 +192,30 @@ def main() -> int:
     started = time.monotonic()
     live = load_live()
     live["elapsedSeconds"] = 0
-    publish(live, stage="reference-discovery", status="running", message="Campagne A41 active: recherche locale de la reference verrouillee par SHA-256.")
-    reference = locate_reference()
+    publish(
+        live,
+        stage="reference-discovery",
+        status="running",
+        message="Campagne A41 active: scan prioritaire du dossier local Opus Magnum.",
+    )
+    reference, match_kind = locate_reference()
     if reference is None:
-        publish(live, stage="reference-required", status="blocked", message="Reference A41 introuvable sur le PC; recherche bloquee avant toute mutation.")
+        publish(
+            live,
+            stage="reference-required",
+            status="blocked",
+            message="Reference A41 1112/220/41/302 introuvable dans le dossier Opus Magnum et les sources de secours.",
+        )
         return 3
 
     live["elapsedSeconds"] = round(time.monotonic() - started, 1)
-    publish(live, stage="program-analysis", status="running", message=f"Reference trouvee: {reference.name}. Analyse des fenetres de retiming.")
+    publish(
+        live,
+        stage="program-analysis",
+        status="running",
+        message=f"Reference trouvee automatiquement ({match_kind}): {reference.name}. Analyse des fenetres de retiming.",
+        extra={"referenceFile": reference.name, "referenceMatch": match_kind, "referenceSource": "local-opus-folder"},
+    )
     solution = parse_solution(reference)
     analysis = analyze_program(solution)
     ANALYSIS.write_text(json.dumps({"schemaVersion": 1, "updatedAt": now(), **analysis}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -172,11 +229,14 @@ def main() -> int:
         stage="validation-queue",
         status="running",
         message=f"{analysis['candidateCount']} retimings elementaires identifies; preparation de la validation OMSIM.",
-        extra={"analysisReport": "reports/rotor-a41-cycle-analysis.json", "referencePath": str(reference)},
+        extra={
+            "analysisReport": "reports/rotor-a41-cycle-analysis.json",
+            "referenceFile": reference.name,
+            "referenceMatch": match_kind,
+            "referenceSource": "local-opus-folder",
+        },
     )
 
-    # Short heartbeat only. The campaign now yields quickly instead of occupying the
-    # machine for hours while no validated mutator is running.
     for remaining in range(4, 0, -1):
         time.sleep(15)
         live = load_live()
