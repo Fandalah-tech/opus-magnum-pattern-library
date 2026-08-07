@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-004",
+  "operation": "run_rotor_a41_cycle_campaign",
+  "priority": 4000,
+  "timeout_seconds": 7200,
+  "notes": "Rescan after confirming Steam profile solutions under C:/Users/bruno/Documents/My Games/Opus Magnum/76561197961630013. Prefer exact A41 1112/220/41/302; otherwise best local Area 41 candidate."
+}
