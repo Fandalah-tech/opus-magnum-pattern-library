@@ -9,15 +9,16 @@
       "tests/test_mechanical_macros.py",
       "tests/test_structure_goal.py"
     ],
-    "notes": "Validate macro-state admissibility filtering before rerunning the Rotor structure search with exact target inventory."
+    "notes": "Validate macro-state admissibility filtering before rerunning the Rotor structure search with exact target inventory.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-inventory-filter-tests-001.json",
-  "git_sha": "5686b6385c19f2ed81ed1827a9190880c338a06f",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T00:54:03.938360+00:00",
-  "finished_at": "2026-08-06T00:54:05.314233+00:00",
-  "duration_seconds": 1.376,
-  "exit_code": 0,
-  "status": "success",
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-inventory-filter-tests-001.json",
+  "git_sha": "524cf5f352deaf5333fb458646a1c5320e57e2dc",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:39:04.569943+00:00",
+  "finished_at": "2026-08-07T10:39:04.705233+00:00",
+  "duration_seconds": 0.135,
+  "exit_code": 1,
+  "status": "failed",
   "error": null
 }
