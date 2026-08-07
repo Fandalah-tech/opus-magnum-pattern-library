@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-005",
+  "operation": "run_rotor_a41_cycle_campaign",
+  "priority": 5000,
+  "timeout_seconds": 7200,
+  "notes": "Validate baseline in final OMSIM, test retiming mutations, greedily chain validated cycle improvements, publish live metrics and write a playable .solution for the best result."
+}
