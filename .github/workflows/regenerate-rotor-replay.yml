@@ -1,0 +1,63 @@
+name: Regenerate Rotor replay
+
+on:
+  push:
+    branches: [feature/disjoint-solver-readiness]
+    paths:
+      - "tools/build_rotor_candidate_replay.py"
+      - "packages/opus_engine/**"
+      - ".github/workflows/regenerate-rotor-replay.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: regenerate-rotor-replay
+  cancel-in-progress: true
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild corrected Rotor replay
+        env:
+          PYTHONPATH: .
+        run: |
+          python tools/build_rotor_candidate_replay.py
+      - name: Inspect generated replay
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('reports/rotor-tail-best-candidate-replay.json').read_text(encoding='utf-8'))
+          print(json.dumps({
+              'schemaVersion': p.get('schemaVersion'),
+              'frames': len(p.get('frames', [])),
+              'solverStartIndex': p.get('solverStartIndex'),
+              'finalCycle': p.get('frames', [{}])[-1].get('state', {}).get('cycle'),
+              'finalScore': p.get('frames', [{}])[-1].get('state', {}).get('score'),
+              'replayFixes': p.get('replayFixes'),
+          }, indent=2))
+          assert p.get('replayFixes', {}).get('trackCoordinates') == 'world'
+          assert p.get('frames')
+          PY
+      - name: Publish corrected replay
+        run: |
+          if git diff --quiet -- reports/rotor-tail-best-candidate-replay.json; then
+            echo "Replay already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/rotor-tail-best-candidate-replay.json
+          git commit -m "Regenerate Rotor replay with corrected track geometry"
+          git push origin HEAD:feature/disjoint-solver-readiness
