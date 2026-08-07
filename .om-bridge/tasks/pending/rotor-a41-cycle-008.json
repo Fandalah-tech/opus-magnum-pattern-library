@@ -3,5 +3,5 @@
   "operation": "run_rotor_a41_remote_cycle_campaign",
   "priority": 9500,
   "timeout_seconds": 21600,
-  "notes": "Retry A41 remote validation using the current /api/v1/analyze validator endpoint and normalized validation response. Preserve area 41 and optimize cycles from the 1112/220/41/302 baseline."
+  "notes": "Retry A41 remote validation using the current /api/v1/analyze validator endpoint and normalized validation response. Preserve area 41 and optimize cycles from the 1112/220/41/302 baseline. Retriggered after queue-hardening update."
 }
