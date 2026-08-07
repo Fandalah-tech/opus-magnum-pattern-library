@@ -123,9 +123,6 @@ def test_existing_pipeline_runs_on_exact_official_geometry() -> None:
 
     last_frame = simulator.frames[-1]
     errors = [event for event in last_frame.get("events", []) if event.get("kind") == "simulation-error"]
-    assert replay["summary"]["terminatedWithError"] is False, errors
-    assert simulator.delivered_products == {"out": 6}, {
-        "delivered": simulator.delivered_products,
-        "cycle": simulator.world.cycle,
-        "errors": errors,
-    }
+    short_error = errors[0]["message"].split(";")[0] if errors else "no simulation-error event"
+    assert replay["summary"]["terminatedWithError"] is False, short_error
+    assert simulator.delivered_products == {"out": 6}, simulator.delivered_products
