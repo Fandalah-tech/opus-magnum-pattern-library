@@ -14,6 +14,7 @@ on:
     paths:
       - "tools/crawl_critelli_catalog.py"
       - "tools/import_critelli_event.py"
+      - "tools/enrich_critelli_solutions.py"
       - "tests/test_import_critelli_event.py"
       - ".github/workflows/critelli-catalog.yml"
 
@@ -26,7 +27,7 @@ env:
 jobs:
   inventory:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,12 +49,20 @@ jobs:
             --delay 0.30 \
             --output reports/critelli-event-catalog.json
 
-      - name: Commit metadata report
+      - name: Enrich Liquid Perfumes pilot ephemerally
+        run: |
+          python tools/enrich_critelli_solutions.py \
+            --catalog reports/critelli-event-catalog.json \
+            --event-url https://events.critelli.technology/OM2026Weeklies1_LiquidPerfumes \
+            --delay 0.10 \
+            --output reports/critelli-liquid-perfumes-solutions.json
+
+      - name: Commit metadata reports
         run: |
           git config user.name "codex-catalog-bot"
           git config user.email "codex-catalog-bot@users.noreply.github.com"
-          git add reports/critelli-event-catalog.json
+          git add reports/critelli-event-catalog.json reports/critelli-liquid-perfumes-solutions.json
           git diff --cached --quiet && exit 0
-          git commit -m "Refresh Critelli public event catalog"
+          git commit -m "Refresh Critelli public metadata catalogs"
           git pull --rebase origin feature/disjoint-solver-readiness
           git push origin HEAD:feature/disjoint-solver-readiness
