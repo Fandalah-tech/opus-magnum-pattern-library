@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -36,6 +37,7 @@ def main() -> int:
     parser.add_argument("--puzzle", default="reports/aqueous-dagger.puzzle")
     parser.add_argument("--variants", default="reports/aqueous-offset-search")
     parser.add_argument("--workers", type=int, default=12)
+    parser.add_argument("--progress-every", type=int, default=10)
     args = parser.parse_args()
 
     root = Path(args.variants)
@@ -46,6 +48,9 @@ def main() -> int:
     valid_results = []
     failures = Counter()
     tested = 0
+
+    total = len(solutions)
+    print(f"SEARCH START candidates={total} workers={max(1, args.workers)}", flush=True)
 
     with ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
         futures = {
@@ -66,9 +71,17 @@ def main() -> int:
                 cycles = metrics.get("cycles")
                 if cycles is not None and (best is None or cycles < best["metrics"]["cycles"]):
                     best = record
+                    shutil.copy2(solution, root / "best.solution")
                     print("NEW BEST", json.dumps(best, sort_keys=True), flush=True)
             else:
                 failures[issue_signature(validation)] += 1
+
+            if tested % max(1, args.progress_every) == 0 or tested == total:
+                best_cycles = None if best is None else best.get("metrics", {}).get("cycles")
+                print(
+                    f"PROGRESS tested={tested}/{total} valid={len(valid_results)} best_cycles={best_cycles}",
+                    flush=True,
+                )
 
     valid_results.sort(key=lambda r: (
         r.get("metrics", {}).get("cycles", 10**9),
