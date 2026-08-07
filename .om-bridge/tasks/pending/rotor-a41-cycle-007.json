@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-007",
+  "operation": "run_rotor_a41_remote_cycle_campaign",
+  "priority": 7000,
+  "timeout_seconds": 21600,
+  "notes": "Retry A41 remote validation after fixing recursive Steam-profile custom puzzle discovery and .puzzle suffix normalization."
+}
