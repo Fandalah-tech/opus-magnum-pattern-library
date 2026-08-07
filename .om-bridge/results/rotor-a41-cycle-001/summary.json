@@ -1,13 +1,19 @@
 {
   "schema_version": 1,
-  "task": null,
-  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-001.json",
-  "git_sha": "e8c7933c85a7e5ad60bd496e65f0596096c6904e",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-07T01:30:01.374063+00:00",
-  "finished_at": "2026-08-07T01:30:01.438714+00:00",
-  "duration_seconds": 0.065,
-  "exit_code": 2,
+  "task": {
+    "id": "rotor-a41-cycle-001",
+    "operation": "run_rotor_a41_cycle_campaign",
+    "priority": 1000,
+    "timeout_seconds": 7200,
+    "notes": "TOP PRIORITY. Use SHA-locked A41 reference. Preserve area 41, cost 220 and geometry; optimize cycles only and publish only fully validated metric improvements."
+  },
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-cycle-001.json",
+  "git_sha": "0a94a73f44cb9fcda0af543563d245107eb456eb",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:34:45.938503+00:00",
+  "finished_at": "2026-08-07T10:34:46.684077+00:00",
+  "duration_seconds": 0.746,
+  "exit_code": 6,
   "status": "failed",
-  "error": "ValueError: unknown task fields: ['priority']"
+  "error": null
 }
