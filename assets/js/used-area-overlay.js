@@ -1,10 +1,10 @@
 (() => {
   const root = document.querySelector('#solution-viewer');
-  if (!root || !window.OpusGeometry || !window.OpusSolutionViewer) return;
+  if (!root || !window.OpusRendererCore) return;
 
-  const { SIZE, hexPoints, axialToPixel, svgEl } = window.OpusSolutionViewer.constants;
+  const { HEX_SIZE: SIZE, hexPoints, axialToPixel, svgEl } = window.OpusRendererCore;
   let viewer = null;
-  let replay = null;
+  let scene = null;
   let cumulativeByFrame = [];
   let activeByFrame = [];
   let areaLayer = null;
@@ -13,20 +13,12 @@
   const key = ([q, r]) => `${Number(q)},${Number(r)}`;
   const cell = (value) => value.split(',').map(Number);
 
-  function staticCells(solution) {
-    const result = new Set();
-    for (const part of solution?.parts || []) {
-      for (const position of window.OpusGeometry.occupiedCells(part)) result.add(key(position));
-    }
-    return result;
-  }
-
   function activeCells(frame) {
     const result = new Set();
     for (const molecule of frame?.molecules || []) {
       for (const atom of molecule.atoms || []) result.add(key(atom.position || [0, 0]));
     }
-    for (const arm of frame?.armStates || []) {
+    for (const arm of frame?.armStates || frame?.arms || []) {
       result.add(key(arm.origin || [0, 0]));
       for (const tip of arm.tips || []) result.add(key(tip.position || arm.origin || [0, 0]));
     }
@@ -58,10 +50,10 @@
     return badge;
   }
 
-  function build(payload) {
-    replay = payload?.replay || null;
-    const frames = replay?.frames || [];
-    const used = staticCells(payload?.solution);
+  function build(nextScene) {
+    scene = nextScene || null;
+    const frames = scene?.timeline?.frames || [];
+    const used = new Set((scene?.static?.occupiedCells || []).map(key));
     cumulativeByFrame = [];
     activeByFrame = [];
 
@@ -78,10 +70,11 @@
     };
   }
 
-  function render(frame, trace) {
+  function render(frameScene) {
     const layer = ensureLayer();
-    if (!layer || !trace?.frames?.length) return;
-    const index = Math.max(0, trace.frames.indexOf(frame));
+    const timeline = frameScene?.timeline || scene?.timeline;
+    if (!layer || !timeline?.frames?.length) return;
+    const index = Math.max(0, Number(frameScene?.timeline?.frameIndex ?? timeline.frameIndex ?? 0));
     const used = cumulativeByFrame[index] || new Set();
     const active = activeByFrame[index] || new Set();
     layer.replaceChildren();
@@ -105,17 +98,17 @@
     if (node) node.textContent = `Used area · ${used.size} hexes · ${active.size} active`;
   }
 
-  window.addEventListener('opus:analysisready', (event) => {
+  window.addEventListener('opus:sceneready', (event) => {
     viewer = event.detail?.viewer || viewer;
     areaLayer = null;
     badge?.remove();
     badge = null;
-    build(event.detail?.payload);
+    build(event.detail?.scene);
     ensureLayer();
     ensureBadge();
   });
 
   root.addEventListener('opus:replayframe', (event) => {
-    render(event.detail?.frame, event.detail?.trace || replay);
+    render(event.detail?.scene || scene);
   });
 })();
