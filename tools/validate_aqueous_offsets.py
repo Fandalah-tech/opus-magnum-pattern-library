@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+from collections import Counter
 from pathlib import Path
 
 
@@ -20,6 +21,14 @@ def validate(url: str, puzzle: Path, solution: Path) -> dict:
     return payload.get("validation", {})
 
 
+def issue_signature(validation: dict) -> str:
+    issues = validation.get("issues") or []
+    if not issues:
+        return str(validation.get("status") or "unknown")
+    message = str(issues[0].get("message") or issues[0].get("code") or "issue")
+    return message.splitlines()[-1][:180]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--validator-url", required=True)
@@ -32,15 +41,15 @@ def main() -> int:
     variant_meta = {item["file"]: item for item in manifest["variants"]}
     best = None
     valid_results = []
+    failures = Counter()
+    tested = 0
 
     for solution in sorted(root.glob("variant-*.solution")):
+        tested += 1
         validation = validate(args.validator_url, Path(args.puzzle), solution)
         metrics = validation.get("metrics") or {}
         if validation.get("valid") is True:
-            record = {
-                **variant_meta[solution.name],
-                "metrics": metrics,
-            }
+            record = {**variant_meta[solution.name], "metrics": metrics}
             valid_results.append(record)
             cycles = metrics.get("cycles")
             if cycles is not None and (best is None or cycles < best["metrics"]["cycles"]):
@@ -48,17 +57,23 @@ def main() -> int:
                 print("NEW BEST", json.dumps(best, sort_keys=True))
             if cycles is not None and cycles <= 15:
                 break
+        else:
+            failures[issue_signature(validation)] += 1
 
     report = {
         "candidateCount": manifest["candidateCount"],
-        "tested": len(valid_results),
+        "tested": tested,
         "valid": valid_results,
         "best": best,
+        "failureSignatures": failures.most_common(20),
     }
     Path("reports/aqueous-offset-results.json").write_text(json.dumps(report, indent=2))
-    print(json.dumps({"best": best, "validCount": len(valid_results)}, indent=2))
-    if best is None:
-        raise SystemExit("no valid one-cycle offset variant")
+    print(json.dumps({
+        "best": best,
+        "validCount": len(valid_results),
+        "tested": tested,
+        "topFailures": failures.most_common(10),
+    }, indent=2))
     return 0
 
 
