@@ -1,0 +1,186 @@
+{
+  "stages": [
+    {
+      "label": "single-arm-frontier",
+      "found": false,
+      "depth": 13,
+      "bestScore": 96,
+      "visitedStates": 8006,
+      "expandedStates": 1726,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "rotate_cw"
+        }
+      ],
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "matchRotation": 0,
+      "matchTranslation": [
+        3,
+        -1
+      ],
+      "eligibleAtomCount": 5,
+      "targetAtomCount": 13,
+      "targetBondCount": 6,
+      "bestAtomCount": 11,
+      "bestBondCount": 0
+    },
+    {
+      "label": "coordinated-refinement",
+      "found": false,
+      "depth": 5,
+      "bestScore": 96,
+      "visitedStates": 3903,
+      "expandedStates": 312,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "rotate_cw"
+        }
+      ],
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "matchRotation": 0,
+      "matchTranslation": [
+        3,
+        -1
+      ],
+      "eligibleAtomCount": 5,
+      "targetAtomCount": 13,
+      "targetBondCount": 6,
+      "bestAtomCount": 11,
+      "bestBondCount": 0
+    },
+    {
+      "label": "edge-plateau-position-refinement",
+      "found": false,
+      "depth": 4,
+      "bestScore": 0,
+      "visitedStates": 4017,
+      "expandedStates": 314,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "rotate_cw"
+        }
+      ],
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "matchRotation": 0,
+      "matchTranslation": [
+        3,
+        -1
+      ],
+      "eligibleAtomCount": 5,
+      "targetAtomCount": 13,
+      "targetBondCount": 6,
+      "bestAtomCount": 11,
+      "bestBondCount": 0
+    },
+    {
+      "label": "controlled-inventory-transition",
+      "found": false,
+      "depth": 4,
+      "bestScore": 0,
+      "visitedStates": 5270,
+      "expandedStates": 432,
+      "stoppedReason": "time-limit",
+      "macros": [],
+      "actions": [
+        {
+          "part-12": "rotate_ccw"
+        },
+        {
+          "part-12": "extend"
+        },
+        {
+          "part-10": "grab"
+        },
+        {
+          "part-10": "rotate_cw"
+        }
+      ],
+      "matchedPositions": 4,
+      "matchedEdges": 0,
+      "matchRotation": 0,
+      "matchTranslation": [
+        3,
+        -1
+      ],
+      "eligibleAtomCount": 5,
+      "targetAtomCount": 13,
+      "targetBondCount": 6,
+      "bestAtomCount": 11,
+      "bestBondCount": 0
+    }
+  ],
+  "best": {
+    "label": "controlled-inventory-transition",
+    "found": false,
+    "depth": 4,
+    "bestScore": 0,
+    "visitedStates": 5270,
+    "expandedStates": 432,
+    "stoppedReason": "time-limit",
+    "macros": [],
+    "actions": [
+      {
+        "part-12": "rotate_ccw"
+      },
+      {
+        "part-12": "extend"
+      },
+      {
+        "part-10": "grab"
+      },
+      {
+        "part-10": "rotate_cw"
+      }
+    ],
+    "matchedPositions": 4,
+    "matchedEdges": 0,
+    "matchRotation": 0,
+    "matchTranslation": [
+      3,
+      -1
+    ],
+    "eligibleAtomCount": 5,
+    "targetAtomCount": 13,
+    "targetBondCount": 6,
+    "bestAtomCount": 11,
+    "bestBondCount": 0
+  },
+  "inventoryLocked": false,
+  "learnedMacroCount": 6
+}

@@ -4,15 +4,16 @@
     "id": "rotor-inventory-search-001",
     "operation": "search_rotor_structure",
     "timeout_seconds": 900,
-    "notes": "Rerun the staged A42/A43 structure-only Rotor search with inventory-preserving macro refinement. Compare against baseline: 9 matched positions, 2 matched edges, 20 atoms."
+    "notes": "Rerun the staged A42/A43 structure-only Rotor search with inventory-preserving macro refinement. Compare against baseline: 9 matched positions, 2 matched edges, 20 atoms.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-inventory-search-001.json",
-  "git_sha": "8a70a3563d67bdafd95752f9fd18616fc1550f8f",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T00:54:37.131859+00:00",
-  "finished_at": "2026-08-06T00:56:52.814491+00:00",
-  "duration_seconds": 135.683,
-  "exit_code": 1,
-  "status": "failed",
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-inventory-search-001.json",
+  "git_sha": "b133cda2f2af116287dcfbb9d9bf3cc4fddf0220",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:39:13.892429+00:00",
+  "finished_at": "2026-08-07T10:42:29.393404+00:00",
+  "duration_seconds": 195.501,
+  "exit_code": 0,
+  "status": "success",
   "error": null
 }
