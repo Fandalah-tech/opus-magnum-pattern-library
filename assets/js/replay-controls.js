@@ -11,6 +11,7 @@
   let trace = null;
   let frameIndex = 0;
   let timer = null;
+  let initialFrameRequest = null;
   let playing = false;
 
   const playbackRate = () => Math.max(.25, Number(speed?.value || 1));
@@ -22,6 +23,11 @@
   const clearTimer = () => {
     if (timer) window.clearTimeout(timer);
     timer = null;
+  };
+
+  const clearInitialFrame = () => {
+    if (initialFrameRequest) cancelAnimationFrame(initialFrameRequest);
+    initialFrameRequest = null;
   };
 
   const stop = () => {
@@ -80,12 +86,14 @@
 
   const step = (delta) => {
     if (!trace?.frames?.length) return;
+    clearInitialFrame();
     frameIndex = Math.max(0, Math.min(trace.frames.length - 1, frameIndex + delta));
     renderFrame({ manual: true });
   };
 
   play?.addEventListener('click', () => {
     if (!trace?.frames?.length) return;
+    clearInitialFrame();
     if (playing) {
       stop();
       return;
@@ -101,6 +109,7 @@
   next?.addEventListener('click', () => { stop(); step(1); });
   range?.addEventListener('input', () => {
     stop();
+    clearInitialFrame();
     frameIndex = Number(range.value);
     renderFrame({ manual: true });
   });
@@ -113,6 +122,7 @@
     trace = event.detail.payload?.replay || null;
     frameIndex = 0;
     stop();
+    clearInitialFrame();
     const count = trace?.frames?.length || 0;
     range.max = String(Math.max(0, count - 1));
     range.value = '0';
@@ -124,6 +134,15 @@
       else if (trace?.capabilities?.physicalArmAnimation) note.textContent = 'Kinematic arm replay — molecules, tracks and collisions are not available yet.';
       else note.textContent = 'Program replay preview — physical states are not available yet.';
     }
-    renderFrame({ manual: true });
+    // Every replay renderer also receives opus:analysisready and resets its state.
+    // Dispatching the first frame synchronously here races with those resets and
+    // lets them cancel the animation we just scheduled. Wait one paint so every
+    // analysisready listener has completed before the first physical frame.
+    if (count > 0) {
+      initialFrameRequest = requestAnimationFrame(() => {
+        initialFrameRequest = null;
+        renderFrame({ manual: true });
+      });
+    }
   });
 })();
