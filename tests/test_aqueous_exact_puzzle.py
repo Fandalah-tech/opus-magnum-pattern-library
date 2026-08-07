@@ -88,7 +88,9 @@ def _part(part_id, part_type, position, *, rotation=0, length=1, which=0, progra
 def _candidate() -> dict:
     return {
         "parts": [
-            _part("out", "out-std", (1, -1), rotation=1, which=0),
+            # The official product coordinates differ from the earlier image
+            # reconstruction; this pose matches the assembled molecule exactly.
+            _part("out", "out-std", (1, 0), rotation=0, which=0),
             _part("a-salt-arm", "arm1", (-2, 0), rotation=4, length=2,
                   program=_program([(0, "grab"), (1, "rotate_ccw"), (2, "rotate_ccw"),
                                     (3, "drop"), (4, "rotate_cw"), (5, "rotate_cw")])),
