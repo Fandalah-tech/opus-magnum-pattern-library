@@ -1,0 +1,19 @@
+{
+  "validation": {"status":"fixture","metrics":{"cycles":0,"cost":0,"area":0,"instructions":0}},
+  "puzzle": {"name":"Arm Family Renderer Fixture","reagents":[],"products":[]},
+  "solution": {
+    "name":"Canonical Arm Family",
+    "puzzleFile":"renderer-arm-family",
+    "metrics":{"cycles":0,"cost":0,"area":0,"instructions":0},
+    "parts":[
+      {"id":"gallery-arm1","type":"arm1","enabled":true,"position":[-5,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"gallery-arm2","type":"arm2","enabled":true,"position":[-2,0],"length":1,"rotation":0,"which":0,"armNumber":1,"program":[]},
+      {"id":"gallery-arm3","type":"arm3","enabled":true,"position":[1,0],"length":1,"rotation":0,"which":0,"armNumber":2,"program":[]},
+      {"id":"gallery-arm6","type":"arm6","enabled":true,"position":[4,0],"length":1,"rotation":0,"which":0,"armNumber":3,"program":[]},
+      {"id":"gallery-baron","type":"baron","enabled":true,"position":[7,0],"length":1,"rotation":0,"which":0,"armNumber":4,"program":[]},
+      {"id":"gallery-piston","type":"piston","enabled":true,"position":[10,0],"length":2,"rotation":0,"which":0,"armNumber":5,"program":[]}
+    ]
+  },
+  "graph":{"nodes":[],"edges":[]},
+  "replay":null
+}
