@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-009",
+  "operation": "run_rotor_a41_remote_cycle_campaign",
+  "priority": 9500,
+  "timeout_seconds": 21600,
+  "notes": "Canonical A41 remote cycle campaign after queue hardening. Use /api/v1/analyze, preserve area 41, validate the 1112/220/41/302 reference, and search for lower-cycle retimings."
+}
