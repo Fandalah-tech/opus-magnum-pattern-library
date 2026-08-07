@@ -1,9 +1,13 @@
 (() => {
-  const NS = "http://www.w3.org/2000/svg";
-  const SQRT3 = Math.sqrt(3);
-  const SIZE = 34;
+  const core = window.OpusRendererCore;
+  if (!core) throw new Error("OpusRendererCore must load before solution-viewer.js");
+  const SIZE = core.HEX_SIZE;
+  const SQRT3 = core.SQRT3;
   const GEO = window.OpusGeometry;
   const SYMBOLS = window.OpusPieceSymbols;
+  const axialToPixel = core.axialToPixel;
+  const hexPoints = core.hexPoints;
+  const svgEl = core.svgEl;
   const COLORS = {
     arm: "#d4a457",
     armDark: "#3a2b1d",
@@ -21,16 +25,6 @@
   };
   const LAYER_ORDER = ["grid", "track", "glyph", "part", "bond", "atom", "arm", "overlay"];
 
-  const axialToPixel = ([q, r]) => [SIZE * SQRT3 * (q + r / 2), -SIZE * 1.5 * r];
-  const hexPoints = (x, y, radius = SIZE * .9) => Array.from({ length: 6 }, (_, i) => {
-    const angle = Math.PI / 180 * (60 * i - 30);
-    return `${x + radius * Math.cos(angle)},${y + radius * Math.sin(angle)}`;
-  }).join(" ");
-  const svgEl = (name, attrs = {}) => {
-    const node = document.createElementNS(NS, name);
-    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
-    return node;
-  };
   const escapeHtml = (value) => String(value ?? "—")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -232,14 +226,12 @@
     drawArm(group, part) {
       const origin = part.position || [0, 0];
       const [x, y] = axialToPixel(origin);
-      const branchOffsets = part.type === "arm6" ? [0, 1, 2, 3, 4, 5] : [0];
-      const length = Math.max(1, Number(part.length || 1));
-      group.dataset.branchCount = String(branchOffsets.length);
+      const tips = core.armTips(part);
+      group.dataset.branchCount = String(tips.length);
 
-      for (let branchIndex = 0; branchIndex < branchOffsets.length; branchIndex += 1) {
-        const rotation = Number(part.rotation || 0) + branchOffsets[branchIndex];
-        const [dq, dr] = GEO.direction(rotation);
-        const [ex, ey] = axialToPixel([origin[0] + dq * length, origin[1] + dr * length]);
+      for (const tip of tips) {
+        const branchIndex = tip.branchIndex;
+        const [ex, ey] = axialToPixel(tip.position);
         group.append(svgEl("line", {
           x1: x, y1: y, x2: ex, y2: ey,
           stroke: "#1f1a14", "stroke-width": 13, "stroke-linecap": "round",
@@ -379,7 +371,7 @@
         rows.push(
           ["Length", part.length ?? 1],
           ["Arm number", part.armNumber ?? "—"],
-          ["Branches", part.type === "arm6" ? 6 : 1],
+          ["Branches", core.branchOffsets(part.type).length],
           ["Instructions", (part.program || []).length]
         );
       } else if (kind === "input") {
@@ -467,13 +459,7 @@
     }
 
     kind(type = "") {
-      if (/^(arm|piston|baron)/.test(type)) return "arm";
-      if (type === "input") return "input";
-      if (type.startsWith("out-")) return "output";
-      if (type === "track") return "track";
-      if (type === "conduit") return "conduit";
-      if (type.startsWith("glyph-") || type === "bonder" || type === "unbonder") return "glyph";
-      return "part";
+      return core.partKind(type);
     }
 
     applyTransform() {
