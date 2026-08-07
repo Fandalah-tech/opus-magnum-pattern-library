@@ -9,15 +9,16 @@
       "tests/test_macro_explorer.py",
       "tests/test_mechanical_macros.py"
     ],
-    "notes": "Validate primitive beam admissibility filtering before running the 12-to-13 atom transition campaign."
+    "notes": "Validate primitive beam admissibility filtering before running the 12-to-13 atom transition campaign.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-transition-tests-001.json",
-  "git_sha": "619ab137d56e995ea88b6a465f94888ae8540252",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T01:15:13.096863+00:00",
-  "finished_at": "2026-08-06T01:15:14.594947+00:00",
-  "duration_seconds": 1.498,
-  "exit_code": 0,
-  "status": "success",
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-transition-tests-001.json",
+  "git_sha": "37822142aa45bfdd9a7883f7519c3903e7df84a0",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T21:12:17.528879+00:00",
+  "finished_at": "2026-08-07T21:12:17.602614+00:00",
+  "duration_seconds": 0.074,
+  "exit_code": 1,
+  "status": "failed",
   "error": null
 }
