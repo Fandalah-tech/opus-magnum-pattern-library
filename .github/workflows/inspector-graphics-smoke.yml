@@ -8,6 +8,9 @@ on:
       - "assets/js/inspector.js"
       - "assets/js/opus-scene.js"
       - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-svg-overlay-host.js"
+      - "assets/js/opus-svg-diagnostics-overlay.js"
+      - "assets/js/inspector-diagnostics-overlay.js"
       - "assets/js/opus-viewer-runtime.js"
       - "assets/js/solution-viewer.js"
       - "assets/js/replay-controls.js"
@@ -41,14 +44,45 @@ jobs:
         run: |
           python -m pip install --upgrade pip playwright
           python -m playwright install --with-deps chromium
-      - name: Validate explicit Inspector runtime flow
+      - name: Validate explicit Inspector runtime and diagnostics overlay flow
         run: |
           python -m http.server 8765 >/tmp/inspector-http.log 2>&1 &
           python - <<'PY'
+          import json
           from pathlib import Path
           from playwright.sync_api import sync_playwright
 
-          payload = Path('data/viewer-demo-payload.json').read_text(encoding='utf-8')
+          payload = json.loads(Path('data/viewer-demo-payload.json').read_text(encoding='utf-8'))
+          payload['diagnostics'] = {
+              'schemaVersion': '0.1.0',
+              'analysisType': 'static-optimization-diagnostics',
+              'summary': {
+                  'diagnosticCount': 2,
+                  'warningCount': 1,
+                  'opportunityCount': 1,
+                  'infoCount': 0,
+              },
+              'diagnostics': [
+                  {
+                      'id': 'very-low-arm-utilization',
+                      'severity': 'opportunity',
+                      'confidence': 'high',
+                      'targets': ['arm-main'],
+                      'evidence': [{'kind': 'timeline-arms'}],
+                  },
+                  {
+                      'id': 'high-global-idle-time',
+                      'severity': 'warning',
+                      'confidence': 'high',
+                      'targets': [],
+                      'evidence': [{'kind': 'timeline-summary'}],
+                  },
+              ],
+          }
+          payload.setdefault('patterns', {'summary': {}, 'findings': []})
+          payload.setdefault('timeline', {'summary': {}, 'arms': []})
+          body = json.dumps(payload)
+
           with sync_playwright() as p:
               browser = p.chromium.launch()
               page = browser.new_page(viewport={'width': 1500, 'height': 1000})
@@ -58,7 +92,7 @@ jobs:
 
               def fulfill(route):
                   requests.append(route.request.url)
-                  route.fulfill(status=200, content_type='application/json', body=payload)
+                  route.fulfill(status=200, content_type='application/json', body=body)
 
               page.route('**/api/v1/analyze', fulfill)
               page.goto('http://127.0.0.1:8765/inspector.html', wait_until='networkidle', timeout=120000)
@@ -68,6 +102,8 @@ jobs:
               assert page.evaluate("typeof window.OpusViewerRuntime === 'object'")
               assert page.evaluate("typeof window.OpusScene === 'object'")
               assert page.evaluate("typeof window.OpusSvgRenderer === 'object'")
+              assert page.evaluate("typeof window.OpusSvgOverlayHost === 'object'")
+              assert page.evaluate("typeof window.OpusSvgDiagnosticsOverlay === 'object'")
 
               page.set_input_files('#puzzle-file', files=[{
                   'name': 'fixture.puzzle', 'mimeType': 'application/octet-stream', 'buffer': b'puzzle'
@@ -79,6 +115,7 @@ jobs:
               page.locator('#analyze-button').click()
               page.wait_for_selector('#results:not([hidden])', timeout=30000)
               page.wait_for_function("document.querySelector('#solution-viewer [data-part-id=\"arm-main\"]') !== null", timeout=30000)
+              page.wait_for_function("window.__OPUS_DIAGNOSTICS_OVERLAY__?.stats?.targetedParts === 1", timeout=30000)
               page.wait_for_timeout(260)
 
               assert len(requests) == 1, requests
@@ -89,6 +126,51 @@ jobs:
               assert page.locator('#solution-viewer [data-part-id]').count() >= 6
               assert page.locator('#solution-viewer [data-atom-id]').count() >= 2
               assert page.locator('#solution-viewer [data-viewer-layer="area"]').count() == 1
+              assert page.locator('#diagnostic-findings .pattern-finding').count() == 2
+
+              overlay_state = page.evaluate("""() => {
+                const world = document.querySelector('#solution-viewer [data-viewer-world]');
+                const layer = world.querySelector('[data-opus-overlay="diagnostics"]');
+                const baseOverlay = world.querySelector('[data-viewer-layer="overlay"]');
+                const target = layer?.querySelector('[data-opus-diagnostic-target="arm-main"]');
+                const toggle = document.querySelector('[data-diagnostics-overlay-toggle]');
+                return {
+                  layerExists: Boolean(layer),
+                  targetCount: layer?.querySelectorAll('[data-opus-diagnostic-target]').length || 0,
+                  targetExists: Boolean(target),
+                  targetHasPartId: target?.hasAttribute('data-part-id') || false,
+                  diagnosticCount: Number(layer?.dataset.diagnosticCount || 0),
+                  targetedCount: Number(layer?.dataset.targetedDiagnosticCount || 0),
+                  globalCount: Number(layer?.dataset.globalDiagnosticCount || 0),
+                  beforeBaseOverlay: Boolean(layer && baseOverlay && (layer.compareDocumentPosition(baseOverlay) & Node.DOCUMENT_POSITION_FOLLOWING)),
+                  toggleExists: Boolean(toggle),
+                  toggleDisabled: Boolean(toggle?.disabled),
+                  toggleText: toggle?.textContent || '',
+                  ariaPressed: toggle?.getAttribute('aria-pressed'),
+                  hidden: Boolean(layer?.hidden)
+                };
+              }""")
+              assert overlay_state['layerExists'], overlay_state
+              assert overlay_state['targetCount'] == 1, overlay_state
+              assert overlay_state['targetExists'], overlay_state
+              assert not overlay_state['targetHasPartId'], overlay_state
+              assert overlay_state['diagnosticCount'] == 2, overlay_state
+              assert overlay_state['targetedCount'] == 1, overlay_state
+              assert overlay_state['globalCount'] == 1, overlay_state
+              assert overlay_state['beforeBaseOverlay'], overlay_state
+              assert overlay_state['toggleExists'], overlay_state
+              assert not overlay_state['toggleDisabled'], overlay_state
+              assert 'Diagnostics · 1' in overlay_state['toggleText'], overlay_state
+              assert overlay_state['ariaPressed'] == 'true', overlay_state
+              assert not overlay_state['hidden'], overlay_state
+
+              toggle = page.locator('[data-diagnostics-overlay-toggle]')
+              toggle.click()
+              assert page.evaluate("document.querySelector('[data-opus-overlay=\"diagnostics\"]').hidden === true")
+              assert toggle.get_attribute('aria-pressed') == 'false'
+              toggle.click()
+              assert page.evaluate("document.querySelector('[data-opus-overlay=\"diagnostics\"]').hidden === false")
+              assert toggle.get_attribute('aria-pressed') == 'true'
 
               scene_state = page.evaluate("""() => {
                 const scene = window.OpusViewerRuntime.currentScene('#solution-viewer');
@@ -96,6 +178,8 @@ jobs:
                   kind: scene?.kind,
                   parts: scene?.static?.parts?.length || 0,
                   frames: scene?.timeline?.frames?.length || 0,
+                  diagnostics: scene?.annotations?.diagnostics?.items?.length || 0,
+                  targetedDiagnostics: scene?.annotations?.diagnostics?.items?.filter(item => item.targets?.length)?.length || 0,
                   captureReady: window.__OPUS_CAPTURE_READY__ === true,
                   lastSceneMatches: window.__OPUS_LAST_SCENE__ === scene
                 };
@@ -103,6 +187,8 @@ jobs:
               assert scene_state['kind'] == 'opus-scene', scene_state
               assert scene_state['parts'] >= 6, scene_state
               assert scene_state['frames'] == 4, scene_state
+              assert scene_state['diagnostics'] == 2, scene_state
+              assert scene_state['targetedDiagnostics'] == 1, scene_state
               assert scene_state['captureReady'], scene_state
               assert scene_state['lastSceneMatches'], scene_state
 
