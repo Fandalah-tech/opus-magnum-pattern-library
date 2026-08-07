@@ -96,8 +96,6 @@ def _candidate() -> dict:
                   program=_program([(0, "grab"), (3, "rotate_ccw"), (4, "drop"), (5, "rotate_cw")])),
             _part("z-pivot-arm", "arm1", (2, 0), rotation=3,
                   program=_program([(4, "grab"), (5, "pivot_ccw")])),
-            # Same world-space source triangles as the reconstructed fixture,
-            # but using the official reagent-local coordinates/orientations.
             _part("salt-input", "input", (-2, -2), rotation=3, which=0),
             _part("water-input", "input", (3, -2), rotation=4, which=1),
             _part("calc-0", "glyph-calcification", (0, -2)),
@@ -123,5 +121,6 @@ def test_existing_pipeline_runs_on_exact_official_geometry() -> None:
     simulator = Simulator.from_models(puzzle, solution)
     replay = simulator.run_timeline(timeline)
 
-    assert replay["summary"]["terminatedWithError"] is False
-    assert simulator.delivered_products == {"out": 6}
+    last_frame = simulator.frames[-1]
+    assert replay["summary"]["terminatedWithError"] is False, last_frame
+    assert simulator.delivered_products == {"out": 6}, last_frame
