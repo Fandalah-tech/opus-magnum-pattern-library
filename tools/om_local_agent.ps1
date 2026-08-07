@@ -120,15 +120,57 @@ function Find-Repository {
   return $null
 }
 
+function Get-PorcelainPath {
+  param([string]$Line)
+  if ([string]::IsNullOrWhiteSpace($Line) -or $Line.Length -lt 4) { return '' }
+  $path = $Line.Substring(3).Trim()
+  if ($path -match ' -> ') { $path = ($path -split ' -> ')[-1] }
+  $path = $path.Trim('"') -replace '\\','/'
+  return $path
+}
+
+function Test-RuntimeDirtyPath {
+  param([string]$Path)
+  if ([string]::IsNullOrWhiteSpace($Path)) { return $false }
+  return (
+    $Path -like 'reports/rotor-a41-*' -or
+    $Path -eq 'reports/live-search-status.json' -or
+    $Path -eq 'reports/om-agent-status.json' -or
+    $Path -like '.om-bridge/results/*'
+  )
+}
+
 function Sync-Repository {
   param([string]$Repo)
   if (-not $Repo) { Write-AgentLog 'Depot local introuvable.'; return $false }
   Push-Location $Repo
+  $runtimeStashed = $false
   try {
-    $statusResult = Invoke-GitLogged -Arguments @('status','--porcelain')
+    $statusResult = Invoke-GitLogged -Arguments @('status','--porcelain','--untracked-files=all')
     if ($statusResult.ExitCode -ne 0) { Write-AgentLog 'Git inaccessible ou depot invalide.'; return $false }
     $dirty = @($statusResult.Output | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) })
-    if ($dirty.Count -gt 0) { Write-AgentLog 'Depot modifie localement; synchronisation/file suspendue.'; return $false }
+    if ($dirty.Count -gt 0) {
+      $unsafe = @()
+      foreach ($line in $dirty) {
+        $path = Get-PorcelainPath -Line ([string]$line)
+        if (-not (Test-RuntimeDirtyPath -Path $path)) { $unsafe += [string]$line }
+      }
+      if ($unsafe.Count -gt 0) {
+        Write-AgentLog ('Depot modifie hors runtime; synchronisation/file suspendue: ' + ($unsafe -join ' | '))
+        return $false
+      }
+
+      Write-AgentLog 'Checkpoint/runtime OMSIM detecte apres interruption; preservation temporaire avant synchronisation.'
+      $stash = Invoke-GitLogged -Arguments @(
+        'stash','push','--include-untracked','-m','om-agent-runtime-recovery','--',
+        'reports/rotor-a41-*','reports/live-search-status.json','reports/om-agent-status.json','.om-bridge/results'
+      )
+      if ($stash.ExitCode -ne 0) {
+        Write-AgentLog 'Impossible de preserver le checkpoint/runtime; synchronisation suspendue.'
+        return $false
+      }
+      $runtimeStashed = $true
+    }
 
     $fetch = Invoke-GitLogged -Arguments @('fetch','origin',$ResearchBranch,'--prune')
     if ($fetch.ExitCode -ne 0) { return $false }
@@ -142,7 +184,17 @@ function Sync-Repository {
     }
 
     $pull = Invoke-GitLogged -Arguments @('pull','--ff-only','origin',$ResearchBranch)
-    return ($pull.ExitCode -eq 0)
+    if ($pull.ExitCode -ne 0) { return $false }
+
+    if ($runtimeStashed) {
+      $restore = Invoke-GitLogged -Arguments @('stash','pop')
+      if ($restore.ExitCode -ne 0) {
+        Write-AgentLog 'Conflit lors de la restauration du checkpoint/runtime; stash conserve pour recuperation manuelle.'
+        return $false
+      }
+      Write-AgentLog 'Checkpoint/runtime OMSIM restaure; reprise de la file autorisee.'
+    }
+    return $true
   } finally { Pop-Location }
 }
 
