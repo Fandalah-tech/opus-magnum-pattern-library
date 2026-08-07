@@ -42,6 +42,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "build_rotor_candidate_replay": [sys.executable, "tools/build_rotor_candidate_replay.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
     "import_critelli_liquid_perfumes": [sys.executable, "tools/import_critelli_event.py", "--max-solutions", "25", "--delay", "0.4"],
+    "crawl_critelli_catalog": [sys.executable, "tools/crawl_critelli_catalog.py", "--delay", "0.35"],
 }
 
 
