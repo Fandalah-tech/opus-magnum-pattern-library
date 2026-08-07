@@ -98,7 +98,7 @@ jobs:
               page.route('https://raw.githubusercontent.com/**', route_handler)
               page.goto('http://127.0.0.1:8765/solver-lab.html', wait_until='networkidle', timeout=120000)
               page.wait_for_function("document.body.dataset.solverSceneReady === 'true'", timeout=30000)
-              page.wait_for_timeout(300)
+              page.wait_for_timeout(350)
 
               state = page.evaluate("""() => {
                 const root = document.querySelector('#solution-viewer');
@@ -111,6 +111,8 @@ jobs:
                   armSixBranches: root.querySelectorAll('[data-part-id="arm-six"] [data-arm-shaft]').length,
                   armSixContract: root.querySelector('[data-part-id="arm-six"]')?.dataset.branchCount,
                   iframeCount: document.querySelectorAll('iframe').length,
+                  stationPreviews: root.querySelectorAll('[data-input-preview],[data-output-preview]').length,
+                  replayAtoms: root.querySelectorAll('.replay-atom').length,
                   status: document.querySelector('#solver-status')?.textContent || '',
                   score: document.querySelector('#solver-score')?.textContent || '',
                   stage: document.querySelector('#solver-stage')?.textContent || '',
@@ -123,23 +125,41 @@ jobs:
               assert state['areaOverlay'] == 1, state
               assert state['armSixBranches'] == 6 and state['armSixContract'] == '6', state
               assert state['iframeCount'] == 0, state
+              assert state['stationPreviews'] == 0, state
+              assert state['replayAtoms'] == len(frames[0]['state']['atoms']), (state, frames[0]['state']['atoms'])
               assert 'Scene canonique chargée' in state['status'], state
               assert state['score'] == '599', state
               assert state['stage'] == 'searching', state
               assert state['rangeMax'] == '3', state
 
               page.locator('#jump-solver').click()
-              page.wait_for_timeout(250)
+              page.wait_for_timeout(350)
               jumped = page.evaluate("""() => ({
                 range: document.querySelector('#solution-viewer [data-replay-range]')?.value,
                 frame: document.querySelector('#solver-frame')?.textContent,
                 segment: document.querySelector('#solver-segment')?.textContent,
-                frameScore: document.querySelector('#solver-frame-score')?.textContent
+                frameScore: document.querySelector('#solver-frame-score')?.textContent,
+                replayAtoms: document.querySelectorAll('#solution-viewer .replay-atom').length,
+                stationPreviews: document.querySelectorAll('#solution-viewer [data-input-preview],#solution-viewer [data-output-preview]').length
               })""")
               assert jumped['range'] == '2', jumped
               assert jumped['frame'] == '3 / 4', jumped
               assert jumped['segment'] == 'Solver', jumped
               assert jumped['frameScore'] == '592', jumped
+              assert jumped['stationPreviews'] == 0, jumped
+              assert jumped['replayAtoms'] == len(frames[2]['state']['atoms']), (jumped, frames[2]['state']['atoms'])
+
+              # Go back to the initial frame and ensure frame 2 did not accumulate.
+              page.locator('#solution-viewer [data-replay-range]').fill('0')
+              page.locator('#solution-viewer [data-replay-range]').dispatch_event('input')
+              page.wait_for_timeout(350)
+              returned = page.evaluate("""() => ({
+                replayAtoms: document.querySelectorAll('#solution-viewer .replay-atom').length,
+                range: document.querySelector('#solution-viewer [data-replay-range]')?.value
+              })""")
+              assert returned['range'] == '0', returned
+              assert returned['replayAtoms'] == len(frames[0]['state']['atoms']), (returned, frames[0]['state']['atoms'])
+
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
               browser.close()
