@@ -8,6 +8,7 @@
   };
 
   const loadScript = (src) => new Promise((resolve) => {
+    if (document.querySelector(`script[src="${src}"]`)) return resolve();
     const script = document.createElement('script');
     script.src = src;
     script.onload = resolve;
@@ -17,8 +18,9 @@
 
   const init = () => {
     const root = document.querySelector('#solution-viewer');
-    if (!root || !window.OpusSolutionViewer) return;
-    const viewer = window.OpusSolutionViewer.create(root);
+    const runtime = window.OpusViewerRuntime;
+    if (!root || !runtime) return;
+    const viewer = runtime.mount(root);
     const nativeFetch = window.fetch.bind(window);
     window.fetch = async (...args) => {
       const response = await nativeFetch(...args);
@@ -26,10 +28,7 @@
       if (response.ok && url.includes('/api/v1/analyze')) {
         response.clone().json().then((payload) => {
           if (!payload?.solution) return;
-          requestAnimationFrame(() => {
-            viewer.render(payload.solution, payload.graph, payload.puzzle, payload.replay);
-            window.dispatchEvent(new CustomEvent('opus:analysisready', { detail: { payload, viewer } }));
-          });
+          requestAnimationFrame(() => runtime.renderPayload(payload, root));
         }).catch(() => {});
       }
       return response;
@@ -39,6 +38,7 @@
 
   loadStylesheet('assets/css/viewer-replay-enhancements.css');
   Promise.resolve()
+    .then(() => loadScript('assets/js/opus-viewer-runtime.js'))
     .then(() => loadScript('assets/js/solution-viewer-symbols.js'))
     .then(() => loadScript('assets/js/output-product-preview.js'))
     .then(() => loadScript('assets/js/viewer-interactions.js'))
