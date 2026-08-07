@@ -10,6 +10,7 @@ on:
       - "assets/js/opus-scene.js"
       - "assets/js/opus-scene-diff.js"
       - "assets/js/opus-svg-renderer.js"
+      - "assets/js/opus-svg-overlay-host.js"
       - "assets/js/opus-svg-diff-overlay.js"
       - "assets/js/opus-viewer-runtime.js"
       - ".github/workflows/scene-diff-lab-smoke.yml"
@@ -78,19 +79,25 @@ jobs:
               page.wait_for_function("window.__OPUS_SCENE_DIFF__?.kind === 'opus-scene-diff'", timeout=30000)
               page.wait_for_selector('#diff-result:not([hidden])')
 
-              state = page.evaluate("""() => ({
-                requestCount: 2,
-                diffKind: window.__OPUS_SCENE_DIFF__.kind,
-                beforeKind: window.__OPUS_SCENE_DIFF_BEFORE__.kind,
-                afterKind: window.__OPUS_SCENE_DIFF_AFTER__.kind,
-                summary: window.__OPUS_SCENE_DIFF__.summary,
-                renderedParts: document.querySelectorAll('#diff-svg [data-part-id]').length,
-                moveLines: document.querySelectorAll('#diff-svg [data-diff-kind="moved"]').length,
-                changedRings: document.querySelectorAll('#diff-svg [data-diff-kind="changed"]').length,
-                viewBox: document.querySelector('#diff-svg').getAttribute('viewBox'),
-                hasSolutionViewerRoot: Boolean(document.querySelector('#solution-viewer')),
-                status: document.querySelector('#diff-status').textContent
-              })""")
+              state = page.evaluate("""() => {
+                const world = document.querySelector('#diff-svg [data-diff-world]');
+                const overlay = world.querySelector('[data-opus-overlay="scene-diff"]');
+                const baseOverlay = world.querySelector('[data-viewer-layer="overlay"]');
+                return {
+                  diffKind: window.__OPUS_SCENE_DIFF__.kind,
+                  beforeKind: window.__OPUS_SCENE_DIFF_BEFORE__.kind,
+                  afterKind: window.__OPUS_SCENE_DIFF_AFTER__.kind,
+                  summary: window.__OPUS_SCENE_DIFF__.summary,
+                  renderedParts: document.querySelectorAll('#diff-svg [data-part-id]').length,
+                  moveLines: document.querySelectorAll('#diff-svg [data-diff-kind="moved"]').length,
+                  changedRings: document.querySelectorAll('#diff-svg [data-diff-kind="changed"]').length,
+                  viewBox: document.querySelector('#diff-svg').getAttribute('viewBox'),
+                  hasSolutionViewerRoot: Boolean(document.querySelector('#solution-viewer')),
+                  status: document.querySelector('#diff-status').textContent,
+                  overlayNames: window.__OPUS_OVERLAY_HOST__?.names?.() || [],
+                  overlayBeforeBase: Boolean(overlay && baseOverlay && (overlay.compareDocumentPosition(baseOverlay) & Node.DOCUMENT_POSITION_FOLLOWING))
+                };
+              }""")
               state['requestCount'] = len(requests)
               assert state['requestCount'] == 2, state
               assert state['diffKind'] == 'opus-scene-diff', state
@@ -104,6 +111,8 @@ jobs:
               assert state['viewBox'], state
               assert state['hasSolutionViewerRoot'] is False, state
               assert state['status'] == 'Comparison complete.', state
+              assert state['overlayNames'] == ['scene-diff'], state
+              assert state['overlayBeforeBase'] is True, state
               if errors:
                   raise AssertionError('Browser errors: ' + ' | '.join(errors))
               browser.close()
