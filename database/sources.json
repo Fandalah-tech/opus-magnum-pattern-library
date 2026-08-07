@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.1.0",
+  "sources": [
+    {
+      "id": "campaign-p007-p015-user-reference",
+      "type": "pair-manifest",
+      "path": "fixtures/reference/campaign-p007-p015.manifest.json",
+      "enabled": true,
+      "priority": 100,
+      "notes": "Trusted private campaign reference pairs; metadata may be displayed, binaries are not redistributed."
+    },
+    {
+      "id": "critelli-public-events",
+      "type": "public-event-manifest",
+      "path": "database/critelli-public-events.manifest.json",
+      "enabled": true,
+      "priority": 60,
+      "notes": "Public Critelli event and submission metadata. Puzzle/solution binaries are not redistributed; solution metadata is derived from ephemeral downloads and binary parsing when accessible."
+    }
+  ]
+}
