@@ -160,7 +160,8 @@
   }
 
   root.addEventListener('opus:replayframe', (event) => {
-    const molecules = event.detail.frame?.molecules || [];
+    const frame = event.detail?.scene?.timeline?.frame || event.detail?.frame || null;
+    const molecules = frame?.molecules || [];
     const duration = Number(event.detail?.animationDuration ?? 140);
     animateMolecules(molecules, duration);
   });
