@@ -21,23 +21,52 @@ MAX_CANDIDATES = 300
 
 
 def locate_puzzle(solution: dict[str, Any]) -> Path | None:
-    wanted = Path(str(solution.get("puzzleFile") or "")).name.lower()
-    roots = []
+    raw_wanted = Path(str(solution.get("puzzleFile") or "")).name.lower()
+    wanted_names: set[str] = set()
+    if raw_wanted:
+        wanted_names.add(raw_wanted)
+        if not raw_wanted.endswith(".puzzle"):
+            wanted_names.add(raw_wanted + ".puzzle")
+        else:
+            wanted_names.add(raw_wanted[:-7])
+
+    roots: list[Path] = []
     configured = os.environ.get("OM_OPUS_MAGNUM_ROOT")
     if configured:
         roots.append(Path(configured))
     roots.append(DEFAULT_OPUS_ROOT)
     roots.append(Path("C:/Users/bruno/Documents/My Games/Opus Magnum"))
+
+    seen: set[str] = set()
     for root in roots:
-        if not root.exists():
+        try:
+            root = root.resolve()
+        except OSError:
             continue
-        exact = list(root.rglob(Path(wanted).name)) if wanted else []
-        for path in exact:
-            if path.is_file() and path.name.lower() == wanted:
+        key = str(root).lower()
+        if key in seen or not root.exists():
+            continue
+        seen.add(key)
+
+        # Opus Magnum stores custom puzzles below the Steam-id directory, e.g.
+        # <Opus Magnum>/<steam-id>/custom/weeklies2026_van-berlos-rotor.puzzle.
+        # Search recursively instead of assuming custom/ is directly below the root.
+        try:
+            candidates = list(root.rglob("*.puzzle"))
+        except (OSError, PermissionError):
+            continue
+
+        for path in candidates:
+            if path.name.lower() in wanted_names:
                 return path
-        for path in root.rglob("*.puzzle"):
-            if not wanted or path.name.lower() == wanted:
+
+        # Fallback for historical solution headers that omit/add the .puzzle suffix
+        # or differ only by path components.
+        wanted_stems = {Path(name).stem.lower() for name in wanted_names}
+        for path in candidates:
+            if path.stem.lower() in wanted_stems:
                 return path
+
     return None
 
 
@@ -102,7 +131,7 @@ def main() -> int:
         return 3
     puzzle_path = locate_puzzle(solution)
     if puzzle_path is None:
-        publish(live, stage="puzzle-required", status="blocked", message=f"Puzzle binaire {solution.get('puzzleFile')} introuvable dans le dossier Opus Magnum/custom.")
+        publish(live, stage="puzzle-required", status="blocked", message=f"Puzzle binaire {solution.get('puzzleFile')} introuvable sous le dossier Opus Magnum, y compris les profils Steam/custom.")
         return 4
 
     publish(live, stage="baseline-validation", status="running", message=f"Validation distante de {reference_file} avec {puzzle_path.name}.", extra={"validatorUrl": VALIDATOR_URL, "puzzlePath": str(puzzle_path), "referenceMatch": match_kind})
