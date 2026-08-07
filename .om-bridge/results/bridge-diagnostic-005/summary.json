@@ -9,15 +9,16 @@
       "tests/test_mechanical_macros.py",
       "tests/test_macro_explorer.py"
     ],
-    "notes": "Final bridge validation after relaxing non-semantic path tie assertion."
+    "notes": "Final bridge validation after relaxing non-semantic path tie assertion.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/bridge-diagnostic-005.json",
-  "git_sha": "50d46a799e848523b17aa66595bcbfb35d79ff7e",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T00:47:02.216859+00:00",
-  "finished_at": "2026-08-06T00:47:03.758958+00:00",
-  "duration_seconds": 1.542,
-  "exit_code": 0,
-  "status": "success",
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/bridge-diagnostic-005.json",
+  "git_sha": "39073f3bc04e68a17387af6dacd9d5985c6c5ed9",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:35:31.729782+00:00",
+  "finished_at": "2026-08-07T10:35:31.901982+00:00",
+  "duration_seconds": 0.172,
+  "exit_code": 1,
+  "status": "failed",
   "error": null
 }
