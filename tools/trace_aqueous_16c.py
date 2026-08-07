@@ -13,6 +13,18 @@ def load_b64(path: str) -> bytes:
     return base64.b64decode(Path(path).read_text().strip())
 
 
+def _right_atoms(frame: dict) -> list[dict]:
+    atoms = (frame.get("world") or {}).get("atoms") or []
+    # The third right-hand product is assembled from right input spawns 4 and 5.
+    prefixes = ("part-14-spawn-4-", "part-14-spawn-5-")
+    return [atom for atom in atoms if str(atom.get("id") or "").startswith(prefixes)]
+
+
+def _interesting_arms(frame: dict) -> list[dict]:
+    keep = {"part-11", "part-12", "part-15", "part-16"}
+    return [arm for arm in frame.get("arms", []) if arm.get("id") in keep]
+
+
 def main() -> int:
     puzzle = parse_puzzle_bytes(
         load_b64("fixtures/weeklies2026/aqueous-dagger.puzzle.b64"),
@@ -46,12 +58,16 @@ def main() -> int:
             event for event in frame.get("events", [])
             if event.get("kind") in {"product-delivered", "simulation-error", "bond-created", "atom-transmuted"}
         ]
-        if changed or noteworthy or cycle["cycle"] >= 12:
-            print("CYCLE", cycle["cycle"], json.dumps({
-                "instructions": instructions,
-                "delivered": current,
-                "events": noteworthy,
-            }, sort_keys=True, default=str))
+        payload = {
+            "instructions": instructions,
+            "delivered": current,
+            "events": noteworthy,
+        }
+        if 11 <= cycle["cycle"] <= 14:
+            payload["rightAtoms"] = _right_atoms(frame)
+            payload["rightArms"] = _interesting_arms(frame)
+        if changed or noteworthy or cycle["cycle"] >= 11:
+            print("CYCLE", cycle["cycle"], json.dumps(payload, sort_keys=True, default=str))
         previous = current
         if frame.get("terminatedWithError"):
             break
