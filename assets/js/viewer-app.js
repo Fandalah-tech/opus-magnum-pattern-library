@@ -30,6 +30,11 @@
     result.hidden = false;
   }
 
+  function renderMachine(payload) {
+    renderSummary(payload);
+    requestAnimationFrame(() => window.OpusViewerRuntime.renderPayload(payload, '#solution-viewer'));
+  }
+
   async function analyze() {
     analyzeButton.disabled = true;
     status.textContent = 'Analyzing and rendering…';
@@ -37,9 +42,9 @@
       const payload = await window.OpusViewerRuntime.analyzeFiles(
         puzzleInput.files[0],
         solutionInput.files[0],
-        { root: '#solution-viewer' }
+        { root: '#solution-viewer', render: false }
       );
-      renderSummary(payload);
+      renderMachine(payload);
       status.textContent = 'Render complete.';
     } catch (error) {
       console.error(error);
@@ -56,8 +61,8 @@
       const response = await fetch('data/viewer-demo-payload.json', { cache: 'no-store' });
       if (!response.ok) throw new Error(`Demo payload → ${response.status}`);
       const payload = await response.json();
-      window.OpusViewerRuntime.renderPayload(payload, '#solution-viewer');
-      renderSummary(payload);
+      renderMachine(payload);
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       status.textContent = 'Demo render complete.';
       document.body.dataset.viewerDemoReady = 'true';
     } catch (error) {
