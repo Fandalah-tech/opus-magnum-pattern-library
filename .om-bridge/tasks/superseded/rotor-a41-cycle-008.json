@@ -1,0 +1,7 @@
+{
+  "id": "rotor-a41-cycle-008",
+  "operation": "run_rotor_a41_remote_cycle_campaign",
+  "priority": 9500,
+  "timeout_seconds": 21600,
+  "notes": "Superseded before execution after queue-hardening changes. Replaced by rotor-a41-cycle-009."
+}
