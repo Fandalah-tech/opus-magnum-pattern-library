@@ -9,6 +9,7 @@
   const speed = root.querySelector('[data-replay-speed]');
   const note = root.querySelector('[data-replay-note]');
   let trace = null;
+  let scene = null;
   let frameIndex = 0;
   let timer = null;
   let initialFrameRequest = null;
@@ -55,9 +56,11 @@
     const rate = playbackRate();
     const duration = animationDuration(manual);
     root.dataset.replaySpeed = String(rate);
+    const frameScene = scene && window.OpusScene?.atFrame ? window.OpusScene.atFrame(scene, frameIndex) : scene;
     root.dispatchEvent(new CustomEvent('opus:replayframe', {
       detail: {
         frame,
+        scene: frameScene,
         trace,
         playbackRate: rate,
         animationDuration: duration,
@@ -118,8 +121,14 @@
     if (playing) scheduleNext();
   });
 
-  window.addEventListener('opus:analysisready', (event) => {
-    trace = event.detail.payload?.replay || null;
+  window.addEventListener('opus:sceneready', (event) => {
+    scene = event.detail.scene || null;
+    const timeline = scene?.timeline || null;
+    trace = timeline ? {
+      frames: timeline.frames || [],
+      summary: { cycleCount: Number(timeline.cycleCount || 0) },
+      capabilities: { ...(timeline.capabilities || {}) }
+    } : null;
     frameIndex = 0;
     stop();
     clearInitialFrame();
@@ -134,10 +143,8 @@
       else if (trace?.capabilities?.physicalArmAnimation) note.textContent = 'Kinematic arm replay — molecules, tracks and collisions are not available yet.';
       else note.textContent = 'Program replay preview — physical states are not available yet.';
     }
-    // Every replay renderer also receives opus:analysisready and resets its state.
-    // Dispatching the first frame synchronously here races with those resets and
-    // lets them cancel the animation we just scheduled. Wait one paint so every
-    // analysisready listener has completed before the first physical frame.
+    // OpusViewerRuntime emits sceneready before analysisready. Defer the first
+    // frame one paint so legacy analysisready listeners can finish resetting.
     if (count > 0) {
       initialFrameRequest = requestAnimationFrame(() => {
         initialFrameRequest = null;
