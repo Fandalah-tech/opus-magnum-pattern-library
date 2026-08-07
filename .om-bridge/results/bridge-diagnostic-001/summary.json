@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "bridge-diagnostic-001",
+    "operation": "run_tests",
+    "timeout_seconds": 900,
+    "pytest_targets": [
+      "tests/test_om_worker.py",
+      "tests/test_mechanical_macros.py",
+      "tests/test_macro_explorer.py"
+    ],
+    "notes": "First end-to-end self-hosted runner validation.",
+    "priority": 0
+  },
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/bridge-diagnostic-001.json",
+  "git_sha": "c5c42503603e95427616c03d2619bac697deec78",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:34:54.905405+00:00",
+  "finished_at": "2026-08-07T10:34:55.018441+00:00",
+  "duration_seconds": 0.113,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}
