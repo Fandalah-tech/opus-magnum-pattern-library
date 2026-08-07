@@ -1,6 +1,13 @@
 import base64
 
-from tools.import_critelli_event import Link, LinkParser, decode_data_uri, discover_file_links, parse_links
+from tools.import_critelli_event import (
+    Link,
+    LinkParser,
+    decode_data_uri,
+    discover_file_links,
+    discover_submissions_url,
+    parse_links,
+)
 
 
 def test_discovers_relative_puzzle_and_solution_links():
@@ -38,3 +45,13 @@ def test_critelli_inline_puzzle_data_uri_is_discovered_and_decoded():
     data, content_type = decode_data_uri(links[0].url)
     assert content_type == "application/octet-stream"
     assert data == payload
+
+
+def test_discovers_public_submissions_page_without_guessing_key():
+    event = "https://events.critelli.technology/OM2026Weeklies1_LiquidPerfumes"
+    html = b'''<html><body>
+      <a href="/submissions/19f7ad44e24b92dbe47c4b6536a35aa1">view all submissions</a>
+      <a href="https://example.com/submissions/deadbeefdeadbeef">external</a>
+    </body></html>'''
+    links, _, _ = parse_links(html, event)
+    assert discover_submissions_url(links, event) == "https://events.critelli.technology/submissions/19f7ad44e24b92dbe47c4b6536a35aa1"
