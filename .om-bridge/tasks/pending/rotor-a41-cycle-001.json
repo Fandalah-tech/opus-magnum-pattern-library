@@ -1,6 +1,7 @@
 {
   "id": "rotor-a41-cycle-001",
   "operation": "run_rotor_a41_cycle_campaign",
+  "priority": 1000,
   "timeout_seconds": 7200,
-  "notes": "Use SHA-locked A41 reference. Preserve area 41, cost 220 and geometry; publish only fully validated metric improvements."
+  "notes": "TOP PRIORITY. Use SHA-locked A41 reference. Preserve area 41, cost 220 and geometry; optimize cycles only and publish only fully validated metric improvements."
 }
