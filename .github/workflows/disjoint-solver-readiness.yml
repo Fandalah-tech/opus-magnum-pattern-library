@@ -66,13 +66,14 @@ jobs:
             -q
 
       - name: Search structure-only A42 Rotor solve
+        if: github.event_name == 'workflow_dispatch'
         timeout-minutes: 4
         run: python tools/search_rotor_structure.py
 
       - name: Report corrected Rotor prefix state
-        if: always()
+        if: github.event_name == 'workflow_dispatch'
         run: python tools/report_rotor_prefix.py
 
       - name: Report learned Rotor macro structure
-        if: always()
+        if: github.event_name == 'workflow_dispatch'
         run: python tools/report_rotor_macros.py
