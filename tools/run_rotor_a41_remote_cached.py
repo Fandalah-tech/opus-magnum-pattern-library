@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -7,12 +8,48 @@ from tools.a41_validator_cache import ValidatorCache, solution_fingerprint
 import tools.run_rotor_a41_remote_cycle_campaign as campaign
 
 CACHE_PATH = Path("reports/rotor-a41-validator-cache.json")
+LEARNING_PATH = Path("reports/rotor-a41-retiming-learning.json")
 CACHE_NAMESPACE = f"{campaign.VALIDATOR_URL.rstrip('/')}{campaign.ANALYZE_ENDPOINT}"
+
+
+def load_learned_ranks(path: Path = LEARNING_PATH) -> dict[tuple[str, str], int]:
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    rows = data.get("byPartInstruction") if isinstance(data, dict) else None
+    if not isinstance(rows, list):
+        return {}
+    ranks: dict[tuple[str, str], int] = {}
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            continue
+        part = str(row.get("part") or "")
+        instruction = str(row.get("instruction") or "")
+        if part and instruction:
+            ranks.setdefault((part, instruction), index)
+    return ranks
+
+
+def reorder_shifts(shifts: list[dict[str, Any]], ranks: dict[tuple[str, str], int]) -> list[dict[str, Any]]:
+    if not ranks:
+        return shifts
+    fallback = len(ranks) + 1000
+    indexed = list(enumerate(shifts))
+    indexed.sort(key=lambda item: (
+        ranks.get((str(item[1].get("part") or ""), str(item[1].get("instruction") or "")), fallback),
+        item[0],
+    ))
+    return [shift for _, shift in indexed]
 
 
 def main() -> int:
     cache = ValidatorCache(CACHE_PATH, CACHE_NAMESPACE)
     original_validate = campaign.validate_remote
+    original_candidate_shifts = campaign.candidate_shifts
+    learned_ranks = load_learned_ranks()
 
     def validate_cached(puzzle_path: Path, solution: dict[str, Any], name: str) -> dict[str, Any]:
         fingerprint = solution_fingerprint(campaign.encode_solution(solution))
@@ -33,7 +70,11 @@ def main() -> int:
             cache.put(fingerprint, stored)
         return result
 
+    def candidate_shifts_learned(solution: dict[str, Any]) -> list[dict[str, Any]]:
+        return reorder_shifts(original_candidate_shifts(solution), learned_ranks)
+
     campaign.validate_remote = validate_cached
+    campaign.candidate_shifts = candidate_shifts_learned
     return campaign.main()
 
 
