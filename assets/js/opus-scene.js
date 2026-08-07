@@ -151,5 +151,45 @@
     return new Set(scene?.static?.relations?.get(partId) || []);
   }
 
-  window.OpusScene = Object.freeze({ build, atFrame, related });
+  function diagnostics(scene, options = {}) {
+    let items = [...(scene?.annotations?.diagnostics?.items || [])];
+    if (options.severities?.length) {
+      const allowed = new Set(options.severities.map(String));
+      items = items.filter(item => allowed.has(String(item.severity)));
+    }
+    if (options.confidences?.length) {
+      const allowed = new Set(options.confidences.map(String));
+      items = items.filter(item => allowed.has(String(item.confidence)));
+    }
+    return items;
+  }
+
+  function targetedDiagnostics(scene, options = {}) {
+    return diagnostics(scene, options).filter(item => item.targets?.length);
+  }
+
+  function globalDiagnostics(scene, options = {}) {
+    return diagnostics(scene, options).filter(item => !item.targets?.length);
+  }
+
+  function diagnosticsForPart(scene, partId, options = {}) {
+    const id = String(partId);
+    return targetedDiagnostics(scene, options).filter(item => item.targets.some(target => String(target) === id));
+  }
+
+  function part(scene, partId) {
+    const id = String(partId);
+    return (scene?.static?.parts || []).find(item => String(item.id) === id) || null;
+  }
+
+  window.OpusScene = Object.freeze({
+    build,
+    atFrame,
+    related,
+    part,
+    diagnostics,
+    targetedDiagnostics,
+    globalDiagnostics,
+    diagnosticsForPart
+  });
 })();
