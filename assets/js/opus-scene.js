@@ -56,6 +56,31 @@
     };
   }
 
+  function normalizeDiagnostics(payload) {
+    const diagnostics = payload?.diagnostics || {};
+    return {
+      summary: { ...(diagnostics.summary || {}) },
+      items: (diagnostics.diagnostics || []).map(item => ({
+        id: item.id || 'diagnostic',
+        severity: item.severity || 'info',
+        confidence: item.confidence || 'unknown',
+        targets: [...(item.targets || [])].map(String),
+        evidence: (item.evidence || []).map(entry => ({ ...entry }))
+      }))
+    };
+  }
+
+  function normalizePatterns(payload) {
+    const patterns = payload?.patterns || {};
+    return {
+      summary: { ...(patterns.summary || {}) },
+      findings: (patterns.findings || []).map(item => ({
+        ...item,
+        evidence: (item.evidence || []).map(entry => ({ ...entry }))
+      }))
+    };
+  }
+
   function build(payload, options = {}) {
     if (!payload?.solution) throw new Error('Cannot build an Opus scene without a solution');
     const solution = payload.solution;
@@ -93,6 +118,10 @@
         occupiedCells,
         graph,
         relations
+      },
+      annotations: {
+        diagnostics: normalizeDiagnostics(payload),
+        patterns: normalizePatterns(payload)
       },
       timeline: {
         frames,
