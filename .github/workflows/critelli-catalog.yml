@@ -20,6 +20,9 @@ on:
 permissions:
   contents: write
 
+env:
+  PYTHONPATH: .
+
 jobs:
   inventory:
     runs-on: ubuntu-latest
@@ -36,7 +39,7 @@ jobs:
           python-version: "3.12"
 
       - name: Run Critelli importer tests
-        run: python -m pip install pytest && pytest -q tests/test_import_critelli_event.py
+        run: python -m pip install pytest && python -m pytest -q tests/test_import_critelli_event.py
 
       - name: Inventory public catalog
         run: |
