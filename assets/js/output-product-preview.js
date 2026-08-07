@@ -102,12 +102,11 @@
     group.append(preview);
   }
 
-  window.addEventListener('opus:analysisready', (event) => {
-    const payload = event.detail?.payload;
-    const puzzle = payload?.puzzle;
-    const solution = payload?.solution;
-    if (!puzzle || !solution) return;
-    for (const part of solution.parts || []) {
+  function renderScene(scene) {
+    const puzzle = scene?.source?.puzzle;
+    const parts = scene?.static?.parts || [];
+    if (!puzzle || !parts.length) return;
+    for (const part of parts) {
       const group = root.querySelector(`[data-part-id="${CSS.escape(String(part.id))}"]`);
       if (!group) continue;
       if (part.type === 'input') {
@@ -118,7 +117,8 @@
         if (product) drawMoleculePreview(group, part, product, 'output');
       }
     }
-  });
+  }
 
-  window.OpusStationMoleculePreview = Object.freeze({ drawMoleculePreview });
+  window.addEventListener('opus:sceneready', event => renderScene(event.detail?.scene));
+  window.OpusStationMoleculePreview = Object.freeze({ drawMoleculePreview, renderScene });
 })();
