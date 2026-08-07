@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Van Berlo Rotor A41 — campagne cycles</title>
+<style>
+:root{font-family:Inter,system-ui,sans-serif;color:#e9eef7;background:#10141d}body{max-width:980px;margin:0 auto;padding:24px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center}.badge{padding:7px 12px;border-radius:999px;background:#263247;font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}.card{background:#181f2c;border:1px solid #2b364a;border-radius:14px;padding:16px}.label{color:#9eabc0;font-size:.85rem}.value{font-size:1.8rem;font-weight:800;margin-top:5px}.delta{font-size:.85rem;color:#91d5a4}.section{margin-top:24px}table{width:100%;border-collapse:collapse;background:#181f2c;border-radius:14px;overflow:hidden}th,td{text-align:left;padding:11px;border-bottom:1px solid #2b364a}th{color:#9eabc0}.muted{color:#9eabc0}.error{color:#ff9b9b}code{font-size:.8rem}a{color:#9fc3ff}</style>
+</head>
+<body>
+<div class="top"><div><h1>Van Berlo’s Rotor — A41</h1><div class="muted">Campagne d’optimisation des cycles</div></div><div id="status" class="badge">Chargement…</div></div>
+<div id="updated" class="muted" style="margin-top:12px"></div>
+<div class="grid">
+<div class="card"><div class="label">Meilleur cycles</div><div id="cycles" class="value">—</div><div id="cyclesDelta" class="delta"></div></div>
+<div class="card"><div class="label">Area</div><div id="area" class="value">—</div></div>
+<div class="card"><div class="label">Coût</div><div id="cost" class="value">—</div></div>
+<div class="card"><div class="label">Instructions</div><div id="instructions" class="value">—</div><div id="instructionsDelta" class="delta"></div></div>
+<div class="card"><div class="label">Candidats testés</div><div id="tested" class="value">—</div></div>
+<div class="card"><div class="label">Candidats valides</div><div id="valid" class="value">—</div></div>
+</div>
+<div class="section"><h2>Meilleurs résultats</h2><table><thead><tr><th>#</th><th>Type</th><th>Cycles</th><th>Area</th><th>Coût</th><th>Instructions</th></tr></thead><tbody id="results"></tbody></table></div>
+<div class="section"><div id="message" class="muted"></div><p class="muted">Actualisation automatique toutes les 20 secondes.</p></div>
+<script>
+const DATA='https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/feature/disjoint-solver-readiness/reports/rotor-a41-cycle-live.json';
+const $=id=>document.getElementById(id);
+function metric(v){return v===null||v===undefined?'—':Number(v).toLocaleString('fr-CA')}
+async function refresh(){try{const r=await fetch(DATA+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();const m=d.metrics||{},b=m.best||{},base=m.baseline||{},imp=m.improvement||{};$('status').textContent=(d.status||'inconnu')+' · '+(d.stage||'—');$('updated').textContent='Dernière mise à jour : '+new Date(d.updatedAt).toLocaleString('fr-CA');$('cycles').textContent=metric(b.cycles);$('area').textContent=metric(b.area);$('cost').textContent=metric(b.cost);$('instructions').textContent=metric(b.instructions);$('tested').textContent=metric(m.testedCandidates);$('valid').textContent=metric(m.validCandidates);$('cyclesDelta').textContent=(imp.cycles||0)?`${imp.cycles} cycles gagnés`:`Référence : ${metric(base.cycles)}`;$('instructionsDelta').textContent=(imp.instructions||0)?`${imp.instructions} instructions gagnées`:`Référence : ${metric(base.instructions)}`;$('message').textContent=d.message||'';$('results').innerHTML=(d.bestResults||[]).map(x=>`<tr><td>${x.rank??'—'}</td><td>${x.kind??'candidate'}</td><td>${metric(x.metrics?.cycles)}</td><td>${metric(x.metrics?.area)}</td><td>${metric(x.metrics?.cost)}</td><td>${metric(x.metrics?.instructions)}</td></tr>`).join('')||'<tr><td colspan="6">Aucun résultat</td></tr>';}catch(e){$('status').textContent='Erreur de lecture';$('message').innerHTML='<span class="error">'+e.message+'</span>';}}
+refresh();setInterval(refresh,20000);
+</script>
+</body></html>
