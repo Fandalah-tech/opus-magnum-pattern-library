@@ -16,13 +16,35 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: om-local-worker
-  cancel-in-progress: false
-
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      task_file: ${{ steps.task.outputs.task_file }}
+      has_task: ${{ steps.task.outputs.has_task }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/disjoint-solver-readiness
+          fetch-depth: 50
+
+      - name: Resolve actionable task
+        id: task
+        env:
+          DISPATCH_TASK: ${{ inputs.task_file }}
+          EVENT_NAME: ${{ github.event_name }}
+          TRIGGER_SHA: ${{ github.sha }}
+        run: |
+          python tools/resolve_om_task.py \
+            --event "$EVENT_NAME" \
+            --dispatch-task "$DISPATCH_TASK" \
+            --trigger-sha "$TRIGGER_SHA" \
+            --output "$GITHUB_OUTPUT" \
+            --allow-empty
+
   execute:
-    if: github.event_name == 'workflow_dispatch' || github.actor == 'Fandalah-tech'
+    needs: guard
+    if: needs.guard.outputs.has_task == 'true' && (github.event_name == 'workflow_dispatch' || github.actor == 'Fandalah-tech')
     runs-on: [self-hosted, Windows, X64, omsim]
     timeout-minutes: 360
     steps:
@@ -30,16 +52,6 @@ jobs:
         with:
           ref: feature/disjoint-solver-readiness
           fetch-depth: 50
-
-      - name: Resolve task file
-        id: task
-        shell: cmd
-        env:
-          DISPATCH_TASK: ${{ inputs.task_file }}
-          EVENT_NAME: ${{ github.event_name }}
-          TRIGGER_SHA: ${{ github.sha }}
-        run: |
-          python tools/resolve_om_task.py --event "%EVENT_NAME%" --dispatch-task "%DISPATCH_TASK%" --trigger-sha "%TRIGGER_SHA%" --output "%GITHUB_OUTPUT%"
 
       - name: Prepare Python test environment
         shell: cmd
@@ -55,7 +67,7 @@ jobs:
         run: |
           setlocal EnableDelayedExpansion
           python --version
-          python tools/om_worker.py --task "${{ steps.task.outputs.task_file }}" --results-root ".om-bridge/results"
+          python tools/om_worker.py --task "${{ needs.guard.outputs.task_file }}" --results-root ".om-bridge/results"
           set code=!ERRORLEVEL!
           echo exit_code=!code!>>"%GITHUB_OUTPUT%"
           exit /b 0
