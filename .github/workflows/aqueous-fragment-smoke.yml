@@ -6,6 +6,7 @@ on:
       - packages/opus_solver/fragment_planner.py
       - tests/test_fragment_planner.py
       - tests/test_aqueous_candidate.py
+      - tests/test_aqueous_exact_puzzle.py
       - .github/workflows/aqueous-fragment-smoke.yml
   workflow_dispatch:
 
@@ -27,4 +28,9 @@ jobs:
       - name: Run Aqueous planner and candidate tests
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest tests/test_fragment_planner.py tests/test_aqueous_candidate.py -q
+        run: >-
+          python -m pytest
+          tests/test_fragment_planner.py
+          tests/test_aqueous_candidate.py
+          tests/test_aqueous_exact_puzzle.py
+          -q
