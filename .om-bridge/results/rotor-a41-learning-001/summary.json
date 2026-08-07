@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "task": {
+    "id": "rotor-a41-learning-001",
+    "operation": "analyze_a41_retiming_results",
+    "priority": 9400,
+    "timeout_seconds": 300,
+    "notes": "Run immediately after canonical A41-009 to learn which parts/instruction classes yield valid or improving retimings. Produces reports/rotor-a41-retiming-learning.json for the next campaign."
+  },
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-learning-001.json",
+  "git_sha": "a585e7f76dfae4b71bc1532ef744f348d976e9f9",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T21:12:00.398564+00:00",
+  "finished_at": "2026-08-07T21:12:00.580437+00:00",
+  "duration_seconds": 0.182,
+  "exit_code": 1,
+  "status": "failed",
+  "error": null
+}

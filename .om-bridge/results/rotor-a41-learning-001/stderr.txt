@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\analyze_a41_retiming_results.py", line 161, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\analyze_a41_retiming_results.py", line 150, in main
+    data = _load_source()
+  File "C:\actions-runner\_work\opus-magnum-pattern-library\opus-magnum-pattern-library\tools\analyze_a41_retiming_results.py", line 48, in _load_source
+    raise FileNotFoundError("No remote A41 validation analysis/checkpoint is available")
+FileNotFoundError: No remote A41 validation analysis/checkpoint is available
