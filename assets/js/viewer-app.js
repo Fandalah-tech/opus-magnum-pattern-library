@@ -6,11 +6,17 @@
   const status = byId('viewer-status');
   const result = byId('viewer-result');
   const metricKeys = ['cycles','cost','area','instructions'];
+  const params = new URLSearchParams(location.search);
+  const fixtureName = params.get('fixture') || (params.has('demo') ? 'demo' : '');
+  const FIXTURES = {
+    demo: 'data/viewer-demo-payload.json',
+    arms: 'data/viewer-arm-gallery-payload.json'
+  };
 
   function updateReady() {
     const ready = Boolean(puzzleInput?.files?.length && solutionInput?.files?.length);
     if (analyzeButton) analyzeButton.disabled = !ready;
-    if (status && !new URLSearchParams(location.search).has('demo')) {
+    if (status && !fixtureName) {
       status.textContent = ready ? 'Ready to render.' : 'Choose a matching .puzzle and .solution file.';
     }
   }
@@ -54,20 +60,27 @@
     }
   }
 
-  async function loadDemo() {
-    if (!new URLSearchParams(location.search).has('demo')) return;
-    status.textContent = 'Loading deterministic renderer demo…';
+  async function loadFixture() {
+    if (!fixtureName) return;
+    const fixtureUrl = FIXTURES[fixtureName];
+    if (!fixtureUrl) {
+      status.textContent = `Unknown renderer fixture: ${fixtureName}`;
+      document.body.dataset.viewerDemoReady = 'false';
+      return;
+    }
+    status.textContent = `Loading renderer fixture · ${fixtureName}…`;
     try {
-      const response = await fetch('data/viewer-demo-payload.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Demo payload → ${response.status}`);
+      const response = await fetch(fixtureUrl, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Fixture payload → ${response.status}`);
       const payload = await response.json();
       renderMachine(payload);
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-      status.textContent = 'Demo render complete.';
+      status.textContent = `Fixture render complete · ${fixtureName}.`;
+      document.body.dataset.viewerFixture = fixtureName;
       document.body.dataset.viewerDemoReady = 'true';
     } catch (error) {
       console.error(error);
-      status.textContent = `Demo failed: ${error.message}`;
+      status.textContent = `Fixture failed: ${error.message}`;
       document.body.dataset.viewerDemoReady = 'false';
     }
   }
@@ -77,5 +90,5 @@
   analyzeButton?.addEventListener('click', analyze);
   window.addEventListener('resize', () => window.OpusViewerRuntime?.fit?.('#solution-viewer'));
   updateReady();
-  loadDemo();
+  loadFixture();
 })();
