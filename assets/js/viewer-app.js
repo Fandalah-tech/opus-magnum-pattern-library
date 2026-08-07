@@ -17,7 +17,7 @@
   function updateReady() {
     const ready = Boolean(puzzleInput?.files?.length && solutionInput?.files?.length);
     if (analyzeButton) analyzeButton.disabled = !ready;
-    if (status && !fixtureName) {
+    if (status && !fixtureName && !params.has('pair')) {
       status.textContent = ready ? 'Ready to render.' : 'Choose a matching .puzzle and .solution file.';
     }
   }
@@ -42,17 +42,27 @@
     requestAnimationFrame(() => window.OpusViewerRuntime.renderPayload(payload, '#solution-viewer'));
   }
 
+  async function analyzeFiles(puzzleFile, solutionFile, options = {}) {
+    if (!puzzleFile || !solutionFile) throw new Error('Puzzle and solution files are required');
+    status.textContent = 'Analyzing and rendering…';
+    const payload = await window.OpusViewerRuntime.analyzeFiles(
+      puzzleFile,
+      solutionFile,
+      { root: '#solution-viewer', render: false, signal: options.signal }
+    );
+    renderMachine(payload);
+    if (options.save !== false && window.OpusPairLibrary?.save) {
+      try { await window.OpusPairLibrary.save(puzzleFile, solutionFile); }
+      catch (error) { console.warn('Unable to save local viewer pair', error); }
+    }
+    status.textContent = 'Render complete.';
+    return payload;
+  }
+
   async function analyze() {
     analyzeButton.disabled = true;
-    status.textContent = 'Analyzing and rendering…';
     try {
-      const payload = await window.OpusViewerRuntime.analyzeFiles(
-        puzzleInput.files[0],
-        solutionInput.files[0],
-        { root: '#solution-viewer', render: false }
-      );
-      renderMachine(payload);
-      status.textContent = 'Render complete.';
+      await analyzeFiles(puzzleInput.files[0], solutionInput.files[0]);
     } catch (error) {
       console.error(error);
       status.textContent = `Failed: ${error.message}`;
@@ -86,6 +96,7 @@
     }
   }
 
+  window.OpusViewerApp = Object.freeze({ analyzeFiles, renderMachine, updateReady });
   puzzleInput?.addEventListener('change', updateReady);
   solutionInput?.addEventListener('change', updateReady);
   analyzeButton?.addEventListener('click', analyze);
