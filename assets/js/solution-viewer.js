@@ -1,29 +1,15 @@
 (() => {
   const core = window.OpusRendererCore;
-  if (!core) throw new Error("OpusRendererCore must load before solution-viewer.js");
+  const Scene = window.OpusScene;
+  const SvgRenderer = window.OpusSvgRenderer;
+  if (!core || !Scene || !SvgRenderer) throw new Error("OpusRendererCore, OpusScene and OpusSvgRenderer must load before solution-viewer.js");
   const SIZE = core.HEX_SIZE;
   const SQRT3 = core.SQRT3;
   const GEO = window.OpusGeometry;
-  const SYMBOLS = window.OpusPieceSymbols;
   const axialToPixel = core.axialToPixel;
   const hexPoints = core.hexPoints;
   const svgEl = core.svgEl;
-  const COLORS = {
-    arm: "#d4a457",
-    armDark: "#3a2b1d",
-    input: "#69b8a1",
-    output: "#de7e63",
-    track: "#8c7a61",
-    trackCore: "#c6a976",
-    glyph: "#9a83bb",
-    selected: "#f4d58d",
-    related: "#72c3b0",
-    grid: "#3a342d",
-    gridFill: "#161411",
-    text: "#f1e8d7",
-    muted: "#b8aa95"
-  };
-  const LAYER_ORDER = ["grid", "track", "glyph", "part", "bond", "atom", "arm", "overlay"];
+  const COLORS = SvgRenderer.COLORS;
 
   const escapeHtml = (value) => String(value ?? "—")
     .replaceAll("&", "&amp;")
@@ -48,10 +34,12 @@
       this.graph = null;
       this.puzzle = null;
       this.replay = null;
-      this.layers = new Map();
+      this.scene = null;
       this.selectedId = null;
+      this.renderer = SvgRenderer.create(this.world, {
+        onPartActivate: (partId) => this.selectPart(partId)
+      });
       this.bind();
-      this.buildLayers();
     }
 
     bind() {
@@ -91,217 +79,35 @@
       this.root.addEventListener("opus:viewerselect", (event) => this.selectReplayObject(event.detail));
     }
 
-    buildLayers() {
-      this.world.replaceChildren();
-      this.layers.clear();
-      for (const name of LAYER_ORDER) {
-        const layer = svgEl("g", {
-          class: `viewer-layer viewer-layer-${name}`,
-          "data-viewer-layer": name
-        });
-        this.layers.set(name, layer);
-        this.world.append(layer);
-      }
-    }
-
     layer(name) {
-      if (!this.layers.has(name) || !this.layers.get(name)?.isConnected) this.buildLayers();
-      return this.layers.get(name);
+      return this.renderer.layer(name);
     }
 
     render(solution, graph, puzzle = null, replay = null) {
-      this.parts = solution.parts || [];
-      this.graph = graph || null;
-      this.puzzle = puzzle || null;
-      this.replay = replay || null;
+      const scene = Scene.build({ solution, graph, puzzle, replay });
+      return this.renderScene(scene);
+    }
+
+    renderScene(scene) {
+      if (!scene?.static) throw new Error("SolutionViewer.renderScene requires an Opus scene");
+      this.scene = scene;
+      this.parts = scene.static.parts || [];
+      this.graph = scene.source.graph || null;
+      this.puzzle = scene.source.puzzle || null;
+      this.replay = scene.source.replay || null;
       this.selectedId = null;
-      this.buildLayers();
+      this.renderer.render(scene);
       if (!this.parts.length) {
         if (this.details) this.details.innerHTML = '<p class="hint">No parts in this solution.</p>';
-        return;
+        return this;
       }
-      this.drawGrid();
-      for (const part of this.parts) this.drawPart(part);
       this.fit();
       this.selectPart(this.parts[0]?.id);
-    }
-
-    drawGrid() {
-      const positions = this.parts.flatMap((part) => GEO.occupiedCells(part));
-      const qs = positions.map(([q]) => q);
-      const rs = positions.map(([, r]) => r);
-      const minQ = Math.min(...qs) - 5;
-      const maxQ = Math.max(...qs) + 5;
-      const minR = Math.min(...rs) - 5;
-      const maxR = Math.max(...rs) + 5;
-      const grid = this.layer("grid");
-      for (let q = minQ; q <= maxQ; q += 1) {
-        for (let r = minR; r <= maxR; r += 1) {
-          const [x, y] = axialToPixel([q, r]);
-          const active = positions.some(([pq, pr]) => pq === q && pr === r);
-          grid.append(svgEl("polygon", {
-            points: hexPoints(x, y, SIZE * .92),
-            fill: active ? COLORS.gridFill : "transparent",
-            "fill-opacity": active ? .72 : 0,
-            stroke: COLORS.grid,
-            "stroke-width": active ? 1.35 : .9,
-            "stroke-opacity": active ? .9 : .58,
-            class: active ? "viewer-grid-cell active" : "viewer-grid-cell"
-          }));
-        }
-      }
-    }
-
-    drawPart(part) {
-      const kind = this.kind(part.type);
-      const targetLayer = kind === "track" ? "track" : kind === "arm" ? "arm" : kind === "glyph" ? "glyph" : "part";
-      const group = svgEl("g", {
-        "data-part-id": part.id,
-        "data-part-kind": kind,
-        class: `viewer-part viewer-${kind}`,
-        tabindex: 0,
-        role: "button",
-        "aria-label": `${part.type} ${part.id}`
-      });
-      group.addEventListener("click", (event) => {
-        event.stopPropagation();
-        this.selectPart(part.id);
-      });
-      group.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          this.selectPart(part.id);
-        }
-      });
-      group.addEventListener("pointerenter", () => group.classList.add("hovered"));
-      group.addEventListener("pointerleave", () => group.classList.remove("hovered"));
-
-      if (kind === "track") this.drawTrack(group, part);
-      else if (kind === "arm") this.drawArm(group, part);
-      else this.drawStation(group, part, kind);
-
-      const title = svgEl("title");
-      title.textContent = `${part.type} · ${part.id}`;
-      group.append(title);
-      this.layer(targetLayer).append(group);
-    }
-
-    drawTrack(group, part) {
-      const cells = GEO.occupiedCells(part);
-      const points = cells.map(axialToPixel).map(([x, y]) => `${x},${y}`).join(" ");
-      group.append(svgEl("polyline", {
-        points,
-        fill: "none",
-        stroke: "#211d18",
-        "stroke-width": 17,
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        class: "viewer-track-shadow"
-      }));
-      group.append(svgEl("polyline", {
-        points,
-        fill: "none",
-        stroke: COLORS.track,
-        "stroke-width": 10,
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        class: "viewer-track-rail"
-      }));
-      group.append(svgEl("polyline", {
-        points,
-        fill: "none",
-        stroke: COLORS.trackCore,
-        "stroke-width": 2.4,
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        "stroke-dasharray": "3 8",
-        class: "viewer-track-core"
-      }));
-      for (const cell of cells) {
-        const [x, y] = axialToPixel(cell);
-        group.append(svgEl("circle", { cx: x, cy: y, r: 5.5, fill: "#241f19", stroke: COLORS.trackCore, "stroke-width": 2 }));
-      }
-    }
-
-    drawArm(group, part) {
-      const origin = part.position || [0, 0];
-      const [x, y] = axialToPixel(origin);
-      const tips = core.armTips(part);
-      group.dataset.branchCount = String(tips.length);
-
-      for (const tip of tips) {
-        const branchIndex = tip.branchIndex;
-        const [ex, ey] = axialToPixel(tip.position);
-        group.append(svgEl("line", {
-          x1: x, y1: y, x2: ex, y2: ey,
-          stroke: "#1f1a14", "stroke-width": 13, "stroke-linecap": "round",
-          "data-arm-shadow": branchIndex
-        }));
-        group.append(svgEl("line", {
-          x1: x, y1: y, x2: ex, y2: ey,
-          stroke: COLORS.arm, "stroke-width": 7, "stroke-linecap": "round",
-          "data-arm-shaft": branchIndex
-        }));
-        group.append(svgEl("circle", {
-          cx: ex, cy: ey, r: 11.5, fill: COLORS.armDark, stroke: COLORS.arm, "stroke-width": 4,
-          "data-arm-tip": branchIndex
-        }));
-        group.append(svgEl("circle", {
-          cx: ex, cy: ey, r: 4.2, fill: COLORS.arm,
-          "data-arm-grip": branchIndex
-        }));
-      }
-      group.append(svgEl("circle", {
-        cx: x, cy: y, r: 17, fill: "#1b1814", stroke: "#5a452d", "stroke-width": 6,
-        class: "viewer-arm-base-shadow"
-      }));
-      group.append(svgEl("circle", {
-        cx: x, cy: y, r: 14, fill: COLORS.armDark, stroke: COLORS.arm, "stroke-width": 3.5,
-        "data-arm-base": "true"
-      }));
-      group.append(svgEl("circle", { cx: x, cy: y, r: 4.5, fill: COLORS.arm }));
-    }
-
-    drawStation(group, part, kind) {
-      const cells = GEO.occupiedCells(part);
-      const color = COLORS[kind] || COLORS.glyph;
-      const centers = cells.map(axialToPixel);
-      const footprint = svgEl("g", { class: "viewer-piece-footprint" });
-      for (const [x, y] of centers) {
-        footprint.append(svgEl("polygon", {
-          points: hexPoints(x, y, SIZE * .72),
-          fill: color,
-          "fill-opacity": .09,
-          stroke: color,
-          "stroke-opacity": .78,
-          "stroke-width": 2.2
-        }));
-        footprint.append(svgEl("polygon", {
-          points: hexPoints(x, y, SIZE * .58),
-          fill: "#12100e",
-          "fill-opacity": .74,
-          stroke: "#251f19",
-          "stroke-width": 1
-        }));
-      }
-      group.append(footprint);
-      if (SYMBOLS?.draw) {
-        SYMBOLS.draw(group, part, centers, color, GEO.label(part.type));
-      } else {
-        const [cx, cy] = axialToPixel(part.position || [0, 0]);
-        const label = svgEl("text", { x: cx, y: cy + 5, "text-anchor": "middle", fill: COLORS.text, "font-size": 12, "font-weight": 700 });
-        label.textContent = GEO.label(part.type);
-        group.append(label);
-      }
+      return this;
     }
 
     relationSet(id) {
-      const related = new Set();
-      for (const edge of this.graph?.edges || []) {
-        if (edge.source === id) related.add(edge.target);
-        if (edge.target === id) related.add(edge.source);
-      }
-      return related;
+      return Scene.related(this.scene, id);
     }
 
     selectPart(id) {
@@ -331,7 +137,7 @@
     renderSelectionOverlay(part, related) {
       const overlay = this.layer("overlay");
       overlay.replaceChildren();
-      for (const cell of GEO.occupiedCells(part)) {
+      for (const cell of part.occupiedCells || GEO.occupiedCells(part)) {
         const [x, y] = axialToPixel(cell);
         overlay.append(svgEl("polygon", {
           points: hexPoints(x, y, SIZE * .84),
@@ -365,13 +171,13 @@
     }
 
     partRows(part, kind, related) {
-      const footprint = GEO.occupiedCells(part);
+      const footprint = part.occupiedCells || GEO.occupiedCells(part);
       const rows = this.commonRows(part);
       if (kind === "arm") {
         rows.push(
           ["Length", part.length ?? 1],
           ["Arm number", part.armNumber ?? "—"],
-          ["Branches", core.branchOffsets(part.type).length],
+          ["Branches", part.armTips?.length || core.branchOffsets(part.type).length],
           ["Instructions", (part.program || []).length]
         );
       } else if (kind === "input") {
@@ -410,7 +216,7 @@
 
     renderPartInspector(part, related) {
       if (!this.details) return;
-      const kind = this.kind(part.type);
+      const kind = part.kind || core.partKind(part.type);
       const program = kind === "arm" ? (part.program || []) : [];
       const rows = this.partRows(part, kind, related);
       const relatedRows = [...related].map((id) => {
@@ -452,7 +258,7 @@
         ["Molecule ID", molecule.id],
         ["Atoms", molecule.atoms?.length ?? 0],
         ["Bonds", molecule.bonds?.length ?? 0],
-        ["Held by", Array.isArray(molecule.heldBy) && molecule.heldBy.length ? molecule.heldBy.join(", ") : "None"]
+        ["Held by", Array.isArray(molecule?.heldBy) && molecule.heldBy.length ? molecule.heldBy.join(", ") : "None"]
       ];
       const atoms = (molecule.atoms || []).map((atom) => `<li><b>${escapeHtml(atom.element)}</b><span>${escapeHtml(formatPosition(atom.position))}</span></li>`).join("");
       this.details.innerHTML = `<header class="viewer-inspector-head"><span class="viewer-kind-badge molecule">molecule</span><div><h4>Molecule</h4><p>${escapeHtml(molecule.id)}</p></div></header><section class="viewer-inspector-section"><h5>Properties</h5><dl>${rows.map(([key, value]) => `<dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd>`).join("")}</dl></section>${atoms ? `<section class="viewer-inspector-section"><h5>Atoms</h5><ul class="viewer-related-list">${atoms}</ul></section>` : ""}`;
