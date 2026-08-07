@@ -34,6 +34,7 @@ ALLOWED_OPERATIONS: dict[str, list[str]] = {
     "report_rotor_respawn_models": [sys.executable, "tools/report_rotor_respawn_models.py"],
     "search_rotor_last_atom_tail": [sys.executable, "tools/search_rotor_last_atom_tail.py"],
     "run_rotor_autonomous_campaign": [sys.executable, "tools/run_rotor_autonomous_campaign.py"],
+    "run_rotor_a41_cycle_campaign": [sys.executable, "tools/run_rotor_a41_cycle_campaign.py"],
     "build_rotor_candidate_replay": [sys.executable, "tools/build_rotor_candidate_replay.py"],
     "apply_rotor_bonder_chain_patch": [sys.executable, "tools/apply_rotor_bonder_chain_patch.py"],
     "import_critelli_liquid_perfumes": [sys.executable, "tools/import_critelli_event.py", "--max-solutions", "25", "--delay", "0.4"],
@@ -120,7 +121,7 @@ def main() -> int:
     result_dir.mkdir(parents=True, exist_ok=True)
     (result_dir / "stdout.txt").write_text(stdout, encoding="utf-8")
     (result_dir / "stderr.txt").write_text(stderr, encoding="utf-8")
-    summary = {"schema_version": 1, "task": task, "task_file": args.task.as_posix(), "git_sha": _git_sha(), "runner_name": os.environ.get("RUNNER_NAME"), "started_at": started_at.isoformat(), "finished_at": datetime.now(timezone.utc).isoformat(), "duration_seconds": round(time.monotonic() - started, 3), "exit_code": exit_code, "status": "success" if exit_code == 0 else "failed", "error": error}
+    summary = {"schema_version": 1, "task": task, "task_file": args.task.as_posix(), "git_sha": _git_sha(), "runner_name": os.environ.get("RUNNER_NAME") or os.environ.get("COMPUTERNAME"), "started_at": started_at.isoformat(), "finished_at": datetime.now(timezone.utc).isoformat(), "duration_seconds": round(time.monotonic() - started, 3), "exit_code": exit_code, "status": "success" if exit_code == 0 else "failed", "error": error}
     (result_dir / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False))
     return exit_code
