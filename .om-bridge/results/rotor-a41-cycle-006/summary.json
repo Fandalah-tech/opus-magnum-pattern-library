@@ -7,13 +7,13 @@
     "timeout_seconds": 7200,
     "notes": "Use the official remote validator as the authority because the local engine cannot yet reproduce the A41 baseline. Validate the baseline, then test and greedily chain retiming candidates while preserving Area 41. Publish live metrics and save the best playable .solution."
   },
-  "task_file": ".om-bridge/tasks/pending/rotor-a41-cycle-006.json",
-  "git_sha": "9b3438e6fc9c5bad8ab6bc275a895ef8588a5bd1",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-07T02:17:16.769304+00:00",
-  "finished_at": "2026-08-07T02:17:17.345278+00:00",
-  "duration_seconds": 0.576,
-  "exit_code": 4,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/rotor-a41-cycle-006.json",
+  "git_sha": "dc9efa76b65e041ec3a6b65490f8cd1b6900caa9",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:34:01.328826+00:00",
+  "finished_at": "2026-08-07T10:34:02.034726+00:00",
+  "duration_seconds": 0.706,
+  "exit_code": 5,
   "status": "failed",
   "error": null
 }
