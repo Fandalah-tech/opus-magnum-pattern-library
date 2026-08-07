@@ -89,8 +89,9 @@
 
   root.addEventListener('opus:replayframe', (event) => {
     const duration = Number(event.detail?.animationDuration ?? 180);
+    const frame = event.detail?.scene?.timeline?.frame || event.detail?.frame || null;
     const seen = new Set();
-    for (const state of event.detail.frame?.armStates || []) {
+    for (const state of frame?.armStates || frame?.arms || []) {
       seen.add(state.partId); applyArmState(state, duration);
     }
     root.querySelectorAll('.viewer-arm').forEach((group) => {
