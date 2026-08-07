@@ -10,6 +10,7 @@ on:
       - tools/build_aqueous_probe.py
       - tools/search_aqueous_16c_offsets.py
       - tools/search_aqueous_16c_structural.py
+      - tools/search_aqueous_output_capture.py
       - tools/validate_aqueous_offsets.py
       - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
       - fixtures/weeklies2026/aqueous-dagger-16c-reference.solution.b64
@@ -72,3 +73,11 @@ jobs:
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
           --variants reports/aqueous-structural-search
+      - name: Generate output capture variants
+        run: python tools/search_aqueous_output_capture.py --radius 4
+      - name: Search output placements for 15 cycles
+        run: >-
+          python tools/validate_aqueous_offsets.py
+          --validator-url "${VALIDATOR_URL}"
+          --variants reports/aqueous-output-search
+          --workers 16
