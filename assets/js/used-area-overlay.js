@@ -1,10 +1,14 @@
 (() => {
   const root = document.querySelector('#solution-viewer');
-  if (!root || !window.OpusRendererCore) return;
+  const core = window.OpusRendererCore;
+  const hostFactory = window.OpusSvgOverlayHost;
+  if (!root || !core) return;
+  if (!hostFactory) throw new Error('OpusSvgOverlayHost must load before used-area-overlay.js');
 
-  const { HEX_SIZE: SIZE, hexPoints, axialToPixel, svgEl } = window.OpusRendererCore;
+  const { HEX_SIZE: SIZE, hexPoints, axialToPixel, svgEl } = core;
   let viewer = null;
   let scene = null;
+  let overlayHost = null;
   let cumulativeByFrame = [];
   let activeByFrame = [];
   let areaLayer = null;
@@ -29,13 +33,12 @@
     if (areaLayer?.isConnected) return areaLayer;
     const world = viewer?.world || root.querySelector('[data-viewer-world]');
     if (!world) return null;
-    areaLayer = svgEl('g', {
-      class: 'viewer-layer viewer-layer-area',
-      'data-viewer-layer': 'area',
-      'pointer-events': 'none'
+    overlayHost = hostFactory.create(world);
+    areaLayer = overlayHost.ensure('area', {
+      before: 'track',
+      className: 'viewer-layer viewer-layer-area',
+      viewerLayer: 'area'
     });
-    const trackLayer = world.querySelector('[data-viewer-layer="track"]');
-    world.insertBefore(areaLayer, trackLayer || world.firstChild?.nextSibling || null);
     return areaLayer;
   }
 
@@ -101,6 +104,7 @@
   window.addEventListener('opus:sceneready', (event) => {
     viewer = event.detail?.viewer || viewer;
     areaLayer = null;
+    overlayHost = null;
     badge?.remove();
     badge = null;
     build(event.detail?.scene);
