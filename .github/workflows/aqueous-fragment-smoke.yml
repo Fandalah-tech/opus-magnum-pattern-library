@@ -11,6 +11,7 @@ on:
       - tools/search_aqueous_16c_offsets.py
       - tools/search_aqueous_16c_structural.py
       - tools/search_aqueous_output_capture.py
+      - tools/search_aqueous_right_bonders.py
       - tools/trace_aqueous_16c.py
       - tools/validate_aqueous_offsets.py
       - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
@@ -84,3 +85,11 @@ jobs:
           --validator-url "${VALIDATOR_URL}"
           --variants reports/aqueous-output-search
           --workers 16
+      - name: Generate right-side bonder variants
+        run: python tools/search_aqueous_right_bonders.py --radius 3
+      - name: Search right-side bonders for 15 cycles
+        run: >-
+          python tools/validate_aqueous_offsets.py
+          --validator-url "${VALIDATOR_URL}"
+          --variants reports/aqueous-right-bonder-search
+          --workers 20
