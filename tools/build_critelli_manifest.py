@@ -17,7 +17,6 @@ def build(event_catalog: dict, solution_catalog: dict | None = None) -> dict:
     solution_events = {e["eventUrl"]: e for e in (solution_catalog or {}).get("events", [])}
     puzzles: list[dict] = []
     solutions: list[dict] = []
-    puzzle_ids: dict[str, str] = {}
     seen_solutions: set[str] = set()
 
     for event in event_catalog.get("events", []):
@@ -26,7 +25,6 @@ def build(event_catalog: dict, solution_catalog: dict | None = None) -> dict:
         if not digest:
             continue
         puzzle_id = stable_id("puz", digest)
-        puzzle_ids[digest] = puzzle_id
         puzzles.append({
             "id": puzzle_id,
             "sha256": digest,
@@ -62,12 +60,22 @@ def build(event_catalog: dict, solution_catalog: dict | None = None) -> dict:
                 "size": solution.get("bytes"),
                 "metrics": solution.get("metrics") or {},
                 "partCount": solution.get("partCount"),
+                "submitter": solution.get("submitter"),
+                "submissionId": solution.get("submissionId"),
+                "submissionSequence": solution.get("filenameSequence"),
+                "submitterProvenance": {
+                    "source": solution.get("submitterSource"),
+                    "confidence": solution.get("submitterConfidence"),
+                },
                 "sourceDataset": "critelli-public-events",
                 "sourceUrl": solution.get("sourceUrl"),
                 "redistribution": "metadata-only",
                 "validation": {
                     "parserClean": solution.get("trailingBytes") == 0,
                     "embeddedMetrics": all(v is not None for v in (solution.get("metrics") or {}).values()),
+                    "puzzleFileMatchesEvent": solution.get("puzzleFile") in {
+                        puzzle.get("file"), Path(puzzle.get("file") or "").stem
+                    },
                     "omsim": None,
                 },
                 "tags": ["critelli", "public-submission"],
@@ -76,18 +84,20 @@ def build(event_catalog: dict, solution_catalog: dict | None = None) -> dict:
     puzzles.sort(key=lambda x: ((x.get("name") or "").casefold(), x["id"]))
     solutions.sort(key=lambda x: (x["puzzleId"], (x.get("metrics") or {}).get("cycles") or 10**12, x["id"]))
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "id": "critelli-public-events",
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "redistribution": "metadata-only",
         "source": {
             "description": "Public Opus Magnum event metadata and public submission metadata discovered from events.critelli.technology.",
             "filesCommitted": False,
-            "notes": "Puzzle and solution binaries are not redistributed. SHA-256 and parsed metadata are retained; solution binaries are downloaded ephemerally only when enrichment is run.",
+            "notes": "Puzzle and solution binaries are not redistributed. SHA-256 and parsed metadata are retained; solution binaries are downloaded ephemerally only when enrichment is run. Submitter names are derived from public download filenames and carry an explicit confidence field.",
         },
         "summary": {
             "puzzleCount": len(puzzles),
             "enrichedSolutionCount": len(solutions),
+            "solutionsWithSubmitter": sum(1 for s in solutions if s.get("submitter")),
+            "solutionsWithCompleteMetrics": sum(1 for s in solutions if s["validation"].get("embeddedMetrics")),
             "puzzlesWithPublicSubmissions": sum(1 for p in puzzles if p.get("submissionsUrl")),
             "discoveredPublicSolutionLinks": sum(int(p.get("publicSubmissionCount") or 0) for p in puzzles),
         },
