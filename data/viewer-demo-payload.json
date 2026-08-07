@@ -1,0 +1,71 @@
+{
+  "validation": {
+    "status": "valid",
+    "metrics": {"cycles": 24, "cost": 120, "area": 18, "instructions": 12}
+  },
+  "puzzle": {
+    "name": "Renderer Demo",
+    "reagents": [],
+    "products": []
+  },
+  "solution": {
+    "name": "Renderer Demo Machine",
+    "puzzleFile": "renderer-demo",
+    "metrics": {"cycles": 24, "cost": 120, "area": 18, "instructions": 12},
+    "parts": [
+      {"id":"arm-main","type":"arm1","enabled":true,"position":[0,0],"length":2,"rotation":0,"which":0,"armNumber":1,"program":[{"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"rotate_cw"},{"cycle":2,"instruction":"drop"}]},
+      {"id":"arm-six","type":"arm6","enabled":true,"position":[3,-1],"length":1,"rotation":0,"which":0,"armNumber":2,"program":[{"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"rotate_ccw"}]},
+      {"id":"track-main","type":"track","enabled":true,"position":[-2,1],"length":1,"rotation":0,"which":0,"armNumber":0,"trackHexes":[[-2,1],[-1,1],[0,1],[1,0]],"program":[]},
+      {"id":"glyph-bond","type":"bonder","enabled":true,"position":[1,-2],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"input-a","type":"input","enabled":true,"position":[-3,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+      {"id":"output-a","type":"out-std","enabled":true,"position":[4,-2],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]}
+    ]
+  },
+  "graph": {
+    "nodes": [],
+    "edges": [
+      {"source":"input-a","target":"arm-main","relation":"adjacent"},
+      {"source":"arm-main","target":"glyph-bond","relation":"reach"},
+      {"source":"glyph-bond","target":"arm-six","relation":"reach"},
+      {"source":"arm-six","target":"output-a","relation":"reach"}
+    ]
+  },
+  "replay": {
+    "summary": {"cycleCount": 3},
+    "capabilities": {"physicalArmAnimation":true,"moleculeAnimation":true,"multiBranchGrab":true},
+    "frames": [
+      {
+        "phaseLabel":"initial","cycle":-1,"displayCycle":0,"events":[],
+        "armStates":[
+          {"partId":"arm-main","origin":[0,0],"rotation":0,"length":2,"tips":[{"branchIndex":0,"position":[2,0]}],"grabbing":false,"heldMoleculeIds":[]},
+          {"partId":"arm-six","origin":[3,-1],"rotation":0,"length":1,"tips":[{"branchIndex":0,"position":[4,-1]},{"branchIndex":1,"position":[3,0]},{"branchIndex":2,"position":[2,0]},{"branchIndex":3,"position":[2,-1]},{"branchIndex":4,"position":[3,-2]},{"branchIndex":5,"position":[4,-2]}],"grabbing":false,"heldMoleculeIds":[]}
+        ],
+        "molecules":[{"id":"mol-1","heldBy":[],"atoms":[{"id":"atom-salt","element":"salt","position":[-3,0]},{"id":"atom-fire","element":"fire","position":[-2,0]}],"bonds":[{"id":"bond-1","from":[-3,0],"to":[-2,0],"type":"normal"}]}]
+      },
+      {
+        "cycle":0,"displayCycle":1,"events":[{"partId":"arm-main","instruction":"grab"}],
+        "armStates":[
+          {"partId":"arm-main","origin":[0,0],"rotation":0,"length":2,"tips":[{"branchIndex":0,"position":[2,0]}],"grabbing":true,"heldMoleculeIds":["mol-1"]},
+          {"partId":"arm-six","origin":[3,-1],"rotation":0,"length":1,"tips":[{"branchIndex":0,"position":[4,-1]},{"branchIndex":1,"position":[3,0]},{"branchIndex":2,"position":[2,0]},{"branchIndex":3,"position":[2,-1]},{"branchIndex":4,"position":[3,-2]},{"branchIndex":5,"position":[4,-2]}],"grabbing":false,"heldMoleculeIds":[]}
+        ],
+        "molecules":[{"id":"mol-1","heldBy":["arm-main"],"atoms":[{"id":"atom-salt","element":"salt","position":[1,0]},{"id":"atom-fire","element":"fire","position":[2,0]}],"bonds":[{"id":"bond-1","from":[1,0],"to":[2,0],"type":"normal"}]}]
+      },
+      {
+        "cycle":1,"displayCycle":2,"events":[{"partId":"arm-main","instruction":"rotate_cw"},{"partId":"arm-six","instruction":"grab"}],
+        "armStates":[
+          {"partId":"arm-main","origin":[0,0],"rotation":1,"length":2,"tips":[{"branchIndex":0,"position":[0,2]}],"grabbing":true,"heldMoleculeIds":["mol-1"]},
+          {"partId":"arm-six","origin":[3,-1],"rotation":1,"length":1,"tips":[{"branchIndex":0,"position":[3,0]},{"branchIndex":1,"position":[2,0]},{"branchIndex":2,"position":[2,-1]},{"branchIndex":3,"position":[3,-2]},{"branchIndex":4,"position":[4,-2]},{"branchIndex":5,"position":[4,-1]}],"grabbing":true,"heldMoleculeIds":[]}
+        ],
+        "molecules":[{"id":"mol-1","heldBy":["arm-main"],"atoms":[{"id":"atom-salt","element":"salt","position":[0,1]},{"id":"atom-fire","element":"fire","position":[0,2]}],"bonds":[{"id":"bond-1","from":[0,1],"to":[0,2],"type":"normal"}]}]
+      },
+      {
+        "cycle":2,"displayCycle":3,"events":[{"partId":"arm-main","instruction":"drop"}],
+        "armStates":[
+          {"partId":"arm-main","origin":[0,0],"rotation":1,"length":2,"tips":[{"branchIndex":0,"position":[0,2]}],"grabbing":false,"heldMoleculeIds":[]},
+          {"partId":"arm-six","origin":[3,-1],"rotation":1,"length":1,"tips":[{"branchIndex":0,"position":[3,0]},{"branchIndex":1,"position":[2,0]},{"branchIndex":2,"position":[2,-1]},{"branchIndex":3,"position":[3,-2]},{"branchIndex":4,"position":[4,-2]},{"branchIndex":5,"position":[4,-1]}],"grabbing":false,"heldMoleculeIds":[]}
+        ],
+        "molecules":[{"id":"mol-1","heldBy":[],"atoms":[{"id":"atom-salt","element":"salt","position":[0,1]},{"id":"atom-fire","element":"fire","position":[0,2]}],"bonds":[{"id":"bond-1","from":[0,1],"to":[0,2],"type":"normal"}]}]
+      }
+    ]
+  }
+}
