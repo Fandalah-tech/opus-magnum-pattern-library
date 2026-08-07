@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from tools.om_worker import _load_task, _pytest_targets
+from tools.om_worker import ALLOWED_OPERATIONS, _load_task, _pytest_targets
 
 
 def _write(tmp_path: Path, data: dict) -> Path:
@@ -21,6 +21,11 @@ def test_load_task_accepts_allowlisted_operation(tmp_path):
 
     assert task["id"] == "rotor-001"
     assert task["timeout_seconds"] == 120
+
+
+def test_a41_remote_operation_uses_cached_wrapper():
+    command = ALLOWED_OPERATIONS["run_rotor_a41_remote_cycle_campaign"]
+    assert command[-1] == "tools/run_rotor_a41_remote_cached.py"
 
 
 def test_load_task_rejects_shell_command(tmp_path):
