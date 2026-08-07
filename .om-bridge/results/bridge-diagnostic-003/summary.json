@@ -9,14 +9,15 @@
       "tests/test_mechanical_macros.py",
       "tests/test_macro_explorer.py"
     ],
-    "notes": "Cross-shell bridge diagnostic using cmd and Python resolver."
+    "notes": "Cross-shell bridge diagnostic using cmd and Python resolver.",
+    "priority": 0
   },
-  "task_file": ".om-bridge/tasks/pending/bridge-diagnostic-003.json",
-  "git_sha": "1f089ffa63dc6afb5121d2b62ae570816c9f11d9",
-  "runner_name": "Bruno-OMSIM",
-  "started_at": "2026-08-06T00:44:11.136996+00:00",
-  "finished_at": "2026-08-06T00:44:11.299480+00:00",
-  "duration_seconds": 0.162,
+  "task_file": "C:/actions-runner/_work/opus-magnum-pattern-library/opus-magnum-pattern-library/.om-bridge/tasks/pending/bridge-diagnostic-003.json",
+  "git_sha": "13af609fea25a3dd49ef4f93bf719d762511b3e1",
+  "runner_name": "BRUNO-PC",
+  "started_at": "2026-08-07T10:35:13.709332+00:00",
+  "finished_at": "2026-08-07T10:35:13.908040+00:00",
+  "duration_seconds": 0.199,
   "exit_code": 1,
   "status": "failed",
   "error": null
