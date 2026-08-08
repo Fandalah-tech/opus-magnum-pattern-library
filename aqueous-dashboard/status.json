@@ -5,17 +5,17 @@
   "targetCycles": 26,
   "generation": 1,
   "maxGenerations": 5,
-  "generationTested": 10,
+  "generationTested": 90,
   "generationTotal": 210,
-  "generationValid": 0,
+  "generationValid": 3,
   "generationTimeouts": 0,
-  "tested": 10,
-  "valid": 0,
+  "tested": 90,
+  "valid": 3,
   "timeouts": 0,
   "bestCycles": 27,
   "bestGeneration": 0,
   "bestMutation": "seed",
-  "eliteCount": 1,
+  "eliteCount": 3,
   "stagnation": 0,
   "stagnationLimit": 5,
   "workers": 12,
@@ -32,6 +32,30 @@
       "sha256": "235f2ce6556dc172ced005c4a16ffc320b65dd2e278ac6d3385e7e5a7901e77e",
       "semanticId": "784cadaceb44a0836b77044838770ef97a7128060d7b2fb6474a9a11ec5baf1c",
       "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-1.solution"
+    },
+    {
+      "rank": 2,
+      "cycles": 27,
+      "cost": 120,
+      "area": 71,
+      "instructions": 12,
+      "mutation": "functional-move",
+      "generation": 1,
+      "sha256": "67d2096157a537d4515d09e452a689c57241fe7024ebf56f59c0023ea920f22b",
+      "semanticId": "87eaaaedf289c101711b99512ba951d8f4650ce2af9fef43d2df6ea1905b9cb7",
+      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-2.solution"
+    },
+    {
+      "rank": 3,
+      "cycles": 27,
+      "cost": 120,
+      "area": 71,
+      "instructions": 12,
+      "mutation": "functional-move",
+      "generation": 1,
+      "sha256": "49f4ebe85cedfe9e1d0488668553ea469174d7dcdf0ef936448d6f2a8c302a96",
+      "semanticId": "983f198c1909f3e85d20fe2730ad04f8ab018b8b3c2631e81939e8564cdf9149",
+      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-3.solution"
     }
   ],
   "history": [
@@ -43,6 +67,6 @@
       "timeouts": 0
     }
   ],
-  "updatedAt": "2026-08-08T02:37:07.515343+00:00",
+  "updatedAt": "2026-08-08T02:37:08.632291+00:00",
   "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31235357096"
 }
