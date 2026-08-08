@@ -16,7 +16,7 @@ env:
   PYTHONPATH: ${{ github.workspace }}
   VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
   SEARCH_DIR: reports/aqueous-v7
-  LEGACY_ARTIFACT_ID: "9024679156"
+  FALLBACK_ARTIFACT_ID: "9026389922"
 
 jobs:
   search:
@@ -42,19 +42,27 @@ jobs:
               Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
           PY
 
-      - name: Restore prior search knowledge
+      - name: Restore latest persistent search knowledge
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "${SEARCH_DIR}"
+          artifact_id=$(gh api -H "Accept: application/vnd.github+json" \
+            "/repos/${GITHUB_REPOSITORY}/actions/artifacts?name=aqueous-v7-search&per_page=100" \
+            --jq '.artifacts | map(select(.expired == false and .workflow_run.head_branch == "feature/aqueous-dagger-fragment-planner-final")) | sort_by(.created_at) | reverse | .[0].id // empty')
+          if [ -z "$artifact_id" ]; then artifact_id="${FALLBACK_ARTIFACT_ID}"; fi
+          echo "restoring artifact ${artifact_id}"
           gh api -H "Accept: application/vnd.github+json" \
-            /repos/${GITHUB_REPOSITORY}/actions/artifacts/${LEGACY_ARTIFACT_ID}/zip > /tmp/previous.zip
+            "/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" > /tmp/previous.zip
           unzip -q -o /tmp/previous.zip -d "${SEARCH_DIR}"
           echo "restored $(wc -l < "${SEARCH_DIR}/attempted.txt" 2>/dev/null || echo 0) attempted identities"
+          echo "restored $(wc -l < "${SEARCH_DIR}/expanded.txt" 2>/dev/null || echo 0) expanded identities"
 
-      - name: Syntax and identity smoke test
+      - name: Activate v9 search neighborhood
         run: |
-          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v7.py tools/search_aqueous_structural.py tools/validate_aqueous_offsets.py
+          sed -i 's/GENERATOR_VERSION = 8/GENERATOR_VERSION = 9/' tools/run_aqueous_evolution_v7.py
+          sed -i 's#tools/search_aqueous_structural.py#tools/search_aqueous_structural_v9.py#' tools/run_aqueous_evolution_v7.py
+          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v7.py tools/search_aqueous_structural.py tools/search_aqueous_structural_v9.py tools/validate_aqueous_offsets.py
 
       - name: Resumable autonomous search to 26c
         run: >-
@@ -68,6 +76,7 @@ jobs:
           --workers 8
           --watchdog-seconds 25
           --generation-seconds 600
+          --retry-batch 32
 
       - name: Summarize search
         if: always()
@@ -80,7 +89,7 @@ jobs:
           if not src.exists(): src=root/'checkpoint.json'
           if src.exists():
               r=json.loads(src.read_text())
-              print(json.dumps({k:r.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']},indent=2))
+              print(json.dumps({k:r.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries','retryable']},indent=2))
               for h in (r.get('history') or [])[-20:]: print('HISTORY',json.dumps(h,sort_keys=True))
           PY
 
@@ -96,6 +105,7 @@ jobs:
             ${{ env.SEARCH_DIR }}/attempted.txt
             ${{ env.SEARCH_DIR }}/expanded.txt
             ${{ env.SEARCH_DIR }}/retryable.txt
+            ${{ env.SEARCH_DIR }}/retry/
             ${{ env.SEARCH_DIR }}/top-1.solution
             ${{ env.SEARCH_DIR }}/top-2.solution
             ${{ env.SEARCH_DIR }}/top-3.solution
