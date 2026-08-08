@@ -1,0 +1,53 @@
+name: Aqueous Arm6 Rotary P7 Search
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - tools/search_aqueous_arm6_rotary_p7.py
+      - .github/workflows/aqueous-arm6-rotary-p7.yml
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json
+  workflow_dispatch:
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+      SEARCH_DIR: reports/aqueous-arm6-rotary-p7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle
+        shell: bash
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          Path('reports/aqueous-arm6-rotary-p7/puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          PY
+      - name: Search arm6 rotary P7 family
+        shell: bash
+        run: |
+          python tools/search_aqueous_arm6_rotary_p7.py \
+            --validator-url "${VALIDATOR_URL}" \
+            --puzzle "${SEARCH_DIR}/puzzle.puzzle" \
+            --seed-json fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json \
+            --out "${SEARCH_DIR}/search" \
+            --workers 8
+      - name: Summarize
+        if: always()
+        shell: bash
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aqueous-arm6-rotary-p7
+          path: |
+            reports/aqueous-arm6-rotary-p7/search/results.json
+            reports/aqueous-arm6-rotary-p7/search/best.solution
+          if-no-files-found: warn

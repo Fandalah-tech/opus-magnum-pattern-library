@@ -1,0 +1,85 @@
+name: Aqueous Bestagon Geometry Search
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - tools/search_aqueous_bestagon_geometry.py
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-r3-period8.solution.b64
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-r3-skeleton.solution.b64
+      - .github/workflows/aqueous-bestagon-geometry.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-bestagon-geometry
+
+jobs:
+  search:
+    name: exhaustive R3 two-arm geometry
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Materialize inputs
+        run: |
+          mkdir -p reports
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          pairs = [
+              ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64','reports/aqueous-dagger.puzzle'),
+              ('fixtures/weeklies2026/aqueous-dagger-bestagon-r3-period8.solution.b64','reports/bestagon-r3-p8.solution'),
+              ('fixtures/weeklies2026/aqueous-dagger-bestagon-r3-skeleton.solution.b64','reports/bestagon-r3-skeleton.solution'),
+          ]
+          for src,dst in pairs:
+              Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
+          PY
+
+      - name: Syntax smoke test
+        run: python -m py_compile tools/search_aqueous_bestagon_geometry.py tools/validate_aqueous_offsets.py
+
+      - name: Exhaust R3 arm placements and orientations
+        run: >-
+          python tools/search_aqueous_bestagon_geometry.py
+          --validator-url "${VALIDATOR_URL}"
+          --puzzle reports/aqueous-dagger.puzzle
+          --seed reports/bestagon-r3-p8.solution
+          --skeleton reports/bestagon-r3-skeleton.solution
+          --work "${SEARCH_DIR}"
+          --workers 8
+          --radius 3
+          --target-cycles 44
+
+      - name: Summarize
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR']); p=root/'results.json'
+          lines=['# Aqueous Bestagon R3 geometry search','']
+          if p.exists():
+              r=json.loads(p.read_text())
+              for k in ['state','seedMetrics','bestMetrics','center','radius','zoneCells','generated','tested','valid','improved','targetCycles','foundTarget','elapsedSeconds']:
+                  lines.append(f'**{k}:** {r.get(k)}')
+          else: lines.append('No results.json produced.')
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
+          PY
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-bestagon-geometry-search
+          path: |
+            ${{ env.SEARCH_DIR }}/results.json
+            ${{ env.SEARCH_DIR }}/best.solution
+            ${{ env.SEARCH_DIR }}/target-*.solution
+          if-no-files-found: warn

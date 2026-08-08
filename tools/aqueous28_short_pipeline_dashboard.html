@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Aqueous Dagger — Short Pipelines</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#17213a;--text:#e8eefc;--muted:#91a0bd;--ok:#57d18c;--warn:#f0c35a;--bad:#ff6b7a;--accent:#67a7ff;--line:#263554}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#09101d,#0d1424 35%,#0b1020);color:var(--text);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif}
+.wrap{max-width:1280px;margin:auto;padding:24px}.top{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}.title h1{margin:0;font-size:26px}.title p{margin:6px 0 0;color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:10px;text-decoration:none;cursor:pointer}.btn:hover{border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}.card{background:rgba(18,26,45,.9);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.18)}.metric{font-size:29px;font-weight:750;margin-top:4px}.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.status{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border-radius:999px;background:#18233d;border:1px solid var(--line);font-weight:650}.dot{width:9px;height:9px;border-radius:50%;background:var(--warn)}.ok .dot{background:var(--ok)}.bad .dot{background:var(--bad)}.run .dot{background:var(--accent);box-shadow:0 0 0 5px rgba(103,167,255,.12)}
+section{margin-top:14px}.section-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:9px}.section-title h2{margin:0;font-size:17px}.muted{color:var(--muted)}
+.jobs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.job{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:12px}.job .name{font-weight:700}.job .sub{color:var(--muted);font-size:12px;margin-top:4px}.bar{height:6px;background:#1e2b47;border-radius:5px;overflow:hidden;margin-top:9px}.bar>i{display:block;height:100%;background:var(--accent);width:0}.job.completed .bar>i{width:100%;background:var(--ok)}.job.failure .bar>i{width:100%;background:var(--bad)}.job.in_progress .bar>i{width:62%}
+.results{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}.table th{color:var(--muted);font-size:12px}.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+footer{margin:20px 0 6px;color:var(--muted);font-size:12px}.pulse{animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.jobs{grid-template-columns:repeat(2,1fr)}.results{grid-template-columns:1fr}}@media(max-width:520px){.wrap{padding:14px}.grid,.jobs{grid-template-columns:1fr}.metric{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="title"><h1>Aqueous Dagger — Short Pipelines</h1><p>Recherche 5c@1 → 6c@1 → preuve directe 7c@2</p></div>
+    <div class="actions"><button class="btn" onclick="refresh()">Rafraîchir</button><a class="btn" id="runLink" target="_blank">Ouvrir le run</a><a class="btn" href="https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/workflows/aqueous28-short-pipelines.yml" target="_blank">Workflow</a></div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="label">Statut</div><div style="margin-top:8px"><span id="status" class="status"><span class="dot"></span><span>Chargement…</span></span></div></div>
+    <div class="card"><div class="label">Jobs terminés</div><div id="done" class="metric">—</div><div id="doneSub" class="muted">sur —</div></div>
+    <div class="card"><div class="label">5c@1 trouvés</div><div id="p5" class="metric">—</div><div class="muted">catalogue de pipelines</div></div>
+    <div class="card"><div class="label">7c@2 prouvés</div><div id="p7" class="metric">—</div><div class="muted">validation directe simulateur</div></div>
+  </div>
+
+  <section>
+    <div class="section-title"><h2>Configurations</h2><span id="updated" class="muted">—</span></div>
+    <div id="jobs" class="jobs"><div class="empty">Chargement des jobs…</div></div>
+  </section>
+
+  <section class="results">
+    <div class="card"><div class="section-title"><h2>Résultats rapides</h2><span class="muted">5c@1 / 6c@1 / 7c@2</span></div><div id="resultBox" class="empty">Les compteurs détaillés apparaîtront ici dès que les artifacts/results seront publiés.</div></div>
+    <div class="card"><div class="section-title"><h2>Artifacts</h2><span class="muted">candidats et checkpoints</span></div><div id="artifacts" class="empty">Aucun artifact disponible pour le moment.</div></div>
+  </section>
+
+  <footer>Auto-refresh toutes les 10 secondes. Source : GitHub Actions public API. Si GitHub limite temporairement les appels anonymes, le dernier état affiché reste visible.</footer>
+</div>
+<script>
+const OWNER='Fandalah-tech', REPO='opus-magnum-pattern-library', WF='aqueous28-short-pipelines.yml', BRANCH='feature/aqueous-dagger-fragment-planner-final';
+const API=`https://api.github.com/repos/${OWNER}/${REPO}`; let lastRun=null;
+const $=id=>document.getElementById(id);
+function setStatus(status,conclusion){const el=$('status'); el.className='status'; let txt=status||'inconnu'; if(status==='completed'){txt=conclusion||'completed';el.classList.add(conclusion==='success'?'ok':'bad')} else if(status==='in_progress'){txt='en cours';el.classList.add('run')} else if(status==='queued'){txt='en file';} el.children[1].textContent=txt;}
+function jobCard(j){const s=j.status==='completed'?(j.conclusion||'completed'):j.status; const cls=(j.conclusion==='failure'?'failure':j.status); return `<div class="job ${cls}"><div class="name">${j.name}</div><div class="sub">${s}</div><div class="bar"><i></i></div></div>`}
+async function api(path){const r=await fetch(API+path,{headers:{'Accept':'application/vnd.github+json'}}); if(!r.ok) throw new Error(`GitHub API ${r.status}`); return r.json()}
+async function refresh(){try{
+ const runs=await api(`/actions/workflows/${WF}/runs?branch=${encodeURIComponent(BRANCH)}&per_page=1`); const run=runs.workflow_runs?.[0]; if(!run) throw new Error('Aucun run trouvé'); lastRun=run; setStatus(run.status,run.conclusion); $('runLink').href=run.html_url; $('updated').textContent='MAJ '+new Date().toLocaleTimeString('fr-CA');
+ const jobs=await api(`/actions/runs/${run.id}/jobs?per_page=100`); const arr=jobs.jobs||[]; $('jobs').innerHTML=arr.length?arr.map(jobCard).join(''):'<div class="empty">Aucun job.</div>'; const done=arr.filter(x=>x.status==='completed').length; $('done').textContent=done; $('doneSub').textContent=`sur ${arr.length}`;
+ const arts=await api(`/actions/runs/${run.id}/artifacts?per_page=100`); const aa=arts.artifacts||[]; $('artifacts').innerHTML=aa.length?`<table class="table"><thead><tr><th>Nom</th><th>Taille</th></tr></thead><tbody>${aa.map(a=>`<tr><td><a class="btn" style="padding:4px 7px" target="_blank" href="https://github.com/${OWNER}/${REPO}/actions/runs/${run.id}/artifacts/${a.id}">${a.name}</a></td><td>${Math.max(1,Math.round(a.size_in_bytes/1024))} Ko</td></tr>`).join('')}</tbody></table>`:'<div class="empty">Aucun artifact disponible pour le moment.</div>';
+ // Counters are left unknown until a published summary exists. Try a conventional branch file if one is added later.
+ try{const u=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/out/aqueous28-short-pipelines/summary.json?t=${Date.now()}`; const rr=await fetch(u); if(rr.ok){const d=await rr.json(); $('p5').textContent=d.p5??'—'; $('p7').textContent=d.p7??'—'; $('resultBox').innerHTML=`<table class="table"><tr><th>5c@1</th><td>${d.p5??0}</td></tr><tr><th>6c@1</th><td>${d.p6??0}</td></tr><tr><th>7c@2</th><td>${d.p7??0}</td></tr></table>`}}
+ catch(_){ }
+ }catch(e){setStatus('completed','failure'); $('updated').textContent=e.message;}
+}
+refresh(); setInterval(refresh,10000);
+</script>
+</body></html>

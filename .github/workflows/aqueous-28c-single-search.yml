@@ -1,0 +1,108 @@
+name: Aqueous Evolution Dashboard
+
+on:
+  workflow_dispatch:
+    inputs:
+      generations:
+        description: "Nombre maximum de générations"
+        required: true
+        default: "10"
+      elites:
+        description: "Nombre d'élites conservées (1-8)"
+        required: true
+        default: "3"
+      target_cycles:
+        description: "Cible cycles — arrêt automatique si atteinte"
+        required: true
+        default: "26"
+      stagnation:
+        description: "Arrêt après N générations sans amélioration (0 = désactivé)"
+        required: true
+        default: "8"
+
+permissions:
+  contents: write
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-evolution
+  GITHUB_TOKEN: ${{ github.token }}
+  GENERATIONS: ${{ inputs.generations || '5' }}
+  ELITES: ${{ inputs.elites || '3' }}
+  TARGET_CYCLES: ${{ inputs.target_cycles || '26' }}
+  STAGNATION: ${{ inputs.stagnation || '5' }}
+
+jobs:
+  evolution:
+    name: autonomous evolution
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Materialize puzzle + canonical 27c seed
+        run: |
+          mkdir -p reports
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          for src,dst in [
+            ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64','reports/aqueous-dagger.puzzle'),
+            ('fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64','reports/single27.solution')]:
+              Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
+          PY
+
+      - name: 🔴 LIVE EVOLUTION — watch dashboard
+        run: >-
+          python tools/run_aqueous_evolution.py
+          --validator-url "${VALIDATOR_URL}"
+          --puzzle reports/aqueous-dagger.puzzle
+          --seed reports/single27.solution
+          --work "${SEARCH_DIR}"
+          --generations "${GENERATIONS}"
+          --elites "${ELITES}"
+          --target-cycles "${TARGET_CYCLES}"
+          --stagnation "${STAGNATION}"
+          --workers 12
+          --progress-every 10
+          --live-repo "${GITHUB_REPOSITORY}"
+          --live-branch aqueous-dashboard-live
+          --live-dir aqueous-dashboard
+
+      - name: Build GitHub summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path(os.environ['SEARCH_DIR'])/'results.json'
+          dash='https://htmlpreview.github.io/?https://github.com/Fandalah-tech/opus-magnum-pattern-library/blob/aqueous-dashboard-live/aqueous-dashboard/index.html'
+          if not p.exists():
+              Path(os.environ['GITHUB_STEP_SUMMARY']).write_text(f'# Aqueous Dagger — Evolution\n\nRun interrompu avant le rapport.\n\n[Dashboard HTML]({dash})\n')
+              raise SystemExit(0)
+          r=json.loads(p.read_text())
+          lines=[
+            '# Aqueous Dagger — Evolution','',
+            f"**État :** {r.get('state','—')}",
+            f"**Générations :** {r.get('generationsCompleted',0)} / {r.get('maxGenerations',0)}",
+            f"**Meilleur :** {r.get('bestCycles','—')} cycles",
+            f"**Candidats testés :** {r.get('tested',0)}",
+            f"**Candidats valides :** {r.get('valid',0)}",'',
+            f'[Ouvrir le dashboard HTML]({dash})','',
+            'Les trois meilleurs `.solution` sont publiés directement dans le dashboard et joints au run.'
+          ]
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
+          PY
+
+      - name: Upload Top 3 + report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-top-solutions
+          path: |
+            ${{ env.SEARCH_DIR }}/top-1.solution
+            ${{ env.SEARCH_DIR }}/top-2.solution
+            ${{ env.SEARCH_DIR }}/top-3.solution
+            ${{ env.SEARCH_DIR }}/results.json
+          if-no-files-found: warn

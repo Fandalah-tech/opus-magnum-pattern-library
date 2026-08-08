@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {"kind": "solution", "version": 7},
+  "puzzleFile": "weeklies2026_aqueous-dagger",
+  "name": "50C seed",
+  "metrics": {},
+  "unknownMetrics": [],
+  "parts": [
+    {"type":"input","enabled":true,"position":[-11,-3],"length":1,"rotation":5,"which":0,"armNumber":6,"program":[]},
+    {"type":"track","enabled":true,"position":[-12,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[],"trackHexes":[[1,-1],[0,0]]},
+    {"type":"out-std","enabled":true,"position":[-14,-1],"length":1,"rotation":4,"which":0,"armNumber":6,"program":[]},
+    {"type":"glyph-calcification","enabled":true,"position":[-14,1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"type":"bonder","enabled":true,"position":[-13,-1],"length":1,"rotation":1,"which":0,"armNumber":6,"program":[]},
+    {"type":"glyph-calcification","enabled":true,"position":[-12,-1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"type":"glyph-marker","enabled":true,"position":[-13,1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"type":"arm1","enabled":true,"position":[-12,-3],"length":1,"rotation":2,"which":0,"armNumber":0,"program":[{"cycle":0,"instruction":"pivot_ccw","rawCode":"p"},{"cycle":1,"instruction":"drop","rawCode":"g"},{"cycle":2,"instruction":"rotate_cw","rawCode":"R"},{"cycle":3,"instruction":"grab","rawCode":"G"},{"cycle":4,"instruction":"rotate_ccw","rawCode":"r"},{"cycle":5,"instruction":"drop","rawCode":"g"},{"cycle":7,"instruction":"grab","rawCode":"G"}]},
+    {"type":"arm1","enabled":true,"position":[-15,-1],"length":2,"rotation":0,"which":0,"armNumber":2,"program":[{"cycle":5,"instruction":"grab","rawCode":"G"},{"cycle":6,"instruction":"pivot_cw","rawCode":"P"},{"cycle":7,"instruction":"drop","rawCode":"g"}]},
+    {"type":"arm1","enabled":true,"position":[-11,-1],"length":1,"rotation":4,"which":0,"armNumber":1,"program":[{"cycle":0,"instruction":"grab","rawCode":"G"},{"cycle":1,"instruction":"rotate_cw","rawCode":"R"},{"cycle":2,"instruction":"track_plus","rawCode":"A"},{"cycle":3,"instruction":"pivot_cw","rawCode":"P"},{"cycle":4,"instruction":"pivot_ccw","rawCode":"p"},{"cycle":5,"instruction":"drop","rawCode":"g"},{"cycle":6,"instruction":"track_minus","rawCode":"a"},{"cycle":7,"instruction":"rotate_ccw","rawCode":"r"}]}
+  ]
+}

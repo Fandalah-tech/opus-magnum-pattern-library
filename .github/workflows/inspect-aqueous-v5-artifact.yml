@@ -1,0 +1,79 @@
+name: Inspect Aqueous V5 Artifact
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - .github/workflows/inspect-aqueous-v5-artifact.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+env:
+  ARTIFACT_ID: "9026389922"
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/aqueous-dagger-fragment-planner-final
+      - name: Download completed v7 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -H "Accept: application/vnd.github+json" \
+            /repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip > /tmp/v7.zip
+          mkdir -p /tmp/v7
+          unzip -q /tmp/v7.zip -d /tmp/v7
+      - name: Materialize inspection report
+        run: |
+          rm -rf reports/aqueous-v7-inspection
+          mkdir -p reports/aqueous-v7-inspection
+          python - <<'PY'
+          import json, shutil, hashlib
+          from pathlib import Path
+          src=Path('/tmp/v7')
+          out=Path('reports/aqueous-v7-inspection')
+          found={p.name:p for p in src.rglob('*') if p.is_file()}
+          for name in ['results.json','checkpoint.json','state-v7.json','attempted.txt','expanded.txt','retryable.txt']:
+              if name in found:
+                  shutil.copy2(found[name], out/name)
+          summary={}
+          keys=['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']
+          histkeys=['generation','bestCycles','tested','valid','new','repeatPrior','duplicateWithin','translationClasses','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries','aborted']
+          for name in ['results.json','checkpoint.json','state-v7.json']:
+              p=found.get(name)
+              if p:
+                  d=json.loads(p.read_text())
+                  summary[name]={k:d.get(k) for k in keys}
+                  summary[name]['history']=[{k:h.get(k) for k in histkeys if k in h} for h in (d.get('history') or [])[-50:]]
+                  summary[name]['top']=d.get('top') or d.get('topSolutions') or []
+                  summary[name]['keys']=sorted(d.keys())
+          for name in ['attempted.txt','expanded.txt','retryable.txt']:
+              p=found.get(name)
+              if p:
+                  lines=[x for x in p.read_text(errors='replace').splitlines() if x.strip()]
+                  summary[name]={'count':len(lines),'first':lines[:5],'last':lines[-5:]}
+          sols=[]
+          for p in sorted(src.rglob('*.solution')):
+              data=p.read_bytes()
+              sols.append({'name':p.name,'path':str(p.relative_to(src)),'size':len(data),'sha256':hashlib.sha256(data).hexdigest()})
+              if p.name.startswith('top-'):
+                  shutil.copy2(p,out/p.name)
+          summary['solutions']=sols
+          (out/'summary.json').write_text(json.dumps(summary,indent=2))
+          print(json.dumps(summary,indent=2))
+          PY
+      - name: Commit inspection data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/aqueous-v7-inspection
+          git diff --cached --quiet && exit 0
+          git commit -m "Inspect latest Aqueous v7 search artifact"
+          git push origin HEAD:feature/aqueous-dagger-fragment-planner-final

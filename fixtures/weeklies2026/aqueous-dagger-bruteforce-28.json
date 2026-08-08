@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {"kind": "solution", "version": 7},
+  "source": {"name": "aqueous-dagger-weeklies2026_aqueous-dagger-28.solution"},
+  "puzzleFile": "weeklies2026_aqueous-dagger",
+  "name": "TEST BRUTEFORCE 1",
+  "metrics": {"cycles": null, "cost": null, "area": null, "instructions": null},
+  "unknownMetrics": [],
+  "parts": [
+    {"id":"part-0","type":"track","enabled":true,"position":[-9,-1],"length":1,"rotation":0,"which":0,"armNumber":1,"program":[],"trackHexes":[[-1,0],[-2,0]]},
+    {"id":"part-1","type":"input","enabled":true,"position":[-10,-3],"length":1,"rotation":0,"which":0,"armNumber":1,"program":[]},
+    {"id":"part-2","type":"out-std","enabled":true,"position":[-8,-4],"length":1,"rotation":3,"which":0,"armNumber":1,"program":[]},
+    {"id":"part-3","type":"glyph-calcification","enabled":true,"position":[-8,-2],"length":1,"rotation":0,"which":0,"armNumber":1,"program":[]},
+    {"id":"part-4","type":"bonder","enabled":true,"position":[-9,-2],"length":1,"rotation":4,"which":0,"armNumber":1,"program":[]},
+    {"id":"part-5","type":"arm1","enabled":true,"position":[-11,-1],"length":1,"rotation":4,"which":0,"armNumber":0,"program":[{"cycle":0,"instruction":"grab","rawCode":"G"}]},
+    {"id":"part-6","type":"glyph-calcification","enabled":true,"position":[-10,-2],"length":1,"rotation":0,"which":0,"armNumber":1,"program":[]},
+    {"id":"part-7","type":"piston","enabled":true,"position":[-9,-5],"length":1,"rotation":1,"which":0,"armNumber":2,"program":[]},
+    {"id":"part-8","type":"piston","enabled":true,"position":[-10,-4],"length":1,"rotation":1,"which":0,"armNumber":1,"program":[]},
+    {"id":"part-9","type":"piston","enabled":true,"position":[-7,-5],"length":1,"rotation":2,"which":0,"armNumber":3,"program":[]},
+    {"id":"part-10","type":"glyph-calcification","enabled":true,"position":[-9,-1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]}
+  ],
+  "trailingBytes": 0
+}

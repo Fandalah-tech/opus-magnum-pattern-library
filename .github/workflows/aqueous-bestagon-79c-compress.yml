@@ -1,0 +1,57 @@
+name: Aqueous Bestagon 79c Compression
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - '.github/workflows/aqueous-bestagon-79c-compress.yml'
+      - 'tools/search_aqueous_bestagon_79c_compress.py'
+      - 'fixtures/weeklies2026/aqueous-dagger-bestagon-79c-complete.solution.b64'
+      - 'packages/opus_parser/**'
+  workflow_dispatch:
+
+jobs:
+  compress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+      SEARCH_DIR: reports/aqueous-bestagon-79c-compress
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle and 79c seed
+        shell: bash
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          (root/'puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          raw=''.join(Path('fixtures/weeklies2026/aqueous-dagger-bestagon-79c-complete.solution.b64').read_text().split())
+          (root/'seed.solution').write_bytes(base64.b64decode(raw))
+          PY
+      - name: Guided compression search
+        shell: bash
+        run: |
+          python tools/search_aqueous_bestagon_79c_compress.py \
+            --validator-url "${VALIDATOR_URL}" \
+            --puzzle "${SEARCH_DIR}/puzzle.puzzle" \
+            --seed "${SEARCH_DIR}/seed.solution" \
+            --out "${SEARCH_DIR}/search" \
+            --workers 8 \
+            --rounds 30
+      - name: Summarize
+        if: always()
+        shell: bash
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-bestagon-79c-compress
+          path: |
+            reports/aqueous-bestagon-79c-compress/search/results.json
+            reports/aqueous-bestagon-79c-compress/search/best.solution
