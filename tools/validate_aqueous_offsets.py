@@ -18,14 +18,40 @@ from pathlib import Path
 def validate(url: str, puzzle: Path, solution: Path) -> dict:
     command = [
         "curl", "--fail-with-body", "-sS",
+        "--connect-timeout", "5",
+        "--max-time", "30",
+        "--retry", "1",
+        "--retry-delay", "1",
+        "--retry-connrefused",
         "-F", f"puzzle=@{puzzle}",
         "-F", f"solution=@{solution}",
         f"{url}/api/v1/analyze",
     ]
-    result = subprocess.run(command, capture_output=True, text=True)
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, timeout=35)
+    except subprocess.TimeoutExpired:
+        return {
+            "httpError": "validator timeout after 35s",
+            "valid": False,
+            "issues": [{"message": "validator timeout"}],
+        }
     if result.returncode != 0:
-        return {"httpError": result.stderr.strip(), "valid": False}
-    payload = json.loads(result.stdout)
+        stderr = result.stderr.strip()
+        if result.returncode == 28:
+            stderr = stderr or "validator curl timeout"
+        return {
+            "httpError": stderr,
+            "valid": False,
+            "issues": [{"message": stderr or f"curl exit {result.returncode}"}],
+        }
+    try:
+        payload = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        return {
+            "valid": False,
+            "httpError": f"invalid validator JSON: {exc}",
+            "issues": [{"message": "invalid validator JSON"}],
+        }
     return payload.get("validation", {})
 
 
