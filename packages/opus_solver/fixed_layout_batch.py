@@ -70,13 +70,7 @@ def verify_periodic_program(
     *,
     max_periods: int = 5,
 ) -> int:
-    """Return products/period once the repeated P-period program reaches a true loop.
-
-    The initial board may be a startup state.  We therefore compare successive
-    period-boundary physical states instead of requiring period 1 to return to
-    the empty/startup board.  A success requires identical canonical states on
-    consecutive boundaries and a strictly positive delivered-product delta.
-    """
+    """Prove a steady repeated P-period loop, allowing a startup transient."""
     simulator = Simulator.from_models(puzzle, start.solution)
     previous_key = physical_state_key(simulator)
     previous_delivered = delivered_total(simulator)
@@ -136,8 +130,6 @@ def brute_force_configuration_steady(
         if not frontier:
             return None
 
-    # Every unique P-step boundary state represents one distinct candidate tape.
-    # Re-run only these finalists for several periods to prove a steady P loop.
     for _, path in frontier:
         delta = verify_periodic_program(
             puzzle, start, path, bounds, max_periods=verification_periods,
@@ -156,16 +148,15 @@ def solve_fixed_layout_batch(
     limit: int = 64,
     verification_periods: int = 5,
 ) -> BatchSearchResult:
-    # Enumerate the full canonical pose list once so batch offsets are stable.
     enum_bounds = LayoutBounds(
         center=bounds.center,
         radius=bounds.radius,
         period=bounds.period,
+        motion_radius=bounds.motion_radius,
         max_active_arms=bounds.max_active_arms,
         max_atoms=bounds.max_atoms,
         max_start_configs=0,
         max_states_per_depth=bounds.max_states_per_depth,
-        runtime_radius=bounds.runtime_radius,
     )
     configurations = enumerate_start_configurations(puzzle, layout, enum_bounds)
     total = len(configurations)
