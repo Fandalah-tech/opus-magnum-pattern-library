@@ -1,0 +1,103 @@
+name: Aqueous V5 Autonomous Search
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - .github/workflows/aqueous-v5-autonomous.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-v7
+  LEGACY_ARTIFACT_ID: "9024679156"
+
+jobs:
+  search:
+    name: resumable coupled structural search
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/aqueous-dagger-fragment-planner-final
+
+      - name: Materialize puzzle and 27c seed
+        run: |
+          mkdir -p reports
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          pairs = [
+              ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64','reports/aqueous-dagger.puzzle'),
+              ('fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64','reports/single27.solution'),
+          ]
+          for src, dst in pairs:
+              Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
+          PY
+
+      - name: Restore prior search knowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          gh api -H "Accept: application/vnd.github+json" \
+            /repos/${GITHUB_REPOSITORY}/actions/artifacts/${LEGACY_ARTIFACT_ID}/zip > /tmp/previous.zip
+          unzip -q -o /tmp/previous.zip -d "${SEARCH_DIR}"
+          echo "restored $(wc -l < "${SEARCH_DIR}/attempted.txt" 2>/dev/null || echo 0) attempted identities"
+
+      - name: Syntax and identity smoke test
+        run: |
+          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v7.py tools/search_aqueous_structural.py tools/validate_aqueous_offsets.py
+
+      - name: Resumable autonomous search to 26c
+        run: >-
+          python tools/run_aqueous_evolution_v7.py
+          --validator-url "${VALIDATOR_URL}"
+          --puzzle reports/aqueous-dagger.puzzle
+          --seed reports/single27.solution
+          --work "${SEARCH_DIR}"
+          --generations 300
+          --target-cycles 26
+          --workers 8
+          --watchdog-seconds 25
+          --generation-seconds 600
+
+      - name: Summarize search
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          src=root/'results.json'
+          if not src.exists(): src=root/'checkpoint.json'
+          if src.exists():
+              r=json.loads(src.read_text())
+              print(json.dumps({k:r.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']},indent=2))
+              for h in (r.get('history') or [])[-20:]: print('HISTORY',json.dumps(h,sort_keys=True))
+          PY
+
+      - name: Upload persistent search state and solutions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-v7-search
+          path: |
+            ${{ env.SEARCH_DIR }}/results.json
+            ${{ env.SEARCH_DIR }}/checkpoint.json
+            ${{ env.SEARCH_DIR }}/state-v7.json
+            ${{ env.SEARCH_DIR }}/attempted.txt
+            ${{ env.SEARCH_DIR }}/expanded.txt
+            ${{ env.SEARCH_DIR }}/retryable.txt
+            ${{ env.SEARCH_DIR }}/top-1.solution
+            ${{ env.SEARCH_DIR }}/top-2.solution
+            ${{ env.SEARCH_DIR }}/top-3.solution
+            ${{ env.SEARCH_DIR }}/archive/
+          if-no-files-found: warn

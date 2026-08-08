@@ -1,0 +1,214 @@
+{
+  "metrics": {
+    "cycles": null,
+    "cost": null,
+    "area": null,
+    "instructions": null
+  },
+  "puzzleFile": "weeklies2026_aqueous-dagger",
+  "parts": [
+    {
+      "index": 0,
+      "type": "arm1",
+      "position": [
+        -3,
+        -1
+      ],
+      "length": 2,
+      "rotation": 2,
+      "which": 0,
+      "armNumber": 1,
+      "trackHexes": null,
+      "program": [
+        {
+          "cycle": 2,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 3,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        },
+        {
+          "cycle": 4,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 5,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "type": "input",
+      "position": [
+        -5,
+        2
+      ],
+      "length": 1,
+      "rotation": 2,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 2,
+      "type": "arm1",
+      "position": [
+        -5,
+        5
+      ],
+      "length": 3,
+      "rotation": 4,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": [
+        {
+          "cycle": 0,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 1,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 2,
+          "instruction": "drop",
+          "rawCode": "g"
+        },
+        {
+          "cycle": 3,
+          "instruction": "rotate_cw",
+          "rawCode": "R"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "type": "bonder",
+      "position": [
+        -2,
+        2
+      ],
+      "length": 1,
+      "rotation": 4,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 4,
+      "type": "bonder",
+      "position": [
+        2,
+        -1
+      ],
+      "length": 1,
+      "rotation": 4,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 5,
+      "type": "glyph-calcification",
+      "position": [
+        -1,
+        1
+      ],
+      "length": 1,
+      "rotation": 0,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 6,
+      "type": "glyph-calcification",
+      "position": [
+        -1,
+        2
+      ],
+      "length": 1,
+      "rotation": 0,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 7,
+      "type": "glyph-calcification",
+      "position": [
+        1,
+        -1
+      ],
+      "length": 1,
+      "rotation": 0,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 8,
+      "type": "out-std",
+      "position": [
+        5,
+        -1
+      ],
+      "length": 1,
+      "rotation": 5,
+      "which": 0,
+      "armNumber": 0,
+      "trackHexes": null,
+      "program": []
+    },
+    {
+      "index": 9,
+      "type": "arm3",
+      "position": [
+        1,
+        2
+      ],
+      "length": 2,
+      "rotation": 3,
+      "which": 0,
+      "armNumber": 2,
+      "trackHexes": null,
+      "program": [
+        {
+          "cycle": 3,
+          "instruction": "grab",
+          "rawCode": "G"
+        },
+        {
+          "cycle": 4,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 5,
+          "instruction": "rotate_ccw",
+          "rawCode": "r"
+        },
+        {
+          "cycle": 6,
+          "instruction": "drop",
+          "rawCode": "g"
+        }
+      ]
+    }
+  ]
+}

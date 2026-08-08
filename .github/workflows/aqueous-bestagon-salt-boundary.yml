@@ -1,0 +1,65 @@
+name: Aqueous Bestagon Salt Boundary
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - tools/search_aqueous_bestagon_salt_boundary.py
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-minus1.solution.b64
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-plus1.solution.b64
+      - .github/workflows/aqueous-bestagon-salt-boundary.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-bestagon-salt-boundary
+
+jobs:
+  search:
+    name: exhaustive -1/+1 salt boundary
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle and boundary seeds
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          pairs=[
+            ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64', root/'puzzle.puzzle'),
+            ('fixtures/weeklies2026/aqueous-dagger-bestagon-minus1.solution.b64', root/'minus.solution'),
+            ('fixtures/weeklies2026/aqueous-dagger-bestagon-plus1.solution.b64', root/'plus.solution'),
+          ]
+          for src,dst in pairs:
+            dst.write_bytes(base64.b64decode(Path(src).read_text().strip()))
+          PY
+      - name: Search boundary hypercube
+        run: >-
+          python tools/search_aqueous_bestagon_salt_boundary.py
+          --validator-url "${VALIDATOR_URL}"
+          --puzzle "${SEARCH_DIR}/puzzle.puzzle"
+          --minus "${SEARCH_DIR}/minus.solution"
+          --plus "${SEARCH_DIR}/plus.solution"
+          --out "${SEARCH_DIR}/search"
+          --workers 8
+      - name: Summarize
+        if: always()
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-bestagon-salt-boundary
+          path: |
+            ${{ env.SEARCH_DIR }}/search/results.json
+            ${{ env.SEARCH_DIR }}/search/best.solution
+          if-no-files-found: warn

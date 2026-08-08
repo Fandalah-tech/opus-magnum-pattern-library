@@ -1,0 +1,46 @@
+name: Aqueous Bestagon Third Arm Exit
+
+on:
+  push:
+    branches: [feature/aqueous-dagger-fragment-planner-final]
+    paths:
+      - '.github/workflows/aqueous-bestagon-third-arm.yml'
+      - 'tools/search_aqueous_bestagon_third_arm.py'
+      - 'fixtures/weeklies2026/aqueous-dagger-bestagon-prefix.solution.b64'
+  workflow_dispatch:
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+      SEARCH_DIR: reports/aqueous-bestagon-third-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle and prefix seed
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          root.mkdir(parents=True, exist_ok=True)
+          (root/'puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          (root/'seed.solution').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger-bestagon-prefix.solution.b64').read_text().strip()))
+          PY
+      - name: Search bounded third-arm suffixes
+        run: |
+          python tools/search_aqueous_bestagon_third_arm.py --validator-url "${VALIDATOR_URL}" --puzzle "${SEARCH_DIR}/puzzle.puzzle" --seed "${SEARCH_DIR}/seed.solution" --out "${SEARCH_DIR}/search" --workers 8
+      - name: Summarize
+        if: always()
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aqueous-bestagon-third-arm
+          path: |
+            reports/aqueous-bestagon-third-arm/search/results.json
+            reports/aqueous-bestagon-third-arm/search/best.solution

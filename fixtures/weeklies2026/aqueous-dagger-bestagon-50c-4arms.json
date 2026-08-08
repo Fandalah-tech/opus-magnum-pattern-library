@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "0.1.0",
+  "format": {"kind": "solution", "version": 7},
+  "puzzleFile": "weeklies2026_aqueous-dagger",
+  "name": "50C",
+  "metrics": {"cycles": 50, "cost": 160, "area": 19, "instructions": 18},
+  "unknownMetrics": [],
+  "parts": [
+    {"type":"input","enabled":true,"position":[-11,-3],"length":1,"rotation":5,"which":0,"armNumber":6,"program":[]},
+    {"type":"track","enabled":true,"position":[-12,0],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[],"trackHexes":[[1,-1],[0,0]]},
+    {"type":"out-std","enabled":true,"position":[-14,-1],"length":1,"rotation":4,"which":0,"armNumber":6,"program":[]},
+    {"type":"glyph-calcification","enabled":true,"position":[-14,1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"type":"bonder","enabled":true,"position":[-13,-1],"length":1,"rotation":1,"which":0,"armNumber":6,"program":[]},
+    {"type":"glyph-calcification","enabled":true,"position":[-12,-1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"type":"arm1","enabled":true,"position":[-12,-3],"length":1,"rotation":2,"which":0,"armNumber":0,"program":[{"cycle":0,"instruction":"pivot_ccw"},{"cycle":1,"instruction":"drop"},{"cycle":2,"instruction":"rotate_cw"},{"cycle":3,"instruction":"grab"},{"cycle":4,"instruction":"rotate_ccw"},{"cycle":5,"instruction":"drop"},{"cycle":7,"instruction":"grab"}]},
+    {"type":"arm1","enabled":true,"position":[-11,-1],"length":1,"rotation":4,"which":0,"armNumber":1,"program":[{"cycle":0,"instruction":"grab"},{"cycle":1,"instruction":"rotate_cw"},{"cycle":2,"instruction":"track_plus"},{"cycle":3,"instruction":"pivot_cw"},{"cycle":4,"instruction":"pivot_ccw"},{"cycle":5,"instruction":"drop"},{"cycle":6,"instruction":"track_minus"},{"cycle":7,"instruction":"rotate_ccw"}]},
+    {"type":"glyph-marker","enabled":true,"position":[-13,1],"length":1,"rotation":0,"which":0,"armNumber":0,"program":[]},
+    {"type":"piston","enabled":true,"position":[-13,-3],"length":2,"rotation":1,"which":0,"armNumber":2,"program":[{"cycle":5,"instruction":"grab"},{"cycle":6,"instruction":"pivot_cw"},{"cycle":7,"instruction":"drop"}]},
+    {"type":"piston","enabled":true,"position":[-15,-1],"length":1,"rotation":0,"which":0,"armNumber":3,"program":[]}
+  ]
+}

@@ -1,0 +1,33 @@
+name: Aqueous fast overlap search
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+
+jobs:
+  overlap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle
+        run: |
+          mkdir -p reports
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          Path('reports/aqueous-dagger.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          PY
+      - name: Generate duplicate-output variants
+        run: python tools/search_aqueous_second_output.py --radius 3
+      - name: Validate duplicate-output variants
+        run: >-
+          python tools/validate_aqueous_offsets.py
+          --validator-url "${VALIDATOR_URL}"
+          --variants reports/aqueous-second-output-search
+          --workers 12

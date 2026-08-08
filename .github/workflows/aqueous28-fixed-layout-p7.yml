@@ -1,0 +1,43 @@
+name: Aqueous 28 Fixed Layout P7
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - '.github/workflows/aqueous28-fixed-layout-p7.yml'
+  workflow_dispatch:
+
+jobs:
+  search:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile new solver
+        run: python -m py_compile packages/opus_solver/fixed_layout.py packages/opus_solver/fixed_layout_batch.py tools/search_fixed_layout_batch.py
+      - name: Search first configuration batch
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p out/aqueous28-p7
+          set +e
+          python tools/search_fixed_layout_batch.py \
+            --puzzle fixtures/weeklies2026/aqueous-dagger.puzzle.b64 \
+            --layout fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json \
+            --center-q -9 --center-r -3 --radius 3 --motion-radius 3 \
+            --period 7 --offset 0 --limit 32 \
+            --max-active-arms 4 --max-atoms 24 --max-states-per-depth 20000 \
+            --verification-periods 5 --out out/aqueous28-p7
+          code=$?
+          echo "solver_exit=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Show report
+        if: always()
+        run: cat out/aqueous28-p7/results.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aqueous28-p7-batch-00000
+          path: out/aqueous28-p7
+          if-no-files-found: warn

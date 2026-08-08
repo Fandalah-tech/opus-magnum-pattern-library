@@ -1,0 +1,40 @@
+name: Fixed Layout Solver Smoke
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - 'packages/opus_solver/fixed_layout.py'
+      - 'packages/opus_solver/__init__.py'
+      - 'tools/search_fixed_layout.py'
+      - '.github/workflows/fixed-layout-solver-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile solver
+        run: python -m py_compile packages/opus_solver/fixed_layout.py tools/search_fixed_layout.py
+      - name: Enumerate start configurations
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python - <<'PY'
+          import base64, json
+          from packages.opus_parser import parse_puzzle
+          from packages.opus_solver.fixed_layout import LayoutBounds, enumerate_start_configurations
+
+          raw = base64.b64decode(open('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read().strip())
+          puzzle = parse_puzzle(raw)
+          layout = json.load(open('fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json'))
+          for index, part in enumerate(layout.get('parts', [])):
+              part.setdefault('id', f'part-{index}')
+          bounds = LayoutBounds(center=(0,0), radius=100, period=7, max_start_configs=16)
+          configs = enumerate_start_configurations(puzzle, layout, bounds)
+          print('startConfigurations=', len(configs))
+          assert configs, 'expected at least one configuration'
+          assert len({c.signature for c in configs}) == len(configs), 'configurations must be canonical/deduplicated'
+          PY
