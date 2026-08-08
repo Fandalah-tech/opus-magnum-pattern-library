@@ -1,23 +1,11 @@
 name: Aqueous V5 Autonomous Search
 
 on:
-  push:
-    branches:
-      - feature/aqueous-dagger-fragment-planner-final
-    paths:
-      - tools/run_aqueous_evolution_v5.py
-      - tools/run_aqueous_evolution_v6.py
-      - tools/solution_identity.py
-      - tools/search_aqueous_28c_single.py
-      - tools/search_aqueous_structural.py
-      - tools/validate_aqueous_offsets.py
-      - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
-      - fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
-      - .github/workflows/aqueous-v5-autonomous.yml
   workflow_dispatch:
 
 permissions:
   contents: read
+  actions: read
 
 env:
   PYTHONPATH: ${{ github.workspace }}
@@ -31,6 +19,8 @@ jobs:
     timeout-minutes: 330
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feature/aqueous-dagger-fragment-planner-final
 
       - name: Materialize puzzle and 27c seed
         run: |
