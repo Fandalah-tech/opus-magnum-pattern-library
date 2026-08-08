@@ -1,0 +1,58 @@
+name: Aqueous Bestagon Piston Periods
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - tools/search_aqueous_bestagon_piston_periods.py
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-piston-exp.solution.b64
+      - .github/workflows/aqueous-bestagon-piston-periods.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-bestagon-piston-periods
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle and piston seed
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          root.mkdir(parents=True, exist_ok=True)
+          (root/'puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          (root/'seed.solution').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger-bestagon-piston-exp.solution.b64').read_text().strip()))
+          PY
+      - name: Exhaust period 5-7 timing schedules
+        run: >-
+          python tools/search_aqueous_bestagon_piston_periods.py
+          --validator-url "${VALIDATOR_URL}"
+          --puzzle "${SEARCH_DIR}/puzzle.puzzle"
+          --seed "${SEARCH_DIR}/seed.solution"
+          --out "${SEARCH_DIR}/search"
+          --workers 8
+      - name: Summarize
+        if: always()
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-bestagon-piston-periods
+          path: |
+            ${{ env.SEARCH_DIR }}/search/results.json
+            ${{ env.SEARCH_DIR }}/search/best.solution
+          if-no-files-found: warn
