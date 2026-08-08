@@ -1,13 +1,6 @@
 name: Aqueous Evolution Dashboard
 
 on:
-  pull_request:
-    paths:
-      - tools/search_aqueous_28c_single.py
-      - tools/validate_aqueous_offsets.py
-      - tools/run_aqueous_evolution.py
-      - fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
-      - .github/workflows/aqueous-28c-single-search.yml
   workflow_dispatch:
     inputs:
       generations:
@@ -71,7 +64,7 @@ jobs:
           --elites "${ELITES}"
           --target-cycles "${TARGET_CYCLES}"
           --stagnation "${STAGNATION}"
-          --workers 24
+          --workers 12
           --progress-every 10
           --live-repo "${GITHUB_REPOSITORY}"
           --live-branch aqueous-dashboard-live
