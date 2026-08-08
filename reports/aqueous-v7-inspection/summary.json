@@ -1,0 +1,289 @@
+{
+  "results.json": {
+    "state": "exhausted",
+    "bestCycles": 27,
+    "tested": 0,
+    "valid": 1,
+    "attemptedMechanisms": 322968,
+    "validMechanisms": 3,
+    "expandedParents": 9,
+    "frontier": 0,
+    "timeouts": 0,
+    "retries": 0,
+    "history": [
+      {
+        "generation": 1,
+        "bestCycles": 27,
+        "tested": 0,
+        "valid": 0,
+        "new": 0,
+        "repeatPrior": 4853,
+        "duplicateWithin": 9,
+        "translationClasses": 4853,
+        "attemptedMechanisms": 322968,
+        "validMechanisms": 3,
+        "expandedParents": 8,
+        "frontier": 1,
+        "timeouts": 0,
+        "retries": 0,
+        "aborted": false
+      },
+      {
+        "generation": 2,
+        "bestCycles": 27,
+        "tested": 0,
+        "valid": 0,
+        "new": 0,
+        "repeatPrior": 2429,
+        "duplicateWithin": 2,
+        "translationClasses": 2429,
+        "attemptedMechanisms": 322968,
+        "validMechanisms": 3,
+        "expandedParents": 9,
+        "frontier": 0,
+        "timeouts": 0,
+        "retries": 0,
+        "aborted": false
+      }
+    ],
+    "top": [],
+    "keys": [
+      "attemptedMechanisms",
+      "bestCycles",
+      "expandedParents",
+      "frontier",
+      "generation",
+      "hall",
+      "history",
+      "retries",
+      "retryable",
+      "schemaVersion",
+      "state",
+      "tested",
+      "timeouts",
+      "valid",
+      "validMechanisms"
+    ]
+  },
+  "checkpoint.json": {
+    "state": "exhausted",
+    "bestCycles": 27,
+    "tested": 0,
+    "valid": 1,
+    "attemptedMechanisms": 322968,
+    "validMechanisms": 3,
+    "expandedParents": 9,
+    "frontier": 0,
+    "timeouts": 0,
+    "retries": 0,
+    "history": [
+      {
+        "generation": 1,
+        "bestCycles": 27,
+        "tested": 0,
+        "valid": 0,
+        "new": 0,
+        "repeatPrior": 4853,
+        "duplicateWithin": 9,
+        "translationClasses": 4853,
+        "attemptedMechanisms": 322968,
+        "validMechanisms": 3,
+        "expandedParents": 8,
+        "frontier": 1,
+        "timeouts": 0,
+        "retries": 0,
+        "aborted": false
+      },
+      {
+        "generation": 2,
+        "bestCycles": 27,
+        "tested": 0,
+        "valid": 0,
+        "new": 0,
+        "repeatPrior": 2429,
+        "duplicateWithin": 2,
+        "translationClasses": 2429,
+        "attemptedMechanisms": 322968,
+        "validMechanisms": 3,
+        "expandedParents": 9,
+        "frontier": 0,
+        "timeouts": 0,
+        "retries": 0,
+        "aborted": false
+      }
+    ],
+    "top": [],
+    "keys": [
+      "attemptedMechanisms",
+      "bestCycles",
+      "expandedParents",
+      "frontier",
+      "generation",
+      "hall",
+      "history",
+      "retries",
+      "retryable",
+      "schemaVersion",
+      "state",
+      "tested",
+      "timeouts",
+      "valid",
+      "validMechanisms"
+    ]
+  },
+  "state-v7.json": {
+    "state": "exhausted",
+    "bestCycles": 27,
+    "tested": 0,
+    "valid": 1,
+    "attemptedMechanisms": 322968,
+    "validMechanisms": 3,
+    "expandedParents": 9,
+    "frontier": 0,
+    "timeouts": 0,
+    "retries": 0,
+    "history": [
+      {
+        "generation": 1,
+        "bestCycles": 27,
+        "tested": 0,
+        "valid": 0,
+        "new": 0,
+        "repeatPrior": 4853,
+        "duplicateWithin": 9,
+        "translationClasses": 4853,
+        "attemptedMechanisms": 322968,
+        "validMechanisms": 3,
+        "expandedParents": 8,
+        "frontier": 1,
+        "timeouts": 0,
+        "retries": 0,
+        "aborted": false
+      },
+      {
+        "generation": 2,
+        "bestCycles": 27,
+        "tested": 0,
+        "valid": 0,
+        "new": 0,
+        "repeatPrior": 2429,
+        "duplicateWithin": 2,
+        "translationClasses": 2429,
+        "attemptedMechanisms": 322968,
+        "validMechanisms": 3,
+        "expandedParents": 9,
+        "frontier": 0,
+        "timeouts": 0,
+        "retries": 0,
+        "aborted": false
+      }
+    ],
+    "top": [],
+    "keys": [
+      "attemptedMechanisms",
+      "bestCycles",
+      "expandedParents",
+      "frontier",
+      "generation",
+      "hall",
+      "history",
+      "retries",
+      "retryable",
+      "schemaVersion",
+      "state",
+      "tested",
+      "timeouts",
+      "valid",
+      "validMechanisms"
+    ]
+  },
+  "attempted.txt": {
+    "count": 322968,
+    "first": [
+      "000038383c9b70966253e263279b54058bec63707059b03f32d4afdefe406f8e",
+      "000057ad29c5a3c36f0e135827a655e6ce59484bbcc102cc4f127f27e8fd7360",
+      "000092350cbf9aca0612ab7efa5e13fd759192365a8b826babd587fc81f7a2ef",
+      "00013e6e06a31d2814f50985c99540ee48930eb940ea4f25ede4fa4b4e8b10e2",
+      "0001579c192f7e4d65e356526473b37ccba6cfcfcb43d7e53e0732715711e1d9"
+    ],
+    "last": [
+      "fffead062f77a790ca9de3353e382083e208bbc6e0443256a5b238605b5249ba",
+      "ffff26cbf8727f3c8a6c683c176dbe073c4cdbf7b0cf58031a478be374fc9643",
+      "ffff58c70400fff0108b8643932ee4b9e36a339f66123d2b80ef593d2b2882e5",
+      "ffff776e2108d84f43b9de92eef09008c3b03fa8f47f72a7fedb052f74a31fef",
+      "ffffa214ea6e252593a56a1bd253e33a78cfb53b986875e37c7fbb39ea0ab15f"
+    ]
+  },
+  "expanded.txt": {
+    "count": 9,
+    "first": [
+      "1b98a5fea51e8d2f8537e1be18cde3e202ca3f41357efdc02c0cbe4cdf189878",
+      "3db37cca275ede021eb396d5c9110ba3341698692e3aaf1c7bc1a3c34c73d934",
+      "55753d5bb1d689dc967176258ad1225733cee6326d51c6caf76585c6f2b05fd2",
+      "c9cd98509b798ca332faa9f182a32812cb65309361cf912ae6458727df1e064f",
+      "e149e9f71b836d1c4e21ddb0f1c6d095157c645a694745db3a45f8e7a18e8333"
+    ],
+    "last": [
+      "e149e9f71b836d1c4e21ddb0f1c6d095157c645a694745db3a45f8e7a18e8333",
+      "e3d086b6429b1655d9a955792efe1728c684821ae11962784adf8ad16df432b0",
+      "e4efd1b5e6713d93c6c10a6f25de1e5c99815e2a57face0ad84dbef060abe04d",
+      "ff776409f221d5b7c70de0687e0be7e67d7b197286e52b3b09180e2ed9b7be27",
+      "ffa3729bf59d80196decda3f0b19d39389fbe04fa9d4d6fbf3ae7e161d844df7"
+    ]
+  },
+  "retryable.txt": {
+    "count": 950,
+    "first": [
+      "0007582d525c3299d15a01ac53682aa63362449e624848f32f5d4b28a06cd765",
+      "0028546c21f686c70d07518241482fefd97de65aeec4156ab98e84f66e91928c",
+      "00d4f8797eba5b4be25b9f4f81db30779ac1d1ee71930dade08973765946eea2",
+      "0145d17c502e52e8dd562b935d1f174f66619a4c14499bbfeee3e697009d090b",
+      "01c2c8b223c8bb1901271073fde8147f49c85c3d712805342e5b8dadecedc85b"
+    ],
+    "last": [
+      "fe544410d7370d14d7730f2983203cab40abf03dff64f38b1d0a7e75386f205e",
+      "feb322cf21f80cd8720cfa63cbac55b69642b17d9ff1c83f88864bb16b7a3d8d",
+      "fef33b232b680bcc7f7102dd9cdf60191ce1871bae6a479e1846c85c6872fe38",
+      "ff0b0f205f38925a903383bf267a8bccc80311dfbea5d420c2dd226e8637090b",
+      "fffd74b846c7fcf232efb88a8d02891b4c98a760f591afe9215907edba3eaf45"
+    ]
+  },
+  "solutions": [
+    {
+      "name": "3db37cca275ede021eb396d5c9110ba3341698692e3aaf1c7bc1a3c34c73d934.solution",
+      "path": "archive/3db37cca275ede021eb396d5c9110ba3341698692e3aaf1c7bc1a3c34c73d934.solution",
+      "size": 535,
+      "sha256": "235f2ce6556dc172ced005c4a16ffc320b65dd2e278ac6d3385e7e5a7901e77e"
+    },
+    {
+      "name": "55753d5bb1d689dc967176258ad1225733cee6326d51c6caf76585c6f2b05fd2.solution",
+      "path": "archive/55753d5bb1d689dc967176258ad1225733cee6326d51c6caf76585c6f2b05fd2.solution",
+      "size": 507,
+      "sha256": "76eb9a18fd062fe15fe657bb0b2ffe0425df3e9da1d58d24690dd27b10e7d22e"
+    },
+    {
+      "name": "c9cd98509b798ca332faa9f182a32812cb65309361cf912ae6458727df1e064f.solution",
+      "path": "archive/c9cd98509b798ca332faa9f182a32812cb65309361cf912ae6458727df1e064f.solution",
+      "size": 513,
+      "sha256": "31d5f2592f7706a2ed0b73070f8eda3e5e365c4b590e4d021bd9d8bb6c8028a0"
+    },
+    {
+      "name": "top-1.solution",
+      "path": "top-1.solution",
+      "size": 535,
+      "sha256": "235f2ce6556dc172ced005c4a16ffc320b65dd2e278ac6d3385e7e5a7901e77e"
+    },
+    {
+      "name": "top-2.solution",
+      "path": "top-2.solution",
+      "size": 507,
+      "sha256": "76eb9a18fd062fe15fe657bb0b2ffe0425df3e9da1d58d24690dd27b10e7d22e"
+    },
+    {
+      "name": "top-3.solution",
+      "path": "top-3.solution",
+      "size": 513,
+      "sha256": "31d5f2592f7706a2ed0b73070f8eda3e5e365c4b590e4d021bd9d8bb6c8028a0"
+    }
+  ]
+}

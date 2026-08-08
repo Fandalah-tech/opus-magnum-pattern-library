@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 7,
+  "state": "exhausted",
+  "generation": 2,
+  "bestCycles": 27,
+  "tested": 0,
+  "valid": 1,
+  "timeouts": 0,
+  "retries": 0,
+  "attemptedMechanisms": 322968,
+  "validMechanisms": 3,
+  "expandedParents": 9,
+  "frontier": 0,
+  "retryable": 950,
+  "history": [
+    {
+      "generation": 1,
+      "bestCycles": 27,
+      "tested": 0,
+      "valid": 0,
+      "new": 0,
+      "repeatPrior": 4853,
+      "duplicateWithin": 9,
+      "translationClasses": 4853,
+      "attemptedMechanisms": 322968,
+      "validMechanisms": 3,
+      "expandedParents": 8,
+      "frontier": 1,
+      "timeouts": 0,
+      "retries": 0,
+      "aborted": false
+    },
+    {
+      "generation": 2,
+      "bestCycles": 27,
+      "tested": 0,
+      "valid": 0,
+      "new": 0,
+      "repeatPrior": 2429,
+      "duplicateWithin": 2,
+      "translationClasses": 2429,
+      "attemptedMechanisms": 322968,
+      "validMechanisms": 3,
+      "expandedParents": 9,
+      "frontier": 0,
+      "timeouts": 0,
+      "retries": 0,
+      "aborted": false
+    }
+  ],
+  "hall": [
+    {
+      "metrics": {
+        "cost": 120,
+        "cycles": 27,
+        "area": 71,
+        "instructions": 12
+      },
+      "kind": "imported-top",
+      "generation": 0,
+      "mechanicalId": "3db37cca275ede021eb396d5c9110ba3341698692e3aaf1c7bc1a3c34c73d934",
+      "translationClass": "548ab9920341d5bba28ef93e85c2b9c321140bfa253a906ae15ebac21d2da482",
+      "sha256": "235f2ce6556dc172ced005c4a16ffc320b65dd2e278ac6d3385e7e5a7901e77e"
+    },
+    {
+      "metrics": {
+        "cost": 120,
+        "cycles": 27,
+        "area": 71,
+        "instructions": 12
+      },
+      "kind": "imported-top",
+      "generation": 0,
+      "mechanicalId": "55753d5bb1d689dc967176258ad1225733cee6326d51c6caf76585c6f2b05fd2",
+      "translationClass": "dcce4e836ec3b7c9e8b29189aae6ef5ac738dd6baf5ffb8f29c2281fb26118a3",
+      "sha256": "76eb9a18fd062fe15fe657bb0b2ffe0425df3e9da1d58d24690dd27b10e7d22e"
+    },
+    {
+      "metrics": {
+        "cost": 120,
+        "cycles": 27,
+        "area": 71,
+        "instructions": 12
+      },
+      "kind": "imported-top",
+      "generation": 0,
+      "mechanicalId": "c9cd98509b798ca332faa9f182a32812cb65309361cf912ae6458727df1e064f",
+      "translationClass": "753503a5f2d490a613ca6fa3fc5c060a9195b4785af99957c425183b78258158",
+      "sha256": "31d5f2592f7706a2ed0b73070f8eda3e5e365c4b590e4d021bd9d8bb6c8028a0"
+    }
+  ]
+}
