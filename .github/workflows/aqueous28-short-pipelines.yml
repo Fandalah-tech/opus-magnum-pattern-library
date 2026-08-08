@@ -1,0 +1,55 @@
+name: Aqueous 28 Short Pipelines
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - '.github/workflows/aqueous28-short-pipelines.yml'
+      - 'packages/opus_solver/pipeline_enumerator.py'
+      - 'tools/search_short_pipelines.py'
+      - 'packages/opus_solver/fixed_layout.py'
+      - 'fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json'
+  workflow_dispatch:
+
+jobs:
+  enumerate:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        config: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile pipeline solver
+        run: python -m py_compile packages/opus_solver/pipeline_enumerator.py tools/search_short_pipelines.py
+      - name: Enumerate config ${{ matrix.config }}
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          out="out/short-pipelines-${{ matrix.config }}"
+          mkdir -p "$out"
+          set +e
+          python tools/search_short_pipelines.py \
+            --puzzle fixtures/weeklies2026/aqueous-dagger.puzzle.b64 \
+            --layout fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json \
+            --center-q -9 --center-r -3 --radius 3 --motion-radius 3 \
+            --offset ${{ matrix.config }} --limit 1 \
+            --max-active-arms 4 --max-atoms 24 --max-states-per-depth 10000 \
+            --catalog-limit 3000 --out "$out"
+          code=$?
+          echo "solver_exit=$code"
+          exit 0
+      - name: Show checkpoint
+        if: always()
+        run: |
+          cat out/short-pipelines-${{ matrix.config }}/checkpoint.json || true
+          cat out/short-pipelines-${{ matrix.config }}/results.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: short-pipelines-${{ matrix.config }}
+          path: out/short-pipelines-${{ matrix.config }}
+          if-no-files-found: warn
