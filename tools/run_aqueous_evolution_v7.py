@@ -19,8 +19,9 @@ def main():
     ap.add_argument('--validator-url',required=True); ap.add_argument('--puzzle',required=True); ap.add_argument('--seed',required=True)
     ap.add_argument('--work',required=True); ap.add_argument('--generations',type=int,default=300); ap.add_argument('--target-cycles',type=int,default=26)
     ap.add_argument('--workers',type=int,default=8); ap.add_argument('--watchdog-seconds',type=int,default=25); ap.add_argument('--generation-seconds',type=int,default=600)
+    ap.add_argument('--retry-batch',type=int,default=32)
     args=ap.parse_args()
-    root=Path(args.work); root.mkdir(parents=True,exist_ok=True); archive=root/'archive'; archive.mkdir(exist_ok=True)
+    root=Path(args.work); root.mkdir(parents=True,exist_ok=True); archive=root/'archive'; archive.mkdir(exist_ok=True); retry_dir=root/'retry'; retry_dir.mkdir(exist_ok=True)
     puzzle=Path(args.puzzle); seed=Path(args.seed); workers=max(1,min(8,args.workers))
     state_path=root/'state-v7.json'
     attempted=set((root/'attempted.txt').read_text().split()) if (root/'attempted.txt').exists() else set()
@@ -51,8 +52,9 @@ def main():
                 v=validate(args.validator_url,puzzle,p)
                 if v.get('valid'): add_existing(p,'imported-top',0,v.get('metrics') or {})
 
-    # Imported tops are intentionally re-expanded under the broader current generator;
-    # attempted identity still prevents revalidation of old neighbors.
+    # Re-expand hall entries whenever the generator changes. The global attempted
+    # registry prevents repeating already validated identities while allowing new
+    # neighborhoods to be discovered around every valid intermediate state.
     for mid in list(hall): expanded.discard(mid)
     attempted.update(hall)
 
@@ -79,13 +81,31 @@ def main():
         (root/'attempted.txt').write_text('\n'.join(sorted(attempted))+'\n'); (root/'expanded.txt').write_text('\n'.join(sorted(expanded))+'\n'); (root/'retryable.txt').write_text('\n'.join(sorted(retryable))+'\n')
         for i,x in enumerate(ranked()[:3],1): shutil.copy2(x['path'],root/f'top-{i}.solution')
 
+    def stash_retry(path: Path, mid: str) -> None:
+        dst=retry_dir/f'{mid}.solution'
+        if path.exists() and not dst.exists(): shutil.copy2(path,dst)
+        retryable.add(mid)
+
     start_gen=(history[-1].get('generation',0)+1) if history else 1
     final_state='running'
     for gen in range(start_gen,start_gen+args.generations):
         fr=frontier()
-        if not fr: final_state='exhausted'; save(gen,final_state); break
+        persisted_retries=[mid for mid in sorted(retryable) if (retry_dir/f'{mid}.solution').exists()][:max(0,args.retry_batch)]
+        if not fr and not persisted_retries:
+            final_state='exhausted'; save(gen,final_state); break
         parents=choose(fr,gen); gen_dir=root/f'generation-{gen:04d}'; shutil.rmtree(gen_dir,ignore_errors=True); gen_dir.mkdir()
         candidates={}; seen=set(); tclasses=set(); generated=dupwithin=repeatprior=retries_gen=0; serial=0
+
+        # Retry watchdog-abandoned candidates from persisted bytes, independent of
+        # whether the current frontier happens to regenerate those identities.
+        for mid in persisted_retries:
+            src=retry_dir/f'{mid}.solution'
+            if not src.exists(): continue
+            tid=translation_class_id(src); tclasses.add(tid); seen.add(mid)
+            dst=gen_dir/f'v-{serial:06d}.solution'; serial+=1; shutil.copy2(src,dst)
+            candidates[str(dst)]={'kind':'persisted-retry','mechanicalId':mid,'translationClass':tid,'isRetry':True,'parentMechanicalId':None}
+            retries_gen+=1
+
         for pi,parent in enumerate(parents):
             fixture=gen_dir/f'p{pi}.b64'; fixture.write_text(base64.b64encode(Path(parent['path']).read_bytes()).decode())
             out=gen_dir/f'p{pi}-out'; subprocess.run(['python','tools/search_aqueous_structural.py','--fixture',str(fixture),'--out',str(out)],check=True)
@@ -100,38 +120,50 @@ def main():
                 candidates[str(dst)]={**meta,'mechanicalId':mid,'translationClass':tid,'isRetry':is_retry,'parentMechanicalId':parent['mechanicalId']}
         tested=validc=timeouts=0; aborted=False; started=time.monotonic(); last=started
         names=iter(candidates.items()); active={}; pool=ThreadPoolExecutor(max_workers=workers)
+
         def submit_one():
             nonlocal cumulative_retries
             try:path,meta=next(names)
             except StopIteration:return False
             mid=meta['mechanicalId']
-            if meta['isRetry']: retryable.discard(mid); cumulative_retries+=1
+            if meta['isRetry']: cumulative_retries+=1
             attempted.add(mid); submit_counts[mid]+=1
             active[pool.submit(validate,args.validator_url,puzzle,Path(path))]=(path,meta); return True
+
         for _ in range(min(workers,len(candidates))): submit_one()
         while active:
             done,_=wait(set(active),timeout=1,return_when=FIRST_COMPLETED); now=time.monotonic()
             for fut in done:
-                path,meta=active.pop(fut); tested+=1; cumulative_tested+=1; last=now
-                try:v=fut.result()
-                except Exception:v={'valid':False}
+                path,meta=active.pop(fut); tested+=1; cumulative_tested+=1; last=now; mid=meta['mechanicalId']
+                try:
+                    v=fut.result(); definitive=True
+                except Exception:
+                    v={'valid':False}; definitive=False
+                if definitive:
+                    retryable.discard(mid)
+                    rp=retry_dir/f'{mid}.solution'
+                    if rp.exists(): rp.unlink()
+                else:
+                    if submit_counts[mid]<2: stash_retry(Path(path),mid)
                 if v.get('valid'):
-                    validc+=1; cumulative_valid+=1; mid=meta['mechanicalId']; dst=archive/f'{mid}.solution'
+                    validc+=1; cumulative_valid+=1; dst=archive/f'{mid}.solution'
                     if not dst.exists(): shutil.copy2(path,dst)
+                    # Keep every mechanically distinct valid intermediate, not only
+                    # equal/better metric elites. Ranking affects parent choice only.
                     hall[mid]={**meta,'path':str(dst),'metrics':v.get('metrics') or {},'kind':meta.get('kind','candidate'),'generation':gen,'sha256':raw_id(Path(path))}
                     if int((v.get('metrics') or {}).get('cycles',999999))<=args.target_cycles:
                         final_state='target_reached'; save(gen,final_state); pool.shutdown(wait=False,cancel_futures=True); print('TARGET REACHED'); return 0
                 submit_one()
             if active and ((now-last)>=args.watchdog_seconds or (now-started)>=args.generation_seconds):
                 aborted=True; abandoned=list(active.values()); timeouts+=len(abandoned); cumulative_timeouts+=len(abandoned)
-                for _,meta in abandoned:
+                for path,meta in abandoned:
                     mid=meta['mechanicalId']
-                    if submit_counts[mid]<2: retryable.add(mid)
+                    if submit_counts[mid]<2: stash_retry(Path(path),mid)
                 for f in active:f.cancel()
                 active.clear(); break
         pool.shutdown(wait=False,cancel_futures=True)
         if not aborted: expanded.update(p['mechanicalId'] for p in parents)
-        history.append({'generation':gen,'bestCycles':best_cycles(),'tested':tested,'valid':validc,'new':len(candidates)-retries_gen,'repeatPrior':repeatprior,'duplicateWithin':dupwithin,'translationClasses':len(tclasses),'attemptedMechanisms':len(attempted),'validMechanisms':len(hall),'expandedParents':len(expanded),'frontier':len(frontier()),'timeouts':timeouts,'retries':retries_gen,'aborted':aborted})
+        history.append({'generation':gen,'bestCycles':best_cycles(),'tested':tested,'valid':validc,'new':max(0,len(candidates)-retries_gen),'repeatPrior':repeatprior,'duplicateWithin':dupwithin,'translationClasses':len(tclasses),'attemptedMechanisms':len(attempted),'validMechanisms':len(hall),'expandedParents':len(expanded),'frontier':len(frontier()),'timeouts':timeouts,'retries':retries_gen,'aborted':aborted})
         save(gen,'running')
         print('DIVERSITY',json.dumps(history[-1],sort_keys=True),flush=True)
     save(history[-1]['generation'] if history else 0,final_state)
