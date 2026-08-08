@@ -1,11 +1,6 @@
 name: Aqueous V5 Autonomous Search
 
 on:
-  push:
-    branches:
-      - feature/aqueous-dagger-fragment-planner-final
-    paths:
-      - .github/workflows/aqueous-v5-autonomous.yml
   workflow_dispatch:
 
 permissions:
@@ -55,8 +50,6 @@ jobs:
           gh api -H "Accept: application/vnd.github+json" \
             "/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" > /tmp/previous.zip
           unzip -q -o /tmp/previous.zip -d "${SEARCH_DIR}"
-          echo "restored $(wc -l < "${SEARCH_DIR}/attempted.txt" 2>/dev/null || echo 0) attempted identities"
-          echo "restored $(wc -l < "${SEARCH_DIR}/expanded.txt" 2>/dev/null || echo 0) expanded identities"
 
       - name: Activate v9 search neighborhood
         run: |
@@ -77,21 +70,6 @@ jobs:
           --watchdog-seconds 25
           --generation-seconds 600
           --retry-batch 32
-
-      - name: Summarize search
-        if: always()
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          root=Path(os.environ['SEARCH_DIR'])
-          src=root/'results.json'
-          if not src.exists(): src=root/'checkpoint.json'
-          if src.exists():
-              r=json.loads(src.read_text())
-              print(json.dumps({k:r.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries','retryable']},indent=2))
-              for h in (r.get('history') or [])[-20:]: print('HISTORY',json.dumps(h,sort_keys=True))
-          PY
 
       - name: Upload persistent search state and solutions
         if: always()
