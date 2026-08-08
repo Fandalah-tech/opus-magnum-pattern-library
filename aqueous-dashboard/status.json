@@ -5,17 +5,17 @@
   "targetCycles": 26,
   "generation": 1,
   "maxGenerations": 5,
-  "generationTested": 10,
+  "generationTested": 90,
   "generationTotal": 210,
-  "generationValid": 1,
+  "generationValid": 3,
   "generationTimeouts": 0,
-  "tested": 10,
-  "valid": 1,
+  "tested": 90,
+  "valid": 3,
   "timeouts": 0,
   "bestCycles": 27,
   "bestGeneration": 0,
   "bestMutation": "seed",
-  "eliteCount": 2,
+  "eliteCount": 3,
   "stagnation": 0,
   "stagnationLimit": 5,
   "workers": 12,
@@ -35,15 +35,27 @@
     },
     {
       "rank": 2,
-      "cycles": 32,
+      "cycles": 27,
       "cost": 120,
       "area": 71,
       "instructions": 12,
-      "mutation": "tick-earlier",
+      "mutation": "functional-move",
       "generation": 1,
-      "sha256": "86d5dbe5bd75b5bfb0e880aa9e9c129b3ff945b9b2df51caee08d3b2861ed83b",
-      "semanticId": "2e91c30c8a52c3a380ea22cb239736d47eea58784c9fc778c3c2ddc12fdad646",
+      "sha256": "67d2096157a537d4515d09e452a689c57241fe7024ebf56f59c0023ea920f22b",
+      "semanticId": "87eaaaedf289c101711b99512ba951d8f4650ce2af9fef43d2df6ea1905b9cb7",
       "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-2.solution"
+    },
+    {
+      "rank": 3,
+      "cycles": 27,
+      "cost": 120,
+      "area": 71,
+      "instructions": 12,
+      "mutation": "functional-move",
+      "generation": 1,
+      "sha256": "49f4ebe85cedfe9e1d0488668553ea469174d7dcdf0ef936448d6f2a8c302a96",
+      "semanticId": "983f198c1909f3e85d20fe2730ad04f8ab018b8b3c2631e81939e8564cdf9149",
+      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-3.solution"
     }
   ],
   "history": [
@@ -55,6 +67,6 @@
       "timeouts": 0
     }
   ],
-  "updatedAt": "2026-08-08T02:50:50.216746+00:00",
+  "updatedAt": "2026-08-08T02:50:51.184659+00:00",
   "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31235883186"
 }
