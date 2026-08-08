@@ -1,0 +1,64 @@
+name: Aqueous 28 Fixed Layout P7 v3
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - '.github/workflows/aqueous28-fixed-layout-p7-v3.yml'
+      - 'packages/opus_solver/fixed_layout.py'
+      - 'packages/opus_solver/fixed_layout_batch.py'
+      - 'tools/search_fixed_layout_batch.py'
+      - 'fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json'
+  workflow_dispatch:
+
+jobs:
+  search:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        offset: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile solver
+        run: python -m py_compile packages/opus_solver/fixed_layout.py packages/opus_solver/fixed_layout_batch.py tools/search_fixed_layout_batch.py
+
+      - name: Search configuration ${{ matrix.offset }}
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          OUT="out/aqueous28-p7-v3/config-${{ matrix.offset }}"
+          mkdir -p "$OUT"
+          set +e
+          python tools/search_fixed_layout_batch.py \
+            --puzzle fixtures/weeklies2026/aqueous-dagger.puzzle.b64 \
+            --layout fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json \
+            --center-q -9 --center-r -3 --radius 3 --motion-radius 3 \
+            --period 7 --offset ${{ matrix.offset }} --limit 1 \
+            --max-active-arms 4 --max-atoms 24 --max-states-per-depth 10000 \
+            --verification-periods 5 --out "$OUT"
+          code=$?
+          echo "solver_exit=$code"
+          exit 0
+
+      - name: Show checkpoint
+        if: always()
+        run: |
+          OUT="out/aqueous28-p7-v3/config-${{ matrix.offset }}"
+          echo "=== checkpoint ==="
+          cat "$OUT/checkpoint.json" 2>/dev/null || true
+          echo "=== result ==="
+          cat "$OUT/results.json" 2>/dev/null || true
+          echo "=== tail progress ==="
+          tail -n 20 "$OUT/progress.jsonl" 2>/dev/null || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aqueous28-p7-v3-config-${{ matrix.offset }}
+          path: out/aqueous28-p7-v3/config-${{ matrix.offset }}
+          if-no-files-found: warn
