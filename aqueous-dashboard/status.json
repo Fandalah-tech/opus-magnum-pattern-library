@@ -5,11 +5,11 @@
   "targetCycles": 26,
   "generation": 1,
   "maxGenerations": 5,
-  "generationTested": 120,
+  "generationTested": 10,
   "generationTotal": 213,
-  "generationValid": 6,
-  "tested": 120,
-  "valid": 6,
+  "generationValid": 1,
+  "tested": 10,
+  "valid": 1,
   "bestCycles": 27,
   "bestGeneration": 0,
   "bestMutation": "seed",
@@ -30,25 +30,14 @@
     },
     {
       "rank": 2,
-      "cycles": 27,
+      "cycles": 32,
       "cost": 120,
       "area": 71,
       "instructions": 12,
-      "mutation": "functional-rotate",
+      "mutation": "tick-earlier",
       "generation": 1,
-      "sha256": "3a9f231d3cf9137e66accbe45ddfaed1b2d933edc16c96aa7c3abe7cd7aaeb57",
+      "sha256": "86d5dbe5bd75b5bfb0e880aa9e9c129b3ff945b9b2df51caee08d3b2861ed83b",
       "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-2.solution"
-    },
-    {
-      "rank": 3,
-      "cycles": 27,
-      "cost": 120,
-      "area": 71,
-      "instructions": 12,
-      "mutation": "functional-move",
-      "generation": 1,
-      "sha256": "49f4ebe85cedfe9e1d0488668553ea469174d7dcdf0ef936448d6f2a8c302a96",
-      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-3.solution"
     }
   ],
   "history": [
@@ -59,6 +48,6 @@
       "valid": 1
     }
   ],
-  "updatedAt": "2026-08-08T01:57:41.466094+00:00",
-  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31233856674"
+  "updatedAt": "2026-08-08T01:57:42.614595+00:00",
+  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31233862712"
 }
