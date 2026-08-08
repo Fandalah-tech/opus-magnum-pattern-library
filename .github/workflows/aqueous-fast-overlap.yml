@@ -1,14 +1,6 @@
 name: Aqueous fast overlap search
 
 on:
-  pull_request:
-    paths:
-      - tools/search_aqueous_second_output.py
-      - tools/search_aqueous_right_bonders.py
-      - tools/validate_aqueous_offsets.py
-      - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
-      - fixtures/weeklies2026/aqueous-dagger-16c-reference.solution.b64
-      - .github/workflows/aqueous-fast-overlap.yml
   workflow_dispatch:
 
 permissions:
@@ -38,4 +30,4 @@ jobs:
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
           --variants reports/aqueous-second-output-search
-          --workers 20
+          --workers 12
