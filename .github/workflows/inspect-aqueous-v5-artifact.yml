@@ -30,13 +30,13 @@ jobs:
             /repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip > /tmp/v5.zip
           mkdir -p /tmp/v5
           unzip -q /tmp/v5.zip -d /tmp/v5
-          find /tmp/v5 -maxdepth 3 -type f -print
       - name: Materialize inspection report
         run: |
           mkdir -p reports/aqueous-v5-inspection
           python - <<'PY'
-          import json, shutil
+          import base64, json, shutil
           from pathlib import Path
+          from packages.opus_parser import parse_solution_bytes
           src=Path('/tmp/v5')
           out=Path('reports/aqueous-v5-inspection')
           found={p.name:p for p in src.rglob('*') if p.is_file()}
@@ -52,7 +52,25 @@ jobs:
                   summary[name]['history']=(d.get('history') or [])[-20:]
                   summary[name]['top']=d.get('top') or d.get('topSolutions') or []
           (out/'summary.json').write_text(json.dumps(summary,indent=2))
-          print(json.dumps(summary,indent=2))
+
+          seed_b64=Path('fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64')
+          model=parse_solution_bytes(base64.b64decode(seed_b64.read_text().strip()), source_name='seed27.solution')
+          parts=[]
+          for i,p in enumerate(model.get('parts') or []):
+              parts.append({
+                  'index': i,
+                  'type': p.get('type'),
+                  'position': p.get('position'),
+                  'length': p.get('length'),
+                  'rotation': p.get('rotation'),
+                  'which': p.get('which'),
+                  'armNumber': p.get('armNumber'),
+                  'trackHexes': p.get('trackHexes'),
+                  'program': p.get('program') or [],
+              })
+          seed_report={'metrics':model.get('metrics'),'puzzleFile':model.get('puzzleFile'),'parts':parts}
+          (out/'seed-structure.json').write_text(json.dumps(seed_report,indent=2))
+          print(json.dumps(seed_report,indent=2))
           PY
       - name: Commit inspection data
         run: |
@@ -60,5 +78,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports/aqueous-v5-inspection
           git diff --cached --quiet && exit 0
-          git commit -m "Record Aqueous v5 run 31236107804 inspection"
+          git commit -m "Record Aqueous 27c seed structure"
           git push origin HEAD:feature/aqueous-dagger-fragment-planner-final
