@@ -4,7 +4,7 @@ import base64
 from pathlib import Path
 
 from packages.opus_parser import parse_solution_bytes, write_solution_bytes
-from tools.solution_identity import mechanical_id, translation_class_id
+from tools.solution_identity import DIRECTIONS, mechanical_id, translation_class_id
 
 
 def _seed(tmp_path: Path) -> tuple[dict, Path]:
@@ -33,6 +33,21 @@ def test_mechanical_identity_ignores_part_order_arm_number_and_name(tmp_path: Pa
         part["armNumber"] = 900 + i
     variant = _write(tmp_path, "reordered.solution", changed)
     assert mechanical_id(seed) == mechanical_id(variant)
+
+
+def test_bonder_reverse_endpoint_representation_is_same_mechanism(tmp_path: Path) -> None:
+    model, seed = _seed(tmp_path)
+    changed = dict(model)
+    changed["parts"] = [dict(p) for p in model["parts"]]
+    bonder = next(p for p in changed["parts"] if p.get("type") == "bonder")
+    q, r = map(int, bonder.get("position") or (0, 0))
+    rot = int(bonder.get("rotation") or 0) % 6
+    dq, dr = DIRECTIONS[rot]
+    bonder["position"] = [q + dq, r + dr]
+    bonder["rotation"] = (rot + 3) % 6
+    variant = _write(tmp_path, "same-bonder-other-end.solution", changed)
+    assert mechanical_id(seed) == mechanical_id(variant)
+    assert translation_class_id(seed) == translation_class_id(variant)
 
 
 def test_translation_class_groups_uniform_shift_but_mechanical_identity_does_not(tmp_path: Path) -> None:
