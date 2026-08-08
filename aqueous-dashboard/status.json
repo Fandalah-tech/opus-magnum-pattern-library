@@ -1,20 +1,20 @@
 {
   "puzzle": "Aqueous Dagger",
-  "state": "running",
+  "state": "stagnated",
   "seedCycles": 27,
   "targetCycles": 26,
-  "generation": 4,
+  "generation": 5,
   "maxGenerations": 5,
-  "generationTested": 100,
+  "generationTested": 259,
   "generationTotal": 259,
   "generationValid": 0,
-  "tested": 908,
+  "tested": 1326,
   "valid": 155,
   "bestCycles": 27,
   "bestGeneration": 0,
   "bestMutation": "functional-rotate",
   "eliteCount": 3,
-  "stagnation": 3,
+  "stagnation": 5,
   "stagnationLimit": 5,
   "topSolutions": [
     {
@@ -75,8 +75,20 @@
       "bestCycles": 27,
       "tested": 259,
       "valid": 0
+    },
+    {
+      "generation": 4,
+      "bestCycles": 27,
+      "tested": 259,
+      "valid": 0
+    },
+    {
+      "generation": 5,
+      "bestCycles": 27,
+      "tested": 259,
+      "valid": 0
     }
   ],
-  "updatedAt": "2026-08-08T01:59:17.795173+00:00",
-  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31233862712"
+  "updatedAt": "2026-08-08T01:59:18.915969+00:00",
+  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31233856674"
 }
