@@ -1,14 +1,42 @@
 {
   "puzzle": "Aqueous Dagger",
-  "state": "completed",
+  "state": "preparing",
   "seedCycles": 27,
   "targetCycles": 26,
-  "tested": 213,
-  "total": 213,
-  "valid": 78,
+  "generation": 0,
+  "maxGenerations": 5,
+  "generationTested": 0,
+  "generationTotal": 0,
+  "generationValid": 0,
+  "tested": 0,
+  "valid": 0,
   "bestCycles": 27,
-  "bestMutation": "functional-move",
-  "generation": 1,
-  "updatedAt": "2026-08-08T00:25:36.730317+00:00",
-  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31230034887"
+  "bestGeneration": 0,
+  "bestMutation": "seed",
+  "eliteCount": 3,
+  "stagnation": 0,
+  "stagnationLimit": 5,
+  "topSolutions": [
+    {
+      "rank": 1,
+      "cycles": 27,
+      "cost": 120,
+      "area": 71,
+      "instructions": 12,
+      "mutation": "seed",
+      "generation": 0,
+      "sha256": "235f2ce6556dc172ced005c4a16ffc320b65dd2e278ac6d3385e7e5a7901e77e",
+      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-1.solution"
+    }
+  ],
+  "history": [
+    {
+      "generation": 0,
+      "bestCycles": 27,
+      "tested": 0,
+      "valid": 1
+    }
+  ],
+  "updatedAt": "2026-08-08T00:25:39.934465+00:00",
+  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31230053371"
 }
