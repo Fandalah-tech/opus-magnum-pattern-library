@@ -19,19 +19,19 @@ def validate(url: str, puzzle: Path, solution: Path) -> dict:
     command = [
         "curl", "--fail-with-body", "-sS",
         "--connect-timeout", "5",
-        "--max-time", "30",
+        "--max-time", "20",
         "--retry", "1",
         "--retry-delay", "1",
         "--retry-connrefused",
         "-F", f"puzzle=@{puzzle}",
         "-F", f"solution=@{solution}",
-        f"{url}/api/v1/analyze",
+        f"{url}/api/v1/validate",
     ]
     try:
-        result = subprocess.run(command, capture_output=True, text=True, timeout=35)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=25)
     except subprocess.TimeoutExpired:
         return {
-            "httpError": "validator timeout after 35s",
+            "httpError": "validator timeout after 25s",
             "valid": False,
             "issues": [{"message": "validator timeout"}],
         }
@@ -52,7 +52,13 @@ def validate(url: str, puzzle: Path, solution: Path) -> dict:
             "httpError": f"invalid validator JSON: {exc}",
             "issues": [{"message": "invalid validator JSON"}],
         }
-    return payload.get("validation", {})
+    # /api/v1/validate is OMSim-only and returns the validation object directly.
+    if isinstance(payload, dict) and "valid" in payload:
+        return payload
+    # Backward-compatible fallback if a deployment ever wraps the validation.
+    if isinstance(payload, dict):
+        return payload.get("validation", {})
+    return {"valid": False, "issues": [{"message": "unexpected validator payload"}]}
 
 
 def issue_signature(validation: dict) -> str:
