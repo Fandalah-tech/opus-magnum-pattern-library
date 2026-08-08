@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable
 
 from packages.opus_engine import SimulationError, Simulator
 
@@ -19,6 +19,8 @@ from .fixed_layout import (
     iter_joint_actions,
     physical_state_key,
 )
+
+ProgressCallback = Callable[[dict[str, Any]], None]
 
 
 @dataclass(slots=True)
@@ -49,6 +51,11 @@ class BatchSearchResult:
                 "program": [dict(row) for row in self.solution.program],
             }
         return payload
+
+
+def _emit(progress: ProgressCallback | None, payload: dict[str, Any]) -> None:
+    if progress is not None:
+        progress(payload)
 
 
 def _run_program_period(simulator: Simulator, program: tuple[dict[str, str | None], ...], bounds: LayoutBounds) -> bool:
@@ -94,14 +101,26 @@ def brute_force_configuration_steady(
     stats: SearchStats,
     *,
     verification_periods: int = 5,
+    progress: ProgressCallback | None = None,
 ) -> PeriodSolution | None:
     initial = Simulator.from_models(puzzle, start.solution)
     locked = _locked_actions(start.solution, bounds.period)
     frontier: list[tuple[Simulator, tuple[dict[str, str | None], ...]]] = [(initial, ())]
 
+    _emit(progress, {
+        "event": "configuration_start",
+        "configuration": start.index,
+        "frontier": 1,
+    })
+
     for depth in range(bounds.period):
         phase = depth % bounds.period
+        before_generated = stats.generated_transitions
+        before_collisions = stats.collisions
+        before_pruned = stats.pruned_bounds
+        before_dedup = stats.deduplicated
         next_by_key: dict[tuple, tuple[Simulator, tuple[dict[str, str | None], ...]]] = {}
+
         for simulator, path in frontier:
             stats.expanded_states += 1
             for row in iter_joint_actions(simulator, phase, bounds, locked):
@@ -123,19 +142,61 @@ def brute_force_configuration_steady(
                     continue
                 next_by_key[dedupe_key] = (trial, new_path)
 
+        raw_frontier = len(next_by_key)
         frontier = list(next_by_key.values())
+        capped = False
         if bounds.max_states_per_depth and len(frontier) > bounds.max_states_per_depth:
             frontier = frontier[:bounds.max_states_per_depth]
+            capped = True
         stats.peak_frontier = max(stats.peak_frontier, len(frontier))
+
+        _emit(progress, {
+            "event": "depth_complete",
+            "configuration": start.index,
+            "depth": depth,
+            "phase": phase,
+            "frontier": len(frontier),
+            "rawFrontier": raw_frontier,
+            "capped": capped,
+            "generated": stats.generated_transitions - before_generated,
+            "collisions": stats.collisions - before_collisions,
+            "prunedBounds": stats.pruned_bounds - before_pruned,
+            "deduplicated": stats.deduplicated - before_dedup,
+        })
+
         if not frontier:
+            _emit(progress, {
+                "event": "configuration_complete",
+                "configuration": start.index,
+                "result": "dead_end",
+                "depth": depth,
+            })
             return None
 
-    for _, path in frontier:
+    _emit(progress, {
+        "event": "verification_start",
+        "configuration": start.index,
+        "candidatePrograms": len(frontier),
+    })
+    for candidate_index, (_, path) in enumerate(frontier):
         delta = verify_periodic_program(
             puzzle, start, path, bounds, max_periods=verification_periods,
         )
         if delta > 0:
+            _emit(progress, {
+                "event": "solution_found",
+                "configuration": start.index,
+                "candidateIndex": candidate_index,
+                "deliveredPerPeriod": delta,
+            })
             return PeriodSolution(start, path, delta, _compile_solution(start, path))
+
+    _emit(progress, {
+        "event": "configuration_complete",
+        "configuration": start.index,
+        "result": "no_periodic_program",
+        "candidatePrograms": len(frontier),
+    })
     return None
 
 
@@ -147,6 +208,7 @@ def solve_fixed_layout_batch(
     offset: int = 0,
     limit: int = 64,
     verification_periods: int = 5,
+    progress: ProgressCallback | None = None,
 ) -> BatchSearchResult:
     enum_bounds = LayoutBounds(
         center=bounds.center,
@@ -163,6 +225,15 @@ def solve_fixed_layout_batch(
     selected = configurations[max(0, offset): max(0, offset) + max(0, limit)]
     stats = SearchStats(start_configurations=total)
     tested: list[int] = []
+
+    _emit(progress, {
+        "event": "batch_start",
+        "offset": offset,
+        "limit": limit,
+        "totalConfigurations": total,
+        "selected": [configuration.index for configuration in selected],
+    })
+
     for configuration in selected:
         tested.append(configuration.index)
         stats.tested_configurations += 1
@@ -172,9 +243,17 @@ def solve_fixed_layout_batch(
             bounds,
             stats,
             verification_periods=verification_periods,
+            progress=progress,
         )
+        _emit(progress, {
+            "event": "checkpoint",
+            "configuration": configuration.index,
+            "testedConfigurations": stats.tested_configurations,
+            "stats": stats.to_dict(),
+        })
         if result is not None:
             return BatchSearchResult(True, result, stats, offset, limit, total, tested)
+
     return BatchSearchResult(
         False, None, stats, offset, limit, total, tested,
         reason="batch exhausted without proven periodic solution",
