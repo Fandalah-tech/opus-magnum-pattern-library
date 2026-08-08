@@ -1,15 +1,6 @@
-name: Aqueous 28 Fixed Layout P7 v3
+name: Aqueous 28 Fixed Layout P7 v3 (legacy)
 
 on:
-  push:
-    branches:
-      - feature/aqueous-dagger-fragment-planner-final
-    paths:
-      - '.github/workflows/aqueous28-fixed-layout-p7-v3.yml'
-      - 'packages/opus_solver/fixed_layout.py'
-      - 'packages/opus_solver/fixed_layout_batch.py'
-      - 'tools/search_fixed_layout_batch.py'
-      - 'fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json'
   workflow_dispatch:
 
 jobs:
@@ -23,10 +14,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-
       - name: Compile solver
         run: python -m py_compile packages/opus_solver/fixed_layout.py packages/opus_solver/fixed_layout_batch.py tools/search_fixed_layout_batch.py
-
       - name: Search configuration ${{ matrix.offset }}
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -44,18 +33,13 @@ jobs:
           code=$?
           echo "solver_exit=$code"
           exit 0
-
       - name: Show checkpoint
         if: always()
         run: |
           OUT="out/aqueous28-p7-v3/config-${{ matrix.offset }}"
-          echo "=== checkpoint ==="
           cat "$OUT/checkpoint.json" 2>/dev/null || true
-          echo "=== result ==="
           cat "$OUT/results.json" 2>/dev/null || true
-          echo "=== tail progress ==="
           tail -n 20 "$OUT/progress.jsonl" 2>/dev/null || true
-
       - uses: actions/upload-artifact@v4
         if: always()
         with:
