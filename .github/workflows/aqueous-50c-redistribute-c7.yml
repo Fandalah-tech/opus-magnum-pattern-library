@@ -1,0 +1,48 @@
+name: Aqueous 50c Redistribute C7
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - '.github/workflows/aqueous-50c-redistribute-c7.yml'
+      - 'tools/search_aqueous_50c_redistribute_c7.py'
+      - 'fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json'
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+      SEARCH_DIR: reports/aqueous-50c-redistribute-c7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          Path('reports/aqueous-50c-redistribute-c7/puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          PY
+      - name: Run targeted C7 redistribution search
+        run: |
+          python tools/search_aqueous_50c_redistribute_c7.py \
+            --validator-url "${VALIDATOR_URL}" \
+            --puzzle "${SEARCH_DIR}/puzzle.puzzle" \
+            --seed-json fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json \
+            --out "${SEARCH_DIR}/search" \
+            --workers 8
+      - name: Summarize
+        if: always()
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aqueous-50c-redistribute-c7
+          path: |
+            reports/aqueous-50c-redistribute-c7/search/results.json
+            reports/aqueous-50c-redistribute-c7/search/best.solution
+          if-no-files-found: warn
