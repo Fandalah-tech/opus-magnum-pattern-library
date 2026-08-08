@@ -1,6 +1,11 @@
 name: Aqueous V5 Autonomous Search
 
 on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - .github/workflows/aqueous-v5-autonomous.yml
   workflow_dispatch:
 
 permissions:
@@ -10,13 +15,14 @@ permissions:
 env:
   PYTHONPATH: ${{ github.workspace }}
   VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
-  SEARCH_DIR: reports/aqueous-v5
+  SEARCH_DIR: reports/aqueous-v7
+  LEGACY_ARTIFACT_ID: "9024679156"
 
 jobs:
   search:
-    name: coupled structural search
+    name: resumable coupled structural search
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,32 +42,32 @@ jobs:
               Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
           PY
 
+      - name: Restore prior search knowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          gh api -H "Accept: application/vnd.github+json" \
+            /repos/${GITHUB_REPOSITORY}/actions/artifacts/${LEGACY_ARTIFACT_ID}/zip > /tmp/previous.zip
+          unzip -q -o /tmp/previous.zip -d "${SEARCH_DIR}"
+          echo "restored $(wc -l < "${SEARCH_DIR}/attempted.txt" 2>/dev/null || echo 0) attempted identities"
+
       - name: Syntax and identity smoke test
         run: |
-          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v5.py tools/run_aqueous_evolution_v6.py tools/search_aqueous_structural.py tools/validate_aqueous_offsets.py
-          python - <<'PY'
-          from pathlib import Path
-          from tools.solution_identity import mechanical_id, translation_class_id
-          p=Path('reports/single27.solution')
-          print('seed mechanical', mechanical_id(p))
-          print('seed translation class', translation_class_id(p))
-          PY
+          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v7.py tools/search_aqueous_structural.py tools/validate_aqueous_offsets.py
 
-      - name: Autonomous coupled search to 26c
+      - name: Resumable autonomous search to 26c
         run: >-
-          python tools/run_aqueous_evolution_v5.py
+          python tools/run_aqueous_evolution_v7.py
           --validator-url "${VALIDATOR_URL}"
           --puzzle reports/aqueous-dagger.puzzle
           --seed reports/single27.solution
           --work "${SEARCH_DIR}"
-          --generations 30
-          --elites 1
+          --generations 300
           --target-cycles 26
           --workers 8
-          --progress-every 20
           --watchdog-seconds 25
           --generation-seconds 600
-          --heartbeat-seconds 5
 
       - name: Summarize search
         if: always()
@@ -70,34 +76,28 @@ jobs:
           import json, os
           from pathlib import Path
           root=Path(os.environ['SEARCH_DIR'])
-          p=root/'results.json'
-          c=root/'checkpoint.json'
-          src=p if p.exists() else c
-          lines=['# Aqueous coupled structural search','']
+          src=root/'results.json'
+          if not src.exists(): src=root/'checkpoint.json'
           if src.exists():
               r=json.loads(src.read_text())
-              for key in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']:
-                  if key in r: lines.append(f'**{key}:** {r[key]}')
-              lines += ['', '## Last generations', '']
-              for h in (r.get('history') or [])[-15:]:
-                  lines.append(f"- G{h.get('generation')}: best={h.get('bestCycles')} tested={h.get('tested')} valid={h.get('valid')} new={h.get('new','-')} repeats={h.get('repeatPrior','-')} translationClasses={h.get('translationClasses','-')} aborted={h.get('aborted','-')}")
-          else:
-              lines.append('No report/checkpoint produced.')
-          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
+              print(json.dumps({k:r.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']},indent=2))
+              for h in (r.get('history') or [])[-20:]: print('HISTORY',json.dumps(h,sort_keys=True))
           PY
 
-      - name: Upload search state and solutions
+      - name: Upload persistent search state and solutions
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: aqueous-v5-search
+          name: aqueous-v7-search
           path: |
             ${{ env.SEARCH_DIR }}/results.json
             ${{ env.SEARCH_DIR }}/checkpoint.json
+            ${{ env.SEARCH_DIR }}/state-v7.json
             ${{ env.SEARCH_DIR }}/attempted.txt
             ${{ env.SEARCH_DIR }}/expanded.txt
             ${{ env.SEARCH_DIR }}/retryable.txt
             ${{ env.SEARCH_DIR }}/top-1.solution
             ${{ env.SEARCH_DIR }}/top-2.solution
             ${{ env.SEARCH_DIR }}/top-3.solution
+            ${{ env.SEARCH_DIR }}/archive/
           if-no-files-found: warn
