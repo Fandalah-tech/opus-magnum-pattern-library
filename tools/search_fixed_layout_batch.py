@@ -20,10 +20,10 @@ def main() -> int:
     ap.add_argument('--motion-radius', type=int)
     ap.add_argument('--period', type=int, default=7)
     ap.add_argument('--offset', type=int, default=0)
-    ap.add_argument('--limit', type=int, default=64)
+    ap.add_argument('--limit', type=int, default=1)
     ap.add_argument('--max-active-arms', type=int, default=4)
     ap.add_argument('--max-atoms', type=int, default=24)
-    ap.add_argument('--max-states-per-depth', type=int, default=20000)
+    ap.add_argument('--max-states-per-depth', type=int, default=10000)
     ap.add_argument('--verification-periods', type=int, default=5)
     ap.add_argument('--out', required=True, type=Path)
     args = ap.parse_args()
@@ -37,10 +37,23 @@ def main() -> int:
         max_active_arms=args.max_active_arms, max_atoms=args.max_atoms,
         max_start_configs=0, max_states_per_depth=args.max_states_per_depth,
     )
+
     args.out.mkdir(parents=True, exist_ok=True)
+    progress_path = args.out / 'progress.jsonl'
+    checkpoint_path = args.out / 'checkpoint.json'
+
+    def progress(payload: dict) -> None:
+        line = json.dumps(payload, separators=(',', ':'))
+        print(line, flush=True)
+        with progress_path.open('a', encoding='utf-8') as handle:
+            handle.write(line + '\n')
+        if payload.get('event') == 'checkpoint':
+            checkpoint_path.write_text(json.dumps(payload, indent=2), encoding='utf-8')
+
     result = solve_fixed_layout_batch(
         puzzle, layout, bounds, offset=args.offset, limit=args.limit,
         verification_periods=args.verification_periods,
+        progress=progress,
     )
     payload = result.to_dict()
     (args.out / 'results.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
