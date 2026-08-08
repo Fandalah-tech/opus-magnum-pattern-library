@@ -6,8 +6,10 @@ on:
       - feature/aqueous-dagger-fragment-planner-final
     paths:
       - tools/run_aqueous_evolution_v5.py
+      - tools/run_aqueous_evolution_v6.py
       - tools/solution_identity.py
       - tools/search_aqueous_28c_single.py
+      - tools/search_aqueous_structural.py
       - tools/validate_aqueous_offsets.py
       - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
       - fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
@@ -24,9 +26,9 @@ env:
 
 jobs:
   search:
-    name: non-repeating best-first search
+    name: coupled structural search
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 330
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +48,7 @@ jobs:
 
       - name: Syntax and identity smoke test
         run: |
-          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v5.py tools/search_aqueous_28c_single.py tools/validate_aqueous_offsets.py
+          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v5.py tools/run_aqueous_evolution_v6.py tools/search_aqueous_structural.py tools/validate_aqueous_offsets.py
           python - <<'PY'
           from pathlib import Path
           from tools.solution_identity import mechanical_id, translation_class_id
@@ -55,20 +57,20 @@ jobs:
           print('seed translation class', translation_class_id(p))
           PY
 
-      - name: Autonomous search to 26c
+      - name: Autonomous coupled search to 26c
         run: >-
           python tools/run_aqueous_evolution_v5.py
           --validator-url "${VALIDATOR_URL}"
           --puzzle reports/aqueous-dagger.puzzle
           --seed reports/single27.solution
           --work "${SEARCH_DIR}"
-          --generations 200
+          --generations 500
           --elites 4
           --target-cycles 26
           --workers 8
-          --progress-every 10
+          --progress-every 20
           --watchdog-seconds 25
-          --generation-seconds 90
+          --generation-seconds 150
           --heartbeat-seconds 5
 
       - name: Summarize search
@@ -81,13 +83,13 @@ jobs:
           p=root/'results.json'
           c=root/'checkpoint.json'
           src=p if p.exists() else c
-          lines=['# Aqueous V5 autonomous search','']
+          lines=['# Aqueous coupled structural search','']
           if src.exists():
               r=json.loads(src.read_text())
-              for key in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts']:
+              for key in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']:
                   if key in r: lines.append(f'**{key}:** {r[key]}')
               lines += ['', '## Last generations', '']
-              for h in (r.get('history') or [])[-12:]:
+              for h in (r.get('history') or [])[-15:]:
                   lines.append(f"- G{h.get('generation')}: best={h.get('bestCycles')} tested={h.get('tested')} valid={h.get('valid')} new={h.get('new','-')} repeats={h.get('repeatPrior','-')} translationClasses={h.get('translationClasses','-')} aborted={h.get('aborted','-')}")
           else:
               lines.append('No report/checkpoint produced.')
@@ -104,6 +106,7 @@ jobs:
             ${{ env.SEARCH_DIR }}/checkpoint.json
             ${{ env.SEARCH_DIR }}/attempted.txt
             ${{ env.SEARCH_DIR }}/expanded.txt
+            ${{ env.SEARCH_DIR }}/retryable.txt
             ${{ env.SEARCH_DIR }}/top-1.solution
             ${{ env.SEARCH_DIR }}/top-2.solution
             ${{ env.SEARCH_DIR }}/top-3.solution
