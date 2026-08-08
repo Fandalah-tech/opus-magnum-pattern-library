@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 env:
-  ARTIFACT_ID: "9015995565"
+  ARTIFACT_ID: "9024679156"
 
 jobs:
   inspect:
@@ -40,16 +40,18 @@ jobs:
           src=Path('/tmp/v5')
           out=Path('reports/aqueous-v5-inspection')
           found={p.name:p for p in src.rglob('*') if p.is_file()}
-          for name in ['results.json','checkpoint.json','attempted.txt','expanded.txt']:
+          for name in ['results.json','checkpoint.json','attempted.txt','expanded.txt','retryable.txt']:
               if name in found:
                   shutil.copy2(found[name], out/name)
           summary={}
+          keys=['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries']
+          histkeys=['generation','bestCycles','tested','valid','new','repeatPrior','duplicateWithin','translationClasses','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts','retries','aborted']
           for name in ['results.json','checkpoint.json']:
               p=found.get(name)
               if p:
                   d=json.loads(p.read_text())
-                  summary[name]={k:d.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts']}
-                  summary[name]['history']=(d.get('history') or [])[-20:]
+                  summary[name]={k:d.get(k) for k in keys}
+                  summary[name]['history']=[{k:h.get(k) for k in histkeys if k in h} for h in (d.get('history') or [])[-30:]]
                   summary[name]['top']=d.get('top') or d.get('topSolutions') or []
           (out/'summary.json').write_text(json.dumps(summary,indent=2))
 
@@ -70,7 +72,7 @@ jobs:
               })
           seed_report={'metrics':model.get('metrics'),'puzzleFile':model.get('puzzleFile'),'parts':parts}
           (out/'seed-structure.json').write_text(json.dumps(seed_report,indent=2))
-          print(json.dumps(seed_report,indent=2))
+          print(json.dumps(summary,indent=2))
           PY
       - name: Commit inspection data
         run: |
@@ -78,5 +80,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports/aqueous-v5-inspection
           git diff --cached --quiet && exit 0
-          git commit -m "Record Aqueous 27c seed structure"
+          git commit -m "Inspect latest Aqueous v5 search artifact"
           git push origin HEAD:feature/aqueous-dagger-fragment-planner-final
