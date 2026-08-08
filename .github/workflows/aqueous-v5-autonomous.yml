@@ -54,13 +54,13 @@ jobs:
           --puzzle reports/aqueous-dagger.puzzle
           --seed reports/single27.solution
           --work "${SEARCH_DIR}"
-          --generations 500
-          --elites 4
+          --generations 30
+          --elites 1
           --target-cycles 26
           --workers 8
           --progress-every 20
           --watchdog-seconds 25
-          --generation-seconds 150
+          --generation-seconds 600
           --heartbeat-seconds 5
 
       - name: Summarize search
