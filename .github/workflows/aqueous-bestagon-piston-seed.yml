@@ -1,0 +1,52 @@
+name: Aqueous Bestagon Piston Seed
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - fixtures/weeklies2026/aqueous-dagger-bestagon-piston-exp.solution.b64
+      - .github/workflows/aqueous-bestagon-piston-seed.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Materialize puzzle and piston seed
+        run: |
+          mkdir -p reports/piston-seed
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          Path('reports/piston-seed/puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          Path('reports/piston-seed/seed.solution').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger-bestagon-piston-exp.solution.b64').read_text().strip()))
+          PY
+      - name: Parse and validate piston seed
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from packages.opus_parser import parse_solution_bytes
+          from tools.validate_aqueous_offsets import validate
+          root=Path('reports/piston-seed')
+          s=root/'seed.solution'
+          parsed=parse_solution_bytes(s.read_bytes(), source_name=s.name)
+          result=validate(os.environ['VALIDATOR_URL'], root/'puzzle.puzzle', s)
+          payload={'parsed':parsed,'validation':result}
+          (root/'result.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+          print(json.dumps({'name':parsed['name'],'parts':[(p['type'],p['position'],p['length'],p['rotation'],p['program']) for p in parsed['parts']], 'validation':result}, default=str))
+          PY
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-bestagon-piston-seed
+          path: reports/piston-seed/result.json
