@@ -1,13 +1,31 @@
-name: Aqueous 27c Evolution Dashboard
+name: Aqueous Evolution Dashboard
 
 on:
   pull_request:
     paths:
       - tools/search_aqueous_28c_single.py
       - tools/validate_aqueous_offsets.py
+      - tools/run_aqueous_evolution.py
       - fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
       - .github/workflows/aqueous-28c-single-search.yml
   workflow_dispatch:
+    inputs:
+      generations:
+        description: "Nombre maximum de générations"
+        required: true
+        default: "10"
+      elites:
+        description: "Nombre d'élites conservées (1-8)"
+        required: true
+        default: "3"
+      target_cycles:
+        description: "Cible cycles — arrêt automatique si atteinte"
+        required: true
+        default: "26"
+      stagnation:
+        description: "Arrêt après N générations sans amélioration (0 = désactivé)"
+        required: true
+        default: "8"
 
 permissions:
   contents: write
@@ -15,13 +33,18 @@ permissions:
 env:
   PYTHONPATH: ${{ github.workspace }}
   VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
-  SEARCH_DIR: reports/aqueous-27c-evolution
+  SEARCH_DIR: reports/aqueous-evolution
   GITHUB_TOKEN: ${{ github.token }}
+  GENERATIONS: ${{ inputs.generations || '5' }}
+  ELITES: ${{ inputs.elites || '3' }}
+  TARGET_CYCLES: ${{ inputs.target_cycles || '26' }}
+  STAGNATION: ${{ inputs.stagnation || '5' }}
 
 jobs:
-  search:
-    name: 27c → 26c search
+  evolution:
+    name: autonomous evolution
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -37,40 +60,22 @@ jobs:
               Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
           PY
 
-      - name: Validate 27c seed
-        run: |
-          curl --fail-with-body -sS \
-            -F "puzzle=@reports/aqueous-dagger.puzzle" \
-            -F "solution=@reports/single27.solution" \
-            "${VALIDATOR_URL}/api/v1/analyze" > reports/single27.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          v=json.loads(Path('reports/single27.json').read_text()).get('validation',{})
-          print(json.dumps(v, indent=2))
-          if not v.get('valid') or v.get('metrics',{}).get('cycles') != 27:
-              raise SystemExit('27c seed did not validate as expected')
-          PY
-
-      - name: Generate mutations from 27c
+      - name: 🔴 LIVE EVOLUTION — watch dashboard
         run: >-
-          python tools/search_aqueous_28c_single.py
-          --fixture fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
-          --out "${SEARCH_DIR}"
-
-      - name: 🔴 LIVE SEARCH — dashboard updates every 10 candidates
-        run: >-
-          python tools/validate_aqueous_offsets.py
+          python tools/run_aqueous_evolution.py
           --validator-url "${VALIDATOR_URL}"
-          --variants "${SEARCH_DIR}"
+          --puzzle reports/aqueous-dagger.puzzle
+          --seed reports/single27.solution
+          --work "${SEARCH_DIR}"
+          --generations "${GENERATIONS}"
+          --elites "${ELITES}"
+          --target-cycles "${TARGET_CYCLES}"
+          --stagnation "${STAGNATION}"
           --workers 24
           --progress-every 10
-          --seed-cycles 27
-          --target-cycles 26
-          --generation 1
           --live-repo "${GITHUB_REPOSITORY}"
           --live-branch aqueous-dashboard-live
-          --live-path aqueous-dashboard/status.json
+          --live-dir aqueous-dashboard
 
       - name: Build GitHub summary
         if: always()
@@ -78,37 +83,33 @@ jobs:
           python - <<'PY'
           import json, os
           from pathlib import Path
-          root=Path(os.environ['SEARCH_DIR'])
-          p=root/'results.json'
+          p=Path(os.environ['SEARCH_DIR'])/'results.json'
+          dash='https://htmlpreview.github.io/?https://github.com/Fandalah-tech/opus-magnum-pattern-library/blob/aqueous-dashboard-live/aqueous-dashboard/index.html'
           if not p.exists():
-              Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('# Aqueous Dagger — Evolution Dashboard\n\nSearch did not produce results.json.\n')
+              Path(os.environ['GITHUB_STEP_SUMMARY']).write_text(f'# Aqueous Dagger — Evolution\n\nRun interrompu avant le rapport.\n\n[Dashboard HTML]({dash})\n')
               raise SystemExit(0)
           r=json.loads(p.read_text())
-          best=r.get('best') or {}
-          tested=r.get('tested',0)
-          valid=len(r.get('valid') or [])
-          target=26
-          bestc=r.get('bestCycles',27)
-          hit = isinstance(bestc,int) and bestc <= target
-          status='✅ TARGET REACHED' if hit else '🟡 SEARCH COMPLETE'
-          mutation=best.get('kind','seed')
           lines=[
-            '# Aqueous Dagger — Evolution Dashboard','',f'## {status}','',
-            '| Metric | Value |','|---|---:|',
-            '| Seed | **27 cycles** |',f'| Best | **{bestc} cycles** |',f'| Target | **{target} cycles** |',
-            f'| Candidates tested | **{tested}** |',f'| Valid candidates | **{valid}** |',
-            f'| Valid rate | **{(100*valid/tested if tested else 0):.1f}%** |',f'| Best mutation | `{mutation}` |','',
-            'Live HTML: https://htmlpreview.github.io/?https://github.com/Fandalah-tech/opus-magnum-pattern-library/blob/aqueous-dashboard-live/aqueous-dashboard/index.html'
+            '# Aqueous Dagger — Evolution','',
+            f"**État :** {r.get('state','—')}",
+            f"**Générations :** {r.get('generationsCompleted',0)} / {r.get('maxGenerations',0)}",
+            f"**Meilleur :** {r.get('bestCycles','—')} cycles",
+            f"**Candidats testés :** {r.get('tested',0)}",
+            f"**Candidats valides :** {r.get('valid',0)}",'',
+            f'[Ouvrir le dashboard HTML]({dash})','',
+            'Les trois meilleurs `.solution` sont publiés directement dans le dashboard et joints au run.'
           ]
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
           PY
 
-      - name: Upload best solution
+      - name: Upload Top 3 + report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: aqueous-best-solution
+          name: aqueous-top-solutions
           path: |
-            ${{ env.SEARCH_DIR }}/best.solution
+            ${{ env.SEARCH_DIR }}/top-1.solution
+            ${{ env.SEARCH_DIR }}/top-2.solution
+            ${{ env.SEARCH_DIR }}/top-3.solution
             ${{ env.SEARCH_DIR }}/results.json
           if-no-files-found: warn
