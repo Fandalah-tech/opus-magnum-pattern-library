@@ -1,15 +1,6 @@
 name: Aqueous 28 Short Pipelines
 
 on:
-  push:
-    branches:
-      - feature/aqueous-dagger-fragment-planner-final
-    paths:
-      - '.github/workflows/aqueous28-short-pipelines.yml'
-      - 'packages/opus_solver/pipeline_enumerator.py'
-      - 'tools/search_short_pipelines.py'
-      - 'packages/opus_solver/fixed_layout.py'
-      - 'fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json'
   workflow_dispatch:
 
 jobs:
