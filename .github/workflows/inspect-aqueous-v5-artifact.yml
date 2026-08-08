@@ -1,0 +1,64 @@
+name: Inspect Aqueous V5 Artifact
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - .github/workflows/inspect-aqueous-v5-artifact.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+env:
+  ARTIFACT_ID: "9015995565"
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/aqueous-dagger-fragment-planner-final
+      - name: Download completed v5 artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -H "Accept: application/vnd.github+json" \
+            /repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip > /tmp/v5.zip
+          mkdir -p /tmp/v5
+          unzip -q /tmp/v5.zip -d /tmp/v5
+          find /tmp/v5 -maxdepth 3 -type f -print
+      - name: Materialize inspection report
+        run: |
+          mkdir -p reports/aqueous-v5-inspection
+          python - <<'PY'
+          import json, shutil
+          from pathlib import Path
+          src=Path('/tmp/v5')
+          out=Path('reports/aqueous-v5-inspection')
+          found={p.name:p for p in src.rglob('*') if p.is_file()}
+          for name in ['results.json','checkpoint.json','attempted.txt','expanded.txt']:
+              if name in found:
+                  shutil.copy2(found[name], out/name)
+          summary={}
+          for name in ['results.json','checkpoint.json']:
+              p=found.get(name)
+              if p:
+                  d=json.loads(p.read_text())
+                  summary[name]={k:d.get(k) for k in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts']}
+                  summary[name]['history']=(d.get('history') or [])[-20:]
+                  summary[name]['top']=d.get('top') or d.get('topSolutions') or []
+          (out/'summary.json').write_text(json.dumps(summary,indent=2))
+          print(json.dumps(summary,indent=2))
+          PY
+      - name: Commit inspection data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/aqueous-v5-inspection
+          git diff --cached --quiet && exit 0
+          git commit -m "Record Aqueous v5 run 31236107804 inspection"
+          git push origin HEAD:feature/aqueous-dagger-fragment-planner-final
