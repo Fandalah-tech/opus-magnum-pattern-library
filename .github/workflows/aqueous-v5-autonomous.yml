@@ -1,0 +1,110 @@
+name: Aqueous V5 Autonomous Search
+
+on:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - tools/run_aqueous_evolution_v5.py
+      - tools/solution_identity.py
+      - tools/search_aqueous_28c_single.py
+      - tools/validate_aqueous_offsets.py
+      - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
+      - fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64
+      - .github/workflows/aqueous-v5-autonomous.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+  VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+  SEARCH_DIR: reports/aqueous-v5
+
+jobs:
+  search:
+    name: non-repeating best-first search
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Materialize puzzle and 27c seed
+        run: |
+          mkdir -p reports
+          python - <<'PY'
+          import base64
+          from pathlib import Path
+          pairs = [
+              ('fixtures/weeklies2026/aqueous-dagger.puzzle.b64','reports/aqueous-dagger.puzzle'),
+              ('fixtures/weeklies2026/aqueous-dagger-27c-single-reference.solution.b64','reports/single27.solution'),
+          ]
+          for src, dst in pairs:
+              Path(dst).write_bytes(base64.b64decode(Path(src).read_text().strip()))
+          PY
+
+      - name: Syntax and identity smoke test
+        run: |
+          python -m py_compile tools/solution_identity.py tools/run_aqueous_evolution_v5.py tools/search_aqueous_28c_single.py tools/validate_aqueous_offsets.py
+          python - <<'PY'
+          from pathlib import Path
+          from tools.solution_identity import mechanical_id, translation_class_id
+          p=Path('reports/single27.solution')
+          print('seed mechanical', mechanical_id(p))
+          print('seed translation class', translation_class_id(p))
+          PY
+
+      - name: Autonomous search to 26c
+        run: >-
+          python tools/run_aqueous_evolution_v5.py
+          --validator-url "${VALIDATOR_URL}"
+          --puzzle reports/aqueous-dagger.puzzle
+          --seed reports/single27.solution
+          --work "${SEARCH_DIR}"
+          --generations 200
+          --elites 4
+          --target-cycles 26
+          --workers 8
+          --progress-every 10
+          --watchdog-seconds 25
+          --generation-seconds 90
+          --heartbeat-seconds 5
+
+      - name: Summarize search
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          p=root/'results.json'
+          c=root/'checkpoint.json'
+          src=p if p.exists() else c
+          lines=['# Aqueous V5 autonomous search','']
+          if src.exists():
+              r=json.loads(src.read_text())
+              for key in ['state','bestCycles','tested','valid','attemptedMechanisms','validMechanisms','expandedParents','frontier','timeouts']:
+                  if key in r: lines.append(f'**{key}:** {r[key]}')
+              lines += ['', '## Last generations', '']
+              for h in (r.get('history') or [])[-12:]:
+                  lines.append(f"- G{h.get('generation')}: best={h.get('bestCycles')} tested={h.get('tested')} valid={h.get('valid')} new={h.get('new','-')} repeats={h.get('repeatPrior','-')} translationClasses={h.get('translationClasses','-')} aborted={h.get('aborted','-')}")
+          else:
+              lines.append('No report/checkpoint produced.')
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines))
+          PY
+
+      - name: Upload search state and solutions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aqueous-v5-search
+          path: |
+            ${{ env.SEARCH_DIR }}/results.json
+            ${{ env.SEARCH_DIR }}/checkpoint.json
+            ${{ env.SEARCH_DIR }}/attempted.txt
+            ${{ env.SEARCH_DIR }}/expanded.txt
+            ${{ env.SEARCH_DIR }}/top-1.solution
+            ${{ env.SEARCH_DIR }}/top-2.solution
+            ${{ env.SEARCH_DIR }}/top-3.solution
+          if-no-files-found: warn
