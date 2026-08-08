@@ -30,8 +30,8 @@ jobs:
           raw = base64.b64decode(open('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read().strip())
           puzzle = parse_puzzle(raw)
           layout = json.load(open('fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json'))
-          # Geometry-independent smoke: the real run will use the user's exact
-          # bounded layout; this test only exercises pose enumeration + dedupe.
+          for index, part in enumerate(layout.get('parts', [])):
+              part.setdefault('id', f'part-{index}')
           bounds = LayoutBounds(center=(0,0), radius=100, period=7, max_start_configs=16)
           configs = enumerate_start_configurations(puzzle, layout, bounds)
           print('startConfigurations=', len(configs))
