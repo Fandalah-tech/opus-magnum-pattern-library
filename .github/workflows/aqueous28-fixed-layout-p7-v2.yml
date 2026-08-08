@@ -1,15 +1,6 @@
 name: Aqueous 28 Fixed Layout P7 v2
 
 on:
-  push:
-    branches:
-      - feature/aqueous-dagger-fragment-planner-final
-    paths:
-      - '.github/workflows/aqueous28-fixed-layout-p7-v2.yml'
-      - 'packages/opus_solver/fixed_layout.py'
-      - 'packages/opus_solver/fixed_layout_batch.py'
-      - 'tools/search_fixed_layout_batch.py'
-      - 'fixtures/weeklies2026/aqueous-dagger-bruteforce-28.json'
   workflow_dispatch:
 
 jobs:
