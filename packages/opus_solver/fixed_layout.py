@@ -18,6 +18,7 @@ class LayoutBounds:
     center: tuple[int, int]
     radius: int
     period: int = 7
+    motion_radius: int | None = None
     max_active_arms: int = 4
     max_atoms: int = 24
     max_start_configs: int = 0
@@ -115,15 +116,32 @@ def _is_arm(part: dict[str, Any]) -> bool:
 
 
 def _pose_domain(part: dict[str, Any], tracks: list[tuple[tuple[int, int], ...]]) -> tuple[tuple, ...]:
-    """All editor-encodable initial poses for an already placed manipulator."""
     rotations = range(6)
-    if part.get("type") == "piston":
-        lengths = range(1, 4)
-    else:
-        lengths = (max(1, int(part.get("length") or 1)),)
+    lengths = range(1, 4) if part.get("type") == "piston" else (max(1, int(part.get("length") or 1)),)
     track = _owned_track(part, tracks)
     positions = track if track else (tuple(part.get("position") or (0, 0)),)
     return tuple((tuple(pos), int(length), int(rotation)) for pos in positions for length in lengths for rotation in rotations)
+
+
+def _layout_pose_bounded(simulator: Simulator, bounds: LayoutBounds) -> bool:
+    for arm in simulator.arms.values():
+        if _axial_radius(tuple(arm.origin), bounds.center) > bounds.radius:
+            return False
+        if any(_axial_radius(tuple(tip), bounds.center) > bounds.radius for tip in arm.tips().values()):
+            return False
+    return True
+
+
+def _runtime_bounded(simulator: Simulator, bounds: LayoutBounds) -> bool:
+    if len(simulator.world.atoms) > bounds.max_atoms:
+        return False
+    if bounds.motion_radius is None:
+        return True
+    return all(
+        _axial_radius(tuple(atom.position), bounds.center) <= bounds.motion_radius
+        for atom in simulator.world.atoms.values()
+        if "-wheel-" not in str(atom.id)
+    )
 
 
 def enumerate_start_configurations(
@@ -131,12 +149,7 @@ def enumerate_start_configurations(
     layout: dict[str, Any],
     bounds: LayoutBounds,
 ) -> list[StartConfiguration]:
-    """Phase A: enumerate unique bounded initial manipulator configurations.
-
-    All non-manipulator pieces remain fixed. Programs are preserved so explicit
-    instructions supplied by the user (notably a known first action) can later
-    be treated as locked phase actions.
-    """
+    """Phase A: enumerate unique editor-encodable initial manipulator poses."""
     tracks = _absolute_tracks(layout)
     arms = [part for part in layout.get("parts", []) if _is_arm(part)]
     domains = [_pose_domain(part, tracks) for part in arms]
@@ -151,12 +164,11 @@ def enumerate_start_configurations(
             part["position"] = [int(position[0]), int(position[1])]
             part["length"] = int(length)
             part["rotation"] = int(rotation)
-
         try:
             simulator = Simulator.from_models(puzzle, candidate)
         except Exception:
             continue
-        if not _bounded(simulator, bounds):
+        if not _layout_pose_bounded(simulator, bounds):
             continue
         signature = physical_state_key(simulator)
         if signature in seen:
@@ -169,18 +181,14 @@ def enumerate_start_configurations(
 
 
 def physical_state_key(simulator: Simulator) -> tuple:
-    """Canonical state independent of atom IDs, cycle counter and output count."""
     atom_desc = {
-        atom_id: (
-            tuple(atom.position), str(atom.element), tuple(sorted(str(x) for x in atom.held_by))
-        )
+        atom_id: (tuple(atom.position), str(atom.element), tuple(sorted(str(x) for x in atom.held_by)))
         for atom_id, atom in simulator.world.atoms.items()
     }
     atoms = tuple(sorted(atom_desc.values()))
     bonds = []
     for bond in simulator.world.bonds.values():
-        a = atom_desc.get(bond.a)
-        b = atom_desc.get(bond.b)
+        a, b = atom_desc.get(bond.a), atom_desc.get(bond.b)
         if a is not None and b is not None:
             bonds.append((str(bond.kind), *sorted((a, b))))
     arms = []
@@ -206,16 +214,6 @@ def physical_state_key(simulator: Simulator) -> tuple:
 
 def delivered_total(simulator: Simulator) -> int:
     return sum(int(value) for value in (getattr(simulator, "delivered_products", {}) or {}).values())
-
-
-def _bounded(simulator: Simulator, bounds: LayoutBounds) -> bool:
-    if len(simulator.world.atoms) > bounds.max_atoms:
-        return False
-    return all(
-        _axial_radius(tuple(atom.position), bounds.center) <= bounds.radius
-        for atom in simulator.world.atoms.values()
-        if "-wheel-" not in str(atom.id)
-    )
 
 
 def _adjacent(first: tuple[int, int], second: tuple[int, int]) -> bool:
@@ -276,9 +274,8 @@ def iter_joint_actions(
             domain = (forced,)
         domains.append(domain)
     for values in product(*domains):
-        if sum(value is not None for value in values) > bounds.max_active_arms:
-            continue
-        yield dict(zip(arm_ids, values))
+        if sum(value is not None for value in values) <= bounds.max_active_arms:
+            yield dict(zip(arm_ids, values))
 
 
 def _compile_solution(start: StartConfiguration, program: tuple[dict[str, str | None], ...]) -> dict[str, Any]:
@@ -288,9 +285,8 @@ def _compile_solution(start: StartConfiguration, program: tuple[dict[str, str | 
         part["program"] = []
     for cycle, row in enumerate(program):
         for arm_id, action in row.items():
-            if action is None:
-                continue
-            by_id[arm_id]["program"].append({"cycle": cycle, "instruction": action})
+            if action is not None:
+                by_id[arm_id]["program"].append({"cycle": cycle, "instruction": action})
     candidate["name"] = f"fixed-layout P{len(program)} config {start.index}"
     candidate["metrics"] = {}
     candidate["unknownMetrics"] = []
@@ -303,12 +299,6 @@ def brute_force_configuration(
     bounds: LayoutBounds,
     stats: SearchStats,
 ) -> PeriodSolution | None:
-    """Phase B: breadth-first search for a physical P-period loop.
-
-    A success requires the exact canonical physical state to recur after one
-    period while at least one additional product has been delivered. This is a
-    proof of a genuine loop, not merely a candidate that survives a few cycles.
-    """
     initial = Simulator.from_models(puzzle, start.solution)
     initial_key = physical_state_key(initial)
     initial_delivered = delivered_total(initial)
@@ -328,7 +318,7 @@ def brute_force_configuration(
                 except SimulationError:
                     stats.collisions += 1
                     continue
-                if not _bounded(trial, bounds):
+                if not _runtime_bounded(trial, bounds):
                     stats.pruned_bounds += 1
                     continue
                 key = physical_state_key(trial)
@@ -336,23 +326,14 @@ def brute_force_configuration(
                 if depth + 1 == bounds.period:
                     delta = delivered_total(trial) - initial_delivered
                     if key == initial_key and delta > 0:
-                        return PeriodSolution(
-                            start_configuration=start,
-                            program=new_path,
-                            delivered_per_period=delta,
-                            candidate_solution=_compile_solution(start, new_path),
-                        )
-                dedupe_key = (depth + 1, key, delivered_total(trial) - initial_delivered)
+                        return PeriodSolution(start, new_path, delta, _compile_solution(start, new_path))
+                dedupe_key = (key, delivered_total(trial) - initial_delivered)
                 if dedupe_key in next_by_key:
                     stats.deduplicated += 1
                     continue
                 next_by_key[dedupe_key] = (trial, new_path)
-
         frontier = list(next_by_key.values())
         if bounds.max_states_per_depth and len(frontier) > bounds.max_states_per_depth:
-            # Deterministic cap; exhaustive mode is obtained with 0. The cap is
-            # deliberately explicit in reports so a negative result cannot be
-            # mistaken for a mathematical proof.
             frontier = frontier[:bounds.max_states_per_depth]
         stats.peak_frontier = max(stats.peak_frontier, len(frontier))
         if not frontier:
