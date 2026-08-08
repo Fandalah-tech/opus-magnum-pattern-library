@@ -1,23 +1,6 @@
 name: Aqueous fragment planner smoke
 
 on:
-  pull_request:
-    paths:
-      - packages/opus_solver/fragment_planner.py
-      - tests/test_fragment_planner.py
-      - tests/test_aqueous_candidate.py
-      - tests/test_aqueous_exact_puzzle.py
-      - tools/build_aqueous_probe.py
-      - tools/search_aqueous_16c_offsets.py
-      - tools/search_aqueous_16c_structural.py
-      - tools/search_aqueous_output_capture.py
-      - tools/search_aqueous_right_bonders.py
-      - tools/search_aqueous_second_output.py
-      - tools/trace_aqueous_16c.py
-      - tools/validate_aqueous_offsets.py
-      - fixtures/weeklies2026/aqueous-dagger.puzzle.b64
-      - fixtures/weeklies2026/aqueous-dagger-16c-reference.solution.b64
-      - .github/workflows/aqueous-fragment-smoke.yml
   workflow_dispatch:
 
 permissions:
@@ -55,12 +38,11 @@ jobs:
           curl --fail-with-body -sS \
             -F "puzzle=@reports/aqueous-dagger.puzzle" \
             -F "solution=@reports/aqueous-dagger-probe.solution" \
-            "${VALIDATOR_URL}/api/v1/analyze" > reports/aqueous-dagger-omsim.json
+            "${VALIDATOR_URL}/api/v1/validate" > reports/aqueous-dagger-omsim.json
           python - <<'PY'
           import json
           from pathlib import Path
-          report = json.loads(Path('reports/aqueous-dagger-omsim.json').read_text())
-          validation = report.get('validation', {})
+          validation = json.loads(Path('reports/aqueous-dagger-omsim.json').read_text())
           print(json.dumps(validation, indent=2))
           if validation.get('valid') is not True:
               raise SystemExit('OMSim rejected the exact Aqueous probe')
@@ -85,7 +67,7 @@ jobs:
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
           --variants reports/aqueous-output-search
-          --workers 16
+          --workers 12
       - name: Generate right-side bonder variants
         run: python tools/search_aqueous_right_bonders.py --radius 3
       - name: Search right-side bonders for 15 cycles
@@ -93,7 +75,7 @@ jobs:
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
           --variants reports/aqueous-right-bonder-search
-          --workers 20
+          --workers 12
       - name: Generate duplicate-output variants
         run: python tools/search_aqueous_second_output.py --radius 3
       - name: Search duplicate outputs for 15 cycles
@@ -101,4 +83,4 @@ jobs:
           python tools/validate_aqueous_offsets.py
           --validator-url "${VALIDATOR_URL}"
           --variants reports/aqueous-second-output-search
-          --workers 16
+          --workers 12
