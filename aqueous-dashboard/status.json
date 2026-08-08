@@ -3,20 +3,20 @@
   "state": "running",
   "seedCycles": 27,
   "targetCycles": 26,
-  "generation": 4,
+  "generation": 2,
   "maxGenerations": 5,
-  "generationTested": 170,
-  "generationTotal": 362,
+  "generationTested": 90,
+  "generationTotal": 508,
   "generationValid": 0,
   "generationTimeouts": 0,
-  "tested": 1250,
-  "valid": 221,
+  "tested": 300,
+  "valid": 75,
   "timeouts": 0,
   "bestCycles": 27,
   "bestGeneration": 0,
   "bestMutation": "seed",
   "eliteCount": 3,
-  "stagnation": 3,
+  "stagnation": 1,
   "stagnationLimit": 5,
   "workers": 12,
   "watchdogSeconds": 35,
@@ -74,26 +74,8 @@
       "timeouts": 0,
       "watchdog": false,
       "distinctElites": 3
-    },
-    {
-      "generation": 2,
-      "bestCycles": 27,
-      "tested": 508,
-      "valid": 146,
-      "timeouts": 0,
-      "watchdog": false,
-      "distinctElites": 3
-    },
-    {
-      "generation": 3,
-      "bestCycles": 27,
-      "tested": 362,
-      "valid": 0,
-      "timeouts": 0,
-      "watchdog": false,
-      "distinctElites": 3
     }
   ],
-  "updatedAt": "2026-08-08T02:49:46.607237+00:00",
-  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31235818450"
+  "updatedAt": "2026-08-08T02:49:47.717850+00:00",
+  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31235833841"
 }
