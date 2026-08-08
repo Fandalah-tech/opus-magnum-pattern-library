@@ -30,6 +30,7 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY packages /app/packages
 COPY services/validator/app.py /app/app.py
+COPY services/validator/fast_app.py /app/fast_app.py
 
 # Cloud Run also acts as the immediate static production fallback for the
 # Codex and Solver Lab when the Vercel free-tier build queue is unavailable.
@@ -43,4 +44,4 @@ WORKDIR /app
 USER appuser
 
 EXPOSE 8080
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
+CMD ["uvicorn", "fast_app:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
