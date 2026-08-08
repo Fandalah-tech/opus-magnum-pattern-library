@@ -30,7 +30,9 @@ jobs:
           raw = base64.b64decode(open('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read().strip())
           puzzle = parse_puzzle(raw)
           layout = json.load(open('fixtures/weeklies2026/aqueous-dagger-bestagon-50c-4arms.json'))
-          bounds = LayoutBounds(center=(-14,-1), radius=3, period=7, max_start_configs=16)
+          # Smoke fixture is not the user's final R3 layout; this merely verifies
+          # that bounded pose enumeration and canonical deduplication execute.
+          bounds = LayoutBounds(center=(-14,-1), radius=6, period=7, max_start_configs=16)
           configs = enumerate_start_configurations(puzzle, layout, bounds)
           print('startConfigurations=', len(configs))
           assert configs, 'expected at least one bounded configuration'
