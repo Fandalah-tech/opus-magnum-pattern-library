@@ -149,7 +149,12 @@ def enumerate_start_configurations(
     layout: dict[str, Any],
     bounds: LayoutBounds,
 ) -> list[StartConfiguration]:
-    """Phase A: enumerate unique editor-encodable initial manipulator poses."""
+    """Phase A: enumerate unique editor-encodable initial manipulator poses.
+
+    Configurations that cannot execute a user-locked cycle-0 instruction are
+    discarded here, before batching.  This keeps batch offsets meaningful and
+    prevents spending whole batches on poses that can never enter the search.
+    """
     tracks = _absolute_tracks(layout)
     arms = [part for part in layout.get("parts", []) if _is_arm(part)]
     domains = [_pose_domain(part, tracks) for part in arms]
@@ -170,6 +175,15 @@ def enumerate_start_configurations(
             continue
         if not _layout_pose_bounded(simulator, bounds):
             continue
+
+        locked = _locked_actions(candidate, bounds.period)
+        impossible_locked_start = any(
+            phase == 0 and action not in legal_actions(simulator, arm_id)
+            for (arm_id, phase), action in locked.items()
+        )
+        if impossible_locked_start:
+            continue
+
         signature = physical_state_key(simulator)
         if signature in seen:
             continue
