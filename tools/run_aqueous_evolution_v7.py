@@ -8,6 +8,8 @@ from pathlib import Path
 from tools.solution_identity import mechanical_id, raw_id, translation_class_id
 from tools.validate_aqueous_offsets import validate
 
+GENERATOR_VERSION = 8
+
 
 def score(m):
     h=10**9
@@ -27,7 +29,7 @@ def main():
     attempted=set((root/'attempted.txt').read_text().split()) if (root/'attempted.txt').exists() else set()
     expanded=set((root/'expanded.txt').read_text().split()) if (root/'expanded.txt').exists() else set()
     retryable=set((root/'retryable.txt').read_text().split()) if (root/'retryable.txt').exists() else set()
-    submit_counts=Counter(); hall={}; history=[]; cumulative_tested=0; cumulative_valid=0; cumulative_timeouts=0; cumulative_retries=0
+    submit_counts=Counter(); hall={}; history=[]; cumulative_tested=0; cumulative_valid=0; cumulative_timeouts=0; cumulative_retries=0; prior_generator_version=0
 
     def add_existing(path, kind='resume', generation=0, metrics=None):
         if not path.exists(): return
@@ -37,6 +39,7 @@ def main():
 
     if state_path.exists():
         old=json.loads(state_path.read_text())
+        prior_generator_version=int(old.get('generatorVersion',0) or 0)
         cumulative_tested=int(old.get('tested',0)); cumulative_valid=int(old.get('valid',0)); cumulative_timeouts=int(old.get('timeouts',0)); cumulative_retries=int(old.get('retries',0)); history=list(old.get('history') or [])
         for rec in old.get('hall') or []:
             p=archive/f"{rec['mechanicalId']}.solution"
@@ -52,10 +55,11 @@ def main():
                 v=validate(args.validator_url,puzzle,p)
                 if v.get('valid'): add_existing(p,'imported-top',0,v.get('metrics') or {})
 
-    # Re-expand hall entries whenever the generator changes. The global attempted
-    # registry prevents repeating already validated identities while allowing new
-    # neighborhoods to be discovered around every valid intermediate state.
-    for mid in list(hall): expanded.discard(mid)
+    # Re-expand hall entries only when the neighborhood generator changes.
+    # Across ordinary resumptions, preserve expanded state so a long search does
+    # not repeatedly regenerate the same parent neighborhoods from zero.
+    if prior_generator_version != GENERATOR_VERSION:
+        for mid in list(hall): expanded.discard(mid)
     attempted.update(hall)
 
     def ranked(): return sorted(hall.values(), key=lambda x:(score(x.get('metrics') or {}),-int(x.get('generation',0)),x['mechanicalId']))
@@ -76,7 +80,7 @@ def main():
         recs=[]
         for x in hall.values():
             recs.append({k:x.get(k) for k in ('metrics','kind','generation','mechanicalId','translationClass','sha256')})
-        payload={'schemaVersion':7,'state':state,'generation':gen,'bestCycles':best_cycles(),'tested':cumulative_tested,'valid':cumulative_valid,'timeouts':cumulative_timeouts,'retries':cumulative_retries,'attemptedMechanisms':len(attempted),'validMechanisms':len(hall),'expandedParents':len(expanded),'frontier':len(frontier()),'retryable':len(retryable),'history':history[-200:],'hall':recs}
+        payload={'schemaVersion':7,'generatorVersion':GENERATOR_VERSION,'state':state,'generation':gen,'bestCycles':best_cycles(),'tested':cumulative_tested,'valid':cumulative_valid,'timeouts':cumulative_timeouts,'retries':cumulative_retries,'attemptedMechanisms':len(attempted),'validMechanisms':len(hall),'expandedParents':len(expanded),'frontier':len(frontier()),'retryable':len(retryable),'history':history[-200:],'hall':recs}
         state_path.write_text(json.dumps(payload,indent=2)); (root/'checkpoint.json').write_text(json.dumps(payload,indent=2))
         (root/'attempted.txt').write_text('\n'.join(sorted(attempted))+'\n'); (root/'expanded.txt').write_text('\n'.join(sorted(expanded))+'\n'); (root/'retryable.txt').write_text('\n'.join(sorted(retryable))+'\n')
         for i,x in enumerate(ranked()[:3],1): shutil.copy2(x['path'],root/f'top-{i}.solution')
