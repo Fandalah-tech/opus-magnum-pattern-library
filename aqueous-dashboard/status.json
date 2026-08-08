@@ -1,15 +1,15 @@
 {
   "puzzle": "Aqueous Dagger",
-  "state": "preparing",
+  "state": "running",
   "seedCycles": 27,
   "targetCycles": 26,
-  "generation": 0,
+  "generation": 1,
   "maxGenerations": 5,
-  "generationTested": 0,
-  "generationTotal": 0,
-  "generationValid": 0,
-  "tested": 0,
-  "valid": 0,
+  "generationTested": 190,
+  "generationTotal": 213,
+  "generationValid": 55,
+  "tested": 190,
+  "valid": 55,
   "bestCycles": 27,
   "bestGeneration": 0,
   "bestMutation": "seed",
@@ -27,6 +27,28 @@
       "generation": 0,
       "sha256": "235f2ce6556dc172ced005c4a16ffc320b65dd2e278ac6d3385e7e5a7901e77e",
       "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-1.solution"
+    },
+    {
+      "rank": 2,
+      "cycles": 27,
+      "cost": 120,
+      "area": 71,
+      "instructions": 12,
+      "mutation": "functional-rotate",
+      "generation": 1,
+      "sha256": "3a9f231d3cf9137e66accbe45ddfaed1b2d933edc16c96aa7c3abe7cd7aaeb57",
+      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-2.solution"
+    },
+    {
+      "rank": 3,
+      "cycles": 27,
+      "cost": 120,
+      "area": 71,
+      "instructions": 12,
+      "mutation": "functional-move",
+      "generation": 1,
+      "sha256": "49f4ebe85cedfe9e1d0488668553ea469174d7dcdf0ef936448d6f2a8c302a96",
+      "downloadUrl": "https://raw.githubusercontent.com/Fandalah-tech/opus-magnum-pattern-library/aqueous-dashboard-live/aqueous-dashboard/top-3.solution"
     }
   ],
   "history": [
@@ -37,6 +59,6 @@
       "valid": 1
     }
   ],
-  "updatedAt": "2026-08-08T00:45:37.671463+00:00",
-  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31230962365"
+  "updatedAt": "2026-08-08T00:45:38.656584+00:00",
+  "runUrl": "https://github.com/Fandalah-tech/opus-magnum-pattern-library/actions/runs/31230951018"
 }
