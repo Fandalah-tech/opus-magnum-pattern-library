@@ -1,0 +1,78 @@
+name: Aqueous Bestagon 50c P7 Search
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/aqueous-dagger-fragment-planner-final
+    paths:
+      - '.github/workflows/aqueous-bestagon-50c-p7.yml'
+      - 'tools/search_aqueous_bestagon_50c_p7.py'
+      - 'fixtures/weeklies2026/aqueous-dagger-bestagon-50c-seed.json'
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      VALIDATOR_URL: https://opus-validator-6gflgqb25q-nn.a.run.app
+      SEARCH_DIR: reports/aqueous-bestagon-50c-p7
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Materialize puzzle
+        shell: bash
+        run: |
+          mkdir -p "${SEARCH_DIR}"
+          python - <<'PY'
+          import base64, os
+          from pathlib import Path
+          root=Path(os.environ['SEARCH_DIR'])
+          root.mkdir(parents=True, exist_ok=True)
+          root.joinpath('puzzle.puzzle').write_bytes(base64.b64decode(Path('fixtures/weeklies2026/aqueous-dagger.puzzle.b64').read_text().strip()))
+          PY
+
+      - name: Rebuild and validate 50c seed
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from packages.opus_parser import write_solution_bytes
+          from tools.validate_aqueous_offsets import validate
+          root=Path(os.environ['SEARCH_DIR'])
+          sol=json.loads(Path('fixtures/weeklies2026/aqueous-dagger-bestagon-50c-seed.json').read_text())
+          seed=root/'seed.solution'
+          seed.write_bytes(write_solution_bytes(sol))
+          result=validate(os.environ['VALIDATOR_URL'], root/'puzzle.puzzle', seed)
+          print(result)
+          if not result.get('valid'):
+              raise SystemExit('Reconstructed 50c seed did not validate')
+          PY
+
+      - name: Exhaust bounded P7 fourth-manipulator search
+        shell: bash
+        run: |
+          python tools/search_aqueous_bestagon_50c_p7.py \
+            --validator-url "${VALIDATOR_URL}" \
+            --puzzle "${SEARCH_DIR}/puzzle.puzzle" \
+            --seed-json fixtures/weeklies2026/aqueous-dagger-bestagon-50c-seed.json \
+            --out "${SEARCH_DIR}/search" \
+            --workers 8 \
+            --limit 120000
+
+      - name: Summarize
+        if: always()
+        shell: bash
+        run: |
+          test -f "${SEARCH_DIR}/search/results.json" && cat "${SEARCH_DIR}/search/results.json" || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aqueous-bestagon-50c-p7
+          path: |
+            reports/aqueous-bestagon-50c-p7/search/results.json
+            reports/aqueous-bestagon-50c-p7/search/best.solution
+          if-no-files-found: warn
