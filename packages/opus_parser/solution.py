@@ -30,9 +30,14 @@ def parse_solution_bytes(data: bytes, *, source_name: str | None = None) -> dict
 
     puzzle_file = reader.string()
     name = reader.string()
-    metric_count = _count(reader, "metric count", 64)
+    metric_marker = _count(reader, "metric marker", 64)
     metrics = {name: None for name in METRIC_IDS.values()}
     unknown_metrics = []
+
+    # OM solution v7 uses this field as a solved marker: 0 means unsolved,
+    # any non-zero value is followed by the canonical four metric pairs.
+    # Older v6 files are kept on the historical count-based interpretation.
+    metric_count = (4 if metric_marker else 0) if version == 7 else metric_marker
     for _ in range(metric_count):
         metric_id = reader.int32()
         value = reader.int32()
