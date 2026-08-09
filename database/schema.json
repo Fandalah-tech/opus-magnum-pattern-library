@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.16.0",
-  "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, synchronized layouts and writable target-puzzle candidate generation for Opus Magnum Codex.",
+  "schemaVersion": "0.17.0",
+  "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, writable target-puzzle generation and diagnostic candidate search for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -32,8 +32,41 @@
       "checks": ["zero trailing bytes", "same part count", "same puzzleFile"]
     }
   },
-  "composedGeneration": {
+  "engineValidationDiagnostics": {
+    "purpose": "Turn failed generated candidates into actionable search signals rather than a boolean failure.",
+    "fields": [
+      "failureMode",
+      "firstError.cycle",
+      "firstError.message",
+      "deliveredProducts",
+      "outputDeficits",
+      "totalDelivered",
+      "totalDeficit",
+      "completedCycles"
+    ],
+    "failureModes": [
+      "simulation-error",
+      "missing-standard-output",
+      "no-product-delivered",
+      "insufficient-product-delivery"
+    ]
+  },
+  "temporalCandidateSearch": {
     "schemaVersion": "0.1.0",
+    "purpose": "Search small relative timing variations around an empirical assembly without changing fragment-local programs or geometry.",
+    "groups": "branch-N and tail-N fragment instances move as units; convergence remains the timing anchor",
+    "ordering": "variants are enumerated by minimum total absolute displacement, with historical timing first",
+    "ranking": [
+      "complete solution",
+      "no simulation termination",
+      "products delivered",
+      "minimum remaining output deficit",
+      "cycles successfully executed",
+      "minimum timing displacement"
+    ]
+  },
+  "composedGeneration": {
+    "schemaVersion": "0.2.0",
     "pipeline": [
       "build manufacturing plan",
       "rank convergence-aware assembly DAGs",
@@ -43,16 +76,25 @@
       "assign target reagent/product indices",
       "build metric-free solution v7 model",
       "serialize and parse back",
-      "run engine validation when requested"
+      "run engine validation when requested",
+      "optionally search local temporal variants for failed candidates"
     ],
-    "diagnosticPolicy": "candidate failures are retained individually so later searches can vary geometry/timing instead of aborting the generation pass",
-    "summary": ["assemblyCandidateCount", "serializableCount", "engineCompleteCount", "hasCompleteSolution"]
+    "diagnosticPolicy": "candidate failures are retained individually and normalized into failure modes so later searches can target timing or geometry instead of aborting the generation pass",
+    "summary": [
+      "assemblyCandidateCount",
+      "serializableCount",
+      "engineCompleteCount",
+      "temporalVariantCount",
+      "temporalCompleteCount",
+      "failureModes",
+      "hasCompleteSolution"
+    ]
   },
   "remainingValidation": [
     "rebuild fragment/flow indexes from the local corpus using current schemas",
-    "exercise composed generation on reference campaign puzzles",
+    "exercise composed generation with temporal search on reference campaign puzzles",
     "cross-check generated candidates with OMSim",
-    "search alternate geometry/transform/timing variants when the preferred empirical combination fails",
+    "add geometry/relative-transform variant search when timing alone does not repair a candidate",
     "upgrade collision checking from origin overlap to exact occupied and swept geometry"
   ]
 }
