@@ -13,7 +13,10 @@ def main() -> int:
     parser.add_argument("puzzle", type=Path)
     parser.add_argument("--flow-index", type=Path, default=Path("database/fragment-flow-index.json"))
     parser.add_argument("--fragment-index", type=Path, default=Path("database/fragment-index.json"))
-    parser.add_argument("--limit", type=int, default=10)
+    parser.add_argument("--limit", type=int, default=25, help="Maximum evaluated generated candidates")
+    parser.add_argument("--assembly-limit", type=int, default=10, help="Maximum ranked assembly DAGs to expand")
+    parser.add_argument("--variants-per-assembly", type=int, default=6, help="Maximum correlated empirical geometry/timing variants per DAG")
+    parser.add_argument("--stop-on-complete", action="store_true", help="Stop after the first engine-complete candidate")
     parser.add_argument("--no-engine-validation", action="store_true")
     parser.add_argument("--report", type=Path, default=Path("reports/composed-candidates.json"))
     parser.add_argument("--write-best", type=Path)
@@ -27,16 +30,25 @@ def main() -> int:
         flow_index,
         fragment_index,
         limit=args.limit,
+        assembly_limit=args.assembly_limit,
+        variants_per_assembly=args.variants_per_assembly,
         validate_engine=not args.no_engine_validation,
+        stop_on_complete=args.stop_on_complete,
     )
 
-    report = dict(result)
-    # Binary payloads are never embedded in JSON reports.
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    args.report.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     if args.write_best:
+        # Prefer a genuinely engine-complete solution; otherwise emit the first
+        # cleanly serializable candidate for manual/OMSim diagnostics.
         best = next(
+            (
+                item for item in result.get("candidates", [])
+                if item.get("engineValidation", {}).get("complete") and item.get("solution")
+            ),
+            None,
+        ) or next(
             (
                 item for item in result.get("candidates", [])
                 if item.get("serialization", {}).get("roundTripClean") and item.get("solution")
