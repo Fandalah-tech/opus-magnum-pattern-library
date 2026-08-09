@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.7.0",
-  "description": "Canonical puzzle/solution catalog plus solver retrieval, fragment indexes and replay-backed glyph evidence for Opus Magnum Codex.",
+  "schemaVersion": "0.8.0",
+  "description": "Canonical puzzle/solution catalog plus solver retrieval, replay-backed fragment evidence and composable molecule-flow transitions for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -13,34 +13,32 @@
     "glyphSimulation": {
       "supported": ["bonder", "unbonder", "glyph-calcification"],
       "eventKind": "glyph-effect",
-      "effects": ["bond-created", "bond-removed", "calcify"],
-      "evaluationOrder": ["arm instructions", "passive glyph effects", "disposal/output consumers", "input respawn"]
-    },
-    "limitations": [
-      "Bonder and unbonder geometry uses the two occupied glyph hexes and still requires OMSim corpus cross-validation.",
-      "Calcification converts air, earth, fire and water on its anchor cell to salt.",
-      "Multibonder, prismatic bonding and all other conversion glyphs are not yet simulated.",
-      "Collision validation is not yet simulated."
-    ]
+      "effects": ["bond-created", "bond-removed", "calcify"]
+    }
   },
   "fragmentIndex": {
     "purpose": "Catalog reusable local functional sub-mechanisms extracted from historical solutions.",
     "roles": ["feed", "output", "bonding", "conversion", "disposal", "conduit", "process"],
     "grouping": ["role", "canonicalMechanismHash"],
-    "evidenceLevels": {
-      "dynamic-confirmed": "Replay directly observed the functional effect at the fragment anchor, including supported glyph mutations.",
-      "dynamic-arm-observed": "Replay observed arm activity inside the fragment, but the anchor effect was not simulated or observed.",
-      "structural-only": "Fragment is inferred from geometry only or no matching puzzle replay was available."
+    "evidenceLevels": ["dynamic-confirmed", "dynamic-arm-observed", "structural-only"]
+  },
+  "fragmentFlowIndex": {
+    "purpose": "Catalog replay-observed composition transitions between canonical functional fragment mechanisms.",
+    "lineage": "Atom ids persist across replay molecule merge/split operations and are used as lineage markers.",
+    "grouping": ["sourceRole", "sourceMechanismHash", "targetRole", "targetMechanismHash", "relation"],
+    "relations": ["bond-created", "bond-removed", "calcify", "delivered", "consumed"],
+    "transitionFields": {
+      "observationCount": "integer",
+      "sourcePuzzleCount": "integer",
+      "sourceSolutionCount": "integer",
+      "sourcePuzzles": "string[]",
+      "samples": "source solution references and observed cycle ranges"
     },
-    "evidenceFields": {
-      "armInstructionCount": "integer",
-      "grabCount": "integer",
-      "dropCount": "integer",
-      "sourceMoleculeCount": "integer",
-      "consumerEventCount": "integer",
-      "glyphEffectCount": "integer",
-      "glyphSimulationAvailable": "boolean",
-      "simulatedGlyphs": "string[]"
-    }
+    "limitations": [
+      "Only replay-observed functional effects produce flow edges.",
+      "Unsupported glyphs do not yet contribute transformation transitions.",
+      "Arm movement is modeled as transport, not as a functional flow node.",
+      "Collision correctness and exact glyph semantics still require OMSim validation."
+    ]
   }
 }
