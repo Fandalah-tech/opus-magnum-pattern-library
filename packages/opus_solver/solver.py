@@ -215,6 +215,18 @@ def _generate_bonded_pair_solution(
     }
 
 
+def _first_simulation_error(replay: dict[str, Any]) -> dict[str, Any] | None:
+    for frame in replay.get("frames", []):
+        for event in frame.get("events", []):
+            if str(event.get("kind") or "") != "simulation-error":
+                continue
+            return {
+                "cycle": event.get("cycle", frame.get("cycle")),
+                "message": str(event.get("message") or "Simulation error"),
+            }
+    return None
+
+
 def validate_generated_solution(
     puzzle: dict[str, Any],
     solution: dict[str, Any],
@@ -231,19 +243,40 @@ def validate_generated_solution(
     ]
     delivered = dict(simulator.delivered_products)
     terminated = bool(replay.get("summary", {}).get("terminatedWithError"))
+    error = _first_simulation_error(replay)
+    deficits = {
+        output_id: max(0, int(target) - int(delivered.get(output_id, 0)))
+        for output_id in standard_outputs
+    }
     complete = (
         not terminated
         and bool(standard_outputs)
-        and all(int(delivered.get(output_id, 0)) >= target for output_id in standard_outputs)
+        and all(value == 0 for value in deficits.values())
     )
+    if complete:
+        failure_mode = None
+    elif terminated:
+        failure_mode = "simulation-error"
+    elif not standard_outputs:
+        failure_mode = "missing-standard-output"
+    elif not any(int(value) for value in delivered.values()):
+        failure_mode = "no-product-delivered"
+    else:
+        failure_mode = "insufficient-product-delivery"
+
     return {
         "complete": complete,
+        "failureMode": failure_mode,
         "targetPerOutput": target,
         "standardOutputs": standard_outputs,
         "deliveredProducts": delivered,
+        "outputDeficits": deficits,
+        "totalDelivered": sum(int(value) for value in delivered.values()),
+        "totalDeficit": sum(deficits.values()),
         "requestedCycles": len(timeline.get("cycles", [])),
         "completedCycles": replay.get("summary", {}).get("completedCycles"),
         "terminatedWithError": terminated,
+        "firstError": error,
     }
 
 
