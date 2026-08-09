@@ -37,6 +37,7 @@ from .manufacturing import (
     ManufacturingPlan,
     build_manufacturing_plan,
 )
+from .repair_policy import recommend_repair_order
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
 from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
 from .solver import (
@@ -79,6 +80,7 @@ __all__ = [
     "rank_fragment_assemblies",
     "rank_fragment_chains",
     "rank_mechanisms",
+    "recommend_repair_order",
     "required_flow_relations",
     "search_geometric_candidates",
     "search_temporal_candidates",
