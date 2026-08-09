@@ -1,43 +1,33 @@
 {
-  "schemaVersion": "0.5.0",
+  "schemaVersion": "0.6.0",
   "description": "Canonical puzzle/solution catalog plus solver retrieval and fragment indexes for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
     "canonicalStructuralHash": "translation/rotation invariant hash preserving program timing",
     "canonicalMechanismHash": "translation/rotation invariant hash with normalized program timing",
-    "puzzleFeatureFingerprint": "hash of solver-relevant puzzle chemistry, molecule topology, available parts and production constraints",
-    "rule": "Content hashes identify exact files; canonical hashes and feature fingerprints identify reusable structure and problem similarity."
-  },
-  "puzzleFeatureIndex": {
-    "purpose": "Comparable puzzle-side representation for cross-puzzle retrieval.",
-    "moleculeIdentity": "translation/rotation invariant; reflection intentionally preserved",
-    "fields": ["sourceFile", "sha256", "name", "fingerprint", "features"]
-  },
-  "solverIndex": {
-    "purpose": "Compact retrieval layer used by the solver to search reusable mechanisms without scanning every exact solution.",
-    "grouping": ["puzzleKey", "canonicalMechanismHash"]
-  },
-  "crossPuzzleRetrieval": {
-    "purpose": "Rank mechanisms learned on other puzzles for reuse on a target puzzle.",
-    "score": "0..1 weighted combination of puzzle feature similarity and mechanism compatibility"
+    "puzzleFeatureFingerprint": "hash of solver-relevant puzzle chemistry, molecule topology, available parts and production constraints"
   },
   "fragmentIndex": {
     "purpose": "Catalog reusable local functional sub-mechanisms extracted from historical solutions.",
     "roles": ["feed", "output", "bonding", "conversion", "disposal", "conduit", "process"],
     "grouping": ["role", "canonicalMechanismHash"],
-    "fragmentFields": {
-      "occurrenceCount": "integer",
-      "sourcePuzzleCount": "integer",
-      "sourcePuzzles": "string[]",
-      "structuralVariantCount": "integer",
-      "canonicalStructuralHashes": "string[]",
-      "partTypes": "string[]",
-      "samples": "source references with anchor and summary"
+    "evidenceLevels": {
+      "dynamic-confirmed": "Replay directly observed input spawning or output/disposal consumption at the fragment anchor.",
+      "dynamic-arm-observed": "Replay observed arm activity inside the fragment, but the anchor glyph effect is not simulated.",
+      "structural-only": "Fragment is inferred from geometry only or no matching puzzle replay was available."
+    },
+    "evidenceFields": {
+      "armInstructionCount": "integer",
+      "grabCount": "integer",
+      "dropCount": "integer",
+      "sourceMoleculeCount": "integer",
+      "consumerEventCount": "integer",
+      "glyphSimulationAvailable": "boolean"
     },
     "limitations": [
-      "Current fragments are structural neighborhoods around functional anchors.",
-      "Runtime molecule-flow confirmation requires cycle-accurate simulation traces."
+      "Bonding and conversion glyph effects remain unconfirmed while replay glyphSimulation is false.",
+      "Evidence is available only when the source puzzle can be resolved for replay."
     ]
   }
 }

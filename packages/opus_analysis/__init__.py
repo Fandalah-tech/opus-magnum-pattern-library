@@ -1,5 +1,6 @@
 from .canonical import canonical_solution_hash, canonical_solution_payload
 from .diagnostics import analyze_solution
+from .fragment_evidence import trace_fragment_evidence
 from .fragments import extract_solution_fragments, functional_role
 from .graph import build_solution_graph
 from .patterns import detect_patterns
@@ -20,4 +21,5 @@ __all__ = [
     "functional_role",
     "puzzle_feature_fingerprint",
     "puzzle_feature_payload",
+    "trace_fragment_evidence",
 ]
