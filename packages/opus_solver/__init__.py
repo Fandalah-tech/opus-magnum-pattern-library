@@ -34,6 +34,7 @@ from .solver import (
     solve_puzzle,
     validate_generated_solution,
 )
+from .variants import empirical_edge_options, enumerate_empirical_assembly_variants
 
 __all__ = [
     "AtomFlow",
@@ -49,6 +50,8 @@ __all__ = [
     "build_composition_prior",
     "build_manufacturing_plan",
     "build_solver_index",
+    "empirical_edge_options",
+    "enumerate_empirical_assembly_variants",
     "generate_composed_candidates",
     "manufacturing_requirements",
     "materialize_assembly_layout",
