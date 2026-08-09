@@ -1,4 +1,10 @@
 from .assembly import rank_fragment_assemblies
+from .candidate_search import (
+    apply_schedule_group_offsets,
+    enumerate_schedule_variants,
+    search_temporal_candidates,
+    validation_rank,
+)
 from .candidate_solution import (
     assign_branch_atom_flows,
     build_candidate_solution,
@@ -44,11 +50,13 @@ __all__ = [
     "UnsupportedPuzzleError",
     "apply_forward_transform",
     "apply_inverse_transform",
+    "apply_schedule_group_offsets",
     "assign_branch_atom_flows",
     "build_candidate_solution",
     "build_composition_prior",
     "build_manufacturing_plan",
     "build_solver_index",
+    "enumerate_schedule_variants",
     "generate_composed_candidates",
     "manufacturing_requirements",
     "materialize_assembly_layout",
@@ -62,9 +70,11 @@ __all__ = [
     "rank_fragment_chains",
     "rank_mechanisms",
     "required_flow_relations",
+    "search_temporal_candidates",
     "serialize_candidate_roundtrip",
     "solve_puzzle",
     "synchronize_layout_programs",
     "transplant_geometry",
     "validate_generated_solution",
+    "validation_rank",
 ]
