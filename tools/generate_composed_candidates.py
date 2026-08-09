@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from packages.opus_parser import parse_puzzle, write_solution
-from packages.opus_solver import generate_composed_candidates
+from packages.opus_solver import build_outcome_index, generate_composed_candidates
 
 
 def _best_writable(result: dict) -> dict | None:
@@ -40,6 +40,7 @@ def main() -> int:
     parser.add_argument("--transform-results", type=int, default=10, help="Best geometric variants retained in the JSON report.")
     parser.add_argument("--report", type=Path, default=Path("reports/composed-candidates.json"))
     parser.add_argument("--write-best", type=Path)
+    parser.add_argument("--outcome-index", type=Path, help="Merge compact learning outcomes into this persistent JSON index.")
     args = parser.parse_args()
 
     puzzle = parse_puzzle(args.puzzle)
@@ -67,7 +68,18 @@ def main() -> int:
         if best is not None:
             write_solution(best["solution"], args.write_best, version=7)
 
-    print(json.dumps(result.get("summary", {}), sort_keys=True))
+    outcome_summary = None
+    if args.outcome_index:
+        existing = json.loads(args.outcome_index.read_text(encoding="utf-8")) if args.outcome_index.exists() else None
+        outcome_index = build_outcome_index(puzzle, result, existing_index=existing)
+        args.outcome_index.parent.mkdir(parents=True, exist_ok=True)
+        args.outcome_index.write_text(json.dumps(outcome_index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        outcome_summary = outcome_index.get("summary", {})
+
+    summary = dict(result.get("summary", {}))
+    if outcome_summary is not None:
+        summary["outcomeLearning"] = outcome_summary
+    print(json.dumps(summary, sort_keys=True))
     return 0 if result.get("summary", {}).get("supported") else 2
 
 

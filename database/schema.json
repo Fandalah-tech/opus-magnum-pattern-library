@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.20.0",
-  "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, writable target-puzzle generation and adaptive diagnostic repair search for Opus Magnum Codex.",
+  "schemaVersion": "0.21.0",
+  "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, adaptive candidate repair and compact solver outcome learning for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -10,95 +10,65 @@
   },
   "fragmentIndex": {"schemaVersion": "0.3.0"},
   "fragmentFlowIndex": {"schemaVersion": "0.4.0"},
-  "assemblyLayout": {
-    "schemaVersion": "0.4.0",
-    "transformOverrides": "optional slot -> relativeTransform mapping used to materialize alternate historically observed geometry joins",
-    "transformSlots": ["branch-N:convergence-input", "branch-N:edge-M", "tail-N:edge"],
-    "geometryDiagnostics": {
-      "exactStaticConflicts": "overlap between two parts whose occupied footprint is modeled exactly",
-      "approximateStaticConflicts": "overlap involving at least one anchor-only fallback footprint",
-      "armWorkspaceOverlaps": "conservative reachable-tip overlap; reported as risk, never treated as invalid by itself"
-    }
-  },
+  "assemblyLayout": {"schemaVersion": "0.4.0"},
   "assemblySchedule": {"schemaVersion": "0.1.0"},
   "candidateSolution": {"schemaVersion": "0.1.0"},
-  "engineValidationDiagnostics": {
-    "fields": [
-      "failureMode",
-      "firstError.cycle",
-      "firstError.message",
-      "deliveredProducts",
-      "outputDeficits",
-      "totalDelivered",
-      "totalDeficit",
-      "completedCycles",
-      "initialInputStatus",
-      "blockedInputsAtStart"
+  "engineValidationDiagnostics": {"schemaVersion": "0.2.0"},
+  "temporalCandidateSearch": {"schemaVersion": "0.1.0"},
+  "geometricCandidateSearch": {"schemaVersion": "0.2.0"},
+  "adaptiveRepairPolicy": {"schemaVersion": "0.1.0"},
+  "solverOutcomeIndex": {
+    "schemaVersion": "0.1.0",
+    "defaultMaterialization": "database/solver-outcomes.json",
+    "purpose": "Persist compact generation outcomes so diagnostic repair heuristics can be calibrated from observed solver success instead of remaining hand-authored.",
+    "privacyAndSizePolicy": "Do not retain generated solution geometry or program payloads; keep canonical identities, diagnostics, repair attempts and progress only.",
+    "outcomeIdentity": "stable hash of puzzle fingerprint, canonical assembly signature, candidate rank, base failure mode and selected repair route",
+    "outcomeFields": [
+      "puzzleFingerprint",
+      "manufacturingStrategy",
+      "assemblyHash",
+      "layoutSignals",
+      "baseProgress",
+      "repairPolicy",
+      "repairSucceededWith",
+      "attempts",
+      "bestProgressSource",
+      "bestProgress",
+      "solved"
     ],
-    "failureModes": [
-      "simulation-error",
-      "blocked-input-at-start",
-      "missing-standard-output",
-      "no-product-delivered",
-      "insufficient-product-delivery"
+    "mergePolicy": "same stable outcome id is deduplicated and the observation with the best engine progress is retained",
+    "priors": {
+      "grouping": ["base failureMode", "firstRepair"],
+      "metrics": [
+        "observationCount",
+        "solvedCount",
+        "solveRate",
+        "firstRepairSuccessCount",
+        "firstRepairSuccessRate",
+        "repairAttempts",
+        "repairSuccesses"
+      ]
+    },
+    "writers": [
+      "tools/record_solver_outcomes.py <puzzle> <generation-report>",
+      "tools/generate_composed_candidates.py --outcome-index <path>"
     ]
-  },
-  "temporalCandidateSearch": {
-    "schemaVersion": "0.1.0",
-    "purpose": "Search small relative timing variations while preserving fragment-local programs and geometry."
-  },
-  "geometricCandidateSearch": {
-    "schemaVersion": "0.2.0",
-    "purpose": "Search alternate relative fragment placements using only transforms observed in the replay-backed corpus."
-  },
-  "adaptiveRepairPolicy": {
-    "schemaVersion": "0.1.0",
-    "purpose": "Select the first bounded repair dimension from engine and layout diagnostics instead of always searching timing before geometry.",
-    "geometryFirstSignals": [
-      "blocked-input-at-start",
-      "exact static footprint conflict",
-      "missing-standard-output",
-      "collision-like simulation error"
-    ],
-    "timingFirstSignals": [
-      "no-product-delivered without geometry signal",
-      "insufficient-product-delivery",
-      "non-collision simulation error"
-    ],
-    "fallback": "timing first when no stronger diagnostic exists",
-    "availabilityRule": "if the preferred repair search is disabled, use the enabled alternative",
-    "terminationRule": "stop repair routing as soon as an enabled search finds a complete solution"
   },
   "composedGeneration": {
     "schemaVersion": "0.4.0",
     "pipeline": [
-      "build manufacturing plan",
-      "rank convergence-aware assembly DAGs",
-      "materialize preferred geometry with footprint diagnostics",
-      "materialize and synchronize programs",
-      "serialize and parse back",
-      "run engine validation including cycle-zero input diagnostics",
-      "derive an explainable adaptive repair route",
-      "run the preferred bounded repair search",
-      "run the alternate repair search only if the first one does not solve the candidate"
-    ],
-    "summary": [
-      "assemblyCandidateCount",
-      "engineCompleteCount",
-      "temporalVariantCount",
-      "temporalCompleteCount",
-      "geometricVariantCount",
-      "geometricCompleteCount",
-      "failureModes",
-      "repairRoutes",
-      "hasCompleteSolution"
+      "build manufacturing plan and assembly candidates",
+      "materialize/synchronize/serialize preferred candidate",
+      "validate engine and derive adaptive repair route",
+      "run bounded timing/geometry repair until solved or exhausted",
+      "optionally compact each candidate result into the persistent solver outcome index"
     ]
   },
   "remainingValidation": [
     "rebuild fragment/flow indexes from the local corpus using current schemas",
-    "measure repair-route effectiveness on reference campaign puzzles",
+    "accumulate solver-outcomes across reference campaign generation runs",
     "cross-check generated candidates with OMSim",
-    "combine geometry and timing search only for candidates that survive both independent repair layers without solving",
-    "learn repair priors empirically from accumulated candidate outcomes"
+    "require a minimum observation threshold before learned priors may override diagnostic repair heuristics",
+    "eventually condition priors on puzzle/manufacturing features in addition to failure mode"
   ]
 }
