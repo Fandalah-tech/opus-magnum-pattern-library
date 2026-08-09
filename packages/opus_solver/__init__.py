@@ -29,6 +29,7 @@ from .layout import (
     materialize_assembly_layout,
     transplant_geometry,
 )
+from .layout_diagnostics import analyze_layout_geometry, arm_workspace_cells, part_occupied_cells
 from .library import build_solver_index, pareto_frontier
 from .manufacturing import (
     AtomFlow,
@@ -53,9 +54,11 @@ __all__ = [
     "ManufacturingPlan",
     "SolveResult",
     "UnsupportedPuzzleError",
+    "analyze_layout_geometry",
     "apply_forward_transform",
     "apply_inverse_transform",
     "apply_schedule_group_offsets",
+    "arm_workspace_cells",
     "assign_branch_atom_flows",
     "build_candidate_solution",
     "build_composition_prior",
@@ -69,6 +72,7 @@ __all__ = [
     "materialize_assembly_schedule",
     "mechanism_compatibility",
     "pareto_frontier",
+    "part_occupied_cells",
     "plan_puzzle_fragment_chains",
     "puzzle_similarity",
     "rank_chains_for_manufacturing_plan",

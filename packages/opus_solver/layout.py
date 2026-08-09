@@ -6,6 +6,8 @@ from typing import Any
 
 from packages.opus_analysis.canonical import rotate_hex
 
+from .layout_diagnostics import analyze_layout_geometry
+
 FragmentKey = tuple[str, str]
 
 
@@ -222,8 +224,10 @@ def materialize_assembly_layout(
         add_instance(f"tail-{tail_index}", target, current_position, current_rotation)
 
     parts, conflicts = _dedupe_parts(all_parts)
+    geometry_diagnostics = analyze_layout_geometry(parts)
+    geometry_summary = geometry_diagnostics["summary"]
     return {
-        "schemaVersion": "0.3.0",
+        "schemaVersion": "0.4.0",
         "summary": {
             "instanceCount": len(placements),
             "materializedPartCount": len(parts),
@@ -231,18 +235,23 @@ def materialize_assembly_layout(
             "missingGeometryCount": len(missing_geometry),
             "missingTransformCount": len(missing_transform),
             "originConflictCount": len(conflicts),
+            "exactStaticConflictCount": geometry_summary["exactStaticConflictCount"],
+            "approximateStaticConflictCount": geometry_summary["approximateStaticConflictCount"],
+            "armWorkspaceOverlapCount": geometry_summary["armWorkspaceOverlapCount"],
             "transformOverrideCount": len(overrides),
             "layoutComplete": not missing_geometry and not missing_transform,
         },
         "placements": placements,
         "parts": parts,
         "conflicts": conflicts,
+        "geometryDiagnostics": geometry_diagnostics,
         "missingGeometry": missing_geometry,
         "missingTransforms": missing_transform,
         "usedTransforms": used_transforms,
         "transformOverrides": deepcopy(overrides),
         "limitations": [
-            "Conflict detection currently checks part-origin overlap only, not full occupied footprints or swept arm paths.",
+            "Static footprint conflicts and arm workspace overlaps are diagnostics; engine/OMSim validation remains authoritative.",
+            "Arm workspace overlap is not treated as invalid because interacting mechanisms routinely share reachable cells.",
             "Deduplicated shared parts retain all fragment-local program contributions for later synchronization.",
             "A materialized layout is a geometry candidate, not yet a valid Opus Magnum solution."
         ],
