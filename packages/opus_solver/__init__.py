@@ -1,3 +1,4 @@
+from .library import build_solver_index, pareto_frontier
 from .manufacturing import (
     AtomFlow,
     ManufacturingOperation,
@@ -20,6 +21,8 @@ __all__ = [
     "SolveResult",
     "UnsupportedPuzzleError",
     "build_manufacturing_plan",
+    "build_solver_index",
+    "pareto_frontier",
     "solve_puzzle",
     "validate_generated_solution",
 ]
