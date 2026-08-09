@@ -60,12 +60,6 @@ class _BinaryWriter:
 
 
 def _metric_entries(solution: dict[str, Any]) -> list[tuple[int, int]]:
-    """Return the exact solved-metrics block expected by the game.
-
-    Version 7 does not encode an arbitrary metric count. A zero means an
-    unsolved file; any non-zero value is followed by exactly four id/value
-    pairs in the order cycles, cost, area and instructions.
-    """
     metrics = solution.get("metrics") or {}
     values = {name: metrics.get(name) for name in _METRIC_CODES}
     present = [name for name, value in values.items() if value is not None]
@@ -80,19 +74,10 @@ def _metric_entries(solution: dict[str, Any]) -> list[tuple[int, int]]:
         )
     if solution.get("unknownMetrics"):
         raise SolutionWriteError("Version 7 solution files do not support additional metrics")
-    return [
-        (code, int(values[name]))
-        for name, code in sorted(_METRIC_CODES.items(), key=lambda item: item[1])
-    ]
+    return [(code, int(values[name])) for name, code in sorted(_METRIC_CODES.items(), key=lambda item: item[1])]
 
 
 def write_solution_bytes(solution: dict[str, Any], *, version: int | None = None) -> bytes:
-    """Serialize a normalized solution model into the game's binary format.
-
-    The writer intentionally accepts the same dictionary shape returned by
-    :func:`parse_solution_bytes`, which makes generated solutions round-trip
-    through the parser without a second internal representation.
-    """
     resolved_version = int(version or (solution.get("format") or {}).get("version") or 7)
     if resolved_version != 7:
         raise SolutionWriteError(f"Writing solution version {resolved_version} is not supported; expected 7")
@@ -126,10 +111,7 @@ def write_solution_bytes(solution: dict[str, Any], *, version: int | None = None
         writer.int32(int(part.get("rotation") or 0))
         writer.int32(int(part.get("which") or 0))
 
-        program = sorted(
-            list(part.get("program") or []),
-            key=lambda item: int(item.get("cycle", 0)),
-        )
+        program = sorted(list(part.get("program") or []), key=lambda item: int(item.get("cycle", 0)))
         writer.int32(len(program))
         for instruction_index, item in enumerate(program):
             instruction = str(item.get("instruction") or "")
@@ -157,6 +139,16 @@ def write_solution_bytes(solution: dict[str, Any], *, version: int | None = None
                 writer.int32(int(cell[1]))
 
         writer.int32(int(part.get("armNumber") or 0))
+
+        if part_type == "pipe":
+            writer.int32(int(part.get("pipeId") or 0))
+            pipe_hexes = list(part.get("pipeHexes") or [])
+            writer.int32(len(pipe_hexes))
+            for cell in pipe_hexes:
+                if len(cell) != 2:
+                    raise SolutionWriteError(f"Part {index} has invalid pipe cell {cell!r}")
+                writer.int32(int(cell[0]))
+                writer.int32(int(cell[1]))
 
     return writer.bytes()
 
