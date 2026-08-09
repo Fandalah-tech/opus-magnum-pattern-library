@@ -118,9 +118,6 @@ def _generate_bonded_pair_solution(
     calcified = _flow_by_transformation(plan, "calcification")
     direct = _flow_by_transformation(plan, None)
 
-    # The pattern is expressed in its own local frame, then rotated and
-    # translated as a whole. This deliberately produces a fresh layout rather
-    # than replaying a campaign reference solution.
     global_rotation = 2
     translation = (4, 3)
 
@@ -146,55 +143,12 @@ def _generate_bonded_pair_solution(
     ]
 
     parts = [
-        _part(
-            "part-0",
-            "out-std",
-            output_origin,
-            global_rotation=global_rotation,
-            translation=translation,
-            rotation=output_rotation,
-            which=0,
-        ),
-        _part(
-            "part-1",
-            "arm1",
-            (2, -2),
-            global_rotation=global_rotation,
-            translation=translation,
-            rotation=3,
-            program=arm_program,
-        ),
-        _part(
-            "part-2",
-            "glyph-calcification",
-            (1, 0),
-            global_rotation=global_rotation,
-            translation=translation,
-        ),
-        _part(
-            "part-3",
-            "bonder",
-            (2, -1),
-            global_rotation=global_rotation,
-            translation=translation,
-            rotation=5,
-        ),
-        _part(
-            "part-4",
-            "input",
-            (3, -3),
-            global_rotation=global_rotation,
-            translation=translation,
-            which=calcified.reagent_index,
-        ),
-        _part(
-            "part-5",
-            "input",
-            (1, -2),
-            global_rotation=global_rotation,
-            translation=translation,
-            which=direct.reagent_index,
-        ),
+        _part("part-0", "out-std", output_origin, global_rotation=global_rotation, translation=translation, rotation=output_rotation, which=0),
+        _part("part-1", "arm1", (2, -2), global_rotation=global_rotation, translation=translation, rotation=3, program=arm_program),
+        _part("part-2", "glyph-calcification", (1, 0), global_rotation=global_rotation, translation=translation),
+        _part("part-3", "bonder", (2, -1), global_rotation=global_rotation, translation=translation, rotation=5),
+        _part("part-4", "input", (3, -3), global_rotation=global_rotation, translation=translation, which=calcified.reagent_index),
+        _part("part-5", "input", (1, -2), global_rotation=global_rotation, translation=translation, which=direct.reagent_index),
     ]
 
     return {
@@ -203,12 +157,7 @@ def _generate_bonded_pair_solution(
         "source": {"name": None, "generator": "opus_solver/bonded-pair-v1"},
         "puzzleFile": _puzzle_file_id(puzzle),
         "name": "Opus Solver MVP - bonded pair v1",
-        "metrics": {
-            "cycles": 77,
-            "cost": 40,
-            "area": 9,
-            "instructions": 13,
-        },
+        "metrics": {"cycles": 77, "cost": 40, "area": 9, "instructions": 13},
         "unknownMetrics": [],
         "parts": parts,
         "trailingBytes": 0,
@@ -235,6 +184,17 @@ def validate_generated_solution(
 ) -> dict[str, Any]:
     timeline = build_program_timeline(solution)
     simulator = Simulator.from_models(puzzle, solution)
+    input_status = [
+        {
+            "inputId": str(source.id),
+            "spawnCountAtStart": int(source.spawn_count),
+            "spawnedAtStart": int(source.spawn_count) > 0,
+            "footprint": [list(position) for position in source.footprint],
+        }
+        for source in simulator.inputs
+    ]
+    blocked_inputs = [item["inputId"] for item in input_status if not item["spawnedAtStart"]]
+
     replay = simulator.run_timeline(timeline)
     standard_outputs = [
         str(part.get("id"))
@@ -250,6 +210,7 @@ def validate_generated_solution(
     }
     complete = (
         not terminated
+        and not blocked_inputs
         and bool(standard_outputs)
         and all(value == 0 for value in deficits.values())
     )
@@ -257,6 +218,8 @@ def validate_generated_solution(
         failure_mode = None
     elif terminated:
         failure_mode = "simulation-error"
+    elif blocked_inputs:
+        failure_mode = "blocked-input-at-start"
     elif not standard_outputs:
         failure_mode = "missing-standard-output"
     elif not any(int(value) for value in delivered.values()):
@@ -277,6 +240,10 @@ def validate_generated_solution(
         "completedCycles": replay.get("summary", {}).get("completedCycles"),
         "terminatedWithError": terminated,
         "firstError": error,
+        "inputSourceCount": len(input_status),
+        "initialSpawnedInputCount": sum(item["spawnedAtStart"] for item in input_status),
+        "blockedInputsAtStart": blocked_inputs,
+        "initialInputStatus": input_status,
     }
 
 
@@ -290,9 +257,7 @@ def solve_puzzle(puzzle: dict[str, Any]) -> SolveResult:
     solution = _generate_bonded_pair_solution(puzzle, plan)
     validation = validate_generated_solution(puzzle, solution)
     if not validation["complete"]:
-        raise GeneratedSolutionError(
-            f"Generated candidate failed validation: {validation}"
-        )
+        raise GeneratedSolutionError(f"Generated candidate failed validation: {validation}")
     return SolveResult(
         puzzle_name=str(puzzle.get("name") or _puzzle_file_id(puzzle)),
         strategy=plan.strategy,
