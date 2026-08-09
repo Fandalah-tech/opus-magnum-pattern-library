@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.4.0",
-  "description": "Canonical puzzle/solution catalog plus solver retrieval indexes for Opus Magnum Codex.",
+  "schemaVersion": "0.5.0",
+  "description": "Canonical puzzle/solution catalog plus solver retrieval and fragment indexes for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -9,75 +9,6 @@
     "puzzleFeatureFingerprint": "hash of solver-relevant puzzle chemistry, molecule topology, available parts and production constraints",
     "rule": "Content hashes identify exact files; canonical hashes and feature fingerprints identify reusable structure and problem similarity."
   },
-  "puzzle": {
-    "required": ["id", "sha256", "name", "version", "sourceDataset"],
-    "fields": {
-      "id": "string",
-      "sha256": "hex64",
-      "name": "string",
-      "file": "string|null",
-      "version": "integer|null",
-      "size": "integer|null",
-      "featureFingerprint": "hex64|null",
-      "features": {
-        "production": "boolean",
-        "outputScale": "integer|null",
-        "availableArms": "string[]",
-        "availableGlyphs": "string[]",
-        "reagents": "molecule summary",
-        "products": "molecule summary"
-      },
-      "sourceDataset": "string",
-      "redistribution": "string",
-      "tags": "string[]"
-    }
-  },
-  "solution": {
-    "required": ["id", "sha256", "puzzleId", "metrics", "sourceDataset"],
-    "fields": {
-      "id": "string",
-      "sha256": "hex64",
-      "puzzleId": "string",
-      "file": "string|null",
-      "version": "integer|null",
-      "size": "integer|null",
-      "metrics": {
-        "cycles": "integer|null",
-        "cost": "integer|null",
-        "area": "integer|null",
-        "instructions": "integer|null"
-      },
-      "canonicalStructuralHash": "string|null",
-      "canonicalMechanismHash": "string|null",
-      "structure": {
-        "partTypes": "string[]",
-        "partCount": "integer|null",
-        "armCount": "integer|null",
-        "cycleSlots": "integer|null",
-        "instructionCount": "integer|null"
-      },
-      "validation": {
-        "parserClean": "boolean|null",
-        "omsim": "string|null",
-        "replayEquivalent": "boolean|null"
-      },
-      "sourceDataset": "string",
-      "redistribution": "string",
-      "tags": "string[]"
-    }
-  },
-  "catalog": {
-    "fields": {
-      "generatedAt": "iso8601|null",
-      "puzzles": "puzzle[]",
-      "solutions": "solution[]",
-      "summary": {
-        "puzzleCount": "integer",
-        "solutionCount": "integer",
-        "validatedSolutionCount": "integer"
-      }
-    }
-  },
   "puzzleFeatureIndex": {
     "purpose": "Comparable puzzle-side representation for cross-puzzle retrieval.",
     "moleculeIdentity": "translation/rotation invariant; reflection intentionally preserved",
@@ -85,43 +16,28 @@
   },
   "solverIndex": {
     "purpose": "Compact retrieval layer used by the solver to search reusable mechanisms without scanning every exact solution.",
-    "grouping": ["puzzleKey", "canonicalMechanismHash"],
-    "mechanismFields": {
-      "solutionCount": "integer",
-      "structuralVariantCount": "integer",
-      "partTypes": "string[]",
-      "armCount": "{min,max}",
-      "partCount": "{min,max}",
-      "cycleSlots": "{min,max}",
-      "instructionCount": "{min,max}",
-      "bestByMetric": "solutionRef by cycles/cost/area/instructions",
-      "paretoFrontier": "solutionRef[]"
-    }
+    "grouping": ["puzzleKey", "canonicalMechanismHash"]
   },
   "crossPuzzleRetrieval": {
     "purpose": "Rank mechanisms learned on other puzzles for reuse on a target puzzle.",
-    "score": "0..1 weighted combination of puzzle feature similarity and mechanism compatibility",
-    "puzzleSimilarityComponents": [
-      "productElements",
-      "reagentElements",
-      "productBonds",
-      "reagentBonds",
-      "productMolecules",
-      "reagentMolecules",
-      "productAtomCounts",
-      "reagentAtomCounts",
-      "productBondCounts",
-      "reagentBondCounts",
-      "availableGlyphs",
-      "availableArms",
-      "production",
-      "outputScale"
-    ],
-    "compatibility": {
-      "compatible": "boolean",
-      "score": "0..1",
-      "requiredParts": "string[]",
-      "missingParts": "string[]"
-    }
+    "score": "0..1 weighted combination of puzzle feature similarity and mechanism compatibility"
+  },
+  "fragmentIndex": {
+    "purpose": "Catalog reusable local functional sub-mechanisms extracted from historical solutions.",
+    "roles": ["feed", "output", "bonding", "conversion", "disposal", "conduit", "process"],
+    "grouping": ["role", "canonicalMechanismHash"],
+    "fragmentFields": {
+      "occurrenceCount": "integer",
+      "sourcePuzzleCount": "integer",
+      "sourcePuzzles": "string[]",
+      "structuralVariantCount": "integer",
+      "canonicalStructuralHashes": "string[]",
+      "partTypes": "string[]",
+      "samples": "source references with anchor and summary"
+    },
+    "limitations": [
+      "Current fragments are structural neighborhoods around functional anchors.",
+      "Runtime molecule-flow confirmation requires cycle-accurate simulation traces."
+    ]
   }
 }
