@@ -24,8 +24,8 @@ def _puzzle_lookup(root: Path) -> dict[str, Path]:
     return lookup
 
 
-def _transform_key(transform: dict[str, Any] | None) -> str:
-    return json.dumps(transform or {}, sort_keys=True, separators=(",", ":"))
+def _json_key(value: dict[str, Any] | None) -> str:
+    return json.dumps(value or {}, sort_keys=True, separators=(",", ":"))
 
 
 def _transform_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
@@ -35,22 +35,46 @@ def _transform_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
         transform = record.get("relativeTransform")
         if not transform:
             continue
-        key = _transform_key(transform)
+        key = _json_key(transform)
         payloads[key] = transform
         weighted[key] += max(1, int(record.get("observationCount") or 0))
     variants = [
         {"relativeTransform": payloads[key], "observationCount": count}
         for key, count in sorted(weighted.items(), key=lambda item: (-item[1], item[0]))
     ]
+    return {"preferred": variants[0]["relativeTransform"] if variants else None, "variantCount": len(variants), "variants": variants}
+
+
+def _invariant_timing(timing: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not timing:
+        return None
     return {
-        "preferred": variants[0]["relativeTransform"] if variants else None,
-        "variantCount": len(variants),
-        "variants": variants,
+        "frame": "source-fragment-program-start",
+        "programStartDelta": timing.get("programStartDelta"),
+        "eventFirstFromSourceStart": timing.get("eventFirstFromSourceStart"),
+        "eventFirstFromTargetStart": timing.get("eventFirstFromTargetStart"),
     }
 
 
+def _timing_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
+    weighted: Counter[str] = Counter()
+    payloads: dict[str, dict[str, Any]] = {}
+    for record in records:
+        timing = _invariant_timing(record.get("relativeTiming"))
+        if not timing or timing.get("programStartDelta") is None:
+            continue
+        key = _json_key(timing)
+        payloads[key] = timing
+        weighted[key] += max(1, int(record.get("observationCount") or 0))
+    variants = [
+        {"relativeTiming": payloads[key], "observationCount": count}
+        for key, count in sorted(weighted.items(), key=lambda item: (-item[1], item[0]))
+    ]
+    return {"preferred": variants[0]["relativeTiming"] if variants else None, "variantCount": len(variants), "variants": variants}
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build replay-backed canonical flow transitions, convergence motifs and relative geometry between functional fragments.")
+    parser = argparse.ArgumentParser(description="Build replay-backed canonical fragment flow with geometry, convergence and relative timing evidence.")
     parser.add_argument("--archive-root", type=Path, default=Path(".datasets/solution-archive"))
     parser.add_argument("--puzzle-root", type=Path, default=Path(".datasets/archive-campaign-reference"))
     parser.add_argument("--output", type=Path, default=Path("database/fragment-flow-index.json"))
@@ -92,21 +116,11 @@ def main() -> int:
                     str(edge.get("targetMechanismHash") or ""),
                     relation,
                 )
-                groups[key].append({
-                    "puzzleKey": puzzle_key,
-                    "solutionSha256": solution_sha,
-                    "solutionFile": item.get("file"),
-                    **edge,
-                })
+                groups[key].append({"puzzleKey": puzzle_key, "solutionSha256": solution_sha, "solutionFile": item.get("file"), **edge})
 
             for motif in extract_convergence_motifs(graph):
                 raw_convergences += 1
-                convergence_groups[canonical_convergence_key(motif)].append({
-                    "puzzleKey": puzzle_key,
-                    "solutionSha256": solution_sha,
-                    "solutionFile": item.get("file"),
-                    **motif,
-                })
+                convergence_groups[canonical_convergence_key(motif)].append({"puzzleKey": puzzle_key, "solutionSha256": solution_sha, "solutionFile": item.get("file"), **motif})
         except Exception as exc:
             errors.append({"file": item.get("file"), "errorType": type(exc).__name__, "message": str(exc)})
 
@@ -117,6 +131,7 @@ def main() -> int:
         solutions = sorted({str(record["solutionSha256"]) for record in records if record.get("solutionSha256")})
         observation_count = sum(int(record.get("observationCount") or 0) for record in records)
         transforms = _transform_summary(records)
+        timings = _timing_summary(records)
         transitions.append({
             "sourceRole": source_role,
             "sourceMechanismHash": source_hash,
@@ -124,6 +139,7 @@ def main() -> int:
             "targetMechanismHash": target_hash,
             "relation": relation,
             "relativeTransforms": transforms,
+            "relativeTimings": timings,
             "observationCount": observation_count,
             "sourcePuzzleCount": len(puzzles),
             "sourceSolutionCount": len(solutions),
@@ -137,6 +153,7 @@ def main() -> int:
                     "lastCycle": record.get("lastCycle"),
                     "observationCount": record.get("observationCount"),
                     "relativeTransform": record.get("relativeTransform"),
+                    "relativeTiming": record.get("relativeTiming"),
                 }
                 for record in records[:max(0, args.sample_limit)]
             ],
@@ -174,7 +191,7 @@ def main() -> int:
         })
 
     index = {
-        "schemaVersion": "0.3.0",
+        "schemaVersion": "0.4.0",
         "summary": {
             "replaySolutionCount": replay_solutions,
             "rawFlowEdgeCount": raw_edges,
@@ -183,6 +200,7 @@ def main() -> int:
             "rawConvergenceMotifCount": raw_convergences,
             "canonicalConvergenceMotifCount": len(convergence_motifs),
             "transitionTransformVariantCount": sum(int(item["relativeTransforms"]["variantCount"]) for item in transitions),
+            "transitionTimingVariantCount": sum(int(item["relativeTimings"]["variantCount"]) for item in transitions),
             "relationCounts": dict(sorted(relation_counts.items())),
             "errorCount": len(errors),
         },

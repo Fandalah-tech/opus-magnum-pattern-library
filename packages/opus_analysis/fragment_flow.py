@@ -31,13 +31,34 @@ def _relative_transform(source_part: dict[str, Any], target_part: dict[str, Any]
     }
 
 
+def _program_start(fragment: dict[str, Any]) -> int | None:
+    value = fragment.get("summary", {}).get("firstInstructionCycle")
+    return int(value) if isinstance(value, int) else None
+
+
+def _relative_timing(source_fragment: dict[str, Any], target_fragment: dict[str, Any], cycles: list[int]) -> dict[str, Any]:
+    source_start = _program_start(source_fragment)
+    target_start = _program_start(target_fragment)
+    event_first = min(cycles) if cycles else None
+    event_last = max(cycles) if cycles else None
+    return {
+        "frame": "source-fragment-program-start",
+        "sourceProgramStart": source_start,
+        "targetProgramStart": target_start,
+        "programStartDelta": (target_start - source_start) if source_start is not None and target_start is not None else None,
+        "eventFirstCycle": event_first,
+        "eventLastCycle": event_last,
+        "eventFirstFromSourceStart": (event_first - source_start) if event_first is not None and source_start is not None else None,
+        "eventFirstFromTargetStart": (event_first - target_start) if event_first is not None and target_start is not None else None,
+    }
+
+
 def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) -> dict[str, Any]:
     """Reconstruct replay-observed molecule flow between functional fragments.
 
-    Atom ids are lineage markers. Flow edges also retain a source-local relative
-    transform between concrete anchor parts, making observed fragment adjacency
-    reusable independently of the historical solution's global translation and
-    rotation.
+    Edge geometry is expressed in the source anchor frame; edge timing is
+    expressed relative to fragment program starts. Both remain stable under a
+    global placement or global program-cycle shift of the historical solution.
     """
     fragments = extract_solution_fragments(solution)
     annotated = {item["anchorPartId"]: item for item in trace_fragment_evidence(puzzle, solution)}
@@ -123,6 +144,7 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
             "anchorPartType": fragment.get("anchorPartType"),
             "anchorPosition": list(part.get("position") or [0, 0]),
             "anchorRotation": int(part.get("rotation") or 0) % 6,
+            "programStartCycle": _program_start(fragment),
             "role": fragment.get("role"),
             "canonicalMechanismHash": fragment.get("canonicalMechanismHash"),
             "canonicalStructuralHash": fragment.get("canonicalStructuralHash"),
@@ -145,13 +167,14 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
             "targetMechanismHash": target_fragment.get("canonicalMechanismHash"),
             "relation": relation,
             "relativeTransform": _relative_transform(source_part, target_part),
+            "relativeTiming": _relative_timing(source_fragment, target_fragment, cycles),
             "observationCount": count,
             "firstCycle": min(cycles),
             "lastCycle": max(cycles),
         })
 
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "analysis": "replay-backed-fragment-molecule-flow",
         "source": {
             "puzzleFile": solution.get("puzzleFile"),
@@ -169,7 +192,7 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
         "limitations": [
             "Only replay-observed functional events create flow edges.",
             "Unsupported glyphs cannot yet create transformation edges.",
-            "Relative transforms describe anchor-to-anchor adjacency, not full fragment non-overlap.",
+            "Relative transforms describe anchor adjacency; relative timing describes fragment program starts.",
             "Collision correctness still requires external validation."
         ],
     }

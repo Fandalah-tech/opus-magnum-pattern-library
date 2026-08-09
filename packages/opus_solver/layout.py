@@ -115,7 +115,18 @@ def _dedupe_parts(parts: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], li
     origins: defaultdict[tuple[int, int], list[dict[str, Any]]] = defaultdict(list)
     for part in parts:
         signature = _part_signature(part)
-        unique.setdefault(signature, part)
+        instance = str(part.get("sourceFragmentInstance") or "")
+        if signature not in unique:
+            retained = deepcopy(part)
+            retained["sourceFragmentInstances"] = [instance] if instance else []
+            retained["programContributions"] = {instance: deepcopy(part.get("program", []))} if instance else {}
+            unique[signature] = retained
+        else:
+            retained = unique[signature]
+            if instance and instance not in retained.setdefault("sourceFragmentInstances", []):
+                retained["sourceFragmentInstances"].append(instance)
+            if instance:
+                retained.setdefault("programContributions", {})[instance] = deepcopy(part.get("program", []))
     for part in unique.values():
         origins[tuple(part.get("position") or (0, 0))].append(part)
 
@@ -133,12 +144,6 @@ def _dedupe_parts(parts: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], li
 
 
 def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[str, Any]) -> dict[str, Any]:
-    """Materialize a convergence-aware assembly candidate in one axial frame.
-
-    The convergence target is anchored at (0,0), rotation 0. Branches are
-    propagated backwards using same-solution convergence transforms and
-    transition transforms; the tail is propagated forwards toward output.
-    """
     geometries = _geometry_lookup(fragment_index)
     convergence = candidate.get("convergence") or {}
     target_key = _key(convergence.get("targetRole"), convergence.get("targetMechanismHash"))
@@ -179,8 +184,7 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
             missing_transform.append({"branch": branch_index, "stage": "convergence-input", "key": list(input_key)})
             continue
         current_position, current_rotation = apply_inverse_transform(convergence_position, convergence_rotation, transform)
-        current_key = input_key
-        add_instance(f"branch-{branch_index}:input", current_key, current_position, current_rotation)
+        add_instance(f"branch-{branch_index}:input", input_key, current_position, current_rotation)
 
         for reverse_index, edge in enumerate(reversed(branch)):
             edge_transform = _preferred_transform(edge)
@@ -189,8 +193,7 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
                 missing_transform.append({"branch": branch_index, "stage": "branch-edge", "edge": edge})
                 break
             current_position, current_rotation = apply_inverse_transform(current_position, current_rotation, edge_transform)
-            current_key = source_key
-            add_instance(f"branch-{branch_index}:upstream-{reverse_index}", current_key, current_position, current_rotation)
+            add_instance(f"branch-{branch_index}:upstream-{reverse_index}", source_key, current_position, current_rotation)
 
     current_position, current_rotation = convergence_position, convergence_rotation
     for tail_index, edge in enumerate(candidate.get("tail", [])):
@@ -204,10 +207,11 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
 
     parts, conflicts = _dedupe_parts(all_parts)
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "summary": {
             "instanceCount": len(placements),
             "materializedPartCount": len(parts),
+            "sharedPartCount": sum(len(part.get("sourceFragmentInstances", [])) > 1 for part in parts),
             "missingGeometryCount": len(missing_geometry),
             "missingTransformCount": len(missing_transform),
             "originConflictCount": len(conflicts),
@@ -220,7 +224,7 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
         "missingTransforms": missing_transform,
         "limitations": [
             "Conflict detection currently checks part-origin overlap only, not full occupied footprints or swept arm paths.",
-            "Programs remain fragment-local normalized tapes and are not yet globally synchronized.",
+            "Deduplicated shared parts retain all fragment-local program contributions for later synchronization.",
             "A materialized layout is a geometry candidate, not yet a valid Opus Magnum solution."
         ],
     }
