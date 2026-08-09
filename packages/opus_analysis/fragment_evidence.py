@@ -4,17 +4,12 @@ from collections import Counter
 from typing import Any
 
 from .fragments import extract_solution_fragments
-from .replay import build_replay_trace
+from .replay_glyphs import build_replay_trace
 from .timeline import build_program_timeline
 
 
 def trace_fragment_evidence(puzzle: dict[str, Any], solution: dict[str, Any]) -> list[dict[str, Any]]:
-    """Annotate structural fragments with replay-observed evidence when available.
-
-    Current replay capabilities can confirm input sourcing, arm interaction,
-    disposal consumption and product delivery. Bond/conversion glyph effects
-    remain structural-only until glyph simulation is implemented.
-    """
+    """Annotate structural fragments with replay-observed evidence when available."""
 
     fragments = extract_solution_fragments(solution)
     timeline = build_program_timeline(solution)
@@ -25,6 +20,7 @@ def trace_fragment_evidence(puzzle: dict[str, Any], solution: dict[str, Any]) ->
     drop_events: Counter[str] = Counter()
     consumer_events: Counter[str] = Counter()
     source_molecules: Counter[str] = Counter()
+    glyph_events: Counter[str] = Counter()
 
     seen_source_molecules: set[str] = set()
     for frame in trace.get("frames", []):
@@ -49,6 +45,10 @@ def trace_fragment_evidence(puzzle: dict[str, Any], solution: dict[str, Any]) ->
                 consumer = str(event.get("consumerPartId") or "")
                 if consumer:
                     consumer_events[consumer] += 1
+            elif kind == "glyph-effect":
+                glyph_part = str(event.get("glyphPartId") or "")
+                if glyph_part:
+                    glyph_events[glyph_part] += 1
 
     annotated = []
     for fragment in fragments:
@@ -61,11 +61,14 @@ def trace_fragment_evidence(puzzle: dict[str, Any], solution: dict[str, Any]) ->
         observed_drops = sum(drop_events[part_id] for part_id in member_ids)
         observed_source_molecules = source_molecules[anchor_id] if role == "feed" else 0
         observed_consumptions = consumer_events[anchor_id] if role in {"output", "disposal"} else 0
+        observed_glyph_effects = glyph_events[anchor_id]
 
         if role == "feed":
             evidence_level = "dynamic-confirmed" if observed_source_molecules else "structural-only"
         elif role in {"output", "disposal"}:
             evidence_level = "dynamic-confirmed" if observed_consumptions else "structural-only"
+        elif observed_glyph_effects:
+            evidence_level = "dynamic-confirmed"
         elif observed_grabs or observed_drops:
             evidence_level = "dynamic-arm-observed"
         else:
@@ -79,7 +82,9 @@ def trace_fragment_evidence(puzzle: dict[str, Any], solution: dict[str, Any]) ->
             "dropCount": observed_drops,
             "sourceMoleculeCount": observed_source_molecules,
             "consumerEventCount": observed_consumptions,
+            "glyphEffectCount": observed_glyph_effects,
             "glyphSimulationAvailable": bool(trace.get("capabilities", {}).get("glyphSimulation")),
+            "simulatedGlyphs": list(trace.get("capabilities", {}).get("simulatedGlyphs", [])),
         }
         annotated.append(annotated_fragment)
 
