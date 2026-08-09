@@ -72,7 +72,20 @@ def _safe_name(value: str) -> str:
     return value.strip("_") or "solution"
 
 
-def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int | None) -> list[dict[str, Any]]:
+def _write_checkpoint(root: Path, puzzles: list[dict[str, Any]], solutions: list[dict[str, Any]]) -> None:
+    write_index(root, puzzles, solutions)
+    checkpoint = root / "checkpoint.json"
+    completed = sorted({str(item.get("puzzleId")) for item in solutions if item.get("file") or item.get("error")})
+    checkpoint.write_text(json.dumps({"completedPuzzleIds": completed, "records": len(solutions)}, indent=2), encoding="utf-8")
+
+
+def import_zlbb(
+    root: Path,
+    puzzles: list[dict[str, Any]],
+    limit_per_puzzle: int | None,
+    *,
+    resume: bool = True,
+) -> list[dict[str, Any]]:
     try:
         from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
         from playwright.sync_api import sync_playwright
@@ -85,6 +98,20 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
     output_root.mkdir(parents=True, exist_ok=True)
     records: list[dict[str, Any]] = []
 
+    existing_index = root / "index.json"
+    if resume and existing_index.exists():
+        try:
+            previous = json.loads(existing_index.read_text(encoding="utf-8"))
+            records.extend(previous.get("solutions", []))
+        except Exception:
+            pass
+
+    completed_puzzles = {
+        str(item.get("puzzleId"))
+        for item in records
+        if item.get("file") or item.get("error")
+    }
+
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(accept_downloads=True)
@@ -93,28 +120,37 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
 
         for puzzle_number, puzzle in enumerate(puzzles, start=1):
             puzzle_id = puzzle["puzzleId"]
+            if resume and puzzle_id in completed_puzzles:
+                print(f"[{puzzle_number}/{len(puzzles)}] {puzzle_id}: resume skip", flush=True)
+                continue
+
             url = puzzle["leaderboardUrl"]
             print(f"[{puzzle_number}/{len(puzzles)}] {puzzle_id}: loading {url}", flush=True)
+            puzzle_records: list[dict[str, Any]] = []
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=30000)
                 page.locator("body").wait_for(state="attached", timeout=10000)
             except Exception as exc:
-                records.append({
+                puzzle_records.append({
                     "puzzleId": puzzle_id,
                     "error": f"navigation-{type(exc).__name__}: {exc}",
                     "sourceUrl": url,
                 })
+                records.extend(puzzle_records)
+                _write_checkpoint(root, puzzles, records)
                 continue
 
             links = page.get_by_text("Download", exact=True)
             try:
                 links.first.wait_for(state="attached", timeout=20000)
             except PlaywrightTimeoutError:
-                records.append({
+                puzzle_records.append({
                     "puzzleId": puzzle_id,
                     "error": "no-download-links-found",
                     "sourceUrl": page.url,
                 })
+                records.extend(puzzle_records)
+                _write_checkpoint(root, puzzles, records)
                 continue
 
             count = links.count()
@@ -139,7 +175,7 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
                     filename = f"{index + 1:03d}-{_safe_name(category)}-{_safe_name(suggested)}"
                     destination = puzzle_dir / filename
                     item.save_as(destination)
-                    records.append({
+                    puzzle_records.append({
                         "puzzleId": puzzle_id,
                         "category": category,
                         "rankOnPage": index + 1,
@@ -149,13 +185,25 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
                         "sourceUrl": page.url,
                     })
                 except Exception as exc:
-                    records.append({
+                    puzzle_records.append({
                         "puzzleId": puzzle_id,
                         "category": category,
                         "rankOnPage": index + 1,
                         "error": f"download-{type(exc).__name__}: {exc}",
                         "sourceUrl": page.url,
                     })
+
+            records.extend(puzzle_records)
+            completed_puzzles.add(puzzle_id)
+            _write_checkpoint(root, puzzles, records)
+            print(
+                json.dumps({
+                    "checkpointPuzzle": puzzle_id,
+                    "solutionFiles": sum(1 for item in records if item.get("file")),
+                    "solutionErrors": sum(1 for item in records if item.get("error")),
+                }),
+                flush=True,
+            )
         browser.close()
     return records
 
@@ -163,7 +211,7 @@ def import_zlbb(root: Path, puzzles: list[dict[str, Any]], limit_per_puzzle: int
 def write_index(root: Path, puzzles: list[dict[str, Any]], solutions: list[dict[str, Any]] | None = None) -> Path:
     solution_records = solutions or []
     index = {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "sources": {"puzzles": OPUSSOLVER_ARCHIVE, "solutions": ZLBB_BASE},
         "puzzleCount": len(puzzles),
         "solutionRecordCount": len(solution_records),
@@ -185,13 +233,19 @@ def main() -> int:
     parser.add_argument("--puzzle-limit", type=int)
     parser.add_argument("--limit-per-puzzle", type=int)
     parser.add_argument("--force", action="store_true")
+    parser.add_argument("--no-resume", action="store_true")
     args = parser.parse_args()
 
     all_puzzles = import_puzzles(args.root, force=args.force)
     selected_puzzles = all_puzzles[: args.puzzle_limit] if args.puzzle_limit else all_puzzles
     solutions = None
     if not args.puzzles_only:
-        solutions = import_zlbb(args.root, selected_puzzles, args.limit_per_puzzle)
+        solutions = import_zlbb(
+            args.root,
+            selected_puzzles,
+            args.limit_per_puzzle,
+            resume=not args.no_resume,
+        )
     index = write_index(args.root, all_puzzles, solutions)
     print(json.dumps({
         "puzzles": len(all_puzzles),
