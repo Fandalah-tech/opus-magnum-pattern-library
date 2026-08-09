@@ -41,8 +41,7 @@ def _best_search_progress(search: dict[str, Any] | None) -> dict[str, Any] | Non
     search = search or {}
     best = None
     for variant in search.get("variants", []):
-        validation = variant.get("validation") or {}
-        progress = _validation_progress(validation)
+        progress = _validation_progress(variant.get("validation") or {})
         candidate = {
             **progress,
             "variantIndex": variant.get("variantIndex"),
@@ -217,4 +216,24 @@ def aggregate_repair_outcomes(records: Iterable[dict[str, Any]]) -> dict[str, An
             "priorGroupCount": len(priors),
         },
         "priors": priors,
+    }
+
+
+def build_outcome_index(
+    puzzle: dict[str, Any],
+    generation: dict[str, Any],
+    *,
+    existing_index: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Merge one generation report into the persistent compact outcome index."""
+    existing_index = existing_index or {}
+    existing_records = list(existing_index.get("outcomes", []))
+    incoming = generation_outcome_records(puzzle, generation)
+    records = merge_outcome_records(existing_records, incoming)
+    aggregate = aggregate_repair_outcomes(records)
+    return {
+        "schemaVersion": "0.1.0",
+        "summary": aggregate["summary"],
+        "priors": aggregate["priors"],
+        "outcomes": records,
     }
