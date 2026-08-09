@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.14.0",
-  "description": "Canonical puzzle/solution catalog plus replay-backed fragment flow, transplantable geometry, observed transforms and assembly layout materialization for Opus Magnum Codex.",
+  "schemaVersion": "0.15.0",
+  "description": "Canonical puzzle/solution catalog plus replay-backed fragment flow, transplantable geometry, assembly materialization and relative program scheduling for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -10,40 +10,54 @@
   },
   "fragmentIndex": {
     "schemaVersion": "0.3.0",
-    "purpose": "Catalog reusable fragment mechanisms with representative canonical geometry."
+    "purpose": "Catalog reusable fragment mechanisms with representative canonical geometry and normalized local programs."
   },
   "fragmentFlowIndex": {
-    "schemaVersion": "0.3.0",
-    "purpose": "Catalog replay-observed transitions, convergence motifs and source-local relative transforms."
+    "schemaVersion": "0.4.0",
+    "purpose": "Catalog replay-observed transitions with source-local geometry and program-start timing evidence.",
+    "relativeTiming": {
+      "frame": "source-fragment-program-start",
+      "programStartDelta": "target fragment program start minus source fragment program start",
+      "eventFirstFromSourceStart": "first observed functional event cycle relative to source program start",
+      "eventFirstFromTargetStart": "first observed functional event cycle relative to target program start",
+      "invariant": "global solution program-cycle shift"
+    },
+    "timingAggregation": {
+      "preferred": "most frequently observed invariant relative timing weighted by observationCount",
+      "variantCount": "number of distinct observed timing relations",
+      "variants": "relative timing plus weighted observation count"
+    },
+    "convergenceMotifs": "same-solution samples retain relativeTimings for each concrete input/output edge"
   },
   "assemblyLayout": {
+    "schemaVersion": "0.2.0",
+    "sharedParts": {
+      "sourceFragmentInstances": "all fragment instances that contributed the same physical part signature",
+      "programContributions": "fragment-local normalized programs retained separately until scheduling"
+    }
+  },
+  "assemblySchedule": {
     "schemaVersion": "0.1.0",
-    "purpose": "Materialize a convergence-aware assembly DAG into one axial coordinate frame.",
-    "root": "convergence fragment anchored at position [0,0], rotation 0",
+    "purpose": "Propagate replay-observed relative program starts through a convergence-aware assembly DAG.",
+    "root": "convergence fragment program start = 0 before non-negative global shift",
     "propagation": {
-      "branches": "walk backwards from convergence inputs with inverse relative transforms",
-      "tail": "walk forwards from convergence target with preferred transition transforms",
-      "fragmentGeometry": "rotate/translate representative canonical geometry so its functional anchor matches the propagated placement"
+      "branches": "walk backwards using inverse programStartDelta",
+      "tail": "walk forwards using programStartDelta",
+      "globalShift": "shift every instance equally when an upstream start would be negative"
     },
-    "deduplication": "identical part type/position/rotation/length/which/track/pipe geometry is retained once",
-    "diagnostics": {
-      "missingGeometry": "fragment instances without representative geometry",
-      "missingTransforms": "assembly edges lacking usable relative-transform evidence",
-      "conflicts": "current first-pass detection of different part types sharing a part origin",
-      "layoutComplete": "true only when no geometry or transform is missing"
+    "programMerge": {
+      "purpose": "shift every fragment-local program contribution into the assembly schedule and merge shared physical parts",
+      "sameCycleSameInstruction": "deduplicated safely",
+      "sameCycleDifferentInstruction": "reported as a program conflict and scheduleComplete=false"
     },
-    "limitations": [
-      "Origin-overlap detection is not full occupied-cell or swept-path collision detection.",
-      "Programs remain normalized per fragment and are not globally synchronized.",
-      "A materialized layout is not yet serialized as a .solution or validated by OMSim."
-    ]
+    "diagnostics": ["missingTimings", "programConflicts", "scheduleComplete"]
   },
   "nextGenerationStep": [
-    "synchronize fragment programs using observed transition cycle offsets",
-    "assign stable arm numbers and part ids",
-    "convert materialized parts into a writable parsed-solution model",
-    "serialize with solution_writer",
-    "validate replay, engine and OMSim",
-    "iterate geometry/transform variants when validation fails"
+    "assign target-puzzle reagent/product indices to feed/output fragment instances",
+    "assign stable part ids and arm numbers",
+    "strip internal provenance fields into a writable solution model",
+    "serialize with solution_writer and parse back",
+    "validate in replay/engine/OMSim",
+    "iterate geometry, transform and timing variants when validation fails"
   ]
 }
