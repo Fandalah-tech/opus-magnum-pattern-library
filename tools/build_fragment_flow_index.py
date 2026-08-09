@@ -24,8 +24,33 @@ def _puzzle_lookup(root: Path) -> dict[str, Path]:
     return lookup
 
 
+def _transform_key(transform: dict[str, Any] | None) -> str:
+    return json.dumps(transform or {}, sort_keys=True, separators=(",", ":"))
+
+
+def _transform_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
+    weighted: Counter[str] = Counter()
+    payloads: dict[str, dict[str, Any]] = {}
+    for record in records:
+        transform = record.get("relativeTransform")
+        if not transform:
+            continue
+        key = _transform_key(transform)
+        payloads[key] = transform
+        weighted[key] += max(1, int(record.get("observationCount") or 0))
+    variants = [
+        {"relativeTransform": payloads[key], "observationCount": count}
+        for key, count in sorted(weighted.items(), key=lambda item: (-item[1], item[0]))
+    ]
+    return {
+        "preferred": variants[0]["relativeTransform"] if variants else None,
+        "variantCount": len(variants),
+        "variants": variants,
+    }
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build replay-backed canonical flow transitions and convergence motifs between functional fragments.")
+    parser = argparse.ArgumentParser(description="Build replay-backed canonical flow transitions, convergence motifs and relative geometry between functional fragments.")
     parser.add_argument("--archive-root", type=Path, default=Path(".datasets/solution-archive"))
     parser.add_argument("--puzzle-root", type=Path, default=Path(".datasets/archive-campaign-reference"))
     parser.add_argument("--output", type=Path, default=Path("database/fragment-flow-index.json"))
@@ -91,12 +116,14 @@ def main() -> int:
         puzzles = sorted({str(record["puzzleKey"]) for record in records})
         solutions = sorted({str(record["solutionSha256"]) for record in records if record.get("solutionSha256")})
         observation_count = sum(int(record.get("observationCount") or 0) for record in records)
+        transforms = _transform_summary(records)
         transitions.append({
             "sourceRole": source_role,
             "sourceMechanismHash": source_hash,
             "targetRole": target_role,
             "targetMechanismHash": target_hash,
             "relation": relation,
+            "relativeTransforms": transforms,
             "observationCount": observation_count,
             "sourcePuzzleCount": len(puzzles),
             "sourceSolutionCount": len(solutions),
@@ -109,6 +136,7 @@ def main() -> int:
                     "firstCycle": record.get("firstCycle"),
                     "lastCycle": record.get("lastCycle"),
                     "observationCount": record.get("observationCount"),
+                    "relativeTransform": record.get("relativeTransform"),
                 }
                 for record in records[:max(0, args.sample_limit)]
             ],
@@ -120,11 +148,7 @@ def main() -> int:
         puzzles = sorted({str(record["puzzleKey"]) for record in records})
         solutions = sorted({str(record["solutionSha256"]) for record in records if record.get("solutionSha256")})
         canonical_inputs = [
-            {
-                "sourceRole": source_role,
-                "sourceMechanismHash": source_hash,
-                "relations": list(relations),
-            }
+            {"sourceRole": source_role, "sourceMechanismHash": source_hash, "relations": list(relations)}
             for source_role, source_hash, relations in input_key
         ]
         convergence_motifs.append({
@@ -150,7 +174,7 @@ def main() -> int:
         })
 
     index = {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "summary": {
             "replaySolutionCount": replay_solutions,
             "rawFlowEdgeCount": raw_edges,
@@ -158,6 +182,7 @@ def main() -> int:
             "flowObservationCount": sum(item["observationCount"] for item in transitions),
             "rawConvergenceMotifCount": raw_convergences,
             "canonicalConvergenceMotifCount": len(convergence_motifs),
+            "transitionTransformVariantCount": sum(int(item["relativeTransforms"]["variantCount"]) for item in transitions),
             "relationCounts": dict(sorted(relation_counts.items())),
             "errorCount": len(errors),
         },
