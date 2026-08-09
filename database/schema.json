@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.8.0",
-  "description": "Canonical puzzle/solution catalog plus solver retrieval, replay-backed fragment evidence and composable molecule-flow transitions for Opus Magnum Codex.",
+  "schemaVersion": "0.9.0",
+  "description": "Canonical puzzle/solution catalog plus solver retrieval, replay-backed fragment flow and empirical composition priors for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -19,26 +19,29 @@
   "fragmentIndex": {
     "purpose": "Catalog reusable local functional sub-mechanisms extracted from historical solutions.",
     "roles": ["feed", "output", "bonding", "conversion", "disposal", "conduit", "process"],
-    "grouping": ["role", "canonicalMechanismHash"],
-    "evidenceLevels": ["dynamic-confirmed", "dynamic-arm-observed", "structural-only"]
+    "grouping": ["role", "canonicalMechanismHash"]
   },
   "fragmentFlowIndex": {
     "purpose": "Catalog replay-observed composition transitions between canonical functional fragment mechanisms.",
     "lineage": "Atom ids persist across replay molecule merge/split operations and are used as lineage markers.",
-    "grouping": ["sourceRole", "sourceMechanismHash", "targetRole", "targetMechanismHash", "relation"],
-    "relations": ["bond-created", "bond-removed", "calcify", "delivered", "consumed"],
-    "transitionFields": {
-      "observationCount": "integer",
-      "sourcePuzzleCount": "integer",
-      "sourceSolutionCount": "integer",
-      "sourcePuzzles": "string[]",
-      "samples": "source solution references and observed cycle ranges"
+    "grouping": ["sourceRole", "sourceMechanismHash", "targetRole", "targetMechanismHash", "relation"]
+  },
+  "compositionPrior": {
+    "purpose": "Rank historically observed fragment chains as solver composition priors.",
+    "defaultStartRoles": ["feed"],
+    "defaultTargetRoles": ["output"],
+    "cyclePolicy": "A fragment mechanism may appear at most once in a candidate chain.",
+    "edgeScore": {
+      "observationConfidence": "1-exp(-observationCount/3)",
+      "puzzleBreadth": "1-exp(-sourcePuzzleCount/2)",
+      "solutionBreadth": "1-exp(-sourceSolutionCount/3)",
+      "weights": {"observationConfidence": 0.60, "puzzleBreadth": 0.25, "solutionBreadth": 0.15}
     },
+    "pathScore": "0.75*edgeAverage + 0.25*bottleneckScore - 0.04*(extra steps)",
     "limitations": [
-      "Only replay-observed functional effects produce flow edges.",
-      "Unsupported glyphs do not yet contribute transformation transitions.",
-      "Arm movement is modeled as transport, not as a functional flow node.",
-      "Collision correctness and exact glyph semantics still require OMSim validation."
+      "The composition prior is empirical and chemistry-agnostic until joined to the target puzzle feature model.",
+      "Unsupported replay glyphs reduce available transition coverage.",
+      "A ranked chain is a strategy prior, not yet a placed or collision-valid solution."
     ]
   }
 }
