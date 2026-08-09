@@ -27,12 +27,15 @@ def generate_composed_candidates(
     transform_search_limit: int = 0,
     transform_per_slot_limit: int = 3,
     transform_result_limit: int = 10,
+    outcome_index: dict[str, Any] | None = None,
+    learned_min_attempts: int = 12,
+    learned_min_rate_margin: float = 0.15,
 ) -> dict[str, Any]:
-    """Run assembly generation and route bounded repair from diagnostics."""
+    """Run assembly generation and route bounded repair from diagnostics/priors."""
     plan = build_manufacturing_plan(puzzle)
     if not plan.supported:
         return {
-            "schemaVersion": "0.4.0",
+            "schemaVersion": "0.5.0",
             "plan": plan.to_dict(),
             "summary": {
                 "supported": False,
@@ -43,6 +46,7 @@ def generate_composed_candidates(
                 "temporalCompleteCount": 0,
                 "geometricVariantCount": 0,
                 "geometricCompleteCount": 0,
+                "learnedRepairOverrideCount": 0,
             },
             "candidates": [],
         }
@@ -55,6 +59,7 @@ def generate_composed_candidates(
     temporal_complete_count = 0
     geometric_variant_count = 0
     geometric_complete_count = 0
+    learned_override_count = 0
     failure_modes: Counter[str] = Counter()
     repair_routes: Counter[str] = Counter()
 
@@ -115,8 +120,12 @@ def generate_composed_candidates(
                 layout_summary,
                 temporal_enabled=temporal_enabled,
                 geometric_enabled=geometric_enabled,
+                outcome_index=outcome_index,
+                learned_min_attempts=learned_min_attempts,
+                learned_min_rate_margin=learned_min_rate_margin,
             )
             record["repairPolicy"] = policy
+            learned_override_count += int(bool(policy.get("learnedOverride")))
             repair_routes[">".join(policy.get("order", [])) or "none"] += 1
 
             repaired = False
@@ -159,7 +168,7 @@ def generate_composed_candidates(
         results.append(record)
 
     return {
-        "schemaVersion": "0.4.0",
+        "schemaVersion": "0.5.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -170,11 +179,15 @@ def generate_composed_candidates(
             "temporalCompleteCount": temporal_complete_count,
             "geometricVariantCount": geometric_variant_count,
             "geometricCompleteCount": geometric_complete_count,
+            "learnedRepairOverrideCount": learned_override_count,
             "hasCompleteSolution": engine_complete_count > 0 or temporal_complete_count > 0 or geometric_complete_count > 0,
             "failureModes": dict(sorted(failure_modes.items())),
             "repairRoutes": dict(sorted(repair_routes.items())),
             "temporalSearchRadius": max(0, int(temporal_search_radius)),
             "transformSearchLimit": max(0, int(transform_search_limit)),
+            "learnedMinAttempts": max(1, int(learned_min_attempts)),
+            "learnedMinRateMargin": float(learned_min_rate_margin),
+            "outcomePriorCount": len((outcome_index or {}).get("outcomes", [])),
         },
         "candidates": results,
     }
