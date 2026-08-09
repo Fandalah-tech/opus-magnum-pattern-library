@@ -69,6 +69,18 @@ def parse_solution_bytes(data: bytes, *, source_name: str | None = None) -> dict
             track_hexes = [[reader.int32(), reader.int32()] for _ in range(track_count)]
 
         arm_number = reader.int32()
+
+        # Production-mode conduit pieces (serialized as "pipe") contain two
+        # additional fields after the otherwise universal arm/part number:
+        # an integer conduit id and a list of axial hex positions. This layout
+        # is documented by F43nd1r/omsp's canonical v7 SolutionParser.
+        pipe_id = None
+        pipe_hexes = []
+        if part_type == "pipe":
+            pipe_id = reader.int32()
+            pipe_count = _count(reader, f"pipe cell count for part {part_index}")
+            pipe_hexes = [[reader.int32(), reader.int32()] for _ in range(pipe_count)]
+
         part = {
             "id": f"part-{part_index}",
             "type": part_type,
@@ -82,10 +94,13 @@ def parse_solution_bytes(data: bytes, *, source_name: str | None = None) -> dict
         }
         if track_hexes:
             part["trackHexes"] = track_hexes
+        if part_type == "pipe":
+            part["pipeId"] = pipe_id
+            part["pipeHexes"] = pipe_hexes
         parts.append(part)
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.1.1",
         "format": {"kind": "solution", "version": version},
         "source": {
             "name": source_name,
