@@ -16,11 +16,12 @@ def _best_writable(result: dict) -> dict | None:
             fallback.append(item)
             if item.get("engineValidation", {}).get("complete"):
                 complete.append(item)
-        for variant in item.get("temporalSearch", {}).get("variants", []):
-            if variant.get("serialization", {}).get("roundTripClean") and variant.get("solution"):
-                fallback.append(variant)
-                if variant.get("validation", {}).get("complete"):
-                    complete.append(variant)
+        for search_name in ("temporalSearch", "geometricSearch"):
+            for variant in item.get(search_name, {}).get("variants", []):
+                if variant.get("serialization", {}).get("roundTripClean") and variant.get("solution"):
+                    fallback.append(variant)
+                    if variant.get("validation", {}).get("complete"):
+                        complete.append(variant)
     return complete[0] if complete else (fallback[0] if fallback else None)
 
 
@@ -34,6 +35,9 @@ def main() -> int:
     parser.add_argument("--temporal-radius", type=int, default=0, help="Search +/- N cycles of relative branch/tail timing around failed candidates.")
     parser.add_argument("--temporal-variants", type=int, default=81, help="Maximum timing variants tested per assembly candidate.")
     parser.add_argument("--temporal-results", type=int, default=10, help="Best timing variants retained in the JSON report.")
+    parser.add_argument("--transform-variants", type=int, default=0, help="Maximum observed relative-transform combinations tested after timing repair fails.")
+    parser.add_argument("--transform-per-slot", type=int, default=3, help="Maximum observed transform choices retained for each fragment join.")
+    parser.add_argument("--transform-results", type=int, default=10, help="Best geometric variants retained in the JSON report.")
     parser.add_argument("--report", type=Path, default=Path("reports/composed-candidates.json"))
     parser.add_argument("--write-best", type=Path)
     args = parser.parse_args()
@@ -50,6 +54,9 @@ def main() -> int:
         temporal_search_radius=args.temporal_radius,
         temporal_variant_limit=args.temporal_variants,
         temporal_result_limit=args.temporal_results,
+        transform_search_limit=args.transform_variants,
+        transform_per_slot_limit=args.transform_per_slot,
+        transform_result_limit=args.transform_results,
     )
 
     args.report.parent.mkdir(parents=True, exist_ok=True)

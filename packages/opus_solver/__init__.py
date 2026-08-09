@@ -18,6 +18,11 @@ from .chemistry_composition import (
 )
 from .composition import build_composition_prior, rank_fragment_chains
 from .generation import generate_composed_candidates
+from .geometry_search import (
+    enumerate_transform_variants,
+    search_geometric_candidates,
+    transform_slots,
+)
 from .layout import (
     apply_forward_transform,
     apply_inverse_transform,
@@ -57,6 +62,7 @@ __all__ = [
     "build_manufacturing_plan",
     "build_solver_index",
     "enumerate_schedule_variants",
+    "enumerate_transform_variants",
     "generate_composed_candidates",
     "manufacturing_requirements",
     "materialize_assembly_layout",
@@ -70,10 +76,12 @@ __all__ = [
     "rank_fragment_chains",
     "rank_mechanisms",
     "required_flow_relations",
+    "search_geometric_candidates",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",
     "solve_puzzle",
     "synchronize_layout_programs",
+    "transform_slots",
     "transplant_geometry",
     "validate_generated_solution",
     "validation_rank",
