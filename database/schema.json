@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.17.0",
-  "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, writable target-puzzle generation and diagnostic candidate search for Opus Magnum Codex.",
+  "schemaVersion": "0.18.0",
+  "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, writable target-puzzle generation and staged diagnostic candidate search for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -10,7 +10,11 @@
   },
   "fragmentIndex": {"schemaVersion": "0.3.0"},
   "fragmentFlowIndex": {"schemaVersion": "0.4.0"},
-  "assemblyLayout": {"schemaVersion": "0.2.0"},
+  "assemblyLayout": {
+    "schemaVersion": "0.3.0",
+    "transformOverrides": "optional slot -> relativeTransform mapping used to materialize alternate historically observed geometry joins",
+    "transformSlots": ["branch-N:convergence-input", "branch-N:edge-M", "tail-N:edge"]
+  },
   "assemblySchedule": {"schemaVersion": "0.1.0"},
   "candidateSolution": {
     "schemaVersion": "0.1.0",
@@ -55,46 +59,52 @@
     "schemaVersion": "0.1.0",
     "purpose": "Search small relative timing variations around an empirical assembly without changing fragment-local programs or geometry.",
     "groups": "branch-N and tail-N fragment instances move as units; convergence remains the timing anchor",
-    "ordering": "variants are enumerated by minimum total absolute displacement, with historical timing first",
-    "ranking": [
-      "complete solution",
-      "no simulation termination",
-      "products delivered",
-      "minimum remaining output deficit",
-      "cycles successfully executed",
-      "minimum timing displacement"
-    ]
+    "ordering": "variants are enumerated by minimum total absolute displacement, with historical timing first"
+  },
+  "geometricCandidateSearch": {
+    "schemaVersion": "0.1.0",
+    "purpose": "Search alternate relative fragment placements using only transform variants observed in the replay-backed corpus.",
+    "choiceSources": {
+      "transitionEdges": "fragment-flow relativeTransforms.variants with observation counts",
+      "convergenceInputs": "relativeTransforms observed in convergence motif samples"
+    },
+    "enumeration": "bounded beam ordered by number of non-preferred joins, then aggregate log observation support",
+    "historicalSafety": "the preferred historical transform combination is always variant zero",
+    "ranking": "engine progress ranking shared with temporal search, with corpus support as a tie breaker"
   },
   "composedGeneration": {
-    "schemaVersion": "0.2.0",
+    "schemaVersion": "0.3.0",
     "pipeline": [
       "build manufacturing plan",
       "rank convergence-aware assembly DAGs",
-      "materialize geometry",
+      "materialize preferred geometry",
       "materialize relative schedule",
       "merge shared-part programs",
       "assign target reagent/product indices",
       "build metric-free solution v7 model",
       "serialize and parse back",
       "run engine validation when requested",
-      "optionally search local temporal variants for failed candidates"
+      "optionally search local temporal variants",
+      "if timing does not repair the candidate, optionally search observed relative-transform variants"
     ],
-    "diagnosticPolicy": "candidate failures are retained individually and normalized into failure modes so later searches can target timing or geometry instead of aborting the generation pass",
+    "diagnosticPolicy": "candidate failures are retained individually and normalized into failure modes so repair stages search the smallest deviation from empirical evidence first",
     "summary": [
       "assemblyCandidateCount",
       "serializableCount",
       "engineCompleteCount",
       "temporalVariantCount",
       "temporalCompleteCount",
+      "geometricVariantCount",
+      "geometricCompleteCount",
       "failureModes",
       "hasCompleteSolution"
     ]
   },
   "remainingValidation": [
     "rebuild fragment/flow indexes from the local corpus using current schemas",
-    "exercise composed generation with temporal search on reference campaign puzzles",
+    "exercise staged temporal/geometric search on reference campaign puzzles",
     "cross-check generated candidates with OMSim",
-    "add geometry/relative-transform variant search when timing alone does not repair a candidate",
+    "combine geometry and timing search only after independent repair layers are measured",
     "upgrade collision checking from origin overlap to exact occupied and swept geometry"
   ]
 }
