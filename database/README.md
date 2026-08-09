@@ -10,15 +10,19 @@ The Codex database is metadata-first. Binary `.puzzle` and `.solution` files are
 4. `tools/build_catalog.py` converts trusted manifests into `database/catalog.json` when a materialized exact-file catalog is wanted.
 5. `tools/analyze_solution_archive.py` parses external solution corpora and computes canonical structural/mechanism hashes.
 6. `tools/build_solver_index.py` condenses that analysis into `database/solver-index.json`, grouped by puzzle and reusable mechanism.
+7. `tools/build_puzzle_feature_index.py` creates a comparable puzzle-side index from chemistry, molecule topology, available parts and Production constraints.
 
 ## Identity
 
 Puzzle and exact-solution identity is content-addressed from SHA-256 (`puz-<16 hex>` / `sol-<16 hex>`). Filenames and titles are descriptive metadata and may change without creating duplicates.
 
-Two additional identities are intentionally solver-oriented:
+Three additional identities are intentionally solver-oriented:
 
 - `canonicalStructuralHash` ignores global translation/rotation while preserving program timing. It identifies the same physical/programmed solution layout in another orientation or position.
 - `canonicalMechanismHash` also normalizes program timing. It groups structural/timing variants that implement the same reusable mechanism.
+- `puzzleFeatureFingerprint` hashes the solver-relevant puzzle description: reagent/product chemistry, canonical molecule topology, available arms/glyphs, output scale and Production flag.
+
+Molecule fingerprints are invariant to translation and 60-degree rotations on the hex grid. Reflection is intentionally **not** normalized because mirrored molecular topology is not automatically equivalent in Opus Magnum.
 
 ## Relationship model
 
@@ -26,21 +30,26 @@ A puzzle may have zero, one or many exact solutions. Every canonical catalog sol
 
 The solver index is a retrieval layer rather than a replacement for the exact catalog. For every puzzle/mechanism pair it retains structural diversity, part/arm/instruction ranges, the best known representative for each major metric, and the non-dominated Pareto representatives.
 
+The puzzle feature index is the complementary retrieval layer. It gives the solver a stable representation that can later support exact feature matches and weighted nearest-neighbour searches across different puzzles.
+
 ## Validation
 
 Validation is deliberately multi-dimensional. Parser cleanliness, OMSim validation and replay equivalence are independent fields rather than one ambiguous `valid` boolean.
 
-## Building the solver index
+## Building the retrieval indexes
 
-After importing and analyzing a solution archive:
+After importing the campaign/reference puzzle corpus and a solution archive:
 
 ```powershell
+python tools/build_puzzle_feature_index.py
 python tools/analyze_solution_archive.py
 python tools/build_solver_index.py
 ```
 
-The default output is `database/solver-index.json`. Large generated indexes may be kept outside Git and rebuilt from the source analysis; the schema and builder are the authoritative contract.
+The default outputs are `database/puzzle-feature-index.json` and `database/solver-index.json`. Large generated indexes may be kept outside Git and rebuilt from the source corpora; the schema and builders are the authoritative contract.
 
-## Next imports
+## Next database step
 
-Future corpus importers should emit the same canonical records. This lets campaign fixtures, community datasets, Critelli events and solver-generated solutions coexist in one searchable index without losing provenance. The next database layer should add puzzle-side feature fingerprints so mechanisms can be retrieved across *similar* puzzles, not only by exact puzzle identity.
+Future corpus importers should emit the same canonical records. This lets campaign fixtures, community datasets, Critelli events and solver-generated solutions coexist without losing provenance.
+
+The next retrieval step is to **join puzzle fingerprints to known mechanism groups and define a similarity score**. That will allow the solver to rank mechanisms learned on other puzzles according to chemical/topological compatibility instead of relying only on exact puzzle identity.
