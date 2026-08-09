@@ -6,11 +6,7 @@ from typing import Any
 
 
 def rotate_hex(position: tuple[int, int], steps: int) -> tuple[int, int]:
-    """Rotate an axial hex coordinate by 60-degree steps.
-
-    This matches packages.opus_engine.builder.rotate_hex and the game's
-    increasing rotation convention.
-    """
+    """Rotate an axial hex coordinate by 60-degree steps."""
     q, r = position
     for _ in range(steps % 6):
         q, r = -r, q + r
@@ -33,15 +29,10 @@ def _program(part: dict[str, Any], *, normalize_time: bool, global_min_cycle: in
 def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool = False) -> dict[str, Any]:
     """Return a translation/rotation invariant structural representation.
 
-    Part ids and arm numbers are intentionally omitted: they are labels rather
-    than geometry. Programs remain attached to their physical parts. Six global
-    rotations are evaluated and the lexicographically smallest representation
-    is chosen. Translation is removed by anchoring the lexicographically
-    smallest occupied part/track coordinate at (0, 0).
-
-    If normalize_time is true, the earliest programmed instruction is shifted
-    to cycle 0. This produces a mechanism signature independent of a global
-    startup delay. With normalize_time false, program cycle numbers are kept.
+    IDs such as part ids and arm numbers are omitted because they are labels,
+    while conduit ids are retained because they pair pipe endpoints/segments in
+    Production puzzles. Track and pipe cell geometry participate in the global
+    rotation and translation normalization.
     """
     parts = list(solution.get("parts", []))
     instruction_cycles = [
@@ -65,7 +56,12 @@ def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool
                 rotate_hex(tuple(int(v) for v in cell), steps)
                 for cell in part.get("trackHexes", [])
             ]
+            pipe_hexes = [
+                rotate_hex(tuple(int(v) for v in cell), steps)
+                for cell in part.get("pipeHexes", [])
+            ]
             occupied.extend(track_hexes)
+            occupied.extend(pipe_hexes)
             rotated_parts.append({
                 "type": str(part.get("type") or ""),
                 "enabled": bool(part.get("enabled", True)),
@@ -75,6 +71,8 @@ def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool
                 "which": int(part.get("which") or 0),
                 "program": _program(part, normalize_time=normalize_time, global_min_cycle=global_min_cycle),
                 "trackHexes": track_hexes,
+                "pipeId": int(part.get("pipeId") or 0) if part.get("type") == "pipe" else None,
+                "pipeHexes": pipe_hexes,
             })
 
         anchor = min(occupied) if occupied else (0, 0)
@@ -83,10 +81,8 @@ def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool
             q, r = part["position"]
             normalized = dict(part)
             normalized["position"] = [q - anchor[0], r - anchor[1]]
-            normalized["trackHexes"] = [
-                [q2 - anchor[0], r2 - anchor[1]]
-                for q2, r2 in part["trackHexes"]
-            ]
+            normalized["trackHexes"] = [[q2 - anchor[0], r2 - anchor[1]] for q2, r2 in part["trackHexes"]]
+            normalized["pipeHexes"] = [[q2 - anchor[0], r2 - anchor[1]] for q2, r2 in part["pipeHexes"]]
             normalized_parts.append(normalized)
 
         normalized_parts.sort(key=lambda item: json.dumps(item, sort_keys=True, separators=(",", ":")))
