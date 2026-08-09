@@ -20,6 +20,7 @@ from .manufacturing import (
     build_manufacturing_plan,
 )
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
+from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
 from .solver import (
     GeneratedSolutionError,
     SolveResult,
@@ -42,6 +43,7 @@ __all__ = [
     "build_solver_index",
     "manufacturing_requirements",
     "materialize_assembly_layout",
+    "materialize_assembly_schedule",
     "mechanism_compatibility",
     "pareto_frontier",
     "plan_puzzle_fragment_chains",
@@ -52,6 +54,7 @@ __all__ = [
     "rank_mechanisms",
     "required_flow_relations",
     "solve_puzzle",
+    "synchronize_layout_programs",
     "transplant_geometry",
     "validate_generated_solution",
 ]
