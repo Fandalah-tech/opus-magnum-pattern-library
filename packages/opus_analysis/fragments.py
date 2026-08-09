@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Any
 
-from .canonical import canonical_solution_hash
+from .canonical import canonical_solution_hash, canonical_solution_payload
 from .graph import build_solution_graph
 
 ARM_TYPES = {"arm1", "arm2", "arm3", "arm6", "piston", "baron"}
@@ -63,13 +63,31 @@ def _fragment_summary(parts: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _geometry(payload: dict[str, Any], anchor_type: str) -> dict[str, Any]:
+    parts = list(payload.get("parts", []))
+    positions = [tuple(part.get("position") or (0, 0)) for part in parts]
+    return {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": anchor_type,
+        "partCount": len(parts),
+        "bounds": {
+            "minQ": min((int(value[0]) for value in positions), default=0),
+            "maxQ": max((int(value[0]) for value in positions), default=0),
+            "minR": min((int(value[1]) for value in positions), default=0),
+            "maxR": max((int(value[1]) for value in positions), default=0),
+        },
+        "parts": parts,
+    }
+
+
 def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]:
     """Extract local functional fragments around non-transfer anchor parts.
 
-    A fragment contains one semantic anchor (input/output/glyph/pipe), arms that
-    can structurally reach it, and tracks structurally reachable by those arms.
-    This is deliberately a structural approximation; confirmed molecule-flow
-    evidence is layered on top from cycle-accurate replay traces.
+    Every fragment now retains a canonical relative geometry payload in addition
+    to its hashes. The payload is translation/rotation invariant and program
+    timing is normalized, making it a transplantable mechanism template rather
+    than only a database identity.
     """
 
     parts = list(solution.get("parts", []))
@@ -87,7 +105,8 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
 
     for anchor in parts:
         anchor_id = str(anchor.get("id"))
-        role = functional_role(str(anchor.get("type") or ""))
+        anchor_type = str(anchor.get("type") or "")
+        role = functional_role(anchor_type)
         if role is None:
             continue
 
@@ -131,6 +150,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
         selected = [part for part in parts if str(part.get("id")) in member_ids]
         subsolution = {"puzzleFile": "", "parts": selected}
         structural_hash = canonical_solution_hash(subsolution, normalize_time=False)
+        mechanism_payload = canonical_solution_payload(subsolution, normalize_time=True)
         mechanism_hash = canonical_solution_hash(subsolution, normalize_time=True)
         dedupe_key = (anchor_id, mechanism_hash)
         if dedupe_key in seen:
@@ -140,11 +160,12 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
         fragments.append({
             "role": role,
             "anchorPartId": anchor_id,
-            "anchorPartType": str(anchor.get("type") or ""),
+            "anchorPartType": anchor_type,
             "memberPartIds": sorted(member_ids),
             "canonicalStructuralHash": structural_hash,
             "canonicalMechanismHash": mechanism_hash,
             "summary": _fragment_summary(selected),
+            "geometry": _geometry(mechanism_payload, anchor_type),
         })
 
     return sorted(
