@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.6.0",
-  "description": "Canonical puzzle/solution catalog plus solver retrieval and fragment indexes for Opus Magnum Codex.",
+  "schemaVersion": "0.7.0",
+  "description": "Canonical puzzle/solution catalog plus solver retrieval, fragment indexes and replay-backed glyph evidence for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -8,13 +8,28 @@
     "canonicalMechanismHash": "translation/rotation invariant hash with normalized program timing",
     "puzzleFeatureFingerprint": "hash of solver-relevant puzzle chemistry, molecule topology, available parts and production constraints"
   },
+  "replay": {
+    "schemaVersion": "0.7.0",
+    "glyphSimulation": {
+      "supported": ["bonder", "unbonder", "glyph-calcification"],
+      "eventKind": "glyph-effect",
+      "effects": ["bond-created", "bond-removed", "calcify"],
+      "evaluationOrder": ["arm instructions", "passive glyph effects", "disposal/output consumers", "input respawn"]
+    },
+    "limitations": [
+      "Bonder and unbonder geometry uses the two occupied glyph hexes and still requires OMSim corpus cross-validation.",
+      "Calcification converts air, earth, fire and water on its anchor cell to salt.",
+      "Multibonder, prismatic bonding and all other conversion glyphs are not yet simulated.",
+      "Collision validation is not yet simulated."
+    ]
+  },
   "fragmentIndex": {
     "purpose": "Catalog reusable local functional sub-mechanisms extracted from historical solutions.",
     "roles": ["feed", "output", "bonding", "conversion", "disposal", "conduit", "process"],
     "grouping": ["role", "canonicalMechanismHash"],
     "evidenceLevels": {
-      "dynamic-confirmed": "Replay directly observed input spawning or output/disposal consumption at the fragment anchor.",
-      "dynamic-arm-observed": "Replay observed arm activity inside the fragment, but the anchor glyph effect is not simulated.",
+      "dynamic-confirmed": "Replay directly observed the functional effect at the fragment anchor, including supported glyph mutations.",
+      "dynamic-arm-observed": "Replay observed arm activity inside the fragment, but the anchor effect was not simulated or observed.",
       "structural-only": "Fragment is inferred from geometry only or no matching puzzle replay was available."
     },
     "evidenceFields": {
@@ -23,11 +38,9 @@
       "dropCount": "integer",
       "sourceMoleculeCount": "integer",
       "consumerEventCount": "integer",
-      "glyphSimulationAvailable": "boolean"
-    },
-    "limitations": [
-      "Bonding and conversion glyph effects remain unconfirmed while replay glyphSimulation is false.",
-      "Evidence is available only when the source puzzle can be resolved for replay."
-    ]
+      "glyphEffectCount": "integer",
+      "glyphSimulationAvailable": "boolean",
+      "simulatedGlyphs": "string[]"
+    }
   }
 }
