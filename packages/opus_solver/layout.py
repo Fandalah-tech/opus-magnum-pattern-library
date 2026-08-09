@@ -143,15 +143,22 @@ def _dedupe_parts(parts: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], li
     return list(unique.values()), conflicts
 
 
-def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[str, Any]) -> dict[str, Any]:
+def materialize_assembly_layout(
+    candidate: dict[str, Any],
+    fragment_index: dict[str, Any],
+    *,
+    transform_overrides: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     geometries = _geometry_lookup(fragment_index)
     convergence = candidate.get("convergence") or {}
     target_key = _key(convergence.get("targetRole"), convergence.get("targetMechanismHash"))
+    overrides = transform_overrides or {}
 
     placements: list[dict[str, Any]] = []
     all_parts: list[dict[str, Any]] = []
     missing_geometry = []
     missing_transform = []
+    used_transforms: dict[str, dict[str, Any]] = {}
 
     def add_instance(instance_id: str, key: FragmentKey, position: tuple[int, int], rotation: int) -> None:
         geometry = geometries.get(key)
@@ -167,6 +174,12 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
             return
         all_parts.extend(transplant_geometry(geometry, anchor_position=position, anchor_rotation=rotation, instance_id=instance_id))
 
+    def select_transform(slot: str, fallback: dict[str, Any] | None) -> dict[str, Any] | None:
+        selected = overrides.get(slot) or fallback
+        if selected is not None:
+            used_transforms[slot] = deepcopy(selected)
+        return selected
+
     convergence_position = (0, 0)
     convergence_rotation = 0
     add_instance("convergence", target_key, convergence_position, convergence_rotation)
@@ -179,35 +192,38 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
         input_key = _key(input_item.get("sourceRole"), input_item.get("sourceMechanismHash"))
         occurrence = occurrence_counter[input_key]
         occurrence_counter[input_key] += 1
-        transform = _motif_input_transform(convergence, input_item, occurrence)
+        slot = f"branch-{branch_index}:convergence-input"
+        transform = select_transform(slot, _motif_input_transform(convergence, input_item, occurrence))
         if transform is None:
-            missing_transform.append({"branch": branch_index, "stage": "convergence-input", "key": list(input_key)})
+            missing_transform.append({"branch": branch_index, "stage": "convergence-input", "key": list(input_key), "slot": slot})
             continue
         current_position, current_rotation = apply_inverse_transform(convergence_position, convergence_rotation, transform)
         add_instance(f"branch-{branch_index}:input", input_key, current_position, current_rotation)
 
         for reverse_index, edge in enumerate(reversed(branch)):
-            edge_transform = _preferred_transform(edge)
+            slot = f"branch-{branch_index}:edge-{reverse_index}"
+            edge_transform = select_transform(slot, _preferred_transform(edge))
             source_key = _key(edge.get("sourceRole"), edge.get("sourceMechanismHash"))
             if edge_transform is None:
-                missing_transform.append({"branch": branch_index, "stage": "branch-edge", "edge": edge})
+                missing_transform.append({"branch": branch_index, "stage": "branch-edge", "edge": edge, "slot": slot})
                 break
             current_position, current_rotation = apply_inverse_transform(current_position, current_rotation, edge_transform)
             add_instance(f"branch-{branch_index}:upstream-{reverse_index}", source_key, current_position, current_rotation)
 
     current_position, current_rotation = convergence_position, convergence_rotation
     for tail_index, edge in enumerate(candidate.get("tail", [])):
-        transform = _preferred_transform(edge)
+        slot = f"tail-{tail_index}:edge"
+        transform = select_transform(slot, _preferred_transform(edge))
         target = _key(edge.get("targetRole"), edge.get("targetMechanismHash"))
         if transform is None:
-            missing_transform.append({"tail": tail_index, "stage": "tail-edge", "edge": edge})
+            missing_transform.append({"tail": tail_index, "stage": "tail-edge", "edge": edge, "slot": slot})
             break
         current_position, current_rotation = apply_forward_transform(current_position, current_rotation, transform)
         add_instance(f"tail-{tail_index}", target, current_position, current_rotation)
 
     parts, conflicts = _dedupe_parts(all_parts)
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "summary": {
             "instanceCount": len(placements),
             "materializedPartCount": len(parts),
@@ -215,6 +231,7 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
             "missingGeometryCount": len(missing_geometry),
             "missingTransformCount": len(missing_transform),
             "originConflictCount": len(conflicts),
+            "transformOverrideCount": len(overrides),
             "layoutComplete": not missing_geometry and not missing_transform,
         },
         "placements": placements,
@@ -222,6 +239,8 @@ def materialize_assembly_layout(candidate: dict[str, Any], fragment_index: dict[
         "conflicts": conflicts,
         "missingGeometry": missing_geometry,
         "missingTransforms": missing_transform,
+        "usedTransforms": used_transforms,
+        "transformOverrides": deepcopy(overrides),
         "limitations": [
             "Conflict detection currently checks part-origin overlap only, not full occupied footprints or swept arm paths.",
             "Deduplicated shared parts retain all fragment-local program contributions for later synchronization.",
