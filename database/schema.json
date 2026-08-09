@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.10.0",
-  "description": "Canonical puzzle/solution catalog plus solver retrieval, replay-backed fragment flow and chemistry-aware composition planning for Opus Magnum Codex.",
+  "schemaVersion": "0.11.0",
+  "description": "Canonical puzzle/solution catalog plus replay-backed fragment flow, chemistry-aware composition and convergence-aware assembly planning for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -8,47 +8,46 @@
     "canonicalMechanismHash": "translation/rotation invariant hash with normalized program timing",
     "puzzleFeatureFingerprint": "hash of solver-relevant puzzle chemistry, molecule topology, available parts and production constraints"
   },
-  "replay": {
-    "schemaVersion": "0.7.0",
-    "glyphSimulation": {
-      "supported": ["bonder", "unbonder", "glyph-calcification"],
-      "eventKind": "glyph-effect",
-      "effects": ["bond-created", "bond-removed", "calcify"]
+  "fragmentFlowIndex": {
+    "schemaVersion": "0.2.0",
+    "purpose": "Catalog replay-observed composition transitions plus same-solution convergence motifs.",
+    "transitions": "Canonical pairwise fragment-flow edges aggregated across solutions.",
+    "convergenceMotifs": {
+      "purpose": "Preserve evidence that multiple concrete predecessor fragments converged on the same target fragment instance in one replayed solution.",
+      "grouping": ["canonical input multiset", "targetRole", "targetMechanismHash"],
+      "inputMultiplicity": "preserved even when multiple inputs use the same canonical mechanism",
+      "fields": ["inputCount", "inputs", "observationCount", "sourcePuzzleCount", "sourceSolutionCount", "samples"]
     }
   },
-  "fragmentFlowIndex": {
-    "purpose": "Catalog replay-observed composition transitions between canonical functional fragment mechanisms.",
-    "lineage": "Atom ids persist across replay molecule merge/split operations and are used as lineage markers.",
-    "grouping": ["sourceRole", "sourceMechanismHash", "targetRole", "targetMechanismHash", "relation"]
-  },
-  "compositionPrior": {
-    "purpose": "Rank historically observed fragment chains as solver composition priors.",
-    "defaultStartRoles": ["feed"],
-    "defaultTargetRoles": ["output"]
-  },
   "chemistryAwareComposition": {
-    "purpose": "Join a target puzzle manufacturing plan to empirical fragment chains and retain candidates that cover the required functional transformations.",
-    "manufacturingToFlowRelations": {
-      "glyph-calcification": "calcify",
-      "bonder": "bond-created",
-      "unbonder": "bond-removed",
-      "deliver": "delivered"
-    },
-    "coverage": {
-      "requiredRelations": "multiset derived from ManufacturingOperation records",
-      "matched": "required relation occurrences observed in the candidate chain",
-      "missing": "required relation occurrences absent from the candidate chain",
-      "score": "matchedCount / requiredCount"
-    },
-    "candidateScore": "0.72*functionalCoverage + 0.28*empiricalChainScore",
-    "assemblyCompleteness": {
-      "requiresConvergence": "true when the manufacturing plan has more than one source operation",
-      "linearChainPolicy": "A linear fragment chain may prove functional coverage but cannot prove multi-source convergence."
-    },
+    "purpose": "Match manufacturing operations to replay-observed functional relations.",
+    "relations": ["calcify", "bond-created", "bond-removed", "delivered"]
+  },
+  "convergenceAwareAssembly": {
+    "purpose": "Construct replay-backed DAG candidates when a manufacturing plan requires multiple reagent streams to converge.",
+    "algorithm": [
+      "select a same-solution convergence motif with enough concrete inputs",
+      "find feed-origin paths to every required motif input",
+      "find an output-bound path from the convergence target",
+      "combine branch relations, one semantic convergence relation and tail relations",
+      "reject candidates missing any manufacturing-required functional relation"
+    ],
+    "candidateFields": [
+      "branches",
+      "convergence",
+      "tail",
+      "requiredRelations",
+      "observedRelations",
+      "functionalCoverageScore",
+      "assemblyComplete",
+      "empiricalScore",
+      "convergenceConfidence",
+      "score"
+    ],
     "limitations": [
-      "The current bonded-pair manufacturing strategy is intentionally narrow.",
-      "Functional coverage is not equivalent to full assembly correctness when multiple reagent streams must converge.",
-      "Placed geometry, timing and collision validity remain downstream solver responsibilities."
+      "A convergence motif proves historical same-solution convergence, not that its geometry can be transplanted unchanged into a new puzzle.",
+      "Current branch selection uses the best empirical path to each motif input rather than global combinatorial optimization.",
+      "Placed geometry, program synchronization and collision validation remain downstream solver responsibilities."
     ]
   }
 }
