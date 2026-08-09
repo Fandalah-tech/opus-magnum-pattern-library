@@ -5,6 +5,7 @@ from .manufacturing import (
     ManufacturingPlan,
     build_manufacturing_plan,
 )
+from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
 from .solver import (
     GeneratedSolutionError,
     SolveResult,
@@ -22,7 +23,10 @@ __all__ = [
     "UnsupportedPuzzleError",
     "build_manufacturing_plan",
     "build_solver_index",
+    "mechanism_compatibility",
     "pareto_frontier",
+    "puzzle_similarity",
+    "rank_mechanisms",
     "solve_puzzle",
     "validate_generated_solution",
 ]
