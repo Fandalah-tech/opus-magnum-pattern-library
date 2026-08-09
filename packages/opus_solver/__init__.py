@@ -37,6 +37,12 @@ from .manufacturing import (
     ManufacturingPlan,
     build_manufacturing_plan,
 )
+from .outcome_learning import (
+    aggregate_repair_outcomes,
+    build_outcome_index,
+    generation_outcome_records,
+    merge_outcome_records,
+)
 from .repair_policy import recommend_repair_order
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
 from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
@@ -55,6 +61,7 @@ __all__ = [
     "ManufacturingPlan",
     "SolveResult",
     "UnsupportedPuzzleError",
+    "aggregate_repair_outcomes",
     "analyze_layout_geometry",
     "apply_forward_transform",
     "apply_inverse_transform",
@@ -64,14 +71,17 @@ __all__ = [
     "build_candidate_solution",
     "build_composition_prior",
     "build_manufacturing_plan",
+    "build_outcome_index",
     "build_solver_index",
     "enumerate_schedule_variants",
     "enumerate_transform_variants",
     "generate_composed_candidates",
+    "generation_outcome_records",
     "manufacturing_requirements",
     "materialize_assembly_layout",
     "materialize_assembly_schedule",
     "mechanism_compatibility",
+    "merge_outcome_records",
     "pareto_frontier",
     "part_occupied_cells",
     "plan_puzzle_fragment_chains",
