@@ -6,6 +6,12 @@ from .chemistry_composition import (
     required_flow_relations,
 )
 from .composition import build_composition_prior, rank_fragment_chains
+from .layout import (
+    apply_forward_transform,
+    apply_inverse_transform,
+    materialize_assembly_layout,
+    transplant_geometry,
+)
 from .library import build_solver_index, pareto_frontier
 from .manufacturing import (
     AtomFlow,
@@ -29,10 +35,13 @@ __all__ = [
     "ManufacturingPlan",
     "SolveResult",
     "UnsupportedPuzzleError",
+    "apply_forward_transform",
+    "apply_inverse_transform",
     "build_composition_prior",
     "build_manufacturing_plan",
     "build_solver_index",
     "manufacturing_requirements",
+    "materialize_assembly_layout",
     "mechanism_compatibility",
     "pareto_frontier",
     "plan_puzzle_fragment_chains",
@@ -43,5 +52,6 @@ __all__ = [
     "rank_mechanisms",
     "required_flow_relations",
     "solve_puzzle",
+    "transplant_geometry",
     "validate_generated_solution",
 ]
