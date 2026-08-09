@@ -1,12 +1,13 @@
 {
-  "schemaVersion": "0.2.0",
-  "description": "Canonical puzzle/solution catalog and solver retrieval index for Opus Magnum Codex.",
+  "schemaVersion": "0.3.0",
+  "description": "Canonical puzzle/solution catalog plus solver retrieval indexes for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
     "canonicalStructuralHash": "translation/rotation invariant hash preserving program timing",
     "canonicalMechanismHash": "translation/rotation invariant hash with normalized program timing",
-    "rule": "Content hashes identify exact files; canonical hashes identify reusable structures and mechanisms."
+    "puzzleFeatureFingerprint": "hash of solver-relevant puzzle chemistry, molecule topology, available parts and production constraints",
+    "rule": "Content hashes identify exact files; canonical hashes and feature fingerprints identify reusable structure and problem similarity."
   },
   "puzzle": {
     "required": ["id", "sha256", "name", "version", "sourceDataset"],
@@ -17,6 +18,15 @@
       "file": "string|null",
       "version": "integer|null",
       "size": "integer|null",
+      "featureFingerprint": "hex64|null",
+      "features": {
+        "production": "boolean",
+        "outputScale": "integer|null",
+        "availableArms": "string[]",
+        "availableGlyphs": "string[]",
+        "reagents": "molecule summary",
+        "products": "molecule summary"
+      },
       "sourceDataset": "string",
       "redistribution": "string",
       "tags": "string[]"
@@ -67,6 +77,11 @@
         "validatedSolutionCount": "integer"
       }
     }
+  },
+  "puzzleFeatureIndex": {
+    "purpose": "Comparable puzzle-side representation for cross-puzzle retrieval.",
+    "moleculeIdentity": "translation/rotation invariant; reflection intentionally preserved",
+    "fields": ["sourceFile", "sha256", "name", "fingerprint", "features"]
   },
   "solverIndex": {
     "purpose": "Compact retrieval layer used by the solver to search reusable mechanisms without scanning every exact solution.",
