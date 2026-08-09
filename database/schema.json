@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.9.0",
-  "description": "Canonical puzzle/solution catalog plus solver retrieval, replay-backed fragment flow and empirical composition priors for Opus Magnum Codex.",
+  "schemaVersion": "0.10.0",
+  "description": "Canonical puzzle/solution catalog plus solver retrieval, replay-backed fragment flow and chemistry-aware composition planning for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -16,11 +16,6 @@
       "effects": ["bond-created", "bond-removed", "calcify"]
     }
   },
-  "fragmentIndex": {
-    "purpose": "Catalog reusable local functional sub-mechanisms extracted from historical solutions.",
-    "roles": ["feed", "output", "bonding", "conversion", "disposal", "conduit", "process"],
-    "grouping": ["role", "canonicalMechanismHash"]
-  },
   "fragmentFlowIndex": {
     "purpose": "Catalog replay-observed composition transitions between canonical functional fragment mechanisms.",
     "lineage": "Atom ids persist across replay molecule merge/split operations and are used as lineage markers.",
@@ -29,19 +24,31 @@
   "compositionPrior": {
     "purpose": "Rank historically observed fragment chains as solver composition priors.",
     "defaultStartRoles": ["feed"],
-    "defaultTargetRoles": ["output"],
-    "cyclePolicy": "A fragment mechanism may appear at most once in a candidate chain.",
-    "edgeScore": {
-      "observationConfidence": "1-exp(-observationCount/3)",
-      "puzzleBreadth": "1-exp(-sourcePuzzleCount/2)",
-      "solutionBreadth": "1-exp(-sourceSolutionCount/3)",
-      "weights": {"observationConfidence": 0.60, "puzzleBreadth": 0.25, "solutionBreadth": 0.15}
+    "defaultTargetRoles": ["output"]
+  },
+  "chemistryAwareComposition": {
+    "purpose": "Join a target puzzle manufacturing plan to empirical fragment chains and retain candidates that cover the required functional transformations.",
+    "manufacturingToFlowRelations": {
+      "glyph-calcification": "calcify",
+      "bonder": "bond-created",
+      "unbonder": "bond-removed",
+      "deliver": "delivered"
     },
-    "pathScore": "0.75*edgeAverage + 0.25*bottleneckScore - 0.04*(extra steps)",
+    "coverage": {
+      "requiredRelations": "multiset derived from ManufacturingOperation records",
+      "matched": "required relation occurrences observed in the candidate chain",
+      "missing": "required relation occurrences absent from the candidate chain",
+      "score": "matchedCount / requiredCount"
+    },
+    "candidateScore": "0.72*functionalCoverage + 0.28*empiricalChainScore",
+    "assemblyCompleteness": {
+      "requiresConvergence": "true when the manufacturing plan has more than one source operation",
+      "linearChainPolicy": "A linear fragment chain may prove functional coverage but cannot prove multi-source convergence."
+    },
     "limitations": [
-      "The composition prior is empirical and chemistry-agnostic until joined to the target puzzle feature model.",
-      "Unsupported replay glyphs reduce available transition coverage.",
-      "A ranked chain is a strategy prior, not yet a placed or collision-valid solution."
+      "The current bonded-pair manufacturing strategy is intentionally narrow.",
+      "Functional coverage is not equivalent to full assembly correctness when multiple reagent streams must converge.",
+      "Placed geometry, timing and collision validity remain downstream solver responsibilities."
     ]
   }
 }
