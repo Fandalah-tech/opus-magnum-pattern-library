@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3.0",
+  "schemaVersion": "0.4.0",
   "description": "Canonical puzzle/solution catalog plus solver retrieval indexes for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
@@ -96,6 +96,32 @@
       "instructionCount": "{min,max}",
       "bestByMetric": "solutionRef by cycles/cost/area/instructions",
       "paretoFrontier": "solutionRef[]"
+    }
+  },
+  "crossPuzzleRetrieval": {
+    "purpose": "Rank mechanisms learned on other puzzles for reuse on a target puzzle.",
+    "score": "0..1 weighted combination of puzzle feature similarity and mechanism compatibility",
+    "puzzleSimilarityComponents": [
+      "productElements",
+      "reagentElements",
+      "productBonds",
+      "reagentBonds",
+      "productMolecules",
+      "reagentMolecules",
+      "productAtomCounts",
+      "reagentAtomCounts",
+      "productBondCounts",
+      "reagentBondCounts",
+      "availableGlyphs",
+      "availableArms",
+      "production",
+      "outputScale"
+    ],
+    "compatibility": {
+      "compatible": "boolean",
+      "score": "0..1",
+      "requiredParts": "string[]",
+      "missingParts": "string[]"
     }
   }
 }
