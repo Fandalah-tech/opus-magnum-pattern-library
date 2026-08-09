@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.18.0",
+  "schemaVersion": "0.19.0",
   "description": "Canonical puzzle/solution catalog plus replay-backed fragment composition, writable target-puzzle generation and staged diagnostic candidate search for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
@@ -11,9 +11,32 @@
   "fragmentIndex": {"schemaVersion": "0.3.0"},
   "fragmentFlowIndex": {"schemaVersion": "0.4.0"},
   "assemblyLayout": {
-    "schemaVersion": "0.3.0",
+    "schemaVersion": "0.4.0",
     "transformOverrides": "optional slot -> relativeTransform mapping used to materialize alternate historically observed geometry joins",
-    "transformSlots": ["branch-N:convergence-input", "branch-N:edge-M", "tail-N:edge"]
+    "transformSlots": ["branch-N:convergence-input", "branch-N:edge-M", "tail-N:edge"],
+    "geometryDiagnostics": {
+      "exactStaticConflicts": "overlap between two parts whose occupied footprint is modeled exactly",
+      "approximateStaticConflicts": "overlap involving at least one anchor-only fallback footprint",
+      "armWorkspaceOverlaps": "conservative reachable-tip overlap; reported as risk, never treated as invalid by itself",
+      "knownFootprints": [
+        "bonder",
+        "unbonder",
+        "bonder-speed",
+        "glyph-calcification",
+        "glyph-equilibrium",
+        "glyph-disposal",
+        "glyph-projection",
+        "glyph-purification",
+        "glyph-duplication",
+        "glyph-life-and-death",
+        "glyph-marker",
+        "glyph-bonder-prisma",
+        "glyph-unbonder-prisma",
+        "track",
+        "pipe",
+        "arm bases"
+      ]
+    }
   },
   "assemblySchedule": {"schemaVersion": "0.1.0"},
   "candidateSolution": {
@@ -46,14 +69,18 @@
       "outputDeficits",
       "totalDelivered",
       "totalDeficit",
-      "completedCycles"
+      "completedCycles",
+      "initialInputStatus",
+      "blockedInputsAtStart"
     ],
     "failureModes": [
       "simulation-error",
+      "blocked-input-at-start",
       "missing-standard-output",
       "no-product-delivered",
       "insufficient-product-delivery"
-    ]
+    ],
+    "blockedInputMeaning": "an input source could not spawn its cycle-zero reagent because another atom already occupied at least one footprint cell"
   },
   "temporalCandidateSearch": {
     "schemaVersion": "0.1.0",
@@ -62,7 +89,7 @@
     "ordering": "variants are enumerated by minimum total absolute displacement, with historical timing first"
   },
   "geometricCandidateSearch": {
-    "schemaVersion": "0.1.0",
+    "schemaVersion": "0.2.0",
     "purpose": "Search alternate relative fragment placements using only transform variants observed in the replay-backed corpus.",
     "choiceSources": {
       "transitionEdges": "fragment-flow relativeTransforms.variants with observation counts",
@@ -70,41 +97,30 @@
     },
     "enumeration": "bounded beam ordered by number of non-preferred joins, then aggregate log observation support",
     "historicalSafety": "the preferred historical transform combination is always variant zero",
-    "ranking": "engine progress ranking shared with temporal search, with corpus support as a tie breaker"
+    "ranking": "engine progress dominates; static footprint conflicts are a tie-breaker before corpus support"
   },
   "composedGeneration": {
     "schemaVersion": "0.3.0",
     "pipeline": [
       "build manufacturing plan",
       "rank convergence-aware assembly DAGs",
-      "materialize preferred geometry",
+      "materialize preferred geometry with footprint diagnostics",
       "materialize relative schedule",
       "merge shared-part programs",
       "assign target reagent/product indices",
       "build metric-free solution v7 model",
       "serialize and parse back",
-      "run engine validation when requested",
+      "run engine validation including cycle-zero input spawn diagnostics",
       "optionally search local temporal variants",
       "if timing does not repair the candidate, optionally search observed relative-transform variants"
     ],
-    "diagnosticPolicy": "candidate failures are retained individually and normalized into failure modes so repair stages search the smallest deviation from empirical evidence first",
-    "summary": [
-      "assemblyCandidateCount",
-      "serializableCount",
-      "engineCompleteCount",
-      "temporalVariantCount",
-      "temporalCompleteCount",
-      "geometricVariantCount",
-      "geometricCompleteCount",
-      "failureModes",
-      "hasCompleteSolution"
-    ]
+    "diagnosticPolicy": "candidate failures are retained individually and normalized into failure modes so repair stages search the smallest deviation from empirical evidence first"
   },
   "remainingValidation": [
     "rebuild fragment/flow indexes from the local corpus using current schemas",
     "exercise staged temporal/geometric search on reference campaign puzzles",
     "cross-check generated candidates with OMSim",
-    "combine geometry and timing search only after independent repair layers are measured",
-    "upgrade collision checking from origin overlap to exact occupied and swept geometry"
+    "model exact input/output physical footprints if needed beyond molecule footprint diagnostics",
+    "add cycle-aware swept arm geometry only where the engine error trace does not already provide sufficient collision localization"
   ]
 }
