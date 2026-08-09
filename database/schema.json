@@ -1,10 +1,12 @@
 {
-  "schemaVersion": "0.1.0",
-  "description": "Canonical puzzle/solution catalog for Opus Magnum Codex.",
+  "schemaVersion": "0.2.0",
+  "description": "Canonical puzzle/solution catalog and solver retrieval index for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
-    "rule": "Hashes are authoritative; filenames and display names are metadata only."
+    "canonicalStructuralHash": "translation/rotation invariant hash preserving program timing",
+    "canonicalMechanismHash": "translation/rotation invariant hash with normalized program timing",
+    "rule": "Content hashes identify exact files; canonical hashes identify reusable structures and mechanisms."
   },
   "puzzle": {
     "required": ["id", "sha256", "name", "version", "sourceDataset"],
@@ -35,6 +37,15 @@
         "area": "integer|null",
         "instructions": "integer|null"
       },
+      "canonicalStructuralHash": "string|null",
+      "canonicalMechanismHash": "string|null",
+      "structure": {
+        "partTypes": "string[]",
+        "partCount": "integer|null",
+        "armCount": "integer|null",
+        "cycleSlots": "integer|null",
+        "instructionCount": "integer|null"
+      },
       "validation": {
         "parserClean": "boolean|null",
         "omsim": "string|null",
@@ -55,6 +66,21 @@
         "solutionCount": "integer",
         "validatedSolutionCount": "integer"
       }
+    }
+  },
+  "solverIndex": {
+    "purpose": "Compact retrieval layer used by the solver to search reusable mechanisms without scanning every exact solution.",
+    "grouping": ["puzzleKey", "canonicalMechanismHash"],
+    "mechanismFields": {
+      "solutionCount": "integer",
+      "structuralVariantCount": "integer",
+      "partTypes": "string[]",
+      "armCount": "{min,max}",
+      "partCount": "{min,max}",
+      "cycleSlots": "{min,max}",
+      "instructionCount": "{min,max}",
+      "bestByMetric": "solutionRef by cycles/cost/area/instructions",
+      "paretoFrontier": "solutionRef[]"
     }
   }
 }
