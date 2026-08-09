@@ -10,17 +10,19 @@ ARM_TYPES = {"arm1", "arm2", "arm3", "arm6", "piston", "baron"}
 TRACK_TYPES = {"track"}
 INPUT_TYPES = {"input"}
 OUTPUT_TYPES = {"out-std", "out-rep"}
-BOND_TYPES = {"bonder", "unbonder", "multibonder", "triplex-bonder"}
-CONVERSION_TYPES = {
-    "calcification",
-    "duplication",
-    "projection",
-    "purification",
-    "animismus",
-    "unification",
-    "dispersion",
+BOND_TYPES = {
+    "bonder", "unbonder", "multibonder", "bonder-speed", "triplex-bonder",
+    "glyph-bonder-prisma", "glyph-unbonder-prisma",
 }
-DISPOSAL_TYPES = {"disposal"}
+CONVERSION_TYPES = {
+    "calcification", "glyph-calcification",
+    "duplication", "glyph-duplication",
+    "projection", "glyph-projection",
+    "purification", "glyph-purification",
+    "animismus", "glyph-life-and-death",
+    "unification", "dispersion",
+}
+DISPOSAL_TYPES = {"disposal", "glyph-disposal"}
 CONDUIT_TYPES = {"pipe"}
 
 
@@ -67,7 +69,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
     A fragment contains one semantic anchor (input/output/glyph/pipe), arms that
     can structurally reach it, and tracks structurally reachable by those arms.
     This is deliberately a structural approximation; confirmed molecule-flow
-    fragments will later be refined from cycle-accurate simulation traces.
+    evidence is layered on top from cycle-accurate replay traces.
     """
 
     parts = list(solution.get("parts", []))
@@ -92,8 +94,6 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
         member_ids = {anchor_id}
         arm_ids = set()
 
-        # Arm -> anchor edges are the strongest reusable local interaction
-        # available without relying on runtime traces.
         for edge in incoming.get(anchor_id, []):
             if edge.get("relation") not in {"within-arm-reach", "shared-hex"}:
                 continue
@@ -103,7 +103,6 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
                 arm_ids.add(source_id)
                 member_ids.add(source_id)
 
-        # Shared-hex edges may be represented in either direction.
         for edge in outgoing.get(anchor_id, []):
             if edge.get("relation") != "shared-hex":
                 continue
@@ -113,7 +112,6 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
                 arm_ids.add(target_id)
                 member_ids.add(target_id)
 
-        # Preserve local rail geometry needed by selected arms.
         for arm_id in arm_ids:
             for edge in outgoing.get(arm_id, []):
                 if edge.get("relation") not in {"within-arm-reach", "shared-hex"}:
@@ -131,10 +129,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
                     member_ids.add(source_id)
 
         selected = [part for part in parts if str(part.get("id")) in member_ids]
-        subsolution = {
-            "puzzleFile": "",
-            "parts": selected,
-        }
+        subsolution = {"puzzleFile": "", "parts": selected}
         structural_hash = canonical_solution_hash(subsolution, normalize_time=False)
         mechanism_hash = canonical_solution_hash(subsolution, normalize_time=True)
         dedupe_key = (anchor_id, mechanism_hash)

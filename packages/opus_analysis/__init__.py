@@ -1,6 +1,7 @@
 from .canonical import canonical_solution_hash, canonical_solution_payload
 from .diagnostics import analyze_solution
 from .fragment_evidence import trace_fragment_evidence
+from .fragment_flow import build_fragment_flow_graph
 from .fragments import extract_solution_fragments, functional_role
 from .graph import build_solution_graph
 from .patterns import detect_patterns
@@ -10,6 +11,7 @@ from .timeline import build_program_timeline
 
 __all__ = [
     "analyze_solution",
+    "build_fragment_flow_graph",
     "build_replay_trace",
     "build_solution_graph",
     "build_program_timeline",
