@@ -1,3 +1,4 @@
+from .assembly import rank_fragment_assemblies
 from .chemistry_composition import (
     manufacturing_requirements,
     plan_puzzle_fragment_chains,
@@ -37,6 +38,7 @@ __all__ = [
     "plan_puzzle_fragment_chains",
     "puzzle_similarity",
     "rank_chains_for_manufacturing_plan",
+    "rank_fragment_assemblies",
     "rank_fragment_chains",
     "rank_mechanisms",
     "required_flow_relations",
