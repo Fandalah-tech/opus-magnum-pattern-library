@@ -1,3 +1,4 @@
+from .canonical import canonical_solution_hash, canonical_solution_payload
 from .diagnostics import analyze_solution
 from .graph import build_solution_graph
 from .patterns import detect_patterns
@@ -9,5 +10,7 @@ __all__ = [
     "build_replay_trace",
     "build_solution_graph",
     "build_program_timeline",
+    "canonical_solution_hash",
+    "canonical_solution_payload",
     "detect_patterns",
 ]
