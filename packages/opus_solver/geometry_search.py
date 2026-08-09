@@ -95,7 +95,6 @@ def _motif_transform_choices(
 
 
 def transform_slots(candidate: dict[str, Any]) -> list[dict[str, Any]]:
-    """Return every materialization join with its observed transform choices."""
     slots = []
     convergence = candidate.get("convergence") or {}
     motif_inputs = list(convergence.get("inputs", []))
@@ -128,7 +127,6 @@ def enumerate_transform_variants(
     per_slot_limit: int = 3,
     limit: int = 81,
 ) -> list[dict[str, Any]]:
-    """Enumerate low-distance transform combinations with a bounded beam."""
     per_slot_limit = max(1, int(per_slot_limit))
     limit = max(0, int(limit))
     if limit == 0:
@@ -216,8 +214,12 @@ def search_geometric_candidates(
                 fragment_index,
                 transform_overrides=variant.get("overrides", {}),
             )
-            record["layoutSummary"] = layout.get("summary", {})
-            if not layout.get("summary", {}).get("layoutComplete"):
+            layout_summary = layout.get("summary", {})
+            record["layoutSummary"] = layout_summary
+            exact_conflicts = int(layout_summary.get("exactStaticConflictCount") or 0)
+            approximate_conflicts = int(layout_summary.get("approximateStaticConflictCount") or 0)
+            record["staticConflictPenalty"] = exact_conflicts * 100 + approximate_conflicts
+            if not layout_summary.get("layoutComplete"):
                 record["failureMode"] = "layout-incomplete"
                 record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
                 results.append(record)
@@ -243,12 +245,14 @@ def search_geometric_candidates(
         except Exception as exc:
             record["failureMode"] = "generation-error"
             record["generationError"] = {"errorType": type(exc).__name__, "message": str(exc)}
+            record["staticConflictPenalty"] = 10**9
             record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
         results.append(record)
 
     results.sort(
         key=lambda item: (
             tuple(item.get("rank", ())),
+            -int(item.get("staticConflictPenalty") or 0),
             float(item.get("supportScore") or 0.0),
         ),
         reverse=True,
@@ -257,7 +261,7 @@ def search_geometric_candidates(
     for item in selected:
         item.pop("rank", None)
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "summary": {
             "searchedVariantCount": len(results),
             "returnedVariantCount": len(selected),
