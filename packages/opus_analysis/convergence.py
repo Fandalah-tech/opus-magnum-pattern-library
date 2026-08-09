@@ -5,12 +5,7 @@ from typing import Any
 
 
 def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: int = 2) -> list[dict[str, Any]]:
-    """Extract same-solution multi-predecessor convergence motifs.
-
-    Unlike the canonical transition index, this operates before cross-solution
-    aggregation, so multiple incoming lineage edges are known to have converged
-    on the same concrete fragment instance in the same replayed solution.
-    """
+    """Extract same-solution multi-predecessor convergence motifs."""
     minimum_inputs = max(2, int(minimum_inputs))
     nodes = {str(node.get("anchorPartId") or ""): node for node in flow_graph.get("nodes", [])}
     incoming: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -24,8 +19,6 @@ def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: in
 
     motifs = []
     for target_id, edges in sorted(incoming.items()):
-        # Count concrete predecessor fragment instances, not merely canonical
-        # mechanism hashes. Two feeds may legitimately use the same mechanism.
         predecessors = sorted({str(edge.get("sourceAnchorPartId") or "") for edge in edges if edge.get("sourceAnchorPartId")})
         if len(predecessors) < minimum_inputs:
             continue
@@ -38,11 +31,13 @@ def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: in
         for predecessor_id in predecessors:
             source = nodes.get(predecessor_id, {})
             matching = [edge for edge in edges if str(edge.get("sourceAnchorPartId") or "") == predecessor_id]
+            transforms = [edge.get("relativeTransform") for edge in matching if edge.get("relativeTransform")]
             input_records.append({
                 "sourceAnchorPartId": predecessor_id,
                 "sourceRole": source.get("role"),
                 "sourceMechanismHash": source.get("canonicalMechanismHash"),
                 "relations": sorted({str(edge.get("relation") or "") for edge in matching if edge.get("relation")}),
+                "relativeTransforms": transforms,
                 "observationCount": sum(int(edge.get("observationCount") or 0) for edge in matching),
                 "firstCycle": min((int(edge.get("firstCycle") or 0) for edge in matching), default=None),
                 "lastCycle": max((int(edge.get("lastCycle") or 0) for edge in matching), default=None),
@@ -55,6 +50,7 @@ def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: in
                 "targetRole": edge.get("targetRole"),
                 "targetMechanismHash": edge.get("targetMechanismHash"),
                 "relation": edge.get("relation"),
+                "relativeTransform": edge.get("relativeTransform"),
                 "observationCount": edge.get("observationCount"),
             })
 
@@ -70,7 +66,6 @@ def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: in
 
 
 def canonical_convergence_key(motif: dict[str, Any]) -> tuple[Any, ...]:
-    """Return a canonical key that preserves input multiplicity."""
     inputs = sorted(
         (
             str(item.get("sourceRole") or ""),
