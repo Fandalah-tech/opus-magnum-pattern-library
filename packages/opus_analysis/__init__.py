@@ -5,7 +5,7 @@ from .fragments import extract_solution_fragments, functional_role
 from .graph import build_solution_graph
 from .patterns import detect_patterns
 from .puzzle_features import canonical_molecule_hash, puzzle_feature_fingerprint, puzzle_feature_payload
-from .replay import build_replay_trace
+from .replay_glyphs import build_replay_trace, process_basic_glyphs
 from .timeline import build_program_timeline
 
 __all__ = [
@@ -19,6 +19,7 @@ __all__ = [
     "detect_patterns",
     "extract_solution_fragments",
     "functional_role",
+    "process_basic_glyphs",
     "puzzle_feature_fingerprint",
     "puzzle_feature_payload",
     "trace_fragment_evidence",
