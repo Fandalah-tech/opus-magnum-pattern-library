@@ -18,6 +18,7 @@ on:
       - .github/workflows/import-campaign-corpus.yml
       - tools/import_campaign_corpus.py
       - tools/import_external_puzzle_corpus.py
+      - tools/import_om_solution_archive.py
       - tools/audit_campaign_corpus.py
       - datasets/registry.json
       - packages/opus_engine/**
@@ -30,10 +31,11 @@ permissions:
 env:
   CAMPAIGN_ROOT: .datasets/campaign-corpus
   EXTERNAL_ROOT: .datasets/external-corpus
+  SOLUTION_ARCHIVE_ROOT: .datasets/solution-archive
 
 jobs:
   campaign:
-    name: Full campaign + ZLBB corpus
+    name: Campaign + fresh ZLBB rescan
     runs-on: ubuntu-latest
     timeout-minutes: 330
 
@@ -50,7 +52,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .datasets/campaign-corpus
-          key: opus-campaign-corpus-full-v3-${{ github.ref_name }}
+          key: opus-campaign-corpus-full-v4-${{ github.ref_name }}
           restore-keys: |
             opus-campaign-corpus-full-v3-
             opus-campaign-corpus-
@@ -60,12 +62,12 @@ jobs:
           python -m pip install --upgrade pip playwright
           python -m playwright install --with-deps chromium
 
-      - name: Import campaign puzzles and all available ZLBB records
+      - name: Rescan campaign puzzles and every visible ZLBB download
         env:
           PUZZLE_LIMIT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.puzzle_limit || '' }}
           LIMIT_PER_PUZZLE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.limit_per_puzzle || '' }}
         run: |
-          args=(--root "$CAMPAIGN_ROOT")
+          args=(--root "$CAMPAIGN_ROOT" --no-resume)
           if [[ -n "$PUZZLE_LIMIT" ]]; then
             args+=(--puzzle-limit "$PUZZLE_LIMIT")
           fi
@@ -91,7 +93,6 @@ jobs:
           import json
           import os
           from pathlib import Path
-
           index_path = Path('.datasets/campaign-corpus/index.json')
           index = json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {}
           audit_path = Path('reports/campaign-corpus-audit.json')
@@ -110,8 +111,7 @@ jobs:
           Path('reports/training-corpus-campaign-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
               out.write('## Training corpus — campaign/ZLBB\n\n')
-              for key, value in payload.items():
-                  out.write(f'- {key}: {value}\n')
+              for key, value in payload.items(): out.write(f'- {key}: {value}\n')
           print(json.dumps(payload))
           PY
 
@@ -125,6 +125,59 @@ jobs:
             reports/campaign-corpus-audit.json
             reports/training-corpus-campaign-summary.json
           if-no-files-found: warn
+          retention-days: 30
+
+  solution_archive:
+    name: F43nd1r solution archive
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore solution archive cache
+        uses: actions/cache@v4
+        with:
+          path: .datasets/solution-archive
+          key: opus-solution-archive-f43nd1r-v1
+
+      - name: Download and inventory solution archive
+        run: python tools/import_om_solution_archive.py --root "$SOLUTION_ARCHIVE_ROOT"
+
+      - name: Write solution archive summary
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          index = json.loads(Path('.datasets/solution-archive/index.json').read_text(encoding='utf-8'))
+          payload = {
+              'archiveSolutions': index.get('solutionCount', 0),
+              'uniqueSolutionHashes': index.get('uniqueSolutionHashes', 0),
+              'archivePuzzleNames': index.get('puzzleNameCount', 0),
+              'duplicateHashCount': index.get('duplicateHashCount', 0),
+          }
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/training-corpus-solution-archive-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Training corpus — F43nd1r solution archive\n\n')
+              for key, value in payload.items(): out.write(f'- {key}: {value}\n')
+          print(json.dumps(payload))
+          PY
+
+      - name: Upload solution archive checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: training-corpus-solution-archive-${{ github.run_id }}
+          path: |
+            .datasets/solution-archive/
+            reports/training-corpus-solution-archive-summary.json
+          if-no-files-found: error
           retention-days: 30
 
   external:
@@ -145,7 +198,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .datasets/external-corpus
-          key: opus-external-puzzle-corpus-v1
+          key: opus-external-puzzle-corpus-v2
+          restore-keys: opus-external-puzzle-corpus-
 
       - name: Download and inventory registered external puzzle corpora
         run: |
@@ -154,14 +208,17 @@ jobs:
             --root "$EXTERNAL_ROOT"
 
       - name: Write external summary
+        if: always()
         run: |
           python - <<'PY'
-          import json
-          import os
+          import json, os
           from pathlib import Path
-          index = json.loads(Path('.datasets/external-corpus/index.json').read_text(encoding='utf-8'))
+          path = Path('.datasets/external-corpus/index.json')
+          index = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
           payload = {
               'externalDatasets': index.get('datasetCount', 0),
+              'successfulDatasets': index.get('successfulDatasetCount', 0),
+              'failedDatasets': index.get('failedDatasetCount', 0),
               'externalPuzzles': index.get('puzzleCount', 0),
               'byDataset': {item['id']: item.get('puzzleCount', 0) for item in index.get('datasets', [])},
           }
@@ -169,19 +226,19 @@ jobs:
           Path('reports/training-corpus-external-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
               out.write('## Training corpus — external puzzles\n\n')
-              out.write(f"- datasets: {payload['externalDatasets']}\n")
-              out.write(f"- puzzles: {payload['externalPuzzles']}\n")
-              for key, value in payload['byDataset'].items():
-                  out.write(f'- {key}: {value}\n')
+              for key in ('externalDatasets','successfulDatasets','failedDatasets','externalPuzzles'):
+                  out.write(f'- {key}: {payload[key]}\n')
+              for key, value in payload['byDataset'].items(): out.write(f'- {key}: {value}\n')
           print(json.dumps(payload))
           PY
 
       - name: Upload external corpus checkpoint
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: training-corpus-external-${{ github.run_id }}
           path: |
             .datasets/external-corpus/
             reports/training-corpus-external-summary.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
