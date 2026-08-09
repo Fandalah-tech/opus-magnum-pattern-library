@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.12.0",
-  "description": "Canonical puzzle/solution catalog plus replay-backed fragment flow, convergence-aware assembly planning and transplantable fragment geometry for Opus Magnum Codex.",
+  "schemaVersion": "0.13.0",
+  "description": "Canonical puzzle/solution catalog plus replay-backed fragment flow, transplantable fragment geometry and observed relative transforms for Opus Magnum Codex.",
   "identity": {
     "puzzleId": "puz-<first16 sha256>",
     "solutionId": "sol-<first16 sha256>",
@@ -10,42 +10,42 @@
   },
   "fragmentIndex": {
     "schemaVersion": "0.3.0",
-    "purpose": "Catalog reusable fragment mechanisms with evidence and representative canonical geometry.",
-    "representativeGeometry": {
-      "coordinateSystem": "canonical-axial-relative",
-      "timeNormalization": "global-min-instruction-cycle",
-      "anchorPartType": "string",
-      "bounds": "relative q/r bounds over part origins",
-      "parts": "canonical solution-part payload including relative positions, rotations, programs, track and conduit geometry"
-    },
-    "representativeSelection": [
-      "prefer dynamic-confirmed evidence",
-      "then dynamic-arm-observed",
-      "then structural-only",
-      "within a level prefer fewer parts, then fewer instructions"
-    ]
+    "purpose": "Catalog reusable fragment mechanisms with representative canonical geometry."
   },
   "fragmentFlowIndex": {
-    "schemaVersion": "0.2.0",
-    "purpose": "Catalog replay-observed transitions plus same-solution convergence motifs."
-  },
-  "convergenceAwareAssembly": {
-    "purpose": "Construct replay-backed DAG candidates when multiple reagent streams must converge."
+    "schemaVersion": "0.3.0",
+    "purpose": "Catalog replay-observed transitions, same-solution convergence motifs and relative anchor transforms.",
+    "relativeTransform": {
+      "frame": "source-anchor-local",
+      "delta": "target anchor axial displacement rotated into the source anchor's local orientation",
+      "rotationDelta": "(targetRotation-sourceRotation) mod 6",
+      "invariants": ["global translation", "global 60-degree rotation"]
+    },
+    "transitionAggregation": {
+      "preferred": "most frequently observed relative transform weighted by edge observationCount",
+      "variantCount": "number of distinct observed transforms",
+      "variants": "relative transform plus weighted observation count"
+    },
+    "convergenceMotifs": "sample evidence retains each concrete predecessor-to-target relative transform"
   },
   "geometryTransplant": {
-    "purpose": "Provide a relative, orientation-normalized mechanism template that can be placed into a new puzzle layout.",
-    "invariants": ["global translation", "60-degree global rotation", "global program start cycle"],
+    "purpose": "Combine canonical fragment geometry with historically observed relative transforms to place connected mechanisms in a common coordinate frame.",
+    "availableInputs": [
+      "fragmentIndex.representativeGeometry",
+      "fragmentFlowIndex.transitions.relativeTransforms.preferred",
+      "fragmentFlowIndex.convergenceMotifs.samples.inputs.relativeTransforms"
+    ],
     "nextValidation": [
-      "select compatible representative geometries for every node in an assembly DAG",
-      "solve relative transforms between connected fragment anchors",
-      "deduplicate shared arms/tracks where possible",
+      "propagate anchor transforms through an assembly DAG",
+      "materialize all representative fragment parts into one coordinate frame",
+      "detect conflicting placements and merge identical shared parts",
       "synchronize normalized programs",
-      "write a candidate solution and validate replay/OMSim/collisions"
+      "write and validate a candidate solution"
     ],
     "limitations": [
-      "Representative geometry is evidence-backed historical geometry, not yet proof that independently selected fragments can coexist without overlap.",
-      "Canonical bounds currently summarize part origins; exact occupied-cell bounds remain a downstream placement concern.",
-      "Program synchronization across multiple fragments is not yet solved."
+      "A preferred relative transform is an empirical prior and may have multiple historical variants.",
+      "Anchor-relative compatibility does not guarantee full-fragment non-overlap.",
+      "Program synchronization and collision validation remain downstream responsibilities."
     ]
   }
 }
