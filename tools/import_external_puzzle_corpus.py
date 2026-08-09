@@ -4,6 +4,8 @@ import argparse
 import hashlib
 import json
 import shutil
+import ssl
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -18,11 +20,26 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _stream_download(url: str, destination: Path, *, insecure_tls: bool = False) -> None:
+    request = urllib.request.Request(url, headers={"User-Agent": "opus-magnum-codex/1.0"})
+    context = ssl._create_unverified_context() if insecure_tls else None
+    with urllib.request.urlopen(request, timeout=180, context=context) as response, destination.open("wb") as output:
+        shutil.copyfileobj(response, output)
+
+
 def download(url: str, destination: Path) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    request = urllib.request.Request(url, headers={"User-Agent": "opus-magnum-codex/1.0"})
-    with urllib.request.urlopen(request, timeout=180) as response, destination.open("wb") as output:
-        shutil.copyfileobj(response, output)
+    temporary = destination.with_suffix(destination.suffix + ".part")
+    temporary.unlink(missing_ok=True)
+    try:
+        _stream_download(url, temporary)
+    except urllib.error.URLError as exc:
+        if "TLSV1_UNRECOGNIZED_NAME" not in str(exc).upper():
+            raise
+        print(f"TLS/SNI retry without certificate verification: {url}", flush=True)
+        temporary.unlink(missing_ok=True)
+        _stream_download(url, temporary, insecure_tls=True)
+    temporary.replace(destination)
 
 
 def main() -> int:
@@ -84,7 +101,7 @@ def main() -> int:
         print(json.dumps({"dataset": dataset_id, "puzzles": len(puzzles)}), flush=True)
 
     index = {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.1.1",
         "datasetCount": len(records),
         "puzzleCount": total_puzzles,
         "datasets": records,
