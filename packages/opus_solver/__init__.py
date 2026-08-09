@@ -1,4 +1,9 @@
 from .assembly import rank_fragment_assemblies
+from .candidate_solution import (
+    assign_branch_atom_flows,
+    build_candidate_solution,
+    serialize_candidate_roundtrip,
+)
 from .chemistry_composition import (
     manufacturing_requirements,
     plan_puzzle_fragment_chains,
@@ -6,6 +11,7 @@ from .chemistry_composition import (
     required_flow_relations,
 )
 from .composition import build_composition_prior, rank_fragment_chains
+from .generation import generate_composed_candidates
 from .layout import (
     apply_forward_transform,
     apply_inverse_transform,
@@ -38,9 +44,12 @@ __all__ = [
     "UnsupportedPuzzleError",
     "apply_forward_transform",
     "apply_inverse_transform",
+    "assign_branch_atom_flows",
+    "build_candidate_solution",
     "build_composition_prior",
     "build_manufacturing_plan",
     "build_solver_index",
+    "generate_composed_candidates",
     "manufacturing_requirements",
     "materialize_assembly_layout",
     "materialize_assembly_schedule",
@@ -53,6 +62,7 @@ __all__ = [
     "rank_fragment_chains",
     "rank_mechanisms",
     "required_flow_relations",
+    "serialize_candidate_roundtrip",
     "solve_puzzle",
     "synchronize_layout_programs",
     "transplant_geometry",
