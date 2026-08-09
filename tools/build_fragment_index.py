@@ -20,6 +20,19 @@ def _puzzle_lookup(root: Path) -> dict[str, Path]:
     return lookup
 
 
+def _representative_record(records: list[dict[str, Any]]) -> dict[str, Any]:
+    evidence_rank = {"dynamic-confirmed": 0, "dynamic-arm-observed": 1, "structural-only": 2}
+    return min(
+        records,
+        key=lambda record: (
+            evidence_rank.get(str(record.get("evidence", {}).get("level") or "structural-only"), 3),
+            int(record.get("summary", {}).get("partCount") or 10**9),
+            int(record.get("summary", {}).get("instructionCount") or 10**9),
+            str(record.get("solutionSha256") or ""),
+        ),
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a reusable functional-fragment index from a solution archive.")
     parser.add_argument("--archive-root", type=Path, default=Path(".datasets/solution-archive"))
@@ -76,6 +89,7 @@ def main() -> int:
         source_puzzles = sorted({str(record["puzzleKey"]) for record in records})
         level_counts = Counter(str(record.get("evidence", {}).get("level") or "structural-only") for record in records)
         part_types = sorted({part_type for record in records for part_type in record.get("summary", {}).get("partTypes", [])})
+        representative = _representative_record(records)
         fragments.append({
             "role": role,
             "canonicalMechanismHash": mechanism_hash,
@@ -85,6 +99,13 @@ def main() -> int:
             "structuralVariantCount": len(structural_hashes),
             "canonicalStructuralHashes": structural_hashes,
             "partTypes": part_types,
+            "representativeGeometry": representative.get("geometry"),
+            "representativeSource": {
+                "puzzleKey": representative.get("puzzleKey"),
+                "solutionSha256": representative.get("solutionSha256"),
+                "solutionFile": representative.get("solutionFile"),
+                "evidenceLevel": representative.get("evidence", {}).get("level", "structural-only"),
+            },
             "evidence": {
                 "levels": dict(sorted(level_counts.items())),
                 "dynamicConfirmedCount": level_counts["dynamic-confirmed"],
@@ -98,13 +119,14 @@ def main() -> int:
                     "anchorPartType": record["anchorPartType"],
                     "summary": record["summary"],
                     "evidence": record.get("evidence", {}),
+                    "geometry": record.get("geometry"),
                 }
                 for record in records[:max(0, args.sample_limit)]
             ],
         })
 
     index = {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "summary": {
             "parsedSolutionCount": solution_count,
             "replaySolutionCount": replay_solution_count,
