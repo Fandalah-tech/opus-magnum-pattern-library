@@ -5,60 +5,55 @@ The Codex database is metadata-first. Binary `.puzzle` and `.solution` files are
 ## Layers
 
 1. `datasets/registry.json` records provenance, authorship, licensing and redistribution policy.
-2. Source manifests such as `fixtures/reference/campaign-p007-p015.manifest.json` record trusted puzzle/solution pairs and hashes.
-3. `database/schema.json` defines the canonical puzzle, solution and retrieval records.
-4. `tools/build_catalog.py` converts trusted manifests into `database/catalog.json` when a materialized exact-file catalog is wanted.
-5. `tools/analyze_solution_archive.py` parses external solution corpora and computes canonical structural/mechanism hashes.
-6. `tools/build_solver_index.py` condenses that analysis into `database/solver-index.json`, grouped by puzzle and reusable mechanism.
-7. `tools/build_puzzle_feature_index.py` creates a comparable puzzle-side index from chemistry, molecule topology, available parts and Production constraints.
-8. `tools/retrieve_mechanisms.py` joins both retrieval indexes and ranks known mechanisms for a target `.puzzle`.
+2. Source manifests record trusted puzzle/solution pairs and hashes.
+3. `database/schema.json` defines canonical puzzle, solution and retrieval records.
+4. `tools/build_catalog.py` materializes exact-file metadata.
+5. `tools/analyze_solution_archive.py` computes canonical full-solution hashes.
+6. `tools/build_solver_index.py` groups full reusable mechanisms.
+7. `tools/build_puzzle_feature_index.py` creates comparable puzzle-side fingerprints.
+8. `tools/retrieve_mechanisms.py` ranks full mechanisms for a target puzzle.
+9. `tools/build_fragment_index.py` decomposes historical solutions into reusable local functional fragments.
 
-## Identity
+## Solver-oriented identities
 
-Puzzle and exact-solution identity is content-addressed from SHA-256 (`puz-<16 hex>` / `sol-<16 hex>`). Filenames and titles are descriptive metadata and may change without creating duplicates.
+- `canonicalStructuralHash` ignores global translation/rotation while preserving program timing.
+- `canonicalMechanismHash` also normalizes program timing.
+- `puzzleFeatureFingerprint` hashes solver-relevant reagent/product chemistry, canonical molecule topology, available parts, output scale and Production constraints.
 
-Three additional identities are intentionally solver-oriented:
+Molecule fingerprints are invariant to translation and 60-degree rotations; reflection is intentionally preserved.
 
-- `canonicalStructuralHash` ignores global translation/rotation while preserving program timing. It identifies the same physical/programmed solution layout in another orientation or position.
-- `canonicalMechanismHash` also normalizes program timing. It groups structural/timing variants that implement the same reusable mechanism.
-- `puzzleFeatureFingerprint` hashes the solver-relevant puzzle description: reagent/product chemistry, canonical molecule topology, available arms/glyphs, output scale and Production flag.
+## Cross-puzzle retrieval
 
-Molecule fingerprints are invariant to translation and 60-degree rotations on the hex grid. Reflection is intentionally **not** normalized because mirrored molecular topology is not automatically equivalent in Opus Magnum.
+Cross-puzzle retrieval combines **puzzle similarity** with **mechanism compatibility**. Similarity compares chemistry, molecular topology, atom/bond counts and puzzle constraints. Compatibility checks known required parts and Production conduits. Incompatible mechanisms are filtered by default, and every score remains explainable through its component scores.
 
-## Relationship model
+## Functional fragment index
 
-A puzzle may have zero, one or many exact solutions. Every canonical catalog solution points to exactly one canonical puzzle ID. Metrics belong to the solution, while provenance and redistribution policy are retained on every imported record.
+Whole historical solutions are useful references but are too coarse for composition. The fragment index therefore extracts local sub-mechanisms around semantic anchors:
 
-The solver index is a retrieval layer rather than a replacement for the exact catalog. For every puzzle/mechanism pair it retains structural diversity, part/arm/instruction ranges, the best known representative for each major metric, and the non-dominated Pareto representatives.
+- `feed`: input handling;
+- `output`: delivery to product outputs;
+- `bonding`: bonders/unbonders/multibonders/triplex bonders;
+- `conversion`: calcification, duplication, projection, purification, animismus, unification and dispersion;
+- `disposal`: disposal glyph interactions;
+- `conduit`: Production pipes;
+- `process`: future or currently unclassified functional parts.
 
-The puzzle feature index is the complementary retrieval layer. It provides a comparable representation for exact feature matches and weighted nearest-neighbour retrieval across different puzzles.
+Each anchor is bundled with arms structurally capable of reaching it and the local rails used by those arms. The resulting fragment is canonicalized independently of its source puzzle and grouped by `(role, canonicalMechanismHash)`. The index tracks occurrence frequency, source-puzzle diversity, structural variants and source samples.
 
-Cross-puzzle retrieval ranks a mechanism in two stages:
+This first fragment layer is intentionally structural. It identifies plausible reusable neighborhoods without claiming that a molecule actually traverses every structural edge. Cycle-accurate simulation traces will later promote structural candidates into confirmed flow fragments.
 
-1. **Puzzle similarity** compares product and reagent chemistry, molecule identities and sizes, bond structure, available parts, output scale and Production mode.
-2. **Mechanism compatibility** checks known required arms/glyphs and Production conduit requirements against the target puzzle. Incompatible candidates are filtered by default.
-
-The returned score is intentionally explainable: every result includes its component similarity scores and any missing required parts.
-
-## Validation
-
-Validation is deliberately multi-dimensional. Parser cleanliness, OMSim validation and replay equivalence are independent fields rather than one ambiguous `valid` boolean.
-
-## Building and using the retrieval indexes
-
-After importing the campaign/reference puzzle corpus and a solution archive:
+## Building the database layers
 
 ```powershell
 python tools/build_puzzle_feature_index.py
 python tools/analyze_solution_archive.py
 python tools/build_solver_index.py
+python tools/build_fragment_index.py
 python tools/retrieve_mechanisms.py path\to\target.puzzle --limit 25
 ```
 
-The default materialized indexes are `database/puzzle-feature-index.json` and `database/solver-index.json`. Large generated indexes may be kept outside Git and rebuilt from the source corpora; the schema and builders are the authoritative contract.
+Default generated outputs are `database/puzzle-feature-index.json`, `database/solver-index.json` and `database/fragment-index.json`. Large indexes may remain outside Git and be rebuilt from source corpora.
 
 ## Next database step
 
-Future corpus importers should emit the same canonical records. This lets campaign fixtures, community datasets, Critelli events and solver-generated solutions coexist without losing provenance.
-
-The next useful layer is **mechanism decomposition**: split a canonical solution mechanism into reusable functional fragments (feed, conversion, bonding, transfer, output) so the solver can retrieve and compose sub-mechanisms instead of treating every historical solution as one indivisible template.
+The next major milestone is **trace-confirmed fragment learning**: feed real simulator/replay traces into the fragment layer to identify actual molecule transfers between input, conversion, bonding, transfer and output stages. Once those dynamic edges exist, the solver can begin composing candidate solution graphs from independently reusable fragments rather than cloning historical layouts.
