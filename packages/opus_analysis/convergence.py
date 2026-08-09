@@ -31,13 +31,13 @@ def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: in
         for predecessor_id in predecessors:
             source = nodes.get(predecessor_id, {})
             matching = [edge for edge in edges if str(edge.get("sourceAnchorPartId") or "") == predecessor_id]
-            transforms = [edge.get("relativeTransform") for edge in matching if edge.get("relativeTransform")]
             input_records.append({
                 "sourceAnchorPartId": predecessor_id,
                 "sourceRole": source.get("role"),
                 "sourceMechanismHash": source.get("canonicalMechanismHash"),
                 "relations": sorted({str(edge.get("relation") or "") for edge in matching if edge.get("relation")}),
-                "relativeTransforms": transforms,
+                "relativeTransforms": [edge.get("relativeTransform") for edge in matching if edge.get("relativeTransform")],
+                "relativeTimings": [edge.get("relativeTiming") for edge in matching if edge.get("relativeTiming")],
                 "observationCount": sum(int(edge.get("observationCount") or 0) for edge in matching),
                 "firstCycle": min((int(edge.get("firstCycle") or 0) for edge in matching), default=None),
                 "lastCycle": max((int(edge.get("lastCycle") or 0) for edge in matching), default=None),
@@ -51,6 +51,7 @@ def extract_convergence_motifs(flow_graph: dict[str, Any], *, minimum_inputs: in
                 "targetMechanismHash": edge.get("targetMechanismHash"),
                 "relation": edge.get("relation"),
                 "relativeTransform": edge.get("relativeTransform"),
+                "relativeTiming": edge.get("relativeTiming"),
                 "observationCount": edge.get("observationCount"),
             })
 
