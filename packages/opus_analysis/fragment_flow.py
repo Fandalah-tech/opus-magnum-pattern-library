@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from typing import Any
 
+from .canonical import rotate_hex
 from .fragment_evidence import trace_fragment_evidence
 from .fragments import extract_solution_fragments
 from .replay_glyphs import build_replay_trace
@@ -17,16 +18,31 @@ def _molecules_by_id(frame: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {str(molecule.get("id") or ""): molecule for molecule in frame.get("molecules", []) if molecule.get("id")}
 
 
+def _relative_transform(source_part: dict[str, Any], target_part: dict[str, Any]) -> dict[str, Any]:
+    sq, sr = (int(value) for value in (source_part.get("position") or (0, 0)))
+    tq, tr = (int(value) for value in (target_part.get("position") or (0, 0)))
+    source_rotation = int(source_part.get("rotation") or 0) % 6
+    target_rotation = int(target_part.get("rotation") or 0) % 6
+    local_delta = rotate_hex((tq - sq, tr - sr), -source_rotation)
+    return {
+        "frame": "source-anchor-local",
+        "delta": [int(local_delta[0]), int(local_delta[1])],
+        "rotationDelta": (target_rotation - source_rotation) % 6,
+    }
+
+
 def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) -> dict[str, Any]:
     """Reconstruct replay-observed molecule flow between functional fragments.
 
-    Atom ids are treated as lineage markers. This makes lineage robust to
-    molecule merges at bonders and splits at unbonders because the atoms retain
-    identity even when the containing replay molecule id changes.
+    Atom ids are lineage markers. Flow edges also retain a source-local relative
+    transform between concrete anchor parts, making observed fragment adjacency
+    reusable independently of the historical solution's global translation and
+    rotation.
     """
     fragments = extract_solution_fragments(solution)
     annotated = {item["anchorPartId"]: item for item in trace_fragment_evidence(puzzle, solution)}
     by_anchor = {item["anchorPartId"]: item for item in fragments}
+    parts_by_id = {str(part.get("id") or ""): part for part in solution.get("parts", []) if part.get("id")}
 
     timeline = build_program_timeline(solution)
     trace = build_replay_trace(puzzle, solution, timeline)
@@ -36,7 +52,6 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
     edge_counts: Counter[tuple[str, str, str]] = Counter()
     edge_cycles: defaultdict[tuple[str, str, str], list[int]] = defaultdict(list)
 
-    # Initial input molecules establish the first functional owner.
     if frames:
         for molecule in frames[0].get("molecules", []):
             source = str(molecule.get("sourcePartId") or "")
@@ -50,7 +65,6 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
         current_molecules = _molecules_by_id(frame)
         cycle = int(frame.get("cycle", frame_index - 1))
 
-        # Input respawn can introduce new atoms after the functional events.
         for molecule in frame.get("molecules", []):
             source = str(molecule.get("sourcePartId") or "")
             if source in by_anchor:
@@ -74,10 +88,6 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
                     molecule = current_molecules.get(molecule_id) or previous_molecules.get(molecule_id)
                     if molecule:
                         affected_atoms.update(_atom_ids(molecule))
-
-                # For a merge, the current molecule contains atoms from both
-                # predecessor molecules, so collect all atom ids in that merged
-                # molecule rather than relying on obsolete molecule ids.
                 if event.get("effect") == "bond-created" and event.get("moleculeId"):
                     molecule = current_molecules.get(str(event["moleculeId"]))
                     if molecule:
@@ -87,8 +97,6 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
                 anchor = str(event.get("consumerPartId") or "")
                 relation = "delivered" if kind == "product-delivered" else "consumed"
                 molecule_id = str(event.get("moleculeId") or "")
-                # Consumers remove molecules before the frame snapshot, so use
-                # the previous frame as the authoritative atom set.
                 molecule = previous_molecules.get(molecule_id)
                 if molecule:
                     affected_atoms.update(_atom_ids(molecule))
@@ -102,9 +110,6 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
                 edge_counts[key] += 1
                 edge_cycles[key].append(cycle)
 
-            # A functional transformation/consumer becomes the latest known
-            # owner of the atom lineage. Consumer ownership is kept so complete
-            # source->sink paths remain queryable.
             for atom_id in affected_atoms:
                 atom_owner[atom_id] = anchor
 
@@ -112,9 +117,12 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
     for fragment in fragments:
         anchor = str(fragment["anchorPartId"])
         evidence = annotated.get(anchor, {}).get("evidence", {})
+        part = parts_by_id.get(anchor, {})
         nodes.append({
             "anchorPartId": anchor,
             "anchorPartType": fragment.get("anchorPartType"),
+            "anchorPosition": list(part.get("position") or [0, 0]),
+            "anchorRotation": int(part.get("rotation") or 0) % 6,
             "role": fragment.get("role"),
             "canonicalMechanismHash": fragment.get("canonicalMechanismHash"),
             "canonicalStructuralHash": fragment.get("canonicalStructuralHash"),
@@ -126,6 +134,8 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
         source_fragment = by_anchor[source]
         target_fragment = by_anchor[target]
         cycles = edge_cycles[(source, target, relation)]
+        source_part = parts_by_id.get(source, {})
+        target_part = parts_by_id.get(target, {})
         edges.append({
             "sourceAnchorPartId": source,
             "targetAnchorPartId": target,
@@ -134,13 +144,14 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
             "sourceMechanismHash": source_fragment.get("canonicalMechanismHash"),
             "targetMechanismHash": target_fragment.get("canonicalMechanismHash"),
             "relation": relation,
+            "relativeTransform": _relative_transform(source_part, target_part),
             "observationCount": count,
             "firstCycle": min(cycles),
             "lastCycle": max(cycles),
         })
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "analysis": "replay-backed-fragment-molecule-flow",
         "source": {
             "puzzleFile": solution.get("puzzleFile"),
@@ -158,7 +169,7 @@ def build_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) 
         "limitations": [
             "Only replay-observed functional events create flow edges.",
             "Unsupported glyphs cannot yet create transformation edges.",
-            "Arm motion is treated as transport inside/between functional fragments, not as a graph node.",
-            "Collision correctness still requires external validation.",
+            "Relative transforms describe anchor-to-anchor adjacency, not full fragment non-overlap.",
+            "Collision correctness still requires external validation."
         ],
     }
