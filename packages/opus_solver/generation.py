@@ -6,6 +6,7 @@ from typing import Any
 from .assembly import rank_fragment_assemblies
 from .candidate_search import search_temporal_candidates
 from .candidate_solution import build_candidate_solution, serialize_candidate_roundtrip
+from .geometry_search import search_geometric_candidates
 from .layout import materialize_assembly_layout
 from .manufacturing import build_manufacturing_plan
 from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
@@ -22,17 +23,15 @@ def generate_composed_candidates(
     temporal_search_radius: int = 0,
     temporal_variant_limit: int = 81,
     temporal_result_limit: int = 10,
+    transform_search_limit: int = 0,
+    transform_per_slot_limit: int = 3,
+    transform_result_limit: int = 10,
 ) -> dict[str, Any]:
-    """Run the database-driven assembly generation and optional timing search.
-
-    Candidate failures are retained as diagnostics. When temporal search is
-    enabled, failed but materialized candidates are expanded through small
-    branch/tail timing offsets while preserving every fragment-local program.
-    """
+    """Run assembly generation plus staged timing and geometry repair searches."""
     plan = build_manufacturing_plan(puzzle)
     if not plan.supported:
         return {
-            "schemaVersion": "0.2.0",
+            "schemaVersion": "0.3.0",
             "plan": plan.to_dict(),
             "summary": {
                 "supported": False,
@@ -41,6 +40,8 @@ def generate_composed_candidates(
                 "engineCompleteCount": 0,
                 "temporalVariantCount": 0,
                 "temporalCompleteCount": 0,
+                "geometricVariantCount": 0,
+                "geometricCompleteCount": 0,
             },
             "candidates": [],
         }
@@ -51,6 +52,8 @@ def generate_composed_candidates(
     engine_complete_count = 0
     temporal_variant_count = 0
     temporal_complete_count = 0
+    geometric_variant_count = 0
+    geometric_complete_count = 0
     failure_modes: Counter[str] = Counter()
 
     for index, assembly in enumerate(assemblies):
@@ -81,7 +84,7 @@ def generate_composed_candidates(
                     failure_modes[str(validation.get("failureMode") or "complete")] += 1
                     if validation.get("complete"):
                         engine_complete_count += 1
-                except Exception as exc:  # validation diagnostics must not abort candidate search
+                except Exception as exc:
                     record["engineValidation"] = {
                         "complete": False,
                         "failureMode": "validation-error",
@@ -90,6 +93,7 @@ def generate_composed_candidates(
                     }
                     failure_modes["validation-error"] += 1
 
+            temporal_search = None
             if (
                 validate_engine
                 and temporal_search_radius > 0
@@ -97,7 +101,7 @@ def generate_composed_candidates(
                 and layout.get("summary", {}).get("layoutComplete")
                 and schedule.get("summary", {}).get("scheduleComplete")
             ):
-                search = search_temporal_candidates(
+                temporal_search = search_temporal_candidates(
                     puzzle,
                     plan,
                     assembly,
@@ -107,16 +111,37 @@ def generate_composed_candidates(
                     variant_limit=temporal_variant_limit,
                     result_limit=temporal_result_limit,
                 )
-                record["temporalSearch"] = search
-                temporal_variant_count += int(search.get("summary", {}).get("searchedVariantCount") or 0)
-                temporal_complete_count += int(search.get("summary", {}).get("completeVariantCount") or 0)
+                record["temporalSearch"] = temporal_search
+                temporal_variant_count += int(temporal_search.get("summary", {}).get("searchedVariantCount") or 0)
+                temporal_complete_count += int(temporal_search.get("summary", {}).get("completeVariantCount") or 0)
+
+            repaired_by_timing = bool((temporal_search or {}).get("summary", {}).get("hasCompleteSolution"))
+            if (
+                validate_engine
+                and transform_search_limit > 0
+                and not bool((validation or {}).get("complete"))
+                and not repaired_by_timing
+                and schedule.get("summary", {}).get("scheduleComplete")
+            ):
+                geometric_search = search_geometric_candidates(
+                    puzzle,
+                    plan,
+                    assembly,
+                    fragment_index,
+                    per_slot_limit=transform_per_slot_limit,
+                    variant_limit=transform_search_limit,
+                    result_limit=transform_result_limit,
+                )
+                record["geometricSearch"] = geometric_search
+                geometric_variant_count += int(geometric_search.get("summary", {}).get("searchedVariantCount") or 0)
+                geometric_complete_count += int(geometric_search.get("summary", {}).get("completeVariantCount") or 0)
         except Exception as exc:
             record["generationError"] = {"errorType": type(exc).__name__, "message": str(exc)}
             failure_modes["generation-error"] += 1
         results.append(record)
 
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -125,9 +150,12 @@ def generate_composed_candidates(
             "engineCompleteCount": engine_complete_count,
             "temporalVariantCount": temporal_variant_count,
             "temporalCompleteCount": temporal_complete_count,
-            "hasCompleteSolution": engine_complete_count > 0 or temporal_complete_count > 0,
+            "geometricVariantCount": geometric_variant_count,
+            "geometricCompleteCount": geometric_complete_count,
+            "hasCompleteSolution": engine_complete_count > 0 or temporal_complete_count > 0 or geometric_complete_count > 0,
             "failureModes": dict(sorted(failure_modes.items())),
             "temporalSearchRadius": max(0, int(temporal_search_radius)),
+            "transformSearchLimit": max(0, int(transform_search_limit)),
         },
         "candidates": results,
     }
