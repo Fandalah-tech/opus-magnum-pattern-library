@@ -15,6 +15,22 @@ def _molecule():
     }
 
 
+def _triplex_molecule(channel, raw_code):
+    return {
+        "atoms": [
+            {"id": "a0", "element": "fire", "position": [0, 0]},
+            {"id": "a1", "element": "fire", "position": [1, 0]},
+        ],
+        "bonds": [{
+            "type": "triplex",
+            "rawCode": raw_code,
+            "triplexChannels": [channel],
+            "from": [0, 0],
+            "to": [1, 0],
+        }],
+    }
+
+
 def _puzzle(name, *, products=1, arms=("arm1", "piston")):
     return {
         "source": {"name": f"{name}.puzzle"},
@@ -100,3 +116,13 @@ def test_contract_rejects_solution_that_does_not_belong_to_donor():
             _puzzle("donor"),
             _donor_solution("third-puzzle"),
         )
+
+
+def test_transfer_rejects_different_triplex_channels_as_incompatible():
+    target = _puzzle("target")
+    donor = _puzzle("donor")
+    target["reagents"] = target["products"] = [_triplex_molecule("red", 2)]
+    donor["reagents"] = donor["products"] = [_triplex_molecule("yellow", 8)]
+
+    with pytest.raises(BlindTransferContractError, match="chemistry- and capability-compatible"):
+        generate_blind_transfer_candidates(target, donor, _donor_solution())

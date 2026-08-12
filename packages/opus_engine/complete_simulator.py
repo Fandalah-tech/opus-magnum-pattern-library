@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from packages.opus_parser import expanded_bond_types
+
 from .builder import rotate_hex
 from .faithful_simulator import Simulator as FaithfulSimulator
 from .model import Atom, Bond
@@ -116,11 +118,12 @@ class Simulator(FaithfulSimulator):
                 )
                 bonds = tuple(
                     (
-                        str(bond.get("type") or "normal"),
+                        kind,
                         tuple(bond.get("from") or (0, 0)),
                         tuple(bond.get("to") or (0, 0)),
                     )
                     for bond in product.get("bonds", [])
+                    for kind in expanded_bond_types(bond)
                 )
                 simulator.repeating_patterns.append((
                     part_id, origin, rotation, anchor_local, repeat_local, shift, atoms, bonds,

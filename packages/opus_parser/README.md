@@ -23,6 +23,8 @@ The canonical parsed-binary contracts are defined in
 - Solution format versions 6 and 7.
 - Standard molecules, normal bonds, and the red/black/yellow channel bitmask
   used by triplex bonds. Parsed bonds retain their exact binary `rawCode`.
+- Canonical helpers preserve the combined channel identity for retrieval and
+  expand the mask into channel-specific engine bonds for exact simulation.
 - Standard arms, Van Berlo wheel, tracks, glyphs, inputs and outputs represented as solution parts.
 - Sparse arm instruction tapes.
 

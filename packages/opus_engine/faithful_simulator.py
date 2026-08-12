@@ -174,7 +174,11 @@ class Simulator(RuntimeSimulator):
                 }))
         for positions, part_id in self.prismatic_bonders:
             atoms = [self.world.atom_at(position) for position in positions]
-            for first_index, second_index in ((0, 1), (1, 2), (2, 0)):
+            for first_index, second_index, channel in (
+                (0, 1, "black"),
+                (1, 2, "red"),
+                (2, 0, "yellow"),
+            ):
                 first = atoms[first_index]
                 second = atoms[second_index]
                 if (
@@ -186,7 +190,7 @@ class Simulator(RuntimeSimulator):
                 ):
                     continue
                 normal = Bond(first.id, second.id, "normal")
-                triplex = Bond(first.id, second.id, "triplex")
+                triplex = Bond(first.id, second.id, f"triplex-{channel}")
                 if normal.key in self.world.bonds or triplex.key in self.world.bonds:
                     continue
                 self.world.add_bond(triplex)
@@ -195,5 +199,6 @@ class Simulator(RuntimeSimulator):
                     "fromAtomId": first.id,
                     "toAtomId": second.id,
                     "type": "triplex",
+                    "triplexChannel": channel,
                     "prismatic": True,
                 }))

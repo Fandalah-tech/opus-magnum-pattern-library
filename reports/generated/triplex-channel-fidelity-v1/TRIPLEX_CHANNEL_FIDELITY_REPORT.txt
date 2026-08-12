@@ -1,0 +1,67 @@
+TRIPLEX CHANNEL FIDELITY REPORT
+===============================
+
+Status: VALIDATED
+
+Scope
+-----
+Preserve the exact red, black and yellow triplex bond channels from puzzle
+parsing through molecule fingerprints, cross-puzzle retrieval, blind transfer,
+input spawning, prismatic bonding and output validation.
+
+Implementation
+--------------
+- Binary bond codes 2, 4 and 8 retain red, black and yellow respectively.
+- Binary bond code 14 retains the combined red+black+yellow identity.
+- Molecule hashes remain translation- and rotation-invariant while treating
+  different triplex channel masks as different chemistry.
+- Feature index schema 0.2.0 exposes coarse bond counts and exact bond variants.
+- The prismatic bonder creates black, red and yellow bonds on its three exact
+  local edges and can accumulate different channels on the same atom pair.
+- Input and output models expand a combined mask into three engine bond kinds.
+- A normal bonder no longer creates a normal bond over an existing triplex bond.
+
+Validation
+----------
+Full automated suite: 167 passed, 10 parameterized subtests passed.
+Puzzle feature index: 174 puzzles, 151 fingerprints, 0 parse failures.
+Puzzles with triplex products: 17.
+
+Triplex solution regression
+---------------------------
+OMSim corpus solutions associated with triplex puzzles: 479.
+Maximum concurrent audit workers: 10.
+
+Before exact channel fidelity:
+  engine-complete:   283
+  engine-error:      191
+  engine-incomplete:   5
+
+After exact channel fidelity:
+  engine-complete:   283
+  engine-error:      191
+  engine-incomplete:   5
+
+Solutions whose engine status changed: 0.
+Audit exceptions: 0.
+
+Blind transfer regression
+-------------------------
+Puzzle files scanned: 174
+Puzzle parse failures: 0
+Chemistry-compatible targets: 3
+Targets solved by OMSim: 3
+Candidates generated: 12
+Candidates accepted by OMSim: 8
+Target solutions read: 0
+
+The unchanged matrix result proves that exact channel matching removes a class
+of false chemical equivalences without reducing existing blind-transfer
+coverage.
+
+Known pre-existing gaps
+-----------------------
+The 191 engine errors and 5 incomplete triplex-corpus solutions are existing
+simulator coverage gaps. This milestone does not claim to resolve them; it
+proves that channel fidelity introduces no status regression among all 479
+audited solutions.

@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from packages.opus_parser import expanded_bond_types
+
 from .model import Atom, Bond, Hex
 from .world import World, WorldEvent
 
@@ -87,9 +89,10 @@ def build_input_sources(puzzle: dict[str, Any], solution: dict[str, Any]) -> lis
             (
                 local_index[tuple(bond.get("from") or (0, 0))],
                 local_index[tuple(bond.get("to") or (0, 0))],
-                str(bond.get("type") or "normal"),
+                kind,
             )
             for bond in reagent.get("bonds", [])
+            for kind in expanded_bond_types(bond)
             if tuple(bond.get("from") or (0, 0)) in local_index
             and tuple(bond.get("to") or (0, 0)) in local_index
         )

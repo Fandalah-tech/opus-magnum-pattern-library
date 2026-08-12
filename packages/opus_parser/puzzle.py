@@ -25,15 +25,56 @@ GLYPH_FLAGS = {
 }
 
 
+def triplex_channels_from_code(bond_code: int) -> tuple[str, ...]:
+    return tuple(
+        name for mask, name in TRIPLEX_BOND_CHANNELS if int(bond_code) & mask
+    )
+
+
+def triplex_bond_channels(bond: dict) -> tuple[str, ...]:
+    """Return triplex channels in canonical red/black/yellow order."""
+
+    if str(bond.get("type") or "normal") != "triplex":
+        return ()
+    explicit = set(str(value) for value in bond.get("triplexChannels") or ())
+    channels = tuple(
+        name for _, name in TRIPLEX_BOND_CHANNELS if name in explicit
+    )
+    if channels:
+        return channels
+    raw_code = bond.get("rawCode")
+    if isinstance(raw_code, int):
+        return triplex_channels_from_code(raw_code)
+    return ()
+
+
+def canonical_bond_identity(bond: dict) -> str:
+    """Preserve exact triplex chemistry while accepting legacy models."""
+
+    bond_type = str(bond.get("type") or "normal")
+    channels = triplex_bond_channels(bond)
+    if bond_type == "triplex" and channels:
+        return f"triplex:{'+'.join(channels)}"
+    return bond_type
+
+
+def expanded_bond_types(bond: dict) -> tuple[str, ...]:
+    """Expand a parsed bond into the bond kinds stored by opus_engine."""
+
+    bond_type = str(bond.get("type") or "normal")
+    channels = triplex_bond_channels(bond)
+    if bond_type == "triplex" and channels:
+        return tuple(f"triplex-{channel}" for channel in channels)
+    return (bond_type,)
+
+
 def _bond_descriptor(bond_code: int, kind: str, index: int) -> dict:
     unknown_bits = bond_code & ~KNOWN_BOND_MASK
     if bond_code == 0 or unknown_bits:
         raise ParseError(f"Unknown bond code {bond_code} in {kind} {index}")
 
     has_normal_bond = bool(bond_code & 0x01)
-    triplex_channels = [
-        name for mask, name in TRIPLEX_BOND_CHANNELS if bond_code & mask
-    ]
+    triplex_channels = triplex_channels_from_code(bond_code)
     if has_normal_bond and triplex_channels:
         raise ParseError(
             f"Unsupported mixed normal/triplex bond code {bond_code} in {kind} {index}"
@@ -44,7 +85,7 @@ def _bond_descriptor(bond_code: int, kind: str, index: int) -> dict:
         "rawCode": bond_code,
     }
     if triplex_channels:
-        descriptor["triplexChannels"] = triplex_channels
+        descriptor["triplexChannels"] = list(triplex_channels)
     return descriptor
 
 

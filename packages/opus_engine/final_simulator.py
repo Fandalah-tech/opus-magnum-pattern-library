@@ -153,7 +153,7 @@ class Simulator(CompleteSimulator):
         triplex_pairs = {
             tuple(sorted((start, end)))
             for kind, start, end in bonds
-            if kind == "triplex"
+            if kind.startswith("triplex")
         }
         normalized = tuple(
             bond for bond in bonds

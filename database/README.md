@@ -20,7 +20,7 @@ The Codex database is metadata-first. Binary `.puzzle` and `.solution` files are
 - `canonicalMechanismHash` also normalizes program timing.
 - `puzzleFeatureFingerprint` hashes solver-relevant reagent/product chemistry, canonical molecule topology, available parts, output scale and Production constraints.
 
-Molecule fingerprints are invariant to translation and 60-degree rotations; reflection is intentionally preserved.
+Molecule fingerprints are invariant to translation and 60-degree rotations; reflection is intentionally preserved. Triplex red, black and yellow channels are part of the molecule identity, so feature indexes created before schema `0.2.0` should be rebuilt.
 
 ## Cross-puzzle retrieval
 

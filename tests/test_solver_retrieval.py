@@ -14,6 +14,7 @@ def _features(*, product_element="salt", reagent_element="salt", glyphs=None, pr
             "bondCounts": [0],
             "elements": {reagent_element: 1},
             "bonds": {},
+            "bondVariants": {},
             "moleculeSignatures": [f"reagent-{reagent_element}"],
         },
         "products": {
@@ -22,6 +23,7 @@ def _features(*, product_element="salt", reagent_element="salt", glyphs=None, pr
             "bondCounts": [0],
             "elements": {product_element: 1},
             "bonds": {},
+            "bondVariants": {},
             "moleculeSignatures": [f"product-{product_element}"],
         },
     }
@@ -34,6 +36,23 @@ def test_puzzle_similarity_prefers_matching_chemistry():
 
     assert puzzle_similarity(target, close)["score"] > puzzle_similarity(target, far)["score"]
     assert puzzle_similarity(target, close)["score"] == 1.0
+
+
+def test_puzzle_similarity_distinguishes_triplex_channel_variants():
+    target = _features()
+    matching = _features()
+    different = _features()
+    target["products"]["bonds"] = matching["products"]["bonds"] = different["products"]["bonds"] = {"triplex": 1}
+    target["products"]["bondVariants"] = matching["products"]["bondVariants"] = {"triplex:red": 1}
+    different["products"]["bondVariants"] = {"triplex:yellow": 1}
+
+    matching_score = puzzle_similarity(target, matching)
+    different_score = puzzle_similarity(target, different)
+
+    assert matching_score["components"]["productBonds"] == 1.0
+    assert different_score["components"]["productBonds"] == 1.0
+    assert different_score["components"]["productBondVariants"] == 0.0
+    assert matching_score["score"] > different_score["score"]
 
 
 def test_mechanism_compatibility_rejects_missing_known_glyph():

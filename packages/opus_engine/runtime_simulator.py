@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from packages.opus_parser import expanded_bond_types
+
 from .builder import rotate_hex
 from .model import Atom, Bond
 from .simulator import RESET, SimulationError, Simulator as BaseSimulator
@@ -93,11 +95,12 @@ class Simulator(BaseSimulator):
             ))
             bonds = tuple(sorted(
                 _bond_signature(
-                    str(bond.get("type") or "normal"),
+                    kind,
                     _transform(bond.get("from") or (0, 0), origin, rotation),
                     _transform(bond.get("to") or (0, 0), origin, rotation),
                 )
                 for bond in product.get("bonds", [])
+                for kind in expanded_bond_types(bond)
             ))
             simulator.output_patterns.append((str(part.get("id")), product_index, atoms, bonds))
         return simulator
@@ -246,7 +249,12 @@ class Simulator(BaseSimulator):
             if first is None or second is None or first.id == second.id:
                 continue
             bond = Bond(first.id, second.id, "normal")
-            if bond.key in self.world.bonds:
+            pair = tuple(sorted((first.id, second.id)))
+            has_triplex = any(
+                key[:2] == pair and key[2].startswith("triplex")
+                for key in self.world.bonds
+            )
+            if bond.key in self.world.bonds or has_triplex:
                 continue
             self.world.add_bond(bond)
             self.world.events.append(WorldEvent("bond-created", self.world.cycle, {

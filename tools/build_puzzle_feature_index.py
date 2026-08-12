@@ -34,7 +34,8 @@ def main() -> int:
             })
 
     index = {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
+        "bondIdentity": "triplex-channel-aware-v1",
         "summary": {
             "puzzleCount": len(records),
             "fingerprintCount": len({record["fingerprint"] for record in records}),
