@@ -23,3 +23,29 @@ The first public corpus-derived strategy is `corpus-derived-fragment-extraction-
 Unsupported puzzles produce a structured report and remain available for the next solver strategy instead of being mistaken for engine failures.
 
 Acceptance is covered by `tests/test_solve_test_puzzle.py` and the native fixture `samples/solver/P007.puzzle`.
+
+## Objective architecture portfolio
+
+The Critelli corpus strategy now has a separate oracle-scored portfolio path:
+
+```bash
+python tools/solve_objective_portfolio.py path/to/puzzle.puzzle \
+  --omsim path/to/omsim \
+  --output-dir reports/generated/objective-portfolio
+```
+
+This path materializes independent sequential-piston, periodic-pipeline,
+balanced-cell, and parallel-throughput architectures. OMSim validates and
+scores every candidate with a 60-second default timeout, then selects winners
+independently for cost, area, cycles, rate, instructions, CostArea,
+Cost+Cycles, and Sum4. The report preserves local-engine disagreements as
+diagnostics instead of rejecting an OMSim-valid architecture.
+
+The normalized blueprints are public-corpus-derived reuse. They demonstrate
+metric-directed generation and objective selection; they are not presented as
+new mechanisms discovered without examples.
+
+On the Salt of Saturn reference corpus, the checked-in portfolio reproduces
+the corpus winners for all eight configured objectives: cost 50, area 25,
+cycles 53, rate 1, instructions 15, CostArea 2250, Cost+Cycles 240, and
+Sum4 343.

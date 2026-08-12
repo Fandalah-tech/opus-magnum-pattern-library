@@ -43,6 +43,13 @@ from .outcome_learning import (
     generation_outcome_records,
     merge_outcome_records,
 )
+from .objective_portfolio import (
+    OBJECTIVES,
+    ObjectiveCandidate,
+    generate_objective_candidates,
+    objective_key,
+    select_objective_winners,
+)
 from .repair_policy import recommend_repair_order
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
 from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
@@ -59,6 +66,8 @@ __all__ = [
     "GeneratedSolutionError",
     "ManufacturingOperation",
     "ManufacturingPlan",
+    "OBJECTIVES",
+    "ObjectiveCandidate",
     "SolveResult",
     "UnsupportedPuzzleError",
     "aggregate_repair_outcomes",
@@ -76,12 +85,14 @@ __all__ = [
     "enumerate_schedule_variants",
     "enumerate_transform_variants",
     "generate_composed_candidates",
+    "generate_objective_candidates",
     "generation_outcome_records",
     "manufacturing_requirements",
     "materialize_assembly_layout",
     "materialize_assembly_schedule",
     "mechanism_compatibility",
     "merge_outcome_records",
+    "objective_key",
     "pareto_frontier",
     "part_occupied_cells",
     "plan_puzzle_fragment_chains",
@@ -95,6 +106,7 @@ __all__ = [
     "search_geometric_candidates",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",
+    "select_objective_winners",
     "solve_puzzle",
     "synchronize_layout_programs",
     "transform_slots",

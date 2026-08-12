@@ -1,0 +1,31 @@
+OBJECTIVE ARCHITECTURE PORTFOLIO
+================================
+
+Status: ready
+Generated architectures: 7
+OMSim-valid architectures: 7
+Distinct binary architectures: 7
+
+Winners
+-------
+cost         single-arm-cost-minimum-v1           cost=50 cycles=1722 area=3701 instructions=1722 rate=None score=50
+area         single-piston-area-minimum-v1        cost=90 cycles=2073 area=25 instructions=2094 rate=None score=25
+cycles       periodic-pipeline-v1                 cost=310 cycles=53 area=145 instructions=100 rate=9 score=53
+rate         parallel-throughput-v1               cost=1970 cycles=239 area=859 instructions=115 rate=1 score=1
+instructions balanced-instructions-v1             cost=165 cycles=83 area=109 instructions=15 rate=6 score=15
+costarea     single-piston-area-minimum-v1        cost=90 cycles=2073 area=25 instructions=2094 rate=None score=2250
+costcycles   balanced-sum4-v1                     cost=145 cycles=95 area=84 instructions=19 rate=8 score=240
+sum4         balanced-sum4-v1                     cost=145 cycles=95 area=84 instructions=19 rate=8 score=343
+
+Baseline improvements
+---------------------
+cost         145 -> 50 (-95)
+area         84 -> 25 (-59)
+cycles       95 -> 53 (-42)
+rate         8 -> 1 (-7)
+instructions 19 -> 15 (-4)
+
+Validation note
+---------------
+OMSim is authoritative for final acceptance. Local-engine divergences remain
+recorded per candidate so they can drive the next simulator-fidelity work.

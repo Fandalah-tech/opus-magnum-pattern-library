@@ -15,13 +15,27 @@ SUMMARY_RE = re.compile(
     r"^(?P<cost>\d+)g/(?P<instructions>\d+)i@0\s+"
     r"(?P<cycles>\d+)c/(?P<area>\d+)a@V(?:\s+.*)?$"
 )
+METRIC_RE = re.compile(r"^(cost|instructions|cycles|area):\s*(\d+)\s*$")
+OUTPUT_INTERVALS_RE = re.compile(r"^output intervals:\s*(.*?)\s*(?:\[([^]]*)\])?\s*$")
 CYCLE_RE = re.compile(r"\bon cycle (?P<cycle>\d+) at (?P<u>-?\d+) (?P<v>-?\d+)\b")
 
 
 def parse_omsim_output(stdout: str, returncode: int) -> dict[str, Any]:
     text = stdout.strip()
     metrics = {"cost": None, "cycles": None, "area": None, "instructions": None}
+    output_intervals = {"warmup": [], "steadyState": []}
     issues: list[dict[str, Any]] = []
+
+    for line in text.splitlines():
+        metric_match = METRIC_RE.match(line.strip())
+        if metric_match:
+            metrics[metric_match.group(1)] = int(metric_match.group(2))
+        interval_match = OUTPUT_INTERVALS_RE.match(line.strip())
+        if interval_match:
+            output_intervals = {
+                "warmup": [int(value) for value in re.findall(r"\d+", interval_match.group(1) or "")],
+                "steadyState": [int(value) for value in re.findall(r"\d+", interval_match.group(2) or "")],
+            }
 
     for line in reversed(text.splitlines()):
         match = SUMMARY_RE.match(line.strip())
@@ -59,14 +73,39 @@ def parse_omsim_output(stdout: str, returncode: int) -> dict[str, Any]:
         "validator": {"name": "omsim", "version": None, "commit": None},
         "valid": valid,
         "metrics": metrics,
+        "rate": output_intervals["steadyState"][0] if output_intervals["steadyState"] else None,
+        "outputIntervals": output_intervals,
         "issues": issues,
         "knownDivergence": False,
         "rawOutput": text or None,
     }
 
 
-def run_omsim(binary: Path, puzzle: Path, solution: Path, timeout: int) -> dict[str, Any]:
+def run_omsim(
+    binary: Path,
+    puzzle: Path,
+    solution: Path,
+    timeout: int,
+    *,
+    output_intervals: bool = False,
+) -> dict[str, Any]:
     command = [str(binary), "--puzzle-file", str(puzzle), str(solution)]
+    if output_intervals:
+        command = [
+            str(binary),
+            "--puzzle-file",
+            str(puzzle),
+            "--output-intervals",
+            "--metric",
+            "cost",
+            "--metric",
+            "instructions",
+            "--metric",
+            "cycles",
+            "--metric",
+            "area",
+            str(solution),
+        ]
     try:
         completed = subprocess.run(
             command,
@@ -94,13 +133,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--omsim", type=Path, default=Path("omsim"), help="path to omsim executable"
     )
     parser.add_argument("--timeout", type=int, default=60)
+    parser.add_argument("--output-intervals", action="store_true")
     parser.add_argument("--output", type=Path, help="write JSON to this file instead of stdout")
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
-    result = run_omsim(args.omsim, args.puzzle, args.solution, args.timeout)
+    result = run_omsim(
+        args.omsim,
+        args.puzzle,
+        args.solution,
+        args.timeout,
+        output_intervals=args.output_intervals,
+    )
     payload = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
 
     if args.output:
