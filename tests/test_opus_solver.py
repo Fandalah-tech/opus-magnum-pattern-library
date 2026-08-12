@@ -146,6 +146,16 @@ def test_generated_solution_round_trips_through_binary_format() -> None:
     assert validation["deliveredProducts"] == {"part-0": 6}
 
 
+def test_generated_validation_can_be_bounded_for_search_preflight() -> None:
+    puzzle = _stabilized_water_puzzle()
+    generated = solve_puzzle(puzzle).solution
+
+    validation = validate_generated_solution(puzzle, generated, max_cycles=1)
+
+    assert validation["complete"] is False
+    assert validation["requestedCycles"] == 1
+
+
 def test_solver_rejects_unsupported_product_shape() -> None:
     puzzle = _stabilized_water_puzzle()
     puzzle["products"][0]["atoms"].append(
@@ -158,3 +168,24 @@ def test_solver_rejects_unsupported_product_shape() -> None:
         assert "exactly two atoms" in str(error)
     else:
         raise AssertionError("Unsupported puzzle should have raised UnsupportedPuzzleError")
+
+
+def test_generated_validation_rejects_parts_disabled_by_target_puzzle() -> None:
+    puzzle = _triplex_extension_puzzle()
+    solution = {
+        "parts": [
+            {"id": "forbidden", "type": "glyph-unification", "position": [0, 0], "rotation": 0, "program": []},
+            {"id": "output", "type": "out-std", "position": [1, 0], "rotation": 0, "which": 0, "program": []},
+        ],
+    }
+
+    validation = validate_generated_solution(puzzle, solution)
+
+    assert validation["complete"] is False
+    assert validation["failureMode"] == "unavailable-parts"
+    assert validation["unavailableParts"] == [{
+        "partId": "forbidden",
+        "partType": "glyph-unification",
+        "requiredCapability": "unification",
+        "category": "glyph",
+    }]

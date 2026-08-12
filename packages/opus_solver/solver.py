@@ -10,6 +10,7 @@ from packages.opus_engine import Simulator
 from packages.opus_engine.builder import rotate_hex
 from packages.opus_parser import write_solution
 
+from .capabilities import unavailable_solution_parts
 from .manufacturing import AtomFlow, ManufacturingPlan, build_manufacturing_plan
 
 STANDARD_PRODUCT_TARGET = 6
@@ -323,7 +324,36 @@ def validate_generated_solution(
     solution: dict[str, Any],
     *,
     target: int = STANDARD_PRODUCT_TARGET,
+    max_cycles: int | None = None,
 ) -> dict[str, Any]:
+    unavailable_parts = unavailable_solution_parts(puzzle, solution)
+    if unavailable_parts:
+        standard_outputs = [
+            str(part.get("id"))
+            for part in solution.get("parts", [])
+            if part.get("type") == "out-std"
+        ]
+        return {
+            "complete": False,
+            "failureMode": "unavailable-parts",
+            "targetPerOutput": target,
+            "standardOutputs": standard_outputs,
+            "deliveredProducts": {},
+            "deliveredByProduct": {},
+            "outputDeficits": {},
+            "totalDelivered": 0,
+            "totalDeficit": target * max(1, len(standard_outputs)),
+            "requestedCycles": 0,
+            "completedCycles": 0,
+            "terminatedWithError": False,
+            "terminatedAfterCompletion": False,
+            "firstError": None,
+            "inputSourceCount": sum(part.get("type") == "input" for part in solution.get("parts", [])),
+            "initialSpawnedInputCount": 0,
+            "blockedInputsAtStart": [],
+            "initialInputStatus": [],
+            "unavailableParts": unavailable_parts,
+        }
     base_timeline = build_program_timeline(solution)
     period = max(1, int(base_timeline.get("summary", {}).get("globalPeriod") or 1))
     last_program_cycle = max(
@@ -339,6 +369,8 @@ def validate_generated_solution(
         period * (max(1, int(target)) + 1),
         last_program_cycle + period * max(1, int(target)) + 1,
     )
+    if max_cycles is not None:
+        horizon = min(horizon, max(1, int(max_cycles)))
     timeline = build_program_timeline(solution, max_cycles=horizon)
     simulator = Simulator.from_models(puzzle, solution)
     input_status = [

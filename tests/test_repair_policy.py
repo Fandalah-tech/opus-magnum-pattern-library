@@ -60,3 +60,9 @@ def test_disabled_preferred_search_falls_back_to_available_repair():
 def test_no_enabled_search_returns_empty_route():
     result = _route({"failureMode": "no-product-delivered"}, temporal=False, geometry=False)
     assert result["order"] == []
+
+
+def test_unavailable_parts_require_a_new_assembly_not_local_search():
+    result = _route({"failureMode": "unavailable-parts"})
+    assert result["preferred"] == "assembly"
+    assert result["order"] == []

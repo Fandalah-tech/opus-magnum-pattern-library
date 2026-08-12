@@ -38,6 +38,10 @@ def main() -> int:
     parser.add_argument("--transform-variants", type=int, default=0, help="Maximum observed relative-transform combinations tested after timing repair fails.")
     parser.add_argument("--transform-per-slot", type=int, default=3, help="Maximum observed transform choices retained for each fragment join.")
     parser.add_argument("--transform-results", type=int, default=10, help="Best geometric variants retained in the JSON report.")
+    parser.add_argument("--transform-synthetic-radius", type=int, default=0, help="Add unobserved local hex translations within this radius to geometric repair.")
+    parser.add_argument("--transform-synthetic-rotations", type=int, default=0, help="Add +/- this many local rotation steps to geometric repair.")
+    parser.add_argument("--transform-preflight-cycles", type=int, default=0, help="Replay each geometric variant only this long before promoting the best variants to full validation.")
+    parser.add_argument("--transform-promotions", type=int, default=25, help="Maximum preflight survivors promoted to full validation per assembly.")
     parser.add_argument("--chain-max-depth", type=int, default=8, help="Maximum engine-observed transitions in a linear materialized chain.")
     parser.add_argument("--min-engine-validated-solutions", type=int, default=0, help="Require every selected transition to have at least this many engine-complete source solutions.")
     parser.add_argument("--report", type=Path, default=Path("reports/composed-candidates.json"))
@@ -61,6 +65,10 @@ def main() -> int:
         transform_search_limit=args.transform_variants,
         transform_per_slot_limit=args.transform_per_slot,
         transform_result_limit=args.transform_results,
+        transform_synthetic_translation_radius=args.transform_synthetic_radius,
+        transform_synthetic_rotation_radius=args.transform_synthetic_rotations,
+        transform_preflight_cycles=args.transform_preflight_cycles,
+        transform_promotion_limit=args.transform_promotions,
         chain_max_depth=args.chain_max_depth,
         min_engine_validated_solutions=args.min_engine_validated_solutions,
     )

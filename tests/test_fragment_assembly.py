@@ -118,3 +118,52 @@ def test_assembly_prefers_one_engine_coherent_source_solution():
     assert ranked[0]["coherentSourceSolution"] == "coherent.solution"
     assert ranked[0]["branches"][0][0]["relativeTransform"] == transform
     assert ranked[0]["tail"][0]["relativeTiming"] == timing
+
+
+def test_three_input_prism_generalizes_an_unobserved_channel():
+    plan = ManufacturingPlan(
+        strategy="triplex-test",
+        supported=True,
+        reason=None,
+        product_index=0,
+        atom_flows=(),
+        operations=(
+            ManufacturingOperation(id="source", kind="source", inputs=(), outputs=("raw",)),
+            ManufacturingOperation(id="split", kind="unbond", inputs=("raw",), outputs=("a", "b"), glyph="unbonder"),
+            ManufacturingOperation(id="copy", kind="duplicate", inputs=("a",), outputs=("a", "c"), glyph="glyph-duplication"),
+            ManufacturingOperation(
+                id="prism",
+                kind="bond",
+                inputs=("a", "b", "c"),
+                outputs=("product",),
+                glyph="bonder-prisma",
+                metadata={"triplexChannels": ["red", "black", "yellow"]},
+            ),
+            ManufacturingOperation(id="deliver", kind="deliver", inputs=("product",), outputs=("out",)),
+        ),
+        required_glyphs=("unbonder", "duplication", "triplex-bonder"),
+    )
+    flow = {
+        "transitions": [
+            _edge("feed", "feed", "process", "split", "bond-removed"),
+            _edge("process", "split", "conversion", "copy", "duplicate"),
+            _edge("bonding", "prism", "output", "out", "delivered"),
+        ],
+        "convergenceMotifs": [{
+            "targetRole": "bonding",
+            "targetMechanismHash": "prism",
+            "inputCount": 3,
+            "inputs": [
+                {"sourceRole": "conversion", "sourceMechanismHash": "copy", "relations": ["triplex-bond-created:red"]},
+                {"sourceRole": "process", "sourceMechanismHash": "split", "relations": ["triplex-bond-created:black"]},
+                {"sourceRole": "feed", "sourceMechanismHash": "feed", "relations": ["triplex-bond-created:red"]},
+            ],
+            "observationCount": 2,
+        }],
+    }
+
+    ranked = rank_fragment_assemblies(plan, flow)
+
+    assert len(ranked) == 1
+    assert ranked[0]["inferredRelations"] == {"triplex-bond-created:yellow": 1}
+    assert ranked[0]["relationCoverageEvidence"] == "engine-observed-plus-prism-physics"

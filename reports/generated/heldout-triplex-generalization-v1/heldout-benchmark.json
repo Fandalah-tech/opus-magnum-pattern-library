@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "0.1.0",
+  "benchmark": "strict-leave-one-puzzle-out-triplex-generalization",
+  "targetPuzzleId": "OM2021_W1",
+  "sourceFilter": {
+    "mode": "strict-source-holdout",
+    "engineCompleteSolutionCountBeforeExclusion": 396,
+    "excludedEngineCompleteSolutionCount": 230,
+    "eligibleEngineCompleteSolutionCount": 166,
+    "targetEvidenceStringCount": 0
+  },
+  "index": {
+    "schemaVersion": "0.8.0",
+    "canonicalFragmentCount": 1182,
+    "canonicalTransitionCount": 1635,
+    "canonicalConvergenceMotifCount": 392,
+    "triplexTransitionCount": 597,
+    "triplexObservationCount": 4645,
+    "validationDriftCount": 0,
+    "errorCount": 0,
+    "workerCount": 10
+  },
+  "generation": {
+    "assemblyCandidateCount": 3,
+    "serializableCount": 3,
+    "omsimValidBaselineCount": 0,
+    "geometricVariantCount": 2187,
+    "promotedFullReplayCount": 24,
+    "completeVariantCount": 0,
+    "deliveredProductCount": 0
+  },
+  "baselineCandidates": [
+    {
+      "rank": 1,
+      "sourcePuzzleId": "OM2020_W4_VolatilityAndTranquility",
+      "sourceSolution": "tourney-2020/Week 4/Kailaria/volatility-and-tranquility-OM2020_W4_VolatilityAndTranquility-11.solution",
+      "inferredRelation": "triplex-bond-created:red",
+      "prunedPartType": "glyph-unification",
+      "omsimSummary": "125g/977i@0",
+      "omsimResult": "collision on cycle 3 at -2 -2"
+    },
+    {
+      "rank": 2,
+      "sourcePuzzleId": "week5",
+      "sourceSolution": "tourney-2019/week5/GI-jinyou.solution",
+      "inferredRelations": [
+        "triplex-bond-created:black",
+        "triplex-bond-created:yellow"
+      ],
+      "prunedPartType": "baron",
+      "omsimSummary": "90g/129i@0",
+      "omsimResult": "did not complete within cycle limit"
+    },
+    {
+      "rank": 3,
+      "sourcePuzzleId": "week5",
+      "sourceSolution": "tourney-2019/week5/GI-S.G.S.solution",
+      "inferredRelations": [
+        "triplex-bond-created:red",
+        "triplex-bond-created:yellow"
+      ],
+      "prunedPartType": "baron",
+      "omsimSummary": "90g/111i@0",
+      "omsimResult": "collision on cycle 1 at 2 -1"
+    }
+  ],
+  "result": {
+    "heldoutSolved": false,
+    "bottleneck": "shared physical donor parts are duplicated by fragment-level geometric perturbations",
+    "nextMilestone": "shared-component graph materialization and repair"
+  },
+  "verification": {
+    "passedTests": 190,
+    "passedSubtests": 10,
+    "compileCheck": "passed"
+  }
+}

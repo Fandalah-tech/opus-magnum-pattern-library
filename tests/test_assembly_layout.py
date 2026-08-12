@@ -96,3 +96,37 @@ def test_missing_geometry_is_reported_not_silently_ignored():
     layout = materialize_assembly_layout(candidate, {"fragments": []})
     assert layout["summary"]["layoutComplete"] is False
     assert layout["summary"]["missingGeometryCount"] == 1
+
+
+def test_coherent_assembly_uses_geometry_from_its_source_solution():
+    source_geometry = _geometry("bonder")
+    source_geometry["parts"].append({
+        "type": "arm1",
+        "position": [1, 0],
+        "rotation": 0,
+        "length": 1,
+        "which": 0,
+        "program": [{"cycle": 0, "instruction": "grab"}],
+    })
+    fragment = _fragment("bonding", "bond", "bonder")
+    fragment["solutionGeometries"] = [{
+        "solutionPath": "coherent.solution",
+        "representativeGeometry": source_geometry,
+    }]
+    candidate = {
+        "coherentSourceSolution": "coherent.solution",
+        "convergence": {
+            "targetRole": "bonding",
+            "targetMechanismHash": "bond",
+            "inputs": [],
+            "samples": [],
+        },
+        "branches": [],
+        "tail": [],
+    }
+
+    layout = materialize_assembly_layout(candidate, {"fragments": [fragment]})
+
+    assert layout["summary"]["sourceSpecificGeometry"] is True
+    assert layout["summary"]["materializedPartCount"] == 2
+    assert {part["type"] for part in layout["parts"]} == {"bonder", "arm1"}

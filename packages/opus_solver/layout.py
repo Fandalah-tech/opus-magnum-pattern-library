@@ -15,10 +15,23 @@ def _key(role: Any, mechanism: Any) -> FragmentKey:
     return str(role or ""), str(mechanism or "")
 
 
-def _geometry_lookup(fragment_index: dict[str, Any]) -> dict[FragmentKey, dict[str, Any]]:
+def _geometry_lookup(
+    fragment_index: dict[str, Any],
+    *,
+    coherent_source_solution: str | None = None,
+) -> dict[FragmentKey, dict[str, Any]]:
     result = {}
     for item in fragment_index.get("fragments", []):
         geometry = item.get("representativeGeometry")
+        if coherent_source_solution:
+            solution_geometry = next((
+                record.get("representativeGeometry")
+                for record in item.get("solutionGeometries", [])
+                if str(record.get("solutionPath") or "") == coherent_source_solution
+                and record.get("representativeGeometry")
+            ), None)
+            if solution_geometry:
+                geometry = solution_geometry
         if geometry:
             result[_key(item.get("role"), item.get("canonicalMechanismHash"))] = geometry
     return result
@@ -157,7 +170,11 @@ def materialize_assembly_layout(
     *,
     transform_overrides: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    geometries = _geometry_lookup(fragment_index)
+    coherent_source_solution = str(candidate.get("coherentSourceSolution") or "") or None
+    geometries = _geometry_lookup(
+        fragment_index,
+        coherent_source_solution=coherent_source_solution,
+    )
     convergence = candidate.get("convergence") or {}
     target_key = _key(convergence.get("targetRole"), convergence.get("targetMechanismHash"))
     overrides = transform_overrides or {}
@@ -245,6 +262,7 @@ def materialize_assembly_layout(
             "approximateStaticConflictCount": geometry_summary["approximateStaticConflictCount"],
             "armWorkspaceOverlapCount": geometry_summary["armWorkspaceOverlapCount"],
             "transformOverrideCount": len(overrides),
+            "sourceSpecificGeometry": bool(coherent_source_solution),
             "layoutComplete": not missing_geometry and not missing_transform,
         },
         "placements": placements,

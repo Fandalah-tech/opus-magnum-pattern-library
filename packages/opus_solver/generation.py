@@ -28,6 +28,10 @@ def generate_composed_candidates(
     transform_search_limit: int = 0,
     transform_per_slot_limit: int = 3,
     transform_result_limit: int = 10,
+    transform_synthetic_translation_radius: int = 0,
+    transform_synthetic_rotation_radius: int = 0,
+    transform_preflight_cycles: int = 0,
+    transform_promotion_limit: int = 25,
     chain_max_depth: int = 8,
     min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
@@ -94,6 +98,9 @@ def generate_composed_candidates(
             record["synchronizedSummary"] = synchronized.get("summary", {})
 
             solution = build_candidate_solution(puzzle, plan, assembly, synchronized)
+            record["capabilityAdaptation"] = {
+                "prunedUnavailableParts": list((solution.get("source") or {}).get("prunedUnavailableParts", [])),
+            }
             roundtrip = serialize_candidate_roundtrip(solution)
             record["serialization"] = roundtrip["diagnostics"]
             record["solution"] = solution
@@ -165,6 +172,10 @@ def generate_composed_candidates(
                         per_slot_limit=transform_per_slot_limit,
                         variant_limit=transform_search_limit,
                         result_limit=transform_result_limit,
+                        synthetic_translation_radius=transform_synthetic_translation_radius,
+                        synthetic_rotation_radius=transform_synthetic_rotation_radius,
+                        preflight_cycles=transform_preflight_cycles,
+                        promotion_limit=transform_promotion_limit,
                     )
                     record["geometricSearch"] = search
                     geometric_variant_count += int(search.get("summary", {}).get("searchedVariantCount") or 0)
@@ -195,6 +206,10 @@ def generate_composed_candidates(
             "repairRoutes": dict(sorted(repair_routes.items())),
             "temporalSearchRadius": max(0, int(temporal_search_radius)),
             "transformSearchLimit": max(0, int(transform_search_limit)),
+            "transformSyntheticTranslationRadius": max(0, int(transform_synthetic_translation_radius)),
+            "transformSyntheticRotationRadius": max(0, int(transform_synthetic_rotation_radius)),
+            "transformPreflightCycles": max(0, int(transform_preflight_cycles)),
+            "transformPromotionLimit": max(0, int(transform_promotion_limit)),
             "candidateKinds": dict(sorted(Counter(str(item.get("candidateKind") or "unknown") for item in assemblies).items())),
             "minEngineValidatedSolutions": max(0, int(min_engine_validated_solutions)),
         },

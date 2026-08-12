@@ -7,6 +7,7 @@ from typing import Any
 
 from packages.opus_parser import parse_solution_bytes, write_solution_bytes
 
+from .capabilities import part_capability_requirement, part_is_available
 from .manufacturing import AtomFlow, ManufacturingPlan
 
 ARM_TYPES = {"arm1", "arm2", "arm3", "arm6", "piston", "baron"}
@@ -124,10 +125,20 @@ def build_candidate_solution(
         if operation.kind == "source" and operation.metadata.get("reagentIndex") is not None
     })
     parts = []
+    pruned_parts = []
     arm_number = 1
     for index, raw_part in enumerate(synchronized_layout.get("parts", [])):
         part = _clean_part(raw_part, part_id=f"part-{index}")
         part_type = part["type"]
+        if not part_is_available(puzzle, part_type):
+            category, capability = part_capability_requirement(puzzle, part_type) or ("unknown", "unknown")
+            pruned_parts.append({
+                "sourcePartId": str(raw_part.get("id") or ""),
+                "partType": part_type,
+                "requiredCapability": capability,
+                "category": category,
+            })
+            continue
         if part_type == "input":
             branch_index = _branch_index_for_part(raw_part) if branch_flows else None
             if branch_index is not None and branch_index in branch_flows:
@@ -146,7 +157,11 @@ def build_candidate_solution(
     return {
         "schemaVersion": "0.1.0",
         "format": {"kind": "solution", "version": 7},
-        "source": {"name": None, "generator": "opus_solver/composed-assembly"},
+        "source": {
+            "name": None,
+            "generator": "opus_solver/composed-assembly",
+            "prunedUnavailableParts": pruned_parts,
+        },
         "puzzleFile": _puzzle_file_id(puzzle),
         "name": name,
         "metrics": {},

@@ -6,7 +6,7 @@ import sys
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 if str(REPOSITORY_ROOT) not in sys.path:
@@ -34,6 +34,71 @@ def _build_graph(item: tuple[str, str, str]) -> dict[str, Any]:
             "errorType": type(exc).__name__,
             "message": str(exc),
         }
+
+
+def _normalized_puzzle_id(value: object) -> str:
+    text = str(value or "").strip().replace("\\", "/")
+    name = text.rsplit("/", 1)[-1]
+    if name.casefold().endswith(".puzzle"):
+        name = name[:-len(".puzzle")]
+    return name.casefold()
+
+
+def _normalized_solution_path(value: object) -> str:
+    return str(value or "").strip().replace("\\", "/").removeprefix("./").casefold()
+
+
+def select_engine_complete_records(
+    audit_report: dict[str, Any],
+    *,
+    exclude_puzzle_ids: Iterable[str] = (),
+    exclude_solution_paths: Iterable[str] = (),
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    requested_puzzle_ids = sorted({str(value) for value in exclude_puzzle_ids if str(value).strip()})
+    requested_solution_paths = sorted({
+        str(value).replace("\\", "/").removeprefix("./")
+        for value in exclude_solution_paths
+        if str(value).strip()
+    })
+    excluded_puzzle_ids = {_normalized_puzzle_id(value) for value in requested_puzzle_ids}
+    excluded_solution_paths = {_normalized_solution_path(value) for value in requested_solution_paths}
+    engine_complete = [
+        record
+        for record in audit_report.get("results", [])
+        if record.get("status") == "engine-complete"
+    ]
+
+    selected: list[dict[str, Any]] = []
+    excluded_by_puzzle = 0
+    excluded_by_solution = 0
+    matched_puzzle_ids: set[str] = set()
+    for record in engine_complete:
+        record_puzzle_ids = {
+            _normalized_puzzle_id(record.get("puzzleId")),
+            _normalized_puzzle_id(record.get("puzzlePath")),
+        } - {""}
+        puzzle_matches = record_puzzle_ids & excluded_puzzle_ids
+        if puzzle_matches:
+            excluded_by_puzzle += 1
+            matched_puzzle_ids.update(puzzle_matches)
+            continue
+        if _normalized_solution_path(record.get("solutionPath")) in excluded_solution_paths:
+            excluded_by_solution += 1
+            continue
+        selected.append(record)
+
+    return selected, {
+        "mode": "strict-source-holdout" if requested_puzzle_ids or requested_solution_paths else "all-engine-complete",
+        "strictSourceFiltering": True,
+        "requestedExcludedPuzzleIds": requested_puzzle_ids,
+        "requestedExcludedSolutionPaths": requested_solution_paths,
+        "matchedExcludedPuzzleIds": sorted(matched_puzzle_ids),
+        "engineCompleteSolutionCountBeforeExclusion": len(engine_complete),
+        "excludedByPuzzleCount": excluded_by_puzzle,
+        "excludedBySolutionCount": excluded_by_solution,
+        "excludedEngineCompleteSolutionCount": excluded_by_puzzle + excluded_by_solution,
+        "eligibleEngineCompleteSolutionCount": len(selected),
+    }
 
 
 def _json_key(value: dict[str, Any] | None) -> str:
@@ -74,18 +139,33 @@ def _variant_summary(records: list[dict[str, Any]], field: str) -> dict[str, Any
     }
 
 
+def _geometry_record_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    return (
+        0 if item.get("evidenceLevel") == "engine-confirmed" else 1,
+        int((item.get("summary") or {}).get("partCount") or 10**9),
+        int((item.get("summary") or {}).get("instructionCount") or 10**9),
+        str(item.get("solutionPath") or ""),
+    )
+
+
 def build_engine_fragment_flow_index(
     audit_report: dict[str, Any],
     *,
     workers: int = 10,
     sample_limit: int = 5,
+    exclude_puzzle_ids: Iterable[str] = (),
+    exclude_solution_paths: Iterable[str] = (),
 ) -> dict[str, Any]:
     solution_root = Path(str(audit_report["solutionRoot"]))
-    eligible = [
-        record
-        for record in audit_report.get("results", [])
-        if record.get("status") == "engine-complete"
-    ]
+    eligible, source_filter = select_engine_complete_records(
+        audit_report,
+        exclude_puzzle_ids=exclude_puzzle_ids,
+        exclude_solution_paths=exclude_solution_paths,
+    )
+    excluded_puzzle_ids = {
+        _normalized_puzzle_id(value)
+        for value in source_filter["requestedExcludedPuzzleIds"]
+    }
     items = [
         (
             str(record["puzzlePath"]),
@@ -114,6 +194,14 @@ def build_engine_fragment_flow_index(
             errors.append(result)
             continue
         graph = result["graph"]
+        graph_puzzle_id = str(graph.get("source", {}).get("puzzleFile") or "<unknown>")
+        if _normalized_puzzle_id(graph_puzzle_id) in excluded_puzzle_ids:
+            errors.append({
+                "solutionPath": result["solutionPath"],
+                "errorType": "SourceExclusionDrift",
+                "message": f"excluded puzzle source reached graph aggregation: {graph_puzzle_id}",
+            })
+            continue
         validation = graph.get("engineValidation", {})
         if not validation.get("complete"):
             validation_drift.append({
@@ -122,7 +210,7 @@ def build_engine_fragment_flow_index(
             })
             continue
         replay_solution_count += 1
-        puzzle_id = str(graph.get("source", {}).get("puzzleFile") or "<unknown>")
+        puzzle_id = graph_puzzle_id
         solution_sha = graph.get("source", {}).get("solutionSha256")
         for node in graph.get("nodes", []):
             raw_fragment_count += 1
@@ -212,15 +300,20 @@ def build_engine_fragment_flow_index(
 
     fragments = []
     for (role, mechanism_hash), records in sorted(fragment_groups.items()):
-        representative = min(
-            records,
-            key=lambda item: (
-                0 if item.get("evidenceLevel") == "engine-confirmed" else 1,
-                int((item.get("summary") or {}).get("partCount") or 10**9),
-                int((item.get("summary") or {}).get("instructionCount") or 10**9),
-                str(item.get("solutionPath") or ""),
-            ),
-        )
+        representative = min(records, key=_geometry_record_key)
+        solution_geometry_records = []
+        by_solution: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
+        for record in records:
+            by_solution[str(record.get("solutionPath") or "")].append(record)
+        for solution_path, solution_records in sorted(by_solution.items()):
+            solution_representative = min(solution_records, key=_geometry_record_key)
+            solution_geometry_records.append({
+                "puzzleId": solution_representative.get("puzzleId"),
+                "solutionPath": solution_path,
+                "solutionSha256": solution_representative.get("solutionSha256"),
+                "evidenceLevel": solution_representative.get("evidenceLevel"),
+                "representativeGeometry": solution_representative.get("representativeGeometry"),
+            })
         puzzles = sorted({str(record["puzzleId"]) for record in records})
         solutions = sorted({str(record["solutionPath"]) for record in records})
         structural_hashes = sorted({
@@ -245,6 +338,8 @@ def build_engine_fragment_flow_index(
             "canonicalStructuralHashes": structural_hashes,
             "partTypes": part_types,
             "representativeGeometry": representative.get("representativeGeometry"),
+            "solutionGeometryCount": len(solution_geometry_records),
+            "solutionGeometries": solution_geometry_records,
             "representativeSource": {
                 "puzzleId": representative.get("puzzleId"),
                 "solutionPath": representative.get("solutionPath"),
@@ -320,11 +415,14 @@ def build_engine_fragment_flow_index(
         })
 
     return {
-        "schemaVersion": "0.6.0",
+        "schemaVersion": "0.8.0",
         "analysis": "engine-validated-fragment-flow-index",
         "sourceAuditSchemaVersion": audit_report.get("schemaVersion"),
+        "sourceFilter": source_filter,
         "summary": {
             "auditedSolutionCount": int(audit_report.get("summary", {}).get("solutionCount") or 0),
+            "engineCompleteSolutionCountBeforeExclusion": source_filter["engineCompleteSolutionCountBeforeExclusion"],
+            "excludedEngineCompleteSolutionCount": source_filter["excludedEngineCompleteSolutionCount"],
             "eligibleEngineCompleteSolutionCount": len(eligible),
             "replayValidatedSolutionCount": replay_solution_count,
             "validationDriftCount": len(validation_drift),
@@ -359,12 +457,16 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--workers", type=int, default=10)
     parser.add_argument("--sample-limit", type=int, default=5)
+    parser.add_argument("--exclude-puzzle-id", action="append", default=[])
+    parser.add_argument("--exclude-solution-path", action="append", default=[])
     args = parser.parse_args()
     audit = json.loads(args.audit.read_text(encoding="utf-8"))
     index = build_engine_fragment_flow_index(
         audit,
         workers=args.workers,
         sample_limit=args.sample_limit,
+        exclude_puzzle_ids=args.exclude_puzzle_id,
+        exclude_solution_paths=args.exclude_solution_path,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

@@ -31,6 +31,8 @@ def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, An
         return None
     selected = max(variants, key=lambda item: int(item.get("observationCount") or 0))
     result = dict(edge)
+    result["repairRelativeTransforms"] = edge.get("relativeTransforms")
+    result["repairRelativeTimings"] = edge.get("relativeTimings")
     result["relativeTransform"] = selected.get("relativeTransform")
     result["relativeTiming"] = selected.get("relativeTiming")
     result["relativeTransforms"] = {
@@ -128,6 +130,41 @@ def _relations_for_candidate(
     return relations
 
 
+def _infer_prismatic_relations(
+    required: Counter[str],
+    observed: Counter[str],
+    motif: dict[str, Any],
+) -> Counter[str]:
+    """Generalize observed prism channels to the other physical channels.
+
+    A bonder-prisma is not a different mechanism for red, black, and yellow:
+    the channel is selected by the molecule's orientation at the same glyph.
+    A replay-backed, three-input bonding convergence therefore proves the
+    physical prism capability even when that source puzzle exercised only a
+    subset of the channels needed by a new product.
+    """
+    inputs = list(motif.get("inputs", []))
+    if str(motif.get("targetRole") or "") != "bonding" or len(inputs) < 3:
+        return Counter()
+    observed_triplex = {
+        relation
+        for relation, count in observed.items()
+        if count > 0 and relation.startswith("triplex-bond-created:")
+    }
+    if not observed_triplex:
+        return Counter()
+    inferable = {
+        "triplex-bond-created:red",
+        "triplex-bond-created:black",
+        "triplex-bond-created:yellow",
+    }
+    return Counter({
+        relation: count - observed.get(relation, 0)
+        for relation, count in required.items()
+        if relation in inferable and count > observed.get(relation, 0)
+    })
+
+
 def rank_fragment_assemblies(
     plan: ManufacturingPlan,
     flow_index: dict[str, Any],
@@ -163,6 +200,7 @@ def rank_fragment_assemblies(
                 ]
                 selected_motif = dict(motif)
                 selected_motif["samples"] = [selected_sample]
+                selected_motif["repairSamples"] = list(motif.get("solutionSamples", []))
                 selected_motif["coherentSourceSolution"] = solution_path
             else:
                 selected_transitions = transitions
@@ -193,7 +231,9 @@ def rank_fragment_assemblies(
 
             motif_relations = sorted({relation for item in inputs for relation in item.get("relations", []) if relation})
             observed = _relations_for_candidate(branch_options, motif_relations, tail)
-            missing = Counter({key: count - observed.get(key, 0) for key, count in required.items() if observed.get(key, 0) < count})
+            inferred = _infer_prismatic_relations(required, observed, selected_motif)
+            covered = observed + inferred
+            missing = Counter({key: count - covered.get(key, 0) for key, count in required.items() if covered.get(key, 0) < count})
             if missing:
                 continue
 
@@ -203,7 +243,8 @@ def rank_fragment_assemblies(
             empirical = (sum(edge_scores) + motif_score) / (len(edge_scores) + 1) if edge_scores else motif_score
             coverage = 1.0
             coherence_bonus = 0.03 if solution_path else 0.0
-            score = min(1.0, 0.65 * coverage + 0.25 * empirical + 0.10 * motif_score + coherence_bonus)
+            inference_penalty = min(0.12, 0.04 * sum(inferred.values()))
+            score = min(1.0, 0.65 * coverage + 0.25 * empirical + 0.10 * motif_score + coherence_bonus) - inference_penalty
 
             candidates.append({
                 "score": round(score, 6),
@@ -216,6 +257,8 @@ def rank_fragment_assemblies(
                 "branches": branch_options,
                 "tail": tail,
                 "observedRelations": dict(sorted(observed.items())),
+                "inferredRelations": dict(sorted(inferred.items())),
+                "relationCoverageEvidence": "engine-observed" if not inferred else "engine-observed-plus-prism-physics",
                 "requiredRelations": dict(sorted(required.items())),
                 "empiricalScore": round(empirical, 6),
                 "convergenceConfidence": round(motif_score, 6),

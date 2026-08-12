@@ -136,3 +136,51 @@ def test_layout_override_moves_selected_convergence_input():
     assert base_input["anchorPosition"] == [-1, 0]
     assert moved_input["anchorPosition"] == [-2, 0]
     assert moved["summary"]["transformOverrideCount"] == 1
+
+
+def test_repair_choices_include_other_engine_complete_sources_after_coherent_preferred():
+    candidate = _candidate()
+    candidate["convergence"]["samples"] = [{
+        "inputs": [{
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "conversion-hash",
+            "relativeTransforms": [T0],
+        }],
+    }]
+    candidate["convergence"]["repairSamples"] = [{
+        "inputs": [{
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "conversion-hash",
+            "relativeTransforms": [T1],
+        }],
+    }]
+    edge = candidate["branches"][0][0]
+    edge["relativeTransforms"] = {
+        "preferred": E0,
+        "variants": [{"relativeTransform": E0, "observationCount": 3}],
+    }
+    edge["repairRelativeTransforms"] = {
+        "preferred": E1,
+        "variants": [{"relativeTransform": E1, "observationCount": 5}],
+    }
+
+    slots = transform_slots(candidate)
+
+    assert [choice["transform"] for choice in slots[0]["choices"]] == [T0, T1]
+    assert [choice["transform"] for choice in slots[1]["choices"]] == [E0, E1]
+    assert slots[1]["choices"][1]["repairEvidence"] == "other-engine-complete-source"
+
+
+def test_synthetic_repair_adds_local_hex_translations_and_rotations():
+    slots = transform_slots(
+        _candidate(),
+        synthetic_translation_radius=1,
+        synthetic_rotation_radius=1,
+    )
+
+    first_choices = slots[0]["choices"]
+    synthetic = [choice for choice in first_choices if choice.get("repairEvidence") == "local-geometric-perturbation"]
+    assert synthetic
+    assert any(choice["translationOffset"] != [0, 0] for choice in synthetic)
+    assert any(choice["rotationOffset"] != 0 for choice in synthetic)
+    assert first_choices[0]["transform"] == T0
