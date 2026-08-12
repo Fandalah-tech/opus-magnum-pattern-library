@@ -27,6 +27,17 @@ class World:
             raise ValueError(f"Hex {atom.position} is already occupied by {occupant.id}")
         self.atoms[atom.id] = atom
 
+    def add_overlapped_atom(self, atom: Atom) -> None:
+        """Add an atom above the current occupants of its hex.
+
+        Opus Magnum permits short-lived overlap during the two glyph phases.
+        Dictionary insertion order is the layer order: the last atom at a
+        position is the topmost one observed by glyphs and grabbers.
+        """
+        if atom.id in self.atoms:
+            raise ValueError(f"Duplicate atom id: {atom.id}")
+        self.atoms[atom.id] = atom
+
     def remove_atom(self, atom_id: str) -> None:
         if atom_id not in self.atoms:
             return
@@ -46,10 +57,15 @@ class World:
                 del self.bonds[key]
 
     def atom_at(self, position: Hex) -> Atom | None:
-        return next((atom for atom in self.atoms.values() if atom.position == position), None)
+        atoms = self.atoms_at(position)
+        return atoms[-1] if atoms else None
+
+    def atoms_at(self, position: Hex) -> list[Atom]:
+        return [atom for atom in self.atoms.values() if atom.position == position]
 
     def occupied(self) -> dict[Hex, str]:
-        return {atom.position: atom.id for atom in self.atoms.values()}
+        return {position: atoms[-1].id for position in {atom.position for atom in self.atoms.values()}
+                if (atoms := self.atoms_at(position))}
 
     def molecules(self) -> list[Molecule]:
         result: list[Molecule] = []

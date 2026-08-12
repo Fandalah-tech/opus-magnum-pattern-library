@@ -36,6 +36,7 @@ class Simulator(RuntimeSimulator):
 
     def __post_init__(self) -> None:
         self.prismatic_bonders = []
+        self.multi_bonders = []
         super().__post_init__()
 
     @classmethod
@@ -58,18 +59,21 @@ class Simulator(RuntimeSimulator):
             arm.base_track_index = arm.track_index
 
         for part in solution.get("parts", []):
-            if part.get("type") != "bonder-prisma":
-                continue
             origin = tuple(part.get("position") or (0, 0))
             rotation = int(part.get("rotation") or 0)
-            simulator.prismatic_bonders.append((
-                (
+            if part.get("type") == "bonder-prisma":
+                simulator.prismatic_bonders.append(((
                     _transform((0, 0), origin, rotation),
                     _transform((1, 0), origin, rotation),
                     _transform((0, 1), origin, rotation),
-                ),
-                str(part.get("id") or "bonder-prisma"),
-            ))
+                ), str(part.get("id") or "bonder-prisma")))
+            elif part.get("type") == "bonder-speed":
+                simulator.multi_bonders.append(((
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((0, -1), origin, rotation),
+                    _transform((-1, 1), origin, rotation),
+                ), str(part.get("id") or "bonder-speed")))
         return simulator
 
     def _plan_motion(self, arm, instruction):
@@ -149,6 +153,25 @@ class Simulator(RuntimeSimulator):
 
     def _process_basic_glyphs(self) -> None:
         super()._process_basic_glyphs()
+        for positions, part_id in self.multi_bonders:
+            center = self.world.atom_at(positions[0])
+            if center is None:
+                continue
+            for position in positions[1:]:
+                neighbor = self.world.atom_at(position)
+                if neighbor is None or neighbor.id == center.id:
+                    continue
+                bond = Bond(center.id, neighbor.id, "normal")
+                if bond.key in self.world.bonds:
+                    continue
+                self.world.add_bond(bond)
+                self.world.events.append(WorldEvent("bond-created", self.world.cycle, {
+                    "glyphPartId": part_id,
+                    "fromAtomId": center.id,
+                    "toAtomId": neighbor.id,
+                    "type": "normal",
+                    "multiBonder": True,
+                }))
         for positions, part_id in self.prismatic_bonders:
             atoms = [self.world.atom_at(position) for position in positions]
             for first_index, second_index in ((0, 1), (1, 2), (2, 0)):

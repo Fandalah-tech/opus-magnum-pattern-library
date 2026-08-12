@@ -5,6 +5,7 @@ from typing import Any
 from .builder import rotate_hex
 from .faithful_simulator import Simulator as FaithfulSimulator
 from .model import Atom, Bond
+from .runtime_simulator import METAL_ORDER
 from .simulator import GRAB, Simulator as BaseSimulator
 from .world import WorldEvent
 
@@ -26,6 +27,10 @@ class Simulator(FaithfulSimulator):
         self.duplication_glyphs = []
         self.faithful_purification_glyphs = []
         self.repeating_patterns = []
+        self.rejection_glyphs = []
+        self.division_glyphs = []
+        self.unification_glyphs = []
+        self.proliferation_glyphs = []
         super().__post_init__()
 
     @classmethod
@@ -57,6 +62,32 @@ class Simulator(FaithfulSimulator):
                     _transform((0, 0), origin, rotation),
                     _transform((1, 0), origin, rotation),
                     _transform((0, 1), origin, rotation),
+                    part_id,
+                ))
+            elif part_type == "glyph-rejection":
+                simulator.rejection_glyphs.append((
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    part_id,
+                ))
+            elif part_type == "glyph-division":
+                simulator.division_glyphs.append((
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((-1, 0), origin, rotation),
+                    part_id,
+                ))
+            elif part_type == "glyph-unification":
+                simulator.unification_glyphs.append((
+                    tuple(_transform(cell, origin, rotation) for cell in ((0, 1), (-1, 1), (0, -1), (1, -1))),
+                    _transform((0, 0), origin, rotation),
+                    part_id,
+                ))
+            elif part_type == "glyph-proliferation":
+                simulator.proliferation_glyphs.append((
+                    _transform((-1, 1), origin, rotation),
+                    _transform((1, 1), origin, rotation),
+                    _transform((1, -1), origin, rotation),
                     part_id,
                 ))
             elif part_type == "out-rep":
@@ -176,6 +207,89 @@ class Simulator(FaithfulSimulator):
                 "position": list(output_pos),
             }))
 
+    def _produce_atom(self, part_id: str, suffix: str, element: str, position) -> str:
+        atom_id = f"{part_id}-{suffix}-{self._glyph_generation}"
+        self._glyph_generation += 1
+        self.world.add_atom(Atom(atom_id, element, position))
+        return atom_id
+
+    def _process_rejection(self) -> None:
+        for metal_pos, output_pos, part_id in self.rejection_glyphs:
+            metal = self.world.atom_at(metal_pos)
+            if metal is None or self.world.atom_at(output_pos) is not None:
+                continue
+            try:
+                index = METAL_ORDER.index(metal.element)
+            except ValueError:
+                continue
+            if index == 0:
+                continue
+            previous = metal.element
+            metal.element = METAL_ORDER[index - 1]
+            produced_id = self._produce_atom(part_id, "quicksilver", "quicksilver", output_pos)
+            self.world.events.append(WorldEvent("atom-rejected", self.world.cycle, {
+                "glyphPartId": part_id, "transformedAtomId": metal.id,
+                "producedAtomId": produced_id, "fromElement": previous,
+                "toElement": metal.element,
+            }))
+
+    def _process_division(self) -> None:
+        for input_pos, first_pos, second_pos, part_id in self.division_glyphs:
+            source = self.world.atom_at(input_pos)
+            if (not self._is_conversion_input(source)
+                    or self.world.atom_at(first_pos) is not None
+                    or self.world.atom_at(second_pos) is not None):
+                continue
+            try:
+                index = METAL_ORDER.index(source.element)
+            except ValueError:
+                continue
+            if index == 0:
+                continue
+            source_id = source.id
+            self._remove_molecule({source_id})
+            first_element = METAL_ORDER[index // 2]
+            second_element = METAL_ORDER[(index - 1) // 2]
+            first_id = self._produce_atom(part_id, "division-a", first_element, first_pos)
+            second_id = self._produce_atom(part_id, "division-b", second_element, second_pos)
+            self.world.events.append(WorldEvent("atom-divided", self.world.cycle, {
+                "glyphPartId": part_id, "consumedAtomId": source_id,
+                "producedAtomIds": [first_id, second_id],
+            }))
+
+    def _process_unification(self) -> None:
+        required = {"air", "earth", "fire", "water"}
+        for input_positions, output_pos, part_id in self.unification_glyphs:
+            atoms = [self.world.atom_at(position) for position in input_positions]
+            if (any(not self._is_conversion_input(atom) for atom in atoms)
+                    or {atom.element for atom in atoms if atom is not None} != required
+                    or self.world.atom_at(output_pos) is not None):
+                continue
+            consumed = {atom.id for atom in atoms if atom is not None}
+            self._remove_molecule(consumed)
+            produced_id = self._produce_atom(part_id, "quintessence", "quintessence", output_pos)
+            self.world.events.append(WorldEvent("atoms-unified", self.world.cycle, {
+                "glyphPartId": part_id, "consumedAtomIds": sorted(consumed),
+                "producedAtomId": produced_id,
+            }))
+
+    def _process_proliferation(self) -> None:
+        for source_pos, quicksilver_pos, output_pos, part_id in self.proliferation_glyphs:
+            source = self.world.atom_at(source_pos)
+            quicksilver = self.world.atom_at(quicksilver_pos)
+            if (source is None or source.element not in METAL_ORDER
+                    or not self._is_conversion_input(quicksilver)
+                    or quicksilver.element != "quicksilver"
+                    or self.world.atom_at(output_pos) is not None):
+                continue
+            consumed_id = quicksilver.id
+            self._remove_molecule({consumed_id})
+            produced_id = self._produce_atom(part_id, "proliferated", source.element, output_pos)
+            self.world.events.append(WorldEvent("atom-proliferated", self.world.cycle, {
+                "glyphPartId": part_id, "sourceAtomId": source.id,
+                "consumedAtomId": consumed_id, "producedAtomId": produced_id,
+            }))
+
     def repeating_product_complete(self, output_id: str, repetitions: int = 3) -> bool:
         pattern = next((item for item in self.repeating_patterns if item[0] == output_id), None)
         if pattern is None:
@@ -276,5 +390,9 @@ class Simulator(FaithfulSimulator):
         self._process_basic_glyphs()
         self._process_projection()
         self._process_purification()
+        self._process_rejection()
+        self._process_division()
+        self._process_unification()
+        self._process_proliferation()
         self._process_consumers()
         BaseSimulator._respawn_inputs(self)

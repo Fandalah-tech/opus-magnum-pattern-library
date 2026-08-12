@@ -108,8 +108,12 @@ class Simulator(FinalSimulator):
         self._process_basic_glyphs()
         self._mark_pending_floating_bonds()
         self._process_projection()
+        self._process_rejection()
         if allow_conversion_inputs:
             self._process_purification()
+            self._process_division()
+            self._process_unification()
+            self._process_proliferation()
         self._latch_repeating_outputs()
         self._process_consumers()
 
