@@ -54,6 +54,10 @@ def required_flow_relations(plan: ManufacturingPlan) -> Counter[str]:
 def manufacturing_requirements(plan: ManufacturingPlan) -> dict[str, Any]:
     sources = [operation for operation in plan.operations if operation.kind == "source"]
     placements = [operation for operation in plan.operations if operation.kind == "place"]
+    convergence_input_count = max(
+        [len(operation.inputs) for operation in plan.operations if len(operation.inputs) > 1]
+        or [len(sources)]
+    )
     return {
         "supported": plan.supported,
         "strategy": plan.strategy,
@@ -62,7 +66,8 @@ def manufacturing_requirements(plan: ManufacturingPlan) -> dict[str, Any]:
         "requiredGlyphs": list(plan.required_glyphs),
         "sourceCount": len(sources),
         "placementCount": len(placements),
-        "requiresConvergence": len(sources) > 1,
+        "convergenceInputCount": convergence_input_count,
+        "requiresConvergence": convergence_input_count > 1,
     }
 
 

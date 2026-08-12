@@ -374,12 +374,11 @@ def validate_generated_solution(
         str(product_index): max(0, int(target) - int(delivered_by_product.get(product_index, 0)))
         for product_index in required_products
     }
-    complete = (
-        not terminated
-        and not blocked_inputs
-        and bool(required_products)
-        and all(value == 0 for value in deficits.values())
-    )
+    targets_complete = bool(required_products) and all(value == 0 for value in deficits.values())
+    # OMSim stops once the requested products have been accepted. A collision
+    # later in our deliberately longer diagnostic horizon is useful evidence,
+    # but it does not invalidate an already completed candidate.
+    complete = not blocked_inputs and targets_complete
     if complete:
         failure_mode = None
     elif terminated:
@@ -406,6 +405,7 @@ def validate_generated_solution(
         "requestedCycles": len(timeline.get("cycles", [])),
         "completedCycles": replay.get("summary", {}).get("completedCycles"),
         "terminatedWithError": terminated,
+        "terminatedAfterCompletion": bool(complete and terminated),
         "firstError": error,
         "inputSourceCount": len(input_status),
         "initialSpawnedInputCount": sum(item["spawnedAtStart"] for item in input_status),

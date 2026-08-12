@@ -207,6 +207,8 @@ def build_engine_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str,
             "role": fragment.get("role"),
             "canonicalMechanismHash": fragment.get("canonicalMechanismHash"),
             "canonicalStructuralHash": fragment.get("canonicalStructuralHash"),
+            "summary": fragment.get("summary", {}),
+            "representativeGeometry": fragment.get("geometry"),
             "evidenceLevel": "engine-confirmed" if relations else "engine-observed-structural",
             "observedRelations": dict(sorted(relations.items())),
         })

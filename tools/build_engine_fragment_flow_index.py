@@ -12,7 +12,12 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 if str(REPOSITORY_ROOT) not in sys.path:
     sys.path.insert(0, str(REPOSITORY_ROOT))
 
-from packages.opus_analysis import build_engine_fragment_flow_graph, bounded_audit_workers
+from packages.opus_analysis import (
+    build_engine_fragment_flow_graph,
+    bounded_audit_workers,
+    canonical_convergence_key,
+    extract_convergence_motifs,
+)
 from packages.opus_parser import parse_puzzle, parse_solution
 
 
@@ -35,11 +40,24 @@ def _json_key(value: dict[str, Any] | None) -> str:
     return json.dumps(value or {}, sort_keys=True, separators=(",", ":"))
 
 
+def _invariant_timing(timing: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not timing:
+        return None
+    return {
+        "frame": "source-fragment-program-start",
+        "programStartDelta": timing.get("programStartDelta"),
+        "eventFirstFromSourceStart": timing.get("eventFirstFromSourceStart"),
+        "eventFirstFromTargetStart": timing.get("eventFirstFromTargetStart"),
+    }
+
+
 def _variant_summary(records: list[dict[str, Any]], field: str) -> dict[str, Any]:
     weighted: Counter[str] = Counter()
     payloads: dict[str, dict[str, Any]] = {}
     for record in records:
         payload = record.get(field)
+        if field == "relativeTiming":
+            payload = _invariant_timing(payload)
         if not payload:
             continue
         key = _json_key(payload)
@@ -82,11 +100,15 @@ def build_engine_fragment_flow_index(
         graph_results = list(executor.map(_build_graph, items))
 
     groups: defaultdict[tuple[str, str, str, str, str], list[dict[str, Any]]] = defaultdict(list)
+    fragment_groups: defaultdict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    convergence_groups: defaultdict[tuple[Any, ...], list[dict[str, Any]]] = defaultdict(list)
     errors: list[dict[str, Any]] = []
     validation_drift: list[dict[str, Any]] = []
     relation_counts: Counter[str] = Counter()
     replay_solution_count = 0
     raw_edge_count = 0
+    raw_fragment_count = 0
+    raw_convergence_count = 0
     for result in graph_results:
         if "graph" not in result:
             errors.append(result)
@@ -102,6 +124,17 @@ def build_engine_fragment_flow_index(
         replay_solution_count += 1
         puzzle_id = str(graph.get("source", {}).get("puzzleFile") or "<unknown>")
         solution_sha = graph.get("source", {}).get("solutionSha256")
+        for node in graph.get("nodes", []):
+            raw_fragment_count += 1
+            fragment_groups[(
+                str(node.get("role") or ""),
+                str(node.get("canonicalMechanismHash") or ""),
+            )].append({
+                **node,
+                "puzzleId": puzzle_id,
+                "solutionPath": result["solutionPath"],
+                "solutionSha256": solution_sha,
+            })
         for edge in graph.get("edges", []):
             raw_edge_count += 1
             relation = str(edge.get("relation") or "unknown")
@@ -115,6 +148,14 @@ def build_engine_fragment_flow_index(
             )
             groups[key].append({
                 **edge,
+                "puzzleId": puzzle_id,
+                "solutionPath": result["solutionPath"],
+                "solutionSha256": solution_sha,
+            })
+        for motif in extract_convergence_motifs(graph):
+            raw_convergence_count += 1
+            convergence_groups[canonical_convergence_key(motif)].append({
+                **motif,
                 "puzzleId": puzzle_id,
                 "solutionPath": result["solutionPath"],
                 "solutionSha256": solution_sha,
@@ -140,7 +181,20 @@ def build_engine_fragment_flow_index(
             "engineValidatedSolutionCount": len(solutions),
             "engineValidationRate": 1.0,
             "sourcePuzzles": puzzles,
+            "sourceSolutions": solutions,
             "evidenceSource": "opus-engine-complete",
+            "solutionVariants": [
+                {
+                    "puzzleId": record["puzzleId"],
+                    "solutionPath": record["solutionPath"],
+                    "sourceAnchorPartId": record.get("sourceAnchorPartId"),
+                    "targetAnchorPartId": record.get("targetAnchorPartId"),
+                    "relativeTransform": record.get("relativeTransform"),
+                    "relativeTiming": _invariant_timing(record.get("relativeTiming")),
+                    "observationCount": record.get("observationCount"),
+                }
+                for record in records
+            ],
             "samples": [
                 {
                     "puzzleId": record["puzzleId"],
@@ -156,8 +210,117 @@ def build_engine_fragment_flow_index(
             ],
         })
 
+    fragments = []
+    for (role, mechanism_hash), records in sorted(fragment_groups.items()):
+        representative = min(
+            records,
+            key=lambda item: (
+                0 if item.get("evidenceLevel") == "engine-confirmed" else 1,
+                int((item.get("summary") or {}).get("partCount") or 10**9),
+                int((item.get("summary") or {}).get("instructionCount") or 10**9),
+                str(item.get("solutionPath") or ""),
+            ),
+        )
+        puzzles = sorted({str(record["puzzleId"]) for record in records})
+        solutions = sorted({str(record["solutionPath"]) for record in records})
+        structural_hashes = sorted({
+            str(record.get("canonicalStructuralHash") or "")
+            for record in records
+            if record.get("canonicalStructuralHash")
+        })
+        part_types = sorted({
+            str(part.get("type") or "")
+            for record in records
+            for part in (record.get("representativeGeometry") or {}).get("parts", [])
+            if part.get("type")
+        })
+        fragments.append({
+            "role": role,
+            "canonicalMechanismHash": mechanism_hash,
+            "occurrenceCount": len(records),
+            "sourcePuzzleCount": len(puzzles),
+            "sourceSolutionCount": len(solutions),
+            "sourcePuzzles": puzzles,
+            "structuralVariantCount": len(structural_hashes),
+            "canonicalStructuralHashes": structural_hashes,
+            "partTypes": part_types,
+            "representativeGeometry": representative.get("representativeGeometry"),
+            "representativeSource": {
+                "puzzleId": representative.get("puzzleId"),
+                "solutionPath": representative.get("solutionPath"),
+                "solutionSha256": representative.get("solutionSha256"),
+                "evidenceLevel": representative.get("evidenceLevel"),
+            },
+            "evidence": {
+                "source": "opus-engine-complete",
+                "engineValidatedSolutionCount": len(solutions),
+                "engineValidationRate": 1.0,
+            },
+            "samples": [
+                {
+                    "puzzleId": record.get("puzzleId"),
+                    "solutionPath": record.get("solutionPath"),
+                    "solutionSha256": record.get("solutionSha256"),
+                    "anchorPartType": record.get("anchorPartType"),
+                    "summary": record.get("summary", {}),
+                    "evidenceLevel": record.get("evidenceLevel"),
+                }
+                for record in records[:max(0, int(sample_limit))]
+            ],
+        })
+
+    convergence_motifs = []
+    for key, records in sorted(convergence_groups.items(), key=lambda item: str(item[0])):
+        input_key, target_role, target_hash = key
+        puzzles = sorted({str(record["puzzleId"]) for record in records})
+        solutions = sorted({str(record["solutionPath"]) for record in records})
+        canonical_inputs = [
+            {
+                "sourceRole": source_role,
+                "sourceMechanismHash": source_hash,
+                "relations": list(relations),
+            }
+            for source_role, source_hash, relations in input_key
+        ]
+        convergence_motifs.append({
+            "targetRole": target_role,
+            "targetMechanismHash": target_hash,
+            "inputCount": len(canonical_inputs),
+            "inputs": canonical_inputs,
+            "observationCount": len(records),
+            "sourcePuzzleCount": len(puzzles),
+            "sourceSolutionCount": len(solutions),
+            "engineValidatedSolutionCount": len(solutions),
+            "engineValidationRate": 1.0,
+            "sourcePuzzles": puzzles,
+            "sourceSolutions": solutions,
+            "evidenceSource": "opus-engine-complete",
+            "solutionSamples": [
+                {
+                    "puzzleId": record.get("puzzleId"),
+                    "solutionPath": record.get("solutionPath"),
+                    "solutionSha256": record.get("solutionSha256"),
+                    "targetAnchorPartId": record.get("targetAnchorPartId"),
+                    "inputs": record.get("inputs", []),
+                    "outputs": record.get("outputs", []),
+                }
+                for record in records
+            ],
+            "samples": [
+                {
+                    "puzzleId": record.get("puzzleId"),
+                    "solutionPath": record.get("solutionPath"),
+                    "solutionSha256": record.get("solutionSha256"),
+                    "targetAnchorPartId": record.get("targetAnchorPartId"),
+                    "inputs": record.get("inputs", []),
+                    "outputs": record.get("outputs", []),
+                }
+                for record in records[:max(0, int(sample_limit))]
+            ],
+        })
+
     return {
-        "schemaVersion": "0.5.0",
+        "schemaVersion": "0.6.0",
         "analysis": "engine-validated-fragment-flow-index",
         "sourceAuditSchemaVersion": audit_report.get("schemaVersion"),
         "summary": {
@@ -168,6 +331,10 @@ def build_engine_fragment_flow_index(
             "rawFlowEdgeCount": raw_edge_count,
             "canonicalTransitionCount": len(transitions),
             "flowObservationCount": sum(item["observationCount"] for item in transitions),
+            "rawFragmentCount": raw_fragment_count,
+            "canonicalFragmentCount": len(fragments),
+            "rawConvergenceMotifCount": raw_convergence_count,
+            "canonicalConvergenceMotifCount": len(convergence_motifs),
             "triplexTransitionCount": sum(str(item["relation"]).startswith("triplex-bond-created:") for item in transitions),
             "triplexObservationCount": sum(
                 int(item["observationCount"])
@@ -179,6 +346,8 @@ def build_engine_fragment_flow_index(
             "errorCount": len(errors),
         },
         "transitions": transitions,
+        "fragments": fragments,
+        "convergenceMotifs": convergence_motifs,
         "validationDrift": validation_drift,
         "errors": errors,
     }

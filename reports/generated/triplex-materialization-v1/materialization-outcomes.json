@@ -1,0 +1,1585 @@
+{
+  "schemaVersion": "0.1.0",
+  "summary": {
+    "outcomeCount": 10,
+    "solvedOutcomeCount": 10,
+    "priorGroupCount": 1
+  },
+  "priors": [
+    {
+      "failureMode": "<none>",
+      "firstRepair": "none",
+      "observationCount": 10,
+      "solvedCount": 10,
+      "solveRate": 1.0,
+      "firstRepairSuccessCount": 0,
+      "firstRepairSuccessRate": 0.0,
+      "repairAttempts": {},
+      "repairSuccesses": {}
+    }
+  ],
+  "outcomes": [
+    {
+      "id": "out-2c6e9730645d48ab739d",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 4,
+      "assemblyScore": 0.929466,
+      "assemblyHash": "7c7cb017f0e12a72582fdcc84f5d0639297a6dbea0c6378a88fd035a7eac3cbb",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relations": [
+                "triplex-bond-created:red"
+              ]
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:red"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relations": [
+                "triplex-bond-created:red"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:red"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "targetRole": "bonding",
+              "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "relation": "triplex-bond-created:black"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:red"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+            "targetRole": "conversion",
+            "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "relation": "calcify"
+          },
+          {
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "targetRole": "bonding",
+            "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+            "relation": "triplex-bond-created:yellow"
+          },
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+            "targetRole": "output",
+            "targetMechanismHash": "d6f22e8a53279417555286f0a77a279b5c851569394c2fc7cb2dc9735fe1beb1",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-5017956a1a30ee6f9815",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 3,
+      "assemblyScore": 0.929466,
+      "assemblyHash": "7c7cb017f0e12a72582fdcc84f5d0639297a6dbea0c6378a88fd035a7eac3cbb",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relations": [
+                "triplex-bond-created:red"
+              ]
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:red"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relations": [
+                "triplex-bond-created:red"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:red"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "targetRole": "bonding",
+              "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "relation": "triplex-bond-created:black"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:red"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+            "targetRole": "conversion",
+            "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "relation": "calcify"
+          },
+          {
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "targetRole": "bonding",
+            "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+            "relation": "triplex-bond-created:yellow"
+          },
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+            "targetRole": "output",
+            "targetMechanismHash": "d6f22e8a53279417555286f0a77a279b5c851569394c2fc7cb2dc9735fe1beb1",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-68a2215d7c1f0ed5bc4f",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 2,
+      "assemblyScore": 0.934626,
+      "assemblyHash": "dd11e9e0fbf96984c9b292de131036c8bf61cbbc4fc2ab5eb4bcae3d2a5752ec",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:black"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:red"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+            "targetRole": "conversion",
+            "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "relation": "calcify"
+          },
+          {
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "targetRole": "bonding",
+            "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+            "relation": "triplex-bond-created:red"
+          },
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+            "targetRole": "output",
+            "targetMechanismHash": "d6f22e8a53279417555286f0a77a279b5c851569394c2fc7cb2dc9735fe1beb1",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-a1c4a31fd9e1d4d1eb1b",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 9,
+      "assemblyScore": 0.879718,
+      "assemblyHash": "34acee9b0d340bcf7269f021ff100fcbe0c08bbb148b01fa9c877b53ae90c3f6",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "b4663c3e05a71dbf0813a4abae4aaee0b113eb45480cccc1510fa6741ebd7c19",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "d6ee904a4d5ecdf0746f2d95771f2d9db6f001ef1856e19a5191e482264a2c5c",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "5a441bf05c62541bd9ab595896e605a85167ff072e45eec1ba462524952e9c86",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:red"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "b4b1cbffdef13471e00eb11dfeb4cad4a538d8f0a4113af78b42e81a3012d585",
+              "targetRole": "bonding",
+              "targetMechanismHash": "d6ee904a4d5ecdf0746f2d95771f2d9db6f001ef1856e19a5191e482264a2c5c",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "b4b1cbffdef13471e00eb11dfeb4cad4a538d8f0a4113af78b42e81a3012d585",
+              "targetRole": "bonding",
+              "targetMechanismHash": "d6ee904a4d5ecdf0746f2d95771f2d9db6f001ef1856e19a5191e482264a2c5c",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "d6ee904a4d5ecdf0746f2d95771f2d9db6f001ef1856e19a5191e482264a2c5c",
+              "targetRole": "conversion",
+              "targetMechanismHash": "5a441bf05c62541bd9ab595896e605a85167ff072e45eec1ba462524952e9c86",
+              "relation": "duplicate"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "b4b1cbffdef13471e00eb11dfeb4cad4a538d8f0a4113af78b42e81a3012d585",
+              "targetRole": "bonding",
+              "targetMechanismHash": "d6ee904a4d5ecdf0746f2d95771f2d9db6f001ef1856e19a5191e482264a2c5c",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "d6ee904a4d5ecdf0746f2d95771f2d9db6f001ef1856e19a5191e482264a2c5c",
+              "targetRole": "conversion",
+              "targetMechanismHash": "5a441bf05c62541bd9ab595896e605a85167ff072e45eec1ba462524952e9c86",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "5a441bf05c62541bd9ab595896e605a85167ff072e45eec1ba462524952e9c86",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "b4663c3e05a71dbf0813a4abae4aaee0b113eb45480cccc1510fa6741ebd7c19",
+            "targetRole": "output",
+            "targetMechanismHash": "d6f22e8a53279417555286f0a77a279b5c851569394c2fc7cb2dc9735fe1beb1",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1120,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1120,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-a97bcf1230b516546ad7",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 10,
+      "assemblyScore": 0.876234,
+      "assemblyHash": "d346fbdd89d995bedaa3d07d5d99e702f871004bc154b703dfc197a823104df2",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "8de05c96e4af137350354b22d773d02de75fb0a85b47acfc90067eb037ef03da",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "e20afe3a95a49b45d977ff08aed19ad493829bb704f41d62370731c8e0d1fa94",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "1a07e0a2651bc5ef1f8bb66e3f156fa919b316eb636ff87e7398602933e91aea",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:red"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "3e84c681a197110e339f09f00c78f706edab95e9992a3f74c134820d951c82cd",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "fb817e06782be140ce5b1280135f2127b973b019344477c779dacb6fb9d15a53",
+              "targetRole": "bonding",
+              "targetMechanismHash": "e20afe3a95a49b45d977ff08aed19ad493829bb704f41d62370731c8e0d1fa94",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "fb817e06782be140ce5b1280135f2127b973b019344477c779dacb6fb9d15a53",
+              "targetRole": "bonding",
+              "targetMechanismHash": "e20afe3a95a49b45d977ff08aed19ad493829bb704f41d62370731c8e0d1fa94",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "e20afe3a95a49b45d977ff08aed19ad493829bb704f41d62370731c8e0d1fa94",
+              "targetRole": "conversion",
+              "targetMechanismHash": "3e84c681a197110e339f09f00c78f706edab95e9992a3f74c134820d951c82cd",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "3e84c681a197110e339f09f00c78f706edab95e9992a3f74c134820d951c82cd",
+              "targetRole": "bonding",
+              "targetMechanismHash": "8de05c96e4af137350354b22d773d02de75fb0a85b47acfc90067eb037ef03da",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "8de05c96e4af137350354b22d773d02de75fb0a85b47acfc90067eb037ef03da",
+              "targetRole": "conversion",
+              "targetMechanismHash": "1a07e0a2651bc5ef1f8bb66e3f156fa919b316eb636ff87e7398602933e91aea",
+              "relation": "calcify"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "fb817e06782be140ce5b1280135f2127b973b019344477c779dacb6fb9d15a53",
+              "targetRole": "bonding",
+              "targetMechanismHash": "e20afe3a95a49b45d977ff08aed19ad493829bb704f41d62370731c8e0d1fa94",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "e20afe3a95a49b45d977ff08aed19ad493829bb704f41d62370731c8e0d1fa94",
+              "targetRole": "bonding",
+              "targetMechanismHash": "8de05c96e4af137350354b22d773d02de75fb0a85b47acfc90067eb037ef03da",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "8de05c96e4af137350354b22d773d02de75fb0a85b47acfc90067eb037ef03da",
+              "targetRole": "conversion",
+              "targetMechanismHash": "1a07e0a2651bc5ef1f8bb66e3f156fa919b316eb636ff87e7398602933e91aea",
+              "relation": "calcify"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "1a07e0a2651bc5ef1f8bb66e3f156fa919b316eb636ff87e7398602933e91aea",
+              "targetRole": "conversion",
+              "targetMechanismHash": "3e84c681a197110e339f09f00c78f706edab95e9992a3f74c134820d951c82cd",
+              "relation": "duplicate"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "8de05c96e4af137350354b22d773d02de75fb0a85b47acfc90067eb037ef03da",
+            "targetRole": "output",
+            "targetMechanismHash": "7b61c660e49f965d73fe3d9945feae8f7f24a80e7ec4295282c3d9dc030dd70d",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 6,
+        "totalDeficit": 0,
+        "completedCycles": 730,
+        "terminatedWithError": true,
+        "terminatedAfterCompletion": true,
+        "blockedInputCount": 0,
+        "firstError": {
+          "cycle": 729,
+          "message": "Atom part-4-spawn-8-atom-2 collides with stationary atom part-4-spawn-7-atom-1 at (2, 0)"
+        }
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 6,
+        "totalDeficit": 0,
+        "completedCycles": 730,
+        "terminatedWithError": true,
+        "terminatedAfterCompletion": true,
+        "blockedInputCount": 0,
+        "firstError": {
+          "cycle": 729,
+          "message": "Atom part-4-spawn-8-atom-2 collides with stationary atom part-4-spawn-7-atom-1 at (2, 0)"
+        }
+      },
+      "solved": true
+    },
+    {
+      "id": "out-c3298ea7ae38de04f748",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 8,
+      "assemblyScore": 0.881135,
+      "assemblyHash": "c1fd3029aaf74b526242480ae8270e4a3193087cf267a84a7abc4de15f97d1a5",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "a80c39639111d4ebdf03def3dae8740bb55962daa5d35e82f363b9c44525e512",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "6371866ab714905370869a81a310bbbb1a8c36f9ec04358b2a5b50a6e300c3cf",
+              "relations": [
+                "triplex-bond-created:black"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "b31ee23e7d4a3cc5aa5d5e355c0a60f502d5005157f997d1965ecefd7179bcbe",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:red",
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "cc972249736bdc8ec6d8932554fb19b48f916534032a4dbe70bca25fc247d791",
+              "relations": [
+                "triplex-bond-created:black"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "165babd2993743dbc84310165bb6d8838d5e832c81266d5740446bd0098666d7",
+              "targetRole": "bonding",
+              "targetMechanismHash": "6371866ab714905370869a81a310bbbb1a8c36f9ec04358b2a5b50a6e300c3cf",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "165babd2993743dbc84310165bb6d8838d5e832c81266d5740446bd0098666d7",
+              "targetRole": "bonding",
+              "targetMechanismHash": "6371866ab714905370869a81a310bbbb1a8c36f9ec04358b2a5b50a6e300c3cf",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "6371866ab714905370869a81a310bbbb1a8c36f9ec04358b2a5b50a6e300c3cf",
+              "targetRole": "bonding",
+              "targetMechanismHash": "a80c39639111d4ebdf03def3dae8740bb55962daa5d35e82f363b9c44525e512",
+              "relation": "triplex-bond-created:black"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "a80c39639111d4ebdf03def3dae8740bb55962daa5d35e82f363b9c44525e512",
+              "targetRole": "conversion",
+              "targetMechanismHash": "b31ee23e7d4a3cc5aa5d5e355c0a60f502d5005157f997d1965ecefd7179bcbe",
+              "relation": "duplicate"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "165babd2993743dbc84310165bb6d8838d5e832c81266d5740446bd0098666d7",
+              "targetRole": "bonding",
+              "targetMechanismHash": "6371866ab714905370869a81a310bbbb1a8c36f9ec04358b2a5b50a6e300c3cf",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "6371866ab714905370869a81a310bbbb1a8c36f9ec04358b2a5b50a6e300c3cf",
+              "targetRole": "conversion",
+              "targetMechanismHash": "b31ee23e7d4a3cc5aa5d5e355c0a60f502d5005157f997d1965ecefd7179bcbe",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "b31ee23e7d4a3cc5aa5d5e355c0a60f502d5005157f997d1965ecefd7179bcbe",
+              "targetRole": "bonding",
+              "targetMechanismHash": "a80c39639111d4ebdf03def3dae8740bb55962daa5d35e82f363b9c44525e512",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "a80c39639111d4ebdf03def3dae8740bb55962daa5d35e82f363b9c44525e512",
+              "targetRole": "conversion",
+              "targetMechanismHash": "cc972249736bdc8ec6d8932554fb19b48f916534032a4dbe70bca25fc247d791",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "a80c39639111d4ebdf03def3dae8740bb55962daa5d35e82f363b9c44525e512",
+            "targetRole": "output",
+            "targetMechanismHash": "fd8ae55d60176e8881072e2f8c74e1bff854b7e661bcfca4d4626cb4f3482851",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1607,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1607,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-dec591cb2569499ade93",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 5,
+      "assemblyScore": 0.883516,
+      "assemblyHash": "0fd779dd188c1686bd0743fcb33abe84b8d304bb5a11efc82e2993ae8cc268b1",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "261ffceb4f1db20ff75965c9920591a5feed20728ae351b6a6d0130b2b9a14ea",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "4d66ced58f00c5e7218a621687028e6513a756287267b49e0c6da908329e61a3",
+              "relations": [
+                "triplex-bond-created:red",
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "136c3bc3f08083ec8c033bca9b828fcb9e4289126fd43a4402b2a84384586c4e",
+              "relations": [
+                "triplex-bond-created:black"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "cd9039bbf27f6310ca1cfd50095419c6210bc7774d2857677b707aeb70442a09",
+              "relations": [
+                "triplex-bond-created:black"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e2804e5ced7e471d34677dd2cb0c43d3bb1b4ff2f9a479fb1b662fd363538593",
+              "targetRole": "bonding",
+              "targetMechanismHash": "4d66ced58f00c5e7218a621687028e6513a756287267b49e0c6da908329e61a3",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e2804e5ced7e471d34677dd2cb0c43d3bb1b4ff2f9a479fb1b662fd363538593",
+              "targetRole": "bonding",
+              "targetMechanismHash": "4d66ced58f00c5e7218a621687028e6513a756287267b49e0c6da908329e61a3",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "4d66ced58f00c5e7218a621687028e6513a756287267b49e0c6da908329e61a3",
+              "targetRole": "bonding",
+              "targetMechanismHash": "261ffceb4f1db20ff75965c9920591a5feed20728ae351b6a6d0130b2b9a14ea",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "261ffceb4f1db20ff75965c9920591a5feed20728ae351b6a6d0130b2b9a14ea",
+              "targetRole": "conversion",
+              "targetMechanismHash": "136c3bc3f08083ec8c033bca9b828fcb9e4289126fd43a4402b2a84384586c4e",
+              "relation": "calcify"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e2804e5ced7e471d34677dd2cb0c43d3bb1b4ff2f9a479fb1b662fd363538593",
+              "targetRole": "bonding",
+              "targetMechanismHash": "4d66ced58f00c5e7218a621687028e6513a756287267b49e0c6da908329e61a3",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "4d66ced58f00c5e7218a621687028e6513a756287267b49e0c6da908329e61a3",
+              "targetRole": "bonding",
+              "targetMechanismHash": "261ffceb4f1db20ff75965c9920591a5feed20728ae351b6a6d0130b2b9a14ea",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "261ffceb4f1db20ff75965c9920591a5feed20728ae351b6a6d0130b2b9a14ea",
+              "targetRole": "conversion",
+              "targetMechanismHash": "cd9039bbf27f6310ca1cfd50095419c6210bc7774d2857677b707aeb70442a09",
+              "relation": "duplicate"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "261ffceb4f1db20ff75965c9920591a5feed20728ae351b6a6d0130b2b9a14ea",
+            "targetRole": "conversion",
+            "targetMechanismHash": "136c3bc3f08083ec8c033bca9b828fcb9e4289126fd43a4402b2a84384586c4e",
+            "relation": "calcify"
+          },
+          {
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "136c3bc3f08083ec8c033bca9b828fcb9e4289126fd43a4402b2a84384586c4e",
+            "targetRole": "output",
+            "targetMechanismHash": "98c02f9cdb9b7da081b5471e6dc7bb71638e868dc10cde0d52ff2e8ba7709985",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 6,
+        "totalDeficit": 0,
+        "completedCycles": 990,
+        "terminatedWithError": true,
+        "terminatedAfterCompletion": true,
+        "blockedInputCount": 0,
+        "firstError": {
+          "cycle": 989,
+          "message": "Atom part-4-spawn-8-atom-2 collides with stationary atom part-4-spawn-9-atom-1 at (-1, 1)"
+        }
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 6,
+        "totalDeficit": 0,
+        "completedCycles": 990,
+        "terminatedWithError": true,
+        "terminatedAfterCompletion": true,
+        "blockedInputCount": 0,
+        "firstError": {
+          "cycle": 989,
+          "message": "Atom part-4-spawn-8-atom-2 collides with stationary atom part-4-spawn-9-atom-1 at (-1, 1)"
+        }
+      },
+      "solved": true
+    },
+    {
+      "id": "out-e81d450b327707801612",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 7,
+      "assemblyScore": 0.881135,
+      "assemblyHash": "8c25e665558c31210ef8bd2aae446f769172af8d0ff616d1eaef907b46533ac8",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "ae5778bbb30dc8d5f4e277f933c2d2ae8fbe90690631db14e4a6266d6da324ea",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "53511daa1c5b26e0d8c845d6e48c65e73471cc270f1b2c88dc32d98ce93a881e",
+              "relations": [
+                "triplex-bond-created:black"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "6e380049b98387bb1f3734d8aa98259cd949d20722d316bba92961c788a5fc7a",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:red",
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "ee20116fd8f7ab4913c1a3bac6ae60642f3a4dcd258cdf6a76d7eaa3dd78e482",
+              "relations": [
+                "triplex-bond-created:black"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "1c35c95eda1f220885e74be9d343de7c96289932b9745493358a17d6d7b061c3",
+              "targetRole": "bonding",
+              "targetMechanismHash": "53511daa1c5b26e0d8c845d6e48c65e73471cc270f1b2c88dc32d98ce93a881e",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "1c35c95eda1f220885e74be9d343de7c96289932b9745493358a17d6d7b061c3",
+              "targetRole": "bonding",
+              "targetMechanismHash": "53511daa1c5b26e0d8c845d6e48c65e73471cc270f1b2c88dc32d98ce93a881e",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "53511daa1c5b26e0d8c845d6e48c65e73471cc270f1b2c88dc32d98ce93a881e",
+              "targetRole": "bonding",
+              "targetMechanismHash": "ae5778bbb30dc8d5f4e277f933c2d2ae8fbe90690631db14e4a6266d6da324ea",
+              "relation": "triplex-bond-created:black"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "ae5778bbb30dc8d5f4e277f933c2d2ae8fbe90690631db14e4a6266d6da324ea",
+              "targetRole": "conversion",
+              "targetMechanismHash": "6e380049b98387bb1f3734d8aa98259cd949d20722d316bba92961c788a5fc7a",
+              "relation": "duplicate"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "1c35c95eda1f220885e74be9d343de7c96289932b9745493358a17d6d7b061c3",
+              "targetRole": "bonding",
+              "targetMechanismHash": "53511daa1c5b26e0d8c845d6e48c65e73471cc270f1b2c88dc32d98ce93a881e",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "53511daa1c5b26e0d8c845d6e48c65e73471cc270f1b2c88dc32d98ce93a881e",
+              "targetRole": "conversion",
+              "targetMechanismHash": "6e380049b98387bb1f3734d8aa98259cd949d20722d316bba92961c788a5fc7a",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "6e380049b98387bb1f3734d8aa98259cd949d20722d316bba92961c788a5fc7a",
+              "targetRole": "bonding",
+              "targetMechanismHash": "ae5778bbb30dc8d5f4e277f933c2d2ae8fbe90690631db14e4a6266d6da324ea",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "ae5778bbb30dc8d5f4e277f933c2d2ae8fbe90690631db14e4a6266d6da324ea",
+              "targetRole": "conversion",
+              "targetMechanismHash": "ee20116fd8f7ab4913c1a3bac6ae60642f3a4dcd258cdf6a76d7eaa3dd78e482",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "ae5778bbb30dc8d5f4e277f933c2d2ae8fbe90690631db14e4a6266d6da324ea",
+            "targetRole": "output",
+            "targetMechanismHash": "feaa92810d4d6cfa28ab22a694f80edbc7df18424e670a0b5ac50dbe2598a861",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1607,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1607,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-eb85cfc9730c7b171e5a",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 1,
+      "assemblyScore": 0.934626,
+      "assemblyHash": "dd11e9e0fbf96984c9b292de131036c8bf61cbbc4fc2ab5eb4bcae3d2a5752ec",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:black"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "63ab72e364bed795abae73d48a2860417cfebf3a716136651757bfdb5f22a9f4",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f06be1bee7311d2c0e551d3dcb78a8c85d51ff9718d85755a143be507e1ed231",
+              "targetRole": "bonding",
+              "targetMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "36c7ece5ab26430908f998705d233f77c786cacd26afc9a86dcb0034490cf1a1",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "relation": "triplex-bond-created:red"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "cba04d194067de2793b14100caad167a64134370802e3e50d5a0658db0d9bd84",
+            "targetRole": "conversion",
+            "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "relation": "calcify"
+          },
+          {
+            "sourceRole": "conversion",
+            "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+            "targetRole": "bonding",
+            "targetMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+            "relation": "triplex-bond-created:red"
+          },
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "7e3c861669133171f07967b2220e9cc3f306aad0044c2a4b12ad6c3a1adec951",
+            "targetRole": "output",
+            "targetMechanismHash": "d6f22e8a53279417555286f0a77a279b5c851569394c2fc7cb2dc9735fe1beb1",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1085,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    },
+    {
+      "id": "out-f9bc37bd2cc12542b304",
+      "schemaVersion": "0.1.0",
+      "puzzleFingerprint": "b205d9b3785a168d4c71c0e61d1d9cf16732f3c8adc4e58cee35962cc1b74079",
+      "puzzleName": "IMPROVED EXPLOSIVE PHIAL",
+      "manufacturingStrategy": "triplex-extension-v1",
+      "candidateRank": 6,
+      "assemblyScore": 0.881208,
+      "assemblyHash": "15c15c1cea5f46b0284a28a0755344e3470e62ed83393e1f07efb668969ba036",
+      "assembly": {
+        "convergence": {
+          "targetRole": "bonding",
+          "targetMechanismHash": "0ed4a3b703371e8137dfffdb80277fdaffc1d9e2706f41b2d1b8dc97a2e3a4e2",
+          "inputs": [
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "bb9a883abe59be5b800ed942469d2eaea76784bd6984fc894f7085fd995c1625",
+              "relations": [
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "8748a3cfe5faaaf207e3d50bea30fd5b66a9cefab90d992ec08060972c969254",
+              "relations": [
+                "triplex-bond-created:black",
+                "triplex-bond-created:yellow"
+              ]
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relations": [
+                "triplex-bond-created:red"
+              ]
+            }
+          ]
+        },
+        "branches": [
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e31921c6858e9cd4352d4d5e0f8969dd04ab277cf51bf6335e96c6bd9585134e",
+              "targetRole": "bonding",
+              "targetMechanismHash": "bb9a883abe59be5b800ed942469d2eaea76784bd6984fc894f7085fd995c1625",
+              "relation": "bond-removed"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e31921c6858e9cd4352d4d5e0f8969dd04ab277cf51bf6335e96c6bd9585134e",
+              "targetRole": "bonding",
+              "targetMechanismHash": "bb9a883abe59be5b800ed942469d2eaea76784bd6984fc894f7085fd995c1625",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "bb9a883abe59be5b800ed942469d2eaea76784bd6984fc894f7085fd995c1625",
+              "targetRole": "conversion",
+              "targetMechanismHash": "8748a3cfe5faaaf207e3d50bea30fd5b66a9cefab90d992ec08060972c969254",
+              "relation": "duplicate"
+            }
+          ],
+          [
+            {
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e31921c6858e9cd4352d4d5e0f8969dd04ab277cf51bf6335e96c6bd9585134e",
+              "targetRole": "bonding",
+              "targetMechanismHash": "bb9a883abe59be5b800ed942469d2eaea76784bd6984fc894f7085fd995c1625",
+              "relation": "bond-removed"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "bb9a883abe59be5b800ed942469d2eaea76784bd6984fc894f7085fd995c1625",
+              "targetRole": "conversion",
+              "targetMechanismHash": "8748a3cfe5faaaf207e3d50bea30fd5b66a9cefab90d992ec08060972c969254",
+              "relation": "duplicate"
+            },
+            {
+              "sourceRole": "conversion",
+              "sourceMechanismHash": "8748a3cfe5faaaf207e3d50bea30fd5b66a9cefab90d992ec08060972c969254",
+              "targetRole": "bonding",
+              "targetMechanismHash": "0ed4a3b703371e8137dfffdb80277fdaffc1d9e2706f41b2d1b8dc97a2e3a4e2",
+              "relation": "triplex-bond-created:yellow"
+            },
+            {
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "0ed4a3b703371e8137dfffdb80277fdaffc1d9e2706f41b2d1b8dc97a2e3a4e2",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify"
+            }
+          ]
+        ],
+        "tail": [
+          {
+            "sourceRole": "bonding",
+            "sourceMechanismHash": "0ed4a3b703371e8137dfffdb80277fdaffc1d9e2706f41b2d1b8dc97a2e3a4e2",
+            "targetRole": "output",
+            "targetMechanismHash": "d6f22e8a53279417555286f0a77a279b5c851569394c2fc7cb2dc9735fe1beb1",
+            "relation": "delivered"
+          }
+        ]
+      },
+      "layoutSignals": {
+        "exactStaticConflictCount": 0,
+        "approximateStaticConflictCount": 0,
+        "armWorkspaceOverlapCount": 0
+      },
+      "baseProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1897,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "repairPolicy": null,
+      "repairSucceededWith": null,
+      "attempts": [],
+      "bestProgressSource": "base",
+      "bestProgress": {
+        "complete": true,
+        "failureMode": null,
+        "totalDelivered": 21,
+        "totalDeficit": 0,
+        "completedCycles": 1897,
+        "terminatedWithError": false,
+        "terminatedAfterCompletion": false,
+        "blockedInputCount": 0,
+        "firstError": null
+      },
+      "solved": true
+    }
+  ]
+}

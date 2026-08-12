@@ -53,6 +53,7 @@ def test_required_relations_ignore_transport_operations():
 def test_requirements_report_multi_source_convergence():
     requirements = manufacturing_requirements(_plan())
     assert requirements["sourceCount"] == 2
+    assert requirements["convergenceInputCount"] == 2
     assert requirements["requiresConvergence"] is True
 
 
@@ -104,3 +105,7 @@ def test_triplex_plan_requires_exact_engine_observable_capabilities():
         "triplex-bond-created:yellow": 1,
         "delivered": 1,
     }
+    requirements = manufacturing_requirements(plan)
+    assert requirements["sourceCount"] == 0
+    assert requirements["convergenceInputCount"] == 3
+    assert requirements["requiresConvergence"] is True

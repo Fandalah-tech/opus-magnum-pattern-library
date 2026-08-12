@@ -117,17 +117,25 @@ def build_candidate_solution(
     if not summary.get("scheduleComplete"):
         raise ValueError("Assembly program schedule is incomplete or conflicting")
 
-    branch_flows = assign_branch_atom_flows(candidate, plan)
+    branch_flows = assign_branch_atom_flows(candidate, plan) if plan.atom_flows else {}
+    source_reagent_indices = sorted({
+        int(operation.metadata["reagentIndex"])
+        for operation in plan.operations
+        if operation.kind == "source" and operation.metadata.get("reagentIndex") is not None
+    })
     parts = []
     arm_number = 1
     for index, raw_part in enumerate(synchronized_layout.get("parts", [])):
         part = _clean_part(raw_part, part_id=f"part-{index}")
         part_type = part["type"]
         if part_type == "input":
-            branch_index = _branch_index_for_part(raw_part)
-            if branch_index is None or branch_index not in branch_flows:
+            branch_index = _branch_index_for_part(raw_part) if branch_flows else None
+            if branch_index is not None and branch_index in branch_flows:
+                part["which"] = int(branch_flows[branch_index].reagent_index)
+            elif len(source_reagent_indices) == 1:
+                part["which"] = source_reagent_indices[0]
+            else:
                 raise ValueError(f"Could not resolve target reagent for input part {raw_part.get('id')}")
-            part["which"] = int(branch_flows[branch_index].reagent_index)
         elif part_type.startswith("out-"):
             part["which"] = int(plan.product_index)
         if part_type in ARM_TYPES:

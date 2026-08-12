@@ -74,3 +74,47 @@ def test_convergence_with_too_few_inputs_is_rejected():
         ],
     }
     assert rank_fragment_assemblies(_plan(), flow) == []
+
+
+def test_assembly_prefers_one_engine_coherent_source_solution():
+    transform = {"frame": "source-anchor-local", "delta": [2, -1], "rotationDelta": 1}
+    timing = {"frame": "source-fragment-program-start", "programStartDelta": 3}
+    calc_edge = _edge("feed", "fa", "conversion", "calc", "calcify")
+    calc_edge["solutionVariants"] = [{
+        "solutionPath": "coherent.solution",
+        "relativeTransform": transform,
+        "relativeTiming": timing,
+        "observationCount": 2,
+    }]
+    output_edge = _edge("bonding", "bond", "output", "out", "delivered")
+    output_edge["solutionVariants"] = [{
+        "solutionPath": "coherent.solution",
+        "relativeTransform": transform,
+        "relativeTiming": timing,
+        "observationCount": 2,
+    }]
+    flow = {
+        "transitions": [calc_edge, output_edge],
+        "convergenceMotifs": [{
+            "targetRole": "bonding",
+            "targetMechanismHash": "bond",
+            "inputCount": 2,
+            "inputs": [
+                {"sourceRole": "conversion", "sourceMechanismHash": "calc", "relations": ["bond-created"]},
+                {"sourceRole": "feed", "sourceMechanismHash": "fb", "relations": ["bond-created"]},
+            ],
+            "observationCount": 1,
+            "solutionSamples": [{
+                "solutionPath": "coherent.solution",
+                "inputs": [
+                    {"sourceRole": "conversion", "sourceMechanismHash": "calc", "relativeTransforms": [transform], "relativeTimings": [timing]},
+                    {"sourceRole": "feed", "sourceMechanismHash": "fb", "relativeTransforms": [transform], "relativeTimings": [timing]},
+                ],
+            }],
+        }],
+    }
+    ranked = rank_fragment_assemblies(_plan(), flow)
+    assert len(ranked) == 1
+    assert ranked[0]["coherentSourceSolution"] == "coherent.solution"
+    assert ranked[0]["branches"][0][0]["relativeTransform"] == transform
+    assert ranked[0]["tail"][0]["relativeTiming"] == timing

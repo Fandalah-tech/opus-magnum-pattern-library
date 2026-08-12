@@ -16,6 +16,8 @@ def _instance_group(instance_id: str) -> str | None:
         return value.split(":", 1)[0]
     if value.startswith("tail-"):
         return value.split(":", 1)[0]
+    if value.startswith("chain-") and value != "chain-0":
+        return value
     return None
 
 

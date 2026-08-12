@@ -86,7 +86,13 @@ def build_manufacturing_plan(puzzle: dict[str, Any]) -> ManufacturingPlan:
             product_index=0,
             atom_flows=(),
             operations=(
-                ManufacturingOperation("source-chain", "source", (), ("fire-fire-salt",)),
+                ManufacturingOperation(
+                    "source-chain",
+                    "source",
+                    (),
+                    ("fire-fire-salt",),
+                    metadata={"reagentIndex": 0},
+                ),
                 ManufacturingOperation(
                     "remove-normal-bond",
                     "unbond",

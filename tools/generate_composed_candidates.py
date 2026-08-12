@@ -38,8 +38,11 @@ def main() -> int:
     parser.add_argument("--transform-variants", type=int, default=0, help="Maximum observed relative-transform combinations tested after timing repair fails.")
     parser.add_argument("--transform-per-slot", type=int, default=3, help="Maximum observed transform choices retained for each fragment join.")
     parser.add_argument("--transform-results", type=int, default=10, help="Best geometric variants retained in the JSON report.")
+    parser.add_argument("--chain-max-depth", type=int, default=8, help="Maximum engine-observed transitions in a linear materialized chain.")
+    parser.add_argument("--min-engine-validated-solutions", type=int, default=0, help="Require every selected transition to have at least this many engine-complete source solutions.")
     parser.add_argument("--report", type=Path, default=Path("reports/composed-candidates.json"))
     parser.add_argument("--write-best", type=Path)
+    parser.add_argument("--write-complete-dir", type=Path, help="Write every engine-complete base/search candidate as a .solution file.")
     parser.add_argument("--outcome-index", type=Path, help="Merge compact learning outcomes into this persistent JSON index.")
     args = parser.parse_args()
 
@@ -58,6 +61,8 @@ def main() -> int:
         transform_search_limit=args.transform_variants,
         transform_per_slot_limit=args.transform_per_slot,
         transform_result_limit=args.transform_results,
+        chain_max_depth=args.chain_max_depth,
+        min_engine_validated_solutions=args.min_engine_validated_solutions,
     )
 
     args.report.parent.mkdir(parents=True, exist_ok=True)
@@ -68,6 +73,27 @@ def main() -> int:
         if best is not None:
             write_solution(best["solution"], args.write_best, version=7)
 
+    written_complete = 0
+    if args.write_complete_dir:
+        args.write_complete_dir.mkdir(parents=True, exist_ok=True)
+        for item in result.get("candidates", []):
+            rank = int(item.get("rank") or 0)
+            if item.get("engineValidation", {}).get("complete") and item.get("solution"):
+                write_solution(item["solution"], args.write_complete_dir / f"rank-{rank:02d}-base.solution", version=7)
+                written_complete += 1
+            for search_name in ("temporalSearch", "geometricSearch"):
+                for variant in item.get(search_name, {}).get("variants", []):
+                    if not variant.get("validation", {}).get("complete") or not variant.get("solution"):
+                        continue
+                    variant_index = int(variant.get("variantIndex") or 0)
+                    label = "timing" if search_name == "temporalSearch" else "geometry"
+                    write_solution(
+                        variant["solution"],
+                        args.write_complete_dir / f"rank-{rank:02d}-{label}-{variant_index:03d}.solution",
+                        version=7,
+                    )
+                    written_complete += 1
+
     outcome_summary = None
     if args.outcome_index:
         existing = json.loads(args.outcome_index.read_text(encoding="utf-8")) if args.outcome_index.exists() else None
@@ -77,6 +103,8 @@ def main() -> int:
         outcome_summary = outcome_index.get("summary", {})
 
     summary = dict(result.get("summary", {}))
+    if args.write_complete_dir:
+        summary["writtenCompleteSolutionCount"] = written_complete
     if outcome_summary is not None:
         summary["outcomeLearning"] = outcome_summary
     print(json.dumps(summary, sort_keys=True))

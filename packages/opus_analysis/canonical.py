@@ -56,18 +56,28 @@ def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool
                 rotate_hex(tuple(int(v) for v in cell), steps)
                 for cell in part.get("trackHexes", [])
             ]
-            pipe_hexes = [
-                rotate_hex(tuple(int(v) for v in cell), steps)
-                for cell in part.get("pipeHexes", [])
-            ]
-            occupied.extend(track_hexes)
-            occupied.extend(pipe_hexes)
+            # Track cells are serialized as world-axis offsets from the track
+            # origin. Conduit cells are local to the pipe part and therefore
+            # rotate through the part rotation, not by mutating their payload.
+            pipe_hexes = [tuple(int(v) for v in cell) for cell in part.get("pipeHexes", [])]
+            occupied.extend(
+                (rotated_position[0] + cell[0], rotated_position[1] + cell[1])
+                for cell in track_hexes
+            )
+            rotated_part_rotation = (int(part.get("rotation") or 0) + steps) % 6
+            occupied.extend(
+                (
+                    rotated_position[0] + rotate_hex(cell, rotated_part_rotation)[0],
+                    rotated_position[1] + rotate_hex(cell, rotated_part_rotation)[1],
+                )
+                for cell in pipe_hexes
+            )
             rotated_parts.append({
                 "type": str(part.get("type") or ""),
                 "enabled": bool(part.get("enabled", True)),
                 "position": rotated_position,
                 "length": int(part.get("length") or 0),
-                "rotation": (int(part.get("rotation") or 0) + steps) % 6,
+                "rotation": rotated_part_rotation,
                 "which": int(part.get("which") or 0),
                 "program": _program(part, normalize_time=normalize_time, global_min_cycle=global_min_cycle),
                 "trackHexes": track_hexes,
@@ -81,8 +91,8 @@ def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool
             q, r = part["position"]
             normalized = dict(part)
             normalized["position"] = [q - anchor[0], r - anchor[1]]
-            normalized["trackHexes"] = [[q2 - anchor[0], r2 - anchor[1]] for q2, r2 in part["trackHexes"]]
-            normalized["pipeHexes"] = [[q2 - anchor[0], r2 - anchor[1]] for q2, r2 in part["pipeHexes"]]
+            normalized["trackHexes"] = [list(cell) for cell in part["trackHexes"]]
+            normalized["pipeHexes"] = [list(cell) for cell in part["pipeHexes"]]
             normalized_parts.append(normalized)
 
         normalized_parts.sort(key=lambda item: json.dumps(item, sort_keys=True, separators=(",", ":")))

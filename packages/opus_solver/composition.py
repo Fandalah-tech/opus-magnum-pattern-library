@@ -159,6 +159,10 @@ def rank_fragment_chains(
                 "engineValidatedSolutionCount": edge.get("engineValidatedSolutionCount"),
                 "engineValidationRate": edge.get("engineValidationRate"),
                 "evidenceSource": edge.get("evidenceSource"),
+                "sourcePuzzles": list(edge.get("sourcePuzzles", [])),
+                "relativeTransforms": edge.get("relativeTransforms"),
+                "relativeTimings": edge.get("relativeTimings"),
+                "samples": list(edge.get("samples", [])),
                 "empirical": edge["empirical"],
             }
             walk(target, nodes + [target], steps + [step], visited | {target})

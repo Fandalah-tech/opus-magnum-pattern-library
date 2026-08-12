@@ -6,11 +6,12 @@ from typing import Any
 from .assembly import rank_fragment_assemblies
 from .candidate_search import search_temporal_candidates
 from .candidate_solution import build_candidate_solution, serialize_candidate_roundtrip
+from .chemistry_composition import manufacturing_requirements, rank_chains_for_manufacturing_plan
 from .geometry_search import search_geometric_candidates
-from .layout import materialize_assembly_layout
+from .layout import materialize_candidate_layout
 from .manufacturing import build_manufacturing_plan
 from .repair_policy import recommend_repair_order
-from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
+from .scheduling import materialize_candidate_schedule, synchronize_layout_programs
 from .solver import validate_generated_solution
 
 
@@ -27,6 +28,8 @@ def generate_composed_candidates(
     transform_search_limit: int = 0,
     transform_per_slot_limit: int = 3,
     transform_result_limit: int = 10,
+    chain_max_depth: int = 8,
+    min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
     """Run assembly generation and route bounded repair from diagnostics."""
     plan = build_manufacturing_plan(puzzle)
@@ -47,7 +50,24 @@ def generate_composed_candidates(
             "candidates": [],
         }
 
-    assemblies = rank_fragment_assemblies(plan, flow_index, limit=max(1, int(limit)))
+    requirements = manufacturing_requirements(plan)
+    if requirements["requiresConvergence"]:
+        assemblies = [
+            {**item, "candidateKind": "convergent-assembly"}
+            for item in rank_fragment_assemblies(plan, flow_index, limit=max(1, int(limit)))
+        ]
+    else:
+        assemblies = [
+            {**item, "candidateKind": "linear-chain"}
+            for item in rank_chains_for_manufacturing_plan(
+                plan,
+                flow_index,
+                fragment_index=fragment_index,
+                max_depth=chain_max_depth,
+                limit=max(1, int(limit)),
+                min_engine_validated_solutions=min_engine_validated_solutions,
+            )
+        ]
     results = []
     serializable_count = 0
     engine_complete_count = 0
@@ -65,10 +85,10 @@ def generate_composed_candidates(
             "assembly": assembly,
         }
         try:
-            layout = materialize_assembly_layout(assembly, fragment_index)
+            layout = materialize_candidate_layout(assembly, fragment_index)
             layout_summary = layout.get("summary", {})
             record["layoutSummary"] = layout_summary
-            schedule = materialize_assembly_schedule(assembly)
+            schedule = materialize_candidate_schedule(assembly)
             record["scheduleSummary"] = schedule.get("summary", {})
             synchronized = synchronize_layout_programs(layout, schedule)
             record["synchronizedSummary"] = synchronized.get("summary", {})
@@ -159,7 +179,7 @@ def generate_composed_candidates(
         results.append(record)
 
     return {
-        "schemaVersion": "0.4.0",
+        "schemaVersion": "0.5.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -175,6 +195,8 @@ def generate_composed_candidates(
             "repairRoutes": dict(sorted(repair_routes.items())),
             "temporalSearchRadius": max(0, int(temporal_search_radius)),
             "transformSearchLimit": max(0, int(transform_search_limit)),
+            "candidateKinds": dict(sorted(Counter(str(item.get("candidateKind") or "unknown") for item in assemblies).items())),
+            "minEngineValidatedSolutions": max(0, int(min_engine_validated_solutions)),
         },
         "candidates": results,
     }

@@ -13,6 +13,16 @@ def _stable_hash(payload: Any) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _compact_error(error: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not error:
+        return None
+    # Full engine diagnostics can contain the entire world state. Learning
+    # only needs a stable headline and cycle; verbose traces stay in the
+    # generation report rather than bloating the persistent outcome index.
+    message = str(error.get("message") or "").split(";", 1)[0]
+    return {"cycle": error.get("cycle"), "message": message}
+
+
 def _validation_progress(validation: dict[str, Any] | None) -> dict[str, Any]:
     validation = validation or {}
     return {
@@ -22,8 +32,9 @@ def _validation_progress(validation: dict[str, Any] | None) -> dict[str, Any]:
         "totalDeficit": int(validation.get("totalDeficit") or 0),
         "completedCycles": int(validation.get("completedCycles") or 0),
         "terminatedWithError": bool(validation.get("terminatedWithError")),
+        "terminatedAfterCompletion": bool(validation.get("terminatedAfterCompletion")),
         "blockedInputCount": len(validation.get("blockedInputsAtStart") or []),
-        "firstError": validation.get("firstError"),
+        "firstError": _compact_error(validation.get("firstError")),
     }
 
 
@@ -53,6 +64,27 @@ def _best_search_progress(search: dict[str, Any] | None) -> dict[str, Any] | Non
 
 
 def _assembly_signature(assembly: dict[str, Any]) -> dict[str, Any]:
+    if assembly.get("candidateKind") == "linear-chain" or (assembly.get("nodes") and assembly.get("steps")):
+        return {
+            "candidateKind": "linear-chain",
+            "nodes": [
+                {
+                    "role": node.get("role"),
+                    "canonicalMechanismHash": node.get("canonicalMechanismHash"),
+                }
+                for node in assembly.get("nodes", [])
+            ],
+            "steps": [
+                {
+                    "sourceRole": edge.get("sourceRole"),
+                    "sourceMechanismHash": edge.get("sourceMechanismHash"),
+                    "targetRole": edge.get("targetRole"),
+                    "targetMechanismHash": edge.get("targetMechanismHash"),
+                    "relation": edge.get("relation"),
+                }
+                for edge in assembly.get("steps", [])
+            ],
+        }
     convergence = assembly.get("convergence") or {}
     branches = []
     for branch in assembly.get("branches", []):

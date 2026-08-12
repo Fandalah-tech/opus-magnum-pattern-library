@@ -21,6 +21,46 @@ def _edge_confidence(edge: dict[str, Any]) -> float:
     return 0.60 * (1.0 - math.exp(-observations / 3.0)) + 0.25 * (1.0 - math.exp(-puzzles / 2.0)) + 0.15 * (1.0 - math.exp(-solutions / 3.0))
 
 
+def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, Any] | None:
+    variants = [
+        item
+        for item in edge.get("solutionVariants", [])
+        if str(item.get("solutionPath") or "") == solution_path
+    ]
+    if not variants:
+        return None
+    selected = max(variants, key=lambda item: int(item.get("observationCount") or 0))
+    result = dict(edge)
+    result["relativeTransform"] = selected.get("relativeTransform")
+    result["relativeTiming"] = selected.get("relativeTiming")
+    result["relativeTransforms"] = {
+        "preferred": selected.get("relativeTransform"),
+        "variantCount": len(variants),
+        "variants": [
+            {
+                "relativeTransform": item.get("relativeTransform"),
+                "observationCount": int(item.get("observationCount") or 0),
+            }
+            for item in variants
+            if item.get("relativeTransform")
+        ],
+    }
+    result["relativeTimings"] = {
+        "preferred": selected.get("relativeTiming"),
+        "variantCount": len(variants),
+        "variants": [
+            {
+                "relativeTiming": item.get("relativeTiming"),
+                "observationCount": int(item.get("observationCount") or 0),
+            }
+            for item in variants
+            if item.get("relativeTiming")
+        ],
+    }
+    result["coherentSourceSolution"] = solution_path
+    return result
+
+
 def _paths_to_target(transitions: list[dict[str, Any]], target: FragmentKey, *, max_depth: int) -> list[list[dict[str, Any]]]:
     if target[0] == "feed":
         return [[]]
@@ -68,15 +108,19 @@ def _paths_from_source(transitions: list[dict[str, Any]], source: FragmentKey, *
     return paths
 
 
-def _relations_for_candidate(branches: list[list[dict[str, Any]]], convergence_relation: str, tail: list[dict[str, Any]]) -> Counter[str]:
+def _relations_for_candidate(
+    branches: list[list[dict[str, Any]]],
+    convergence_relations: list[str],
+    tail: list[dict[str, Any]],
+) -> Counter[str]:
     relations: Counter[str] = Counter()
     for branch in branches:
         for edge in branch:
             relation = str(edge.get("relation") or "")
             if relation:
                 relations[relation] += 1
-    if convergence_relation:
-        relations[convergence_relation] += 1
+    for relation in convergence_relations:
+        relations[relation] += 1
     for edge in tail:
         relation = str(edge.get("relation") or "")
         if relation:
@@ -97,64 +141,86 @@ def rank_fragment_assemblies(
         return []
     requirements = manufacturing_requirements(plan)
     source_count = int(requirements["sourceCount"])
+    convergence_input_count = int(requirements.get("convergenceInputCount") or source_count)
     required = required_flow_relations(plan)
     transitions = list(flow_index.get("transitions", []))
     candidates: list[dict[str, Any]] = []
 
     for motif in flow_index.get("convergenceMotifs", []):
         inputs = list(motif.get("inputs", []))
-        if len(inputs) < source_count:
+        if len(inputs) < convergence_input_count:
             continue
-        target = _key(motif.get("targetRole"), motif.get("targetMechanismHash"))
-        if not target[0] or not target[1]:
-            continue
+        coherent_samples = list(motif.get("solutionSamples", []))
+        sample_options = coherent_samples or [None]
+        for selected_sample in sample_options:
+            solution_path = str((selected_sample or {}).get("solutionPath") or "")
+            if solution_path:
+                selected_transitions = [
+                    selected
+                    for edge in transitions
+                    for selected in [_edge_for_solution(edge, solution_path)]
+                    if selected is not None
+                ]
+                selected_motif = dict(motif)
+                selected_motif["samples"] = [selected_sample]
+                selected_motif["coherentSourceSolution"] = solution_path
+            else:
+                selected_transitions = transitions
+                selected_motif = motif
 
-        branch_options = []
-        valid = True
-        for input_item in inputs[:source_count]:
-            input_key = _key(input_item.get("sourceRole"), input_item.get("sourceMechanismHash"))
-            options = _paths_to_target(transitions, input_key, max_depth=max_branch_depth)
-            if not options:
-                valid = False
-                break
-            options.sort(key=lambda path: (-sum(_edge_confidence(edge) for edge in path), len(path)))
-            branch_options.append(options[0])
-        if not valid:
-            continue
+            target = _key(motif.get("targetRole"), motif.get("targetMechanismHash"))
+            if not target[0] or not target[1]:
+                continue
 
-        tails = _paths_from_source(transitions, target, max_depth=max_tail_depth)
-        if not tails:
-            continue
-        tails.sort(key=lambda path: (-sum(_edge_confidence(edge) for edge in path), len(path)))
-        tail = tails[0]
+            branch_options = []
+            valid = True
+            for input_item in inputs[:convergence_input_count]:
+                input_key = _key(input_item.get("sourceRole"), input_item.get("sourceMechanismHash"))
+                options = _paths_to_target(selected_transitions, input_key, max_depth=max_branch_depth)
+                if not options:
+                    valid = False
+                    break
+                options.sort(key=lambda path: (-sum(_edge_confidence(edge) for edge in path), len(path)))
+                branch_options.append(options[0])
+            if not valid:
+                continue
 
-        motif_relations = sorted({relation for item in inputs for relation in item.get("relations", []) if relation})
-        convergence_relation = motif_relations[0] if len(motif_relations) == 1 else ""
-        observed = _relations_for_candidate(branch_options, convergence_relation, tail)
-        missing = Counter({key: count - observed.get(key, 0) for key, count in required.items() if observed.get(key, 0) < count})
-        if missing:
-            continue
+            tails = _paths_from_source(selected_transitions, target, max_depth=max_tail_depth)
+            if not tails:
+                continue
+            tails.sort(key=lambda path: (-sum(_edge_confidence(edge) for edge in path), len(path)))
+            tail = tails[0]
 
-        edge_scores = [_edge_confidence(edge) for branch in branch_options for edge in branch]
-        edge_scores.extend(_edge_confidence(edge) for edge in tail)
-        motif_score = 1.0 - math.exp(-max(0, int(motif.get("observationCount") or 0)) / 2.0)
-        empirical = (sum(edge_scores) + motif_score) / (len(edge_scores) + 1) if edge_scores else motif_score
-        coverage = 1.0
-        score = 0.65 * coverage + 0.25 * empirical + 0.10 * motif_score
+            motif_relations = sorted({relation for item in inputs for relation in item.get("relations", []) if relation})
+            observed = _relations_for_candidate(branch_options, motif_relations, tail)
+            missing = Counter({key: count - observed.get(key, 0) for key, count in required.items() if observed.get(key, 0) < count})
+            if missing:
+                continue
 
-        candidates.append({
-            "score": round(score, 6),
-            "functionalCoverageScore": 1.0,
-            "assemblyComplete": True,
-            "sourceCount": source_count,
-            "convergence": motif,
-            "branches": branch_options,
-            "tail": tail,
-            "observedRelations": dict(sorted(observed.items())),
-            "requiredRelations": dict(sorted(required.items())),
-            "empiricalScore": round(empirical, 6),
-            "convergenceConfidence": round(motif_score, 6),
-        })
+            edge_scores = [_edge_confidence(edge) for branch in branch_options for edge in branch]
+            edge_scores.extend(_edge_confidence(edge) for edge in tail)
+            motif_score = 1.0 - math.exp(-max(0, int(motif.get("observationCount") or 0)) / 2.0)
+            empirical = (sum(edge_scores) + motif_score) / (len(edge_scores) + 1) if edge_scores else motif_score
+            coverage = 1.0
+            coherence_bonus = 0.03 if solution_path else 0.0
+            score = min(1.0, 0.65 * coverage + 0.25 * empirical + 0.10 * motif_score + coherence_bonus)
+
+            candidates.append({
+                "score": round(score, 6),
+                "functionalCoverageScore": 1.0,
+                "assemblyComplete": True,
+                "sourceCount": source_count,
+                "convergenceInputCount": convergence_input_count,
+                "convergenceRelations": motif_relations,
+                "convergence": selected_motif,
+                "branches": branch_options,
+                "tail": tail,
+                "observedRelations": dict(sorted(observed.items())),
+                "requiredRelations": dict(sorted(required.items())),
+                "empiricalScore": round(empirical, 6),
+                "convergenceConfidence": round(motif_score, 6),
+                "coherentSourceSolution": solution_path or None,
+            })
 
     candidates.sort(key=lambda item: (-float(item["score"]), -float(item["convergenceConfidence"])))
     return candidates[:max(0, int(limit))]

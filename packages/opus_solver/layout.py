@@ -92,9 +92,15 @@ def transplant_geometry(geometry: dict[str, Any], *, anchor_position: tuple[int,
         part["position"] = transform_point(part.get("position") or [0, 0])
         part["rotation"] = (int(part.get("rotation") or 0) + rotation_steps) % 6
         if part.get("trackHexes"):
-            part["trackHexes"] = [transform_point(cell) for cell in part.get("trackHexes", [])]
+            part["trackHexes"] = [
+                list(rotate_hex(tuple(int(value) for value in cell), rotation_steps))
+                for cell in part.get("trackHexes", [])
+            ]
         if part.get("pipeHexes"):
-            part["pipeHexes"] = [transform_point(cell) for cell in part.get("pipeHexes", [])]
+            part["pipeHexes"] = [
+                [int(value) for value in cell]
+                for cell in part.get("pipeHexes", [])
+            ]
         part["sourceFragmentInstance"] = instance_id
         result.append(part)
     return result
@@ -256,3 +262,128 @@ def materialize_assembly_layout(
             "A materialized layout is a geometry candidate, not yet a valid Opus Magnum solution."
         ],
     }
+
+
+def materialize_fragment_chain_layout(
+    candidate: dict[str, Any],
+    fragment_index: dict[str, Any],
+    *,
+    transform_overrides: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Transplant a linear replay-backed fragment chain into one layout."""
+    geometries = _geometry_lookup(fragment_index)
+    overrides = transform_overrides or {}
+    nodes = list(candidate.get("nodes", []))
+    steps = list(candidate.get("steps", []))
+    placements: list[dict[str, Any]] = []
+    all_parts: list[dict[str, Any]] = []
+    missing_geometry = []
+    missing_transform = []
+    used_transforms: dict[str, dict[str, Any]] = {}
+
+    def add_instance(instance_id: str, key: FragmentKey, position: tuple[int, int], rotation: int) -> None:
+        geometry = geometries.get(key)
+        placements.append({
+            "instanceId": instance_id,
+            "role": key[0],
+            "canonicalMechanismHash": key[1],
+            "anchorPosition": list(position),
+            "anchorRotation": rotation,
+        })
+        if geometry is None:
+            missing_geometry.append({
+                "instanceId": instance_id,
+                "role": key[0],
+                "canonicalMechanismHash": key[1],
+            })
+            return
+        all_parts.extend(transplant_geometry(
+            geometry,
+            anchor_position=position,
+            anchor_rotation=rotation,
+            instance_id=instance_id,
+        ))
+
+    if not nodes:
+        missing_geometry.append({"instanceId": "chain-0", "reason": "chain-has-no-nodes"})
+    else:
+        current_position = (0, 0)
+        current_rotation = 0
+        first = nodes[0]
+        add_instance(
+            "chain-0",
+            _key(first.get("role"), first.get("canonicalMechanismHash")),
+            current_position,
+            current_rotation,
+        )
+        for step_index, step in enumerate(steps):
+            slot = f"chain-{step_index}:edge"
+            transform = overrides.get(slot) or _preferred_transform(step)
+            if transform is None:
+                missing_transform.append({"step": step_index, "stage": "chain-edge", "edge": step, "slot": slot})
+                break
+            used_transforms[slot] = deepcopy(transform)
+            current_position, current_rotation = apply_forward_transform(
+                current_position,
+                current_rotation,
+                transform,
+            )
+            target = nodes[step_index + 1] if step_index + 1 < len(nodes) else step
+            add_instance(
+                f"chain-{step_index + 1}",
+                _key(target.get("role") or step.get("targetRole"), target.get("canonicalMechanismHash") or step.get("targetMechanismHash")),
+                current_position,
+                current_rotation,
+            )
+
+    parts, conflicts = _dedupe_parts(all_parts)
+    geometry_diagnostics = analyze_layout_geometry(parts)
+    geometry_summary = geometry_diagnostics["summary"]
+    return {
+        "schemaVersion": "0.1.0",
+        "candidateKind": "linear-chain",
+        "summary": {
+            "instanceCount": len(placements),
+            "materializedPartCount": len(parts),
+            "sharedPartCount": sum(len(part.get("sourceFragmentInstances", [])) > 1 for part in parts),
+            "missingGeometryCount": len(missing_geometry),
+            "missingTransformCount": len(missing_transform),
+            "originConflictCount": len(conflicts),
+            "exactStaticConflictCount": geometry_summary["exactStaticConflictCount"],
+            "approximateStaticConflictCount": geometry_summary["approximateStaticConflictCount"],
+            "armWorkspaceOverlapCount": geometry_summary["armWorkspaceOverlapCount"],
+            "transformOverrideCount": len(overrides),
+            "layoutComplete": not missing_geometry and not missing_transform and len(placements) == len(nodes),
+        },
+        "placements": placements,
+        "parts": parts,
+        "conflicts": conflicts,
+        "geometryDiagnostics": geometry_diagnostics,
+        "missingGeometry": missing_geometry,
+        "missingTransforms": missing_transform,
+        "usedTransforms": used_transforms,
+        "transformOverrides": deepcopy(overrides),
+        "limitations": [
+            "The chain joins canonical engine-validated fragments; the composed layout still requires engine replay.",
+            "Static footprint conflicts are ranking signals, not authoritative simulation results.",
+        ],
+    }
+
+
+def materialize_candidate_layout(
+    candidate: dict[str, Any],
+    fragment_index: dict[str, Any],
+    *,
+    transform_overrides: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    if candidate.get("candidateKind") == "linear-chain" or (candidate.get("nodes") and candidate.get("steps")):
+        return materialize_fragment_chain_layout(
+            candidate,
+            fragment_index,
+            transform_overrides=transform_overrides,
+        )
+    return materialize_assembly_layout(
+        candidate,
+        fragment_index,
+        transform_overrides=transform_overrides,
+    )

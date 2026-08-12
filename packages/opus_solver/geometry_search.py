@@ -7,9 +7,9 @@ from typing import Any
 
 from .candidate_search import validation_rank
 from .candidate_solution import build_candidate_solution, serialize_candidate_roundtrip
-from .layout import materialize_assembly_layout
+from .layout import materialize_candidate_layout
 from .manufacturing import ManufacturingPlan
-from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
+from .scheduling import materialize_candidate_schedule, synchronize_layout_programs
 from .solver import validate_generated_solution
 
 
@@ -96,6 +96,13 @@ def _motif_transform_choices(
 
 def transform_slots(candidate: dict[str, Any]) -> list[dict[str, Any]]:
     slots = []
+    if candidate.get("candidateKind") == "linear-chain" or (candidate.get("nodes") and candidate.get("steps")):
+        for step_index, edge in enumerate(candidate.get("steps", [])):
+            choices = _edge_transform_choices(edge)
+            if choices:
+                slots.append({"slot": f"chain-{step_index}:edge", "choices": choices})
+        return slots
+
     convergence = candidate.get("convergence") or {}
     motif_inputs = list(convergence.get("inputs", []))
     occurrence_counter: dict[tuple[str, str], int] = {}
@@ -193,7 +200,7 @@ def search_geometric_candidates(
     result_limit: int = 10,
 ) -> dict[str, Any]:
     """Search observed relative-transform alternatives using fixed timing."""
-    base_schedule = materialize_assembly_schedule(assembly)
+    base_schedule = materialize_candidate_schedule(assembly)
     results = []
     complete_count = 0
 
@@ -209,7 +216,7 @@ def search_geometric_candidates(
             "supportScore": round(float(variant.get("supportScore") or 0.0), 6),
         }
         try:
-            layout = materialize_assembly_layout(
+            layout = materialize_candidate_layout(
                 assembly,
                 fragment_index,
                 transform_overrides=variant.get("overrides", {}),

@@ -23,6 +23,8 @@ def test_engine_flow_combines_exact_prismatic_channels_into_one_capability():
     prism = next(node for node in graph["nodes"] if node["anchorPartId"] == "prisma")
     assert prism["role"] == "bonding"
     assert prism["observedRelations"] == {"triplex-bond-created:red+black+yellow": 1}
+    assert prism["representativeGeometry"]["anchorPartType"] == "bonder-prisma"
+    assert prism["summary"]["partCount"] >= 1
     assert {
         (edge["sourceAnchorPartId"], edge["targetAnchorPartId"], edge["relation"])
         for edge in graph["edges"]

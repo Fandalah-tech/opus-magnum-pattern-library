@@ -1,4 +1,8 @@
-from packages.opus_solver.scheduling import materialize_assembly_schedule, synchronize_layout_programs
+from packages.opus_solver.scheduling import (
+    materialize_assembly_schedule,
+    materialize_fragment_chain_schedule,
+    synchronize_layout_programs,
+)
 
 
 def _edge(delta):
@@ -99,3 +103,21 @@ def test_missing_timing_prevents_complete_schedule():
     schedule = materialize_assembly_schedule(candidate)
     assert schedule["summary"]["scheduleComplete"] is False
     assert schedule["summary"]["missingTimingCount"] == 1
+
+
+def test_passive_chain_fragments_use_zero_delta_baseline_for_repair():
+    candidate = {
+        "nodes": [
+            {"role": "feed", "canonicalMechanismHash": "f"},
+            {"role": "bonding", "canonicalMechanismHash": "b"},
+        ],
+        "steps": [{
+            "relativeTimings": {
+                "preferred": {"frame": "source-fragment-program-start", "programStartDelta": None}
+            }
+        }],
+    }
+    schedule = materialize_fragment_chain_schedule(candidate)
+    assert schedule["summary"]["scheduleComplete"] is True
+    assert schedule["summary"]["defaultedTimingCount"] == 1
+    assert schedule["instanceStartCycles"] == {"chain-0": 0, "chain-1": 0}

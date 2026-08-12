@@ -34,6 +34,8 @@ from .layout import (
     apply_forward_transform,
     apply_inverse_transform,
     materialize_assembly_layout,
+    materialize_candidate_layout,
+    materialize_fragment_chain_layout,
     transplant_geometry,
 )
 from .layout_diagnostics import analyze_layout_geometry, arm_workspace_cells, part_occupied_cells
@@ -65,7 +67,12 @@ from .portfolio_learning import (
 )
 from .repair_policy import recommend_repair_order
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
-from .scheduling import materialize_assembly_schedule, synchronize_layout_programs
+from .scheduling import (
+    materialize_assembly_schedule,
+    materialize_candidate_schedule,
+    materialize_fragment_chain_schedule,
+    synchronize_layout_programs,
+)
 from .solver import (
     GeneratedSolutionError,
     SolveResult,
@@ -107,6 +114,10 @@ __all__ = [
     "manufacturing_requirements",
     "materialize_assembly_layout",
     "materialize_assembly_schedule",
+    "materialize_candidate_layout",
+    "materialize_candidate_schedule",
+    "materialize_fragment_chain_layout",
+    "materialize_fragment_chain_schedule",
     "mechanism_compatibility",
     "merge_outcome_records",
     "learn_objective_blueprint_portfolio",

@@ -38,6 +38,13 @@ def test_arm_base_on_track_is_not_static_conflict():
     assert result["summary"]["exactStaticConflictCount"] == 0
 
 
+def test_track_cells_are_offsets_from_serialized_origin():
+    footprint = part_occupied_cells(
+        _part("track", "track", (7, -4), trackHexes=[[0, 0], [1, 0], [1, -1]])
+    )
+    assert footprint["cells"] == {(7, -4), (8, -4), (8, -5)}
+
+
 def test_arm_workspace_overlap_is_risk_not_static_invalidity():
     parts = [
         _part("a", "arm1", (0, 0), length=1),
