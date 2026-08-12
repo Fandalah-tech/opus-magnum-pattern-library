@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import re
 from typing import Any
 
 from packages.opus_analysis import build_program_timeline
@@ -107,7 +108,9 @@ def _flow_by_transformation(plan: ManufacturingPlan, transformation: str | None)
 def _puzzle_file_id(puzzle: dict[str, Any]) -> str:
     source_name = str((puzzle.get("source") or {}).get("name") or "")
     if source_name:
-        return Path(source_name).stem
+        # Downloaded duplicates commonly acquire a browser suffix such as
+        # " (1)". The game associates solutions with the original filename.
+        return re.sub(r" \(\d+\)$", "", Path(source_name).stem)
     return str(puzzle.get("id") or puzzle.get("name") or "generated-puzzle")
 
 

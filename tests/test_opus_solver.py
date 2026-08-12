@@ -57,6 +57,15 @@ def test_solver_generates_and_validates_six_products() -> None:
     assert result.solution["parts"][1]["position"] != [2, -2]
 
 
+def test_solver_removes_browser_duplicate_suffix_from_puzzle_file_id() -> None:
+    puzzle = _stabilized_water_puzzle()
+    puzzle["source"]["name"] = "P007 (1).puzzle"
+
+    result = solve_puzzle(puzzle)
+
+    assert result.solution["puzzleFile"] == "P007"
+
+
 def test_generated_solution_round_trips_through_binary_format() -> None:
     puzzle = _stabilized_water_puzzle()
     generated = solve_puzzle(puzzle).solution

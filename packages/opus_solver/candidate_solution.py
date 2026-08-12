@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from pathlib import Path
+import re
 from typing import Any
 
 from packages.opus_parser import parse_solution_bytes, write_solution_bytes
@@ -14,7 +15,7 @@ ARM_TYPES = {"arm1", "arm2", "arm3", "arm6", "piston", "baron"}
 def _puzzle_file_id(puzzle: dict[str, Any]) -> str:
     source_name = str((puzzle.get("source") or {}).get("name") or "")
     if source_name:
-        return Path(source_name).stem
+        return re.sub(r" \(\d+\)$", "", Path(source_name).stem)
     return str(puzzle.get("id") or puzzle.get("name") or "generated-puzzle")
 
 
