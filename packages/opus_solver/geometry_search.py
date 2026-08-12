@@ -5,7 +5,7 @@ import math
 from copy import deepcopy
 from typing import Any
 
-from .candidate_search import validation_rank
+from .candidate_search import invalid_candidate_rank, validation_rank
 from .candidate_solution import build_candidate_solution, serialize_candidate_roundtrip
 from .layout import materialize_candidate_layout
 from .manufacturing import ManufacturingPlan
@@ -298,6 +298,94 @@ def enumerate_transform_variants(
     return variants
 
 
+def _progress_sort_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    return (
+        tuple(item.get("rank", ())),
+        -int(item.get("staticConflictPenalty") or 0),
+        float(item.get("supportScore") or 0.0),
+    )
+
+
+def _survival_sort_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    validation = item.get("validation") or {}
+    return (
+        int(bool(validation.get("complete"))),
+        int(validation.get("totalDelivered") or 0),
+        -int(validation.get("totalDeficit") or 0),
+        int(not bool(validation.get("terminatedWithError"))),
+        int(validation.get("completedCycles") or 0),
+        -int(item.get("displacement") or 0),
+        -int(item.get("staticConflictPenalty") or 0),
+        float(item.get("supportScore") or 0.0),
+        int(validation.get("distinctRequiredChemistryEventCount") or 0),
+        int(validation.get("requiredChemistryEventCount") or 0),
+        int(validation.get("distinctChemistryEventCount") or 0),
+        int(validation.get("chemistryEventCount") or 0),
+        int(validation.get("manipulationEventCount") or 0),
+    )
+
+
+def select_search_portfolio(
+    records: list[dict[str, Any]],
+    *,
+    limit: int,
+) -> list[tuple[dict[str, Any], list[str]]]:
+    """Retain complementary chemical-progress and mechanical-survival fronts."""
+    limit = max(0, int(limit))
+    if not records or limit == 0:
+        return []
+    progress = sorted(records, key=_progress_sort_key, reverse=True)
+    survival = sorted(records, key=_survival_sort_key, reverse=True)
+    progress_quota = (limit + 1) // 2
+    survival_quota = limit // 2
+    selected: list[dict[str, Any]] = []
+    selected_ids: set[int] = set()
+    objectives: dict[int, set[str]] = {}
+
+    def add(record: dict[str, Any], objective: str) -> bool:
+        record_key = id(record)
+        objectives.setdefault(record_key, set()).add(objective)
+        if record_key in selected_ids:
+            return False
+        selected.append(record)
+        selected_ids.add(record_key)
+        return True
+
+    progress_added = 0
+    for record in progress:
+        if progress_added >= progress_quota:
+            break
+        if add(record, "progress"):
+            progress_added += 1
+
+    survival_added = 0
+    for record in survival:
+        if survival_added >= survival_quota:
+            break
+        if add(record, "survival"):
+            survival_added += 1
+
+    # When the two fronts overlap, fill the remaining capacity while retaining
+    # objective labels for any record seen by both lists.
+    for progress_record, survival_record in zip(progress, survival):
+        if len(selected) >= limit:
+            break
+        add(progress_record, "progress")
+        if len(selected) >= limit:
+            break
+        add(survival_record, "survival")
+    for objective, ordered in (("progress", progress), ("survival", survival)):
+        for record in ordered:
+            if len(selected) >= limit:
+                break
+            add(record, objective)
+
+    return [
+        (record, sorted(objectives[id(record)]))
+        for record in selected[:limit]
+    ]
+
+
 def search_geometric_candidates(
     puzzle: dict[str, Any],
     plan: ManufacturingPlan,
@@ -347,7 +435,7 @@ def search_geometric_candidates(
             record["staticConflictPenalty"] = exact_conflicts * 100 + approximate_conflicts
             if not layout_summary.get("layoutComplete"):
                 record["failureMode"] = "layout-incomplete"
-                record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
+                record["rank"] = invalid_candidate_rank(displacement=displacement)
                 results.append(record)
                 continue
 
@@ -356,7 +444,7 @@ def search_geometric_candidates(
             if not synchronized.get("summary", {}).get("scheduleComplete"):
                 record["failureMode"] = "program-conflict"
                 record["programConflicts"] = synchronized.get("programConflicts", [])
-                record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
+                record["rank"] = invalid_candidate_rank(displacement=displacement)
                 results.append(record)
                 continue
 
@@ -379,21 +467,21 @@ def search_geometric_candidates(
             record["failureMode"] = "generation-error"
             record["generationError"] = {"errorType": type(exc).__name__, "message": str(exc)}
             record["staticConflictPenalty"] = 10**9
-            record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
+            record["rank"] = invalid_candidate_rank(displacement=displacement)
         results.append(record)
 
     promoted_count = 0
+    promoted_objectives: dict[str, int] = {"progress": 0, "survival": 0}
     if preflight_cycles > 0:
         promotable = [record for record in results if record.get("_parsedSolution")]
-        promotable.sort(
-            key=lambda item: (
-                tuple(item.get("rank", ())),
-                -int(item.get("staticConflictPenalty") or 0),
-                float(item.get("supportScore") or 0.0),
-            ),
-            reverse=True,
+        promotion_portfolio = select_search_portfolio(
+            promotable,
+            limit=max(0, int(promotion_limit)),
         )
-        for record in promotable[:max(0, int(promotion_limit))]:
+        for record, objectives in promotion_portfolio:
+            record["promotionObjectives"] = objectives
+            for objective in objectives:
+                promoted_objectives[objective] += 1
             validation = validate_generated_solution(puzzle, record["_parsedSolution"])
             record["validation"] = validation
             record["validationScope"] = "full"
@@ -405,21 +493,23 @@ def search_geometric_candidates(
             complete_count += int(bool(validation.get("complete")))
             promoted_count += 1
 
-    results.sort(
-        key=lambda item: (
-            tuple(item.get("rank", ())),
-            -int(item.get("staticConflictPenalty") or 0),
-            float(item.get("supportScore") or 0.0),
-        ),
-        reverse=True,
+    selected_portfolio = select_search_portfolio(
+        results,
+        limit=max(0, int(result_limit)),
     )
-    selected = results[:max(0, int(result_limit))]
+    selected = []
+    returned_objectives: dict[str, int] = {"progress": 0, "survival": 0}
+    for item, objectives in selected_portfolio:
+        item["selectionObjectives"] = objectives
+        for objective in objectives:
+            returned_objectives[objective] += 1
+        selected.append(item)
     for item in results:
         item.pop("_parsedSolution", None)
     for item in selected:
         item.pop("rank", None)
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "summary": {
             "searchedVariantCount": len(results),
             "returnedVariantCount": len(selected),
@@ -431,6 +521,9 @@ def search_geometric_candidates(
             "preflightCycles": max(0, int(preflight_cycles)),
             "promotedVariantCount": promoted_count,
             "promotionLimit": max(0, int(promotion_limit)),
+            "selectionPolicy": "progress-survival-portfolio",
+            "promotedObjectiveCounts": promoted_objectives,
+            "returnedObjectiveCounts": returned_objectives,
         },
         "variants": selected,
     }

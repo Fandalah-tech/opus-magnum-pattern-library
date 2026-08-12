@@ -1,4 +1,8 @@
-from packages.opus_solver.geometry_search import enumerate_transform_variants, transform_slots
+from packages.opus_solver.geometry_search import (
+    enumerate_transform_variants,
+    select_search_portfolio,
+    transform_slots,
+)
 from packages.opus_solver.layout import materialize_assembly_layout
 
 
@@ -184,3 +188,38 @@ def test_synthetic_repair_adds_local_hex_translations_and_rotations():
     assert any(choice["translationOffset"] != [0, 0] for choice in synthetic)
     assert any(choice["rotationOffset"] != 0 for choice in synthetic)
     assert first_choices[0]["transform"] == T0
+
+
+def test_search_portfolio_retains_progress_and_survival_fronts():
+    active = {
+        "variantIndex": 1,
+        "rank": (0, 0, -6, 1, 1, 1, 1, 2, 0, 10, -1),
+        "validation": {
+            "complete": False,
+            "totalDeficit": 6,
+            "terminatedWithError": True,
+            "completedCycles": 10,
+            "distinctRequiredChemistryEventCount": 1,
+            "requiredChemistryEventCount": 1,
+        },
+        "displacement": 1,
+    }
+    stable = {
+        "variantIndex": 2,
+        "rank": (0, 0, -6, 0, 0, 0, 0, 0, 0, 1000, 0),
+        "validation": {
+            "complete": False,
+            "totalDeficit": 6,
+            "terminatedWithError": False,
+            "completedCycles": 1000,
+        },
+        "displacement": 0,
+    }
+
+    selected = select_search_portfolio([active, stable], limit=2)
+
+    assert {record["variantIndex"] for record, _ in selected} == {1, 2}
+    assert {objective for _, objectives in selected for objective in objectives} == {
+        "progress",
+        "survival",
+    }

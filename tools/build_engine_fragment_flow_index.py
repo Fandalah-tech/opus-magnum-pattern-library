@@ -5,6 +5,7 @@ import json
 import sys
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -214,11 +215,16 @@ def build_engine_fragment_flow_index(
         solution_sha = graph.get("source", {}).get("solutionSha256")
         for node in graph.get("nodes", []):
             raw_fragment_count += 1
+            geometry = deepcopy(node.get("representativeGeometry"))
+            if geometry:
+                geometry["sourceSolutionPath"] = result["solutionPath"]
+                geometry["sourceSolutionSha256"] = solution_sha
             fragment_groups[(
                 str(node.get("role") or ""),
                 str(node.get("canonicalMechanismHash") or ""),
             )].append({
                 **node,
+                "representativeGeometry": geometry,
                 "puzzleId": puzzle_id,
                 "solutionPath": result["solutionPath"],
                 "solutionSha256": solution_sha,
@@ -301,19 +307,23 @@ def build_engine_fragment_flow_index(
     fragments = []
     for (role, mechanism_hash), records in sorted(fragment_groups.items()):
         representative = min(records, key=_geometry_record_key)
-        solution_geometry_records = []
-        by_solution: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
-        for record in records:
-            by_solution[str(record.get("solutionPath") or "")].append(record)
-        for solution_path, solution_records in sorted(by_solution.items()):
-            solution_representative = min(solution_records, key=_geometry_record_key)
-            solution_geometry_records.append({
-                "puzzleId": solution_representative.get("puzzleId"),
-                "solutionPath": solution_path,
-                "solutionSha256": solution_representative.get("solutionSha256"),
-                "evidenceLevel": solution_representative.get("evidenceLevel"),
-                "representativeGeometry": solution_representative.get("representativeGeometry"),
-            })
+        solution_geometry_records = [
+            {
+                "puzzleId": record.get("puzzleId"),
+                "solutionPath": record.get("solutionPath"),
+                "solutionSha256": record.get("solutionSha256"),
+                "sourceAnchorPartId": record.get("anchorPartId"),
+                "evidenceLevel": record.get("evidenceLevel"),
+                "representativeGeometry": record.get("representativeGeometry"),
+            }
+            for record in sorted(
+                records,
+                key=lambda item: (
+                    str(item.get("solutionPath") or ""),
+                    str(item.get("anchorPartId") or ""),
+                ),
+            )
+        ]
         puzzles = sorted({str(record["puzzleId"]) for record in records})
         solutions = sorted({str(record["solutionPath"]) for record in records})
         structural_hashes = sorted({
@@ -415,7 +425,7 @@ def build_engine_fragment_flow_index(
         })
 
     return {
-        "schemaVersion": "0.8.0",
+        "schemaVersion": "0.10.0",
         "analysis": "engine-validated-fragment-flow-index",
         "sourceAuditSchemaVersion": audit_report.get("schemaVersion"),
         "sourceFilter": source_filter,

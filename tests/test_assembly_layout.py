@@ -130,3 +130,175 @@ def test_coherent_assembly_uses_geometry_from_its_source_solution():
     assert layout["summary"]["sourceSpecificGeometry"] is True
     assert layout["summary"]["materializedPartCount"] == 2
     assert {part["type"] for part in layout["parts"]} == {"bonder", "arm1"}
+
+
+def test_shared_source_components_move_without_being_duplicated():
+    bonding_geometry = {
+        **_geometry("bonder"),
+        "sourceSolutionPath": "coherent.solution",
+        "sourceAnchorPartId": "bond-source",
+        "parts": [
+            {
+                "sourcePartId": "bond-source",
+                "type": "bonder",
+                "position": [0, 0],
+                "rotation": 0,
+                "length": 1,
+                "which": 0,
+                "program": [],
+            },
+            {
+                "sourcePartId": "shared-arm",
+                "type": "arm1",
+                "position": [-1, 0],
+                "rotation": 0,
+                "length": 1,
+                "which": 0,
+                "program": [{"cycle": 0, "instruction": "grab"}],
+            },
+        ],
+    }
+    feed_geometry = {
+        **_geometry("input"),
+        "sourceSolutionPath": "coherent.solution",
+        "sourceAnchorPartId": "input-source",
+        "parts": [
+            {
+                "sourcePartId": "input-source",
+                "type": "input",
+                "position": [0, 0],
+                "rotation": 0,
+                "length": 1,
+                "which": 0,
+                "program": [],
+            },
+            {
+                "sourcePartId": "shared-arm",
+                "type": "arm1",
+                "position": [1, 0],
+                "rotation": 0,
+                "length": 1,
+                "which": 0,
+                "program": [{"cycle": 0, "instruction": "grab"}],
+            },
+        ],
+    }
+    fragment_index = {
+        "fragments": [
+            {
+                **_fragment("bonding", "bond", "bonder"),
+                "solutionGeometries": [{
+                    "solutionPath": "coherent.solution",
+                    "sourceAnchorPartId": "bond-source",
+                    "representativeGeometry": bonding_geometry,
+                }],
+            },
+            {
+                **_fragment("feed", "feed", "input"),
+                "solutionGeometries": [{
+                    "solutionPath": "coherent.solution",
+                    "sourceAnchorPartId": "input-source",
+                    "representativeGeometry": feed_geometry,
+                }],
+            },
+        ],
+    }
+    candidate = {
+        "coherentSourceSolution": "coherent.solution",
+        "convergence": {
+            "targetRole": "bonding",
+            "targetMechanismHash": "bond",
+            "inputs": [{
+                "sourceRole": "feed",
+                "sourceMechanismHash": "feed",
+                "relations": ["bond-created"],
+            }],
+            "samples": [{
+                "targetAnchorPartId": "bond-source",
+                "inputs": [{
+                    "sourceRole": "feed",
+                    "sourceMechanismHash": "feed",
+                    "sourceAnchorPartId": "input-source",
+                    "relativeTransforms": [{"delta": [2, 0], "rotationDelta": 0}],
+                }],
+            }],
+        },
+        "branches": [[]],
+        "tail": [],
+    }
+
+    baseline = materialize_assembly_layout(candidate, fragment_index)
+    moved = materialize_assembly_layout(
+        candidate,
+        fragment_index,
+        transform_overrides={
+            "branch-0:convergence-input": {"delta": [3, 0], "rotationDelta": 0},
+        },
+    )
+
+    assert baseline["summary"]["rawPartProposalCount"] == 4
+    assert baseline["summary"]["materializedPartCount"] == 3
+    assert baseline["summary"]["sharedSourceIdentityCount"] == 1
+    assert baseline["summary"]["resolvedSourcePoseCount"] == 0
+    assert moved["summary"]["materializedPartCount"] == 3
+    assert moved["summary"]["resolvedSourcePoseCount"] == 1
+    moved_by_source = {part["sourcePartId"]: part for part in moved["parts"]}
+    assert moved_by_source["input-source"]["position"] == [-3, 0]
+    assert moved_by_source["shared-arm"]["position"] == [-2, 0]
+
+
+def test_equal_local_part_ids_from_different_donors_are_not_merged():
+    bonding = _fragment("bonding", "bond", "bonder")
+    bonding["representativeGeometry"].update({
+        "sourceSolutionPath": "donor-a.solution",
+        "parts": [{
+            "sourcePartId": "part-0",
+            "type": "bonder",
+            "position": [0, 0],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "program": [],
+        }],
+    })
+    feed = _fragment("feed", "feed", "input")
+    feed["representativeGeometry"].update({
+        "sourceSolutionPath": "donor-b.solution",
+        "parts": [{
+            "sourcePartId": "part-0",
+            "type": "input",
+            "position": [0, 0],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "program": [],
+        }],
+    })
+    candidate = {
+        "convergence": {
+            "targetRole": "bonding",
+            "targetMechanismHash": "bond",
+            "inputs": [{"sourceRole": "feed", "sourceMechanismHash": "feed"}],
+            "samples": [{
+                "inputs": [{
+                    "sourceRole": "feed",
+                    "sourceMechanismHash": "feed",
+                    "relativeTransforms": [{"delta": [2, 0], "rotationDelta": 0}],
+                }],
+            }],
+        },
+        "branches": [[]],
+        "tail": [],
+    }
+
+    layout = materialize_assembly_layout(
+        candidate,
+        {"fragments": [bonding, feed]},
+    )
+
+    assert layout["summary"]["materializedPartCount"] == 2
+    assert layout["summary"]["sourceIdentityPartCount"] == 2
+    assert {part["sourceComponentId"] for part in layout["parts"]} == {
+        "donor-a.solution::part-0",
+        "donor-b.solution::part-0",
+    }

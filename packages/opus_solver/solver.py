@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 import re
@@ -14,6 +15,34 @@ from .capabilities import unavailable_solution_parts
 from .manufacturing import AtomFlow, ManufacturingPlan, build_manufacturing_plan
 
 STANDARD_PRODUCT_TARGET = 6
+
+CHEMISTRY_PROGRESS_EVENTS = {
+    "atom-bonder-displaced",
+    "atom-calcified",
+    "atom-divided",
+    "atom-duplicated",
+    "atom-projected",
+    "atom-proliferated",
+    "atom-purified",
+    "atom-rejected",
+    "atoms-animated",
+    "atoms-unified",
+    "bond-created",
+    "bond-removed",
+    "floating-bond-created",
+    "floating-bond-settled",
+    "molecule-consumed",
+    "product-delivered",
+    "repeating-product-completed",
+}
+
+MANIPULATION_PROGRESS_EVENTS = {
+    "atom-grabbed",
+    "atoms-dropped",
+    "input-spawned",
+    "molecule-entered-conduit",
+    "molecule-exited-conduit",
+}
 
 
 class UnsupportedPuzzleError(ValueError):
@@ -319,6 +348,65 @@ def _first_simulation_error(replay: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
+def _required_chemistry_events(puzzle: dict[str, Any]) -> set[str]:
+    events: set[str] = set()
+    plan = build_manufacturing_plan(puzzle)
+    for operation in plan.operations:
+        kind = str(operation.kind or "")
+        if kind in {"unbond", "extract"}:
+            events.add("bond-removed")
+        elif kind == "duplicate":
+            events.add("atom-duplicated")
+        elif kind == "bond":
+            events.update({
+                "bond-created",
+                "floating-bond-created",
+                "floating-bond-settled",
+            })
+        elif kind == "calcify" or (
+            kind == "transform" and str(operation.glyph or "") == "glyph-calcification"
+        ):
+            events.add("atom-calcified")
+        elif kind == "animate":
+            events.add("atoms-animated")
+        elif kind == "project":
+            events.add("atom-projected")
+        elif kind == "purify":
+            events.add("atom-purified")
+        elif kind == "unify":
+            events.add("atoms-unified")
+        elif kind == "deliver":
+            events.update({"product-delivered", "repeating-product-completed"})
+    return events
+
+
+def _event_progress(
+    replay: dict[str, Any],
+    *,
+    required_event_kinds: set[str],
+) -> dict[str, Any]:
+    counts = Counter(
+        str(event.get("kind") or "unknown")
+        for frame in replay.get("frames", [])
+        for event in frame.get("events", [])
+    )
+    chemistry_kinds = sorted(CHEMISTRY_PROGRESS_EVENTS.intersection(counts))
+    observed_required = sorted(required_event_kinds.intersection(counts))
+    return {
+        "eventCounts": dict(sorted(counts.items())),
+        "requiredChemistryEventKinds": sorted(required_event_kinds),
+        "observedRequiredChemistryEventKinds": observed_required,
+        "distinctRequiredChemistryEventCount": len(observed_required),
+        "requiredChemistryEventCount": sum(counts[kind] for kind in observed_required),
+        "distinctChemistryEventCount": len(chemistry_kinds),
+        "chemistryEventCount": sum(counts[kind] for kind in chemistry_kinds),
+        "chemistryEventKinds": chemistry_kinds,
+        "manipulationEventCount": sum(
+            counts[kind] for kind in MANIPULATION_PROGRESS_EVENTS
+        ),
+    }
+
+
 def validate_generated_solution(
     puzzle: dict[str, Any],
     solution: dict[str, Any],
@@ -326,6 +414,7 @@ def validate_generated_solution(
     target: int = STANDARD_PRODUCT_TARGET,
     max_cycles: int | None = None,
 ) -> dict[str, Any]:
+    required_event_kinds = _required_chemistry_events(puzzle)
     unavailable_parts = unavailable_solution_parts(puzzle, solution)
     if unavailable_parts:
         standard_outputs = [
@@ -353,6 +442,15 @@ def validate_generated_solution(
             "blockedInputsAtStart": [],
             "initialInputStatus": [],
             "unavailableParts": unavailable_parts,
+            "eventCounts": {},
+            "requiredChemistryEventKinds": sorted(required_event_kinds),
+            "observedRequiredChemistryEventKinds": [],
+            "distinctRequiredChemistryEventCount": 0,
+            "requiredChemistryEventCount": 0,
+            "distinctChemistryEventCount": 0,
+            "chemistryEventCount": 0,
+            "chemistryEventKinds": [],
+            "manipulationEventCount": 0,
         }
     base_timeline = build_program_timeline(solution)
     period = max(1, int(base_timeline.get("summary", {}).get("globalPeriod") or 1))
@@ -385,6 +483,10 @@ def validate_generated_solution(
     blocked_inputs = [item["inputId"] for item in input_status if not item["spawnedAtStart"]]
 
     replay = simulator.run_timeline(timeline)
+    event_progress = _event_progress(
+        replay,
+        required_event_kinds=required_event_kinds,
+    )
     standard_outputs = [
         (str(part.get("id")), int(part.get("which") or 0))
         for part in solution.get("parts", [])
@@ -443,6 +545,7 @@ def validate_generated_solution(
         "initialSpawnedInputCount": sum(item["spawnedAtStart"] for item in input_status),
         "blockedInputsAtStart": blocked_inputs,
         "initialInputStatus": input_status,
+        **event_progress,
     }
 
 

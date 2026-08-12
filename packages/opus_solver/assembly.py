@@ -31,6 +31,8 @@ def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, An
         return None
     selected = max(variants, key=lambda item: int(item.get("observationCount") or 0))
     result = dict(edge)
+    result["sourceAnchorPartId"] = selected.get("sourceAnchorPartId")
+    result["targetAnchorPartId"] = selected.get("targetAnchorPartId")
     result["repairRelativeTransforms"] = edge.get("relativeTransforms")
     result["repairRelativeTimings"] = edge.get("relativeTimings")
     result["relativeTransform"] = selected.get("relativeTransform")

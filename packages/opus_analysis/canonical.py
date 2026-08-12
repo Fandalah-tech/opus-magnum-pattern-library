@@ -108,6 +108,94 @@ def canonical_solution_payload(solution: dict[str, Any], *, normalize_time: bool
     return payloads.get(best, {"puzzleFile": "", "parts": []})
 
 
+def canonical_solution_payload_with_source_ids(
+    solution: dict[str, Any],
+    *,
+    normalize_time: bool = False,
+) -> dict[str, Any]:
+    """Return the canonical payload while retaining each original part ID.
+
+    Source IDs are attached only after choosing the same identity-free
+    canonical representation used by :func:`canonical_solution_payload`, so
+    they never affect structural or mechanism hashes.
+    """
+    target = canonical_solution_payload(solution, normalize_time=normalize_time)
+    parts = list(solution.get("parts", []))
+    instruction_cycles = [
+        int(item.get("cycle") or 0)
+        for part in parts
+        for item in part.get("program", [])
+    ]
+    global_min_cycle = min(instruction_cycles) if instruction_cycles else 0
+
+    for steps in range(6):
+        rotated_parts: list[dict[str, Any]] = []
+        occupied: list[tuple[int, int]] = []
+        for part in parts:
+            position = tuple(int(value) for value in (part.get("position") or (0, 0)))
+            rotated_position = rotate_hex(position, steps)
+            occupied.append(rotated_position)
+            track_hexes = [
+                rotate_hex(tuple(int(value) for value in cell), steps)
+                for cell in part.get("trackHexes", [])
+            ]
+            pipe_hexes = [tuple(int(value) for value in cell) for cell in part.get("pipeHexes", [])]
+            occupied.extend(
+                (rotated_position[0] + cell[0], rotated_position[1] + cell[1])
+                for cell in track_hexes
+            )
+            rotated_part_rotation = (int(part.get("rotation") or 0) + steps) % 6
+            occupied.extend(
+                (
+                    rotated_position[0] + rotate_hex(cell, rotated_part_rotation)[0],
+                    rotated_position[1] + rotate_hex(cell, rotated_part_rotation)[1],
+                )
+                for cell in pipe_hexes
+            )
+            rotated_parts.append({
+                "sourcePartId": str(part.get("id") or ""),
+                "type": str(part.get("type") or ""),
+                "enabled": bool(part.get("enabled", True)),
+                "position": rotated_position,
+                "length": int(part.get("length") or 0),
+                "rotation": rotated_part_rotation,
+                "which": int(part.get("which") or 0),
+                "program": _program(part, normalize_time=normalize_time, global_min_cycle=global_min_cycle),
+                "trackHexes": track_hexes,
+                "pipeId": int(part.get("pipeId") or 0) if part.get("type") == "pipe" else None,
+                "pipeHexes": pipe_hexes,
+            })
+
+        anchor = min(occupied) if occupied else (0, 0)
+        normalized_parts = []
+        for part in rotated_parts:
+            q, r = part["position"]
+            normalized = dict(part)
+            normalized["position"] = [q - anchor[0], r - anchor[1]]
+            normalized["trackHexes"] = [list(cell) for cell in part["trackHexes"]]
+            normalized["pipeHexes"] = [list(cell) for cell in part["pipeHexes"]]
+            normalized_parts.append(normalized)
+
+        normalized_parts.sort(key=lambda item: (
+            json.dumps(
+                {key: value for key, value in item.items() if key != "sourcePartId"},
+                sort_keys=True,
+                separators=(",", ":"),
+            ),
+            item["sourcePartId"],
+        ))
+        identity_free = [
+            {key: value for key, value in item.items() if key != "sourcePartId"}
+            for item in normalized_parts
+        ]
+        if identity_free == target.get("parts", []):
+            return {
+                "puzzleFile": target.get("puzzleFile", ""),
+                "parts": normalized_parts,
+            }
+    raise ValueError("Could not align source part identities with canonical payload")
+
+
 def canonical_solution_hash(solution: dict[str, Any], *, normalize_time: bool = False) -> str:
     payload = canonical_solution_payload(solution, normalize_time=normalize_time)
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")

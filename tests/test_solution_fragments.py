@@ -45,6 +45,10 @@ def test_fragment_collects_reaching_arm():
     assert bonding["memberPartIds"] == ["arm", "bond"]
     assert bonding["summary"]["armCount"] == 1
     assert bonding["summary"]["instructionCount"] == 1
+    assert bonding["geometry"]["sourceAnchorPartId"] == "bond"
+    assert {
+        part["sourcePartId"] for part in bonding["geometry"]["parts"]
+    } == {"arm", "bond"}
     assert output["memberPartIds"] == ["far-output"]
 
 

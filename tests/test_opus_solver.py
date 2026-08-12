@@ -144,6 +144,9 @@ def test_generated_solution_round_trips_through_binary_format() -> None:
     assert parsed["name"] == generated["name"]
     assert validation["complete"] is True
     assert validation["deliveredProducts"] == {"part-0": 6}
+    assert validation["eventCounts"]["product-delivered"] == 6
+    assert validation["chemistryEventCount"] >= 6
+    assert "product-delivered" in validation["observedRequiredChemistryEventKinds"]
 
 
 def test_generated_validation_can_be_bounded_for_search_preflight() -> None:

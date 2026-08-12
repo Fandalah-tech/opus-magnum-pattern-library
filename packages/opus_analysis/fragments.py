@@ -3,7 +3,10 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Any
 
-from .canonical import canonical_solution_hash, canonical_solution_payload
+from .canonical import (
+    canonical_solution_hash,
+    canonical_solution_payload_with_source_ids,
+)
 from .graph import build_solution_graph
 
 ARM_TYPES = {"arm1", "arm2", "arm3", "arm6", "piston", "baron"}
@@ -63,13 +66,14 @@ def _fragment_summary(parts: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _geometry(payload: dict[str, Any], anchor_type: str) -> dict[str, Any]:
+def _geometry(payload: dict[str, Any], anchor_type: str, anchor_part_id: str) -> dict[str, Any]:
     parts = list(payload.get("parts", []))
     positions = [tuple(part.get("position") or (0, 0)) for part in parts]
     return {
         "coordinateSystem": "canonical-axial-relative",
         "timeNormalization": "global-min-instruction-cycle",
         "anchorPartType": anchor_type,
+        "sourceAnchorPartId": anchor_part_id,
         "partCount": len(parts),
         "bounds": {
             "minQ": min((int(value[0]) for value in positions), default=0),
@@ -150,7 +154,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
         selected = [part for part in parts if str(part.get("id")) in member_ids]
         subsolution = {"puzzleFile": "", "parts": selected}
         structural_hash = canonical_solution_hash(subsolution, normalize_time=False)
-        mechanism_payload = canonical_solution_payload(subsolution, normalize_time=True)
+        mechanism_payload = canonical_solution_payload_with_source_ids(subsolution, normalize_time=True)
         mechanism_hash = canonical_solution_hash(subsolution, normalize_time=True)
         dedupe_key = (anchor_id, mechanism_hash)
         if dedupe_key in seen:
@@ -165,7 +169,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
             "canonicalStructuralHash": structural_hash,
             "canonicalMechanismHash": mechanism_hash,
             "summary": _fragment_summary(selected),
-            "geometry": _geometry(mechanism_payload, anchor_type),
+            "geometry": _geometry(mechanism_payload, anchor_type, anchor_id),
         })
 
     return sorted(
