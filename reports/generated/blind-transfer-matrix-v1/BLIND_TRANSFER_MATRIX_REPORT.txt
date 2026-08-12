@@ -3,7 +3,7 @@ BLIND TRANSFER REGRESSION MATRIX
 
 Donor puzzle: infinite-throughput
 Puzzle files scanned: 174
-Puzzle parse failures: 2
+Puzzle parse failures: 0
 Chemistry-compatible targets: 3
 Targets solved by OMSim: 3
 Targets rejected by OMSim: 0

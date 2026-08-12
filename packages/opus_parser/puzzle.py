@@ -10,7 +10,12 @@ ELEMENTS = {
     7: "gold", 8: "silver", 9: "copper", 10: "iron", 11: "tin", 12: "lead",
     13: "vitae", 14: "mors", 15: "repeat", 16: "quintessence",
 }
-BONDS = {1: "normal", 14: "triplex"}
+TRIPLEX_BOND_CHANNELS = (
+    (0x02, "red"),
+    (0x04, "black"),
+    (0x08, "yellow"),
+)
+KNOWN_BOND_MASK = 0x0F
 GLYPH_FLAGS = {
     0x0001: ["bonder"], 0x0002: ["unbonder"], 0x0004: ["multibonder"],
     0x0008: ["triplex-bonder"], 0x0010: ["calcification"],
@@ -18,6 +23,29 @@ GLYPH_FLAGS = {
     0x0100: ["animismus"], 0x0200: ["disposal"],
     0x0400: ["unification", "dispersion"],
 }
+
+
+def _bond_descriptor(bond_code: int, kind: str, index: int) -> dict:
+    unknown_bits = bond_code & ~KNOWN_BOND_MASK
+    if bond_code == 0 or unknown_bits:
+        raise ParseError(f"Unknown bond code {bond_code} in {kind} {index}")
+
+    has_normal_bond = bool(bond_code & 0x01)
+    triplex_channels = [
+        name for mask, name in TRIPLEX_BOND_CHANNELS if bond_code & mask
+    ]
+    if has_normal_bond and triplex_channels:
+        raise ParseError(
+            f"Unsupported mixed normal/triplex bond code {bond_code} in {kind} {index}"
+        )
+
+    descriptor = {
+        "type": "normal" if has_normal_bond else "triplex",
+        "rawCode": bond_code,
+    }
+    if triplex_channels:
+        descriptor["triplexChannels"] = triplex_channels
+    return descriptor
 
 
 def _molecule(reader: BinaryReader, kind: str, index: int) -> dict:
@@ -42,13 +70,12 @@ def _molecule(reader: BinaryReader, kind: str, index: int) -> dict:
         raise ParseError(f"Invalid bond count {bond_count} for {kind} {index}")
     for bond_index in range(bond_count):
         bond_code = reader.byte()
-        if bond_code not in BONDS:
-            raise ParseError(f"Unknown bond code {bond_code} in {kind} {index}")
+        descriptor = _bond_descriptor(bond_code, kind, index)
         start = (reader.sbyte(), reader.sbyte())
         end = (reader.sbyte(), reader.sbyte())
         if start not in positions or end not in positions:
             raise ParseError(f"Bond {bond_index} references a missing atom in {kind} {index}")
-        bonds.append({"type": BONDS[bond_code], "from": list(start), "to": list(end)})
+        bonds.append({**descriptor, "from": list(start), "to": list(end)})
 
     return {"id": f"{kind}-{index}", "atoms": atoms, "bonds": bonds}
 
@@ -87,7 +114,7 @@ def parse_puzzle_bytes(data: bytes, *, source_name: str | None = None) -> dict:
     production = reader.boolean()
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.1.1",
         "format": {"kind": "puzzle", "version": version},
         "source": {
             "name": source_name,
