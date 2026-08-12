@@ -1,3 +1,10 @@
 .datasets/
+reports/generated/om2021-w1/**/learned-objective-blueprints.json
+reports/generated/om2021-w1/**/portfolio-learning-report.json
+reports/generated/om2021-w1/**/PORTFOLIO_LEARNING_REPORT.txt
+reports/generated/om2021-w1/**/solved/candidates/
+reports/generated/om2021-w1/**/solved/final/
+reports/generated/om2021-w1/**/solved/objective-portfolio-report.json
+reports/generated/om2021-w1/**/solved/OBJECTIVE_PORTFOLIO_REPORT.txt
 __pycache__/
 *.pyc

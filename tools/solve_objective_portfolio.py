@@ -17,8 +17,10 @@ from packages.opus_parser import parse_puzzle, parse_solution, write_solution
 from packages.opus_parser.solution_writer import write_solution_bytes
 from packages.opus_solver import (
     OBJECTIVES,
+    build_manufacturing_plan,
     generate_objective_candidates,
     objective_key,
+    objective_portfolio_metadata,
     select_objective_winners,
 )
 from tools.omsim_adapter.validate import run_omsim
@@ -91,9 +93,11 @@ def _text_report(report: dict[str, Any]) -> str:
     lines.extend(("", "Baseline improvements", "---------------------"))
     for objective in ("cost", "area", "cycles", "rate", "instructions"):
         item = report["improvements"][objective]
+        delta = item["delta"]
+        delta_text = f"{delta:+d}" if isinstance(delta, int) else "n/a"
         lines.append(
             f"{objective:12} {item['baseline']} -> {item['winner']} "
-            f"({item['delta']:+d})"
+            f"({delta_text})"
         )
     lines.extend((
         "",
@@ -112,15 +116,26 @@ def solve_objective_portfolio(
     *,
     omsim: Path,
     timeout: int = 60,
+    blueprint_paths: tuple[Path, ...] = (),
 ) -> dict[str, Any]:
     puzzle = parse_puzzle(puzzle_path)
+    plan = build_manufacturing_plan(puzzle)
+    portfolio = objective_portfolio_metadata(
+        puzzle,
+        strategy=plan.strategy,
+        blueprint_paths=blueprint_paths,
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
     candidate_dir = output_dir / "candidates"
     final_dir = output_dir / "final"
     candidate_dir.mkdir(parents=True, exist_ok=True)
     final_dir.mkdir(parents=True, exist_ok=True)
 
-    candidates = generate_objective_candidates(puzzle)
+    candidates = generate_objective_candidates(
+        puzzle,
+        plan,
+        blueprint_paths=blueprint_paths,
+    )
     records: list[dict[str, Any]] = []
     candidate_by_id = {candidate.architecture_id: candidate for candidate in candidates}
 
@@ -171,8 +186,13 @@ def solve_objective_portfolio(
             "solutionSha256": _fingerprint(destination),
         }
 
+    baseline_architecture_id = str(portfolio.get("baselineArchitectureId") or "")
     baseline = next(
-        (record for record in records if record["architectureId"] == "balanced-sum4-v1"),
+        (
+            record
+            for record in records
+            if record["architectureId"] == baseline_architecture_id
+        ),
         None,
     )
     improvements: dict[str, dict[str, Any]] = {}
@@ -204,6 +224,8 @@ def solve_objective_portfolio(
         "puzzlePath": str(puzzle_path),
         "puzzleName": puzzle.get("name"),
         "strategy": "objective-architecture-portfolio-v1",
+        "manufacturingStrategy": plan.strategy,
+        "baselineArchitectureId": baseline_architecture_id,
         "summary": {
             "candidateCount": len(records),
             "oracleValidCandidateCount": len(valid_records),
@@ -232,6 +254,13 @@ def main() -> int:
     parser.add_argument("puzzle", type=Path)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--omsim", type=Path)
+    parser.add_argument(
+        "--blueprints",
+        type=Path,
+        action="append",
+        default=[],
+        help="Additional learned objective blueprint registry (repeatable)",
+    )
     parser.add_argument("--timeout", type=int, default=60)
     args = parser.parse_args()
     binary = args.omsim or (Path(found) if (found := shutil.which("omsim")) else None)
@@ -242,6 +271,7 @@ def main() -> int:
         args.output_dir,
         omsim=binary,
         timeout=args.timeout,
+        blueprint_paths=tuple(args.blueprints),
     )
     print(json.dumps(report, indent=2, ensure_ascii=False))
     return 0 if report["readyForGameTest"] else 2

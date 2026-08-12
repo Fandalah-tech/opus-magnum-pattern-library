@@ -33,6 +33,51 @@ def _stabilized_water_puzzle() -> dict:
     }
 
 
+def _triplex_extension_puzzle() -> dict:
+    return {
+        "schemaVersion": "0.1.0",
+        "source": {"name": "OM2021_W1.puzzle"},
+        "name": "IMPROVED EXPLOSIVE PHIAL",
+        "availableParts": {
+            "arms": ["arm1", "arm2", "arm3", "arm6", "piston"],
+            "glyphs": [
+                "equilibrium",
+                "bonder",
+                "unbonder",
+                "triplex-bonder",
+                "calcification",
+                "duplication",
+            ],
+        },
+        "reagents": [{
+            "atoms": [
+                {"id": "a0", "element": "fire", "position": [-1, 0]},
+                {"id": "a1", "element": "fire", "position": [0, 0]},
+                {"id": "a2", "element": "salt", "position": [1, 0]},
+            ],
+            "bonds": [
+                {"type": "triplex", "from": [-1, 0], "to": [0, 0]},
+                {"type": "normal", "from": [0, 0], "to": [1, 0]},
+            ],
+        }],
+        "products": [{
+            "atoms": [
+                {"id": "a0", "element": "fire", "position": [-2, 0]},
+                {"id": "a1", "element": "fire", "position": [-1, 0]},
+                {"id": "a2", "element": "fire", "position": [0, 0]},
+                {"id": "a3", "element": "salt", "position": [1, 0]},
+            ],
+            "bonds": [
+                {"type": "triplex", "from": [-2, 0], "to": [-1, 0]},
+                {"type": "triplex", "from": [-1, 0], "to": [0, 0]},
+                {"type": "triplex", "from": [0, 0], "to": [1, 0]},
+            ],
+        }],
+        "outputScale": 1,
+        "production": False,
+    }
+
+
 def test_manufacturing_plan_identifies_calcification_and_bonding() -> None:
     plan = build_manufacturing_plan(_stabilized_water_puzzle())
 
@@ -44,6 +89,21 @@ def test_manufacturing_plan_identifies_calcification_and_bonding() -> None:
     ]
     assert [operation.kind for operation in plan.operations][-2:] == ["bond", "deliver"]
     assert plan.required_glyphs == ("bonder", "glyph-calcification")
+
+
+def test_manufacturing_plan_recognizes_triplex_extension_by_chemistry() -> None:
+    plan = build_manufacturing_plan(_triplex_extension_puzzle())
+
+    assert plan.supported is True
+    assert plan.strategy == "triplex-extension-v1"
+    assert [operation.kind for operation in plan.operations] == [
+        "source",
+        "unbond",
+        "duplicate",
+        "bond",
+        "deliver",
+    ]
+    assert plan.required_glyphs == ("unbonder", "triplex-bonder", "duplication")
 
 
 def test_solver_generates_and_validates_six_products() -> None:

@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
+from packages.opus_analysis import puzzle_feature_fingerprint
 from packages.opus_engine.builder import rotate_hex
 from packages.opus_parser.solution_writer import write_solution_bytes
 
@@ -31,7 +32,9 @@ OBJECTIVES = (
     "sum4",
 )
 
-_BLUEPRINT_PATH = Path(__file__).with_name("data") / "sos_objective_blueprints.json"
+_BUILTIN_BLUEPRINT_PATHS = (
+    Path(__file__).with_name("data") / "sos_objective_blueprints.json",
+)
 
 
 @dataclass(slots=True)
@@ -63,15 +66,41 @@ class ObjectiveCandidate:
         return result
 
 
-@lru_cache(maxsize=1)
-def _objective_blueprints() -> tuple[dict[str, Any], ...]:
-    payload = json.loads(_BLUEPRINT_PATH.read_text(encoding="utf-8"))
-    if payload.get("puzzleStrategy") != "corpus-derived-fragment-extraction-v1":
-        raise ValueError(f"Unexpected objective blueprint strategy in {_BLUEPRINT_PATH}")
+def _read_portfolio(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
     blueprints = tuple(payload.get("blueprints") or ())
-    if not blueprints:
-        raise ValueError(f"No objective blueprints found in {_BLUEPRINT_PATH}")
-    return blueprints
+    if not payload.get("puzzleStrategy") or not blueprints:
+        raise ValueError(f"Invalid objective blueprint portfolio in {path}")
+    return {**payload, "blueprints": blueprints, "path": str(path)}
+
+
+@lru_cache(maxsize=1)
+def _builtin_portfolios() -> tuple[dict[str, Any], ...]:
+    return tuple(_read_portfolio(path) for path in _BUILTIN_BLUEPRINT_PATHS)
+
+
+def objective_portfolio_metadata(
+    puzzle: dict[str, Any],
+    *,
+    strategy: str,
+    blueprint_paths: Iterable[str | Path] = (),
+) -> dict[str, Any]:
+    fingerprint = puzzle_feature_fingerprint(puzzle)
+    portfolios = list(_builtin_portfolios())
+    portfolios.extend(_read_portfolio(Path(path)) for path in blueprint_paths)
+    matches = [
+        payload
+        for payload in portfolios
+        if payload.get("puzzleStrategy") == strategy
+        and payload.get("puzzleFeatureFingerprint") == fingerprint
+    ]
+    if len(matches) != 1:
+        locations = [str(item.get("path") or "<memory>") for item in matches]
+        raise UnsupportedPuzzleError(
+            f"Expected one objective portfolio for strategy {strategy!r} and "
+            f"puzzle fingerprint {fingerprint}; found {len(matches)} at {locations}"
+        )
+    return matches[0]
 
 
 def _transformed_part(
@@ -110,6 +139,12 @@ def _transformed_part(
         part["trackHexes"] = [
             list(rotate_hex(tuple(cell), rotation))
             for cell in source["trackHexes"]
+        ]
+    if source.get("type") == "pipe":
+        part["pipeId"] = int(source.get("pipeId") or 0)
+        part["pipeHexes"] = [
+            list(rotate_hex(tuple(cell), rotation))
+            for cell in source.get("pipeHexes") or ()
         ]
     return part
 
@@ -161,20 +196,34 @@ def _candidate(
     reference_metrics: dict[str, int],
     solution: dict[str, Any],
 ) -> ObjectiveCandidate:
+    try:
+        local_validation = validate_generated_solution(puzzle, solution)
+    except Exception as error:
+        local_validation = {
+            "complete": False,
+            "failureMode": "local-simulator-error",
+            "firstError": {"cycle": None, "message": f"{type(error).__name__}: {error}"},
+        }
     return ObjectiveCandidate(
         architecture_id=architecture_id,
         archetype=archetype,
         focus_objectives=tuple(focus_objectives),
         provenance=deepcopy(provenance),
-        reference_metrics={key: int(value) for key, value in reference_metrics.items()},
+        reference_metrics={
+            key: int(value)
+            for key, value in reference_metrics.items()
+            if isinstance(value, int)
+        },
         solution=solution,
-        local_validation=validate_generated_solution(puzzle, solution),
+        local_validation=local_validation,
     )
 
 
 def generate_objective_candidates(
     puzzle: dict[str, Any],
     plan: ManufacturingPlan | None = None,
+    *,
+    blueprint_paths: Iterable[str | Path] = (),
 ) -> tuple[ObjectiveCandidate, ...]:
     """Generate independent architectures for objective-scored oracle search.
 
@@ -188,24 +237,26 @@ def generate_objective_candidates(
         raise UnsupportedPuzzleError(
             resolved_plan.reason or "Puzzle is not supported by the current solver"
         )
-    if resolved_plan.strategy != "corpus-derived-fragment-extraction-v1":
-        raise UnsupportedPuzzleError(
-            "Objective portfolios are not registered for strategy " + resolved_plan.strategy
+    portfolio = objective_portfolio_metadata(
+        puzzle,
+        strategy=resolved_plan.strategy,
+        blueprint_paths=blueprint_paths,
+    )
+    candidates: list[ObjectiveCandidate] = []
+    if resolved_plan.strategy == "corpus-derived-fragment-extraction-v1":
+        balanced = _generate_parallel_fragment_extraction_solution(puzzle, resolved_plan)
+        candidates.append(
+            _candidate(
+                puzzle,
+                architecture_id="balanced-sum4-v1",
+                archetype="balanced-cell",
+                focus_objectives=("costcycles", "sum4"),
+                provenance={"kind": "public-corpus-derived", "sourceName": "generated topology at 9bcd370"},
+                reference_metrics={"cost": 145, "cycles": 95, "area": 84, "instructions": 19},
+                solution=balanced,
+            )
         )
-
-    balanced = _generate_parallel_fragment_extraction_solution(puzzle, resolved_plan)
-    candidates = [
-        _candidate(
-            puzzle,
-            architecture_id="balanced-sum4-v1",
-            archetype="balanced-cell",
-            focus_objectives=("costcycles", "sum4"),
-            provenance={"kind": "public-corpus-derived", "sourceName": "generated topology at 9bcd370"},
-            reference_metrics={"cost": 145, "cycles": 95, "area": 84, "instructions": 19},
-            solution=balanced,
-        )
-    ]
-    for index, blueprint in enumerate(_objective_blueprints()):
+    for index, blueprint in enumerate(portfolio["blueprints"]):
         solution = _materialize_blueprint(puzzle, blueprint, variant_index=index)
         candidates.append(
             _candidate(

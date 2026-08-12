@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from unittest.mock import patch
 
 from packages.opus_solver.manufacturing import ManufacturingPlan
@@ -45,12 +47,20 @@ def _base_solution() -> dict:
 def test_generator_materializes_independent_metric_architectures():
     puzzle = {"source": {"name": "SOS_Salt_of_Saturn_by_Vinegar (1).puzzle"}}
     complete = {"complete": True, "failureMode": None}
+    portfolio = json.loads(
+        Path("packages/opus_solver/data/sos_objective_blueprints.json").read_text(
+            encoding="utf-8"
+        )
+    )
     with patch(
         "packages.opus_solver.objective_portfolio._generate_parallel_fragment_extraction_solution",
         return_value=_base_solution(),
     ), patch(
         "packages.opus_solver.objective_portfolio.validate_generated_solution",
         return_value=complete,
+    ), patch(
+        "packages.opus_solver.objective_portfolio.objective_portfolio_metadata",
+        return_value=portfolio,
     ):
         candidates = generate_objective_candidates(puzzle, _plan())
 

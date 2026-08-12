@@ -48,7 +48,13 @@ from .objective_portfolio import (
     ObjectiveCandidate,
     generate_objective_candidates,
     objective_key,
+    objective_portfolio_metadata,
     select_objective_winners,
+)
+from .portfolio_learning import (
+    bounded_worker_count,
+    learn_objective_blueprint_portfolio,
+    solution_blueprint_parts,
 )
 from .repair_policy import recommend_repair_order
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
@@ -82,6 +88,7 @@ __all__ = [
     "build_manufacturing_plan",
     "build_outcome_index",
     "build_solver_index",
+    "bounded_worker_count",
     "enumerate_schedule_variants",
     "enumerate_transform_variants",
     "generate_composed_candidates",
@@ -92,7 +99,9 @@ __all__ = [
     "materialize_assembly_schedule",
     "mechanism_compatibility",
     "merge_outcome_records",
+    "learn_objective_blueprint_portfolio",
     "objective_key",
+    "objective_portfolio_metadata",
     "pareto_frontier",
     "part_occupied_cells",
     "plan_puzzle_fragment_chains",
@@ -108,6 +117,7 @@ __all__ = [
     "serialize_candidate_roundtrip",
     "select_objective_winners",
     "solve_puzzle",
+    "solution_blueprint_parts",
     "synchronize_layout_programs",
     "transform_slots",
     "transplant_geometry",

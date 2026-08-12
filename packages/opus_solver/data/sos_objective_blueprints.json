@@ -1,6 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "puzzleStrategy": "corpus-derived-fragment-extraction-v1",
+  "puzzleFeatureFingerprint": "240a241abceae6a3ef959d041ca42bfd049a7915f5fcd1e557f71fa048fbd9b1",
+  "baselineArchitectureId": "balanced-sum4-v1",
   "blueprints": [
     {
       "id": "single-arm-sequential-piston-v1",

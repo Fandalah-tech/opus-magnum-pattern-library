@@ -1,0 +1,53 @@
+SECOND PUZZLE GENERALIZATION MILESTONE
+=====================================
+
+Reference puzzle: OM2021_W1 — IMPROVED EXPLOSIVE PHIAL
+Manufacturing strategy: triplex-extension-v1
+Puzzle feature fingerprint: 14fb8ee263823828a9462babc7db9974ab52f989832b7d85893d5e3b1c70b1df
+
+Corpus learning
+---------------
+External solutions inspected: 235
+OMSim-valid solutions: 235
+Validation workers: 9 (hard limit: 10)
+Distinct winning architectures learned: 7
+
+Independent objective winners
+-----------------------------
+cost         60      single-arm-sequential
+area         17      single-arm-sequential piston
+cycles       23      parallel-throughput
+rate         2       parallel-throughput
+instructions 3       single-arm-sequential
+costarea     1700    single-arm-sequential piston
+costcycles   207     balanced-cell
+sum4         334     balanced-cell
+
+Generalization validation
+-------------------------
+Architectures reconstructed with new global transforms: 7
+Distinct generated solution binaries: 7
+OMSim-valid generated solutions: 7
+Objectives assigned a winner: 8 of 8
+Ready for game loading: yes
+
+Improvement over the Sum4 baseline
+----------------------------------
+cost          100 -> 60
+area           46 -> 17
+cycles        147 -> 23
+rate           25 -> 2
+instructions   41 -> 3
+costarea      4600 -> 1700
+costcycles     247 -> 207
+
+Regression validation
+---------------------
+Automated tests: 153 passed
+Original Sweet Vinegar of Saturn portfolio: 7 of 7 OMSim-valid
+
+Data boundary
+-------------
+The raw OMSim solution corpus and the learned full-topology registry remain
+external reference-only data. They are not included in the commit. The code,
+tests and this metric-only validation report are safe to version independently.
