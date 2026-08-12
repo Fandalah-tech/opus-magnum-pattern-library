@@ -11,7 +11,7 @@ TRACK_TYPES = {"track"}
 INPUT_TYPES = {"input"}
 OUTPUT_TYPES = {"out-std", "out-rep"}
 BOND_TYPES = {
-    "bonder", "unbonder", "multibonder", "bonder-speed", "triplex-bonder",
+    "bonder", "unbonder", "multibonder", "bonder-speed", "bonder-prisma", "triplex-bonder",
     "glyph-bonder-prisma", "glyph-unbonder-prisma",
 }
 CONVERSION_TYPES = {
@@ -20,7 +20,7 @@ CONVERSION_TYPES = {
     "projection", "glyph-projection",
     "purification", "glyph-purification",
     "animismus", "glyph-life-and-death",
-    "unification", "dispersion",
+    "unification", "glyph-unification", "dispersion", "glyph-dispersion",
 }
 DISPOSAL_TYPES = {"disposal", "glyph-disposal"}
 CONDUIT_TYPES = {"pipe"}

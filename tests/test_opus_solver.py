@@ -56,7 +56,7 @@ def _triplex_extension_puzzle() -> dict:
                 {"id": "a2", "element": "salt", "position": [1, 0]},
             ],
             "bonds": [
-                {"type": "triplex", "from": [-1, 0], "to": [0, 0]},
+                {"type": "triplex", "triplexChannels": ["red", "black", "yellow"], "from": [-1, 0], "to": [0, 0]},
                 {"type": "normal", "from": [0, 0], "to": [1, 0]},
             ],
         }],
@@ -68,9 +68,9 @@ def _triplex_extension_puzzle() -> dict:
                 {"id": "a3", "element": "salt", "position": [1, 0]},
             ],
             "bonds": [
-                {"type": "triplex", "from": [-2, 0], "to": [-1, 0]},
-                {"type": "triplex", "from": [-1, 0], "to": [0, 0]},
-                {"type": "triplex", "from": [0, 0], "to": [1, 0]},
+                {"type": "triplex", "triplexChannels": ["red", "black", "yellow"], "from": [-2, 0], "to": [-1, 0]},
+                {"type": "triplex", "triplexChannels": ["red", "black", "yellow"], "from": [-1, 0], "to": [0, 0]},
+                {"type": "triplex", "triplexChannels": ["red", "black", "yellow"], "from": [0, 0], "to": [1, 0]},
             ],
         }],
         "outputScale": 1,
@@ -104,6 +104,11 @@ def test_manufacturing_plan_recognizes_triplex_extension_by_chemistry() -> None:
         "deliver",
     ]
     assert plan.required_glyphs == ("unbonder", "triplex-bonder", "duplication")
+    assert next(operation for operation in plan.operations if operation.glyph == "bonder-prisma").metadata == {
+        "bondType": "triplex",
+        "bondCount": 3,
+        "triplexChannels": ["red", "black", "yellow"],
+    }
 
 
 def test_solver_generates_and_validates_six_products() -> None:

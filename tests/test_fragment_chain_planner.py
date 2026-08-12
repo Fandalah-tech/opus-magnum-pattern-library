@@ -50,3 +50,22 @@ def test_rank_fragment_chains_respects_min_observations():
 
     assert len(ranked) == 1
     assert ranked[0]["nodes"][0]["canonicalMechanismHash"] == "strong"
+
+
+def test_rank_fragment_chains_can_require_engine_validated_evidence():
+    validated = _transition("feed", "validated", "output", "o1", "delivered", 2)
+    validated.update({
+        "engineValidatedSolutionCount": 2,
+        "engineValidationRate": 1.0,
+        "evidenceSource": "opus-engine-complete",
+    })
+    unvalidated = _transition("feed", "legacy", "output", "o2", "delivered", 20, 5, 10)
+
+    ranked = rank_fragment_chains(
+        {"transitions": [unvalidated, validated]},
+        min_engine_validated_solutions=1,
+    )
+
+    assert len(ranked) == 1
+    assert ranked[0]["nodes"][0]["canonicalMechanismHash"] == "validated"
+    assert ranked[0]["steps"][0]["evidenceSource"] == "opus-engine-complete"

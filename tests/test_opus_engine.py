@@ -115,6 +115,26 @@ def test_piston_moves_held_molecule() -> None:
     assert world.atoms["a"].position == (2, 0)
 
 
+def test_piston_can_retract_below_its_placement_length_and_reset() -> None:
+    world = World()
+    world.add_atom(Atom("a", "salt", (3, 0)))
+    arm = ArmState("arm", "piston", (0, 0), 0, 3)
+    simulator = Simulator(world, {"arm": arm})
+
+    simulator.step({"arm": "grab"})
+    simulator.step({"arm": "retract"})
+    simulator.step({"arm": "retract"})
+
+    assert arm.length == 1
+    assert world.atoms["a"].position == (1, 0)
+
+    simulator.step({"arm": "reset"})
+
+    assert arm.length == 3
+    assert world.atoms["a"].position == (1, 0)
+    assert not arm.grabbing
+
+
 def test_pivot_rotates_around_grabbed_atom() -> None:
     world = World()
     world.add_atom(Atom("a", "salt", (1, 0)))

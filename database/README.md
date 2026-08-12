@@ -13,6 +13,8 @@ The Codex database is metadata-first. Binary `.puzzle` and `.solution` files are
 7. `tools/build_puzzle_feature_index.py` creates comparable puzzle-side fingerprints.
 8. `tools/retrieve_mechanisms.py` ranks full mechanisms for a target puzzle.
 9. `tools/build_fragment_index.py` decomposes historical solutions into reusable local functional fragments.
+10. `tools/audit_triplex_corpus.py` classifies collision-aware engine outcomes and exposes durable failure categories.
+11. `tools/build_engine_fragment_flow_index.py` promotes only engine-complete traces into reusable, channel-aware fragment transitions.
 
 ## Solver-oriented identities
 
@@ -40,7 +42,7 @@ Whole historical solutions are useful references but are too coarse for composit
 
 Each anchor is bundled with arms structurally capable of reaching it and the local rails used by those arms. The resulting fragment is canonicalized independently of its source puzzle and grouped by `(role, canonicalMechanismHash)`. The index tracks occurrence frequency, source-puzzle diversity, structural variants and source samples.
 
-This first fragment layer is intentionally structural. It identifies plausible reusable neighborhoods without claiming that a molecule actually traverses every structural edge. Cycle-accurate simulation traces will later promote structural candidates into confirmed flow fragments.
+The structural fragment layer identifies plausible reusable neighborhoods without claiming that a molecule traverses every structural edge. The engine fragment-flow layer now promotes only collision-aware, output-complete traces. Its transitions retain geometry, timing, solution breadth and exact red/black/yellow triplex events. The composition planner can require a minimum number of engine-validated source solutions, so unvalidated structural frequency cannot outrank proven evidence by accident.
 
 ## Building the database layers
 
@@ -49,6 +51,8 @@ python tools/build_puzzle_feature_index.py
 python tools/analyze_solution_archive.py
 python tools/build_solver_index.py
 python tools/build_fragment_index.py
+python tools/audit_triplex_corpus.py --puzzle-root <puzzles> --solution-root <solutions> --output <audit.json> --report <audit.txt>
+python tools/build_engine_fragment_flow_index.py --audit <audit.json> --output <engine-flow.json>
 python tools/retrieve_mechanisms.py path\to\target.puzzle --limit 25
 ```
 
@@ -56,4 +60,4 @@ Default generated outputs are `database/puzzle-feature-index.json`, `database/so
 
 ## Next database step
 
-The next major milestone is **trace-confirmed fragment learning**: feed real simulator/replay traces into the fragment layer to identify actual molecule transfers between input, conversion, bonding, transfer and output stages. Once those dynamic edges exist, the solver can begin composing candidate solution graphs from independently reusable fragments rather than cloning historical layouts.
+The next major milestone is **closed-loop fragment assembly**: materialize the engine-validated chains as candidate layouts, replay them, and feed their outcomes back into geometry and scheduling repair. The evidence and ranking layers are now in place; the remaining step is autonomous layout mutation rather than additional structural indexing.

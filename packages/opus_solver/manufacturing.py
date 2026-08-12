@@ -5,6 +5,8 @@ from dataclasses import asdict, dataclass, field
 from itertools import permutations
 from typing import Any
 
+from packages.opus_parser import canonical_bond_identity
+
 CLASSICAL_ELEMENTS = {"air", "earth", "fire", "water"}
 
 
@@ -105,7 +107,11 @@ def build_manufacturing_plan(puzzle: dict[str, Any]) -> ManufacturingPlan:
                     ("fire-fire", "fire", "salt"),
                     ("triplex-product",),
                     glyph="bonder-prisma",
-                    metadata={"bondType": "triplex", "bondCount": 3},
+                    metadata={
+                        "bondType": "triplex",
+                        "bondCount": 3,
+                        "triplexChannels": ["red", "black", "yellow"],
+                    },
                 ),
                 ManufacturingOperation(
                     "deliver-product",
@@ -337,17 +343,17 @@ def _supports_triplex_extension(
                 return None
             degrees[first] += 1
             degrees[second] += 1
-            bond_types[str(bond.get("type") or "normal")] += 1
+            bond_types[canonical_bond_identity(bond)] += 1
         return Counter(atoms.values()), bond_types, sorted(degrees.values())
 
     reagent = topology(reagents[0])
     product = topology(products[0])
     return reagent == (
         Counter({"fire": 2, "salt": 1}),
-        Counter({"triplex": 1, "normal": 1}),
+        Counter({"triplex:red+black+yellow": 1, "normal": 1}),
         [1, 1, 2],
     ) and product == (
         Counter({"fire": 3, "salt": 1}),
-        Counter({"triplex": 3}),
+        Counter({"triplex:red+black+yellow": 3}),
         [1, 1, 2, 2],
     )

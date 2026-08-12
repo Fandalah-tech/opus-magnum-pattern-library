@@ -250,7 +250,10 @@ class Simulator:
         if instruction in EXTEND or instruction in RETRACT:
             if not arm.is_piston:
                 return [], None
-            next_length = min(3, arm.length + 1) if instruction in EXTEND else max(arm.base_length or 1, arm.length - 1)
+            # A piston's placement length is its reset position, not its
+            # minimum extension.  OMSim permits every piston to retract to one
+            # hex regardless of whether it was placed at length two or three.
+            next_length = min(3, arm.length + 1) if instruction in EXTEND else max(1, arm.length - 1)
             direction = DIRECTIONS[arm.rotation % 6]
             delta_units = next_length - arm.length
             delta = (direction[0] * delta_units, direction[1] * delta_units)

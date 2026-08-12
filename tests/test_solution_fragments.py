@@ -19,9 +19,11 @@ def test_functional_role_classification():
     assert functional_role("input") == "feed"
     assert functional_role("out-std") == "output"
     assert functional_role("bonder") == "bonding"
+    assert functional_role("bonder-prisma") == "bonding"
     assert functional_role("purification") == "conversion"
     assert functional_role("disposal") == "disposal"
     assert functional_role("pipe") == "conduit"
+    assert functional_role("glyph-unification") == "conversion"
     assert functional_role("arm1") is None
     assert functional_role("track") is None
 
