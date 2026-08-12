@@ -1,0 +1,149 @@
+STRICT HELD-OUT COMPONENT TIMING AND ORACLE PORTFOLIO - OM2021_W1
+================================================================
+
+Status
+------
+The solver still does not solve OM2021_W1 without examples from that puzzle.
+This milestone nevertheless closes the mechanical-retention problem that was
+blocking the next search stage: at the same 90-result reporting budget, the
+authoritative portfolio now contains 90 machines that run to the OMSim cycle
+limit without a collision or another mechanical error. The previous balanced
+geometry portfolio contained 23 such machines.
+
+The remaining bottleneck is now isolated. None of the mechanically valid
+survivors performs target-relevant chemistry. Geometry/program coordination,
+not candidate survival, is the next problem to solve.
+
+Held-out protocol
+-----------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Engine-complete corpus before exclusion: 396 solutions
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Target solution bytes replayed into the learned index: 0
+Target strings found in learned geometry records: 0
+Validation drift: 0
+Index build errors: 0
+
+Physical-component timing repair
+--------------------------------
+The earlier schedule repair shifted whole fragment groups. Several fragments
+shared one physical arm and each carried a copy of the same complete donor
+program, so a conflict-free group shift usually became a global time offset.
+It did not change the machine's mechanical sequence.
+
+The new repair operates on the materialized physical component instead. For a
+unique programmable arm it can:
+
+- insert one or two idle cycles before a program suffix;
+- remove one or two cycles only where an existing gap permits it;
+- reject negative cycles and instruction overlaps before simulation;
+- target instruction boundaries near early motion, useful chemistry events,
+  the first local error, and existing idle gaps;
+- preserve the exact instruction order and all machine geometry.
+
+Replay diagnostics now expose the exact cycle and event kind for required and
+general chemistry. This connects the target manufacturing plan directly to
+program-cutpoint selection.
+
+Search protocol
+---------------
+The strict benchmark used the same three held-out assemblies and geometric
+budget as the preceding milestone:
+
+- 729 geometric variants per assembly, 2,187 total;
+- 96-cycle geometric preflight;
+- eight geometric promotions per assembly;
+- six progress/survival source geometries per assembly;
+- up to 48 physical-component timing edits per source;
+- timing radius of two cycles and 16 cutpoints per arm;
+- 588 distinct timing variants in total;
+- ten concurrent OMSim workers, the configured maximum.
+
+OMSim validates every timing variant, not only variants promoted by the local
+simulator. Local replay still supplies chemistry and manipulation evidence,
+but it can no longer overrule an OMSim collision, track error, or instruction
+conflict.
+
+Authoritative outcomes for all timing variants
+----------------------------------------------
+OMSim outcomes across all 588 variants:
+
+- completed: 0
+- no completion within the OMSim cycle limit: 128
+- collision: 388
+- track error: 66
+- instruction conflict: 6
+- other error: 0
+
+The two mechanically useful assembly families contributed 32 and 96
+cycle-limit survivors respectively. The third family contributed no survivor;
+its local chemistry evidence is paired with authoritative track, collision, or
+instruction failures.
+
+Oracle-guided global portfolio
+------------------------------
+Selection previously happened independently inside each assembly family. That
+reserved result capacity even for a family with no mechanically valid child.
+The new global portfolio reallocates capacity across all families after OMSim
+validation while retaining separate progress and survival fronts.
+
+At a 90-result budget:
+
+- preceding balanced geometry portfolio: 23 cycle-limit survivors, 64
+  collisions, and three other mechanical errors;
+- component timing with local-only final selection: 29 cycle-limit survivors,
+  46 collisions, 14 track errors, and one instruction conflict;
+- global OMSim-guided portfolio: 90 cycle-limit survivors, zero collisions,
+  zero track errors, and zero instruction conflicts.
+
+The final 90 are drawn from the two useful families: 32 from assembly rank 1
+and 58 from assembly rank 2. This is a gain of 67 mechanically valid retained
+machines over the preceding milestone and eliminates all authoritative
+mechanical failures from the returned portfolio.
+
+What the solver can now do
+--------------------------
+The solver can now:
+
+- mutate the actual program of a shared physical arm rather than fragment
+  schedule copies;
+- place tempo edits at target-aware chemistry and failure boundaries;
+- preserve valid program ordering while inserting or removing idle cycles;
+- preflight all variants locally and promote a bounded progress/survival set;
+- validate every component-timing variant with OMSim through the standard
+  generation command;
+- run up to ten concurrent OMSim validations;
+- classify cycle-limit, collision, track, instruction-conflict, other, and
+  completed outcomes;
+- select a global oracle-guided portfolio across assembly families;
+- expose component-timing attempts to persistent outcome learning.
+
+It cannot yet:
+
+- produce any product on strict held-out OM2021_W1;
+- find target-relevant chemistry in a machine that also survives OMSim;
+- repair the track-coordinate divergence in the chemically active third donor
+  family;
+- combine the stable geometry of one family with the useful chemistry geometry
+  of another.
+
+Next decisive milestone
+-----------------------
+Use the 128 OMSim-stable timing variants as hard mechanical parents, then
+search chemistry-part transforms relative to their arm workspace rather than
+mutating every fragment join. Crossover should preserve the stable arm,
+program, input, and track subgraph while transplanting one required glyph
+interaction at a time: bond removal, duplication, prism bonding, then output.
+OMSim remains the admission gate after every stage.
+
+Verification
+------------
+Python test suite: 203 passed, plus 10 passing subtests
+Targeted component timing/oracle tests: passed
+Compile check: passed
+Diff whitespace check: passed
+OMSim-validated timing variants: 588
+OMSim-stable timing variants: 128
+Returned global oracle portfolio: 90 of 90 mechanically stable
+Strict held-out completion count: 0

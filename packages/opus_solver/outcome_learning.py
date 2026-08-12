@@ -144,23 +144,37 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
         base = _validation_progress(candidate.get("engineValidation"))
         temporal = _best_search_progress(candidate.get("temporalSearch"))
         geometry = _best_search_progress(candidate.get("geometricSearch"))
+        component_timing = _best_search_progress(candidate.get("componentTimingSearch"))
         attempts = []
-        for repair, search in (("timing", candidate.get("temporalSearch")), ("geometry", candidate.get("geometricSearch"))):
+        for repair, search in (
+            ("timing", candidate.get("temporalSearch")),
+            ("geometry", candidate.get("geometricSearch")),
+            ("component-timing", candidate.get("componentTimingSearch")),
+        ):
             if not search:
                 continue
             summary = search.get("summary", {})
-            attempts.append({
+            attempt = {
                 "repair": repair,
                 "searchedVariantCount": int(summary.get("searchedVariantCount") or 0),
                 "completeVariantCount": int(summary.get("completeVariantCount") or 0),
                 "succeeded": bool(summary.get("hasCompleteSolution")),
-            })
+            }
+            if int(summary.get("oracleValidatedVariantCount") or 0) > 0:
+                attempt.update({
+                    "oracleValidatedVariantCount": int(summary.get("oracleValidatedVariantCount") or 0),
+                    "oracleCompleteVariantCount": int(summary.get("oracleCompleteVariantCount") or 0),
+                    "oracleOutcomeCounts": dict(summary.get("oracleOutcomeCounts") or {}),
+                })
+            attempts.append(attempt)
 
         progress_candidates = [("base", base)]
         if temporal is not None:
             progress_candidates.append(("timing", temporal))
         if geometry is not None:
             progress_candidates.append(("geometry", geometry))
+        if component_timing is not None:
+            progress_candidates.append(("component-timing", component_timing))
         best_source, best_progress = max(progress_candidates, key=lambda item: _progress_rank(item[1]))
 
         identity_payload = {

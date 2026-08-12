@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "0.1.0",
+  "targetPuzzleId": "OM2021_W1",
+  "status": "unsolved-heldout",
+  "sourceHoldout": {
+    "engineCompleteSolutionCountBeforeExclusion": 396,
+    "excludedTargetSolutionCount": 230,
+    "remainingEngineCompleteSolutionCount": 166,
+    "remainingPuzzleIdCount": 7,
+    "targetSolutionBytesInLearnedIndex": 0,
+    "targetGeometryRecordCount": 0,
+    "validationDriftCount": 0,
+    "indexBuildErrorCount": 0
+  },
+  "searchProtocol": {
+    "assemblyCandidateCount": 3,
+    "geometricVariantsPerAssembly": 729,
+    "geometricVariantCount": 2187,
+    "geometricPreflightCycles": 96,
+    "geometricPromotionsPerAssembly": 8,
+    "componentTimingSourcesPerAssembly": 6,
+    "componentTimingVariantsPerSourceLimit": 48,
+    "componentTimingRadius": 2,
+    "componentTimingCutpointLimit": 16,
+    "componentTimingVariantCount": 588,
+    "omsimWorkerCount": 10
+  },
+  "componentTimingCapabilities": {
+    "physicalComponentPrograms": true,
+    "suffixDelayInsertion": true,
+    "existingGapRemoval": true,
+    "targetAwareChemistryCutpoints": true,
+    "firstErrorCutpoints": true,
+    "negativeCycleRejection": true,
+    "instructionConflictRejection": true,
+    "oracleValidationOfEveryVariant": true,
+    "globalCrossAssemblyOraclePortfolio": true
+  },
+  "allComponentTimingOmsimOutcomes": {
+    "variantCount": 588,
+    "complete": 0,
+    "cycleLimitWithoutCompletion": 128,
+    "collision": 388,
+    "trackError": 66,
+    "instructionConflict": 6,
+    "otherError": 0,
+    "byAssemblyRank": {
+      "1": {
+        "variantCount": 192,
+        "cycleLimitWithoutCompletion": 32,
+        "collision": 160
+      },
+      "2": {
+        "variantCount": 192,
+        "cycleLimitWithoutCompletion": 96,
+        "collision": 96
+      },
+      "3": {
+        "variantCount": 204,
+        "cycleLimitWithoutCompletion": 0,
+        "collision": 132,
+        "trackError": 66,
+        "instructionConflict": 6
+      }
+    }
+  },
+  "portfolioComparison": {
+    "precedingBalancedGeometry": {
+      "returnedVariantCount": 90,
+      "complete": 0,
+      "cycleLimitWithoutCompletion": 23,
+      "collision": 64,
+      "otherMechanicalError": 3
+    },
+    "localSelectedComponentTiming": {
+      "returnedVariantCount": 90,
+      "complete": 0,
+      "cycleLimitWithoutCompletion": 29,
+      "collision": 46,
+      "trackError": 14,
+      "instructionConflict": 1
+    },
+    "globalOracleComponentTiming": {
+      "returnedVariantCount": 90,
+      "complete": 0,
+      "cycleLimitWithoutCompletion": 90,
+      "collision": 0,
+      "trackError": 0,
+      "instructionConflict": 0,
+      "assemblyRankDistribution": {
+        "1": 32,
+        "2": 58,
+        "3": 0
+      }
+    }
+  },
+  "remainingBottleneck": {
+    "mechanicallyValidTimingVariantCount": 128,
+    "mechanicallyValidTargetActiveVariantCount": 0,
+    "completeTargetChainObserved": false,
+    "description": "Target-relevant chemistry and authoritative mechanical survival remain separated across donor geometry families."
+  },
+  "verification": {
+    "pytestPassed": 203,
+    "pytestSubtestsPassed": 10,
+    "compileCheck": "passed",
+    "diffWhitespaceCheck": "passed",
+    "strictHeldoutCompletionCount": 0
+  }
+}

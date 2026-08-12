@@ -24,6 +24,14 @@ from .chemistry_composition import (
     required_flow_relations,
 )
 from .composition import build_composition_prior, rank_fragment_chains
+from .component_timing import (
+    apply_component_timing_edit,
+    component_program_cutpoints,
+    enumerate_component_timing_variants,
+    oracle_outcome,
+    search_component_timing_candidates,
+    select_oracle_portfolio,
+)
 from .generation import generate_composed_candidates
 from .geometry_search import (
     enumerate_transform_variants,
@@ -96,6 +104,7 @@ __all__ = [
     "analyze_layout_geometry",
     "apply_forward_transform",
     "apply_inverse_transform",
+    "apply_component_timing_edit",
     "apply_schedule_group_offsets",
     "arm_workspace_cells",
     "assign_branch_atom_flows",
@@ -106,6 +115,7 @@ __all__ = [
     "build_solver_index",
     "bounded_worker_count",
     "enumerate_schedule_variants",
+    "enumerate_component_timing_variants",
     "enumerate_transform_variants",
     "generate_composed_candidates",
     "generate_blind_transfer_candidates",
@@ -123,6 +133,7 @@ __all__ = [
     "learn_objective_blueprint_portfolio",
     "objective_key",
     "objective_portfolio_metadata",
+    "oracle_outcome",
     "pareto_frontier",
     "part_occupied_cells",
     "plan_puzzle_fragment_chains",
@@ -135,13 +146,16 @@ __all__ = [
     "recommend_repair_order",
     "required_flow_relations",
     "search_geometric_candidates",
+    "search_component_timing_candidates",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",
     "select_objective_winners",
+    "select_oracle_portfolio",
     "solve_puzzle",
     "solution_blueprint_parts",
     "synchronize_layout_programs",
     "transform_slots",
+    "component_program_cutpoints",
     "transplant_geometry",
     "validate_generated_solution",
     "validate_blind_transfer_contract",

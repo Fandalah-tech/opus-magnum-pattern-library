@@ -148,3 +148,30 @@ def test_build_outcome_index_merges_existing_records():
     assert updated["summary"]["outcomeCount"] == 1
     assert updated["summary"]["solvedOutcomeCount"] == 1
     assert updated["outcomes"][0]["solved"] is True
+
+
+def test_component_timing_oracle_outcomes_are_learned_compactly():
+    generation = _generation(timing_complete=False)
+    generation["candidates"][0]["componentTimingSearch"] = {
+        "summary": {
+            "searchedVariantCount": 12,
+            "completeVariantCount": 0,
+            "hasCompleteSolution": False,
+            "oracleValidatedVariantCount": 12,
+            "oracleCompleteVariantCount": 0,
+            "oracleOutcomeCounts": {"collision": 7, "cycle-limit": 5},
+        },
+        "variants": [],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    component_attempt = next(
+        item for item in record["attempts"] if item["repair"] == "component-timing"
+    )
+
+    assert component_attempt["oracleValidatedVariantCount"] == 12
+    assert component_attempt["oracleCompleteVariantCount"] == 0
+    assert component_attempt["oracleOutcomeCounts"] == {
+        "collision": 7,
+        "cycle-limit": 5,
+    }

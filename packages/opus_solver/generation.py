@@ -1,18 +1,62 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any
+from copy import deepcopy
+from typing import Any, Callable
 
 from .assembly import rank_fragment_assemblies
-from .candidate_search import search_temporal_candidates
+from .candidate_search import search_temporal_candidates, validation_rank
 from .candidate_solution import build_candidate_solution, serialize_candidate_roundtrip
 from .chemistry_composition import manufacturing_requirements, rank_chains_for_manufacturing_plan
+from .component_timing import search_component_timing_candidates, select_oracle_portfolio
 from .geometry_search import search_geometric_candidates
 from .layout import materialize_candidate_layout
 from .manufacturing import build_manufacturing_plan
 from .repair_policy import recommend_repair_order
 from .scheduling import materialize_candidate_schedule, synchronize_layout_programs
 from .solver import validate_generated_solution
+
+
+def _global_component_timing_portfolio(
+    candidates: list[dict[str, Any]],
+    *,
+    limit: int,
+) -> dict[str, Any]:
+    """Reallocate oracle result capacity across assembly families globally."""
+    records = []
+    for candidate in candidates:
+        for variant in candidate.get("componentTimingSearch", {}).get("variants", []):
+            record = deepcopy(variant)
+            record["candidateRank"] = int(candidate.get("rank") or 0)
+            record["rank"] = validation_rank(
+                record.get("validation") or {},
+                displacement=int(record.get("displacement") or 0),
+            )
+            records.append(record)
+
+    selected = []
+    objective_counts: Counter[str] = Counter()
+    outcome_counts: Counter[str] = Counter()
+    for record, objectives in select_oracle_portfolio(
+        records,
+        limit=max(0, int(limit)),
+    ):
+        record.pop("rank", None)
+        record["globalSelectionObjectives"] = objectives
+        objective_counts.update(objectives)
+        outcome_counts[str(record.get("oracleOutcome") or "unknown")] += 1
+        selected.append(record)
+    return {
+        "schemaVersion": "0.1.0",
+        "summary": {
+            "candidateVariantCount": len(records),
+            "returnedVariantCount": len(selected),
+            "selectionPolicy": "global-oracle-progress-survival-portfolio",
+            "returnedObjectiveCounts": dict(sorted(objective_counts.items())),
+            "returnedOracleOutcomeCounts": dict(sorted(outcome_counts.items())),
+        },
+        "variants": selected,
+    }
 
 
 def generate_composed_candidates(
@@ -32,6 +76,16 @@ def generate_composed_candidates(
     transform_synthetic_rotation_radius: int = 0,
     transform_preflight_cycles: int = 0,
     transform_promotion_limit: int = 25,
+    component_timing_search_limit: int = 0,
+    component_timing_source_limit: int = 6,
+    component_timing_radius: int = 2,
+    component_timing_cutpoint_limit: int = 16,
+    component_timing_result_limit: int = 20,
+    component_timing_preflight_cycles: int = 0,
+    component_timing_promotion_limit: int = 40,
+    component_timing_oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
+    component_timing_oracle_workers: int = 1,
+    component_timing_global_result_limit: int = 0,
     chain_max_depth: int = 8,
     min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
@@ -50,6 +104,8 @@ def generate_composed_candidates(
                 "temporalCompleteCount": 0,
                 "geometricVariantCount": 0,
                 "geometricCompleteCount": 0,
+                "componentTimingVariantCount": 0,
+                "componentTimingCompleteCount": 0,
             },
             "candidates": [],
         }
@@ -79,6 +135,9 @@ def generate_composed_candidates(
     temporal_complete_count = 0
     geometric_variant_count = 0
     geometric_complete_count = 0
+    component_timing_variant_count = 0
+    component_timing_complete_count = 0
+    component_timing_oracle_complete_count = 0
     failure_modes: Counter[str] = Counter()
     repair_routes: Counter[str] = Counter()
 
@@ -184,13 +243,56 @@ def generate_composed_candidates(
                 if repaired:
                     record["repairSucceededWith"] = repair
                     break
+
+            if not repaired and component_timing_search_limit > 0:
+                component_sources = []
+                for source_kind, search_name in (
+                    ("geometry", "geometricSearch"),
+                    ("timing", "temporalSearch"),
+                ):
+                    for variant in record.get(search_name, {}).get("variants", []):
+                        component_sources.append({**variant, "sourceKind": source_kind})
+                component_sources.append({
+                    "solution": solution,
+                    "validation": validation,
+                    "sourceKind": "base",
+                    "variantIndex": None,
+                })
+                search = search_component_timing_candidates(
+                    puzzle,
+                    component_sources,
+                    source_limit=component_timing_source_limit,
+                    radius=component_timing_radius,
+                    cutpoint_limit=component_timing_cutpoint_limit,
+                    variants_per_source=component_timing_search_limit,
+                    result_limit=max(
+                        int(component_timing_result_limit),
+                        int(component_timing_global_result_limit),
+                    ),
+                    preflight_cycles=component_timing_preflight_cycles,
+                    promotion_limit=component_timing_promotion_limit,
+                    oracle_validator=component_timing_oracle_validator,
+                    oracle_workers=component_timing_oracle_workers,
+                )
+                record["componentTimingSearch"] = search
+                component_timing_variant_count += int(
+                    search.get("summary", {}).get("searchedVariantCount") or 0
+                )
+                component_timing_complete_count += int(
+                    search.get("summary", {}).get("completeVariantCount") or 0
+                )
+                component_timing_oracle_complete_count += int(
+                    search.get("summary", {}).get("oracleCompleteVariantCount") or 0
+                )
+                if search.get("summary", {}).get("hasCompleteSolution"):
+                    record["repairSucceededWith"] = "component-timing"
         except Exception as exc:
             record["generationError"] = {"errorType": type(exc).__name__, "message": str(exc)}
             failure_modes["generation-error"] += 1
         results.append(record)
 
     return {
-        "schemaVersion": "0.5.0",
+        "schemaVersion": "0.6.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -201,7 +303,16 @@ def generate_composed_candidates(
             "temporalCompleteCount": temporal_complete_count,
             "geometricVariantCount": geometric_variant_count,
             "geometricCompleteCount": geometric_complete_count,
-            "hasCompleteSolution": engine_complete_count > 0 or temporal_complete_count > 0 or geometric_complete_count > 0,
+            "componentTimingVariantCount": component_timing_variant_count,
+            "componentTimingCompleteCount": component_timing_complete_count,
+            "componentTimingOracleCompleteCount": component_timing_oracle_complete_count,
+            "hasCompleteSolution": (
+                engine_complete_count > 0
+                or temporal_complete_count > 0
+                or geometric_complete_count > 0
+                or component_timing_complete_count > 0
+                or component_timing_oracle_complete_count > 0
+            ),
             "failureModes": dict(sorted(failure_modes.items())),
             "repairRoutes": dict(sorted(repair_routes.items())),
             "temporalSearchRadius": max(0, int(temporal_search_radius)),
@@ -210,8 +321,21 @@ def generate_composed_candidates(
             "transformSyntheticRotationRadius": max(0, int(transform_synthetic_rotation_radius)),
             "transformPreflightCycles": max(0, int(transform_preflight_cycles)),
             "transformPromotionLimit": max(0, int(transform_promotion_limit)),
+            "componentTimingSearchLimit": max(0, int(component_timing_search_limit)),
+            "componentTimingSourceLimit": max(0, int(component_timing_source_limit)),
+            "componentTimingRadius": max(0, int(component_timing_radius)),
+            "componentTimingCutpointLimit": max(0, int(component_timing_cutpoint_limit)),
+            "componentTimingPreflightCycles": max(0, int(component_timing_preflight_cycles)),
+            "componentTimingPromotionLimit": max(0, int(component_timing_promotion_limit)),
+            "componentTimingOracleEnabled": component_timing_oracle_validator is not None,
+            "componentTimingOracleWorkers": max(1, min(10, int(component_timing_oracle_workers))),
+            "componentTimingGlobalResultLimit": max(0, int(component_timing_global_result_limit)),
             "candidateKinds": dict(sorted(Counter(str(item.get("candidateKind") or "unknown") for item in assemblies).items())),
             "minEngineValidatedSolutions": max(0, int(min_engine_validated_solutions)),
         },
+        "componentTimingOraclePortfolio": _global_component_timing_portfolio(
+            results,
+            limit=component_timing_global_result_limit,
+        ) if component_timing_oracle_validator is not None else None,
         "candidates": results,
     }

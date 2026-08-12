@@ -64,3 +64,23 @@ def test_target_reached_before_later_diagnostic_error_remains_complete(monkeypat
     assert result["failureMode"] is None
     assert result["terminatedWithError"] is True
     assert result["terminatedAfterCompletion"] is True
+
+
+def test_event_progress_exposes_required_chemistry_cycles():
+    progress = solver_module._event_progress(
+        {
+            "frames": [
+                {"cycle": 3, "events": [{"kind": "bond-created"}]},
+                {"cycle": 8, "events": [{"kind": "bond-removed", "cycle": 8}]},
+            ],
+        },
+        required_event_kinds={"bond-created"},
+    )
+
+    assert progress["requiredChemistryEventTimeline"] == [
+        {"cycle": 3, "kind": "bond-created"},
+    ]
+    assert progress["chemistryEventTimeline"] == [
+        {"cycle": 3, "kind": "bond-created"},
+        {"cycle": 8, "kind": "bond-removed"},
+    ]

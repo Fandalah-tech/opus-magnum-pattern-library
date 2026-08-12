@@ -385,22 +385,34 @@ def _event_progress(
     *,
     required_event_kinds: set[str],
 ) -> dict[str, Any]:
-    counts = Counter(
-        str(event.get("kind") or "unknown")
+    observed_events = [
+        {
+            "cycle": int(event.get("cycle", frame.get("cycle", 0)) or 0),
+            "kind": str(event.get("kind") or "unknown"),
+        }
         for frame in replay.get("frames", [])
         for event in frame.get("events", [])
-    )
+    ]
+    counts = Counter(item["kind"] for item in observed_events)
     chemistry_kinds = sorted(CHEMISTRY_PROGRESS_EVENTS.intersection(counts))
     observed_required = sorted(required_event_kinds.intersection(counts))
+    required_timeline = [
+        item for item in observed_events if item["kind"] in required_event_kinds
+    ]
+    chemistry_timeline = [
+        item for item in observed_events if item["kind"] in CHEMISTRY_PROGRESS_EVENTS
+    ]
     return {
         "eventCounts": dict(sorted(counts.items())),
         "requiredChemistryEventKinds": sorted(required_event_kinds),
         "observedRequiredChemistryEventKinds": observed_required,
+        "requiredChemistryEventTimeline": required_timeline,
         "distinctRequiredChemistryEventCount": len(observed_required),
         "requiredChemistryEventCount": sum(counts[kind] for kind in observed_required),
         "distinctChemistryEventCount": len(chemistry_kinds),
         "chemistryEventCount": sum(counts[kind] for kind in chemistry_kinds),
         "chemistryEventKinds": chemistry_kinds,
+        "chemistryEventTimeline": chemistry_timeline,
         "manipulationEventCount": sum(
             counts[kind] for kind in MANIPULATION_PROGRESS_EVENTS
         ),
@@ -445,11 +457,13 @@ def validate_generated_solution(
             "eventCounts": {},
             "requiredChemistryEventKinds": sorted(required_event_kinds),
             "observedRequiredChemistryEventKinds": [],
+            "requiredChemistryEventTimeline": [],
             "distinctRequiredChemistryEventCount": 0,
             "requiredChemistryEventCount": 0,
             "distinctChemistryEventCount": 0,
             "chemistryEventCount": 0,
             "chemistryEventKinds": [],
+            "chemistryEventTimeline": [],
             "manipulationEventCount": 0,
         }
     base_timeline = build_program_timeline(solution)
