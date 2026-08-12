@@ -20,6 +20,7 @@ def record(sha, *, cycles, cost, area, instructions, mechanism="m1", structure="
         "armCount": 1,
         "cycleSlots": cycles,
         "instructionCount": instructions,
+        "architectureSignature": {"archetype": "balanced-cell" if mechanism == "m1" else "single-arm-sequential"},
         "canonicalStructuralHash": structure,
         "canonicalMechanismHash": mechanism,
     }
@@ -61,6 +62,7 @@ def test_build_solver_index_groups_mechanisms_and_tracks_best_variants():
     first = next(item for item in puzzle["mechanisms"] if item["canonicalMechanismHash"] == "m1")
     assert first["solutionCount"] == 2
     assert first["structuralVariantCount"] == 2
+    assert first["architectureArchetypes"] == ["balanced-cell"]
     assert first["bestByMetric"]["cycles"]["sha256"] == "b"
     assert first["bestByMetric"]["cost"]["sha256"] == "a"
     assert first["bestByMetric"]["area"]["sha256"] == "b"

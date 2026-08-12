@@ -75,6 +75,11 @@ def build_solver_index(analysis: dict[str, Any]) -> dict[str, Any]:
         mechanisms = []
         for mechanism_hash, mechanism_records in sorted(mechanisms_by_hash.items()):
             frontier_records = pareto_frontier(mechanism_records)
+            archetypes = sorted({
+                str(record.get("architectureSignature", {}).get("archetype"))
+                for record in mechanism_records
+                if record.get("architectureSignature", {}).get("archetype")
+            })
             best_by_metric = {}
             for metric in METRIC_NAMES:
                 candidates = [record for record in mechanism_records if _metric_value(record, metric) is not None]
@@ -93,6 +98,7 @@ def build_solver_index(analysis: dict[str, Any]) -> dict[str, Any]:
                 "partCount": _range(mechanism_records, "partCount"),
                 "cycleSlots": _range(mechanism_records, "cycleSlots"),
                 "instructionCount": _range(mechanism_records, "instructionCount"),
+                "architectureArchetypes": archetypes,
                 "bestByMetric": best_by_metric,
                 "paretoFrontier": [_solution_ref(record) for record in frontier_records],
             })

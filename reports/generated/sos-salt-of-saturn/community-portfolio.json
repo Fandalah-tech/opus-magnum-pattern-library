@@ -1,0 +1,509 @@
+{
+  "schemaVersion": "0.1.0",
+  "summary": {
+    "solutionCount": 10,
+    "puzzleFiles": [
+      "SOS_Salt_of_Saturn_by_Vinegar"
+    ],
+    "archetypes": {
+      "balanced-cell": 4,
+      "parallel-throughput": 2,
+      "periodic-pipeline": 1,
+      "single-arm-sequential": 3
+    }
+  },
+  "bestByMetric": {
+    "cost": "Salt of Saturn by Vinegar_1746457110254567225_JUST ENOUGH .......AREA_Feraldok.solution",
+    "area": "Salt of Saturn by Vinegar_1745788611597189946_AGC_Kazyan.solution",
+    "cycles": "Salt of Saturn by Vinegar_1745723823500514482_RATE-ISH SUM-LIKE_mr_puzzel.solution",
+    "instructions": "Salt of Saturn by Vinegar_1746069968785187394_THE DUMBEST SUM4_Kazyan.solution"
+  },
+  "solutions": [
+    {
+      "name": "Salt of Saturn by Vinegar_1745697123521660548_NEW SOLUTION 1_Greenfield.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 107,
+        "cost": 410,
+        "area": 109,
+        "instructions": 155
+      },
+      "signature": {
+        "archetype": "balanced-cell",
+        "partCount": 34,
+        "armCount": 10,
+        "programmedArmCount": 10,
+        "trackCount": 4,
+        "pistonCount": 0,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 7,
+        "bonderCount": 2,
+        "unbonderCount": 7,
+        "programEntryCount": 121,
+        "programSpan": 43,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 8,
+          "arm2": 1,
+          "baron": 1,
+          "bonder": 2,
+          "glyph-calcification": 1,
+          "glyph-disposal": 1,
+          "glyph-duplication": 1,
+          "glyph-marker": 4,
+          "input": 2,
+          "out-std": 2,
+          "track": 4,
+          "unbonder": 7
+        },
+        "instructionTypes": {
+          "drop": 3,
+          "grab": 23,
+          "pivot_ccw": 5,
+          "pivot_cw": 11,
+          "reset": 20,
+          "rotate_ccw": 29,
+          "rotate_cw": 13,
+          "track_minus": 4,
+          "track_plus": 13
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1745708573002159248_COST (PISTON)_Greenfield.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 992,
+        "cost": 90,
+        "area": 63,
+        "instructions": 170
+      },
+      "signature": {
+        "archetype": "single-arm-sequential",
+        "partCount": 10,
+        "armCount": 1,
+        "programmedArmCount": 1,
+        "trackCount": 1,
+        "pistonCount": 1,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 2,
+        "bonderCount": 1,
+        "unbonderCount": 1,
+        "programEntryCount": 167,
+        "programSpan": 167,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "bonder": 1,
+          "glyph-disposal": 1,
+          "glyph-duplication": 1,
+          "input": 2,
+          "out-std": 2,
+          "piston": 1,
+          "track": 1,
+          "unbonder": 1
+        },
+        "instructionTypes": {
+          "drop": 16,
+          "extend": 21,
+          "grab": 17,
+          "pivot_ccw": 16,
+          "pivot_cw": 6,
+          "reset": 1,
+          "retract": 20,
+          "rotate_ccw": 26,
+          "rotate_cw": 31,
+          "track_minus": 7,
+          "track_plus": 6
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1745723823500514482_RATE-ISH SUM-LIKE_mr_puzzel.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 53,
+        "cost": 310,
+        "area": 145,
+        "instructions": 100
+      },
+      "signature": {
+        "archetype": "periodic-pipeline",
+        "partCount": 24,
+        "armCount": 7,
+        "programmedArmCount": 7,
+        "trackCount": 0,
+        "pistonCount": 0,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 4,
+        "bonderCount": 2,
+        "unbonderCount": 7,
+        "programEntryCount": 50,
+        "programSpan": 34,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 6,
+        "partTypes": {
+          "arm1": 6,
+          "arm6": 1,
+          "bonder": 1,
+          "bonder-speed": 1,
+          "glyph-calcification": 1,
+          "glyph-disposal": 1,
+          "glyph-duplication": 2,
+          "input": 2,
+          "out-std": 2,
+          "unbonder": 7
+        },
+        "instructionTypes": {
+          "drop": 2,
+          "grab": 8,
+          "pivot_ccw": 7,
+          "pivot_cw": 1,
+          "repeat": 6,
+          "reset": 6,
+          "rotate_ccw": 15,
+          "rotate_cw": 5
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1745788611597189946_AGC_Kazyan.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 2073,
+        "cost": 90,
+        "area": 25,
+        "instructions": 2094
+      },
+      "signature": {
+        "archetype": "single-arm-sequential",
+        "partCount": 9,
+        "armCount": 1,
+        "programmedArmCount": 1,
+        "trackCount": 0,
+        "pistonCount": 1,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 2,
+        "bonderCount": 1,
+        "unbonderCount": 1,
+        "programEntryCount": 2095,
+        "programSpan": 2095,
+        "periodOverrideCount": 1,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "bonder": 1,
+          "glyph-calcification": 1,
+          "glyph-duplication": 1,
+          "input": 2,
+          "out-std": 2,
+          "piston": 1,
+          "unbonder": 1
+        },
+        "instructionTypes": {
+          "drop": 299,
+          "extend": 227,
+          "grab": 299,
+          "period_override": 1,
+          "pivot_ccw": 96,
+          "pivot_cw": 98,
+          "retract": 226,
+          "rotate_ccw": 364,
+          "rotate_cw": 485
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1745843640109769820_RATE_Greenfield.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 76,
+        "cost": 2765,
+        "area": 1035,
+        "instructions": 454
+      },
+      "signature": {
+        "archetype": "parallel-throughput",
+        "partCount": 190,
+        "armCount": 79,
+        "programmedArmCount": 79,
+        "trackCount": 37,
+        "pistonCount": 0,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 16,
+        "bonderCount": 23,
+        "unbonderCount": 31,
+        "programEntryCount": 332,
+        "programSpan": 85,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 77,
+          "arm2": 2,
+          "bonder": 23,
+          "glyph-calcification": 4,
+          "glyph-duplication": 4,
+          "glyph-marker": 8,
+          "input": 2,
+          "out-std": 2,
+          "track": 37,
+          "unbonder": 31
+        },
+        "instructionTypes": {
+          "drop": 4,
+          "grab": 83,
+          "pivot_ccw": 11,
+          "pivot_cw": 15,
+          "reset": 79,
+          "rotate_ccw": 24,
+          "rotate_cw": 50,
+          "track_plus": 66
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1745978360149935959_NEW SOLUTION 1_crazybot27.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 61,
+        "cost": 330,
+        "area": 122,
+        "instructions": 36
+      },
+      "signature": {
+        "archetype": "balanced-cell",
+        "partCount": 21,
+        "armCount": 10,
+        "programmedArmCount": 9,
+        "trackCount": 1,
+        "pistonCount": 0,
+        "inputCount": 1,
+        "outputCount": 2,
+        "glyphCount": 2,
+        "bonderCount": 0,
+        "unbonderCount": 5,
+        "programEntryCount": 31,
+        "programSpan": 14,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 5,
+          "arm3": 4,
+          "baron": 1,
+          "glyph-disposal": 1,
+          "glyph-duplication": 1,
+          "input": 1,
+          "out-std": 2,
+          "track": 1,
+          "unbonder": 5
+        },
+        "instructionTypes": {
+          "drop": 4,
+          "grab": 9,
+          "pivot_cw": 2,
+          "reset": 5,
+          "rotate_ccw": 3,
+          "rotate_cw": 7,
+          "track_plus": 1
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1746069539360139187_#JUST-RI-THINGS_Kazyan.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 239,
+        "cost": 1970,
+        "area": 859,
+        "instructions": 115
+      },
+      "signature": {
+        "archetype": "parallel-throughput",
+        "partCount": 107,
+        "armCount": 34,
+        "programmedArmCount": 33,
+        "trackCount": 4,
+        "pistonCount": 2,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 22,
+        "bonderCount": 15,
+        "unbonderCount": 28,
+        "programEntryCount": 117,
+        "programSpan": 228,
+        "periodOverrideCount": 2,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 16,
+          "arm3": 2,
+          "arm6": 13,
+          "baron": 1,
+          "bonder": 12,
+          "bonder-speed": 3,
+          "glyph-calcification": 10,
+          "glyph-disposal": 1,
+          "glyph-duplication": 11,
+          "input": 2,
+          "out-std": 2,
+          "piston": 2,
+          "track": 4,
+          "unbonder": 28
+        },
+        "instructionTypes": {
+          "drop": 30,
+          "extend": 2,
+          "grab": 33,
+          "period_override": 2,
+          "retract": 2,
+          "rotate_ccw": 19,
+          "rotate_cw": 24,
+          "track_minus": 1,
+          "track_plus": 4
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1746069968785187394_THE DUMBEST SUM4_Kazyan.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 83,
+        "cost": 165,
+        "area": 109,
+        "instructions": 15
+      },
+      "signature": {
+        "archetype": "balanced-cell",
+        "partCount": 14,
+        "armCount": 4,
+        "programmedArmCount": 4,
+        "trackCount": 1,
+        "pistonCount": 0,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 1,
+        "bonderCount": 1,
+        "unbonderCount": 3,
+        "programEntryCount": 15,
+        "programSpan": 53,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 3,
+          "arm6": 1,
+          "bonder": 1,
+          "glyph-duplication": 1,
+          "input": 2,
+          "out-std": 2,
+          "track": 1,
+          "unbonder": 3
+        },
+        "instructionTypes": {
+          "drop": 3,
+          "grab": 4,
+          "pivot_ccw": 1,
+          "pivot_cw": 2,
+          "rotate_ccw": 1,
+          "track_minus": 2,
+          "track_plus": 2
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1746138701880253535_THE DUMBEST SUM4_Kazyan.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 95,
+        "cost": 145,
+        "area": 84,
+        "instructions": 19
+      },
+      "signature": {
+        "archetype": "balanced-cell",
+        "partCount": 13,
+        "armCount": 4,
+        "programmedArmCount": 4,
+        "trackCount": 1,
+        "pistonCount": 0,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 1,
+        "bonderCount": 1,
+        "unbonderCount": 2,
+        "programEntryCount": 19,
+        "programSpan": 56,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 4,
+          "bonder": 1,
+          "glyph-duplication": 1,
+          "input": 2,
+          "out-std": 2,
+          "track": 1,
+          "unbonder": 2
+        },
+        "instructionTypes": {
+          "drop": 3,
+          "grab": 4,
+          "pivot_ccw": 2,
+          "pivot_cw": 2,
+          "rotate_ccw": 2,
+          "rotate_cw": 2,
+          "track_minus": 2,
+          "track_plus": 2
+        }
+      }
+    },
+    {
+      "name": "Salt of Saturn by Vinegar_1746457110254567225_JUST ENOUGH .......AREA_Feraldok.solution",
+      "puzzleFile": "SOS_Salt_of_Saturn_by_Vinegar",
+      "metrics": {
+        "cycles": 1722,
+        "cost": 50,
+        "area": 3701,
+        "instructions": 1722
+      },
+      "signature": {
+        "archetype": "single-arm-sequential",
+        "partCount": 8,
+        "armCount": 1,
+        "programmedArmCount": 1,
+        "trackCount": 1,
+        "pistonCount": 0,
+        "inputCount": 2,
+        "outputCount": 2,
+        "glyphCount": 0,
+        "bonderCount": 1,
+        "unbonderCount": 1,
+        "programEntryCount": 1603,
+        "programSpan": 1722,
+        "periodOverrideCount": 0,
+        "repeatMarkerCount": 0,
+        "partTypes": {
+          "arm1": 1,
+          "bonder": 1,
+          "input": 2,
+          "out-std": 2,
+          "track": 1,
+          "unbonder": 1
+        },
+        "instructionTypes": {
+          "drop": 188,
+          "grab": 276,
+          "pivot_ccw": 165,
+          "pivot_cw": 104,
+          "reset": 88,
+          "rotate_ccw": 317,
+          "rotate_cw": 268,
+          "track_minus": 115,
+          "track_plus": 82
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+OPUS MAGNUM — SOLUTION PORTFOLIO ANALYSIS
+
+Solutions: 10
+Archetypes: {'balanced-cell': 4, 'parallel-throughput': 2, 'periodic-pipeline': 1, 'single-arm-sequential': 3}
+
+Best stored metrics:
+- cost: Salt of Saturn by Vinegar_1746457110254567225_JUST ENOUGH .......AREA_Feraldok.solution
+- area: Salt of Saturn by Vinegar_1745788611597189946_AGC_Kazyan.solution
+- cycles: Salt of Saturn by Vinegar_1745723823500514482_RATE-ISH SUM-LIKE_mr_puzzel.solution
+- instructions: Salt of Saturn by Vinegar_1746069968785187394_THE DUMBEST SUM4_Kazyan.solution
+
+Architectures:
+- Salt of Saturn by Vinegar_1745697123521660548_NEW SOLUTION 1_Greenfield.solution
+  metrics: cost=410 area=109 cycles=107 instructions=155
+  archetype: balanced-cell; parts=34; arms=10; tracks=4; pistons=0
+  program: entries=121; span=43; repeats=0; period-overrides=0
+- Salt of Saturn by Vinegar_1745708573002159248_COST (PISTON)_Greenfield.solution
+  metrics: cost=90 area=63 cycles=992 instructions=170
+  archetype: single-arm-sequential; parts=10; arms=1; tracks=1; pistons=1
+  program: entries=167; span=167; repeats=0; period-overrides=0
+- Salt of Saturn by Vinegar_1745723823500514482_RATE-ISH SUM-LIKE_mr_puzzel.solution
+  metrics: cost=310 area=145 cycles=53 instructions=100
+  archetype: periodic-pipeline; parts=24; arms=7; tracks=0; pistons=0
+  program: entries=50; span=34; repeats=6; period-overrides=0
+- Salt of Saturn by Vinegar_1745788611597189946_AGC_Kazyan.solution
+  metrics: cost=90 area=25 cycles=2073 instructions=2094
+  archetype: single-arm-sequential; parts=9; arms=1; tracks=0; pistons=1
+  program: entries=2095; span=2095; repeats=0; period-overrides=1
+- Salt of Saturn by Vinegar_1745843640109769820_RATE_Greenfield.solution
+  metrics: cost=2765 area=1035 cycles=76 instructions=454
+  archetype: parallel-throughput; parts=190; arms=79; tracks=37; pistons=0
+  program: entries=332; span=85; repeats=0; period-overrides=0
+- Salt of Saturn by Vinegar_1745978360149935959_NEW SOLUTION 1_crazybot27.solution
+  metrics: cost=330 area=122 cycles=61 instructions=36
+  archetype: balanced-cell; parts=21; arms=10; tracks=1; pistons=0
+  program: entries=31; span=14; repeats=0; period-overrides=0
+- Salt of Saturn by Vinegar_1746069539360139187_#JUST-RI-THINGS_Kazyan.solution
+  metrics: cost=1970 area=859 cycles=239 instructions=115
+  archetype: parallel-throughput; parts=107; arms=34; tracks=4; pistons=2
+  program: entries=117; span=228; repeats=0; period-overrides=2
+- Salt of Saturn by Vinegar_1746069968785187394_THE DUMBEST SUM4_Kazyan.solution
+  metrics: cost=165 area=109 cycles=83 instructions=15
+  archetype: balanced-cell; parts=14; arms=4; tracks=1; pistons=0
+  program: entries=15; span=53; repeats=0; period-overrides=0
+- Salt of Saturn by Vinegar_1746138701880253535_THE DUMBEST SUM4_Kazyan.solution
+  metrics: cost=145 area=84 cycles=95 instructions=19
+  archetype: balanced-cell; parts=13; arms=4; tracks=1; pistons=0
+  program: entries=19; span=56; repeats=0; period-overrides=0
+- Salt of Saturn by Vinegar_1746457110254567225_JUST ENOUGH .......AREA_Feraldok.solution
+  metrics: cost=50 area=3701 cycles=1722 instructions=1722
+  archetype: single-arm-sequential; parts=8; arms=1; tracks=1; pistons=0
+  program: entries=1603; span=1722; repeats=0; period-overrides=0
