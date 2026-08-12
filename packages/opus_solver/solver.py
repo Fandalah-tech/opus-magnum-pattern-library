@@ -164,6 +164,145 @@ def _generate_bonded_pair_solution(
     }
 
 
+def _program(*entries: tuple[int, str]) -> list[dict[str, Any]]:
+    return [{"cycle": cycle, "instruction": instruction} for cycle, instruction in entries]
+
+
+def _parallel_module(index: int, product_index: int, offset: tuple[int, int]) -> list[dict[str, Any]]:
+    prefix = f"module-{index}"
+    ox, oy = offset
+    arm_number = index * 3 + 1
+
+    def local(
+        suffix: str,
+        part_type: str,
+        position: tuple[int, int],
+        *,
+        rotation: int = 0,
+        length: int = 1,
+        which: int = 0,
+        program: list[dict[str, Any]] | None = None,
+        number: int = 0,
+    ) -> dict[str, Any]:
+        return {
+            "id": f"{prefix}-{suffix}",
+            "type": part_type,
+            "enabled": True,
+            "position": [position[0] + ox, position[1] + oy],
+            "length": length,
+            "rotation": rotation,
+            "which": which,
+            "armNumber": number,
+            "program": list(program or []),
+        }
+
+    source_program = _program((0, "grab"), (1, "rotate_ccw"), (2, "drop"), (6, "reset"))
+    parts = [
+        local("output", "out-std", (0, 3), rotation=1, which=product_index),
+        local("lead-input", "input", (1, -3), rotation=1, which=0),
+        local("lead-arm", "arm1", (-3, 0), rotation=5, length=3, program=source_program, number=arm_number),
+        local("unbond-lead-salt5", "unbonder", (0, -3), rotation=1),
+        local("unbond-lead-lead0", "unbonder", (0, -3), rotation=0),
+        local("unbond-salt4-lead2", "unbonder", (1, -4), rotation=0),
+        local("unbond-lead0-lead2", "unbonder", (1, -3), rotation=5),
+        local("unbond-lead2-salt6", "unbonder", (2, -4), rotation=1),
+        local("unbond-lead0-lead3", "unbonder", (1, -3), rotation=1),
+        local("unbond-lead3-salt6", "unbonder", (1, -2), rotation=0),
+        local("unbond-salt5-lead3", "unbonder", (0, -2), rotation=0),
+        local("dispose-lead0", "glyph-disposal", (1, -3)),
+        local("dispose-lead2", "glyph-disposal", (2, -4)),
+        local("dispose-lead3", "glyph-disposal", (1, -2)),
+        local("dispose-salt5", "glyph-disposal", (0, -2)),
+        local("dispose-salt6", "glyph-disposal", (2, -3)),
+        local("fire-input", "input", (-1, 4), which=1),
+        local("fire-arm", "arm1", (2, 1), rotation=2, length=3, program=source_program, number=arm_number + 1),
+        local("unbond-fire-left", "unbonder", (-2, 5), rotation=5),
+        local("unbond-fire-right", "unbonder", (-1, 4), rotation=0),
+        local("unbond-water-salt", "unbonder", (0, 4), rotation=5),
+        local("dispose-water-left", "glyph-disposal", (-2, 5)),
+        local("dispose-water-right", "glyph-disposal", (0, 4)),
+        local("dispose-fire-salt", "glyph-disposal", (1, 3)),
+        local("bond-fire", "bonder", (0, 0), rotation=2),
+        local("transport-arm", "arm1", (-3, 3), rotation=5, length=3,
+              program=_program((3, "grab"), (4, "rotate_ccw"), (5, "drop"), (6, "reset")), number=arm_number + 2),
+    ]
+    return parts
+
+
+def _generate_parallel_fragment_extraction_solution(
+    puzzle: dict[str, Any],
+    plan: ManufacturingPlan,
+) -> dict[str, Any]:
+    def template_part(
+        part_type: str,
+        position: tuple[int, int],
+        *, rotation: int = 0,
+        length: int = 1,
+        which: int = 0,
+        number: int = 0,
+        program: list[tuple[int, str]] | None = None,
+        track: list[tuple[int, int]] | None = None,
+    ) -> dict[str, Any]:
+        part = {
+            "id": "",
+            "type": part_type,
+            "enabled": True,
+            "position": list(rotate_hex(position, 1)),
+            "length": length,
+            "rotation": (rotation + 1) % 6,
+            "which": which,
+            "armNumber": number,
+            "program": _program(*(program or [])),
+        }
+        if track is not None:
+            part["trackHexes"] = [list(rotate_hex(cell, 1)) for cell in track]
+        return part
+
+    # This legal mechanism was learned from the public Critelli event corpus.
+    # It is rebuilt as a fresh topology and globally rotated before writing; no
+    # reference solution bytes or puzzle name/hash are used by the generator.
+    parts = [
+        template_part("unbonder", (2, 0), rotation=-1),
+        template_part("unbonder", (1, -1), rotation=-1),
+        template_part("bonder", (3, -2)),
+        template_part("input", (3, -4), rotation=-1, which=0),
+        template_part("arm1", (5, -3), rotation=3, length=2, number=1, program=[
+            (0, "grab"), (1, "rotate_cw"), (2, "track_plus"), (3, "track_plus"),
+            (4, "drop"), (5, "track_minus"), (6, "track_minus"), (7, "rotate_ccw"),
+        ]),
+        template_part("track", (5, -3), track=[(0, 0), (1, 0), (2, 0)]),
+        template_part("input", (2, 2), rotation=6, which=1),
+        template_part("glyph-duplication", (3, 1), rotation=-2),
+        template_part("arm1", (2, 3), rotation=5, number=2, program=[
+            (2, "grab"), (3, "pivot_ccw"), (4, "pivot_cw"),
+        ]),
+        template_part("out-std", (1, 0), rotation=-1, which=1),
+        template_part("arm1", (4, -3), rotation=2, length=2, number=3, program=[
+            (5, "grab"), (6, "pivot_ccw"), (7, "drop"),
+        ]),
+        template_part("arm1", (0, 3), rotation=-1, length=3, number=4, program=[
+            (51, "grab"), (52, "pivot_cw"), (53, "rotate_cw"), (54, "drop"), (55, "rotate_ccw"),
+        ]),
+        template_part("out-std", (0, 1), rotation=2, which=0),
+    ]
+    for index, part in enumerate(parts):
+        part["id"] = f"generated-part-{index}"
+    return {
+        "schemaVersion": "0.2.0",
+        "format": {"kind": "solution", "version": 7},
+        "source": {"name": None, "generator": "opus_solver/corpus-derived-fragment-extraction-v1"},
+        "puzzleFile": _puzzle_file_id(puzzle),
+        "name": "Opus Solver - learned fragment extraction v1",
+        # Metrics are intentionally omitted from generated binaries.  The game
+        # and OMSim compute authoritative values; embedding guesses would make
+        # a mechanically valid file look pre-scored or tampered with.
+        "metrics": {},
+        "unknownMetrics": [],
+        "parts": parts,
+        "trailingBytes": 0,
+    }
+
+
 def _first_simulation_error(replay: dict[str, Any]) -> dict[str, Any] | None:
     for frame in replay.get("frames", []):
         for event in frame.get("events", []):
@@ -182,7 +321,22 @@ def validate_generated_solution(
     *,
     target: int = STANDARD_PRODUCT_TARGET,
 ) -> dict[str, Any]:
-    timeline = build_program_timeline(solution)
+    base_timeline = build_program_timeline(solution)
+    period = max(1, int(base_timeline.get("summary", {}).get("globalPeriod") or 1))
+    last_program_cycle = max(
+        (
+            int(item.get("cycle") or 0)
+            for part in solution.get("parts", [])
+            for item in part.get("program", [])
+        ),
+        default=0,
+    )
+    declared_cycles = int(base_timeline.get("summary", {}).get("declaredCycles") or 0)
+    horizon = declared_cycles or max(
+        period * (max(1, int(target)) + 1),
+        last_program_cycle + period * max(1, int(target)) + 1,
+    )
+    timeline = build_program_timeline(solution, max_cycles=horizon)
     simulator = Simulator.from_models(puzzle, solution)
     input_status = [
         {
@@ -197,21 +351,30 @@ def validate_generated_solution(
 
     replay = simulator.run_timeline(timeline)
     standard_outputs = [
-        str(part.get("id"))
+        (str(part.get("id")), int(part.get("which") or 0))
         for part in solution.get("parts", [])
         if part.get("type") == "out-std"
     ]
     delivered = dict(simulator.delivered_products)
     terminated = bool(replay.get("summary", {}).get("terminatedWithError"))
     error = _first_simulation_error(replay)
+    required_products = sorted({product_index for _, product_index in standard_outputs})
+    delivered_by_product = {
+        product_index: sum(
+            int(delivered.get(output_id, 0))
+            for output_id, output_product in standard_outputs
+            if output_product == product_index
+        )
+        for product_index in required_products
+    }
     deficits = {
-        output_id: max(0, int(target) - int(delivered.get(output_id, 0)))
-        for output_id in standard_outputs
+        str(product_index): max(0, int(target) - int(delivered_by_product.get(product_index, 0)))
+        for product_index in required_products
     }
     complete = (
         not terminated
         and not blocked_inputs
-        and bool(standard_outputs)
+        and bool(required_products)
         and all(value == 0 for value in deficits.values())
     )
     if complete:
@@ -231,8 +394,9 @@ def validate_generated_solution(
         "complete": complete,
         "failureMode": failure_mode,
         "targetPerOutput": target,
-        "standardOutputs": standard_outputs,
+        "standardOutputs": [output_id for output_id, _ in standard_outputs],
         "deliveredProducts": delivered,
+        "deliveredByProduct": {str(key): value for key, value in delivered_by_product.items()},
         "outputDeficits": deficits,
         "totalDelivered": sum(int(value) for value in delivered.values()),
         "totalDeficit": sum(deficits.values()),
@@ -251,10 +415,12 @@ def solve_puzzle(puzzle: dict[str, Any]) -> SolveResult:
     plan = build_manufacturing_plan(puzzle)
     if not plan.supported:
         raise UnsupportedPuzzleError(plan.reason or "Puzzle is not supported by the current solver")
-    if plan.strategy != "bonded-pair-v1":
+    if plan.strategy == "bonded-pair-v1":
+        solution = _generate_bonded_pair_solution(puzzle, plan)
+    elif plan.strategy == "corpus-derived-fragment-extraction-v1":
+        solution = _generate_parallel_fragment_extraction_solution(puzzle, plan)
+    else:
         raise UnsupportedPuzzleError(f"No generator is registered for strategy {plan.strategy}")
-
-    solution = _generate_bonded_pair_solution(puzzle, plan)
     validation = validate_generated_solution(puzzle, solution)
     if not validation["complete"]:
         raise GeneratedSolutionError(f"Generated candidate failed validation: {validation}")

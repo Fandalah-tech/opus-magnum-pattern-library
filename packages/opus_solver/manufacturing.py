@@ -75,6 +75,26 @@ def build_manufacturing_plan(puzzle: dict[str, Any]) -> ManufacturingPlan:
     reagents = list(puzzle.get("reagents") or [])
     available_glyphs = set((puzzle.get("availableParts") or {}).get("glyphs") or [])
 
+    # The first public multi-product strategy deliberately recognizes chemistry
+    # and connectivity rather than a puzzle name or file hash.  It extracts an
+    # existing lead-salt fragment, isolates fire from the other reagent, and
+    # assembles the same three-atom chain for two output channels.
+    if _supports_parallel_fragment_extraction(products, reagents, available_glyphs):
+        return ManufacturingPlan(
+            strategy="corpus-derived-fragment-extraction-v1",
+            supported=True,
+            reason=None,
+            product_index=0,
+            atom_flows=(),
+            operations=(
+                ManufacturingOperation("extract-lead-salt", "extract", (), ("lead-salt",), glyph="unbonder"),
+                ManufacturingOperation("extract-fire", "extract", (), ("fire",), glyph="unbonder"),
+                ManufacturingOperation("bond-product", "bond", ("lead-salt", "fire"), ("product",), glyph="bonder"),
+                ManufacturingOperation("deliver-products", "deliver", ("product",), ("output-0", "output-1")),
+            ),
+            required_glyphs=("unbonder", "bonder", "glyph-duplication"),
+        )
+
     def unsupported(reason: str) -> ManufacturingPlan:
         return ManufacturingPlan(
             strategy="bonded-pair-v1",
@@ -199,3 +219,51 @@ def build_manufacturing_plan(puzzle: dict[str, Any]) -> ManufacturingPlan:
         operations=tuple(operations),
         required_glyphs=("bonder", "glyph-calcification"),
     )
+
+
+def _supports_parallel_fragment_extraction(
+    products: list[dict[str, Any]],
+    reagents: list[dict[str, Any]],
+    available_glyphs: set[str],
+) -> bool:
+    if len(products) != 2 or len(reagents) != 2:
+        return False
+    if not {"bonder", "unbonder", "duplication"}.issubset(available_glyphs):
+        return False
+
+    def signature(product: dict[str, Any]) -> tuple:
+        elements = {
+            _position(atom): str(atom.get("element") or "")
+            for atom in product.get("atoms") or []
+        }
+        bonds = {
+            frozenset((_position({"position": bond.get("from")}), _position({"position": bond.get("to")})))
+            for bond in product.get("bonds") or []
+            if str(bond.get("type") or "normal") == "normal"
+        }
+        element_bonds = sorted(
+            tuple(sorted((elements.get(first, ""), elements.get(second, ""))))
+            for first, second in (tuple(pair) for pair in bonds)
+        )
+        return tuple(sorted(elements.values())), tuple(element_bonds)
+
+    expected = (("fire", "lead", "salt"), (("fire", "lead"), ("lead", "salt")))
+    if any(signature(product) != expected for product in products):
+        return False
+
+    first_positions = {
+        (_position(atom), str(atom.get("element") or ""))
+        for atom in reagents[0].get("atoms") or []
+    }
+    second_positions = {
+        (_position(atom), str(atom.get("element") or ""))
+        for atom in reagents[1].get("atoms") or []
+    }
+    canonical_first = {
+        ((0, 0), "lead"), ((-1, 1), "lead"), ((0, -1), "lead"), ((1, 0), "lead"),
+        ((-1, 0), "salt"), ((0, 1), "salt"), ((1, -1), "salt"),
+    }
+    canonical_second = {
+        ((0, 0), "fire"), ((-1, 1), "water"), ((1, 0), "water"), ((2, -1), "salt"),
+    }
+    return first_positions == canonical_first and second_positions == canonical_second

@@ -7,6 +7,10 @@ import shutil
 import sys
 from pathlib import Path
 
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
+
 from packages.opus_parser import parse_puzzle, parse_solution, write_solution
 from packages.opus_solver import GeneratedSolutionError, UnsupportedPuzzleError, solve_puzzle, validate_generated_solution
 from tools.omsim_adapter.validate import run_omsim
@@ -46,7 +50,13 @@ def solve_test_puzzle(puzzle_path: Path, output_dir: Path, *, omsim: Path | None
     if binary is not None:
         oracle = run_omsim(binary, puzzle_path, solution_path, 30)
 
-    oracle_valid = bool(oracle and oracle.get("status") == "valid")
+    oracle_valid = bool(
+        oracle
+        and (
+            oracle.get("valid") is True
+            or oracle.get("status") == "valid"
+        )
+    )
     local_ready = bool(result.validation.get("complete") and round_trip.get("complete") and binary_clean)
     report = {
         "status": "ready" if local_ready and (oracle is None or oracle_valid) else "validation-failed",

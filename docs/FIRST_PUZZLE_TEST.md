@@ -16,6 +16,10 @@ The intake pipeline:
 6. runs OMSim when an `omsim` executable is on `PATH` or supplied with `--omsim`;
 7. writes `<puzzle>-auto.solution` and `<puzzle>-solver-report.json`.
 
-The first registered autonomous strategy is `bonded-pair-v1`: a two-atom normal-bond product made from two single-atom reagents, with one reagent transformed through calcification. Unsupported puzzles produce a structured report and remain available for the next solver strategy instead of being mistaken for engine failures.
+The first registered autonomous strategy is `bonded-pair-v1`: a two-atom normal-bond product made from two single-atom reagents, with one reagent transformed through calcification.
+
+The first public corpus-derived strategy is `corpus-derived-fragment-extraction-v1`. It recognizes the reagent/product topology of the Critelli “Salt of Saturn by Vinegar” exercise, rebuilds a learned legal mechanism with fresh part identities, applies a global geometric transformation, and requires both local round-trip validation and OMSim validation. This is reported as corpus-derived reuse, not as an independently discovered architecture.
+
+Unsupported puzzles produce a structured report and remain available for the next solver strategy instead of being mistaken for engine failures.
 
 Acceptance is covered by `tests/test_solve_test_puzzle.py` and the native fixture `samples/solver/P007.puzzle`.
