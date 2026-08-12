@@ -114,6 +114,9 @@ class Simulator(FinalSimulator):
             self._process_division()
             self._process_unification()
             self._process_proliferation()
+            self._capture_conduits()
+        else:
+            self._emit_conduits()
         self._latch_repeating_outputs()
         self._process_consumers()
 

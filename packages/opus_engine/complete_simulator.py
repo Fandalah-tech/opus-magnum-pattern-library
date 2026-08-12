@@ -6,7 +6,7 @@ from .builder import rotate_hex
 from .faithful_simulator import Simulator as FaithfulSimulator
 from .model import Atom, Bond
 from .runtime_simulator import METAL_ORDER
-from .simulator import GRAB, Simulator as BaseSimulator
+from .simulator import GRAB, SimulationError, Simulator as BaseSimulator
 from .world import WorldEvent
 
 
@@ -31,6 +31,8 @@ class Simulator(FaithfulSimulator):
         self.division_glyphs = []
         self.unification_glyphs = []
         self.proliferation_glyphs = []
+        self.conduit_pairs = []
+        self._pending_conduit_payloads = []
         super().__post_init__()
 
     @classmethod
@@ -38,11 +40,15 @@ class Simulator(FaithfulSimulator):
         simulator = super().from_models(puzzle, solution)
         simulator.purification_glyphs = []
         products = puzzle.get("products", [])
+        pipe_parts = []
         for part in solution.get("parts", []):
             part_type = str(part.get("type") or "")
             origin = tuple(part.get("position") or (0, 0))
             rotation = int(part.get("rotation") or 0)
             part_id = str(part.get("id") or part_type)
+            if part_type == "pipe":
+                pipe_parts.append(part)
+                continue
             if part_type == "glyph-life-and-death":
                 simulator.animismus_glyphs.append((
                     _transform((0, 0), origin, rotation),
@@ -119,7 +125,92 @@ class Simulator(FaithfulSimulator):
                 simulator.repeating_patterns.append((
                     part_id, origin, rotation, anchor_local, repeat_local, shift, atoms, bonds,
                 ))
+        pipes_by_id = {}
+        for part in pipe_parts:
+            pipes_by_id.setdefault(int(part.get("pipeId") or 0), []).append(part)
+        for pipe_id, sides in pipes_by_id.items():
+            if len(sides) != 2:
+                continue
+            parsed_sides = []
+            for part in sides:
+                origin = tuple(part.get("position") or (0, 0))
+                rotation = int(part.get("rotation") or 0)
+                cells = tuple(tuple(cell) for cell in (part.get("pipeHexes") or [(0, 0)]))
+                parsed_sides.append({
+                    "id": str(part.get("id") or f"pipe-{pipe_id}"),
+                    "origin": origin,
+                    "rotation": rotation,
+                    "localCells": cells,
+                    "worldCells": frozenset(_transform(cell, origin, rotation) for cell in cells),
+                })
+            simulator.conduit_pairs.append((parsed_sides[0], parsed_sides[1]))
         return simulator
+
+    @staticmethod
+    def _conduit_local(position, side):
+        relative = (position[0] - side["origin"][0], position[1] - side["origin"][1])
+        return rotate_hex(relative, -side["rotation"])
+
+    def _capture_conduit_direction(self, source, target) -> None:
+        for molecule in list(self.world.molecules()):
+            atom_ids = set(molecule.atom_ids)
+            positions = {self.world.atoms[atom_id].position for atom_id in atom_ids}
+            if not positions or not positions.issubset(source["worldCells"]):
+                continue
+            local_by_id = {
+                atom_id: self._conduit_local(self.world.atoms[atom_id].position, source)
+                for atom_id in atom_ids
+            }
+            payload = {
+                "sourcePartId": source["id"],
+                "targetPartId": target["id"],
+                "atoms": [(atom_id, self.world.atoms[atom_id].element, local_by_id[atom_id]) for atom_id in sorted(atom_ids)],
+                "bonds": [
+                    (bond.a, bond.b, bond.kind)
+                    for bond in self.world.bonds.values()
+                    if bond.a in atom_ids and bond.b in atom_ids
+                ],
+                "target": target,
+            }
+            self._pending_conduit_payloads.append(payload)
+            self._remove_molecule(atom_ids)
+            self.world.events.append(WorldEvent("molecule-entered-conduit", self.world.cycle, {
+                "conduitPartId": source["id"], "targetPartId": target["id"],
+                "atomIds": sorted(atom_ids),
+            }))
+
+    def _capture_conduits(self) -> None:
+        if self._pending_conduit_payloads:
+            return
+        for first, second in self.conduit_pairs:
+            self._capture_conduit_direction(first, second)
+            self._capture_conduit_direction(second, first)
+
+    def _emit_conduits(self) -> None:
+        pending = self._pending_conduit_payloads
+        self._pending_conduit_payloads = []
+        for payload in pending:
+            target = payload["target"]
+            id_map = {}
+            destinations = {
+                old_id: _transform(local, target["origin"], target["rotation"])
+                for old_id, _, local in payload["atoms"]
+            }
+            blocked = next((position for position in destinations.values() if self.world.atom_at(position) is not None), None)
+            if blocked is not None:
+                raise SimulationError(f"Conduit output collision at {blocked}")
+            for old_id, element, _ in payload["atoms"]:
+                atom_id = f"{target['id']}-conduit-{self._glyph_generation}"
+                self._glyph_generation += 1
+                id_map[old_id] = atom_id
+                self.world.add_atom(Atom(atom_id, element, destinations[old_id]))
+            for first, second, kind in payload["bonds"]:
+                self.world.add_bond(Bond(id_map[first], id_map[second], kind))
+            self.world.events.append(WorldEvent("molecule-exited-conduit", self.world.cycle, {
+                "conduitPartId": target["id"],
+                "sourcePartId": payload["sourcePartId"],
+                "atomIds": sorted(id_map.values()),
+            }))
 
     def _is_conversion_input(self, atom) -> bool:
         if atom is None or atom.held_by:
