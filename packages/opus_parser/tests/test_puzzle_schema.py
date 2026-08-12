@@ -85,6 +85,8 @@ def _assert_schema_shape(
     if isinstance(value, str):
         if "minLength" in schema:
             assert len(value) >= schema["minLength"], f"{path}: shorter than minLength"
+        if "maxLength" in schema:
+            assert len(value) <= schema["maxLength"], f"{path}: longer than maxLength"
         if "pattern" in schema:
             assert re.search(schema["pattern"], value), f"{path}: does not match pattern"
 
