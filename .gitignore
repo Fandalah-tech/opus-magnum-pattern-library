@@ -6,5 +6,7 @@ reports/generated/om2021-w1/**/solved/candidates/
 reports/generated/om2021-w1/**/solved/final/
 reports/generated/om2021-w1/**/solved/objective-portfolio-report.json
 reports/generated/om2021-w1/**/solved/OBJECTIVE_PORTFOLIO_REPORT.txt
+reports/generated/just-salt/**/candidates/
+reports/generated/just-salt/**/blind-transfer-report.json
 __pycache__/
 *.pyc

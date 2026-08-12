@@ -1,4 +1,11 @@
 from .assembly import rank_fragment_assemblies
+from .blind_transfer import (
+    BlindTransferCandidate,
+    BlindTransferContractError,
+    generate_blind_transfer_candidates,
+    puzzle_file_id,
+    validate_blind_transfer_contract,
+)
 from .candidate_search import (
     apply_schedule_group_offsets,
     enumerate_schedule_variants,
@@ -69,6 +76,8 @@ from .solver import (
 
 __all__ = [
     "AtomFlow",
+    "BlindTransferCandidate",
+    "BlindTransferContractError",
     "GeneratedSolutionError",
     "ManufacturingOperation",
     "ManufacturingPlan",
@@ -92,6 +101,7 @@ __all__ = [
     "enumerate_schedule_variants",
     "enumerate_transform_variants",
     "generate_composed_candidates",
+    "generate_blind_transfer_candidates",
     "generate_objective_candidates",
     "generation_outcome_records",
     "manufacturing_requirements",
@@ -106,6 +116,7 @@ __all__ = [
     "part_occupied_cells",
     "plan_puzzle_fragment_chains",
     "puzzle_similarity",
+    "puzzle_file_id",
     "rank_chains_for_manufacturing_plan",
     "rank_fragment_assemblies",
     "rank_fragment_chains",
@@ -122,5 +133,6 @@ __all__ = [
     "transform_slots",
     "transplant_geometry",
     "validate_generated_solution",
+    "validate_blind_transfer_contract",
     "validation_rank",
 ]

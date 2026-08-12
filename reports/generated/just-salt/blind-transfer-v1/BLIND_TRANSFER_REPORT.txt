@@ -1,0 +1,25 @@
+BLIND CROSS-PUZZLE MECHANISM TRANSFER
+======================================
+
+Target: JUST SALT (just-salt)
+Donor: INFINITE THROUGHPUT (infinite-throughput)
+Target solutions read: 0
+Candidates generated from donor fragments: 3
+OMSim-valid candidates: 2
+
+Accepted transfer
+-----------------
+Candidate: direct-transfer-002
+Donor parts: part-1, part-0, part-5
+Cost: 40
+Instructions: 4
+Cycles: 23
+Area: 3
+Solution: reports/generated/just-salt/blind-transfer-v1/blind-transfer.solution
+
+Protocol
+--------
+The generator accepts exactly one donor solution and rejects it unless
+its puzzle ID matches the donor and differs from the target. It has no
+target-solution-root input, so target solutions cannot enter retrieval,
+ranking, fragment extraction, or validation.
