@@ -175,3 +175,42 @@ def test_component_timing_oracle_outcomes_are_learned_compactly():
         "collision": 7,
         "cycle-limit": 5,
     }
+
+
+def test_global_chemistry_transplant_stage_is_learned_by_source_assembly():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [
+                {"sourceCandidateRank": 1, "sourceVariantIndex": 20},
+            ],
+            "searchedVariantCount": 1500,
+            "oraclePromotedVariantCount": 120,
+            "oracleStableActiveFullOperationVariantCount": 8,
+            "hasOracleStableActiveTransplant": True,
+            "oracleOutcomeCounts": {"collision": 112, "cycle-limit": 8},
+        },
+        "variants": [
+            {
+                "variantIndex": 511,
+                "sourceCandidateRank": 1,
+                "validation": {
+                    "complete": False,
+                    "totalDeficit": 6,
+                    "completedCycles": 160,
+                    "terminatedWithError": False,
+                },
+            },
+        ],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item for item in record["attempts"] if item["repair"] == "chemistry-transplant"
+    )
+
+    assert attempt["succeeded"] is False
+    assert attempt["stageSucceeded"] is True
+    assert attempt["oracleStableActiveVariantCount"] == 8
+    assert attempt["oracleOutcomeCounts"] == {"collision": 112, "cycle-limit": 8}
+    assert record["bestProgressSource"] == "chemistry-transplant"

@@ -23,6 +23,13 @@ from .chemistry_composition import (
     rank_chains_for_manufacturing_plan,
     required_flow_relations,
 )
+from .chemistry_transplant import (
+    arm_grab_sites,
+    enumerate_chemistry_transplants,
+    mechanical_fingerprint,
+    search_chemistry_transplant_candidates,
+    transplant_operation_coverage,
+)
 from .composition import build_composition_prior, rank_fragment_chains
 from .component_timing import (
     apply_component_timing_edit,
@@ -102,6 +109,7 @@ __all__ = [
     "UnsupportedPuzzleError",
     "aggregate_repair_outcomes",
     "analyze_layout_geometry",
+    "arm_grab_sites",
     "apply_forward_transform",
     "apply_inverse_transform",
     "apply_component_timing_edit",
@@ -116,12 +124,14 @@ __all__ = [
     "bounded_worker_count",
     "enumerate_schedule_variants",
     "enumerate_component_timing_variants",
+    "enumerate_chemistry_transplants",
     "enumerate_transform_variants",
     "generate_composed_candidates",
     "generate_blind_transfer_candidates",
     "generate_objective_candidates",
     "generation_outcome_records",
     "manufacturing_requirements",
+    "mechanical_fingerprint",
     "materialize_assembly_layout",
     "materialize_assembly_schedule",
     "materialize_candidate_layout",
@@ -147,6 +157,7 @@ __all__ = [
     "required_flow_relations",
     "search_geometric_candidates",
     "search_component_timing_candidates",
+    "search_chemistry_transplant_candidates",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",
     "select_objective_winners",
@@ -157,6 +168,7 @@ __all__ = [
     "transform_slots",
     "component_program_cutpoints",
     "transplant_geometry",
+    "transplant_operation_coverage",
     "validate_generated_solution",
     "validate_blind_transfer_contract",
     "validation_rank",

@@ -8,6 +8,7 @@ from .assembly import rank_fragment_assemblies
 from .candidate_search import search_temporal_candidates, validation_rank
 from .candidate_solution import build_candidate_solution, serialize_candidate_roundtrip
 from .chemistry_composition import manufacturing_requirements, rank_chains_for_manufacturing_plan
+from .chemistry_transplant import search_chemistry_transplant_candidates
 from .component_timing import search_component_timing_candidates, select_oracle_portfolio
 from .geometry_search import search_geometric_candidates
 from .layout import materialize_candidate_layout
@@ -86,6 +87,12 @@ def generate_composed_candidates(
     component_timing_oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
     component_timing_oracle_workers: int = 1,
     component_timing_global_result_limit: int = 0,
+    chemistry_transplant_variant_limit: int = 0,
+    chemistry_transplant_source_limit: int = 4,
+    chemistry_transplant_result_limit: int = 20,
+    chemistry_transplant_max_grab_cycles: int = 256,
+    chemistry_transplant_local_cycles: int = 160,
+    chemistry_transplant_oracle_promotion_limit: int = 120,
     chain_max_depth: int = 8,
     min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
@@ -106,6 +113,8 @@ def generate_composed_candidates(
                 "geometricCompleteCount": 0,
                 "componentTimingVariantCount": 0,
                 "componentTimingCompleteCount": 0,
+                "chemistryTransplantVariantCount": 0,
+                "chemistryTransplantOracleStableActiveCount": 0,
             },
             "candidates": [],
         }
@@ -291,8 +300,35 @@ def generate_composed_candidates(
             failure_modes["generation-error"] += 1
         results.append(record)
 
+    global_component_portfolio = (
+        _global_component_timing_portfolio(
+            results,
+            limit=component_timing_global_result_limit,
+        )
+        if component_timing_oracle_validator is not None
+        else None
+    )
+    chemistry_transplant_search = None
+    if (
+        chemistry_transplant_variant_limit > 0
+        and global_component_portfolio is not None
+    ):
+        chemistry_transplant_search = search_chemistry_transplant_candidates(
+            puzzle,
+            global_component_portfolio.get("variants", []),
+            source_limit=chemistry_transplant_source_limit,
+            variant_limit=chemistry_transplant_variant_limit,
+            result_limit=chemistry_transplant_result_limit,
+            max_grab_cycles=chemistry_transplant_max_grab_cycles,
+            local_cycles=chemistry_transplant_local_cycles,
+            oracle_promotion_limit=chemistry_transplant_oracle_promotion_limit,
+            oracle_validator=component_timing_oracle_validator,
+            oracle_workers=component_timing_oracle_workers,
+        )
+    chemistry_transplant_summary = (chemistry_transplant_search or {}).get("summary", {})
+
     return {
-        "schemaVersion": "0.6.0",
+        "schemaVersion": "0.7.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -306,6 +342,17 @@ def generate_composed_candidates(
             "componentTimingVariantCount": component_timing_variant_count,
             "componentTimingCompleteCount": component_timing_complete_count,
             "componentTimingOracleCompleteCount": component_timing_oracle_complete_count,
+            "chemistryTransplantVariantCount": int(
+                chemistry_transplant_summary.get("searchedVariantCount") or 0
+            ),
+            "chemistryTransplantOracleStableActiveCount": int(
+                chemistry_transplant_summary.get(
+                    "oracleStableActiveFullOperationVariantCount"
+                ) or 0
+            ),
+            "hasOracleStableActiveChemistryTransplant": bool(
+                chemistry_transplant_summary.get("hasOracleStableActiveTransplant")
+            ),
             "hasCompleteSolution": (
                 engine_complete_count > 0
                 or temporal_complete_count > 0
@@ -330,12 +377,19 @@ def generate_composed_candidates(
             "componentTimingOracleEnabled": component_timing_oracle_validator is not None,
             "componentTimingOracleWorkers": max(1, min(10, int(component_timing_oracle_workers))),
             "componentTimingGlobalResultLimit": max(0, int(component_timing_global_result_limit)),
+            "chemistryTransplantVariantLimit": max(0, int(chemistry_transplant_variant_limit)),
+            "chemistryTransplantSourceLimit": max(0, int(chemistry_transplant_source_limit)),
+            "chemistryTransplantResultLimit": max(0, int(chemistry_transplant_result_limit)),
+            "chemistryTransplantMaxGrabCycles": max(1, int(chemistry_transplant_max_grab_cycles)),
+            "chemistryTransplantLocalCycles": max(1, int(chemistry_transplant_local_cycles)),
+            "chemistryTransplantOraclePromotionLimit": max(
+                0,
+                int(chemistry_transplant_oracle_promotion_limit),
+            ),
             "candidateKinds": dict(sorted(Counter(str(item.get("candidateKind") or "unknown") for item in assemblies).items())),
             "minEngineValidatedSolutions": max(0, int(min_engine_validated_solutions)),
         },
-        "componentTimingOraclePortfolio": _global_component_timing_portfolio(
-            results,
-            limit=component_timing_global_result_limit,
-        ) if component_timing_oracle_validator is not None else None,
+        "componentTimingOraclePortfolio": global_component_portfolio,
+        "chemistryTransplantSearch": chemistry_transplant_search,
         "candidates": results,
     }

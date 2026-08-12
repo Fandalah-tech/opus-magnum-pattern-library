@@ -36,6 +36,14 @@ def _best_writable(result: dict) -> dict | None:
                 or variant.get("oracleValidation", {}).get("valid")
             ):
                 complete.append(variant)
+    for variant in (result.get("chemistryTransplantSearch") or {}).get("variants", []):
+        if variant.get("serialization", {}).get("roundTripClean") and variant.get("solution"):
+            fallback.append(variant)
+            if (
+                variant.get("validation", {}).get("complete")
+                or variant.get("oracleValidation", {}).get("valid")
+            ):
+                complete.append(variant)
     return complete[0] if complete else (fallback[0] if fallback else None)
 
 
@@ -64,6 +72,12 @@ def main() -> int:
     parser.add_argument("--component-timing-global-results", type=int, default=0, help="Reallocate this many oracle-ranked tempo variants globally across all assembly families.")
     parser.add_argument("--component-timing-preflight-cycles", type=int, default=0, help="Replay tempo edits only this long before full-validation promotion.")
     parser.add_argument("--component-timing-promotions", type=int, default=40, help="Maximum component-timing preflight variants promoted to full validation.")
+    parser.add_argument("--chemistry-transplant-variants", type=int, default=0, help="Maximum input/glyph placements tested on globally oracle-stable mechanical parents.")
+    parser.add_argument("--chemistry-transplant-sources", type=int, default=4, help="Maximum distinct oracle-stable mechanism families used as transplant parents.")
+    parser.add_argument("--chemistry-transplant-results", type=int, default=20, help="Best chemistry transplants retained in the JSON report.")
+    parser.add_argument("--chemistry-transplant-grab-cycles", type=int, default=256, help="Mechanism replay horizon used to discover distinct arm grab cells.")
+    parser.add_argument("--chemistry-transplant-local-cycles", type=int, default=160, help="Bounded local validation horizon for each chemistry transplant.")
+    parser.add_argument("--chemistry-transplant-promotions", type=int, default=120, help="Maximum locally ranked chemistry transplants promoted to OMSim.")
     parser.add_argument("--omsim", type=Path, help="Authoritatively validate and rerank every component-timing variant with this OMSim binary.")
     parser.add_argument("--omsim-workers", type=int, default=10, help="Concurrent OMSim validations, capped at 10.")
     parser.add_argument("--omsim-timeout", type=int, default=30, help="Timeout in seconds for each OMSim validation.")
@@ -117,6 +131,12 @@ def main() -> int:
             component_timing_oracle_validator=oracle_validator if args.omsim else None,
             component_timing_oracle_workers=max(1, min(10, int(args.omsim_workers))),
             component_timing_global_result_limit=args.component_timing_global_results,
+            chemistry_transplant_variant_limit=args.chemistry_transplant_variants,
+            chemistry_transplant_source_limit=args.chemistry_transplant_sources,
+            chemistry_transplant_result_limit=args.chemistry_transplant_results,
+            chemistry_transplant_max_grab_cycles=args.chemistry_transplant_grab_cycles,
+            chemistry_transplant_local_cycles=args.chemistry_transplant_local_cycles,
+            chemistry_transplant_oracle_promotion_limit=args.chemistry_transplant_promotions,
             chain_max_depth=args.chain_max_depth,
             min_engine_validated_solutions=args.min_engine_validated_solutions,
         )

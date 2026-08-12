@@ -136,6 +136,13 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
     puzzle_fingerprint = puzzle_feature_fingerprint(puzzle)
     puzzle_name = str(puzzle.get("name") or (puzzle.get("source") or {}).get("name") or "<unknown>")
     plan = generation.get("plan") or {}
+    chemistry_transplant_search = generation.get("chemistryTransplantSearch") or {}
+    chemistry_transplant_summary = chemistry_transplant_search.get("summary") or {}
+    chemistry_transplant_source_ranks = {
+        int(item.get("sourceCandidateRank") or 0)
+        for item in chemistry_transplant_summary.get("selectedMechanicalParents", [])
+        if item.get("sourceCandidateRank") is not None
+    }
     records = []
 
     for candidate in generation.get("candidates", []):
@@ -145,6 +152,16 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
         temporal = _best_search_progress(candidate.get("temporalSearch"))
         geometry = _best_search_progress(candidate.get("geometricSearch"))
         component_timing = _best_search_progress(candidate.get("componentTimingSearch"))
+        chemistry_transplant = None
+        if int(candidate.get("rank") or 0) in chemistry_transplant_source_ranks:
+            chemistry_transplant = _best_search_progress({
+                "variants": [
+                    variant
+                    for variant in chemistry_transplant_search.get("variants", [])
+                    if int(variant.get("sourceCandidateRank") or 0)
+                    == int(candidate.get("rank") or 0)
+                ],
+            })
         attempts = []
         for repair, search in (
             ("timing", candidate.get("temporalSearch")),
@@ -167,6 +184,29 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
                     "oracleOutcomeCounts": dict(summary.get("oracleOutcomeCounts") or {}),
                 })
             attempts.append(attempt)
+        if int(candidate.get("rank") or 0) in chemistry_transplant_source_ranks:
+            attempts.append({
+                "repair": "chemistry-transplant",
+                "searchedVariantCount": int(
+                    chemistry_transplant_summary.get("searchedVariantCount") or 0
+                ),
+                "completeVariantCount": 0,
+                "succeeded": False,
+                "stageSucceeded": bool(
+                    chemistry_transplant_summary.get("hasOracleStableActiveTransplant")
+                ),
+                "oracleValidatedVariantCount": int(
+                    chemistry_transplant_summary.get("oraclePromotedVariantCount") or 0
+                ),
+                "oracleStableActiveVariantCount": int(
+                    chemistry_transplant_summary.get(
+                        "oracleStableActiveFullOperationVariantCount"
+                    ) or 0
+                ),
+                "oracleOutcomeCounts": dict(
+                    chemistry_transplant_summary.get("oracleOutcomeCounts") or {}
+                ),
+            })
 
         progress_candidates = [("base", base)]
         if temporal is not None:
@@ -175,6 +215,8 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
             progress_candidates.append(("geometry", geometry))
         if component_timing is not None:
             progress_candidates.append(("component-timing", component_timing))
+        if chemistry_transplant is not None:
+            progress_candidates.append(("chemistry-transplant", chemistry_transplant))
         best_source, best_progress = max(progress_candidates, key=lambda item: _progress_rank(item[1]))
 
         identity_payload = {
