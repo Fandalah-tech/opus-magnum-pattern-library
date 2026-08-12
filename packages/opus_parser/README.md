@@ -13,6 +13,9 @@ solution = parse_solution("example.solution")
 
 Both functions return JSON-serializable canonical dictionaries and include the source SHA-256, file size, binary format version and number of unconsumed trailing bytes.
 
+The canonical parsed-puzzle contract is defined in
+[`schemas/puzzle.schema.json`](../../schemas/puzzle.schema.json).
+
 ## Supported formats
 
 - Puzzle format version 3.
