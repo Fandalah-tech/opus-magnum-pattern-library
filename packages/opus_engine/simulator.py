@@ -99,6 +99,10 @@ class Simulator:
         return {atom_id}
 
     def _grab(self, arm: ArmState) -> None:
+        # OMSim treats grab on an arm that is already grabbing as a complete
+        # no-op; free branches cannot acquire atoms on a later repeated grab.
+        if arm.grabbing:
+            return
         arm.grabbing = True
         already_held = set(arm.held_atoms.values())
         for branch, tip in arm.tips().items():
@@ -182,13 +186,38 @@ class Simulator:
         destination_owner: dict[Hex, str] = {}
         moving_atoms = {atom_id for proposal in proposals for atom_id in proposal.atom_ids}
         proposed_for_atom: dict[str, Hex] = {}
+        proposal_signatures: dict[str, tuple] = {}
+
+        def signature(proposal: MotionProposal) -> tuple:
+            arm = self.arms[proposal.arm_id]
+            instruction = proposal.instruction
+            if instruction in ROTATE_CW | ROTATE_CCW:
+                return ("rotation", arm.origin, -1 if instruction in ROTATE_CW else 1)
+            if instruction in PIVOT_CW | PIVOT_CCW:
+                fixed = sorted(
+                    self.world.atoms[atom_id].position
+                    for atom_id, destination in proposal.destinations.items()
+                    if self.world.atoms[atom_id].position == destination
+                )
+                return ("pivot", tuple(fixed), -1 if instruction in PIVOT_CW else 1)
+            deltas = {
+                (destination[0] - self.world.atoms[atom_id].position[0],
+                 destination[1] - self.world.atoms[atom_id].position[1])
+                for atom_id, destination in proposal.destinations.items()
+            }
+            return ("translation", tuple(sorted(deltas)))
 
         for proposal in proposals:
+            current_signature = signature(proposal)
             for atom_id, destination in proposal.destinations.items():
                 previous = proposed_for_atom.get(atom_id)
                 if previous is not None and previous != destination:
                     raise SimulationError(f"Conflicting motions for atom {atom_id}")
+                previous_signature = proposal_signatures.get(atom_id)
+                if previous_signature is not None and previous_signature != current_signature:
+                    raise SimulationError(f"Incompatible shared motions for atom {atom_id}")
                 proposed_for_atom[atom_id] = destination
+                proposal_signatures[atom_id] = current_signature
                 owner = destination_owner.get(destination)
                 if owner is not None and owner != atom_id:
                     raise SimulationError(f"Motion collision at {destination}")
