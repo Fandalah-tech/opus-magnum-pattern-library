@@ -138,6 +138,8 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
     plan = generation.get("plan") or {}
     chemistry_transplant_search = generation.get("chemistryTransplantSearch") or {}
     chemistry_transplant_summary = chemistry_transplant_search.get("summary") or {}
+    ordered_chemistry_search = generation.get("orderedChemistrySearch") or {}
+    ordered_chemistry_summary = ordered_chemistry_search.get("summary") or {}
     chemistry_transplant_source_ranks = {
         int(item.get("sourceCandidateRank") or 0)
         for item in chemistry_transplant_summary.get("selectedMechanicalParents", [])
@@ -207,6 +209,46 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
                     chemistry_transplant_summary.get("oracleOutcomeCounts") or {}
                 ),
             })
+            if ordered_chemistry_search:
+                attempts.append({
+                    "repair": "ordered-chemistry",
+                    "searchedVariantCount": int(
+                        ordered_chemistry_summary.get("searchedPrismVariantCount") or 0
+                    ) + int(
+                        ordered_chemistry_summary.get(
+                            "searchedCalcificationVariantCount"
+                        ) or 0
+                    ),
+                    "completeVariantCount": int(
+                        ordered_chemistry_summary.get("oracleCompleteVariantCount") or 0
+                    ),
+                    "succeeded": bool(
+                        ordered_chemistry_summary.get("oracleCompleteVariantCount")
+                    ),
+                    "stageSucceeded": bool(
+                        ordered_chemistry_summary.get(
+                            "hasPersistentCalcifiedCompleteTriplex"
+                        )
+                    ),
+                    "oracleStableCompleteTriplexCount": int(
+                        ordered_chemistry_summary.get(
+                            "oracleStableCompleteTriplexCount"
+                        ) or 0
+                    ),
+                    "oracleStableCalcifiedCompleteTriplexCount": int(
+                        ordered_chemistry_summary.get(
+                            "oracleStableCalcifiedCompleteTriplexCount"
+                        ) or 0
+                    ),
+                    "oraclePrismOutcomeCounts": dict(
+                        ordered_chemistry_summary.get("oraclePrismOutcomeCounts") or {}
+                    ),
+                    "oracleCalcificationOutcomeCounts": dict(
+                        ordered_chemistry_summary.get(
+                            "oracleCalcificationOutcomeCounts"
+                        ) or {}
+                    ),
+                })
 
         progress_candidates = [("base", base)]
         if temporal is not None:

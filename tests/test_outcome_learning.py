@@ -214,3 +214,41 @@ def test_global_chemistry_transplant_stage_is_learned_by_source_assembly():
     assert attempt["oracleStableActiveVariantCount"] == 8
     assert attempt["oracleOutcomeCounts"] == {"collision": 112, "cycle-limit": 8}
     assert record["bestProgressSource"] == "chemistry-transplant"
+
+
+def test_ordered_chemistry_frontier_is_learned_as_a_distinct_stage():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [{"sourceCandidateRank": 1}],
+            "searchedVariantCount": 1500,
+            "oraclePromotedVariantCount": 120,
+            "oracleStableActiveFullOperationVariantCount": 8,
+            "hasOracleStableActiveTransplant": True,
+        },
+        "variants": [],
+    }
+    generation["orderedChemistrySearch"] = {
+        "summary": {
+            "searchedPrismVariantCount": 157,
+            "searchedCalcificationVariantCount": 38,
+            "oracleStableCompleteTriplexCount": 12,
+            "oracleStableCalcifiedCompleteTriplexCount": 22,
+            "hasPersistentCalcifiedCompleteTriplex": True,
+            "oracleCompleteVariantCount": 0,
+            "oraclePrismOutcomeCounts": {"collision": 2, "cycle-limit": 12},
+            "oracleCalcificationOutcomeCounts": {"cycle-limit": 22},
+        },
+        "variants": [],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item for item in record["attempts"] if item["repair"] == "ordered-chemistry"
+    )
+
+    assert attempt["searchedVariantCount"] == 195
+    assert attempt["succeeded"] is False
+    assert attempt["stageSucceeded"] is True
+    assert attempt["oracleStableCompleteTriplexCount"] == 12
+    assert attempt["oracleStableCalcifiedCompleteTriplexCount"] == 22

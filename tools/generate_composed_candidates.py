@@ -44,6 +44,11 @@ def _best_writable(result: dict) -> dict | None:
                 or variant.get("oracleValidation", {}).get("valid")
             ):
                 complete.append(variant)
+    for variant in (result.get("orderedChemistrySearch") or {}).get("variants", []):
+        if variant.get("serialization", {}).get("roundTripClean") and variant.get("solution"):
+            fallback.append(variant)
+            if variant.get("oracleValidation", {}).get("valid"):
+                complete.append(variant)
     return complete[0] if complete else (fallback[0] if fallback else None)
 
 
@@ -78,6 +83,14 @@ def main() -> int:
     parser.add_argument("--chemistry-transplant-grab-cycles", type=int, default=256, help="Mechanism replay horizon used to discover distinct arm grab cells.")
     parser.add_argument("--chemistry-transplant-local-cycles", type=int, default=160, help="Bounded local validation horizon for each chemistry transplant.")
     parser.add_argument("--chemistry-transplant-promotions", type=int, default=120, help="Maximum locally ranked chemistry transplants promoted to OMSim.")
+    parser.add_argument("--ordered-chemistry-variants", type=int, default=0, help="Maximum trajectory-derived second-prism placements tested after stable chemistry transplant.")
+    parser.add_argument("--ordered-chemistry-sources", type=int, default=8, help="Maximum OMSim-stable chemistry transplants advanced into ordered chemistry.")
+    parser.add_argument("--ordered-chemistry-calcification-variants", type=int, default=256, help="Maximum post-triplex calcification placements tested.")
+    parser.add_argument("--ordered-chemistry-results", type=int, default=20, help="Best persistent ordered-chemistry variants retained in the report.")
+    parser.add_argument("--ordered-chemistry-local-cycles", type=int, default=160, help="Local trajectory horizon for persistent chemistry states.")
+    parser.add_argument("--ordered-chemistry-persistence-frames", type=int, default=2, help="Consecutive snapshots required before a chemistry state counts as persistent.")
+    parser.add_argument("--ordered-chemistry-prism-promotions", type=int, default=32, help="Maximum persistent complete-triplex candidates promoted to OMSim.")
+    parser.add_argument("--ordered-chemistry-calcification-promotions", type=int, default=40, help="Maximum persistent calcified-triplex candidates promoted to OMSim.")
     parser.add_argument("--omsim", type=Path, help="Authoritatively validate and rerank every component-timing variant with this OMSim binary.")
     parser.add_argument("--omsim-workers", type=int, default=10, help="Concurrent OMSim validations, capped at 10.")
     parser.add_argument("--omsim-timeout", type=int, default=30, help="Timeout in seconds for each OMSim validation.")
@@ -137,6 +150,22 @@ def main() -> int:
             chemistry_transplant_max_grab_cycles=args.chemistry_transplant_grab_cycles,
             chemistry_transplant_local_cycles=args.chemistry_transplant_local_cycles,
             chemistry_transplant_oracle_promotion_limit=args.chemistry_transplant_promotions,
+            ordered_chemistry_variant_limit=args.ordered_chemistry_variants,
+            ordered_chemistry_source_limit=args.ordered_chemistry_sources,
+            ordered_chemistry_calcification_variant_limit=(
+                args.ordered_chemistry_calcification_variants
+            ),
+            ordered_chemistry_result_limit=args.ordered_chemistry_results,
+            ordered_chemistry_local_cycles=args.ordered_chemistry_local_cycles,
+            ordered_chemistry_persistence_frames=(
+                args.ordered_chemistry_persistence_frames
+            ),
+            ordered_chemistry_prism_oracle_promotion_limit=(
+                args.ordered_chemistry_prism_promotions
+            ),
+            ordered_chemistry_calcification_oracle_promotion_limit=(
+                args.ordered_chemistry_calcification_promotions
+            ),
             chain_max_depth=args.chain_max_depth,
             min_engine_validated_solutions=args.min_engine_validated_solutions,
         )
@@ -176,6 +205,17 @@ def main() -> int:
                         version=7,
                     )
                     written_complete += 1
+        for variant_index, variant in enumerate(
+            (result.get("orderedChemistrySearch") or {}).get("variants", [])
+        ):
+            if not variant.get("solution") or not variant.get("oracleValidation", {}).get("valid"):
+                continue
+            write_solution(
+                variant["solution"],
+                args.write_complete_dir / f"ordered-chemistry-{variant_index:03d}.solution",
+                version=7,
+            )
+            written_complete += 1
 
     outcome_summary = None
     if args.outcome_index:

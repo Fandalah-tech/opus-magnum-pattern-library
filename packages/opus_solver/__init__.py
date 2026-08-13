@@ -75,6 +75,10 @@ from .objective_portfolio import (
     objective_portfolio_metadata,
     select_objective_winners,
 )
+from .ordered_chemistry import (
+    analyze_persistent_chemistry,
+    search_ordered_chemistry_candidates,
+)
 from .portfolio_learning import (
     bounded_worker_count,
     learn_objective_blueprint_portfolio,
@@ -108,6 +112,7 @@ __all__ = [
     "SolveResult",
     "UnsupportedPuzzleError",
     "aggregate_repair_outcomes",
+    "analyze_persistent_chemistry",
     "analyze_layout_geometry",
     "arm_grab_sites",
     "apply_forward_transform",
@@ -158,6 +163,7 @@ __all__ = [
     "search_geometric_candidates",
     "search_component_timing_candidates",
     "search_chemistry_transplant_candidates",
+    "search_ordered_chemistry_candidates",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",
     "select_objective_winners",

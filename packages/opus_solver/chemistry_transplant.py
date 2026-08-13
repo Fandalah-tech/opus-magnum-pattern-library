@@ -162,6 +162,11 @@ def _prism_poses(first: Hex, second: Hex) -> list[dict[str, Any]]:
     return [poses[channel] for channel in ("black", "red", "yellow") if channel in poses]
 
 
+def prism_poses_for_pair(first: Hex, second: Hex) -> list[dict[str, Any]]:
+    """Return deterministic prism poses exposing each channel to an adjacent pair."""
+    return _prism_poses(first, second)
+
+
 def _set_part_pose(
     solution: dict[str, Any],
     *,
