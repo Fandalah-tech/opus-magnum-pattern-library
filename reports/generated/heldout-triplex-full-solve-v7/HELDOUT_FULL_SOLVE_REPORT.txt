@@ -1,0 +1,158 @@
+STRICT HELD-OUT FULL SOLVE - OM2021_W1
+======================================
+
+Status
+------
+OM2021_W1 is solved under the strict held-out protocol.
+
+Unmodified OMSim accepts the complete six-output machine:
+
+    280g/201i@0 356c/38a@V
+
+The normal validation command exits with status 0. The explicit product oracle
+independently confirms every delivery threshold:
+
+    product 1 cycles: 61
+    product 2 cycles: 120
+    product 3 cycles: 179
+    product 4 cycles: 238
+    product 5 cycles: 297
+    product 6 cycles: 356
+
+Output intervals are 61 [59]: the first target appears at cycle 61 and every
+subsequent target arrives 59 cycles later.
+
+Strict held-out protocol
+------------------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Audited triplex solutions: 479
+Engine-complete solutions before exclusion: 396
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Target solution bytes used by the learned index: 0
+Strict full-puzzle completion count: 1
+
+The target puzzle definition was used as the manufacturing specification, and
+OMSim was used as the authoritative validator. No solution associated with
+OM2021_W1 was admitted to retrieval, fragment learning, ranking, composition or
+repair.
+
+From one-shot output to repeatable solve
+----------------------------------------
+The preceding milestone delivered one exact product at cycle 61 but left the
+machine running through a long donor program. That program created additional
+partially processed reagents, accumulated them on the board, and collided on
+cycle 212.
+
+The new stage identifies the exact prefix that made the first persistent
+three-atom core. It appends a physical reset immediately after the core is
+released. OMSim's reset expansion returns the piston, rotation and track
+position to their initial state, producing a genuine 59-cycle chemistry block.
+
+The fourth-fire supply initially seemed to require one reagent per product.
+Instead, the solver now uses the entire auxiliary reagent:
+
+- the first unbonder isolates its first fire atom;
+- a second unbonder separates the remaining fire-salt pair;
+- duplication converts that salt into a third fire atom; and
+- one tracked feeder consumes those three isolated fires over three consecutive
+  chemistry blocks.
+
+After the third fire leaves the input footprint, the auxiliary input respawns.
+The three-block supply schedule therefore forms a 177-cycle super-period. Two
+super-periods provide exactly the six fourth-fire atoms required by the puzzle.
+
+Automatic solver stage
+----------------------
+The repeating-product stage is integrated after the authoritative one-product
+stage. It now:
+
+1. finds the arm that produced the accepted three-atom core;
+2. truncates the irrelevant donor tail;
+3. measures the physical reset-expanded block period;
+4. unrolls three core-production blocks;
+5. adds the second unbonder, duplication glyph and three-cell feeder track;
+6. schedules the feeder across all three auxiliary atoms;
+7. repeats the final pivot/output operation for each core;
+8. locally requires at least six product-delivery events; and
+9. promotes only those candidates to OMSim's `product 6 cycles` oracle.
+
+The geometry is translated and rotated from the detected product-core endpoint,
+including the feeder track offsets. The oracle worker count remains capped at
+ten.
+
+Authoritative result
+--------------------
+Cost: 280
+Instructions: 201
+Cycles: 356
+Area: 38
+Initial output cycle: 61
+Steady-state interval: 59
+Parts: 18
+Program entries in the binary solution: 189
+Physical super-period: 177 cycles
+
+Local replay completed six products without error through 400 cycles. A clean
+end-to-end repeating-stage reconstruction from the committed one-product
+artifact then produced the same binary and received OMSim's six-product proof.
+
+Accepted solution artifact
+--------------------------
+File:
+
+    OM2021_W1-strict-heldout-full-solve.solution
+
+Size: 1,782 bytes
+SHA-256: e5efdcc769e81894b916032872c6c6db772eae9101bdad368c9a72f072dd82cf
+
+OMSim binary SHA-256:
+
+    f0edd34b6d6a3a1b2c3df4f48fe17b818deaae242efb749759d6c64647fbedb4
+
+Target puzzle SHA-256:
+
+    f4bdc881b7d73a668b068b79beed4a688411ea3bf401240067fe43c94b9d78e5
+
+What this milestone establishes
+-------------------------------
+This is no longer an intermediate chemistry score or a collision-free timeout.
+OMSim accepts the normal solution contract after all six products. The held-out
+pipeline has crossed the complete sequence:
+
+- donor-only retrieval;
+- cross-puzzle mechanical composition;
+- timing and geometry repair;
+- active chemistry transplantation;
+- persistent exact-channel triplex construction;
+- exact fourth-atom attachment and output placement; and
+- reset-safe repeated manufacture.
+
+The solver is not yet a universal Opus Magnum solver. The final repeating
+template currently targets this family of a three-atom core plus an auxiliary
+three-atom fire supply. The next development frontier is to infer comparable
+reset and resource-reuse schedules for other product topologies rather than
+encoding a separate finisher for each one.
+
+Next milestone
+--------------
+Preserve this strict solution as a regression, then generalize the periodic
+completion planner around resource accounting, reset-state equivalence and
+trajectory-derived feeder routes. In parallel, the accepted 280/38/356/201
+solution can become an optimization baseline for cost, area, cycles and
+instructions.
+
+Verification
+------------
+Python test suite: 226 passed, plus 10 passing subtests
+Compile check: passed
+CLI option check: passed
+JSON validation: passed
+Diff whitespace check: passed
+Local six-product replay: passed through 400 cycles
+OMSim normal validation: passed, exit 0
+OMSim product thresholds 1 through 6: all passed
+OMSim output intervals: 61 [59]
+Temporary OMSim instrumentation remaining: none
+Target solution bytes used: 0
+Strict full-puzzle completion count: 1

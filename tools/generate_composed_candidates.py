@@ -54,6 +54,11 @@ def _best_writable(result: dict) -> dict | None:
             fallback.append(variant)
             if variant.get("productOracleValidation", {}).get("valid"):
                 complete.append(variant)
+    for variant in (result.get("repeatingProductSearch") or {}).get("variants", []):
+        if variant.get("serialization", {}).get("roundTripClean") and variant.get("solution"):
+            fallback.append(variant)
+            if variant.get("fullProductOracleValidation", {}).get("valid"):
+                complete.append(variant)
     return complete[0] if complete else (fallback[0] if fallback else None)
 
 
@@ -100,7 +105,11 @@ def main() -> int:
     parser.add_argument("--single-product-results", type=int, default=20, help="Best single-product completion variants retained in the report.")
     parser.add_argument("--single-product-local-cycles", type=int, default=100, help="Local replay horizon for each product-finisher candidate.")
     parser.add_argument("--single-product-promotions", type=int, default=20, help="Maximum local product completions promoted to OMSim's product metric.")
-    parser.add_argument("--omsim", type=Path, help="Authoritatively validate and rerank every component-timing variant with this OMSim binary.")
+    parser.add_argument("--repeating-product-sources", type=int, default=0, help="Maximum one-product candidates upgraded into six-output periodic machines.")
+    parser.add_argument("--repeating-product-results", type=int, default=20, help="Best repeating completion variants retained in the report.")
+    parser.add_argument("--repeating-product-local-cycles", type=int, default=400, help="Local replay horizon for six product deliveries.")
+    parser.add_argument("--repeating-product-promotions", type=int, default=20, help="Maximum local six-product completions promoted to OMSim.")
+    parser.add_argument("--omsim", type=Path, help="Authoritatively validate generated candidates with this OMSim binary.")
     parser.add_argument("--omsim-workers", type=int, default=10, help="Concurrent OMSim validations, capped at 10.")
     parser.add_argument("--omsim-timeout", type=int, default=30, help="Timeout in seconds for each OMSim validation.")
     parser.add_argument("--chain-max-depth", type=int, default=8, help="Maximum engine-observed transitions in a linear materialized chain.")
@@ -136,6 +145,18 @@ def main() -> int:
                 path,
                 max(1, int(args.omsim_timeout)),
                 product_count=1,
+                metric="cycles",
+            )
+
+        def full_product_oracle_validator(solution: dict) -> dict:
+            path = Path(oracle_temp_name) / f"full-product-{next(oracle_counter):06d}.solution"
+            write_solution(solution, path, version=7)
+            return run_omsim_product(
+                args.omsim,
+                args.puzzle,
+                path,
+                max(1, int(args.omsim_timeout)),
+                product_count=6,
                 metric="cycles",
             )
 
@@ -193,6 +214,15 @@ def main() -> int:
             single_product_oracle_promotion_limit=args.single_product_promotions,
             single_product_oracle_validator=(
                 product_oracle_validator if args.omsim else None
+            ),
+            repeating_product_source_limit=args.repeating_product_sources,
+            repeating_product_result_limit=args.repeating_product_results,
+            repeating_product_local_cycles=args.repeating_product_local_cycles,
+            repeating_product_oracle_promotion_limit=(
+                args.repeating_product_promotions
+            ),
+            full_product_oracle_validator=(
+                full_product_oracle_validator if args.omsim else None
             ),
             chain_max_depth=args.chain_max_depth,
             min_engine_validated_solutions=args.min_engine_validated_solutions,
@@ -254,6 +284,19 @@ def main() -> int:
             write_solution(
                 variant["solution"],
                 args.write_complete_dir / f"single-product-{variant_index:03d}.solution",
+                version=7,
+            )
+            written_complete += 1
+        for variant_index, variant in enumerate(
+            (result.get("repeatingProductSearch") or {}).get("variants", [])
+        ):
+            if not variant.get("solution") or not variant.get(
+                "fullProductOracleValidation", {}
+            ).get("valid"):
+                continue
+            write_solution(
+                variant["solution"],
+                args.write_complete_dir / f"full-product-{variant_index:03d}.solution",
                 version=7,
             )
             written_complete += 1

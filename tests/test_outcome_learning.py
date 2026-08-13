@@ -292,3 +292,46 @@ def test_single_product_frontier_is_learned_without_claiming_full_completion():
     assert attempt["oracleSingleProductCompleteCount"] == 3
     assert attempt["bestSingleProductCycle"] == 61
     assert record["solved"] is False
+
+
+def test_repeating_product_frontier_counts_as_a_full_solve():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [{"sourceCandidateRank": 1}],
+            "hasOracleStableActiveTransplant": True,
+        },
+        "variants": [],
+    }
+    generation["orderedChemistrySearch"] = {
+        "summary": {"hasPersistentCalcifiedCompleteTriplex": True},
+        "variants": [],
+    }
+    generation["repeatingProductSearch"] = {
+        "summary": {
+            "generatedRepeatingCompletionCount": 3,
+            "localFullProductCompleteCount": 3,
+            "oraclePromotedCount": 3,
+            "oracleFullProductCompleteCount": 3,
+            "hasOracleFullPuzzle": True,
+            "bestFullProductCycle": 356,
+            "oracleOutcomeCounts": {"product-complete": 3},
+        },
+        "variants": [{
+            "sourceCandidateRank": 1,
+            "fullProductOracleOutcome": "product-complete",
+        }],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item
+        for item in record["attempts"]
+        if item["repair"] == "repeating-product-completion"
+    )
+
+    assert attempt["succeeded"] is True
+    assert attempt["oracleFullProductCompleteCount"] == 3
+    assert record["bestProgressSource"] == "repeating-product-completion"
+    assert record["bestProgress"]["totalDelivered"] == 6
+    assert record["solved"] is True

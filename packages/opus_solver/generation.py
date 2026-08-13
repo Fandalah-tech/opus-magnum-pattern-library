@@ -14,7 +14,10 @@ from .geometry_search import search_geometric_candidates
 from .layout import materialize_candidate_layout
 from .manufacturing import build_manufacturing_plan
 from .ordered_chemistry import search_ordered_chemistry_candidates
-from .product_completion import search_single_product_completions
+from .product_completion import (
+    search_repeating_product_completions,
+    search_single_product_completions,
+)
 from .repair_policy import recommend_repair_order
 from .scheduling import materialize_candidate_schedule, synchronize_layout_programs
 from .solver import validate_generated_solution
@@ -108,6 +111,11 @@ def generate_composed_candidates(
     single_product_local_cycles: int = 100,
     single_product_oracle_promotion_limit: int = 20,
     single_product_oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
+    repeating_product_source_limit: int = 0,
+    repeating_product_result_limit: int = 20,
+    repeating_product_local_cycles: int = 400,
+    repeating_product_oracle_promotion_limit: int = 20,
+    full_product_oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
     chain_max_depth: int = 8,
     min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
@@ -136,6 +144,10 @@ def generate_composed_candidates(
                 "oracleSingleProductCompleteCount": 0,
                 "hasOracleSingleProduct": False,
                 "bestSingleProductCycle": None,
+                "repeatingProductCompletionCount": 0,
+                "oracleFullProductCompleteCount": 0,
+                "hasOracleFullPuzzle": False,
+                "bestFullProductCycle": None,
             },
             "candidates": [],
         }
@@ -389,9 +401,22 @@ def generate_composed_candidates(
             oracle_workers=component_timing_oracle_workers,
         )
     product_completion_summary = (product_completion_search or {}).get("summary", {})
+    repeating_product_search = None
+    if repeating_product_source_limit > 0 and product_completion_search is not None:
+        repeating_product_search = search_repeating_product_completions(
+            puzzle,
+            product_completion_search.get("variants", []),
+            source_limit=repeating_product_source_limit,
+            local_cycles=repeating_product_local_cycles,
+            result_limit=repeating_product_result_limit,
+            oracle_promotion_limit=repeating_product_oracle_promotion_limit,
+            full_product_oracle_validator=full_product_oracle_validator,
+            oracle_workers=component_timing_oracle_workers,
+        )
+    repeating_product_summary = (repeating_product_search or {}).get("summary", {})
 
     return {
-        "schemaVersion": "0.9.0",
+        "schemaVersion": "0.10.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -450,6 +475,18 @@ def generate_composed_candidates(
             "bestSingleProductCycle": product_completion_summary.get(
                 "bestSingleProductCycle"
             ),
+            "repeatingProductCompletionCount": int(
+                repeating_product_summary.get("localFullProductCompleteCount") or 0
+            ),
+            "oracleFullProductCompleteCount": int(
+                repeating_product_summary.get("oracleFullProductCompleteCount") or 0
+            ),
+            "hasOracleFullPuzzle": bool(
+                repeating_product_summary.get("hasOracleFullPuzzle")
+            ),
+            "bestFullProductCycle": repeating_product_summary.get(
+                "bestFullProductCycle"
+            ),
             "hasCompleteSolution": (
                 engine_complete_count > 0
                 or temporal_complete_count > 0
@@ -457,6 +494,7 @@ def generate_composed_candidates(
                 or component_timing_complete_count > 0
                 or component_timing_oracle_complete_count > 0
                 or int(ordered_chemistry_summary.get("oracleCompleteVariantCount") or 0) > 0
+                or bool(repeating_product_summary.get("hasOracleFullPuzzle"))
             ),
             "failureModes": dict(sorted(failure_modes.items())),
             "repairRoutes": dict(sorted(repair_routes.items())),
@@ -512,6 +550,23 @@ def generate_composed_candidates(
                 int(single_product_oracle_promotion_limit),
             ),
             "singleProductOracleEnabled": single_product_oracle_validator is not None,
+            "repeatingProductSourceLimit": max(
+                0,
+                int(repeating_product_source_limit),
+            ),
+            "repeatingProductResultLimit": max(
+                0,
+                int(repeating_product_result_limit),
+            ),
+            "repeatingProductLocalCycles": max(
+                1,
+                int(repeating_product_local_cycles),
+            ),
+            "repeatingProductOraclePromotionLimit": max(
+                0,
+                int(repeating_product_oracle_promotion_limit),
+            ),
+            "fullProductOracleEnabled": full_product_oracle_validator is not None,
             "candidateKinds": dict(sorted(Counter(str(item.get("candidateKind") or "unknown") for item in assemblies).items())),
             "minEngineValidatedSolutions": max(0, int(min_engine_validated_solutions)),
         },
@@ -519,5 +574,6 @@ def generate_composed_candidates(
         "chemistryTransplantSearch": chemistry_transplant_search,
         "orderedChemistrySearch": ordered_chemistry_search,
         "productCompletionSearch": product_completion_search,
+        "repeatingProductSearch": repeating_product_search,
         "candidates": results,
     }

@@ -142,10 +142,18 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
     ordered_chemistry_summary = ordered_chemistry_search.get("summary") or {}
     product_completion_search = generation.get("productCompletionSearch") or {}
     product_completion_summary = product_completion_search.get("summary") or {}
+    repeating_product_search = generation.get("repeatingProductSearch") or {}
+    repeating_product_summary = repeating_product_search.get("summary") or {}
     chemistry_transplant_source_ranks = {
         int(item.get("sourceCandidateRank") or 0)
         for item in chemistry_transplant_summary.get("selectedMechanicalParents", [])
         if item.get("sourceCandidateRank") is not None
+    }
+    repeating_product_source_ranks = {
+        int(item.get("sourceCandidateRank") or 0)
+        for item in repeating_product_search.get("variants", [])
+        if item.get("sourceCandidateRank") is not None
+        and str(item.get("fullProductOracleOutcome") or "") == "product-complete"
     }
     records = []
 
@@ -157,6 +165,21 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
         geometry = _best_search_progress(candidate.get("geometricSearch"))
         component_timing = _best_search_progress(candidate.get("componentTimingSearch"))
         chemistry_transplant = None
+        repeating_product = None
+        if int(candidate.get("rank") or 0) in repeating_product_source_ranks:
+            repeating_product = {
+                "complete": True,
+                "failureMode": None,
+                "totalDelivered": 6,
+                "totalDeficit": 0,
+                "completedCycles": int(
+                    repeating_product_summary.get("bestFullProductCycle") or 0
+                ),
+                "terminatedWithError": False,
+                "terminatedAfterCompletion": True,
+                "blockedInputCount": 0,
+                "firstError": None,
+            }
         if int(candidate.get("rank") or 0) in chemistry_transplant_source_ranks:
             chemistry_transplant = _best_search_progress({
                 "variants": [
@@ -286,6 +309,45 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
                             product_completion_summary.get("oracleOutcomeCounts") or {}
                         ),
                     })
+                if repeating_product_search:
+                    attempts.append({
+                        "repair": "repeating-product-completion",
+                        "searchedVariantCount": int(
+                            repeating_product_summary.get(
+                                "generatedRepeatingCompletionCount"
+                            ) or 0
+                        ),
+                        "completeVariantCount": int(
+                            repeating_product_summary.get(
+                                "oracleFullProductCompleteCount"
+                            ) or 0
+                        ),
+                        "succeeded": bool(
+                            repeating_product_summary.get("hasOracleFullPuzzle")
+                        ),
+                        "stageSucceeded": bool(
+                            repeating_product_summary.get("hasOracleFullPuzzle")
+                        ),
+                        "localFullProductCompleteCount": int(
+                            repeating_product_summary.get(
+                                "localFullProductCompleteCount"
+                            ) or 0
+                        ),
+                        "oracleValidatedVariantCount": int(
+                            repeating_product_summary.get("oraclePromotedCount") or 0
+                        ),
+                        "oracleFullProductCompleteCount": int(
+                            repeating_product_summary.get(
+                                "oracleFullProductCompleteCount"
+                            ) or 0
+                        ),
+                        "bestFullProductCycle": repeating_product_summary.get(
+                            "bestFullProductCycle"
+                        ),
+                        "oracleOutcomeCounts": dict(
+                            repeating_product_summary.get("oracleOutcomeCounts") or {}
+                        ),
+                    })
 
         progress_candidates = [("base", base)]
         if temporal is not None:
@@ -296,6 +358,8 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
             progress_candidates.append(("component-timing", component_timing))
         if chemistry_transplant is not None:
             progress_candidates.append(("chemistry-transplant", chemistry_transplant))
+        if repeating_product is not None:
+            progress_candidates.append(("repeating-product-completion", repeating_product))
         best_source, best_progress = max(progress_candidates, key=lambda item: _progress_rank(item[1]))
 
         identity_payload = {

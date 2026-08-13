@@ -88,8 +88,10 @@ from .product_completion import (
     ProductCore,
     analyze_product_delivery,
     find_persistent_product_core,
+    materialize_repeating_product_completion,
     materialize_single_product_completion,
     reorder_instantaneous_bonders,
+    search_repeating_product_completions,
     search_single_product_completions,
 )
 from .repair_policy import recommend_repair_order
@@ -154,6 +156,7 @@ __all__ = [
     "materialize_candidate_schedule",
     "materialize_fragment_chain_layout",
     "materialize_fragment_chain_schedule",
+    "materialize_repeating_product_completion",
     "materialize_single_product_completion",
     "mechanism_compatibility",
     "merge_outcome_records",
@@ -177,6 +180,7 @@ __all__ = [
     "search_component_timing_candidates",
     "search_chemistry_transplant_candidates",
     "search_ordered_chemistry_candidates",
+    "search_repeating_product_completions",
     "search_single_product_completions",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",

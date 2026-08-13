@@ -258,6 +258,204 @@ def materialize_single_product_completion(
     return reorder_instantaneous_bonders(solution)
 
 
+def _part_with_id(
+    solution: dict[str, Any],
+    part_id: str,
+    *,
+    part_type: str | None = None,
+    position: Hex | None = None,
+) -> dict[str, Any]:
+    part = next(
+        (item for item in solution.get("parts", []) if str(item.get("id") or "") == part_id),
+        None,
+    )
+    if part is None and part_type is not None and position is not None:
+        part = next(
+            (
+                item
+                for item in solution.get("parts", [])
+                if str(item.get("type") or "") == part_type
+                and tuple(int(value) for value in item.get("position", (0, 0))) == position
+            ),
+            None,
+        )
+    if part is None:
+        raise ValueError(f"missing product-completion part {part_id}")
+    return part
+
+
+def _producer_arm(
+    solution: dict[str, Any],
+    *,
+    producer_arm_id: str | None,
+) -> dict[str, Any]:
+    excluded = {"fire-supply-arm", "final-red-arm"}
+    candidates = [
+        part
+        for part in solution.get("parts", [])
+        if (
+            str(part.get("type") or "").startswith("arm")
+            or str(part.get("type") or "") in {"piston", "baron"}
+        )
+        and part.get("program")
+        and str(part.get("id") or "") not in excluded
+    ]
+    if producer_arm_id is not None:
+        candidates = [
+            part
+            for part in candidates
+            if str(part.get("id") or "") == producer_arm_id
+        ]
+    if not candidates:
+        raise ValueError("could not identify the product-core producer arm")
+    return max(candidates, key=lambda part: len(part.get("program", [])))
+
+
+def materialize_repeating_product_completion(
+    single_product_solution: dict[str, Any],
+    core: ProductCore,
+    *,
+    producer_arm_id: str | None = None,
+) -> dict[str, Any]:
+    """Convert the one-shot finisher into a six-output periodic machine.
+
+    The auxiliary reagent already contains two fire atoms and one salt.  A
+    second unbonder and duplication glyph turn it into three isolated fires.
+    One tracked feeder consumes those fires over three core-production blocks;
+    the cleared auxiliary input then respawns for the next three products.
+    """
+    solution = deepcopy(single_product_solution)
+    rotation = _rotation_for_core(core)
+    feeder = _part_with_id(
+        solution,
+        "fire-supply-arm",
+        part_type="arm1",
+        position=tuple(_transform_relative((-2, 1), core, rotation)),
+    )
+    red_arm = _part_with_id(
+        solution,
+        "final-red-arm",
+        part_type="arm1",
+        position=tuple(_transform_relative((-1, 0), core, rotation)),
+    )
+    supply_input = _part_with_id(
+        solution,
+        "fire-supply-input",
+        part_type="input",
+        position=tuple(_transform_relative((-1, 2), core, rotation)),
+    )
+    producer = _producer_arm(solution, producer_arm_id=producer_arm_id)
+    ready = int(core.cycle)
+
+    producer_prefix = [
+        deepcopy(item)
+        for item in producer.get("program", [])
+        if int(item.get("cycle") or 0) <= ready
+    ]
+    if not producer_prefix:
+        raise ValueError("producer arm has no instructions before the core-ready cycle")
+    producer_block = [
+        *producer_prefix,
+        {"cycle": ready + 1, "instruction": "reset"},
+    ]
+
+    # Isolate the producer while measuring the physical reset expansion.  This
+    # avoids allowing the delayed finisher programs to define the chemistry
+    # block period.
+    producer_probe = {
+        "parts": [
+            deepcopy(producer),
+            *[
+                deepcopy(part)
+                for part in solution.get("parts", [])
+                if str(part.get("type") or "") == "track"
+            ],
+        ],
+    }
+    producer_probe["parts"][0]["program"] = deepcopy(producer_block)
+    block_period = int(
+        build_program_timeline(producer_probe).get("summary", {}).get("globalPeriod")
+        or 0
+    )
+    if block_period < ready + 1:
+        raise ValueError("producer reset did not create a complete physical period")
+
+    producer["program"] = [
+        {**deepcopy(item), "cycle": int(item.get("cycle") or 0) + offset}
+        for offset in (0, block_period, 2 * block_period)
+        for item in producer_block
+    ]
+
+    core_cycles = [ready + index * block_period for index in range(3)]
+    first, second, third = core_cycles
+    feeder["program"] = [
+        {"cycle": first + 2, "instruction": "grab"},
+        {"cycle": first + 3, "instruction": "rotate_cw"},
+        {"cycle": first + 4, "instruction": "drop"},
+        {"cycle": first + 5, "instruction": "rotate_ccw"},
+        {"cycle": first + 7, "instruction": "track_plus"},
+        {"cycle": second + 2, "instruction": "grab"},
+        {"cycle": second + 3, "instruction": "track_minus"},
+        {"cycle": second + 4, "instruction": "rotate_cw"},
+        {"cycle": second + 5, "instruction": "drop"},
+        {"cycle": second + 6, "instruction": "rotate_ccw"},
+        {"cycle": second + 7, "instruction": "track_plus"},
+        {"cycle": second + 8, "instruction": "track_plus"},
+        {"cycle": third + 2, "instruction": "grab"},
+        {"cycle": third + 3, "instruction": "track_minus"},
+        {"cycle": third + 4, "instruction": "track_minus"},
+        {"cycle": third + 5, "instruction": "rotate_cw"},
+        {"cycle": third + 6, "instruction": "drop"},
+        {"cycle": third + 8, "instruction": "rotate_ccw"},
+    ]
+    red_arm["program"] = [
+        {"cycle": core_cycle + offset, "instruction": instruction}
+        for core_cycle in core_cycles
+        for offset, instruction in (
+            (5, "grab"),
+            (6, "pivot_cw"),
+            (7, "drop"),
+        )
+    ]
+
+    track_step = rotate_hex((1, 0), rotation)
+    solution.setdefault("parts", []).extend([
+        {
+            "id": _unique_part_id(solution, "fire-supply-second-unbonder"),
+            "type": "unbonder",
+            "position": list(supply_input.get("position") or (0, 0)),
+            "rotation": int(supply_input.get("rotation") or 0) % 6,
+            "length": 1,
+            "which": 0,
+            "program": [],
+        },
+        {
+            "id": _unique_part_id(solution, "fire-supply-duplication"),
+            "type": "glyph-duplication",
+            "position": list(supply_input.get("position") or (0, 0)),
+            "rotation": int(supply_input.get("rotation") or 0) % 6,
+            "length": 1,
+            "which": 0,
+            "program": [],
+        },
+        {
+            "id": _unique_part_id(solution, "fire-supply-track"),
+            "type": "track",
+            "position": list(feeder.get("position") or (0, 0)),
+            "rotation": rotation,
+            "length": 1,
+            "which": 0,
+            "program": [],
+            "trackHexes": [
+                [0, 0],
+                [track_step[0], track_step[1]],
+                [2 * track_step[0], 2 * track_step[1]],
+            ],
+        },
+    ])
+    return reorder_instantaneous_bonders(solution)
+
+
 def analyze_product_delivery(replay: dict[str, Any]) -> dict[str, Any]:
     events = [
         event
@@ -328,6 +526,8 @@ def search_single_product_completions(
             records.append({
                 "stage": "single-product-completion",
                 "sourceIndex": source_index,
+                "sourceCandidateRank": source.get("sourceCandidateRank"),
+                "sourceVariantIndex": source.get("sourceVariantIndex"),
                 "core": asdict(core),
                 "serialization": roundtrip["diagnostics"],
                 "localProductDelivery": delivery,
@@ -401,6 +601,132 @@ def search_single_product_completions(
             "oracleSingleProductCompleteCount": len(oracle_complete),
             "hasOracleSingleProduct": bool(oracle_complete),
             "bestSingleProductCycle": min(oracle_cycles) if oracle_cycles else None,
+            "oracleOutcomeCounts": dict(sorted(outcomes.items())),
+        },
+        "variants": ranked[:max(0, int(result_limit))],
+    }
+
+
+def search_repeating_product_completions(
+    puzzle: dict[str, Any],
+    sources: list[dict[str, Any]],
+    *,
+    source_limit: int = 20,
+    local_cycles: int = 400,
+    result_limit: int = 20,
+    oracle_promotion_limit: int = 20,
+    full_product_oracle_validator: ProductOracleValidator | None = None,
+    oracle_workers: int = 1,
+) -> dict[str, Any]:
+    """Turn accepted one-product candidates into six-product periodic machines."""
+    searched = list(sources)[:max(0, int(source_limit))]
+    records: list[dict[str, Any]] = []
+    for source_index, source in enumerate(searched):
+        solution = source.get("solution") if "solution" in source else source
+        core_payload = source.get("core") if isinstance(source, dict) else None
+        if not isinstance(solution, dict) or not isinstance(core_payload, dict):
+            continue
+        try:
+            core = ProductCore(
+                cycle=int(core_payload.get("cycle") or 0),
+                endpoint=tuple(int(value) for value in core_payload.get("endpoint", (0, 0))),
+                neighbor=tuple(int(value) for value in core_payload.get("neighbor", (0, 0))),
+                atom_ids=tuple(str(value) for value in core_payload.get("atom_ids", ())),
+            )
+            completed = materialize_repeating_product_completion(solution, core)
+            roundtrip = serialize_candidate_roundtrip(completed)
+            replay = _run_replay(
+                puzzle,
+                roundtrip["parsed"],
+                max_cycles=max(1, int(local_cycles)),
+            )
+            delivery = analyze_product_delivery(replay)
+            period = int(
+                build_program_timeline(roundtrip["parsed"]).get("summary", {}).get(
+                    "globalPeriod"
+                ) or 0
+            )
+            records.append({
+                "stage": "repeating-product-completion",
+                "sourceIndex": source_index,
+                "sourceCandidateRank": source.get("sourceCandidateRank"),
+                "sourceVariantIndex": source.get("sourceVariantIndex"),
+                "core": asdict(core),
+                "globalPeriod": period,
+                "serialization": roundtrip["diagnostics"],
+                "localProductDelivery": delivery,
+                "solution": completed,
+            })
+        except Exception as exc:
+            records.append({
+                "stage": "repeating-product-completion",
+                "sourceIndex": source_index,
+                "generationError": {
+                    "errorType": type(exc).__name__,
+                    "message": str(exc),
+                },
+            })
+
+    local_complete = [
+        record
+        for record in records
+        if int((record.get("localProductDelivery") or {}).get("deliveredProductCount") or 0)
+        >= 6
+    ]
+    promoted = local_complete[:max(0, int(oracle_promotion_limit))]
+    outcomes: Counter[str] = Counter()
+
+    def validate(record: dict[str, Any]) -> dict[str, Any]:
+        try:
+            assert full_product_oracle_validator is not None
+            return full_product_oracle_validator(record["solution"])
+        except Exception as exc:
+            return {
+                "status": "validator-error",
+                "valid": None,
+                "value": None,
+                "issues": [{"message": f"{type(exc).__name__}: {exc}"}],
+            }
+
+    if full_product_oracle_validator is not None and promoted:
+        with ThreadPoolExecutor(max_workers=max(1, min(10, int(oracle_workers)))) as executor:
+            validations = list(executor.map(validate, promoted))
+        for record, validation in zip(promoted, validations):
+            record["fullProductOracleValidation"] = validation
+            outcome = str(validation.get("status") or "unknown")
+            record["fullProductOracleOutcome"] = outcome
+            outcomes[outcome] += 1
+
+    oracle_complete = [
+        record
+        for record in promoted
+        if str(record.get("fullProductOracleOutcome") or "") == "product-complete"
+        and int((record.get("fullProductOracleValidation") or {}).get("productCount") or 0)
+        >= 6
+    ]
+    oracle_cycles = [
+        int((record.get("fullProductOracleValidation") or {}).get("value"))
+        for record in oracle_complete
+        if (record.get("fullProductOracleValidation") or {}).get("value") is not None
+    ]
+    ranked = sorted(
+        records,
+        key=lambda record: (
+            int(record in oracle_complete),
+            int((record.get("localProductDelivery") or {}).get("deliveredProductCount") or 0),
+            -int((record.get("fullProductOracleValidation") or {}).get("value") or 1_000_000),
+        ),
+        reverse=True,
+    )
+    return {
+        "summary": {
+            "searchedSourceCount": len(searched),
+            "generatedRepeatingCompletionCount": len(records),
+            "localFullProductCompleteCount": len(local_complete),
+            "oraclePromotedCount": len(promoted) if full_product_oracle_validator else 0,
+            "oracleFullProductCompleteCount": len(oracle_complete),
+            "hasOracleFullPuzzle": bool(oracle_complete),
+            "bestFullProductCycle": min(oracle_cycles) if oracle_cycles else None,
             "oracleOutcomeCounts": dict(sorted(outcomes.items())),
         },
         "variants": ranked[:max(0, int(result_limit))],
