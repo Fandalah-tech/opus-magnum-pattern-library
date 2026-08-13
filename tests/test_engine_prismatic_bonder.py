@@ -71,6 +71,32 @@ def test_prismatic_bonder_can_add_a_second_channel_to_the_same_pair() -> None:
     }
 
 
+def test_prism_and_unbonder_follow_solution_part_order() -> None:
+    puzzle = {"products": []}
+    world = World()
+    world.add_atom(Atom("a", "fire", (0, 0)))
+    world.add_atom(Atom("b", "fire", (1, 0)))
+
+    prism_first = Simulator.from_models(puzzle, {"parts": [
+        {"id": "prism", "type": "bonder-prisma", "position": [0, 0], "rotation": 0},
+        {"id": "split", "type": "unbonder", "position": [0, 0], "rotation": 0},
+    ]})
+    prism_first.world = world
+    prism_first.step({})
+
+    assert set(world.bonds) == set()
+
+    world.add_bond(Bond("a", "b", "normal"))
+    unbonder_first = Simulator.from_models(puzzle, {"parts": [
+        {"id": "split", "type": "unbonder", "position": [0, 0], "rotation": 0},
+        {"id": "prism", "type": "bonder-prisma", "position": [0, 0], "rotation": 0},
+    ]})
+    unbonder_first.world = world
+    unbonder_first.step({})
+
+    assert set(world.bonds) == {Bond("a", "b", "triplex-black").key}
+
+
 def test_parser_triplex_mask_expands_for_inputs_and_outputs() -> None:
     molecule = {
         "atoms": [

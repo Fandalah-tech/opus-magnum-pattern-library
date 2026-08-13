@@ -11,6 +11,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from packages.opus_validator import classify_product_result
+
 SUMMARY_RE = re.compile(
     r"^(?P<cost>\d+)g/(?P<instructions>\d+)i@0\s+"
     r"(?P<cycles>\d+)c/(?P<area>\d+)a@V(?:\s+.*)?$"
@@ -123,6 +125,69 @@ def run_omsim(
         part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
     )
     return parse_omsim_output(combined, completed.returncode)
+
+
+def run_omsim_product(
+    binary: Path,
+    puzzle: Path,
+    solution: Path,
+    timeout: int,
+    *,
+    product_count: int = 1,
+    metric: str = "cycles",
+) -> dict[str, Any]:
+    """Ask omsim to stop only after it has accepted an exact product."""
+    command = [
+        str(binary),
+        "--puzzle-file",
+        str(puzzle),
+        "--metric",
+        f"product {product_count} {metric}",
+        str(solution),
+    ]
+    try:
+        completed = subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+        )
+    except FileNotFoundError:
+        output = f"omsim binary not found: {binary}"
+        return {
+            **classify_product_result(
+                127,
+                output,
+                product_count=product_count,
+                metric=metric,
+            ),
+            "rawOutput": output,
+        }
+    except subprocess.TimeoutExpired:
+        output = f"omsim timed out after {timeout} seconds"
+        return {
+            **classify_product_result(
+                124,
+                output,
+                product_count=product_count,
+                metric=metric,
+            ),
+            "rawOutput": output,
+        }
+
+    combined = "\n".join(
+        part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
+    )
+    return {
+        **classify_product_result(
+            completed.returncode,
+            combined,
+            product_count=product_count,
+            metric=metric,
+        ),
+        "rawOutput": combined or None,
+    }
 
 
 def build_parser() -> argparse.ArgumentParser:

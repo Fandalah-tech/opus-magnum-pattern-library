@@ -1,3 +1,17 @@
-from .omsim import build_command, classify_result, parse_metrics
+from .omsim import (
+    build_command,
+    build_product_command,
+    classify_product_result,
+    classify_result,
+    parse_metrics,
+    parse_product_metric,
+)
 
-__all__ = ["build_command", "classify_result", "parse_metrics"]
+__all__ = [
+    "build_command",
+    "build_product_command",
+    "classify_product_result",
+    "classify_result",
+    "parse_metrics",
+    "parse_product_metric",
+]

@@ -14,6 +14,7 @@ from .geometry_search import search_geometric_candidates
 from .layout import materialize_candidate_layout
 from .manufacturing import build_manufacturing_plan
 from .ordered_chemistry import search_ordered_chemistry_candidates
+from .product_completion import search_single_product_completions
 from .repair_policy import recommend_repair_order
 from .scheduling import materialize_candidate_schedule, synchronize_layout_programs
 from .solver import validate_generated_solution
@@ -102,6 +103,11 @@ def generate_composed_candidates(
     ordered_chemistry_persistence_frames: int = 2,
     ordered_chemistry_prism_oracle_promotion_limit: int = 32,
     ordered_chemistry_calcification_oracle_promotion_limit: int = 40,
+    single_product_source_limit: int = 0,
+    single_product_result_limit: int = 20,
+    single_product_local_cycles: int = 100,
+    single_product_oracle_promotion_limit: int = 20,
+    single_product_oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
     chain_max_depth: int = 8,
     min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
@@ -126,6 +132,10 @@ def generate_composed_candidates(
                 "chemistryTransplantOracleStableActiveCount": 0,
                 "orderedChemistryPrismVariantCount": 0,
                 "orderedChemistryCalcificationVariantCount": 0,
+                "singleProductCompletionCount": 0,
+                "oracleSingleProductCompleteCount": 0,
+                "hasOracleSingleProduct": False,
+                "bestSingleProductCycle": None,
             },
             "candidates": [],
         }
@@ -361,9 +371,27 @@ def generate_composed_candidates(
             oracle_workers=component_timing_oracle_workers,
         )
     ordered_chemistry_summary = (ordered_chemistry_search or {}).get("summary", {})
+    product_completion_search = None
+    if single_product_source_limit > 0 and ordered_chemistry_search is not None:
+        product_sources = [
+            *(ordered_chemistry_search.get("prismVariants") or []),
+            *(ordered_chemistry_search.get("variants") or []),
+        ]
+        product_completion_search = search_single_product_completions(
+            puzzle,
+            product_sources,
+            source_limit=single_product_source_limit,
+            local_cycles=single_product_local_cycles,
+            persistence_frames=ordered_chemistry_persistence_frames,
+            result_limit=single_product_result_limit,
+            oracle_promotion_limit=single_product_oracle_promotion_limit,
+            product_oracle_validator=single_product_oracle_validator,
+            oracle_workers=component_timing_oracle_workers,
+        )
+    product_completion_summary = (product_completion_search or {}).get("summary", {})
 
     return {
-        "schemaVersion": "0.8.0",
+        "schemaVersion": "0.9.0",
         "plan": plan.to_dict(),
         "summary": {
             "supported": True,
@@ -409,6 +437,18 @@ def generate_composed_candidates(
                 ordered_chemistry_summary.get(
                     "hasPersistentCalcifiedCompleteTriplex"
                 )
+            ),
+            "singleProductCompletionCount": int(
+                product_completion_summary.get("localSingleProductCompleteCount") or 0
+            ),
+            "oracleSingleProductCompleteCount": int(
+                product_completion_summary.get("oracleSingleProductCompleteCount") or 0
+            ),
+            "hasOracleSingleProduct": bool(
+                product_completion_summary.get("hasOracleSingleProduct")
+            ),
+            "bestSingleProductCycle": product_completion_summary.get(
+                "bestSingleProductCycle"
             ),
             "hasCompleteSolution": (
                 engine_complete_count > 0
@@ -464,11 +504,20 @@ def generate_composed_candidates(
                 0,
                 int(ordered_chemistry_calcification_oracle_promotion_limit),
             ),
+            "singleProductSourceLimit": max(0, int(single_product_source_limit)),
+            "singleProductResultLimit": max(0, int(single_product_result_limit)),
+            "singleProductLocalCycles": max(1, int(single_product_local_cycles)),
+            "singleProductOraclePromotionLimit": max(
+                0,
+                int(single_product_oracle_promotion_limit),
+            ),
+            "singleProductOracleEnabled": single_product_oracle_validator is not None,
             "candidateKinds": dict(sorted(Counter(str(item.get("candidateKind") or "unknown") for item in assemblies).items())),
             "minEngineValidatedSolutions": max(0, int(min_engine_validated_solutions)),
         },
         "componentTimingOraclePortfolio": global_component_portfolio,
         "chemistryTransplantSearch": chemistry_transplant_search,
         "orderedChemistrySearch": ordered_chemistry_search,
+        "productCompletionSearch": product_completion_search,
         "candidates": results,
     }

@@ -140,6 +140,8 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
     chemistry_transplant_summary = chemistry_transplant_search.get("summary") or {}
     ordered_chemistry_search = generation.get("orderedChemistrySearch") or {}
     ordered_chemistry_summary = ordered_chemistry_search.get("summary") or {}
+    product_completion_search = generation.get("productCompletionSearch") or {}
+    product_completion_summary = product_completion_search.get("summary") or {}
     chemistry_transplant_source_ranks = {
         int(item.get("sourceCandidateRank") or 0)
         for item in chemistry_transplant_summary.get("selectedMechanicalParents", [])
@@ -249,6 +251,41 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
                         ) or {}
                     ),
                 })
+                if product_completion_search:
+                    attempts.append({
+                        "repair": "single-product-completion",
+                        "searchedVariantCount": int(
+                            product_completion_summary.get("generatedCompletionCount") or 0
+                        ),
+                        "completeVariantCount": int(
+                            product_completion_summary.get(
+                                "oracleSingleProductCompleteCount"
+                            ) or 0
+                        ),
+                        "succeeded": False,
+                        "stageSucceeded": bool(
+                            product_completion_summary.get("hasOracleSingleProduct")
+                        ),
+                        "localSingleProductCompleteCount": int(
+                            product_completion_summary.get(
+                                "localSingleProductCompleteCount"
+                            ) or 0
+                        ),
+                        "oracleValidatedVariantCount": int(
+                            product_completion_summary.get("oraclePromotedCount") or 0
+                        ),
+                        "oracleSingleProductCompleteCount": int(
+                            product_completion_summary.get(
+                                "oracleSingleProductCompleteCount"
+                            ) or 0
+                        ),
+                        "bestSingleProductCycle": product_completion_summary.get(
+                            "bestSingleProductCycle"
+                        ),
+                        "oracleOutcomeCounts": dict(
+                            product_completion_summary.get("oracleOutcomeCounts") or {}
+                        ),
+                    })
 
         progress_candidates = [("base", base)]
         if temporal is not None:

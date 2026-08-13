@@ -151,12 +151,12 @@ class Simulator(RuntimeSimulator):
                 "position": list(metal.position),
             }))
 
-    def _process_basic_glyphs(self) -> None:
-        super()._process_basic_glyphs()
-        for positions, part_id in self.multi_bonders:
+    def _apply_basic_glyph_operation(self, operation) -> None:
+        part_type, positions, part_id = operation
+        if part_type == "bonder-speed":
             center = self.world.atom_at(positions[0])
             if center is None:
-                continue
+                return
             for position in positions[1:]:
                 neighbor = self.world.atom_at(position)
                 if neighbor is None or neighbor.id == center.id:
@@ -172,7 +172,9 @@ class Simulator(RuntimeSimulator):
                     "type": "normal",
                     "multiBonder": True,
                 }))
-        for positions, part_id in self.prismatic_bonders:
+            return
+
+        if part_type == "bonder-prisma":
             atoms = [self.world.atom_at(position) for position in positions]
             for first_index, second_index, channel in (
                 (0, 1, "black"),
@@ -202,3 +204,6 @@ class Simulator(RuntimeSimulator):
                     "triplexChannel": channel,
                     "prismatic": True,
                 }))
+            return
+
+        super()._apply_basic_glyph_operation(operation)

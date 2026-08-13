@@ -31,6 +31,7 @@ class Simulator(BaseSimulator):
         self.disposal_cells = set()
         self.bonder_pairs = []
         self.unbonder_pairs = []
+        self.basic_glyph_operations = []
         self.calcification_cells = []
         self.purification_glyphs = []
         self.projection_glyphs = []
@@ -57,6 +58,24 @@ class Simulator(BaseSimulator):
                     simulator.bonder_pairs.append(pair)
                 else:
                     simulator.unbonder_pairs.append(pair)
+                simulator.basic_glyph_operations.append((part_type, (origin, second), part_id))
+                continue
+
+            if part_type == "bonder-prisma":
+                simulator.basic_glyph_operations.append((part_type, (
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((0, 1), origin, rotation),
+                ), part_id))
+                continue
+
+            if part_type == "bonder-speed":
+                simulator.basic_glyph_operations.append((part_type, (
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((0, -1), origin, rotation),
+                    _transform((-1, 1), origin, rotation),
+                ), part_id))
                 continue
 
             if part_type == "glyph-calcification":
@@ -228,12 +247,14 @@ class Simulator(BaseSimulator):
                 "position": list(center_pos),
             }))
 
-    def _process_basic_glyphs(self) -> None:
-        for first_pos, second_pos, part_id in self.unbonder_pairs:
+    def _apply_basic_glyph_operation(self, operation) -> None:
+        part_type, positions, part_id = operation
+        if part_type == "unbonder":
+            first_pos, second_pos = positions
             first = self.world.atom_at(first_pos)
             second = self.world.atom_at(second_pos)
             if first is None or second is None:
-                continue
+                return
             before = len(self.world.bonds)
             self.world.remove_bond(first.id, second.id)
             if len(self.world.bonds) != before:
@@ -242,12 +263,14 @@ class Simulator(BaseSimulator):
                     "fromAtomId": first.id,
                     "toAtomId": second.id,
                 }))
+            return
 
-        for first_pos, second_pos, part_id in self.bonder_pairs:
+        if part_type == "bonder":
+            first_pos, second_pos = positions
             first = self.world.atom_at(first_pos)
             second = self.world.atom_at(second_pos)
             if first is None or second is None or first.id == second.id:
-                continue
+                return
             bond = Bond(first.id, second.id, "normal")
             pair = tuple(sorted((first.id, second.id)))
             has_triplex = any(
@@ -255,7 +278,7 @@ class Simulator(BaseSimulator):
                 for key in self.world.bonds
             )
             if bond.key in self.world.bonds or has_triplex:
-                continue
+                return
             self.world.add_bond(bond)
             self.world.events.append(WorldEvent("bond-created", self.world.cycle, {
                 "glyphPartId": part_id,
@@ -263,6 +286,13 @@ class Simulator(BaseSimulator):
                 "toAtomId": second.id,
                 "type": "normal",
             }))
+
+    def _process_basic_glyphs(self) -> None:
+        # OMSim applies instantaneous glyphs in solution-file order. Keeping
+        # the bonder family in separate type buckets changes chemistry when an
+        # unbonder and a bonder touch the same pair in one half-cycle.
+        for operation in self.basic_glyph_operations:
+            self._apply_basic_glyph_operation(operation)
 
     def _molecule_signature(self, atom_ids: set[str]) -> tuple[tuple, tuple]:
         atoms = tuple(sorted(

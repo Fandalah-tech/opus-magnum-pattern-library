@@ -1,13 +1,36 @@
 from pathlib import Path
 import unittest
 
-from packages.opus_validator import build_command, classify_result, parse_metrics
+from packages.opus_validator import (
+    build_command,
+    build_product_command,
+    classify_product_result,
+    classify_result,
+    parse_metrics,
+    parse_product_metric,
+)
 
 
 class OmsimAdapterTests(unittest.TestCase):
     def test_build_command_uses_puzzle_file_option(self):
         command = build_command("omsim", Path("a.puzzle"), Path("b.solution"))
         self.assertEqual(command, ["omsim", "--puzzle-file", "a.puzzle", "b.solution"])
+
+    def test_build_product_command_requests_an_explicit_delivery(self):
+        command = build_product_command(
+            "omsim",
+            Path("a.puzzle"),
+            Path("b.solution"),
+            product_count=1,
+        )
+        self.assertEqual(command, [
+            "omsim",
+            "--puzzle-file",
+            "a.puzzle",
+            "--metric",
+            "product 1 cycles",
+            "b.solution",
+        ])
 
     def test_parse_metrics(self):
         self.assertEqual(
@@ -32,6 +55,20 @@ class OmsimAdapterTests(unittest.TestCase):
         self.assertEqual(result["status"], "invalid")
         self.assertFalse(result["valid"])
         self.assertEqual(result["issues"][0]["code"], "OMSIM_VALIDATION_FAILED")
+
+    def test_product_metric_is_a_strict_delivery_proof(self):
+        output = "product 1 cycles: 61\n"
+        self.assertEqual(parse_product_metric(output), 61)
+        result = classify_product_result(0, output)
+        self.assertEqual(result["status"], "product-complete")
+        self.assertTrue(result["valid"])
+        self.assertEqual(result["value"], 61)
+
+    def test_cycle_limit_success_cannot_masquerade_as_product_delivery(self):
+        result = classify_product_result(0, "235g/983i@0 1000c/72a@V\n")
+        self.assertEqual(result["status"], "validator-error")
+        self.assertIsNone(result["valid"])
+        self.assertEqual(result["issues"][0]["code"], "OMSIM_PRODUCT_METRIC_MISSING")
 
 
 if __name__ == "__main__":

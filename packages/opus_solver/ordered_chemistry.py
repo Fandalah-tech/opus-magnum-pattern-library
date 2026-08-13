@@ -12,6 +12,7 @@ from packages.opus_engine.builder import DIRECTIONS
 from .candidate_solution import serialize_candidate_roundtrip
 from .chemistry_transplant import mechanical_fingerprint, prism_poses_for_pair
 from .component_timing import oracle_outcome
+from .product_completion import reorder_instantaneous_bonders
 
 
 OracleValidator = Callable[[dict[str, Any]], dict[str, Any]]
@@ -400,9 +401,10 @@ def search_ordered_chemistry_candidates(
     for source in stable_sources:
         if prism_attempt_count >= max(0, int(prism_variant_limit)):
             break
+        ordered_source_solution = reorder_instantaneous_bonders(source["solution"])
         source_replay = _run_replay(
             puzzle,
-            source["solution"],
+            ordered_source_solution,
             max_cycles=local_cycles,
         )
         source_progress = analyze_persistent_chemistry(
@@ -417,7 +419,7 @@ def search_ordered_chemistry_candidates(
             if prism_attempt_count >= max(0, int(prism_variant_limit)):
                 break
             prism_attempt_count += 1
-            solution = deepcopy(source["solution"])
+            solution = deepcopy(ordered_source_solution)
             solution.setdefault("parts", []).append({
                 "id": _unique_part_id(solution, "ordered-prism"),
                 "type": "bonder-prisma",
@@ -427,6 +429,7 @@ def search_ordered_chemistry_candidates(
                 "which": 0,
                 "program": [],
             })
+            solution = reorder_instantaneous_bonders(solution)
             if mechanical_fingerprint(solution) != mechanical_fingerprint(source["solution"]):
                 raise AssertionError("Ordered prism stage changed the frozen mechanism")
             try:

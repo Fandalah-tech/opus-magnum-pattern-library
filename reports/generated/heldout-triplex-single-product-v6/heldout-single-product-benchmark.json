@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "0.1.0",
+  "benchmarkId": "heldout-triplex-single-product-v6",
+  "targetPuzzleId": "OM2021_W1",
+  "targetPuzzleName": "Improved Explosive Phial",
+  "protocol": {
+    "auditedTriplexSolutionCount": 479,
+    "engineCompleteBeforeExclusion": 396,
+    "excludedTargetSolutionCount": 230,
+    "remainingEngineCompleteDonorCount": 166,
+    "remainingDonorPuzzleCount": 7,
+    "targetSolutionBytesUsed": 0
+  },
+  "fidelityCorrection": {
+    "issue": "instantaneous bonder glyphs were bucketed by type instead of solution-file order",
+    "fixed": true,
+    "regressionCovered": true,
+    "historicalV5IntermediateCountReclassified": 22,
+    "historicalV5Classification": "mechanical cycle-limit survival only"
+  },
+  "pipelineReproduction": {
+    "searchedPrismPlacementCount": 14,
+    "persistentProductCoreCount": 3,
+    "generatedCompletionCount": 3,
+    "localSingleProductCompleteCount": 3,
+    "oraclePromotedCount": 3,
+    "oracleSingleProductCompleteCount": 3,
+    "bestSingleProductCycle": 61
+  },
+  "boundedFeederGeometryExploration": {
+    "configurationCount": 18,
+    "oracleSingleProductCompleteCount": 10
+  },
+  "bestCandidate": {
+    "artifact": "OM2021_W1-single-product-cycle-61.solution",
+    "sha256": "955d06e655ac63f782d4738478dd94d7d52ecb8e334bb0132085fd5777113b6b",
+    "partCount": 15,
+    "productMetric": {
+      "commandMetric": "product 1 cycles",
+      "value": 61,
+      "exitCode": 0,
+      "rawOutput": "product 1 cycles: 61"
+    },
+    "normalRun": {
+      "cost": 235,
+      "instructions": 983,
+      "firstOutputInterval": 61,
+      "status": "collision",
+      "collisionCycle": 212,
+      "collisionPosition": [2, -1],
+      "exitCode": 255
+    }
+  },
+  "targetProduct": {
+    "atomCount": 4,
+    "fullTriplexEdgeCount": 3,
+    "triplexChannelCount": 9
+  },
+  "verification": {
+    "pythonTestsPassed": 222,
+    "pythonSubtestsPassed": 10,
+    "omsimBinarySha256": "f0edd34b6d6a3a1b2c3df4f48fe17b818deaae242efb749759d6c64647fbedb4",
+    "oracleWorkerCap": 10
+  },
+  "milestone": {
+    "hasAuthoritativeSingleProduct": true,
+    "strictSingleProductProofCount": 1,
+    "hasFullPuzzleCompletion": false,
+    "strictFullPuzzleCompletionCount": 0,
+    "remainingRequiredOutputCount": 5,
+    "nextBlocker": "repeatability and cleanup after the first accepted product"
+  }
+}

@@ -84,6 +84,14 @@ from .portfolio_learning import (
     learn_objective_blueprint_portfolio,
     solution_blueprint_parts,
 )
+from .product_completion import (
+    ProductCore,
+    analyze_product_delivery,
+    find_persistent_product_core,
+    materialize_single_product_completion,
+    reorder_instantaneous_bonders,
+    search_single_product_completions,
+)
 from .repair_policy import recommend_repair_order
 from .retrieval import mechanism_compatibility, puzzle_similarity, rank_mechanisms
 from .scheduling import (
@@ -109,10 +117,12 @@ __all__ = [
     "ManufacturingPlan",
     "OBJECTIVES",
     "ObjectiveCandidate",
+    "ProductCore",
     "SolveResult",
     "UnsupportedPuzzleError",
     "aggregate_repair_outcomes",
     "analyze_persistent_chemistry",
+    "analyze_product_delivery",
     "analyze_layout_geometry",
     "arm_grab_sites",
     "apply_forward_transform",
@@ -131,6 +141,7 @@ __all__ = [
     "enumerate_component_timing_variants",
     "enumerate_chemistry_transplants",
     "enumerate_transform_variants",
+    "find_persistent_product_core",
     "generate_composed_candidates",
     "generate_blind_transfer_candidates",
     "generate_objective_candidates",
@@ -143,6 +154,7 @@ __all__ = [
     "materialize_candidate_schedule",
     "materialize_fragment_chain_layout",
     "materialize_fragment_chain_schedule",
+    "materialize_single_product_completion",
     "mechanism_compatibility",
     "merge_outcome_records",
     "learn_objective_blueprint_portfolio",
@@ -159,11 +171,13 @@ __all__ = [
     "rank_fragment_chains",
     "rank_mechanisms",
     "recommend_repair_order",
+    "reorder_instantaneous_bonders",
     "required_flow_relations",
     "search_geometric_candidates",
     "search_component_timing_candidates",
     "search_chemistry_transplant_candidates",
     "search_ordered_chemistry_candidates",
+    "search_single_product_completions",
     "search_temporal_candidates",
     "serialize_candidate_roundtrip",
     "select_objective_winners",
