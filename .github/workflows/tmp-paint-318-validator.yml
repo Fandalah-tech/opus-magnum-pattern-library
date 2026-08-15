@@ -9,19 +9,23 @@ permissions:
   contents: read
 
 jobs:
-  fetch-libverify:
+  build-omsim:
     runs-on: ubuntu-latest
     steps:
-      - name: Download OMSim libverify
+      - name: Clone and build OMSim
         run: |
-          curl -L --fail --retry 3 \
-            -o libverify.so \
-            https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so
-          chmod +x libverify.so
-          sha256sum libverify.so
-      - name: Upload validator library
+          git clone --depth 1 https://github.com/ianh/omsim.git omsim-src
+          make -C omsim-src omsim libverify.so
+          sha256sum omsim-src/omsim omsim-src/libverify.so
+      - name: Upload OMSim build and source
         uses: actions/upload-artifact@v4
         with:
-          name: omsim-libverify-linux
-          path: libverify.so
+          name: omsim-linux-source-build
+          path: |
+            omsim-src/omsim
+            omsim-src/libverify.so
+            omsim-src/*.c
+            omsim-src/*.h
+            omsim-src/Makefile
+            omsim-src/README
           retention-days: 1
