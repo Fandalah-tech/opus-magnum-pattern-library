@@ -1,0 +1,27 @@
+name: Temporary Paint 318 validator bootstrap
+
+on:
+  push:
+    branches:
+      - tmp/paint-318-validator
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-libverify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download OMSim libverify
+        run: |
+          curl -L --fail --retry 3 \
+            -o libverify.so \
+            https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so
+          chmod +x libverify.so
+          sha256sum libverify.so
+      - name: Upload validator library
+        uses: actions/upload-artifact@v4
+        with:
+          name: omsim-libverify-linux
+          path: libverify.so
+          retention-days: 1
