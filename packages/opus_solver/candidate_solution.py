@@ -441,6 +441,11 @@ def rotary_singleton_accumulator_adaptation(
                 {"cycle": 1, "instruction": "rotate_cw" if step == -1 else "rotate_ccw"},
                 {"cycle": 2, "instruction": "drop"},
                 {"cycle": 3, "instruction": "rotate_ccw" if step == -1 else "rotate_cw"},
+                {"cycle": 4, "instruction": "repeat"},
+                {"cycle": 8, "instruction": "repeat"},
+                {"cycle": 16, "instruction": "repeat"},
+                {"cycle": 32, "instruction": "repeat"},
+                {"cycle": 64, "instruction": "repeat"},
             ]
             selected_arm["armNumber"] = 1
             selected_bonder["position"] = list(arc_cells[0])
@@ -461,6 +466,7 @@ def rotary_singleton_accumulator_adaptation(
                     "servingCandidateArmId": str(selected_arm.get("id") or ""),
                     "rotationStep": int(step),
                     "period": 4,
+                    "expandedTapePeriod": 128,
                     "targetAtomCount": len(product_atoms),
                     "arcCells": [list(cell) for cell in arc_cells],
                     "bonderPosition": list(selected_bonder["position"]),
@@ -594,9 +600,15 @@ def build_candidate_solution(
 
 
 def serialize_candidate_roundtrip(solution: dict[str, Any]) -> dict[str, Any]:
-    """Serialize a metric-free v7 candidate and parse it back for contract validation."""
+    """Serialize a metric-free v7 candidate and parse it back for contract validation.
+
+    Binary round-trip verification remains authoritative for the game payload,
+    while non-serialized generator provenance is reattached to the parsed model
+    solely for local diagnostics/validation. It is ignored by the binary writer.
+    """
     payload = write_solution_bytes(solution, version=7)
     parsed = parse_solution_bytes(payload, source_name="generated-candidate.solution")
+    parsed["source"] = deepcopy(solution.get("source") or {})
     return {
         "bytes": payload,
         "parsed": parsed,
@@ -606,5 +618,6 @@ def serialize_candidate_roundtrip(solution: dict[str, Any]) -> dict[str, Any]:
             "parserTrailingBytes": parsed.get("trailingBytes"),
             "puzzleFileMatches": str(parsed.get("puzzleFile") or "") == str(solution.get("puzzleFile") or ""),
             "roundTripClean": parsed.get("trailingBytes") == 0 and len(parsed.get("parts", [])) == len(solution.get("parts", [])),
+            "nonSerializedSourceMetadataReattached": True,
         },
     }
