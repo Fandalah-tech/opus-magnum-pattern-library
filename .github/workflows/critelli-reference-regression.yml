@@ -111,19 +111,13 @@ jobs:
           assert cycles['knowledgeResolution']['flowIndexExplicit'] is False
           assert instructions['knowledgeResolution']['flowIndexExplicit'] is False
           print(json.dumps({
-              'cycles': {
-                  'rank': cv['compositionCandidateRank'],
-                  'metrics': cm,
-              },
-              'instructions': {
-                  'rank': iv['compositionCandidateRank'],
-                  'metrics': im,
-              },
+              'cycles': {'rank': cv['compositionCandidateRank'], 'metrics': cm},
+              'instructions': {'rank': iv['compositionCandidateRank'], 'metrics': im},
               'completeCandidates': cv['compositionCompleteCandidateCount'],
           }, sort_keys=True))
           PY
 
-      - name: Build compact learned knowledge index
+      - name: Build diversified learned knowledge index
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -134,6 +128,10 @@ jobs:
           fixture_root = Path('fixtures/reference/critelli-aqueous-dagger')
           puzzle_path = Path('.datasets/critelli-aqueous-dagger-reference/puzzle/weeklies2026_aqueous-dagger.puzzle')
           manifest = json.loads((fixture_root / 'manifest.json').read_text(encoding='utf-8'))
+          fixture_records = [
+              *manifest.get('novelFixtures', []),
+              *manifest.get('objectiveSpecializedFixtures', []),
+          ]
           results = [
               {
                   'status': 'engine-complete',
@@ -141,12 +139,16 @@ jobs:
                   'puzzlePath': str(puzzle_path),
                   'solutionPath': str(fixture_root / item['file']),
               }
-              for item in manifest['novelFixtures']
+              for item in fixture_records
           ]
           audit = {
-              'schemaVersion': '0.2.0',
+              'schemaVersion': '0.3.0',
               'solutionRoot': '.',
-              'summary': {'solutionCount': len(results)},
+              'summary': {
+                  'solutionCount': len(results),
+                  'novelFixtureCount': len(manifest.get('novelFixtures', [])),
+                  'objectiveSpecializedFixtureCount': len(manifest.get('objectiveSpecializedFixtures', [])),
+              },
               'results': results,
           }
           Path('reports').mkdir(exist_ok=True)
@@ -156,24 +158,52 @@ jobs:
           PY
           python tools/build_engine_fragment_flow_index.py \
             --audit reports/critelli-aqueous-dagger-mini-audit.json \
-            --workers 6 \
-            --sample-limit 6 \
+            --workers 7 \
+            --sample-limit 7 \
             --output reports/critelli-aqueous-dagger-mini-engine-flow.json
           python - <<'PY'
           import json
           from pathlib import Path
           index = json.loads(Path('reports/critelli-aqueous-dagger-mini-engine-flow.json').read_text(encoding='utf-8'))
           summary = index['summary']
-          assert summary['eligibleEngineCompleteSolutionCount'] == 6
-          assert summary['replayValidatedSolutionCount'] == 6
+          assert summary['eligibleEngineCompleteSolutionCount'] == 7
+          assert summary['replayValidatedSolutionCount'] == 7
           assert summary['validationDriftCount'] == 0
           assert summary['errorCount'] == 0
-          assert all(
-              str(path).startswith('fixtures/reference/critelli-aqueous-dagger/generated-novel/')
+          sources = {
+              path
               for transition in index['transitions']
               for path in transition.get('sourceSolutions', [])
-          )
+          }
+          assert any('/generated-novel/' in path for path in sources)
+          assert any('/objective-specialized/' in path for path in sources)
           print(json.dumps(summary, sort_keys=True))
+          PY
+
+      - name: Test diversified knowledge before persistence
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/solve_puzzle.py \
+            "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+            reports/critelli-aqueous-dagger-diverse-cycles.solution \
+            --flow-index reports/critelli-aqueous-dagger-mini-engine-flow.json \
+            --fragment-index reports/critelli-aqueous-dagger-mini-engine-flow.json \
+            --objective cycles \
+            --composition-limit 20 \
+            --report reports/critelli-aqueous-dagger-diverse-cycles.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('reports/critelli-aqueous-dagger-diverse-cycles.json').read_text(encoding='utf-8'))
+          validation = report['validation']
+          assert validation['complete'] is True
+          assert validation['compositionCompleteCandidateCount'] >= 2
+          print(json.dumps({
+              'rank': validation['compositionCandidateRank'],
+              'completeCandidates': validation['compositionCompleteCandidateCount'],
+              'localMetrics': validation['localCandidateMetrics'],
+          }, sort_keys=True))
           PY
 
       - name: Refresh validated knowledge database
@@ -189,7 +219,7 @@ jobs:
             echo "Knowledge index already current and reproducible."
             exit 0
           fi
-          git commit -m "Update validated learned knowledge index [skip ci]"
+          git commit -m "Update diversified learned knowledge index [skip ci]"
           git fetch origin feature/critelli-2026-public-corpus
           git rebase origin/feature/critelli-2026-public-corpus
           git push origin HEAD:feature/critelli-2026-public-corpus
@@ -208,8 +238,10 @@ jobs:
           reference = load('reports/critelli-aqueous-dagger-reference-regression.json', {'summary': {}})
           cycles = load('reports/critelli-aqueous-dagger-cycles.json', {'validation': {}})
           instructions = load('reports/critelli-aqueous-dagger-instructions.json', {'validation': {}})
+          diverse = load('reports/critelli-aqueous-dagger-diverse-cycles.json', {'validation': {}})
           cv = cycles.get('validation', {})
           iv = instructions.get('validation', {})
+          dv = diverse.get('validation', {})
           summary = {
               **reference.get('summary', {}),
               'autonomousCyclesComplete': bool(cv.get('complete')),
@@ -218,11 +250,14 @@ jobs:
               'autonomousInstructionsComplete': bool(iv.get('complete')),
               'autonomousInstructionsRank': iv.get('compositionCandidateRank'),
               'autonomousInstructionsLocalMetrics': iv.get('localCandidateMetrics'),
-              'autonomousCompleteCandidates': cv.get('compositionCompleteCandidateCount'),
+              'diversifiedCyclesComplete': bool(dv.get('complete')),
+              'diversifiedCyclesRank': dv.get('compositionCandidateRank'),
+              'diversifiedCyclesLocalMetrics': dv.get('localCandidateMetrics'),
+              'diversifiedCompleteCandidates': dv.get('compositionCompleteCandidateCount'),
               'autonomousKnowledgeIndex': cycles.get('knowledgeResolution', {}).get('flowIndex'),
           }
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
-              out.write('## Aqueous Dagger learned-reference regression\n\n')
+              out.write('## Aqueous Dagger diversified learned-reference regression\n\n')
               for key, value in summary.items():
                   out.write(f'- {key}: {value}\n')
           print(json.dumps(summary))
@@ -240,5 +275,7 @@ jobs:
             reports/critelli-aqueous-dagger-cycles.solution
             reports/critelli-aqueous-dagger-instructions.json
             reports/critelli-aqueous-dagger-instructions.solution
+            reports/critelli-aqueous-dagger-diverse-cycles.json
+            reports/critelli-aqueous-dagger-diverse-cycles.solution
           if-no-files-found: warn
           retention-days: 30
