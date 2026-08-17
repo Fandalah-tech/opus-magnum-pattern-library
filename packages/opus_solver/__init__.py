@@ -59,8 +59,8 @@ from .manufacturing import (
     AtomFlow,
     ManufacturingOperation,
     ManufacturingPlan,
-    build_manufacturing_plan,
 )
+from .manufacturing_extensions import build_manufacturing_plan
 from .outcome_learning import (
     aggregate_repair_outcomes,
     build_outcome_index,
