@@ -8,7 +8,6 @@ on:
       - .github/workflows/heldout-transfer-regression.yml
       - database/engine-fragment-flow-index.json
       - tools/evaluate_holdout_transfer.py
-      - tools/import_campaign_corpus.py
       - tests/test_holdout_transfer.py
       - packages/opus_solver/**
       - packages/opus_parser/**
@@ -23,6 +22,7 @@ env:
   TARGET_PUZZLE_ID: P016
   CAMPAIGN_ROOT: .datasets/heldout-campaign-p016
   FLOW_INDEX: database/engine-fragment-flow-index.json
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
   OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
   OMSIM_BINARY: .tools/omsim/omsim
 
@@ -44,19 +44,18 @@ jobs:
       - name: Test heldout isolation helpers
         run: python -m unittest tests.test_holdout_transfer -v
 
-      - name: Fetch campaign puzzles only
+      - name: Fetch only the pinned heldout puzzle
         run: |
-          python tools/import_campaign_corpus.py \
-            --root "$CAMPAIGN_ROOT" \
-            --puzzles-only \
-            --force
-          TARGET_PATH="$(find "$CAMPAIGN_ROOT/puzzles" -type f -name "${TARGET_PUZZLE_ID}.puzzle" | head -n 1)"
-          if [ -z "$TARGET_PATH" ]; then
-            echo "Heldout target ${TARGET_PUZZLE_ID}.puzzle was not found" >&2
-            exit 1
-          fi
+          mkdir -p "$CAMPAIGN_ROOT"
+          TARGET_PATH="$CAMPAIGN_ROOT/${TARGET_PUZZLE_ID}.puzzle"
+          curl --fail --location \
+            --retry 5 --retry-all-errors --retry-delay 2 \
+            "https://raw.githubusercontent.com/gtw123/OpusSolver/${OPUSSOLVER_COMMIT}/test/puzzles/campaign/ch2/${TARGET_PUZZLE_ID}.puzzle" \
+            --output "$TARGET_PATH"
+          test -s "$TARGET_PATH"
           echo "TARGET_PUZZLE=$TARGET_PATH" >> "$GITHUB_ENV"
           echo "Heldout puzzle: $TARGET_PATH"
+          sha256sum "$TARGET_PATH"
 
       - name: Prove target-specific knowledge is absent
         run: |
@@ -115,6 +114,7 @@ jobs:
           report = json.loads(report_path.read_text(encoding='utf-8'))
           protocol = report['protocol']
           result = report['result']
+          profile = report['target']['profile']
           assert protocol['targetSolutionBytesUsed'] == 0
           assert protocol['targetSolutionInputsAccepted'] is False
           assert protocol['targetExcludedFromKnowledge'] is True
@@ -129,6 +129,12 @@ jobs:
               'targetPuzzleName': report['target']['name'],
               'targetSolutionBytesUsed': protocol['targetSolutionBytesUsed'],
               'targetExcludedFromKnowledge': protocol['targetExcludedFromKnowledge'],
+              'reagentCount': profile['reagentCount'],
+              'productCount': profile['productCount'],
+              'reagents': profile['reagents'],
+              'products': profile['products'],
+              'availableGlyphs': profile['availableGlyphs'],
+              'planner': profile['planner'],
               'donorSourceSolutionCount': protocol['knowledgeSourceSolutionCount'],
               'knowledgeFragments': protocol['knowledgeFragmentCount'],
               'knowledgeTransitions': protocol['knowledgeTransitionCount'],
