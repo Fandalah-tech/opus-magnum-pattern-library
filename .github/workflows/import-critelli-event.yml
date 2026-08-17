@@ -8,6 +8,7 @@ on:
       - .github/workflows/import-critelli-event.yml
       - tools/import_critelli_event.py
       - tools/learn_critelli_metric_portfolio.py
+      - tools/validate_critelli_portfolio_materialization.py
       - tests/test_import_critelli_event.py
       - tests/test_learn_critelli_metric_portfolio.py
       - tests/test_paired_bonded_clusters.py
@@ -113,6 +114,17 @@ jobs:
             --representatives-per-objective 8 \
             --output reports/critelli-aqueous-dagger-portfolio.json
 
+      - name: Rebuild learned winners without original solution bytes
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/validate_critelli_portfolio_materialization.py \
+            --puzzle "$CRITELLI_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+            --portfolio reports/critelli-aqueous-dagger-portfolio.json \
+            --solution-dir reports/critelli-aqueous-dagger-materialized \
+            --output reports/critelli-aqueous-dagger-materialization.json
+
       - name: Write event summary
         if: always()
         run: |
@@ -124,10 +136,12 @@ jobs:
           analysis_path = Path('reports/critelli-aqueous-dagger-analysis.json')
           puzzle_path = Path('reports/critelli-aqueous-dagger-puzzle.json')
           portfolio_path = Path('reports/critelli-aqueous-dagger-portfolio.json')
+          materialization_path = Path('reports/critelli-aqueous-dagger-materialization.json')
           index = json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {}
           analysis = json.loads(analysis_path.read_text(encoding='utf-8')) if analysis_path.exists() else {'summary': {}}
           puzzle = json.loads(puzzle_path.read_text(encoding='utf-8')) if puzzle_path.exists() else {}
           portfolio = json.loads(portfolio_path.read_text(encoding='utf-8')) if portfolio_path.exists() else {'summary': {}, 'objectives': {}}
+          materialization = json.loads(materialization_path.read_text(encoding='utf-8')) if materialization_path.exists() else {'summary': {}}
           a = analysis.get('summary', {})
           payload = {
               'eventId': index.get('eventId'),
@@ -147,6 +161,9 @@ jobs:
               'portfolioMechanisms': portfolio.get('summary', {}).get('uniqueMechanismsInPortfolio', 0),
               'cgaWinner': portfolio.get('objectives', {}).get('cga', {}).get('winnerMetricVector'),
               'bcaWinner': portfolio.get('objectives', {}).get('bca', {}).get('winnerMetricVector'),
+              'materializedWinnerCount': materialization.get('summary', {}).get('winnerCount', 0),
+              'materializedCompleteCount': materialization.get('summary', {}).get('completeCount', 0),
+              'materializedAllComplete': materialization.get('summary', {}).get('allComplete', False),
           }
           Path('reports').mkdir(exist_ok=True)
           Path('reports/critelli-aqueous-dagger-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
@@ -167,6 +184,8 @@ jobs:
             reports/critelli-aqueous-dagger-puzzle.json
             reports/critelli-aqueous-dagger-analysis.json
             reports/critelli-aqueous-dagger-portfolio.json
+            reports/critelli-aqueous-dagger-materialization.json
+            reports/critelli-aqueous-dagger-materialized/
             reports/critelli-aqueous-dagger-summary.json
           if-no-files-found: warn
           retention-days: 30
