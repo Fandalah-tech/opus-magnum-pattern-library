@@ -1,0 +1,87 @@
+name: Critelli reference regression
+
+on:
+  push:
+    branches:
+      - main
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/critelli-reference-regression.yml
+      - fixtures/reference/critelli-aqueous-dagger/**
+      - tools/import_critelli_event.py
+      - tools/validate_critelli_reference.py
+      - packages/opus_analysis/**
+      - packages/opus_engine/**
+      - packages/opus_parser/**
+      - packages/opus_solver/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
+  EVENT_PAGE: https://events.critelli.technology/OM2026Weeklies6_AqueousDagger
+  REFERENCE_ROOT: .datasets/critelli-aqueous-dagger-reference
+  FIXTURE_ROOT: fixtures/reference/critelli-aqueous-dagger
+
+jobs:
+  regression:
+    name: Validate learned Aqueous Dagger references
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch only the official event puzzle
+        run: |
+          python tools/import_critelli_event.py \
+            --event-id "$EVENT_ID" \
+            --event-page-url "$EVENT_PAGE" \
+            --root "$REFERENCE_ROOT" \
+            --puzzle-name weeklies2026_aqueous-dagger \
+            --require-puzzle \
+            --puzzle-only \
+            --force
+
+      - name: Validate persisted novel mechanisms
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/validate_critelli_reference.py \
+            --puzzle "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+            --solutions-dir "$FIXTURE_ROOT/generated-novel" \
+            --manifest "$FIXTURE_ROOT/manifest.json" \
+            --output reports/critelli-aqueous-dagger-reference-regression.json \
+            --strict
+
+      - name: Write regression summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('reports/critelli-aqueous-dagger-reference-regression.json')
+          report = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {'summary': {}}
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Aqueous Dagger learned-reference regression\n\n')
+              for key, value in report.get('summary', {}).items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(report.get('summary', {})))
+          PY
+
+      - name: Upload regression report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critelli-aqueous-dagger-reference-${{ github.run_id }}
+          path: reports/critelli-aqueous-dagger-reference-regression.json
+          if-no-files-found: warn
+          retention-days: 30

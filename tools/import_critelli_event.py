@@ -189,13 +189,14 @@ def write_index(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Download and inventory all solutions from one Critelli event submissions page.")
+    parser = argparse.ArgumentParser(description="Download and inventory a Critelli event puzzle and submissions corpus.")
     parser.add_argument("--event-id", required=True)
     parser.add_argument("--root", type=Path, default=Path(".datasets/critelli-event"))
     parser.add_argument("--page-url")
     parser.add_argument("--event-page-url")
     parser.add_argument("--puzzle-name")
     parser.add_argument("--require-puzzle", action="store_true")
+    parser.add_argument("--puzzle-only", action="store_true", help="Fetch only the event puzzle, skipping submission discovery/downloads.")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--strict", action="store_true")
@@ -226,6 +227,29 @@ def main() -> int:
             }
         elif args.require_puzzle:
             raise RuntimeError(f"No .puzzle download link found at {args.event_page_url}")
+
+    if args.puzzle_only:
+        if puzzle_record is None:
+            raise RuntimeError("--puzzle-only requires an event page containing a downloadable .puzzle file")
+        index = write_index(
+            args.root,
+            event_id=args.event_id,
+            page_url=page_url,
+            puzzle_name=args.puzzle_name,
+            puzzle_record=puzzle_record,
+            records=[],
+        )
+        print(json.dumps({
+            "eventId": args.event_id,
+            "submissions": 0,
+            "solutions": 0,
+            "downloadErrors": 0,
+            "uniqueSubmitters": 0,
+            "puzzleFile": puzzle_record.get("file"),
+            "puzzleOnly": True,
+            "index": str(index),
+        }, ensure_ascii=False), flush=True)
+        return 0
 
     raw_html_path = args.root / "submissions.html"
     if args.force or not raw_html_path.exists():
@@ -284,6 +308,7 @@ def main() -> int:
         "downloadErrors": failures,
         "uniqueSubmitters": len({str(item.get("submitter")) for item in records if item.get("submitter")}),
         "puzzleFile": (puzzle_record or {}).get("file"),
+        "puzzleOnly": False,
         "index": str(index),
     }, ensure_ascii=False), flush=True)
     return 1 if args.strict and failures else 0
