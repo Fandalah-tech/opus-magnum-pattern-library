@@ -6,14 +6,29 @@ from typing import Any
 BCA_OBJECTIVE = "bca"
 BCA_PROXY_OBJECTIVE = "cycles"
 BCA_MINIMUM_HEXAGON_METRIC = "minimum hexagon"
-BCA_RESTRICTIONS_METRIC = "default restrictions"
+BCA_RESTRICTIONS_NICKNAME = "default restrictions"
+
+# `default restrictions` is a Critelli website nickname, not a libverify basic
+# metric.  OMSim exposes the simulator metrics underneath it, so request those
+# primitives and reproduce the published nickname expression exactly.
+BCA_RESTRICTION_METRICS = (
+    "overlap",
+    "parts of type baron",
+    "parts of type ravari",
+    "parts of type glyph-disposal",
+    "parts of type glyph-proliferation",
+    "duplicate reagents",
+    "duplicate products",
+    "maximum track gap^2",
+    "cabinet violations",
+)
 BCA_OMSIM_METRICS = (
     "cost",
     "instructions",
     "cycles",
     "area",
     BCA_MINIMUM_HEXAGON_METRIC,
-    BCA_RESTRICTIONS_METRIC,
+    *BCA_RESTRICTION_METRICS,
 )
 
 
@@ -41,11 +56,31 @@ def bca_key(metrics: dict[str, Any]) -> tuple[int, ...]:
     return minimum_hexagon, cycles, area, cost, instructions
 
 
+def bca_default_restrictions(validation: dict[str, Any]) -> int | None:
+    """Evaluate Critelli's published `default restrictions` nickname locally."""
+
+    extras = validation.get("extraMetrics") or {}
+    if not all(isinstance(extras.get(name), int) for name in BCA_RESTRICTION_METRICS):
+        return None
+
+    return (
+        int(extras["overlap"])
+        + max(0, int(extras["parts of type baron"]) - 1)
+        + max(0, int(extras["parts of type ravari"]) - 1)
+        + max(0, int(extras["parts of type glyph-disposal"]) - 1)
+        + max(0, int(extras["parts of type glyph-proliferation"]) - 1)
+        + int(extras["duplicate reagents"])
+        + int(extras["duplicate products"])
+        + max(0, int(extras["maximum track gap^2"]) - 1)
+        + int(extras["cabinet violations"])
+    )
+
+
 def bca_metrics_from_omsim(validation: dict[str, Any]) -> dict[str, int] | None:
     base = validation.get("metrics") or {}
     extras = validation.get("extraMetrics") or {}
     minimum_hexagon = extras.get(BCA_MINIMUM_HEXAGON_METRIC)
-    restrictions = extras.get(BCA_RESTRICTIONS_METRIC)
+    restrictions = bca_default_restrictions(validation)
     if not isinstance(minimum_hexagon, int):
         return None
     if restrictions != 0:
@@ -59,6 +94,7 @@ def bca_metrics_from_omsim(validation: dict[str, Any]) -> dict[str, int] | None:
         "cycles": int(base["cycles"]),
         "area": int(base["area"]),
         "instructions": int(base["instructions"]),
+        "defaultRestrictions": int(restrictions),
     }
     if isinstance(validation.get("rate"), int):
         result["rate"] = int(validation["rate"])
@@ -76,6 +112,7 @@ def bca_proxy_validation(validation: dict[str, Any]) -> dict[str, Any]:
     """
 
     result = deepcopy(validation)
+    restrictions = bca_default_restrictions(validation)
     metrics = bca_metrics_from_omsim(validation)
     if not validation.get("valid") or metrics is None:
         result["valid"] = False
@@ -84,12 +121,17 @@ def bca_proxy_validation(validation: dict[str, Any]) -> dict[str, Any]:
             "code": "BCA_METRICS_UNAVAILABLE",
             "message": (
                 "BCA requires OMSim metrics cost, instructions, cycles, area, "
-                "minimum hexagon and default restrictions == 0"
+                "minimum hexagon and Critelli default restrictions == 0"
             ),
+            "details": {
+                "defaultRestrictions": restrictions,
+                "requestedRestrictionMetrics": list(BCA_RESTRICTION_METRICS),
+            },
         })
         return result
 
     result["authoritativeMetrics"] = deepcopy(validation.get("metrics") or {})
+    result["defaultRestrictions"] = int(metrics["defaultRestrictions"])
     result["bcaMetrics"] = metrics
     result["bcaObjectiveKey"] = list(bca_key(metrics))
     result["rankingProxy"] = {
@@ -124,6 +166,7 @@ def normalize_bca_selection(validation: dict[str, Any]) -> dict[str, Any]:
     result["optimizationObjective"] = BCA_OBJECTIVE
     result["optimizationMetricSource"] = "omsim-minimum-hexagon"
     result["bcaMetrics"] = deepcopy(metrics)
+    result["defaultRestrictions"] = int(metrics.get("defaultRestrictions") or 0)
     result["objectiveKey"] = list(bca_key(metrics))
     result["proxyObjective"] = BCA_PROXY_OBJECTIVE
     result["proxyObjectiveKey"] = deepcopy(validation.get("objectiveKey"))
