@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "critelli-learned-regression-fixture",
+  "eventId": "31a11c8c2b284d8f0664f3f069f9e11e",
+  "sourcePage": "https://events.critelli.technology/submissions/31a11c8c2b284d8f0664f3f069f9e11e",
+  "puzzleFileId": "weeklies2026_aqueous-dagger",
+  "puzzleDistribution": "not redistributed; fetched from the public event page during CI",
+  "trainingCorpus": {
+    "solutions": 329,
+    "uniqueMechanisms": 326,
+    "engineCoherentSolutions": 272,
+    "engineFlowFragments": 1587,
+    "engineFlowTransitions": 2011,
+    "engineFlowConvergences": 503
+  },
+  "planner": {
+    "strategy": "paired-bonded-clusters-v1",
+    "supported": true
+  },
+  "objectiveReferences": {
+    "cga": {"cycles": 15, "cost": 230, "area": 76},
+    "bca": {"boundingHexagon": 3, "cycles": 49, "area": 18}
+  },
+  "composedValidation": {
+    "generated": 10,
+    "serializable": 10,
+    "complete": 10,
+    "novelStructures": 6,
+    "novelMechanisms": 6
+  },
+  "novelFixtures": [
+    {
+      "file": "generated-novel/rank-01-base.solution",
+      "generatedRank": 1,
+      "sha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
+      "canonicalStructuralHash": "665981dd273ec6059130f34f639b209bd919710cf5320b0871f8958f0228d80a",
+      "canonicalMechanismHash": "665981dd273ec6059130f34f639b209bd919710cf5320b0871f8958f0228d80a",
+      "engineRequestedCycles": 57,
+      "productsDelivered": 7
+    },
+    {
+      "file": "generated-novel/rank-02-base.solution",
+      "generatedRank": 2,
+      "sha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
+      "canonicalStructuralHash": "5ff13ba6ca4e9024ec6d8495ccfa49661dc58682d62d7254d2c0657c9f848eb3",
+      "canonicalMechanismHash": "5ff13ba6ca4e9024ec6d8495ccfa49661dc58682d62d7254d2c0657c9f848eb3",
+      "engineRequestedCycles": 58,
+      "productsDelivered": 7
+    },
+    {
+      "file": "generated-novel/rank-04-base.solution",
+      "generatedRank": 4,
+      "sha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
+      "canonicalStructuralHash": "a946776d20368b86a353af5b9f74a112359a2dab882a583e5d0826fa57564d81",
+      "canonicalMechanismHash": "a946776d20368b86a353af5b9f74a112359a2dab882a583e5d0826fa57564d81",
+      "engineRequestedCycles": 58,
+      "productsDelivered": 7
+    },
+    {
+      "file": "generated-novel/rank-05-base.solution",
+      "generatedRank": 5,
+      "sha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
+      "canonicalStructuralHash": "7566b395f111560b3084952c05c18976d577e3253cbbeba819140d124f3ee9ee",
+      "canonicalMechanismHash": "7566b395f111560b3084952c05c18976d577e3253cbbeba819140d124f3ee9ee",
+      "engineRequestedCycles": 57,
+      "productsDelivered": 7
+    },
+    {
+      "file": "generated-novel/rank-06-base.solution",
+      "generatedRank": 6,
+      "sha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
+      "canonicalStructuralHash": "ca693944e394e1c64b55ca325fa1bce4fbeece168a253b4fabaa79b5423cf36f",
+      "canonicalMechanismHash": "ca693944e394e1c64b55ca325fa1bce4fbeece168a253b4fabaa79b5423cf36f",
+      "engineRequestedCycles": 91,
+      "productsDelivered": 7
+    },
+    {
+      "file": "generated-novel/rank-09-base.solution",
+      "generatedRank": 9,
+      "sha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
+      "canonicalStructuralHash": "ee3be284e810627502acdc0d6045d7550dfe14d2daebf0c6002877a611eecbcc",
+      "canonicalMechanismHash": "ee3be284e810627502acdc0d6045d7550dfe14d2daebf0c6002877a611eecbcc",
+      "engineRequestedCycles": 64,
+      "productsDelivered": 7
+    }
+  ],
+  "regeneration": {
+    "eventImporter": "tools/import_critelli_event.py",
+    "engineFlowBuilder": "tools/build_engine_fragment_flow_index.py",
+    "composer": "tools/generate_composed_candidates.py",
+    "noveltyCheck": "tools/assess_composed_novelty.py",
+    "objectivePortfolioLearner": "tools/learn_critelli_metric_portfolio.py"
+  }
+}
