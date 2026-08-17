@@ -11,6 +11,7 @@ on:
       - database/learned-solution-bank.json
       - fixtures/reference/critelli-aqueous-dagger/objective-specialized/**
       - packages/opus_solver/autonomous.py
+      - packages/opus_solver/bca.py
       - packages/opus_solver/objective_portfolio.py
       - tools/solve_puzzle.py
       - tools/omsim_adapter/**
@@ -67,7 +68,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: |
           mkdir -p reports/critelli-omsim-oracle
-          for objective in cost area cycles instructions sum4; do
+          for objective in cost area cycles instructions sum4 bca; do
             python tools/solve_puzzle.py \
               "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
               "reports/critelli-omsim-oracle/${objective}.solution" \
@@ -78,15 +79,20 @@ jobs:
               --report "reports/critelli-omsim-oracle/${objective}.json"
           done
 
-      - name: Verify objective-family split and selected binaries
+      - name: Verify objective-family split and BCA
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
+          from packages.opus_solver.bca import (
+              BCA_OMSIM_METRICS,
+              bca_key,
+              bca_metrics_from_omsim,
+          )
           from packages.opus_solver.objective_portfolio import objective_key
-          from tools.omsim_adapter.validate import run_omsim
+          from tools.omsim_adapter.validate import run_omsim, run_omsim_metrics
 
           root = Path('reports/critelli-omsim-oracle')
           puzzle = Path('.datasets/critelli-aqueous-dagger-omsim/puzzle/weeklies2026_aqueous-dagger.puzzle')
@@ -163,10 +169,48 @@ jobs:
                   'validCandidates': validation['oracleValidCandidateCount'],
               }
 
+          bca_report = json.loads((root / 'bca.json').read_text(encoding='utf-8'))
+          bca_validation = bca_report['validation']
+          bca_metrics = bca_validation['bcaMetrics']
+          assert bca_validation['complete'] is True
+          assert bca_validation['optimizationObjective'] == 'bca'
+          assert bca_validation['optimizationMetricSource'] == 'omsim-minimum-hexagon'
+          assert bca_validation['solverRoute'] == 'knowledge-fragment-composition-v1'
+          assert bca_validation['selectedCandidateSource'] == 'fragment-composition'
+          assert bca_validation['oracleScoredCandidateCount'] == 6
+          assert bca_validation['oracleValidCandidateCount'] == 6
+          assert bca_metrics['minimumHexagon'] == 3
+          assert bca_metrics['cycles'] == 49
+          assert bca_metrics['area'] == 18
+          assert bca_validation['objectiveKey'] == list(bca_key(bca_metrics))
+
+          independent_bca = run_omsim_metrics(
+              omsim,
+              puzzle,
+              root / 'bca.solution',
+              30,
+              metrics=BCA_OMSIM_METRICS,
+              output_intervals=True,
+          )
+          assert independent_bca['valid'] is True
+          independent_bca_metrics = bca_metrics_from_omsim(independent_bca)
+          assert independent_bca_metrics == bca_metrics
+          assert independent_bca['extraMetrics']['default restrictions'] == 0
+
+          summary['bca'] = {
+              'route': bca_validation['solverRoute'],
+              'candidate': bca_validation['selectedCandidateId'],
+              'rank': bca_validation['compositionCandidateRank'],
+              'metrics': bca_metrics,
+              'local': bca_validation['localCandidateMetrics'],
+              'validCandidates': bca_validation['oracleValidCandidateCount'],
+          }
+
           assert summary['cycles']['metrics']['cycles'] < summary['cost']['metrics']['cycles']
           assert summary['cost']['metrics']['cost'] < summary['cycles']['metrics']['cost']
           assert summary['area']['metrics']['area'] < summary['cycles']['metrics']['area']
           assert summary['instructions']['metrics']['instructions'] < summary['cycles']['metrics']['instructions']
+          assert summary['bca']['metrics']['minimumHexagon'] == 3
 
           (root / 'summary.json').write_text(
               json.dumps(summary, indent=2, sort_keys=True), encoding='utf-8'
