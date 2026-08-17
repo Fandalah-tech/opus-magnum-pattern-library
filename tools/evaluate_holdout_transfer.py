@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import json
 from pathlib import Path
 from typing import Any, Iterable
 
 from packages.opus_parser import parse_puzzle, write_solution
 from packages.opus_solver.autonomous import solve_puzzle_from_knowledge
+from packages.opus_solver.manufacturing_extensions import build_manufacturing_plan
 
 
 def _walk_strings(value: Any) -> Iterable[str]:
@@ -49,6 +51,52 @@ def knowledge_source_solutions(knowledge: dict[str, Any]) -> list[str]:
     return sorted(paths)
 
 
+def _molecule_profile(molecule: dict[str, Any]) -> dict[str, Any]:
+    atoms = list(molecule.get("atoms") or [])
+    bonds = list(molecule.get("bonds") or [])
+    return {
+        "atomCount": len(atoms),
+        "elements": dict(sorted(Counter(str(atom.get("element") or "") for atom in atoms).items())),
+        "bondCount": len(bonds),
+        "bondTypes": dict(sorted(Counter(str(bond.get("type") or "normal") for bond in bonds).items())),
+        "atoms": [
+            {
+                "element": str(atom.get("element") or ""),
+                "position": list(atom.get("position") or (0, 0)),
+            }
+            for atom in atoms
+        ],
+        "bonds": [
+            {
+                "type": str(bond.get("type") or "normal"),
+                "from": list(bond.get("from") or (0, 0)),
+                "to": list(bond.get("to") or (0, 0)),
+            }
+            for bond in bonds
+        ],
+    }
+
+
+def puzzle_transfer_profile(puzzle: dict[str, Any]) -> dict[str, Any]:
+    plan = build_manufacturing_plan(puzzle)
+    available = puzzle.get("availableParts") or {}
+    return {
+        "reagentCount": len(puzzle.get("reagents") or []),
+        "productCount": len(puzzle.get("products") or []),
+        "reagents": [_molecule_profile(item) for item in (puzzle.get("reagents") or [])],
+        "products": [_molecule_profile(item) for item in (puzzle.get("products") or [])],
+        "availableArms": list(available.get("arms") or []),
+        "availableGlyphs": list(available.get("glyphs") or []),
+        "planner": {
+            "strategy": plan.strategy,
+            "supported": plan.supported,
+            "reason": plan.reason,
+            "operationKinds": [operation.kind for operation in plan.operations],
+            "requiredGlyphs": list(plan.required_glyphs),
+        },
+    }
+
+
 def evaluate_holdout_transfer(
     puzzle_path: Path,
     flow_index_path: Path,
@@ -80,12 +128,13 @@ def evaluate_holdout_transfer(
     }
 
     report: dict[str, Any] = {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-knowledge-transfer",
         "target": {
             "id": target_puzzle_id,
             "name": puzzle.get("name"),
             "source": puzzle.get("source"),
+            "profile": puzzle_transfer_profile(puzzle),
         },
         "protocol": protocol,
         "request": {
