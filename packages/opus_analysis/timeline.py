@@ -16,6 +16,8 @@ TRACK_MINUS = "track_minus"
 GRAB = "grab"
 DROP = "drop"
 
+STANDARD_PRODUCT_TARGET = 6
+
 
 def _absolute_tracks(solution: dict[str, Any]) -> list[tuple[tuple[int, int], ...]]:
     tracks: list[tuple[tuple[int, int], ...]] = []
@@ -227,6 +229,32 @@ def _expand_arm_tape(
     return {"start": min_tape, "tape": tape, "sourceCount": len(ordered)}
 
 
+def _validation_cycle_hint(solution: dict[str, Any], global_period: int) -> int | None:
+    """Return an internal simulation horizon hint without changing file metrics.
+
+    Generated candidates are deliberately serialized without guessed metrics.
+    Some productive mechanisms nevertheless require several tape periods before
+    six complete products emerge.  Their non-serialized generator provenance
+    may therefore carry enough structural information to request a longer local
+    replay while leaving the resulting `.solution` unscored.
+    """
+    source = solution.get("source") or {}
+    explicit = source.get("validationCycleHint")
+    if isinstance(explicit, int) and explicit > 0:
+        return explicit
+
+    rotary = source.get("rotarySingletonAccumulator")
+    if isinstance(rotary, dict):
+        atom_count = max(1, int(rotary.get("targetAtomCount") or 1))
+        period = max(1, int(rotary.get("period") or global_period or 1))
+        assembly_steps = max(1, atom_count - 1)
+        # Six standard products, each requiring the complete target assembly,
+        # plus one warm-up period.  This is intentionally a conservative local
+        # validation horizon, not an asserted cycle score.
+        return period * (STANDARD_PRODUCT_TARGET * assembly_steps + 1)
+    return None
+
+
 def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None = None) -> dict[str, Any]:
     """Build the physical, globally synchronized instruction timeline."""
     arms = [
@@ -239,8 +267,10 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     global_start = min(starts, default=0)
     global_period = max((len(item["tape"]) for item in decoded), default=1)
 
-    declared_cycles = solution.get("metrics", {}).get("cycles")
-    default_horizon = max(int(declared_cycles or 0), global_period, 1)
+    metric_declared_cycles = solution.get("metrics", {}).get("cycles")
+    validation_cycle_hint = _validation_cycle_hint(solution, global_period)
+    effective_declared_cycles = metric_declared_cycles or validation_cycle_hint
+    default_horizon = max(int(effective_declared_cycles or 0), global_period, 1)
     horizon = max(1, int(max_cycles) if max_cycles is not None else default_horizon)
 
     cycles: list[dict[str, Any]] = []
@@ -311,15 +341,18 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     active_cycle_count = sum(1 for cycle in range(horizon) if active_counts[cycle] > 0)
 
     return {
-        "schemaVersion": "0.4.1",
+        "schemaVersion": "0.4.2",
         "analysisType": "physical-decoded-global-program-timeline",
         "limitations": [
             "Reset instructions are expanded into physical motions.",
             "An instruction is counted as scheduled even if physical execution later fails or is blocked.",
+            "Internal validation-cycle hints extend diagnostic replay only; they are not authoritative cycle metrics.",
         ],
         "summary": {
             "horizon": horizon,
-            "declaredCycles": declared_cycles,
+            "declaredCycles": effective_declared_cycles,
+            "metricDeclaredCycles": metric_declared_cycles,
+            "validationCycleHint": validation_cycle_hint,
             "globalPeriod": global_period,
             "periodSource": "decoded_physical_tape",
             "armCount": len(arms),
