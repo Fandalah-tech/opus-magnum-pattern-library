@@ -1,0 +1,107 @@
+name: Import Critelli event corpus
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/import-critelli-event.yml
+      - tools/import_critelli_event.py
+      - tests/test_import_critelli_event.py
+      - tools/analyze_solution_archive.py
+      - tools/import_campaign_corpus.py
+      - packages/opus_analysis/**
+      - packages/opus_parser/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
+  CRITELLI_ROOT: .datasets/critelli-aqueous-dagger
+  CAMPAIGN_ROOT: .datasets/critelli-campaign-reference
+
+jobs:
+  aqueous_dagger:
+    name: Aqueous Dagger final corpus
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test Critelli table parser
+        run: python -m unittest tests.test_import_critelli_event
+
+      - name: Download every Aqueous Dagger submission
+        run: |
+          python tools/import_critelli_event.py \
+            --event-id "$EVENT_ID" \
+            --root "$CRITELLI_ROOT" \
+            --puzzle-name weeklies2026_aqueous-dagger \
+            --strict
+
+      - name: Import campaign references for structural analyzer
+        run: python tools/import_campaign_corpus.py --root "$CAMPAIGN_ROOT" --puzzles-only
+
+      - name: Parse and structurally analyze Critelli solutions
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/analyze_solution_archive.py \
+            --archive-root "$CRITELLI_ROOT" \
+            --campaign-root "$CAMPAIGN_ROOT" \
+            --output reports/critelli-aqueous-dagger-analysis.json
+
+      - name: Write event summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          index_path = Path('.datasets/critelli-aqueous-dagger/index.json')
+          analysis_path = Path('reports/critelli-aqueous-dagger-analysis.json')
+          index = json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {}
+          analysis = json.loads(analysis_path.read_text(encoding='utf-8')) if analysis_path.exists() else {'summary': {}}
+          a = analysis.get('summary', {})
+          payload = {
+              'eventId': index.get('eventId'),
+              'submissionRecords': index.get('submissionRecordCount', 0),
+              'solutionFiles': index.get('solutionFileCount', 0),
+              'downloadErrors': index.get('downloadErrorCount', 0),
+              'uniqueSubmitters': index.get('uniqueSubmitterCount', 0),
+              'scoringSubmissions': index.get('scoringSubmissionCount', 0),
+              'showcases': index.get('showcaseCount', 0),
+              'parsed': a.get('parsed', 0),
+              'parseErrors': a.get('parseErrors', 0),
+              'uniqueStructures': a.get('uniqueCanonicalStructures', 0),
+              'uniqueMechanisms': a.get('uniqueCanonicalMechanisms', 0),
+          }
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/critelli-aqueous-dagger-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Critelli — Aqueous Dagger final corpus\n\n')
+              for key, value in payload.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(payload))
+          PY
+
+      - name: Upload Critelli corpus and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critelli-aqueous-dagger-${{ github.run_id }}
+          path: |
+            .datasets/critelli-aqueous-dagger/
+            reports/critelli-aqueous-dagger-analysis.json
+            reports/critelli-aqueous-dagger-summary.json
+          if-no-files-found: warn
+          retention-days: 30
