@@ -7,6 +7,8 @@ on:
       - feature/critelli-2026-public-corpus
     paths:
       - .github/workflows/critelli-reference-regression.yml
+      - database/engine-fragment-flow-index.json
+      - database/learned-solution-bank.json
       - fixtures/reference/critelli-aqueous-dagger/**
       - tools/import_critelli_event.py
       - tools/validate_critelli_reference.py
@@ -45,10 +47,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test autonomous solver routing
-        run: python -m unittest tests.test_autonomous_solver -v
+      - name: Test autonomous solver and engine-flow routing
+        run: |
+          python -m unittest tests.test_autonomous_solver -v
+          python -m pytest tests/test_engine_fragment_flow.py -q
 
-      - name: Fetch only the official event puzzle
+      - name: Fetch official event puzzle only
         run: |
           python tools/import_critelli_event.py \
             --event-id "$EVENT_ID" \
@@ -70,11 +74,12 @@ jobs:
             --output reports/critelli-aqueous-dagger-reference-regression.json \
             --strict
 
-      - name: Solve clean checkout with committed objectives
+      - name: Validate clean-checkout portfolio routing
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
           test -f "$KNOWLEDGE_INDEX"
+          test -f database/learned-solution-bank.json
           python tools/solve_puzzle.py \
             "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
             reports/critelli-aqueous-dagger-cycles.solution \
@@ -95,29 +100,51 @@ jobs:
           instructions = json.loads(Path('reports/critelli-aqueous-dagger-instructions.json').read_text(encoding='utf-8'))
           cv = cycles['validation']
           iv = instructions['validation']
-          cm = cv['localCandidateMetrics']
-          im = iv['localCandidateMetrics']
 
           assert cv['complete'] is True and iv['complete'] is True
-          assert cv['solverRoute'] == 'knowledge-fragment-composition-v1'
-          assert iv['solverRoute'] == 'knowledge-fragment-composition-v1'
           assert cv['optimizationObjective'] == 'cycles'
           assert iv['optimizationObjective'] == 'instructions'
+
+          # The multi-level portfolio must preserve the globally parallel learned
+          # CGA architecture for cycle-focused search while retaining compact
+          # fragment recomposition for low-instruction search.
+          assert cv['solverRoute'] == 'knowledge-architecture-bank-v1'
+          assert cv['selectedCandidateSource'] == 'learned-architecture-bank'
+          assert cv['selectedCandidateId'] == 'aqueous-dagger-cga-15c-v1'
+          assert cv['architectureSeedCandidateCount'] == 1
+          assert cv['architectureSeedCompleteCount'] == 1
+          assert cv['fragmentAssemblyCandidateCount'] >= 1
+
+          assert iv['solverRoute'] == 'knowledge-fragment-composition-v1'
+          assert iv['selectedCandidateSource'] == 'fragment-composition'
+          assert iv['selectedCandidateId'].startswith('fragment-composition-')
+
           assert cv['compositionCompleteCandidateCount'] >= 2
           assert iv['compositionCompleteCandidateCount'] == cv['compositionCompleteCandidateCount']
-          assert cm['cycles'] <= im['cycles']
-          assert im['instructions'] <= cm['instructions']
-          assert cycles['knowledgeResolution']['flowIndex'] == 'database/engine-fragment-flow-index.json'
-          assert cycles['knowledgeResolution']['flowIndexExplicit'] is False
-          assert instructions['knowledgeResolution']['flowIndexExplicit'] is False
+          assert iv['localCandidateMetrics']['instructions'] <= cv['localCandidateMetrics']['instructions']
+          assert cv['localCandidateMetrics']['cycles'] <= iv['localCandidateMetrics']['cycles']
+
+          knowledge = cycles['knowledgeResolution']
+          assert knowledge['flowIndex'] == 'database/engine-fragment-flow-index.json'
+          assert knowledge['flowIndexExplicit'] is False
+          assert knowledge['solutionBank']['matchingEntryCount'] == 1
+          assert knowledge['solutionBankExplicit'] is False
           print(json.dumps({
-              'cycles': {'rank': cv['compositionCandidateRank'], 'metrics': cm},
-              'instructions': {'rank': iv['compositionCandidateRank'], 'metrics': im},
+              'cycles': {
+                  'route': cv['solverRoute'],
+                  'candidate': cv['selectedCandidateId'],
+                  'localMetrics': cv['localCandidateMetrics'],
+              },
+              'instructions': {
+                  'route': iv['solverRoute'],
+                  'candidate': iv['selectedCandidateId'],
+                  'localMetrics': iv['localCandidateMetrics'],
+              },
               'completeCandidates': cv['compositionCompleteCandidateCount'],
           }, sort_keys=True))
           PY
 
-      - name: Build diversified learned knowledge index
+      - name: Rebuild diversified engine-flow knowledge
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -128,27 +155,20 @@ jobs:
           fixture_root = Path('fixtures/reference/critelli-aqueous-dagger')
           puzzle_path = Path('.datasets/critelli-aqueous-dagger-reference/puzzle/weeklies2026_aqueous-dagger.puzzle')
           manifest = json.loads((fixture_root / 'manifest.json').read_text(encoding='utf-8'))
-          fixture_records = [
+          fixtures = [
               *manifest.get('novelFixtures', []),
               *manifest.get('objectiveSpecializedFixtures', []),
           ]
-          results = [
-              {
-                  'status': 'engine-complete',
-                  'puzzleId': manifest['puzzleFileId'],
-                  'puzzlePath': str(puzzle_path),
-                  'solutionPath': str(fixture_root / item['file']),
-              }
-              for item in fixture_records
-          ]
+          results = [{
+              'status': 'engine-complete',
+              'puzzleId': manifest['puzzleFileId'],
+              'puzzlePath': str(puzzle_path),
+              'solutionPath': str(fixture_root / item['file']),
+          } for item in fixtures]
           audit = {
               'schemaVersion': '0.3.0',
               'solutionRoot': '.',
-              'summary': {
-                  'solutionCount': len(results),
-                  'novelFixtureCount': len(manifest.get('novelFixtures', [])),
-                  'objectiveSpecializedFixtureCount': len(manifest.get('objectiveSpecializedFixtures', [])),
-              },
+              'summary': {'solutionCount': len(results)},
               'results': results,
           }
           Path('reports').mkdir(exist_ok=True)
@@ -170,6 +190,9 @@ jobs:
           assert summary['replayValidatedSolutionCount'] == 7
           assert summary['validationDriftCount'] == 0
           assert summary['errorCount'] == 0
+          assert summary['canonicalFragmentCount'] >= 26
+          assert summary['canonicalTransitionCount'] >= 34
+          assert summary['canonicalConvergenceMotifCount'] >= 13
           sources = {
               path
               for transition in index['transitions']
@@ -180,33 +203,7 @@ jobs:
           print(json.dumps(summary, sort_keys=True))
           PY
 
-      - name: Test diversified knowledge before persistence
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: |
-          python tools/solve_puzzle.py \
-            "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
-            reports/critelli-aqueous-dagger-diverse-cycles.solution \
-            --flow-index reports/critelli-aqueous-dagger-mini-engine-flow.json \
-            --fragment-index reports/critelli-aqueous-dagger-mini-engine-flow.json \
-            --objective cycles \
-            --composition-limit 20 \
-            --report reports/critelli-aqueous-dagger-diverse-cycles.json
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path('reports/critelli-aqueous-dagger-diverse-cycles.json').read_text(encoding='utf-8'))
-          validation = report['validation']
-          assert validation['complete'] is True
-          assert validation['compositionCompleteCandidateCount'] >= 2
-          print(json.dumps({
-              'rank': validation['compositionCandidateRank'],
-              'completeCandidates': validation['compositionCompleteCandidateCount'],
-              'localMetrics': validation['localCandidateMetrics'],
-          }, sort_keys=True))
-          PY
-
-      - name: Refresh validated knowledge database
+      - name: Refresh reproducible knowledge index
         if: github.ref_name == 'feature/critelli-2026-public-corpus' && github.actor == 'Fandalah-tech'
         run: |
           if ! cmp -s reports/critelli-aqueous-dagger-mini-engine-flow.json "$KNOWLEDGE_INDEX"; then
@@ -238,32 +235,27 @@ jobs:
           reference = load('reports/critelli-aqueous-dagger-reference-regression.json', {'summary': {}})
           cycles = load('reports/critelli-aqueous-dagger-cycles.json', {'validation': {}})
           instructions = load('reports/critelli-aqueous-dagger-instructions.json', {'validation': {}})
-          diverse = load('reports/critelli-aqueous-dagger-diverse-cycles.json', {'validation': {}})
           cv = cycles.get('validation', {})
           iv = instructions.get('validation', {})
-          dv = diverse.get('validation', {})
           summary = {
               **reference.get('summary', {}),
-              'autonomousCyclesComplete': bool(cv.get('complete')),
-              'autonomousCyclesRank': cv.get('compositionCandidateRank'),
-              'autonomousCyclesLocalMetrics': cv.get('localCandidateMetrics'),
-              'autonomousInstructionsComplete': bool(iv.get('complete')),
-              'autonomousInstructionsRank': iv.get('compositionCandidateRank'),
-              'autonomousInstructionsLocalMetrics': iv.get('localCandidateMetrics'),
-              'diversifiedCyclesComplete': bool(dv.get('complete')),
-              'diversifiedCyclesRank': dv.get('compositionCandidateRank'),
-              'diversifiedCyclesLocalMetrics': dv.get('localCandidateMetrics'),
-              'diversifiedCompleteCandidates': dv.get('compositionCompleteCandidateCount'),
-              'autonomousKnowledgeIndex': cycles.get('knowledgeResolution', {}).get('flowIndex'),
+              'cyclesRoute': cv.get('solverRoute'),
+              'cyclesCandidate': cv.get('selectedCandidateId'),
+              'cyclesLocalMetrics': cv.get('localCandidateMetrics'),
+              'instructionsRoute': iv.get('solverRoute'),
+              'instructionsCandidate': iv.get('selectedCandidateId'),
+              'instructionsLocalMetrics': iv.get('localCandidateMetrics'),
+              'completeCandidates': cv.get('compositionCompleteCandidateCount'),
+              'knowledgeIndex': cycles.get('knowledgeResolution', {}).get('flowIndex'),
           }
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
-              out.write('## Aqueous Dagger diversified learned-reference regression\n\n')
+              out.write('## Aqueous Dagger multi-level knowledge regression\n\n')
               for key, value in summary.items():
                   out.write(f'- {key}: {value}\n')
           print(json.dumps(summary))
           PY
 
-      - name: Upload regression report
+      - name: Upload regression reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -275,7 +267,5 @@ jobs:
             reports/critelli-aqueous-dagger-cycles.solution
             reports/critelli-aqueous-dagger-instructions.json
             reports/critelli-aqueous-dagger-instructions.solution
-            reports/critelli-aqueous-dagger-diverse-cycles.json
-            reports/critelli-aqueous-dagger-diverse-cycles.solution
           if-no-files-found: warn
           retention-days: 30
