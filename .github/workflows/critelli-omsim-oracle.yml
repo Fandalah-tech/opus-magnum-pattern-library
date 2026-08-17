@@ -1,0 +1,151 @@
+name: Critelli OMSim oracle regression
+
+on:
+  push:
+    branches:
+      - main
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/critelli-omsim-oracle.yml
+      - database/engine-fragment-flow-index.json
+      - packages/opus_solver/autonomous.py
+      - packages/opus_solver/objective_portfolio.py
+      - tools/solve_puzzle.py
+      - tools/omsim_adapter/**
+      - tools/import_critelli_event.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
+  EVENT_PAGE: https://events.critelli.technology/OM2026Weeklies6_AqueousDagger
+  REFERENCE_ROOT: .datasets/critelli-aqueous-dagger-omsim
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+
+jobs:
+  oracle:
+    name: Score autonomous Aqueous candidates with OMSim
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build pinned OMSim
+        run: |
+          mkdir -p .tools
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          echo "OMSim commit: $(git -C .tools/omsim rev-parse HEAD)"
+
+      - name: Fetch only the official Aqueous Dagger puzzle
+        run: |
+          python tools/import_critelli_event.py \
+            --event-id "$EVENT_ID" \
+            --event-page-url "$EVENT_PAGE" \
+            --root "$REFERENCE_ROOT" \
+            --puzzle-name weeklies2026_aqueous-dagger \
+            --require-puzzle \
+            --puzzle-only \
+            --force
+
+      - name: Optimize complete candidates with authoritative objectives
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p reports/critelli-omsim-oracle
+          for objective in cost area cycles instructions sum4; do
+            python tools/solve_puzzle.py \
+              "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+              "reports/critelli-omsim-oracle/${objective}.solution" \
+              --objective "$objective" \
+              --omsim "$OMSIM_BINARY" \
+              --omsim-timeout 30 \
+              --composition-limit 10 \
+              --report "reports/critelli-omsim-oracle/${objective}.json"
+          done
+
+      - name: Verify oracle rankings and revalidate selected binaries
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from packages.opus_solver.objective_portfolio import objective_key
+          from tools.omsim_adapter.validate import run_omsim
+
+          root = Path('reports/critelli-omsim-oracle')
+          puzzle = Path('.datasets/critelli-aqueous-dagger-omsim/puzzle/weeklies2026_aqueous-dagger.puzzle')
+          omsim = Path('.tools/omsim/omsim')
+          summary = {}
+          for objective in ('cost', 'area', 'cycles', 'instructions', 'sum4'):
+              report = json.loads((root / f'{objective}.json').read_text(encoding='utf-8'))
+              validation = report['validation']
+              metrics = validation['oracleMetrics']
+              assert validation['complete'] is True
+              assert validation['optimizationObjective'] == objective
+              assert validation['optimizationMetricSource'] == 'omsim'
+              assert validation['oracleScoredCandidateCount'] == validation['compositionCompleteCandidateCount']
+              assert validation['oracleValidCandidateCount'] > 0
+              assert all(isinstance(metrics.get(key), int) for key in ('cost', 'cycles', 'area', 'instructions'))
+              assert validation['objectiveKey'] == list(objective_key(objective, metrics))
+
+              independent = run_omsim(
+                  omsim,
+                  puzzle,
+                  root / f'{objective}.solution',
+                  30,
+                  output_intervals=True,
+              )
+              assert independent['valid'] is True
+              assert independent['metrics'] == {
+                  key: metrics[key]
+                  for key in ('cost', 'cycles', 'area', 'instructions')
+              }
+              summary[objective] = {
+                  'rank': validation['compositionCandidateRank'],
+                  'metrics': metrics,
+                  'local': validation['localCandidateMetrics'],
+                  'validCandidates': validation['oracleValidCandidateCount'],
+              }
+          (root / 'summary.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True), encoding='utf-8'
+          )
+          print(json.dumps(summary, sort_keys=True))
+          PY
+
+      - name: Write OMSim summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('reports/critelli-omsim-oracle/summary.json')
+          summary = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Autonomous OMSim oracle regression\n\n')
+              out.write(f'- OMSim commit: `{os.environ["OMSIM_COMMIT"]}`\n')
+              for objective, item in summary.items():
+                  out.write(f'- {objective}: rank {item["rank"]}, metrics {item["metrics"]}\n')
+          PY
+
+      - name: Upload authoritative oracle reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critelli-omsim-oracle-${{ github.run_id }}
+          path: reports/critelli-omsim-oracle/
+          if-no-files-found: warn
+          retention-days: 30
