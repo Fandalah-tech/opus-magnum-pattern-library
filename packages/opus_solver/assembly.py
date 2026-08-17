@@ -21,12 +21,11 @@ def _edge_confidence(edge: dict[str, Any]) -> float:
     return 0.60 * (1.0 - math.exp(-observations / 3.0)) + 0.25 * (1.0 - math.exp(-puzzles / 2.0)) + 0.15 * (1.0 - math.exp(-solutions / 3.0))
 
 
-def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, Any] | None:
-    variants = [
-        item
-        for item in edge.get("solutionVariants", [])
-        if str(item.get("solutionPath") or "") == solution_path
-    ]
+def _edge_from_variants(
+    edge: dict[str, Any],
+    solution_path: str,
+    variants: list[dict[str, Any]],
+) -> dict[str, Any] | None:
     if not variants:
         return None
     selected = max(variants, key=lambda item: int(item.get("observationCount") or 0))
@@ -64,6 +63,40 @@ def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, An
     result["coherentSourceSolution"] = solution_path
     result["coherentObservationCount"] = max(1, int(selected.get("observationCount") or 0))
     return result
+
+
+def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, Any] | None:
+    variants = [
+        item
+        for item in edge.get("solutionVariants", [])
+        if str(item.get("solutionPath") or "") == solution_path
+    ]
+    return _edge_from_variants(edge, solution_path, variants)
+
+
+def _coherent_transition_index(
+    transitions: list[dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    """Materialize each donor-specific transition once per ranking pass.
+
+    The earlier implementation rescanned every transition for every convergence
+    sample.  Large learned corpora contain thousands of transitions and motifs,
+    turning a five-target benchmark into millions of repeated variant scans.
+    This index walks the transition variants once and preserves exactly the same
+    strongest-per-edge donor semantics used by `_edge_for_solution`.
+    """
+    by_solution: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
+    for edge in transitions:
+        grouped: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
+        for variant in edge.get("solutionVariants", []) or []:
+            path = str(variant.get("solutionPath") or "")
+            if path:
+                grouped[path].append(variant)
+        for path, variants in grouped.items():
+            selected = _edge_from_variants(edge, path, variants)
+            if selected is not None:
+                by_solution[path].append(selected)
+    return dict(by_solution)
 
 
 def _paths_to_target(transitions: list[dict[str, Any]], target: FragmentKey, *, max_depth: int) -> list[list[dict[str, Any]]]:
@@ -183,6 +216,7 @@ def rank_fragment_assemblies(
     convergence_input_count = int(requirements.get("convergenceInputCount") or source_count)
     required = required_flow_relations(plan)
     transitions = list(flow_index.get("transitions", []))
+    coherent_transitions = _coherent_transition_index(transitions)
     candidates: list[dict[str, Any]] = []
 
     for motif in flow_index.get("convergenceMotifs", []):
@@ -194,12 +228,7 @@ def rank_fragment_assemblies(
         for selected_sample in sample_options:
             solution_path = str((selected_sample or {}).get("solutionPath") or "")
             if solution_path:
-                selected_transitions = [
-                    selected
-                    for edge in transitions
-                    for selected in [_edge_for_solution(edge, solution_path)]
-                    if selected is not None
-                ]
+                selected_transitions = coherent_transitions.get(solution_path, [])
                 selected_motif = dict(motif)
                 selected_motif["samples"] = [selected_sample]
                 selected_motif["repairSamples"] = list(motif.get("solutionSamples", []))
