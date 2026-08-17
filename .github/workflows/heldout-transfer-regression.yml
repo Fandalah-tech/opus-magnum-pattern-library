@@ -1,0 +1,163 @@
+name: Blind heldout transfer regression
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-transfer-regression.yml
+      - database/engine-fragment-flow-index.json
+      - tools/evaluate_holdout_transfer.py
+      - tools/import_campaign_corpus.py
+      - tests/test_holdout_transfer.py
+      - packages/opus_solver/**
+      - packages/opus_parser/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_PUZZLE_ID: P016
+  CAMPAIGN_ROOT: .datasets/heldout-campaign-p016
+  FLOW_INDEX: database/engine-fragment-flow-index.json
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+
+jobs:
+  heldout:
+    name: Transfer learned fragments to unseen P016
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test heldout isolation helpers
+        run: python -m unittest tests.test_holdout_transfer -v
+
+      - name: Fetch campaign puzzles only
+        run: |
+          python tools/import_campaign_corpus.py \
+            --root "$CAMPAIGN_ROOT" \
+            --puzzles-only \
+            --force
+          TARGET_PATH="$(find "$CAMPAIGN_ROOT/puzzles" -type f -name "${TARGET_PUZZLE_ID}.puzzle" | head -n 1)"
+          if [ -z "$TARGET_PATH" ]; then
+            echo "Heldout target ${TARGET_PUZZLE_ID}.puzzle was not found" >&2
+            exit 1
+          fi
+          echo "TARGET_PUZZLE=$TARGET_PATH" >> "$GITHUB_ENV"
+          echo "Heldout puzzle: $TARGET_PATH"
+
+      - name: Prove target-specific knowledge is absent
+        run: |
+          test -f "$FLOW_INDEX"
+          if git grep -n "$TARGET_PUZZLE_ID" -- "$FLOW_INDEX" database/learned-solution-bank.json; then
+            echo "Heldout target leaked into persistent solver knowledge" >&2
+            exit 1
+          fi
+          echo "No ${TARGET_PUZZLE_ID} references in persistent learned knowledge."
+
+      - name: Attempt strict knowledge-only transfer
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p reports/heldout-transfer-p016
+          python tools/evaluate_holdout_transfer.py \
+            --puzzle "$TARGET_PUZZLE" \
+            --flow-index "$FLOW_INDEX" \
+            --target-puzzle-id "$TARGET_PUZZLE_ID" \
+            --objective balanced \
+            --composition-limit 30 \
+            --solution-output reports/heldout-transfer-p016/P016-blind-transfer.solution \
+            --output reports/heldout-transfer-p016/report.json \
+            --strict-isolation
+
+      - name: Build pinned OMSim when transfer completes
+        if: ${{ hashFiles('reports/heldout-transfer-p016/P016-blind-transfer.solution') != '' }}
+        run: |
+          mkdir -p .tools
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+
+      - name: Validate transferred solution with OMSim
+        if: ${{ hashFiles('reports/heldout-transfer-p016/P016-blind-transfer.solution') != '' }}
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/omsim_adapter/validate.py \
+            "$TARGET_PUZZLE" \
+            reports/heldout-transfer-p016/P016-blind-transfer.solution \
+            --omsim "$OMSIM_BINARY" \
+            --output reports/heldout-transfer-p016/omsim.json
+
+      - name: Assert benchmark protocol and write summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          report_path = Path('reports/heldout-transfer-p016/report.json')
+          if not report_path.exists():
+              raise SystemExit('Heldout transfer report was not produced')
+          report = json.loads(report_path.read_text(encoding='utf-8'))
+          protocol = report['protocol']
+          result = report['result']
+          assert protocol['targetSolutionBytesUsed'] == 0
+          assert protocol['targetSolutionInputsAccepted'] is False
+          assert protocol['targetExcludedFromKnowledge'] is True
+          assert protocol['targetKnowledgeMentionCount'] == 0
+          assert report['request']['directGeneratorAllowed'] is False
+          assert report['request']['learnedArchitectureBankAllowed'] is False
+
+          omsim_path = Path('reports/heldout-transfer-p016/omsim.json')
+          omsim = json.loads(omsim_path.read_text(encoding='utf-8')) if omsim_path.exists() else None
+          summary = {
+              'targetPuzzleId': report['target']['id'],
+              'targetPuzzleName': report['target']['name'],
+              'targetSolutionBytesUsed': protocol['targetSolutionBytesUsed'],
+              'targetExcludedFromKnowledge': protocol['targetExcludedFromKnowledge'],
+              'donorSourceSolutionCount': protocol['knowledgeSourceSolutionCount'],
+              'knowledgeFragments': protocol['knowledgeFragmentCount'],
+              'knowledgeTransitions': protocol['knowledgeTransitionCount'],
+              'knowledgeConvergences': protocol['knowledgeConvergenceCount'],
+              'complete': result['complete'],
+              'route': result.get('route'),
+              'candidate': result.get('candidate'),
+              'localMetrics': result.get('localMetrics'),
+              'errorType': result.get('errorType'),
+              'error': result.get('error'),
+              'omsimValid': omsim.get('valid') if omsim else None,
+              'omsimMetrics': omsim.get('metrics') if omsim else None,
+          }
+          Path('reports/heldout-transfer-p016/summary.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Strict blind transfer — P016\n\n')
+              for key, value in summary.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(summary, ensure_ascii=False))
+          PY
+
+      - name: Upload heldout benchmark
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-transfer-p016-${{ github.run_id }}
+          path: reports/heldout-transfer-p016/
+          if-no-files-found: warn
+          retention-days: 30
