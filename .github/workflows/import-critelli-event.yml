@@ -9,6 +9,8 @@ on:
       - tools/import_critelli_event.py
       - tools/learn_critelli_metric_portfolio.py
       - tools/validate_critelli_portfolio_materialization.py
+      - tools/build_fragment_index.py
+      - tools/build_fragment_flow_index.py
       - tests/test_import_critelli_event.py
       - tests/test_learn_critelli_metric_portfolio.py
       - tests/test_paired_bonded_clusters.py
@@ -105,6 +107,24 @@ jobs:
             --campaign-root "$CAMPAIGN_ROOT" \
             --output reports/critelli-aqueous-dagger-analysis.json
 
+      - name: Extract replay-backed functional fragments
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/build_fragment_index.py \
+            --archive-root "$CRITELLI_ROOT" \
+            --puzzle-root "$CRITELLI_ROOT/puzzle" \
+            --output reports/critelli-aqueous-dagger-fragments.json
+
+      - name: Extract fragment flow and convergence motifs
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/build_fragment_flow_index.py \
+            --archive-root "$CRITELLI_ROOT" \
+            --puzzle-root "$CRITELLI_ROOT/puzzle" \
+            --output reports/critelli-aqueous-dagger-fragment-flow.json
+
       - name: Learn compact CGA/BCA architecture portfolio
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -132,17 +152,20 @@ jobs:
           import json, os
           from pathlib import Path
 
-          index_path = Path('.datasets/critelli-aqueous-dagger/index.json')
-          analysis_path = Path('reports/critelli-aqueous-dagger-analysis.json')
-          puzzle_path = Path('reports/critelli-aqueous-dagger-puzzle.json')
-          portfolio_path = Path('reports/critelli-aqueous-dagger-portfolio.json')
-          materialization_path = Path('reports/critelli-aqueous-dagger-materialization.json')
-          index = json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {}
-          analysis = json.loads(analysis_path.read_text(encoding='utf-8')) if analysis_path.exists() else {'summary': {}}
-          puzzle = json.loads(puzzle_path.read_text(encoding='utf-8')) if puzzle_path.exists() else {}
-          portfolio = json.loads(portfolio_path.read_text(encoding='utf-8')) if portfolio_path.exists() else {'summary': {}, 'objectives': {}}
-          materialization = json.loads(materialization_path.read_text(encoding='utf-8')) if materialization_path.exists() else {'summary': {}}
+          def load(path, fallback):
+              path = Path(path)
+              return json.loads(path.read_text(encoding='utf-8')) if path.exists() else fallback
+
+          index = load('.datasets/critelli-aqueous-dagger/index.json', {})
+          analysis = load('reports/critelli-aqueous-dagger-analysis.json', {'summary': {}})
+          puzzle = load('reports/critelli-aqueous-dagger-puzzle.json', {})
+          fragments = load('reports/critelli-aqueous-dagger-fragments.json', {'summary': {}})
+          flow = load('reports/critelli-aqueous-dagger-fragment-flow.json', {'summary': {}})
+          portfolio = load('reports/critelli-aqueous-dagger-portfolio.json', {'summary': {}, 'objectives': {}})
+          materialization = load('reports/critelli-aqueous-dagger-materialization.json', {'summary': {}})
           a = analysis.get('summary', {})
+          f = fragments.get('summary', {})
+          g = flow.get('summary', {})
           payload = {
               'eventId': index.get('eventId'),
               'submissionRecords': index.get('submissionRecordCount', 0),
@@ -158,6 +181,14 @@ jobs:
               'parseErrors': a.get('parseErrors', 0),
               'uniqueStructures': a.get('uniqueCanonicalStructures', 0),
               'uniqueMechanisms': a.get('uniqueCanonicalMechanisms', 0),
+              'replaySolutions': f.get('replaySolutionCount', 0),
+              'rawFragments': f.get('rawFragmentCount', 0),
+              'canonicalFragments': f.get('canonicalFragmentCount', 0),
+              'dynamicConfirmedFragments': f.get('evidenceLevels', {}).get('dynamic-confirmed', 0),
+              'flowReplaySolutions': g.get('replaySolutionCount', 0),
+              'canonicalTransitions': g.get('canonicalTransitionCount', 0),
+              'flowObservations': g.get('flowObservationCount', 0),
+              'canonicalConvergences': g.get('canonicalConvergenceMotifCount', 0),
               'portfolioMechanisms': portfolio.get('summary', {}).get('uniqueMechanismsInPortfolio', 0),
               'cgaWinner': portfolio.get('objectives', {}).get('cga', {}).get('winnerMetricVector'),
               'bcaWinner': portfolio.get('objectives', {}).get('bca', {}).get('winnerMetricVector'),
@@ -183,6 +214,8 @@ jobs:
             .datasets/critelli-aqueous-dagger/
             reports/critelli-aqueous-dagger-puzzle.json
             reports/critelli-aqueous-dagger-analysis.json
+            reports/critelli-aqueous-dagger-fragments.json
+            reports/critelli-aqueous-dagger-fragment-flow.json
             reports/critelli-aqueous-dagger-portfolio.json
             reports/critelli-aqueous-dagger-materialization.json
             reports/critelli-aqueous-dagger-materialized/
