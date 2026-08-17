@@ -60,6 +60,61 @@ def assign_branch_atom_flows(candidate: dict[str, Any], plan: ManufacturingPlan)
     raise ValueError(f"No branch assignment strategy for manufacturing plan {plan.strategy}")
 
 
+def assign_branch_reagent_indices(candidate: dict[str, Any], plan: ManufacturingPlan) -> dict[int, int]:
+    """Resolve each source branch to a target reagent without puzzle-specific IDs.
+
+    Atom-flow plans keep their established chemistry mapping. Source-operation
+    plans may instead label source roles such as ``direct`` and ``calcifying``;
+    those roles are matched to replay-observed relations on each assembly
+    branch. Ambiguous mappings fail rather than silently reusing a donor input.
+    """
+    branch_count = len(candidate.get("branches", []))
+    if branch_count <= 0:
+        return {}
+
+    if plan.atom_flows:
+        return {
+            branch_index: int(flow.reagent_index)
+            for branch_index, flow in assign_branch_atom_flows(candidate, plan).items()
+        }
+
+    source_operations = [
+        operation
+        for operation in plan.operations
+        if operation.kind == "source" and operation.metadata.get("reagentIndex") is not None
+    ]
+    if not source_operations:
+        return {}
+
+    source_indices = sorted({int(operation.metadata["reagentIndex"]) for operation in source_operations})
+    if len(source_indices) == 1:
+        return {branch_index: source_indices[0] for branch_index in range(branch_count)}
+
+    role_to_reagent = {
+        str(operation.metadata.get("branchRole") or ""): int(operation.metadata["reagentIndex"])
+        for operation in source_operations
+        if operation.metadata.get("branchRole")
+    }
+    if set(role_to_reagent) == {"direct", "calcifying"} and branch_count == 2:
+        calcifying_branches = [
+            branch_index
+            for branch_index in range(branch_count)
+            if "calcify" in _branch_relations(candidate, branch_index)
+        ]
+        if len(calcifying_branches) != 1:
+            raise ValueError(
+                f"Expected exactly one calcifying source branch for {plan.strategy}; found {calcifying_branches}"
+            )
+        calcifying_index = calcifying_branches[0]
+        direct_index = 1 - calcifying_index
+        return {
+            calcifying_index: role_to_reagent["calcifying"],
+            direct_index: role_to_reagent["direct"],
+        }
+
+    raise ValueError(f"No source-branch reagent assignment strategy for manufacturing plan {plan.strategy}")
+
+
 def _branch_index_for_part(part: dict[str, Any]) -> int | None:
     instances = list(part.get("sourceFragmentInstances", []))
     if part.get("sourceFragmentInstance"):
@@ -118,7 +173,7 @@ def build_candidate_solution(
     if not summary.get("scheduleComplete"):
         raise ValueError("Assembly program schedule is incomplete or conflicting")
 
-    branch_flows = assign_branch_atom_flows(candidate, plan) if plan.atom_flows else {}
+    branch_reagent_indices = assign_branch_reagent_indices(candidate, plan)
     source_reagent_indices = sorted({
         int(operation.metadata["reagentIndex"])
         for operation in plan.operations
@@ -140,9 +195,9 @@ def build_candidate_solution(
             })
             continue
         if part_type == "input":
-            branch_index = _branch_index_for_part(raw_part) if branch_flows else None
-            if branch_index is not None and branch_index in branch_flows:
-                part["which"] = int(branch_flows[branch_index].reagent_index)
+            branch_index = _branch_index_for_part(raw_part) if branch_reagent_indices else None
+            if branch_index is not None and branch_index in branch_reagent_indices:
+                part["which"] = int(branch_reagent_indices[branch_index])
             elif len(source_reagent_indices) == 1:
                 part["which"] = source_reagent_indices[0]
             else:

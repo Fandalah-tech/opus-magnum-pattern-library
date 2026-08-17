@@ -44,7 +44,7 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
     """Recognize two homologous bonded clusters, one preserved and one calcified.
 
     This is deliberately chemistry/topology driven rather than keyed to a
-    puzzle name or file hash.  Two identical homogeneous classical-element
+    puzzle name or file hash. Two identical homogeneous classical-element
     reagents may form a product containing one unchanged copy and one
     bond-preserving salt copy, with one or more new normal bonds between the
     two clusters.
@@ -116,14 +116,24 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
             "source",
             (),
             ("direct-cluster",),
-            metadata={"reagentIndex": 0, "element": source_element, "atomCount": cluster_size},
+            metadata={
+                "reagentIndex": 0,
+                "element": source_element,
+                "atomCount": cluster_size,
+                "branchRole": "direct",
+            },
         ),
         ManufacturingOperation(
             "source-calcified-cluster",
             "source",
             (),
             ("calcification-stage-0",),
-            metadata={"reagentIndex": 1, "element": source_element, "atomCount": cluster_size},
+            metadata={
+                "reagentIndex": 1,
+                "element": source_element,
+                "atomCount": cluster_size,
+                "branchRole": "calcifying",
+            },
         ),
     ]
     current = "calcification-stage-0"
