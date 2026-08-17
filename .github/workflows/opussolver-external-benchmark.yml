@@ -8,6 +8,7 @@ on:
       - .github/workflows/opussolver-external-benchmark.yml
       - datasets/opussolver-puzzle-benchmark.json
       - tools/benchmark_opussolver_puzzles.py
+      - tools/profile_external_puzzle_chemistry.py
       - tests/test_opussolver_puzzle_benchmark.py
       - database/engine-fragment-flow-index.json
       - packages/opus_solver/**
@@ -82,6 +83,15 @@ jobs:
             --output-dir "$REPORT_ROOT"
           test -s "$REPORT_ROOT/report.json"
 
+      - name: Profile development-set chemistry
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/profile_external_puzzle_chemistry.py \
+            --collection-root .tools/opussolver/test/puzzles/24hour-1-sample \
+            --output "$REPORT_ROOT/chemistry-map.json"
+          test -s "$REPORT_ROOT/chemistry-map.json"
+
       - name: Assert benchmark contract and publish failure map
         run: |
           python - <<'PY'
@@ -89,13 +99,15 @@ jobs:
           import json, os
           from pathlib import Path
 
-          path = Path('reports/opussolver-external-benchmark/sample-100/report.json')
-          report = json.loads(path.read_text(encoding='utf-8'))
+          root = Path('reports/opussolver-external-benchmark/sample-100')
+          report = json.loads((root / 'report.json').read_text(encoding='utf-8'))
+          chemistry = json.loads((root / 'chemistry-map.json').read_text(encoding='utf-8'))
           source = report['sourceVerification']
           collection = report['collection']
           protocol = report['protocol']
           summary = report['summary']
           targets = report['targets']
+          chemistry_summary = chemistry['summary']
 
           assert report['pinnedCommit'] == 'fdedd3f01a238b941ceba8bace7ea35cbd3b8c41'
           assert source['verified'] is True
@@ -107,6 +119,8 @@ jobs:
           assert summary['collectionPuzzleCount'] == 100
           assert summary['selectedPuzzleCount'] == 100
           assert len(targets) == 100
+          assert chemistry_summary['puzzleCount'] == 100
+          assert chemistry['targetSolutionBytesUsed'] == 0
           assert summary['targetSolutionBytesUsed'] == 0
           assert summary['knowledgeLeakCount'] == 0
           assert protocol['targetSolutionInputsAccepted'] is False
@@ -118,6 +132,7 @@ jobs:
           planner_reasons = Counter()
           planner_strategies = Counter()
           solver_errors = Counter()
+          solver_error_messages = Counter()
           for target in targets:
               if target.get('plannerStrategy'):
                   planner_strategies[target['plannerStrategy']] += 1
@@ -125,6 +140,7 @@ jobs:
                   planner_reasons[' '.join(str(target.get('error') or 'planner-unsupported').split())] += 1
               if target.get('status') == 'solver-error':
                   solver_errors[target.get('errorType') or 'unknown'] += 1
+                  solver_error_messages[' '.join(str(target.get('error') or 'solver-error').split())] += 1
 
           compact = {
               'collection': collection['id'],
@@ -137,12 +153,20 @@ jobs:
               'candidateAvailable': summary['candidateAvailableCount'],
               'localComplete': summary['localCompleteCount'],
               'solverErrors': dict(solver_errors.most_common()),
+              'solverErrorMessages': dict(solver_error_messages.most_common()),
               'omsimTested': summary['omsimTestedCount'],
               'omsimValid': summary['omsimValidCount'],
               'failureStages': summary['failureStageCounts'],
+              'chemistry': {
+                  'reagentCounts': chemistry_summary['reagentCountCounts'],
+                  'productCounts': chemistry_summary['productCountCounts'],
+                  'reagentAtomVectors': chemistry_summary['reagentAtomVectorCounts'],
+                  'productAtomVectors': chemistry_summary['productAtomVectorCounts'],
+                  'production': chemistry_summary['productionCounts'],
+              },
               'targetSolutionBytesUsed': summary['targetSolutionBytesUsed'],
           }
-          Path('reports/opussolver-external-benchmark/sample-100/failure-map.json').write_text(
+          (root / 'failure-map.json').write_text(
               json.dumps(compact, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
           )
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
