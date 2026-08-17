@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import argparse
+from itertools import count
 import json
 import os
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
-from packages.opus_parser import parse_puzzle
+from packages.opus_parser import parse_puzzle, write_solution
 from packages.opus_solver import solve_puzzle_auto
-from packages.opus_solver.autonomous import KNOWLEDGE_OBJECTIVES
+from packages.opus_solver.autonomous import KNOWLEDGE_OBJECTIVES, LOCAL_OBJECTIVES
+from tools.omsim_adapter.validate import run_omsim
 
 
 _DEFAULT_FLOW_INDEX_CANDIDATES = (
@@ -34,7 +37,7 @@ def _resolve_index_path(
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Generate a solution with the autonomous Opus solver."
+        description="Generate and optionally oracle-optimize a solution with the autonomous Opus solver."
     )
     parser.add_argument("puzzle", type=Path, help="Path to an Opus Magnum .puzzle file")
     parser.add_argument("output", type=Path, help="Destination .solution file")
@@ -65,10 +68,21 @@ def main() -> int:
         choices=KNOWLEDGE_OBJECTIVES,
         default="balanced",
         help=(
-            "Local autonomous ranking objective. 'cycles' minimizes the first local six-product "
-            "completion cycle; 'instructions' minimizes programmed instructions; 'balanced' "
-            "preserves evidence/assembly ranking. OMSim remains authoritative for official metrics."
+            "Optimization objective. Without --omsim only balanced, cycles and instructions are "
+            "available as local ranking signals. With --omsim, cost/area/cycles/rate/instructions/"
+            "costarea/costcycles/sum4 use authoritative OMSim metrics."
         ),
+    )
+    parser.add_argument(
+        "--omsim",
+        type=Path,
+        help="Optional OMSim executable used as the authoritative validator and objective scorer.",
+    )
+    parser.add_argument(
+        "--omsim-timeout",
+        type=int,
+        default=60,
+        help="Timeout in seconds for each OMSim candidate validation.",
     )
     parser.add_argument(
         "--report",
@@ -76,6 +90,11 @@ def main() -> int:
         help="Optional JSON report containing the manufacturing plan and validation",
     )
     args = parser.parse_args()
+
+    if args.omsim is None and args.objective not in LOCAL_OBJECTIVES:
+        parser.error(
+            f"--objective {args.objective!r} requires --omsim; without OMSim choose one of {LOCAL_OBJECTIVES}"
+        )
 
     puzzle = parse_puzzle(args.puzzle)
     flow_path = _resolve_index_path(
@@ -101,13 +120,31 @@ def main() -> int:
         if fragment_path is not None
         else None
     )
-    result = solve_puzzle_auto(
-        puzzle,
-        flow_index=flow_index,
-        fragment_index=fragment_index,
-        composition_limit=max(1, int(args.composition_limit)),
-        objective=args.objective,
-    )
+
+    with TemporaryDirectory(prefix="opus-autonomous-oracle-") as oracle_temp_name:
+        oracle_counter = count()
+
+        def omsim_validator(solution: dict) -> dict:
+            candidate_path = Path(oracle_temp_name) / f"candidate-{next(oracle_counter):04d}.solution"
+            write_solution(solution, candidate_path, version=7)
+            return run_omsim(
+                args.omsim,
+                args.puzzle,
+                candidate_path,
+                max(1, int(args.omsim_timeout)),
+                output_intervals=True,
+            )
+
+        result = solve_puzzle_auto(
+            puzzle,
+            flow_index=flow_index,
+            fragment_index=fragment_index,
+            composition_limit=max(1, int(args.composition_limit)),
+            objective=args.objective,
+            oracle_validator=omsim_validator if args.omsim is not None else None,
+            oracle_name="omsim" if args.omsim is not None else "oracle",
+        )
+
     result.write(args.output)
 
     report = result.to_dict(include_solution=True)
@@ -116,6 +153,12 @@ def main() -> int:
         "fragmentIndex": str(fragment_path) if fragment_path is not None else None,
         "flowIndexExplicit": args.flow_index is not None,
         "fragmentIndexExplicit": args.fragment_index is not None,
+    }
+    report["oracleResolution"] = {
+        "enabled": args.omsim is not None,
+        "name": "omsim" if args.omsim is not None else None,
+        "binary": str(args.omsim) if args.omsim is not None else None,
+        "timeoutSeconds": max(1, int(args.omsim_timeout)) if args.omsim is not None else None,
     }
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
@@ -126,8 +169,11 @@ def main() -> int:
         "strategy": result.strategy,
         "route": result.validation.get("solverRoute"),
         "objective": result.validation.get("optimizationObjective"),
+        "metricSource": result.validation.get("optimizationMetricSource"),
         "localMetrics": result.validation.get("localCandidateMetrics"),
+        "oracleMetrics": result.validation.get("oracleMetrics"),
         "knowledge": report["knowledgeResolution"],
+        "oracle": report["oracleResolution"],
         "output": str(args.output),
         "validation": result.validation,
     }, indent=2))
