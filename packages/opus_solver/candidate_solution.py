@@ -279,6 +279,202 @@ def singleton_input_alignment(
     }
 
 
+def _normal_bond_pairs(molecule: dict[str, Any]) -> set[frozenset[tuple[int, int]]] | None:
+    pairs: set[frozenset[tuple[int, int]]] = set()
+    for bond in molecule.get("bonds") or []:
+        if str(bond.get("type") or "normal") != "normal":
+            return None
+        first = tuple(int(value) for value in (bond.get("from") or (0, 0)))
+        second = tuple(int(value) for value in (bond.get("to") or (0, 0)))
+        if first == second:
+            return None
+        pairs.add(frozenset((first, second)))
+    return pairs
+
+
+def _arc_output_transform(
+    product: dict[str, Any],
+    arc_cells: list[tuple[int, int]],
+) -> tuple[tuple[int, int], int] | None:
+    atoms = list(product.get("atoms") or [])
+    local_cells = [tuple(int(value) for value in (atom.get("position") or (0, 0))) for atom in atoms]
+    if len(local_cells) != len(arc_cells) or len(set(local_cells)) != len(local_cells):
+        return None
+    bonds = _normal_bond_pairs(product)
+    if bonds is None or len(bonds) != len(local_cells) - 1:
+        return None
+    expected_world_bonds = {
+        frozenset((arc_cells[index], arc_cells[index + 1]))
+        for index in range(len(arc_cells) - 1)
+    }
+    target_cells = set(arc_cells)
+    for rotation in range(6):
+        rotated = [rotate_hex(cell, rotation) for cell in local_cells]
+        for world_anchor in arc_cells:
+            for local_anchor in rotated:
+                origin = (
+                    world_anchor[0] - local_anchor[0],
+                    world_anchor[1] - local_anchor[1],
+                )
+                transformed = {
+                    (origin[0] + cell[0], origin[1] + cell[1])
+                    for cell in rotated
+                }
+                if transformed != target_cells:
+                    continue
+                world_bonds = {
+                    frozenset((
+                        (
+                            origin[0] + rotate_hex(tuple(first), rotation)[0],
+                            origin[1] + rotate_hex(tuple(first), rotation)[1],
+                        ),
+                        (
+                            origin[0] + rotate_hex(tuple(second), rotation)[0],
+                            origin[1] + rotate_hex(tuple(second), rotation)[1],
+                        ),
+                    ))
+                    for pair in bonds
+                    for first, second in [tuple(pair)]
+                }
+                if world_bonds == expected_world_bonds:
+                    return origin, rotation
+    return None
+
+
+def _direction_rotation(delta: tuple[int, int]) -> int | None:
+    for rotation in range(6):
+        if rotate_hex((1, 0), rotation) == delta:
+            return rotation
+    return None
+
+
+def _preferred_rotation_steps(arm: dict[str, Any]) -> list[int]:
+    ordered = sorted(arm.get("program") or [], key=lambda item: int(item.get("cycle") or 0))
+    preferred = None
+    for item in ordered:
+        instruction = str(item.get("instruction") or "")
+        if instruction == "rotate_cw":
+            preferred = -1
+            break
+        if instruction == "rotate_ccw":
+            preferred = 1
+            break
+    return [preferred, -preferred] if preferred in {-1, 1} else [-1, 1]
+
+
+def rotary_singleton_accumulator_adaptation(
+    parts: list[dict[str, Any]],
+    puzzle: dict[str, Any],
+    plan: ManufacturingPlan,
+    input_alignments: list[dict[str, Any]],
+    source_part_map: dict[str, str],
+) -> dict[str, Any] | None:
+    """Adapt one learned feed arm into a repeating rotary chain accumulator.
+
+    This specialization is intentionally structural.  It applies only to the
+    renewable-singleton manufacturing plan, a fixed one-hex arm learned from
+    the selected fragment, and a target product whose exact atom/bond geometry
+    is congruent to successive arm-tip positions around that pivot.  No target
+    solution data participates in the transformation.
+    """
+    if plan.strategy != "repeated-singleton-assembly-v1":
+        return None
+    products = list(puzzle.get("products") or [])
+    reagents = list(puzzle.get("reagents") or [])
+    if len(products) != 1 or not input_alignments:
+        return None
+    product = products[0]
+    product_atoms = list(product.get("atoms") or [])
+    if not 2 <= len(product_atoms) <= 6:
+        return None
+
+    by_id = {str(part.get("id") or ""): part for part in parts}
+    bonder = next((part for part in parts if part.get("type") == "bonder"), None)
+    output = next((part for part in parts if str(part.get("type") or "").startswith("out-")), None)
+    if bonder is None or output is None:
+        return None
+
+    for alignment in input_alignments:
+        input_part = by_id.get(str(alignment.get("partId") or ""))
+        serving_clean_id = source_part_map.get(str(alignment.get("servingArmId") or ""))
+        arm = by_id.get(str(serving_clean_id or ""))
+        if input_part is None or arm is None:
+            continue
+        if arm.get("type") != "arm1" or int(arm.get("length") or 1) != 1:
+            continue
+        reagent_index = int(input_part.get("which") or 0)
+        if not 0 <= reagent_index < len(reagents):
+            continue
+        reagent_atoms = list(reagents[reagent_index].get("atoms") or [])
+        if len(reagent_atoms) != 1:
+            continue
+        source_element = str(reagent_atoms[0].get("element") or "")
+        if {str(atom.get("element") or "") for atom in product_atoms} != {source_element}:
+            continue
+
+        pivot = tuple(int(value) for value in (arm.get("position") or (0, 0)))
+        initial_rotation = int(arm.get("rotation") or 0) % 6
+        for step in _preferred_rotation_steps(arm):
+            arc_cells = []
+            for index in range(len(product_atoms)):
+                offset = rotate_hex((1, 0), initial_rotation + step * index)
+                arc_cells.append((pivot[0] + offset[0], pivot[1] + offset[1]))
+            transform = _arc_output_transform(product, arc_cells)
+            if transform is None:
+                continue
+            output_origin, output_rotation = transform
+            delta = (
+                arc_cells[1][0] - arc_cells[0][0],
+                arc_cells[1][1] - arc_cells[0][1],
+            )
+            bonder_rotation = _direction_rotation(delta)
+            if bonder_rotation is None:
+                continue
+
+            selected_input = deepcopy(input_part)
+            selected_arm = deepcopy(arm)
+            selected_bonder = deepcopy(bonder)
+            selected_output = deepcopy(output)
+
+            selected_arm["program"] = [
+                {"cycle": 0, "instruction": "grab"},
+                {"cycle": 1, "instruction": "rotate_cw" if step == -1 else "rotate_ccw"},
+                {"cycle": 2, "instruction": "drop"},
+                {"cycle": 3, "instruction": "rotate_ccw" if step == -1 else "rotate_cw"},
+            ]
+            selected_arm["armNumber"] = 1
+            selected_bonder["position"] = list(arc_cells[0])
+            selected_bonder["rotation"] = int(bonder_rotation)
+            selected_bonder["program"] = []
+            selected_output["position"] = list(output_origin)
+            selected_output["rotation"] = int(output_rotation)
+            selected_output["which"] = int(plan.product_index)
+            selected_output["program"] = []
+            selected_input["program"] = []
+
+            return {
+                "parts": [selected_bonder, selected_input, selected_arm, selected_output],
+                "metadata": {
+                    "kind": "rotary-singleton-accumulator-v1",
+                    "sourcePlan": plan.strategy,
+                    "servingArmId": str(alignment.get("servingArmId") or ""),
+                    "servingCandidateArmId": str(selected_arm.get("id") or ""),
+                    "rotationStep": int(step),
+                    "period": 4,
+                    "targetAtomCount": len(product_atoms),
+                    "arcCells": [list(cell) for cell in arc_cells],
+                    "bonderPosition": list(selected_bonder["position"]),
+                    "bonderRotation": int(selected_bonder["rotation"]),
+                    "outputPosition": list(selected_output["position"]),
+                    "outputRotation": int(selected_output["rotation"]),
+                    "prunedPartCount": max(0, len(parts) - 4),
+                    "geometryEvidence": "target-product-rigid-transform-to-learned-arm-tip-arc",
+                    "targetSolutionBytesUsed": 0,
+                },
+            }
+    return None
+
+
 def _clean_part(part: dict[str, Any], *, part_id: str) -> dict[str, Any]:
     cleaned = {
         "id": part_id,
@@ -328,14 +524,18 @@ def build_candidate_solution(
     parts = []
     pruned_parts = []
     input_alignments = []
+    source_part_map: dict[str, str] = {}
     arm_number = 1
     for index, raw_part in enumerate(raw_parts):
         part = _clean_part(raw_part, part_id=f"part-{index}")
+        source_part_id = str(raw_part.get("id") or "")
+        if source_part_id:
+            source_part_map[source_part_id] = part["id"]
         part_type = part["type"]
         if not part_is_available(puzzle, part_type):
             category, capability = part_capability_requirement(puzzle, part_type) or ("unknown", "unknown")
             pruned_parts.append({
-                "sourcePartId": str(raw_part.get("id") or ""),
+                "sourcePartId": source_part_id,
                 "partType": part_type,
                 "requiredCapability": capability,
                 "category": category,
@@ -354,7 +554,7 @@ def build_candidate_solution(
                 part["position"] = list(alignment["position"])
                 input_alignments.append({
                     "partId": part["id"],
-                    "sourcePartId": str(raw_part.get("id") or ""),
+                    "sourcePartId": source_part_id,
                     **alignment,
                 })
         elif part_type.startswith("out-"):
@@ -364,6 +564,16 @@ def build_candidate_solution(
             arm_number += 1
         parts.append(part)
 
+    accumulator = rotary_singleton_accumulator_adaptation(
+        parts,
+        puzzle,
+        plan,
+        input_alignments,
+        source_part_map,
+    )
+    if accumulator is not None:
+        parts = accumulator["parts"]
+
     return {
         "schemaVersion": "0.1.0",
         "format": {"kind": "solution", "version": 7},
@@ -372,6 +582,7 @@ def build_candidate_solution(
             "generator": "opus_solver/composed-assembly",
             "prunedUnavailableParts": pruned_parts,
             "singletonInputAlignments": input_alignments,
+            "rotarySingletonAccumulator": accumulator["metadata"] if accumulator is not None else None,
         },
         "puzzleFile": _puzzle_file_id(puzzle),
         "name": name,
