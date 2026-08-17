@@ -6,15 +6,21 @@ import json
 from pathlib import Path
 from typing import Any, Iterable
 
+from packages.opus_analysis.canonical import rotate_hex
 from packages.opus_parser import parse_puzzle, write_solution
 from packages.opus_solver.assembly import rank_fragment_assemblies
 from packages.opus_solver.autonomous import solve_puzzle_from_knowledge
+from packages.opus_solver.candidate_solution import build_candidate_solution
 from packages.opus_solver.chemistry_composition import (
     manufacturing_requirements,
     rank_chains_for_manufacturing_plan,
     required_flow_relations,
 )
+from packages.opus_solver.layout import materialize_candidate_layout
 from packages.opus_solver.manufacturing_extensions import build_manufacturing_plan
+from packages.opus_solver.scheduling import materialize_candidate_schedule, synchronize_layout_programs
+
+ARM_TYPES = {"arm1", "arm2", "arm3", "arm6", "piston", "baron"}
 
 
 def _walk_strings(value: Any) -> Iterable[str]:
@@ -29,10 +35,7 @@ def _walk_strings(value: Any) -> Iterable[str]:
             yield from _walk_strings(item)
 
 
-def target_knowledge_mentions(
-    knowledge: dict[str, Any],
-    target_puzzle_id: str,
-) -> list[str]:
+def target_knowledge_mentions(knowledge: dict[str, Any], target_puzzle_id: str) -> list[str]:
     needle = target_puzzle_id.strip().lower()
     if not needle:
         raise ValueError("target_puzzle_id must not be empty")
@@ -57,21 +60,8 @@ def _molecule_profile(molecule: dict[str, Any]) -> dict[str, Any]:
         "elements": dict(sorted(Counter(str(atom.get("element") or "") for atom in atoms).items())),
         "bondCount": len(bonds),
         "bondTypes": dict(sorted(Counter(str(bond.get("type") or "normal") for bond in bonds).items())),
-        "atoms": [
-            {
-                "element": str(atom.get("element") or ""),
-                "position": list(atom.get("position") or (0, 0)),
-            }
-            for atom in atoms
-        ],
-        "bonds": [
-            {
-                "type": str(bond.get("type") or "normal"),
-                "from": list(bond.get("from") or (0, 0)),
-                "to": list(bond.get("to") or (0, 0)),
-            }
-            for bond in bonds
-        ],
+        "atoms": [{"element": str(atom.get("element") or ""), "position": list(atom.get("position") or (0, 0))} for atom in atoms],
+        "bonds": [{"type": str(bond.get("type") or "normal"), "from": list(bond.get("from") or (0, 0)), "to": list(bond.get("to") or (0, 0))} for bond in bonds],
     }
 
 
@@ -95,26 +85,89 @@ def puzzle_transfer_profile(puzzle: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _composition_diagnostics(
+def _part_snapshot(part: dict[str, Any]) -> dict[str, Any]:
+    result = {
+        "id": part.get("id"),
+        "type": part.get("type"),
+        "position": list(part.get("position") or (0, 0)),
+        "rotation": int(part.get("rotation") or 0),
+        "length": int(part.get("length") or 1),
+        "which": int(part.get("which") or 0),
+        "sourcePartId": part.get("sourcePartId"),
+        "sourceFragmentInstance": part.get("sourceFragmentInstance"),
+        "sourceFragmentInstances": list(part.get("sourceFragmentInstances") or []),
+        "program": [
+            {"cycle": int(item.get("cycle") or 0), "instruction": str(item.get("instruction") or "")}
+            for item in (part.get("program") or [])
+        ],
+    }
+    if str(part.get("type") or "") in ARM_TYPES:
+        base = tuple(int(value) for value in (part.get("position") or (0, 0)))
+        reach = rotate_hex((int(part.get("length") or 1), 0), int(part.get("rotation") or 0))
+        result["initialTipPosition"] = [base[0] + reach[0], base[1] + reach[1]]
+    if part.get("trackHexes"):
+        result["trackHexes"] = [list(cell) for cell in part.get("trackHexes", [])]
+    return result
+
+
+def _mechanical_candidate_diagnostics(
     puzzle: dict[str, Any],
     knowledge: dict[str, Any],
+    assemblies: list[dict[str, Any]],
     *,
-    limit: int,
-) -> dict[str, Any]:
+    limit: int = 3,
+) -> list[dict[str, Any]]:
+    plan = build_manufacturing_plan(puzzle)
+    diagnostics = []
+    for rank, assembly in enumerate(assemblies[:max(0, int(limit))], start=1):
+        item: dict[str, Any] = {
+            "rank": rank,
+            "score": assembly.get("score"),
+            "coherentSourceSolution": assembly.get("coherentSourceSolution"),
+            "observedRelations": assembly.get("observedRelations"),
+            "relationCapacities": assembly.get("relationCapacities"),
+        }
+        try:
+            layout = materialize_candidate_layout(assembly, knowledge)
+            schedule = materialize_candidate_schedule(assembly)
+            synchronized = synchronize_layout_programs(layout, schedule)
+            solution = build_candidate_solution(
+                puzzle,
+                plan,
+                assembly,
+                synchronized,
+                name=f"Heldout mechanical diagnostic {rank}",
+            )
+            item["layoutSummary"] = layout.get("summary")
+            item["scheduleSummary"] = schedule.get("summary")
+            item["synchronizedSummary"] = synchronized.get("summary")
+            item["rawParts"] = [_part_snapshot(part) for part in synchronized.get("parts", [])]
+            item["solutionParts"] = [_part_snapshot(part) for part in solution.get("parts", [])]
+            item["inputPositions"] = [
+                list(part.get("position") or (0, 0))
+                for part in solution.get("parts", [])
+                if part.get("type") == "input"
+            ]
+            item["armInitialTips"] = [
+                _part_snapshot(part).get("initialTipPosition")
+                for part in solution.get("parts", [])
+                if str(part.get("type") or "") in ARM_TYPES
+            ]
+        except Exception as error:
+            item["errorType"] = type(error).__name__
+            item["error"] = str(error)
+        diagnostics.append(item)
+    return diagnostics
+
+
+def _composition_diagnostics(puzzle: dict[str, Any], knowledge: dict[str, Any], *, limit: int) -> dict[str, Any]:
     plan = build_manufacturing_plan(puzzle)
     requirements = manufacturing_requirements(plan)
     required = required_flow_relations(plan)
     motifs = list(knowledge.get("convergenceMotifs") or [])
     motif_input_counts = [len(item.get("inputs") or []) for item in motifs]
     relation_counts = dict((knowledge.get("summary") or {}).get("relationCounts") or {})
-    assemblies = rank_fragment_assemblies(
-        plan,
-        knowledge,
-        limit=max(1, int(limit)),
-    ) if plan.supported else []
-    # Evaluate linear functional coverage as a diagnostic even when the planner
-    # correctly declares that a convergence is required.  This separates
-    # "chemistry absent" from "DAG assembly unavailable".
+    assemblies = rank_fragment_assemblies(plan, knowledge, limit=max(1, int(limit))) if plan.supported else []
     chains = rank_chains_for_manufacturing_plan(
         plan,
         knowledge,
@@ -136,12 +189,15 @@ def _composition_diagnostics(
                 "score": item.get("score"),
                 "sourceCount": item.get("sourceCount"),
                 "convergenceInputCount": item.get("convergenceInputCount"),
+                "coherentSourceSolution": item.get("coherentSourceSolution"),
                 "observedRelations": item.get("observedRelations"),
+                "relationCapacities": item.get("relationCapacities"),
                 "inferredRelations": item.get("inferredRelations"),
                 "requiredRelations": item.get("requiredRelations"),
             }
             for item in assemblies[:3]
         ],
+        "mechanicalCandidates": _mechanical_candidate_diagnostics(puzzle, knowledge, assemblies, limit=3),
         "bestChains": [
             {
                 "score": item.get("score"),
@@ -168,11 +224,7 @@ def evaluate_holdout_transfer(
     mentions = target_knowledge_mentions(knowledge, target_puzzle_id)
     sources = knowledge_source_solutions(knowledge)
     profile = puzzle_transfer_profile(puzzle)
-    composition = _composition_diagnostics(
-        puzzle,
-        knowledge,
-        limit=composition_limit,
-    )
+    composition = _composition_diagnostics(puzzle, knowledge, limit=composition_limit)
 
     protocol = {
         "targetPuzzleId": target_puzzle_id,
@@ -191,14 +243,9 @@ def evaluate_holdout_transfer(
     }
 
     report: dict[str, Any] = {
-        "schemaVersion": "0.3.0",
+        "schemaVersion": "0.4.0",
         "kind": "strict-heldout-knowledge-transfer",
-        "target": {
-            "id": target_puzzle_id,
-            "name": puzzle.get("name"),
-            "source": puzzle.get("source"),
-            "profile": profile,
-        },
+        "target": {"id": target_puzzle_id, "name": puzzle.get("name"), "source": puzzle.get("source"), "profile": profile},
         "protocol": protocol,
         "request": {
             "objective": objective,
@@ -222,9 +269,7 @@ def evaluate_holdout_transfer(
 
     if mentions:
         report["result"]["errorType"] = "TargetKnowledgeLeakError"
-        report["result"]["error"] = (
-            f"Held-out target {target_puzzle_id!r} appears in reusable knowledge"
-        )
+        report["result"]["error"] = f"Held-out target {target_puzzle_id!r} appears in reusable knowledge"
         return report
 
     try:
@@ -257,18 +302,11 @@ def evaluate_holdout_transfer(
     except Exception as error:
         report["result"]["errorType"] = type(error).__name__
         report["result"]["error"] = str(error)
-
     return report
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Evaluate fragment-knowledge transfer on a held-out puzzle without "
-            "allowing target solution bytes, direct generators or target-specific "
-            "learned architectures."
-        )
-    )
+    parser = argparse.ArgumentParser(description="Evaluate strict fragment-knowledge transfer on a held-out puzzle.")
     parser.add_argument("--puzzle", type=Path, required=True)
     parser.add_argument("--flow-index", type=Path, required=True)
     parser.add_argument("--target-puzzle-id", required=True)
@@ -289,10 +327,7 @@ def main() -> int:
         solution_output=args.solution_output,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(report, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({
         "target": report["target"],
         "protocol": {
