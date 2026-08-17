@@ -1,41 +1,41 @@
 {
   "schemaVersion": "0.10.0",
   "analysis": "engine-validated-fragment-flow-index",
-  "sourceAuditSchemaVersion": "0.2.0",
+  "sourceAuditSchemaVersion": "0.3.0",
   "sourceFilter": {
     "mode": "all-engine-complete",
     "strictSourceFiltering": true,
     "requestedExcludedPuzzleIds": [],
     "requestedExcludedSolutionPaths": [],
     "matchedExcludedPuzzleIds": [],
-    "engineCompleteSolutionCountBeforeExclusion": 6,
+    "engineCompleteSolutionCountBeforeExclusion": 7,
     "excludedByPuzzleCount": 0,
     "excludedBySolutionCount": 0,
     "excludedEngineCompleteSolutionCount": 0,
-    "eligibleEngineCompleteSolutionCount": 6
+    "eligibleEngineCompleteSolutionCount": 7
   },
   "summary": {
-    "auditedSolutionCount": 6,
-    "engineCompleteSolutionCountBeforeExclusion": 6,
+    "auditedSolutionCount": 7,
+    "engineCompleteSolutionCountBeforeExclusion": 7,
     "excludedEngineCompleteSolutionCount": 0,
-    "eligibleEngineCompleteSolutionCount": 6,
-    "replayValidatedSolutionCount": 6,
+    "eligibleEngineCompleteSolutionCount": 7,
+    "replayValidatedSolutionCount": 7,
     "validationDriftCount": 0,
-    "rawFlowEdgeCount": 36,
-    "canonicalTransitionCount": 26,
-    "flowObservationCount": 289,
-    "rawFragmentCount": 30,
-    "canonicalFragmentCount": 20,
-    "rawConvergenceMotifCount": 12,
-    "canonicalConvergenceMotifCount": 11,
+    "rawFlowEdgeCount": 45,
+    "canonicalTransitionCount": 34,
+    "flowObservationCount": 576,
+    "rawFragmentCount": 38,
+    "canonicalFragmentCount": 26,
+    "rawConvergenceMotifCount": 14,
+    "canonicalConvergenceMotifCount": 13,
     "triplexTransitionCount": 0,
     "triplexObservationCount": 0,
     "relationCounts": {
-      "bond-created": 119,
-      "calcify": 128,
-      "delivered": 42
+      "bond-created": 238,
+      "calcify": 254,
+      "delivered": 84
     },
-    "workerCount": 6,
+    "workerCount": 7,
     "errorCount": 0
   },
   "transitions": [
@@ -384,6 +384,234 @@
     {
       "sourceRole": "bonding",
       "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+      "targetRole": "bonding",
+      "targetMechanismHash": "7fb0534e06c77babec8f0a6d7a3fb33a1d554e96537947ee3e68ed682d495d10",
+      "relation": "bond-created",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            0,
+            -1
+          ],
+          "rotationDelta": 5
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                0,
+                -1
+              ],
+              "rotationDelta": 5
+            },
+            "observationCount": 35
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": null,
+          "eventFirstFromTargetStart": -1
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": null,
+              "eventFirstFromTargetStart": -1
+            },
+            "observationCount": 35
+          }
+        ]
+      },
+      "observationCount": 35,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-1",
+          "targetAnchorPartId": "part-2",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              -1
+            ],
+            "rotationDelta": 5
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": -1
+          },
+          "observationCount": 35
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 3,
+          "lastCycle": 113,
+          "observationCount": 35,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              -1
+            ],
+            "rotationDelta": 5
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": 4,
+            "programStartDelta": null,
+            "eventFirstCycle": 3,
+            "eventLastCycle": 113,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": -1
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "bonding",
+      "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+      "targetRole": "conversion",
+      "targetMechanismHash": "bed52c7d31e44fa980147bfed1daf5b868a315fcd7c0490596f3ccfca1d99a2e",
+      "relation": "calcify",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            0,
+            1
+          ],
+          "rotationDelta": 1
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                0,
+                1
+              ],
+              "rotationDelta": 1
+            },
+            "observationCount": 7
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": null,
+          "eventFirstFromTargetStart": 13
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": null,
+              "eventFirstFromTargetStart": 13
+            },
+            "observationCount": 7
+          }
+        ]
+      },
+      "observationCount": 7,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-1",
+          "targetAnchorPartId": "part-15",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              1
+            ],
+            "rotationDelta": 1
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": 13
+          },
+          "observationCount": 7
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 13,
+          "lastCycle": 115,
+          "observationCount": 7,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              1
+            ],
+            "rotationDelta": 1
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": 0,
+            "programStartDelta": null,
+            "eventFirstCycle": 13,
+            "eventLastCycle": 115,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": 13
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "bonding",
+      "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
       "targetRole": "conversion",
       "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
       "relation": "calcify",
@@ -391,13 +619,24 @@
         "preferred": {
           "frame": "source-anchor-local",
           "delta": [
-            -1,
-            1
+            1,
+            -1
           ],
-          "rotationDelta": 2
+          "rotationDelta": 1
         },
-        "variantCount": 4,
+        "variantCount": 5,
         "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                1,
+                -1
+              ],
+              "rotationDelta": 1
+            },
+            "observationCount": 35
+          },
           {
             "relativeTransform": {
               "frame": "source-anchor-local",
@@ -460,14 +699,14 @@
               "eventFirstFromSourceStart": null,
               "eventFirstFromTargetStart": null
             },
-            "observationCount": 28
+            "observationCount": 63
           }
         ]
       },
-      "observationCount": 28,
+      "observationCount": 63,
       "sourcePuzzleCount": 1,
-      "sourceSolutionCount": 4,
-      "engineValidatedSolutionCount": 4,
+      "sourceSolutionCount": 5,
+      "engineValidatedSolutionCount": 5,
       "engineValidationRate": 1.0,
       "sourcePuzzles": [
         "weeklies2026_aqueous-dagger"
@@ -476,7 +715,8 @@
         "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
         "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
         "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
-        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
@@ -563,6 +803,27 @@
             "eventFirstFromTargetStart": null
           },
           "observationCount": 7
+        },
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-1",
+          "targetAnchorPartId": "part-0",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              1,
+              -1
+            ],
+            "rotationDelta": 1
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": null
+          },
+          "observationCount": 35
         }
       ],
       "samples": [
@@ -668,6 +929,146 @@
             "eventLastCycle": 53,
             "eventFirstFromSourceStart": null,
             "eventFirstFromTargetStart": null
+          }
+        },
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 3,
+          "lastCycle": 113,
+          "observationCount": 35,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              1,
+              -1
+            ],
+            "rotationDelta": 1
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": null,
+            "programStartDelta": null,
+            "eventFirstCycle": 3,
+            "eventLastCycle": 113,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": null
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "bonding",
+      "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+      "targetRole": "output",
+      "targetMechanismHash": "3ff3afd51527032000311c13ac70e5e31388e22da82fcf8bfd06972da6f7faf1",
+      "relation": "delivered",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            0,
+            -3
+          ],
+          "rotationDelta": 2
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                0,
+                -3
+              ],
+              "rotationDelta": 2
+            },
+            "observationCount": 7
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": null,
+          "eventFirstFromTargetStart": 10
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": null,
+              "eventFirstFromTargetStart": 10
+            },
+            "observationCount": 7
+          }
+        ]
+      },
+      "observationCount": 7,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-1",
+          "targetAnchorPartId": "part-4",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              -3
+            ],
+            "rotationDelta": 2
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": 10
+          },
+          "observationCount": 7
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 14,
+          "lastCycle": 116,
+          "observationCount": 7,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              -3
+            ],
+            "rotationDelta": 2
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": 4,
+            "programStartDelta": null,
+            "eventFirstCycle": 14,
+            "eventLastCycle": 116,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": 10
           }
         }
       ]
@@ -1176,6 +1577,120 @@
             "eventLastCycle": 89,
             "eventFirstFromSourceStart": 11,
             "eventFirstFromTargetStart": 11
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "bonding",
+      "sourceMechanismHash": "7fb0534e06c77babec8f0a6d7a3fb33a1d554e96537947ee3e68ed682d495d10",
+      "targetRole": "output",
+      "targetMechanismHash": "3ff3afd51527032000311c13ac70e5e31388e22da82fcf8bfd06972da6f7faf1",
+      "relation": "delivered",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            2,
+            -2
+          ],
+          "rotationDelta": 3
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                2,
+                -2
+              ],
+              "rotationDelta": 3
+            },
+            "observationCount": 35
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": 0,
+          "eventFirstFromSourceStart": 1,
+          "eventFirstFromTargetStart": 1
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": 0,
+              "eventFirstFromSourceStart": 1,
+              "eventFirstFromTargetStart": 1
+            },
+            "observationCount": 35
+          }
+        ]
+      },
+      "observationCount": 35,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-2",
+          "targetAnchorPartId": "part-4",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              2,
+              -2
+            ],
+            "rotationDelta": 3
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": 0,
+            "eventFirstFromSourceStart": 1,
+            "eventFirstFromTargetStart": 1
+          },
+          "observationCount": 35
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 5,
+          "lastCycle": 115,
+          "observationCount": 35,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              2,
+              -2
+            ],
+            "rotationDelta": 3
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": 4,
+            "targetProgramStart": 4,
+            "programStartDelta": 0,
+            "eventFirstCycle": 5,
+            "eventLastCycle": 115,
+            "eventFirstFromSourceStart": 1,
+            "eventFirstFromTargetStart": 1
           }
         }
       ]
@@ -2499,6 +3014,348 @@
     },
     {
       "sourceRole": "feed",
+      "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+      "targetRole": "bonding",
+      "targetMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+      "relation": "bond-created",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            -4,
+            4
+          ],
+          "rotationDelta": 5
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                -4,
+                4
+              ],
+              "rotationDelta": 5
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": null,
+          "eventFirstFromTargetStart": null
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": null,
+              "eventFirstFromTargetStart": null
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "observationCount": 42,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-7",
+          "targetAnchorPartId": "part-1",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              -4,
+              4
+            ],
+            "rotationDelta": 5
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": null
+          },
+          "observationCount": 42
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 2,
+          "lastCycle": 114,
+          "observationCount": 42,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              -4,
+              4
+            ],
+            "rotationDelta": 5
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": null,
+            "programStartDelta": null,
+            "eventFirstCycle": 2,
+            "eventLastCycle": 114,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": null
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "feed",
+      "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+      "targetRole": "conversion",
+      "targetMechanismHash": "3b9f120b23c01feb7d12e4c8dd207f69394918e309f896d34f1b6ea50b257757",
+      "relation": "calcify",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            -3,
+            2
+          ],
+          "rotationDelta": 0
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                -3,
+                2
+              ],
+              "rotationDelta": 0
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": null,
+          "eventFirstFromTargetStart": 2
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": null,
+              "eventFirstFromTargetStart": 2
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "observationCount": 42,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-7",
+          "targetAnchorPartId": "part-3",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              -3,
+              2
+            ],
+            "rotationDelta": 0
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": 2
+          },
+          "observationCount": 42
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 2,
+          "lastCycle": 114,
+          "observationCount": 42,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              -3,
+              2
+            ],
+            "rotationDelta": 0
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": 0,
+            "programStartDelta": null,
+            "eventFirstCycle": 2,
+            "eventLastCycle": 114,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": 2
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "feed",
+      "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+      "targetRole": "conversion",
+      "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+      "relation": "calcify",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            -4,
+            3
+          ],
+          "rotationDelta": 0
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                -4,
+                3
+              ],
+              "rotationDelta": 0
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": null,
+          "eventFirstFromTargetStart": null
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": null,
+              "eventFirstFromTargetStart": null
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "observationCount": 42,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-7",
+          "targetAnchorPartId": "part-0",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              -4,
+              3
+            ],
+            "rotationDelta": 0
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": null
+          },
+          "observationCount": 42
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 2,
+          "lastCycle": 114,
+          "observationCount": 42,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              -4,
+              3
+            ],
+            "rotationDelta": 0
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": null,
+            "targetProgramStart": null,
+            "programStartDelta": null,
+            "eventFirstCycle": 2,
+            "eventLastCycle": 114,
+            "eventFirstFromSourceStart": null,
+            "eventFirstFromTargetStart": null
+          }
+        }
+      ]
+    },
+    {
+      "sourceRole": "feed",
       "sourceMechanismHash": "542e6c84fdc10a86e7e9fbdccf4f136a9b72c09d5d73eca8b8d80fe8c56c52ba",
       "targetRole": "bonding",
       "targetMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
@@ -3581,6 +4438,120 @@
           }
         }
       ]
+    },
+    {
+      "sourceRole": "feed",
+      "sourceMechanismHash": "e8169cebee9cc42f047bf2a3a5a50bcf026ca0e2eeebd86e9adbcd96ad2ed8f0",
+      "targetRole": "bonding",
+      "targetMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+      "relation": "bond-created",
+      "relativeTransforms": {
+        "preferred": {
+          "frame": "source-anchor-local",
+          "delta": [
+            0,
+            -3
+          ],
+          "rotationDelta": 5
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTransform": {
+              "frame": "source-anchor-local",
+              "delta": [
+                0,
+                -3
+              ],
+              "rotationDelta": 5
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "relativeTimings": {
+        "preferred": {
+          "frame": "source-fragment-program-start",
+          "programStartDelta": null,
+          "eventFirstFromSourceStart": 2,
+          "eventFirstFromTargetStart": null
+        },
+        "variantCount": 1,
+        "variants": [
+          {
+            "relativeTiming": {
+              "frame": "source-fragment-program-start",
+              "programStartDelta": null,
+              "eventFirstFromSourceStart": 2,
+              "eventFirstFromTargetStart": null
+            },
+            "observationCount": 42
+          }
+        ]
+      },
+      "observationCount": 42,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionVariants": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "sourceAnchorPartId": "part-9",
+          "targetAnchorPartId": "part-1",
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              -3
+            ],
+            "rotationDelta": 5
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "programStartDelta": null,
+            "eventFirstFromSourceStart": 2,
+            "eventFirstFromTargetStart": null
+          },
+          "observationCount": 42
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "firstCycle": 2,
+          "lastCycle": 114,
+          "observationCount": 42,
+          "relativeTransform": {
+            "frame": "source-anchor-local",
+            "delta": [
+              0,
+              -3
+            ],
+            "rotationDelta": 5
+          },
+          "relativeTiming": {
+            "frame": "source-fragment-program-start",
+            "sourceProgramStart": 0,
+            "targetProgramStart": null,
+            "programStartDelta": null,
+            "eventFirstCycle": 2,
+            "eventLastCycle": 114,
+            "eventFirstFromSourceStart": 2,
+            "eventFirstFromTargetStart": null
+          }
+        }
+      ]
     }
   ],
   "fragments": [
@@ -3869,9 +4840,9 @@
     {
       "role": "bonding",
       "canonicalMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
-      "occurrenceCount": 4,
+      "occurrenceCount": 5,
       "sourcePuzzleCount": 1,
-      "sourceSolutionCount": 4,
+      "sourceSolutionCount": 5,
       "sourcePuzzles": [
         "weeklies2026_aqueous-dagger"
       ],
@@ -3915,7 +4886,7 @@
         "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
         "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
-      "solutionGeometryCount": 4,
+      "solutionGeometryCount": 5,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
@@ -4076,6 +5047,46 @@
             "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
             "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
+        },
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-1",
+          "evidenceLevel": "engine-confirmed",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "bonder",
+            "sourceAnchorPartId": "part-1",
+            "partCount": 1,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 0,
+              "minR": 0,
+              "maxR": 0
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-1",
+                "type": "bonder",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 0,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
         }
       ],
       "representativeSource": {
@@ -4086,7 +5097,7 @@
       },
       "evidence": {
         "source": "opus-engine-complete",
-        "engineValidatedSolutionCount": 4,
+        "engineValidatedSolutionCount": 5,
         "engineValidationRate": 1.0
       },
       "samples": [
@@ -4148,6 +5159,24 @@
           "puzzleId": "weeklies2026_aqueous-dagger",
           "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
+          "anchorPartType": "bonder",
+          "summary": {
+            "partCount": 1,
+            "armCount": 0,
+            "trackCount": 0,
+            "instructionCount": 0,
+            "firstInstructionCycle": null,
+            "lastInstructionCycle": null,
+            "partTypes": [
+              "bonder"
+            ]
+          },
+          "evidenceLevel": "engine-confirmed"
+        },
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 1,
@@ -4563,6 +5592,322 @@
       ]
     },
     {
+      "role": "bonding",
+      "canonicalMechanismHash": "7fb0534e06c77babec8f0a6d7a3fb33a1d554e96537947ee3e68ed682d495d10",
+      "occurrenceCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "structuralVariantCount": 1,
+      "canonicalStructuralHashes": [
+        "c0cd04d62167149aa001eee34e8feb29b0d2b72a46bddd74bd29f8bd976bc10b"
+      ],
+      "partTypes": [
+        "arm1",
+        "bonder",
+        "track"
+      ],
+      "representativeGeometry": {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": "bonder",
+        "sourceAnchorPartId": "part-2",
+        "partCount": 3,
+        "bounds": {
+          "minQ": 0,
+          "maxQ": 3,
+          "minR": -3,
+          "maxR": 0
+        },
+        "parts": [
+          {
+            "sourcePartId": "part-2",
+            "type": "bonder",
+            "enabled": true,
+            "position": [
+              0,
+              0
+            ],
+            "length": 1,
+            "rotation": 1,
+            "which": 0,
+            "program": [],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-11",
+            "type": "track",
+            "enabled": true,
+            "position": [
+              2,
+              -3
+            ],
+            "length": 1,
+            "rotation": 3,
+            "which": 0,
+            "program": [],
+            "trackHexes": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                -1
+              ]
+            ],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-14",
+            "type": "arm1",
+            "enabled": true,
+            "position": [
+              3,
+              -3
+            ],
+            "length": 3,
+            "rotation": 1,
+            "which": 0,
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 1,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 2,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 3,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 4,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 5,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 6,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 7,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 8,
+                "instruction": "pivot_ccw"
+              },
+              {
+                "cycle": 9,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 10,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 11,
+                "instruction": "track_plus"
+              }
+            ],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          }
+        ],
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+      },
+      "solutionGeometryCount": 1,
+      "solutionGeometries": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-2",
+          "evidenceLevel": "engine-confirmed",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "bonder",
+            "sourceAnchorPartId": "part-2",
+            "partCount": 3,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 3,
+              "minR": -3,
+              "maxR": 0
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-2",
+                "type": "bonder",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 1,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-11",
+                "type": "track",
+                "enabled": true,
+                "position": [
+                  2,
+                  -3
+                ],
+                "length": 1,
+                "rotation": 3,
+                "which": 0,
+                "program": [],
+                "trackHexes": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    1,
+                    0
+                  ],
+                  [
+                    1,
+                    -1
+                  ]
+                ],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-14",
+                "type": "arm1",
+                "enabled": true,
+                "position": [
+                  3,
+                  -3
+                ],
+                "length": 3,
+                "rotation": 1,
+                "which": 0,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "pivot_ccw"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "track_plus"
+                  }
+                ],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
+        }
+      ],
+      "representativeSource": {
+        "puzzleId": "weeklies2026_aqueous-dagger",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+        "evidenceLevel": "engine-confirmed"
+      },
+      "evidence": {
+        "source": "opus-engine-complete",
+        "engineValidatedSolutionCount": 1,
+        "engineValidationRate": 1.0
+      },
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "anchorPartType": "bonder",
+          "summary": {
+            "partCount": 3,
+            "armCount": 1,
+            "trackCount": 1,
+            "instructionCount": 12,
+            "firstInstructionCycle": 4,
+            "lastInstructionCycle": 15,
+            "partTypes": [
+              "arm1",
+              "bonder",
+              "track"
+            ]
+          },
+          "evidenceLevel": "engine-confirmed"
+        }
+      ]
+    },
+    {
       "role": "conversion",
       "canonicalMechanismHash": "1170879a8c7e6e8d4e4d2f083fa08855b6ba899c9ed0874890c169243881e2a0",
       "occurrenceCount": 1,
@@ -4822,6 +6167,338 @@
             "lastInstructionCycle": 7,
             "partTypes": [
               "arm1",
+              "glyph-calcification",
+              "track"
+            ]
+          },
+          "evidenceLevel": "engine-confirmed"
+        }
+      ]
+    },
+    {
+      "role": "conversion",
+      "canonicalMechanismHash": "3b9f120b23c01feb7d12e4c8dd207f69394918e309f896d34f1b6ea50b257757",
+      "occurrenceCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "structuralVariantCount": 1,
+      "canonicalStructuralHashes": [
+        "3b9f120b23c01feb7d12e4c8dd207f69394918e309f896d34f1b6ea50b257757"
+      ],
+      "partTypes": [
+        "arm3",
+        "glyph-calcification",
+        "track"
+      ],
+      "representativeGeometry": {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": "glyph-calcification",
+        "sourceAnchorPartId": "part-3",
+        "partCount": 3,
+        "bounds": {
+          "minQ": 0,
+          "maxQ": 2,
+          "minR": -2,
+          "maxR": 0
+        },
+        "parts": [
+          {
+            "sourcePartId": "part-3",
+            "type": "glyph-calcification",
+            "enabled": true,
+            "position": [
+              0,
+              0
+            ],
+            "length": 1,
+            "rotation": 1,
+            "which": 0,
+            "program": [],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-6",
+            "type": "track",
+            "enabled": true,
+            "position": [
+              2,
+              -2
+            ],
+            "length": 1,
+            "rotation": 1,
+            "which": 0,
+            "program": [],
+            "trackHexes": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                1,
+                -1
+              ]
+            ],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-16",
+            "type": "arm3",
+            "enabled": true,
+            "position": [
+              2,
+              -2
+            ],
+            "length": 2,
+            "rotation": 1,
+            "which": 0,
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 2,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 3,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 4,
+                "instruction": "pivot_cw"
+              },
+              {
+                "cycle": 5,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 6,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 7,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 8,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 9,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 10,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 11,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 12,
+                "instruction": "pivot_cw"
+              },
+              {
+                "cycle": 13,
+                "instruction": "reset"
+              }
+            ],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          }
+        ],
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+      },
+      "solutionGeometryCount": 1,
+      "solutionGeometries": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-3",
+          "evidenceLevel": "engine-confirmed",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "glyph-calcification",
+            "sourceAnchorPartId": "part-3",
+            "partCount": 3,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 2,
+              "minR": -2,
+              "maxR": 0
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-3",
+                "type": "glyph-calcification",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 1,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-6",
+                "type": "track",
+                "enabled": true,
+                "position": [
+                  2,
+                  -2
+                ],
+                "length": 1,
+                "rotation": 1,
+                "which": 0,
+                "program": [],
+                "trackHexes": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    -1
+                  ],
+                  [
+                    1,
+                    -1
+                  ]
+                ],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-16",
+                "type": "arm3",
+                "enabled": true,
+                "position": [
+                  2,
+                  -2
+                ],
+                "length": 2,
+                "rotation": 1,
+                "which": 0,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "pivot_cw"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "pivot_cw"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "reset"
+                  }
+                ],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
+        }
+      ],
+      "representativeSource": {
+        "puzzleId": "weeklies2026_aqueous-dagger",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+        "evidenceLevel": "engine-confirmed"
+      },
+      "evidence": {
+        "source": "opus-engine-complete",
+        "engineValidatedSolutionCount": 1,
+        "engineValidationRate": 1.0
+      },
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "anchorPartType": "glyph-calcification",
+          "summary": {
+            "partCount": 3,
+            "armCount": 1,
+            "trackCount": 1,
+            "instructionCount": 14,
+            "firstInstructionCycle": 0,
+            "lastInstructionCycle": 13,
+            "partTypes": [
+              "arm3",
               "glyph-calcification",
               "track"
             ]
@@ -6088,6 +7765,392 @@
     },
     {
       "role": "conversion",
+      "canonicalMechanismHash": "bed52c7d31e44fa980147bfed1daf5b868a315fcd7c0490596f3ccfca1d99a2e",
+      "occurrenceCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "structuralVariantCount": 1,
+      "canonicalStructuralHashes": [
+        "bed52c7d31e44fa980147bfed1daf5b868a315fcd7c0490596f3ccfca1d99a2e"
+      ],
+      "partTypes": [
+        "arm1",
+        "glyph-calcification"
+      ],
+      "representativeGeometry": {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": "glyph-calcification",
+        "sourceAnchorPartId": "part-15",
+        "partCount": 3,
+        "bounds": {
+          "minQ": 0,
+          "maxQ": 2,
+          "minR": -1,
+          "maxR": 1
+        },
+        "parts": [
+          {
+            "sourcePartId": "part-15",
+            "type": "glyph-calcification",
+            "enabled": true,
+            "position": [
+              0,
+              0
+            ],
+            "length": 1,
+            "rotation": 0,
+            "which": 0,
+            "program": [],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-10",
+            "type": "arm1",
+            "enabled": true,
+            "position": [
+              1,
+              1
+            ],
+            "length": 2,
+            "rotation": 2,
+            "which": 0,
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 3,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 4,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 5,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 6,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 7,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 8,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 9,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 10,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 11,
+                "instruction": "rotate_cw"
+              }
+            ],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-8",
+            "type": "arm1",
+            "enabled": true,
+            "position": [
+              2,
+              -1
+            ],
+            "length": 2,
+            "rotation": 4,
+            "which": 0,
+            "program": [
+              {
+                "cycle": 2,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 3,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 4,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 5,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 6,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 7,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 8,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 9,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 10,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 11,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 12,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 13,
+                "instruction": "rotate_ccw"
+              }
+            ],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          }
+        ],
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+      },
+      "solutionGeometryCount": 1,
+      "solutionGeometries": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-15",
+          "evidenceLevel": "engine-confirmed",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "glyph-calcification",
+            "sourceAnchorPartId": "part-15",
+            "partCount": 3,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 2,
+              "minR": -1,
+              "maxR": 1
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-15",
+                "type": "glyph-calcification",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 0,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-10",
+                "type": "arm1",
+                "enabled": true,
+                "position": [
+                  1,
+                  1
+                ],
+                "length": 2,
+                "rotation": 2,
+                "which": 0,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "rotate_cw"
+                  }
+                ],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-8",
+                "type": "arm1",
+                "enabled": true,
+                "position": [
+                  2,
+                  -1
+                ],
+                "length": 2,
+                "rotation": 4,
+                "which": 0,
+                "program": [
+                  {
+                    "cycle": 2,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 12,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 13,
+                    "instruction": "rotate_ccw"
+                  }
+                ],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
+        }
+      ],
+      "representativeSource": {
+        "puzzleId": "weeklies2026_aqueous-dagger",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+        "evidenceLevel": "engine-confirmed"
+      },
+      "evidence": {
+        "source": "opus-engine-complete",
+        "engineValidatedSolutionCount": 1,
+        "engineValidationRate": 1.0
+      },
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "anchorPartType": "glyph-calcification",
+          "summary": {
+            "partCount": 3,
+            "armCount": 2,
+            "trackCount": 0,
+            "instructionCount": 24,
+            "firstInstructionCycle": 0,
+            "lastInstructionCycle": 13,
+            "partTypes": [
+              "arm1",
+              "glyph-calcification"
+            ]
+          },
+          "evidenceLevel": "engine-confirmed"
+        }
+      ]
+    },
+    {
+      "role": "conversion",
       "canonicalMechanismHash": "ca4a1cbe1763bf4ad180d5cc93078493969ebff557ed32e4ba93994b2a6b1ff2",
       "occurrenceCount": 1,
       "sourcePuzzleCount": 1,
@@ -6639,9 +8702,9 @@
     {
       "role": "conversion",
       "canonicalMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
-      "occurrenceCount": 4,
+      "occurrenceCount": 5,
       "sourcePuzzleCount": 1,
-      "sourceSolutionCount": 4,
+      "sourceSolutionCount": 5,
       "sourcePuzzles": [
         "weeklies2026_aqueous-dagger"
       ],
@@ -6685,7 +8748,7 @@
         "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
         "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
-      "solutionGeometryCount": 4,
+      "solutionGeometryCount": 5,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
@@ -6846,6 +8909,46 @@
             "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
             "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
+        },
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-0",
+          "evidenceLevel": "engine-confirmed",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "glyph-calcification",
+            "sourceAnchorPartId": "part-0",
+            "partCount": 1,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 0,
+              "minR": 0,
+              "maxR": 0
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-0",
+                "type": "glyph-calcification",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 0,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
         }
       ],
       "representativeSource": {
@@ -6856,7 +8959,7 @@
       },
       "evidence": {
         "source": "opus-engine-complete",
-        "engineValidatedSolutionCount": 4,
+        "engineValidatedSolutionCount": 5,
         "engineValidationRate": 1.0
       },
       "samples": [
@@ -6918,6 +9021,24 @@
           "puzzleId": "weeklies2026_aqueous-dagger",
           "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
+          "anchorPartType": "glyph-calcification",
+          "summary": {
+            "partCount": 1,
+            "armCount": 0,
+            "trackCount": 0,
+            "instructionCount": 0,
+            "firstInstructionCycle": null,
+            "lastInstructionCycle": null,
+            "partTypes": [
+              "glyph-calcification"
+            ]
+          },
+          "evidenceLevel": "engine-confirmed"
+        },
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 1,
@@ -7403,6 +9524,130 @@
             "lastInstructionCycle": 9,
             "partTypes": [
               "arm1",
+              "input"
+            ]
+          },
+          "evidenceLevel": "engine-observed-structural"
+        }
+      ]
+    },
+    {
+      "role": "feed",
+      "canonicalMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+      "occurrenceCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "structuralVariantCount": 1,
+      "canonicalStructuralHashes": [
+        "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208"
+      ],
+      "partTypes": [
+        "input"
+      ],
+      "representativeGeometry": {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": "input",
+        "sourceAnchorPartId": "part-7",
+        "partCount": 1,
+        "bounds": {
+          "minQ": 0,
+          "maxQ": 0,
+          "minR": 0,
+          "maxR": 0
+        },
+        "parts": [
+          {
+            "sourcePartId": "part-7",
+            "type": "input",
+            "enabled": true,
+            "position": [
+              0,
+              0
+            ],
+            "length": 1,
+            "rotation": 0,
+            "which": 1,
+            "program": [],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          }
+        ],
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+      },
+      "solutionGeometryCount": 1,
+      "solutionGeometries": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-7",
+          "evidenceLevel": "engine-observed-structural",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "input",
+            "sourceAnchorPartId": "part-7",
+            "partCount": 1,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 0,
+              "minR": 0,
+              "maxR": 0
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-7",
+                "type": "input",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 0,
+                "which": 1,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
+        }
+      ],
+      "representativeSource": {
+        "puzzleId": "weeklies2026_aqueous-dagger",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+        "evidenceLevel": "engine-observed-structural"
+      },
+      "evidence": {
+        "source": "opus-engine-complete",
+        "engineValidatedSolutionCount": 1,
+        "engineValidationRate": 1.0
+      },
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "anchorPartType": "input",
+          "summary": {
+            "partCount": 1,
+            "armCount": 0,
+            "trackCount": 0,
+            "instructionCount": 0,
+            "firstInstructionCycle": null,
+            "lastInstructionCycle": null,
+            "partTypes": [
               "input"
             ]
           },
@@ -8537,6 +10782,578 @@
             ]
           },
           "evidenceLevel": "engine-observed-structural"
+        }
+      ]
+    },
+    {
+      "role": "feed",
+      "canonicalMechanismHash": "e8169cebee9cc42f047bf2a3a5a50bcf026ca0e2eeebd86e9adbcd96ad2ed8f0",
+      "occurrenceCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "structuralVariantCount": 1,
+      "canonicalStructuralHashes": [
+        "e8169cebee9cc42f047bf2a3a5a50bcf026ca0e2eeebd86e9adbcd96ad2ed8f0"
+      ],
+      "partTypes": [
+        "arm1",
+        "input"
+      ],
+      "representativeGeometry": {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": "input",
+        "sourceAnchorPartId": "part-9",
+        "partCount": 2,
+        "bounds": {
+          "minQ": 0,
+          "maxQ": 2,
+          "minR": -2,
+          "maxR": 0
+        },
+        "parts": [
+          {
+            "sourcePartId": "part-9",
+            "type": "input",
+            "enabled": true,
+            "position": [
+              0,
+              0
+            ],
+            "length": 1,
+            "rotation": 0,
+            "which": 0,
+            "program": [],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-10",
+            "type": "arm1",
+            "enabled": true,
+            "position": [
+              2,
+              -2
+            ],
+            "length": 2,
+            "rotation": 2,
+            "which": 0,
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 3,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 4,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 5,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 6,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 7,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 8,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 9,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 10,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 11,
+                "instruction": "rotate_cw"
+              }
+            ],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          }
+        ],
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+      },
+      "solutionGeometryCount": 1,
+      "solutionGeometries": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-9",
+          "evidenceLevel": "engine-observed-structural",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "input",
+            "sourceAnchorPartId": "part-9",
+            "partCount": 2,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 2,
+              "minR": -2,
+              "maxR": 0
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-9",
+                "type": "input",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 0,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-10",
+                "type": "arm1",
+                "enabled": true,
+                "position": [
+                  2,
+                  -2
+                ],
+                "length": 2,
+                "rotation": 2,
+                "which": 0,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "rotate_cw"
+                  }
+                ],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
+        }
+      ],
+      "representativeSource": {
+        "puzzleId": "weeklies2026_aqueous-dagger",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+        "evidenceLevel": "engine-observed-structural"
+      },
+      "evidence": {
+        "source": "opus-engine-complete",
+        "engineValidatedSolutionCount": 1,
+        "engineValidationRate": 1.0
+      },
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "anchorPartType": "input",
+          "summary": {
+            "partCount": 2,
+            "armCount": 1,
+            "trackCount": 0,
+            "instructionCount": 12,
+            "firstInstructionCycle": 0,
+            "lastInstructionCycle": 11,
+            "partTypes": [
+              "arm1",
+              "input"
+            ]
+          },
+          "evidenceLevel": "engine-observed-structural"
+        }
+      ]
+    },
+    {
+      "role": "output",
+      "canonicalMechanismHash": "3ff3afd51527032000311c13ac70e5e31388e22da82fcf8bfd06972da6f7faf1",
+      "occurrenceCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "structuralVariantCount": 1,
+      "canonicalStructuralHashes": [
+        "3e4c9a53727e5331d4409dd21ea7a750f2f76b865f288c3a831d882a9b0c973c"
+      ],
+      "partTypes": [
+        "arm1",
+        "out-std",
+        "track"
+      ],
+      "representativeGeometry": {
+        "coordinateSystem": "canonical-axial-relative",
+        "timeNormalization": "global-min-instruction-cycle",
+        "anchorPartType": "out-std",
+        "sourceAnchorPartId": "part-4",
+        "partCount": 3,
+        "bounds": {
+          "minQ": 0,
+          "maxQ": 3,
+          "minR": 0,
+          "maxR": 1
+        },
+        "parts": [
+          {
+            "sourcePartId": "part-4",
+            "type": "out-std",
+            "enabled": true,
+            "position": [
+              0,
+              0
+            ],
+            "length": 1,
+            "rotation": 0,
+            "which": 0,
+            "program": [],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-11",
+            "type": "track",
+            "enabled": true,
+            "position": [
+              3,
+              0
+            ],
+            "length": 1,
+            "rotation": 5,
+            "which": 0,
+            "program": [],
+            "trackHexes": [
+              [
+                0,
+                0
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "pipeId": null,
+            "pipeHexes": []
+          },
+          {
+            "sourcePartId": "part-14",
+            "type": "arm1",
+            "enabled": true,
+            "position": [
+              2,
+              1
+            ],
+            "length": 3,
+            "rotation": 3,
+            "which": 0,
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 1,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 2,
+                "instruction": "rotate_ccw"
+              },
+              {
+                "cycle": 3,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 4,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 5,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 6,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 7,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 8,
+                "instruction": "pivot_ccw"
+              },
+              {
+                "cycle": 9,
+                "instruction": "rotate_cw"
+              },
+              {
+                "cycle": 10,
+                "instruction": "drop"
+              },
+              {
+                "cycle": 11,
+                "instruction": "track_plus"
+              }
+            ],
+            "trackHexes": [],
+            "pipeId": null,
+            "pipeHexes": []
+          }
+        ],
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+      },
+      "solutionGeometryCount": 1,
+      "solutionGeometries": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "sourceAnchorPartId": "part-4",
+          "evidenceLevel": "engine-confirmed",
+          "representativeGeometry": {
+            "coordinateSystem": "canonical-axial-relative",
+            "timeNormalization": "global-min-instruction-cycle",
+            "anchorPartType": "out-std",
+            "sourceAnchorPartId": "part-4",
+            "partCount": 3,
+            "bounds": {
+              "minQ": 0,
+              "maxQ": 3,
+              "minR": 0,
+              "maxR": 1
+            },
+            "parts": [
+              {
+                "sourcePartId": "part-4",
+                "type": "out-std",
+                "enabled": true,
+                "position": [
+                  0,
+                  0
+                ],
+                "length": 1,
+                "rotation": 0,
+                "which": 0,
+                "program": [],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-11",
+                "type": "track",
+                "enabled": true,
+                "position": [
+                  3,
+                  0
+                ],
+                "length": 1,
+                "rotation": 5,
+                "which": 0,
+                "program": [],
+                "trackHexes": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    -1,
+                    1
+                  ],
+                  [
+                    0,
+                    1
+                  ]
+                ],
+                "pipeId": null,
+                "pipeHexes": []
+              },
+              {
+                "sourcePartId": "part-14",
+                "type": "arm1",
+                "enabled": true,
+                "position": [
+                  2,
+                  1
+                ],
+                "length": 3,
+                "rotation": 3,
+                "which": 0,
+                "program": [
+                  {
+                    "cycle": 0,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 1,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 2,
+                    "instruction": "rotate_ccw"
+                  },
+                  {
+                    "cycle": 3,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 4,
+                    "instruction": "track_plus"
+                  },
+                  {
+                    "cycle": 5,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 6,
+                    "instruction": "grab"
+                  },
+                  {
+                    "cycle": 7,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 8,
+                    "instruction": "pivot_ccw"
+                  },
+                  {
+                    "cycle": 9,
+                    "instruction": "rotate_cw"
+                  },
+                  {
+                    "cycle": 10,
+                    "instruction": "drop"
+                  },
+                  {
+                    "cycle": 11,
+                    "instruction": "track_plus"
+                  }
+                ],
+                "trackHexes": [],
+                "pipeId": null,
+                "pipeHexes": []
+              }
+            ],
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+            "sourceSolutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4"
+          }
+        }
+      ],
+      "representativeSource": {
+        "puzzleId": "weeklies2026_aqueous-dagger",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+        "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+        "evidenceLevel": "engine-confirmed"
+      },
+      "evidence": {
+        "source": "opus-engine-complete",
+        "engineValidatedSolutionCount": 1,
+        "engineValidationRate": 1.0
+      },
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "anchorPartType": "out-std",
+          "summary": {
+            "partCount": 3,
+            "armCount": 1,
+            "trackCount": 1,
+            "instructionCount": 12,
+            "firstInstructionCycle": 4,
+            "lastInstructionCycle": 15,
+            "partTypes": [
+              "arm1",
+              "out-std",
+              "track"
+            ]
+          },
+          "evidenceLevel": "engine-confirmed"
         }
       ]
     },
@@ -10717,6 +13534,193 @@
     },
     {
       "targetRole": "conversion",
+      "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+      "inputCount": 2,
+      "inputs": [
+        {
+          "sourceRole": "bonding",
+          "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+          "relations": [
+            "calcify"
+          ]
+        },
+        {
+          "sourceRole": "feed",
+          "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+          "relations": [
+            "calcify"
+          ]
+        }
+      ],
+      "observationCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionSamples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "targetAnchorPartId": "part-0",
+          "inputs": [
+            {
+              "sourceAnchorPartId": "part-1",
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+              "relations": [
+                "calcify"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    1,
+                    -1
+                  ],
+                  "rotationDelta": 1
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": null,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 3,
+                  "eventLastCycle": 113,
+                  "eventFirstFromSourceStart": null,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 35,
+              "firstCycle": 3,
+              "lastCycle": 113
+            },
+            {
+              "sourceAnchorPartId": "part-7",
+              "sourceRole": "feed",
+              "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+              "relations": [
+                "calcify"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    -4,
+                    3
+                  ],
+                  "rotationDelta": 0
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": null,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 2,
+                  "eventLastCycle": 114,
+                  "eventFirstFromSourceStart": null,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 42,
+              "firstCycle": 2,
+              "lastCycle": 114
+            }
+          ],
+          "outputs": []
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "targetAnchorPartId": "part-0",
+          "inputs": [
+            {
+              "sourceAnchorPartId": "part-1",
+              "sourceRole": "bonding",
+              "sourceMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+              "relations": [
+                "calcify"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    1,
+                    -1
+                  ],
+                  "rotationDelta": 1
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": null,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 3,
+                  "eventLastCycle": 113,
+                  "eventFirstFromSourceStart": null,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 35,
+              "firstCycle": 3,
+              "lastCycle": 113
+            },
+            {
+              "sourceAnchorPartId": "part-7",
+              "sourceRole": "feed",
+              "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+              "relations": [
+                "calcify"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    -4,
+                    3
+                  ],
+                  "rotationDelta": 0
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": null,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 2,
+                  "eventLastCycle": 114,
+                  "eventFirstFromSourceStart": null,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 42,
+              "firstCycle": 2,
+              "lastCycle": 114
+            }
+          ],
+          "outputs": []
+        }
+      ]
+    },
+    {
+      "targetRole": "conversion",
       "targetMechanismHash": "787ee1c32918b5a440c6bb38cb7d23e222a5f1fdb6bfe0c6527bfa1512044a3b",
       "inputCount": 2,
       "inputs": [
@@ -12695,6 +15699,395 @@
                 "eventLastCycle": 56,
                 "eventFirstFromSourceStart": null,
                 "eventFirstFromTargetStart": null
+              },
+              "observationCount": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "targetRole": "bonding",
+      "targetMechanismHash": "1ebb0c7b67a7119943f9660961c83f297ef2357c2d67b3250fa40f65fd7cb5a3",
+      "inputCount": 2,
+      "inputs": [
+        {
+          "sourceRole": "feed",
+          "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+          "relations": [
+            "bond-created"
+          ]
+        },
+        {
+          "sourceRole": "feed",
+          "sourceMechanismHash": "e8169cebee9cc42f047bf2a3a5a50bcf026ca0e2eeebd86e9adbcd96ad2ed8f0",
+          "relations": [
+            "bond-created"
+          ]
+        }
+      ],
+      "observationCount": 1,
+      "sourcePuzzleCount": 1,
+      "sourceSolutionCount": 1,
+      "engineValidatedSolutionCount": 1,
+      "engineValidationRate": 1.0,
+      "sourcePuzzles": [
+        "weeklies2026_aqueous-dagger"
+      ],
+      "sourceSolutions": [
+        "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution"
+      ],
+      "evidenceSource": "opus-engine-complete",
+      "solutionSamples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "targetAnchorPartId": "part-1",
+          "inputs": [
+            {
+              "sourceAnchorPartId": "part-7",
+              "sourceRole": "feed",
+              "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+              "relations": [
+                "bond-created"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    -4,
+                    4
+                  ],
+                  "rotationDelta": 5
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": null,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 2,
+                  "eventLastCycle": 114,
+                  "eventFirstFromSourceStart": null,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 42,
+              "firstCycle": 2,
+              "lastCycle": 114
+            },
+            {
+              "sourceAnchorPartId": "part-9",
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e8169cebee9cc42f047bf2a3a5a50bcf026ca0e2eeebd86e9adbcd96ad2ed8f0",
+              "relations": [
+                "bond-created"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    0,
+                    -3
+                  ],
+                  "rotationDelta": 5
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": 0,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 2,
+                  "eventLastCycle": 114,
+                  "eventFirstFromSourceStart": 2,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 42,
+              "firstCycle": 2,
+              "lastCycle": 114
+            }
+          ],
+          "outputs": [
+            {
+              "targetAnchorPartId": "part-2",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7fb0534e06c77babec8f0a6d7a3fb33a1d554e96537947ee3e68ed682d495d10",
+              "relation": "bond-created",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  0,
+                  -1
+                ],
+                "rotationDelta": 5
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": 4,
+                "programStartDelta": null,
+                "eventFirstCycle": 3,
+                "eventLastCycle": 113,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": -1
+              },
+              "observationCount": 35
+            },
+            {
+              "targetAnchorPartId": "part-15",
+              "targetRole": "conversion",
+              "targetMechanismHash": "bed52c7d31e44fa980147bfed1daf5b868a315fcd7c0490596f3ccfca1d99a2e",
+              "relation": "calcify",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  0,
+                  1
+                ],
+                "rotationDelta": 1
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": 0,
+                "programStartDelta": null,
+                "eventFirstCycle": 13,
+                "eventLastCycle": 115,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": 13
+              },
+              "observationCount": 7
+            },
+            {
+              "targetAnchorPartId": "part-0",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  1,
+                  -1
+                ],
+                "rotationDelta": 1
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": null,
+                "programStartDelta": null,
+                "eventFirstCycle": 3,
+                "eventLastCycle": 113,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": null
+              },
+              "observationCount": 35
+            },
+            {
+              "targetAnchorPartId": "part-4",
+              "targetRole": "output",
+              "targetMechanismHash": "3ff3afd51527032000311c13ac70e5e31388e22da82fcf8bfd06972da6f7faf1",
+              "relation": "delivered",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  0,
+                  -3
+                ],
+                "rotationDelta": 2
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": 4,
+                "programStartDelta": null,
+                "eventFirstCycle": 14,
+                "eventLastCycle": 116,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": 10
+              },
+              "observationCount": 7
+            }
+          ]
+        }
+      ],
+      "samples": [
+        {
+          "puzzleId": "weeklies2026_aqueous-dagger",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+          "solutionSha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+          "targetAnchorPartId": "part-1",
+          "inputs": [
+            {
+              "sourceAnchorPartId": "part-7",
+              "sourceRole": "feed",
+              "sourceMechanismHash": "397ef37859dd7f25759049d4fb8edb8babf11fde0f44b6d52e53be7f0f4bd208",
+              "relations": [
+                "bond-created"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    -4,
+                    4
+                  ],
+                  "rotationDelta": 5
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": null,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 2,
+                  "eventLastCycle": 114,
+                  "eventFirstFromSourceStart": null,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 42,
+              "firstCycle": 2,
+              "lastCycle": 114
+            },
+            {
+              "sourceAnchorPartId": "part-9",
+              "sourceRole": "feed",
+              "sourceMechanismHash": "e8169cebee9cc42f047bf2a3a5a50bcf026ca0e2eeebd86e9adbcd96ad2ed8f0",
+              "relations": [
+                "bond-created"
+              ],
+              "relativeTransforms": [
+                {
+                  "frame": "source-anchor-local",
+                  "delta": [
+                    0,
+                    -3
+                  ],
+                  "rotationDelta": 5
+                }
+              ],
+              "relativeTimings": [
+                {
+                  "frame": "source-fragment-program-start",
+                  "sourceProgramStart": 0,
+                  "targetProgramStart": null,
+                  "programStartDelta": null,
+                  "eventFirstCycle": 2,
+                  "eventLastCycle": 114,
+                  "eventFirstFromSourceStart": 2,
+                  "eventFirstFromTargetStart": null
+                }
+              ],
+              "observationCount": 42,
+              "firstCycle": 2,
+              "lastCycle": 114
+            }
+          ],
+          "outputs": [
+            {
+              "targetAnchorPartId": "part-2",
+              "targetRole": "bonding",
+              "targetMechanismHash": "7fb0534e06c77babec8f0a6d7a3fb33a1d554e96537947ee3e68ed682d495d10",
+              "relation": "bond-created",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  0,
+                  -1
+                ],
+                "rotationDelta": 5
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": 4,
+                "programStartDelta": null,
+                "eventFirstCycle": 3,
+                "eventLastCycle": 113,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": -1
+              },
+              "observationCount": 35
+            },
+            {
+              "targetAnchorPartId": "part-15",
+              "targetRole": "conversion",
+              "targetMechanismHash": "bed52c7d31e44fa980147bfed1daf5b868a315fcd7c0490596f3ccfca1d99a2e",
+              "relation": "calcify",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  0,
+                  1
+                ],
+                "rotationDelta": 1
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": 0,
+                "programStartDelta": null,
+                "eventFirstCycle": 13,
+                "eventLastCycle": 115,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": 13
+              },
+              "observationCount": 7
+            },
+            {
+              "targetAnchorPartId": "part-0",
+              "targetRole": "conversion",
+              "targetMechanismHash": "f533457f3d922eda114de8f3cf7cb8750ee03cd8c53e562f3fc6e17bb2d468a2",
+              "relation": "calcify",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  1,
+                  -1
+                ],
+                "rotationDelta": 1
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": null,
+                "programStartDelta": null,
+                "eventFirstCycle": 3,
+                "eventLastCycle": 113,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": null
+              },
+              "observationCount": 35
+            },
+            {
+              "targetAnchorPartId": "part-4",
+              "targetRole": "output",
+              "targetMechanismHash": "3ff3afd51527032000311c13ac70e5e31388e22da82fcf8bfd06972da6f7faf1",
+              "relation": "delivered",
+              "relativeTransform": {
+                "frame": "source-anchor-local",
+                "delta": [
+                  0,
+                  -3
+                ],
+                "rotationDelta": 2
+              },
+              "relativeTiming": {
+                "frame": "source-fragment-program-start",
+                "sourceProgramStart": null,
+                "targetProgramStart": 4,
+                "programStartDelta": null,
+                "eventFirstCycle": 14,
+                "eventLastCycle": 116,
+                "eventFirstFromSourceStart": null,
+                "eventFirstFromTargetStart": 10
               },
               "observationCount": 7
             }
