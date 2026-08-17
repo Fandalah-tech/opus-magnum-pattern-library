@@ -3,7 +3,10 @@ from __future__ import annotations
 import unittest
 
 from packages.opus_solver import build_manufacturing_plan
-from packages.opus_solver.candidate_solution import assign_branch_reagent_indices
+from packages.opus_solver.candidate_solution import (
+    assign_branch_reagent_indices,
+    resolve_input_reagent_index,
+)
 
 
 def _triangle(element: str) -> dict:
@@ -84,16 +87,22 @@ class PairedBondedClustersTests(unittest.TestCase):
         }
         self.assertEqual(assign_branch_reagent_indices(candidate, plan), {0: 0, 1: 1})
 
-    def test_interchangeable_mapping_does_not_depend_on_branch_chemistry(self) -> None:
+    def test_shared_input_can_feed_interchangeable_branches(self) -> None:
         plan = build_manufacturing_plan(_aqueous_like_puzzle())
-        candidate = {
-            "branches": [
-                [{"relation": "bond-created"}],
-                [{"relation": "calcify"}],
+        raw_part = {
+            "id": "shared-input",
+            "sourceFragmentInstances": [
+                "branch-0:upstream-2:part-0",
+                "branch-1:upstream-1:part-0",
             ],
-            "convergence": {"inputs": [{}, {}]},
         }
-        self.assertEqual(assign_branch_reagent_indices(candidate, plan), {0: 0, 1: 1})
+        resolved = resolve_input_reagent_index(raw_part, {0: 0, 1: 1}, [0, 1], plan)
+        self.assertEqual(resolved, 0)
+
+    def test_unattributed_input_can_use_interchangeable_source(self) -> None:
+        plan = build_manufacturing_plan(_aqueous_like_puzzle())
+        resolved = resolve_input_reagent_index({"id": "shared-root"}, {0: 0, 1: 1}, [0, 1], plan)
+        self.assertEqual(resolved, 0)
 
     def test_rejects_cluster_when_calcification_is_unavailable(self) -> None:
         puzzle = _aqueous_like_puzzle()

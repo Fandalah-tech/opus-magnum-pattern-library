@@ -34,13 +34,7 @@ def _branch_relations(candidate: dict[str, Any], branch_index: int) -> set[str]:
 
 
 def assign_branch_atom_flows(candidate: dict[str, Any], plan: ManufacturingPlan) -> dict[int, AtomFlow]:
-    """Assign target-puzzle atom flows to assembly branches by chemistry.
-
-    For the current bonded-pair strategy, the calcifying branch is matched to
-    the calcification AtomFlow and the remaining branch to the direct AtomFlow.
-    The function is intentionally strict so historical input indices are never
-    silently reused for the wrong target reagent.
-    """
+    """Assign target-puzzle atom flows to assembly branches by chemistry."""
     branch_count = len(candidate.get("branches", []))
     flows = list(plan.atom_flows)
     if branch_count != len(flows):
@@ -58,6 +52,24 @@ def assign_branch_atom_flows(candidate: dict[str, Any], plan: ManufacturingPlan)
         return {calc_index: calcified[0], direct_index: direct[0]}
 
     raise ValueError(f"No branch assignment strategy for manufacturing plan {plan.strategy}")
+
+
+def _interchangeable_reagent_groups(plan: ManufacturingPlan) -> list[set[int]]:
+    groups: dict[str, set[int]] = {}
+    for operation in plan.operations:
+        if operation.kind != "source" or operation.metadata.get("reagentIndex") is None:
+            continue
+        group = str(operation.metadata.get("interchangeableSourceGroup") or "")
+        if not group:
+            continue
+        groups.setdefault(group, set()).add(int(operation.metadata["reagentIndex"]))
+    return [indices for indices in groups.values() if indices]
+
+
+def _reagents_are_interchangeable(reagent_indices: set[int], plan: ManufacturingPlan) -> bool:
+    if len(reagent_indices) <= 1:
+        return True
+    return any(reagent_indices.issubset(group) for group in _interchangeable_reagent_groups(plan))
 
 
 def assign_branch_reagent_indices(candidate: dict[str, Any], plan: ManufacturingPlan) -> dict[int, int]:
@@ -130,11 +142,11 @@ def assign_branch_reagent_indices(candidate: dict[str, Any], plan: Manufacturing
     raise ValueError(f"No source-branch reagent assignment strategy for manufacturing plan {plan.strategy}")
 
 
-def _branch_index_for_part(part: dict[str, Any]) -> int | None:
+def _branch_indexes_for_part(part: dict[str, Any]) -> set[int]:
     instances = list(part.get("sourceFragmentInstances", []))
     if part.get("sourceFragmentInstance"):
         instances.append(part.get("sourceFragmentInstance"))
-    indexes = set()
+    indexes: set[int] = set()
     for instance in instances:
         value = str(instance or "")
         if not value.startswith("branch-"):
@@ -144,9 +156,36 @@ def _branch_index_for_part(part: dict[str, Any]) -> int | None:
             indexes.add(int(prefix.split("-", 1)[1]))
         except (ValueError, IndexError):
             continue
-    if len(indexes) > 1:
-        raise ValueError(f"Input part is shared across multiple source branches: {sorted(indexes)}")
-    return next(iter(indexes)) if indexes else None
+    return indexes
+
+
+def resolve_input_reagent_index(
+    part: dict[str, Any],
+    branch_reagent_indices: dict[int, int],
+    source_reagent_indices: list[int],
+    plan: ManufacturingPlan,
+) -> int:
+    """Resolve an input glyph, including safe sharing across equivalent branches."""
+    branch_indexes = _branch_indexes_for_part(part)
+    if branch_indexes:
+        missing = sorted(branch_indexes - set(branch_reagent_indices))
+        if missing:
+            raise ValueError(f"Input part references unmapped source branches: {missing}")
+        mapped = {int(branch_reagent_indices[index]) for index in branch_indexes}
+        if len(mapped) == 1:
+            return next(iter(mapped))
+        if _reagents_are_interchangeable(mapped, plan):
+            return min(mapped)
+        raise ValueError(
+            f"Input part is shared across non-interchangeable source branches: {sorted(branch_indexes)}"
+        )
+
+    if len(source_reagent_indices) == 1:
+        return int(source_reagent_indices[0])
+    source_set = {int(index) for index in source_reagent_indices}
+    if source_set and _reagents_are_interchangeable(source_set, plan):
+        return min(source_set)
+    raise ValueError(f"Could not resolve target reagent for input part {part.get('id')}")
 
 
 def _clean_part(part: dict[str, Any], *, part_id: str) -> dict[str, Any]:
@@ -210,13 +249,12 @@ def build_candidate_solution(
             })
             continue
         if part_type == "input":
-            branch_index = _branch_index_for_part(raw_part) if branch_reagent_indices else None
-            if branch_index is not None and branch_index in branch_reagent_indices:
-                part["which"] = int(branch_reagent_indices[branch_index])
-            elif len(source_reagent_indices) == 1:
-                part["which"] = source_reagent_indices[0]
-            else:
-                raise ValueError(f"Could not resolve target reagent for input part {raw_part.get('id')}")
+            part["which"] = resolve_input_reagent_index(
+                raw_part,
+                branch_reagent_indices,
+                source_reagent_indices,
+                plan,
+            )
         elif part_type.startswith("out-"):
             part["which"] = int(plan.product_index)
         if part_type in ARM_TYPES:
