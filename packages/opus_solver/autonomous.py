@@ -57,9 +57,11 @@ def _composition_assemblies(
 
 
 def _instruction_count(solution: dict[str, Any]) -> int:
+    """Count physical instruction cells after OMSim-compatible tape decoding."""
+    timeline = build_program_timeline(solution)
     return sum(
-        len(part.get("program") or ())
-        for part in solution.get("parts", [])
+        int(arm.get("expandedInstructionCount") or 0)
+        for arm in timeline.get("arms", [])
     )
 
 
@@ -68,7 +70,7 @@ def _local_completion_cycle(
     solution: dict[str, Any],
     validation: dict[str, Any],
 ) -> tuple[int | None, dict[str, int]]:
-    """Return the first local cycle where every standard product reaches six."""
+    """Return the zero-based frame where every standard product reaches six."""
 
     required_products = {
         int(part.get("which") or 0)
@@ -119,8 +121,9 @@ def _local_candidate_metrics(
         or validation.get("requestedCycles")
         or 10**9
     )
+    metric_cycles = completion_cycle + 1 if completion_cycle is not None else fallback_cycle
     return {
-        "cycles": completion_cycle if completion_cycle is not None else fallback_cycle,
+        "cycles": metric_cycles,
         "completionCycle": completion_cycle,
         "completionByProduct": completion_by_product,
         "instructions": _instruction_count(solution),
