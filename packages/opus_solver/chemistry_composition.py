@@ -4,12 +4,19 @@ from collections import Counter
 from typing import Any
 
 from .composition import rank_fragment_chains
-from .manufacturing import ManufacturingPlan, build_manufacturing_plan
+from .manufacturing import ManufacturingPlan
+from .manufacturing_extensions import build_manufacturing_plan
 
 
 _OPERATION_RELATIONS = {
     "transform": {
         "glyph-calcification": "calcify",
+        "glyph-purification": "purify",
+        "glyph-projection": "project",
+        "glyph-animismus": "animate",
+        "glyph-dispersion": "disperse",
+        "glyph-unification": "unify",
+        "glyph-duplication": "duplicate",
     },
     "bond": {
         "bonder": "bond-created",
@@ -179,7 +186,7 @@ def plan_puzzle_fragment_chains(
         min_engine_validated_solutions=min_engine_validated_solutions,
     ) if plan.supported else []
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "manufacturingPlan": plan.to_dict(),
         "requirements": requirements,
         "summary": {
