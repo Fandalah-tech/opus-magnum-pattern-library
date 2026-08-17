@@ -79,7 +79,12 @@ def evaluate_loaded_transfer(
     puzzle = parse_puzzle(puzzle_path)
     mentions = target_knowledge_mentions(knowledge, target_puzzle_id)
     profile = puzzle_transfer_profile(puzzle)
-    composition = _composition_diagnostics(puzzle, knowledge, limit=composition_limit)
+    composition = _composition_diagnostics(
+        puzzle,
+        knowledge,
+        limit=composition_limit,
+        detailed=False,
+    )
     protocol = {
         "targetPuzzleId": target_puzzle_id,
         "targetPuzzlePath": str(puzzle_path),
@@ -107,6 +112,7 @@ def evaluate_loaded_transfer(
             "learnedArchitectureBankAllowed": False,
             "fragmentKnowledgeAllowed": True,
             "knowledgeLoadedOnceForMatrix": True,
+            "diagnosticMode": "matrix-compact",
         },
         "compositionDiagnostics": composition,
         "result": {
@@ -228,7 +234,7 @@ def evaluate_matrix(manifest_path: Path, puzzle_root: Path, flow_index_path: Pat
         "kind": "strict-heldout-transfer-matrix",
         "manifest": str(manifest_path),
         "source": manifest.get("source"),
-        "request": {"objective": objective, "compositionLimit": int(composition_limit), "targetSolutionBytesUsed": 0, "targetSolutionInputsAccepted": False, "directGeneratorAllowed": False, "learnedArchitectureBankAllowed": False, "fragmentKnowledgeAllowed": True, "knowledgeLoadedOnce": True},
+        "request": {"objective": objective, "compositionLimit": int(composition_limit), "targetSolutionBytesUsed": 0, "targetSolutionInputsAccepted": False, "directGeneratorAllowed": False, "learnedArchitectureBankAllowed": False, "fragmentKnowledgeAllowed": True, "knowledgeLoadedOnce": True, "diagnosticMode": "matrix-compact"},
         "summary": {
             "targetCount": target_count,
             "integrityFailureCount": integrity_failures,
