@@ -71,6 +71,52 @@ class LearnedSolutionBankTests(unittest.TestCase):
         self.assertEqual(merged["entries"][0]["id"], "new")
         self.assertEqual(merged["entries"][0]["referenceMetrics"]["cycles"], 15)
 
+    def test_bank_merge_replaces_legacy_entry_with_same_semantic_architecture(self) -> None:
+        current = {
+            "entries": [{
+                "id": "aqueous-dagger-cga-15c-v1",
+                "puzzleFile": "weeklies2026_aqueous-dagger",
+                "focusObjectives": ["cycles"],
+                "canonicalMechanismHash": "same-mechanism",
+                "referenceMetrics": {"cycles": 15},
+            }]
+        }
+        replacement = [{
+            "id": "weeklies2026-aqueous-dagger-cga-promoted",
+            "sourceKey": "weeklies2026_aqueous-dagger:cga:arch",
+            "puzzleFile": "weeklies2026_aqueous-dagger",
+            "focusObjectives": ["cycles"],
+            "canonicalMechanismHash": "same-mechanism",
+            "referenceMetrics": {"cycles": 15, "cost": 230},
+        }]
+
+        merged = merge_bank(current, replacement)
+
+        self.assertEqual(merged["summary"]["entryCount"], 1)
+        self.assertEqual(
+            merged["entries"][0]["id"],
+            "weeklies2026-aqueous-dagger-cga-promoted",
+        )
+        self.assertIn("sourceKey", merged["entries"][0])
+
+    def test_same_mechanism_can_serve_distinct_objective_families(self) -> None:
+        current = {"entries": [{
+            "id": "cycles",
+            "puzzleFile": "puzzle",
+            "focusObjectives": ["cycles"],
+            "canonicalMechanismHash": "same",
+        }]}
+        replacement = [{
+            "id": "bca",
+            "puzzleFile": "puzzle",
+            "focusObjectives": ["bca"],
+            "canonicalMechanismHash": "same",
+        }]
+
+        merged = merge_bank(current, replacement)
+
+        self.assertEqual(merged["summary"]["entryCount"], 2)
+
     def test_update_bank_persists_solution_and_json(self) -> None:
         with TemporaryDirectory() as temp_name:
             root = Path(temp_name)
