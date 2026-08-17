@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "learned-solution-bank",
+  "entries": [
+    {
+      "id": "aqueous-dagger-cga-15c-v1",
+      "puzzleFile": "weeklies2026_aqueous-dagger",
+      "solutionPath": "fixtures/reference/critelli-aqueous-dagger/objective-specialized/cga-15c-230g-76a.solution",
+      "focusObjectives": ["cycles"],
+      "referenceMetrics": {
+        "cost": 230,
+        "cycles": 15,
+        "area": 76,
+        "instructions": 89
+      },
+      "canonicalMechanismHash": "b24ab6d6a456b391f6aa03bf7e13668d0f2a2002e1cda7fd716ba2aa2794d4a6",
+      "provenance": {
+        "kind": "critelli-event-derived-blueprint",
+        "eventId": "31a11c8c2b284d8f0664f3f069f9e11e",
+        "architectureId": "critelli-cga-b24ab6d6a456",
+        "materializedFromLearnedBlueprint": true,
+        "originalSolutionBytesCommitted": false
+      }
+    }
+  ]
+}
