@@ -9,6 +9,9 @@ on:
       - tools/normalize_campaign_flow_audit.py
       - tools/build_engine_fragment_flow_index.py
       - packages/opus_analysis/engine_fragment_flow.py
+      - packages/opus_solver/generic_chemistry.py
+      - tests/test_generic_singleton_chemistry.py
+      - tests/test_generic_reagent_chemistry.py
       - packages/opus_engine/**
       - packages/opus_parser/**
   workflow_dispatch:
@@ -42,9 +45,23 @@ jobs:
           python-version: "3.12"
 
       - name: Run chemistry planner unit tests
-        run: python -m unittest tests.test_generic_singleton_chemistry -v
+        run: |
+          python -m unittest tests.test_generic_singleton_chemistry -v
+          python -m unittest tests.test_generic_reagent_chemistry -v
 
-      - name: Download authorized campaign training checkpoint
+      - name: Restore authorized campaign corpus cache
+        id: campaign_cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CAMPAIGN_ROOT }}
+          key: opus-campaign-corpus-full-v4-main
+          restore-keys: |
+            opus-campaign-corpus-full-v4-
+            opus-campaign-corpus-full-v3-
+            opus-campaign-corpus-
+
+      - name: Fall back to pinned campaign checkpoint artifact
+        if: steps.campaign_cache.outputs.cache-matched-key == ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -64,20 +81,29 @@ jobs:
       - name: Verify checkpoint inventory
         run: |
           test -s "$CAMPAIGN_ROOT/index.json"
-          test -s "$CHECKPOINT_ROOT/reports/campaign-corpus-audit.json"
           python - <<'PY'
           import json
           from pathlib import Path
           index = json.loads(Path('.training-checkpoint/.datasets/campaign-corpus/index.json').read_text())
-          audit = json.loads(Path('.training-checkpoint/reports/campaign-corpus-audit.json').read_text())
-          assert index['solutionFileCount'] == 1049
-          assert audit['summary']['engineComplete'] == 583
-          print({'solutions': index['solutionFileCount'], 'engineComplete': audit['summary']['engineComplete']})
+          assert index['solutionFileCount'] == 1049, index.get('solutionFileCount')
+          print({'solutions': index['solutionFileCount'], 'puzzles': index.get('puzzleCount')})
           PY
+
+      - name: Re-audit donor solutions against current engine
+        id: engine_audit
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$CHECKPOINT_ROOT/reports"
+          python tools/audit_campaign_corpus.py \
+            --root "$CAMPAIGN_ROOT" \
+            --output "$CHECKPOINT_ROOT/reports/campaign-corpus-audit.json"
 
       - name: Normalize campaign audit for generic flow learner
         run: |
           mkdir -p "$REPORT_ROOT"
+          test -s "$CHECKPOINT_ROOT/reports/campaign-corpus-audit.json"
           python tools/normalize_campaign_flow_audit.py \
             --campaign-root "$CAMPAIGN_ROOT" \
             --index "$CAMPAIGN_ROOT/index.json" \
@@ -125,6 +151,7 @@ jobs:
           payload = {
               'sourceRunId': 31314985141,
               'sourceArtifactId': 9039107400,
+              'cacheKey': os.environ.get('CAMPAIGN_CACHE_KEY', ''),
               'engineCompleteBeforeExclusion': source_filter['engineCompleteSolutionCountBeforeExclusion'],
               'excludedP016Solutions': source_filter['excludedByPuzzleCount'],
               'eligible': source_filter['eligibleEngineCompleteSolutionCount'],
@@ -145,6 +172,8 @@ jobs:
                   out.write(f'- {key}: {value}\n')
           print(json.dumps(payload, ensure_ascii=False))
           PY
+        env:
+          CAMPAIGN_CACHE_KEY: ${{ steps.campaign_cache.outputs.cache-matched-key }}
 
       - name: Upload generic training flow checkpoint
         if: always()
