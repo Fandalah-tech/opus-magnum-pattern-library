@@ -159,6 +159,15 @@ jobs:
           assert omsim['metrics']['cost'] <= 30
           assert omsim['metrics']['area'] <= 5
 
+          local = result['localMetrics']
+          # P016 now locks the two local conventions that previously drifted:
+          # cycle metrics are one-based counts while completionCycle is a
+          # zero-based replay frame, and instruction metrics count the decoded
+          # physical tape after repeat/reset expansion.
+          assert local['cycles'] == omsim['metrics']['cycles']
+          assert local['completionCycle'] + 1 == omsim['metrics']['cycles']
+          assert local['instructions'] == omsim['metrics']['instructions']
+
           summary = {
               'targetPuzzleId': report['target']['id'],
               'targetPuzzleName': report['target']['name'],
@@ -173,9 +182,11 @@ jobs:
               'completeCandidates': result['compositionCompleteCandidateCount'],
               'route': result['route'],
               'candidate': result.get('candidate'),
-              'localMetricsDiagnosticOnly': result.get('localMetrics'),
+              'localMetrics': local,
               'omsimValid': omsim['valid'],
               'omsimMetrics': omsim['metrics'],
+              'localCyclesMatchOMSim': local['cycles'] == omsim['metrics']['cycles'],
+              'localInstructionsMatchOMSim': local['instructions'] == omsim['metrics']['instructions'],
           }
           Path('reports/heldout-transfer-p016/summary.json').write_text(
               json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
