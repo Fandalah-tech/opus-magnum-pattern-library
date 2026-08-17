@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 from typing import Any
 
+from packages.opus_analysis.canonical import rotate_hex
 from packages.opus_parser import parse_solution_bytes, write_solution_bytes
 
 from .capabilities import part_capability_requirement, part_is_available
@@ -73,14 +74,7 @@ def _reagents_are_interchangeable(reagent_indices: set[int], plan: Manufacturing
 
 
 def assign_branch_reagent_indices(candidate: dict[str, Any], plan: ManufacturingPlan) -> dict[int, int]:
-    """Resolve each source branch to a target reagent without puzzle-specific IDs.
-
-    Atom-flow plans keep their established chemistry mapping. Source-operation
-    plans may mark chemically equivalent reagents as one interchangeable source
-    group; those sources are assigned deterministically to branches because any
-    bijection is chemically valid. Non-interchangeable role-labelled sources
-    may still be resolved from replay-observed branch relations.
-    """
+    """Resolve each source branch to a target reagent without puzzle-specific IDs."""
     branch_count = len(candidate.get("branches", []))
     if branch_count <= 0:
         return {}
@@ -188,6 +182,103 @@ def resolve_input_reagent_index(
     raise ValueError(f"Could not resolve target reagent for input part {part.get('id')}")
 
 
+def _fragment_instance_ids(part: dict[str, Any]) -> set[str]:
+    values = {
+        str(value)
+        for value in (part.get("sourceFragmentInstances") or [])
+        if value
+    }
+    for field in (
+        "sourceFragmentInstance",
+        "originalSourceFragmentInstance",
+    ):
+        if part.get(field):
+            values.add(str(part[field]))
+    return values
+
+
+def _first_program_instruction(part: dict[str, Any]) -> tuple[int, str] | None:
+    program = sorted(
+        (
+            (int(item.get("cycle") or 0), str(item.get("instruction") or ""))
+            for item in (part.get("program") or [])
+            if item.get("instruction")
+        ),
+        key=lambda item: item[0],
+    )
+    return program[0] if program else None
+
+
+def _arm_initial_tip(part: dict[str, Any]) -> tuple[int, int]:
+    base = tuple(int(value) for value in (part.get("position") or (0, 0)))
+    reach = rotate_hex((int(part.get("length") or 1), 0), int(part.get("rotation") or 0) % 6)
+    return base[0] + reach[0], base[1] + reach[1]
+
+
+def singleton_input_alignment(
+    input_part: dict[str, Any],
+    reagent_index: int,
+    puzzle: dict[str, Any],
+    all_parts: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    """Recenter a singleton target reagent onto an inherited first grab site.
+
+    Learned feed fragments may come from multi-atom reagents where the arm's
+    first grab cell is offset from the input glyph origin.  If the target
+    reagent contains exactly one atom, preserve the learned arm geometry and
+    translate only the target input glyph so that atom appears under the first
+    stationary grab.  Candidate arms must share fragment provenance with the
+    input, which prevents unrelated nearby arms from attracting the glyph.
+    """
+
+    reagents = list(puzzle.get("reagents") or [])
+    if reagent_index < 0 or reagent_index >= len(reagents):
+        return None
+    atoms = list(reagents[reagent_index].get("atoms") or [])
+    if len(atoms) != 1:
+        return None
+
+    input_instances = _fragment_instance_ids(input_part)
+    if not input_instances:
+        return None
+
+    choices: list[tuple[int, int, int, str, dict[str, Any]]] = []
+    for arm in all_parts:
+        arm_type = str(arm.get("type") or "")
+        if arm_type not in ARM_TYPES or not part_is_available(puzzle, arm_type):
+            continue
+        first = _first_program_instruction(arm)
+        if first is None or first[1] != "grab":
+            continue
+        arm_instances = _fragment_instance_ids(arm)
+        overlap = len(input_instances & arm_instances)
+        if overlap <= 0:
+            continue
+        exact = int(arm_instances == input_instances)
+        choices.append((overlap, exact, -first[0], str(arm.get("id") or ""), arm))
+
+    if not choices:
+        return None
+    choices.sort(key=lambda item: (-item[0], -item[1], -item[2], item[3]))
+    overlap, exact, negative_cycle, _, arm = choices[0]
+    grab = _arm_initial_tip(arm)
+    atom_position = tuple(int(value) for value in (atoms[0].get("position") or (0, 0)))
+    atom_offset = rotate_hex(atom_position, int(input_part.get("rotation") or 0) % 6)
+    aligned = [grab[0] - atom_offset[0], grab[1] - atom_offset[1]]
+    original = [int(value) for value in (input_part.get("position") or (0, 0))]
+    return {
+        "position": aligned,
+        "originalPosition": original,
+        "reagentIndex": int(reagent_index),
+        "targetAtomLocalPosition": list(atom_position),
+        "grabPosition": list(grab),
+        "servingArmId": str(arm.get("id") or ""),
+        "sharedFragmentInstanceCount": int(overlap),
+        "exactFragmentInstanceMatch": bool(exact),
+        "firstGrabCycle": int(-negative_cycle),
+    }
+
+
 def _clean_part(part: dict[str, Any], *, part_id: str) -> dict[str, Any]:
     cleaned = {
         "id": part_id,
@@ -233,10 +324,12 @@ def build_candidate_solution(
         for operation in plan.operations
         if operation.kind == "source" and operation.metadata.get("reagentIndex") is not None
     })
+    raw_parts = list(synchronized_layout.get("parts", []))
     parts = []
     pruned_parts = []
+    input_alignments = []
     arm_number = 1
-    for index, raw_part in enumerate(synchronized_layout.get("parts", [])):
+    for index, raw_part in enumerate(raw_parts):
         part = _clean_part(raw_part, part_id=f"part-{index}")
         part_type = part["type"]
         if not part_is_available(puzzle, part_type):
@@ -249,12 +342,21 @@ def build_candidate_solution(
             })
             continue
         if part_type == "input":
-            part["which"] = resolve_input_reagent_index(
+            reagent_index = resolve_input_reagent_index(
                 raw_part,
                 branch_reagent_indices,
                 source_reagent_indices,
                 plan,
             )
+            part["which"] = reagent_index
+            alignment = singleton_input_alignment(raw_part, reagent_index, puzzle, raw_parts)
+            if alignment is not None:
+                part["position"] = list(alignment["position"])
+                input_alignments.append({
+                    "partId": part["id"],
+                    "sourcePartId": str(raw_part.get("id") or ""),
+                    **alignment,
+                })
         elif part_type.startswith("out-"):
             part["which"] = int(plan.product_index)
         if part_type in ARM_TYPES:
@@ -269,6 +371,7 @@ def build_candidate_solution(
             "name": None,
             "generator": "opus_solver/composed-assembly",
             "prunedUnavailableParts": pruned_parts,
+            "singletonInputAlignments": input_alignments,
         },
         "puzzleFile": _puzzle_file_id(puzzle),
         "name": name,
