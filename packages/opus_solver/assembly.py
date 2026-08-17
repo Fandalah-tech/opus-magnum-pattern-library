@@ -62,6 +62,11 @@ def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, An
         ],
     }
     result["coherentSourceSolution"] = solution_path
+    # This is replay evidence from one exact source mechanism.  It is safe to
+    # use as repeated relation capacity: the materialized mechanism already
+    # contains the repeating program that produced those observations.  Never
+    # infer capacity from the aggregate edge count across unrelated solutions.
+    result["coherentObservationCount"] = max(1, int(selected.get("observationCount") or 0))
     return result
 
 
@@ -112,6 +117,14 @@ def _paths_from_source(transitions: list[dict[str, Any]], source: FragmentKey, *
     return paths
 
 
+def _edge_relation_capacity(edge: dict[str, Any]) -> int:
+    """Capacity proved by one coherent replay, otherwise one structural edge."""
+
+    if edge.get("coherentSourceSolution"):
+        return max(1, int(edge.get("coherentObservationCount") or 1))
+    return 1
+
+
 def _relations_for_candidate(
     branches: list[list[dict[str, Any]]],
     convergence_relations: list[str],
@@ -122,13 +135,13 @@ def _relations_for_candidate(
         for edge in branch:
             relation = str(edge.get("relation") or "")
             if relation:
-                relations[relation] += 1
+                relations[relation] += _edge_relation_capacity(edge)
     for relation in convergence_relations:
         relations[relation] += 1
     for edge in tail:
         relation = str(edge.get("relation") or "")
         if relation:
-            relations[relation] += 1
+            relations[relation] += _edge_relation_capacity(edge)
     return relations
 
 
@@ -137,14 +150,7 @@ def _infer_prismatic_relations(
     observed: Counter[str],
     motif: dict[str, Any],
 ) -> Counter[str]:
-    """Generalize observed prism channels to the other physical channels.
-
-    A bonder-prisma is not a different mechanism for red, black, and yellow:
-    the channel is selected by the molecule's orientation at the same glyph.
-    A replay-backed, three-input bonding convergence therefore proves the
-    physical prism capability even when that source puzzle exercised only a
-    subset of the channels needed by a new product.
-    """
+    """Generalize observed prism channels to the other physical channels."""
     inputs = list(motif.get("inputs", []))
     if str(motif.get("targetRole") or "") != "bonding" or len(inputs) < 3:
         return Counter()
@@ -248,6 +254,15 @@ def rank_fragment_assemblies(
             inference_penalty = min(0.12, 0.04 * sum(inferred.values()))
             score = min(1.0, 0.65 * coverage + 0.25 * empirical + 0.10 * motif_score + coherence_bonus) - inference_penalty
 
+            capacities = [
+                {
+                    "relation": str(edge.get("relation") or ""),
+                    "capacity": _edge_relation_capacity(edge),
+                    "solutionPath": edge.get("coherentSourceSolution"),
+                }
+                for edge in [*(edge for branch in branch_options for edge in branch), *tail]
+                if edge.get("relation")
+            ]
             candidates.append({
                 "score": round(score, 6),
                 "functionalCoverageScore": 1.0,
@@ -259,8 +274,9 @@ def rank_fragment_assemblies(
                 "branches": branch_options,
                 "tail": tail,
                 "observedRelations": dict(sorted(observed.items())),
+                "relationCapacities": capacities,
                 "inferredRelations": dict(sorted(inferred.items())),
-                "relationCoverageEvidence": "engine-observed" if not inferred else "engine-observed-plus-prism-physics",
+                "relationCoverageEvidence": "engine-coherent-replay-capacity" if solution_path else "engine-observed",
                 "requiredRelations": dict(sorted(required.items())),
                 "empiricalScore": round(empirical, 6),
                 "convergenceConfidence": round(motif_score, 6),
