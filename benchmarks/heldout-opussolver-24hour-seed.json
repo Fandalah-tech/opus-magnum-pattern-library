@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "external-heldout-puzzle-manifest",
+  "source": {
+    "repository": "gtw123/OpusSolver",
+    "commit": "fdedd3f01a238b941ceba8bace7ea35cbd3b8c41",
+    "root": "test/puzzles/24hour-1-puzzles",
+    "targetSolutionBytesPolicy": "never-fetch",
+    "selection": "five evenly spaced puzzle-only checkpoints across GEN000-GEN999"
+  },
+  "targets": [
+    {"id":"GEN000","path":"GEN000.puzzle","sha256":"fe1a5e9caee3b5dade803b60f8549eecee187d50d8ecb9c43f3c44a990e8d79b"},
+    {"id":"GEN249","path":"GEN249.puzzle","sha256":"09b9011561a1b8bdd67c44bcc969bdad012f7b164224d39078b32b32fc4956e2"},
+    {"id":"GEN499","path":"GEN499.puzzle","sha256":"af5669f9373bb84aec0b7f4d8a74ac3a55693b512c6c6122d8dcc9572f91fbef"},
+    {"id":"GEN749","path":"GEN749.puzzle","sha256":"1cc9550e54ac331dd38bae0f369382191c0390c01fa534fcfad82e16a749cc72"},
+    {"id":"GEN999","path":"GEN999.puzzle","sha256":"571c1d21d23445867c2fe2ab995c5134e06d039a50633ac2d84688c66b3a2b0b"}
+  ]
+}
