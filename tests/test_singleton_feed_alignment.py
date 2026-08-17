@@ -31,7 +31,7 @@ def test_singleton_input_is_recentered_on_first_stationary_grab():
         "sourceFragmentInstances": ["branch-0-upstream-1", "branch-1-input"],
         "program": [
             {"cycle": 0, "instruction": "grab"},
-            {"cycle": 1, "instruction": "rotateClockwise"},
+            {"cycle": 1, "instruction": "rotate_cw"},
         ],
     }
 
@@ -68,8 +68,8 @@ def test_local_singleton_atom_offset_is_respected_under_input_rotation():
 
     assert aligned is not None
     assert aligned["grabPosition"] == [1, 0]
-    # rotate_hex((1,0), 1) = (1,-1), so origin must be grab - offset.
-    assert aligned["position"] == [0, 1]
+    # rotate_hex((1,0), 1) = (0,1), so origin = grab - offset.
+    assert aligned["position"] == [1, -1]
     assert aligned["firstGrabCycle"] == 3
 
 
