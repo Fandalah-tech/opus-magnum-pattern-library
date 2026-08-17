@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.10.0",
   "analysis": "engine-validated-fragment-flow-index",
-  "sourceAuditSchemaVersion": "0.1.0",
+  "sourceAuditSchemaVersion": "0.2.0",
   "sourceFilter": {
     "mode": "all-engine-complete",
     "strictSourceFiltering": true,
@@ -98,13 +98,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-3",
           "relativeTransform": {
@@ -127,8 +127,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "firstCycle": 6,
           "lastCycle": 60,
           "observationCount": 7,
@@ -212,13 +212,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-4",
           "relativeTransform": {
@@ -241,8 +241,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "firstCycle": 6,
           "lastCycle": 60,
           "observationCount": 7,
@@ -326,13 +326,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-6",
           "relativeTransform": {
@@ -355,8 +355,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "firstCycle": 9,
           "lastCycle": 63,
           "observationCount": 7,
@@ -473,16 +473,16 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -503,7 +503,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -524,7 +524,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -545,7 +545,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -568,8 +568,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "firstCycle": 5,
           "lastCycle": 53,
           "observationCount": 7,
@@ -594,8 +594,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "firstCycle": 5,
           "lastCycle": 53,
           "observationCount": 7,
@@ -620,8 +620,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "firstCycle": 5,
           "lastCycle": 53,
           "observationCount": 7,
@@ -646,8 +646,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "firstCycle": 5,
           "lastCycle": 53,
           "observationCount": 7,
@@ -753,16 +753,16 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-7",
           "relativeTransform": {
@@ -783,7 +783,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-7",
           "relativeTransform": {
@@ -804,7 +804,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-7",
           "relativeTransform": {
@@ -825,7 +825,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-7",
           "relativeTransform": {
@@ -848,8 +848,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "firstCycle": 8,
           "lastCycle": 56,
           "observationCount": 7,
@@ -874,8 +874,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "firstCycle": 8,
           "lastCycle": 56,
           "observationCount": 7,
@@ -900,8 +900,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "firstCycle": 8,
           "lastCycle": 56,
           "observationCount": 7,
@@ -926,8 +926,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "firstCycle": 8,
           "lastCycle": 56,
           "observationCount": 7,
@@ -1011,13 +1011,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
           "sourceAnchorPartId": "part-4",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -1040,8 +1040,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "firstCycle": 9,
           "lastCycle": 87,
           "observationCount": 7,
@@ -1125,13 +1125,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
           "sourceAnchorPartId": "part-4",
           "targetAnchorPartId": "part-7",
           "relativeTransform": {
@@ -1154,8 +1154,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "firstCycle": 11,
           "lastCycle": 89,
           "observationCount": 7,
@@ -1239,13 +1239,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
           "sourceAnchorPartId": "part-2",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -1268,8 +1268,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "firstCycle": 3,
           "lastCycle": 51,
           "observationCount": 7,
@@ -1353,13 +1353,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
           "sourceAnchorPartId": "part-4",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -1382,8 +1382,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "firstCycle": 3,
           "lastCycle": 51,
           "observationCount": 7,
@@ -1467,13 +1467,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
           "sourceAnchorPartId": "part-1",
           "targetAnchorPartId": "part-5",
           "relativeTransform": {
@@ -1496,8 +1496,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "firstCycle": 5,
           "lastCycle": 83,
           "observationCount": 7,
@@ -1581,13 +1581,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-4",
           "relativeTransform": {
@@ -1610,8 +1610,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "firstCycle": 8,
           "lastCycle": 86,
           "observationCount": 7,
@@ -1695,13 +1695,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
           "sourceAnchorPartId": "part-2",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -1724,8 +1724,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "firstCycle": 3,
           "lastCycle": 51,
           "observationCount": 7,
@@ -1809,13 +1809,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
           "sourceAnchorPartId": "part-4",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -1838,8 +1838,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "firstCycle": 5,
           "lastCycle": 62,
           "observationCount": 14,
@@ -1956,16 +1956,16 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -1986,7 +1986,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -2007,7 +2007,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -2028,7 +2028,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "sourceAnchorPartId": "part-0",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -2051,8 +2051,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "firstCycle": 4,
           "lastCycle": 54,
           "observationCount": 14,
@@ -2077,8 +2077,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "firstCycle": 4,
           "lastCycle": 54,
           "observationCount": 14,
@@ -2103,8 +2103,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "firstCycle": 4,
           "lastCycle": 54,
           "observationCount": 14,
@@ -2129,8 +2129,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "firstCycle": 4,
           "lastCycle": 54,
           "observationCount": 14,
@@ -2214,13 +2214,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "sourceAnchorPartId": "part-4",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -2243,8 +2243,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "firstCycle": 3,
           "lastCycle": 51,
           "observationCount": 7,
@@ -2328,13 +2328,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -2357,8 +2357,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "firstCycle": 4,
           "lastCycle": 52,
           "observationCount": 7,
@@ -2442,13 +2442,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-4",
           "relativeTransform": {
@@ -2471,8 +2471,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "firstCycle": 2,
           "lastCycle": 58,
           "observationCount": 8,
@@ -2567,14 +2567,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -2595,7 +2595,7 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -2618,8 +2618,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "firstCycle": 4,
           "lastCycle": 52,
           "observationCount": 7,
@@ -2644,8 +2644,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "firstCycle": 4,
           "lastCycle": 52,
           "observationCount": 7,
@@ -2729,13 +2729,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-2",
           "relativeTransform": {
@@ -2758,8 +2758,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "firstCycle": 2,
           "lastCycle": 50,
           "observationCount": 7,
@@ -2843,13 +2843,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-4",
           "relativeTransform": {
@@ -2872,8 +2872,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "firstCycle": 2,
           "lastCycle": 50,
           "observationCount": 7,
@@ -2957,13 +2957,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-0",
           "relativeTransform": {
@@ -2986,8 +2986,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "firstCycle": 5,
           "lastCycle": 59,
           "observationCount": 7,
@@ -3071,13 +3071,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-4",
           "relativeTransform": {
@@ -3100,8 +3100,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "firstCycle": 3,
           "lastCycle": 57,
           "observationCount": 7,
@@ -3185,13 +3185,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -3214,8 +3214,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "firstCycle": 4,
           "lastCycle": 52,
           "observationCount": 7,
@@ -3299,13 +3299,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
           "sourceAnchorPartId": "part-5",
           "targetAnchorPartId": "part-2",
           "relativeTransform": {
@@ -3328,8 +3328,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "firstCycle": 2,
           "lastCycle": 58,
           "observationCount": 8,
@@ -3413,13 +3413,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
           "sourceAnchorPartId": "part-6",
           "targetAnchorPartId": "part-4",
           "relativeTransform": {
@@ -3442,8 +3442,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "firstCycle": 8,
           "lastCycle": 86,
           "observationCount": 7,
@@ -3527,13 +3527,13 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionVariants": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
           "sourceAnchorPartId": "part-6",
           "targetAnchorPartId": "part-1",
           "relativeTransform": {
@@ -3556,8 +3556,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "firstCycle": 2,
           "lastCycle": 80,
           "observationCount": 7,
@@ -3709,15 +3709,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "sourceAnchorPartId": "part-0",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -3828,15 +3828,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-            "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+            "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -3847,8 +3847,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 3,
@@ -3912,15 +3912,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
       "solutionGeometryCount": 4,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "sourceAnchorPartId": "part-1",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -3953,14 +3953,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-            "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+            "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "sourceAnchorPartId": "part-1",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -3993,14 +3993,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-            "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+            "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "sourceAnchorPartId": "part-1",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -4033,14 +4033,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-            "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+            "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "sourceAnchorPartId": "part-1",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -4073,15 +4073,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-            "sourceSolutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+            "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -4092,8 +4092,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 1,
@@ -4110,8 +4110,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 1,
@@ -4128,8 +4128,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 1,
@@ -4146,8 +4146,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 1,
@@ -4347,15 +4347,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "sourceAnchorPartId": "part-4",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -4523,15 +4523,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-            "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+            "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -4542,8 +4542,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "anchorPartType": "bonder",
           "summary": {
             "partCount": 4,
@@ -4680,15 +4680,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "sourceAnchorPartId": "part-2",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -4791,15 +4791,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-            "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+            "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -4810,8 +4810,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 3,
@@ -4948,15 +4948,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "sourceAnchorPartId": "part-4",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -5059,15 +5059,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-            "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+            "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -5078,8 +5078,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 3,
@@ -5281,15 +5281,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "sourceAnchorPartId": "part-1",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -5457,15 +5457,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-            "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+            "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -5476,8 +5476,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 4,
@@ -5576,15 +5576,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "sourceAnchorPartId": "part-3",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -5650,15 +5650,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-            "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+            "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -5669,8 +5669,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 2,
@@ -5871,15 +5871,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "sourceAnchorPartId": "part-5",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6047,15 +6047,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-            "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+            "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -6066,8 +6066,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 4,
@@ -6204,15 +6204,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "sourceAnchorPartId": "part-2",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6315,15 +6315,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-            "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+            "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -6334,8 +6334,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 3,
@@ -6479,15 +6479,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "sourceAnchorPartId": "part-4",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6598,15 +6598,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-            "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+            "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -6617,8 +6617,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 3,
@@ -6682,15 +6682,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
       "solutionGeometryCount": 4,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "sourceAnchorPartId": "part-0",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6723,14 +6723,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-            "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+            "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "sourceAnchorPartId": "part-0",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6763,14 +6763,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-            "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+            "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "sourceAnchorPartId": "part-0",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6803,14 +6803,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-            "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+            "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "sourceAnchorPartId": "part-0",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -6843,15 +6843,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-            "sourceSolutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+            "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -6862,8 +6862,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 1,
@@ -6880,8 +6880,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 1,
@@ -6898,8 +6898,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 1,
@@ -6916,8 +6916,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 1,
@@ -7048,15 +7048,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-        "sourceSolutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+        "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "sourceAnchorPartId": "part-4",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -7155,15 +7155,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-            "sourceSolutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+            "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-        "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+        "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -7174,8 +7174,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "anchorPartType": "glyph-calcification",
           "summary": {
             "partCount": 3,
@@ -7286,15 +7286,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "sourceAnchorPartId": "part-5",
           "evidenceLevel": "engine-observed-structural",
           "representativeGeometry": {
@@ -7372,15 +7372,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-            "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+            "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-        "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+        "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
         "evidenceLevel": "engine-observed-structural"
       },
       "evidence": {
@@ -7391,8 +7391,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "anchorPartType": "input",
           "summary": {
             "partCount": 2,
@@ -7498,15 +7498,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
       "solutionGeometryCount": 2,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "sourceAnchorPartId": "part-5",
           "evidenceLevel": "engine-observed-structural",
           "representativeGeometry": {
@@ -7580,14 +7580,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-            "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+            "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "sourceAnchorPartId": "part-5",
           "evidenceLevel": "engine-observed-structural",
           "representativeGeometry": {
@@ -7661,15 +7661,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-            "sourceSolutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+            "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
         "evidenceLevel": "engine-observed-structural"
       },
       "evidence": {
@@ -7680,8 +7680,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "anchorPartType": "input",
           "summary": {
             "partCount": 2,
@@ -7699,8 +7699,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "anchorPartType": "input",
           "summary": {
             "partCount": 2,
@@ -7843,15 +7843,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "sourceAnchorPartId": "part-5",
           "evidenceLevel": "engine-observed-structural",
           "representativeGeometry": {
@@ -7962,15 +7962,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-            "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+            "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
         "evidenceLevel": "engine-observed-structural"
       },
       "evidence": {
@@ -7981,8 +7981,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "anchorPartType": "input",
           "summary": {
             "partCount": 3,
@@ -8092,15 +8092,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "sourceAnchorPartId": "part-5",
           "evidenceLevel": "engine-observed-structural",
           "representativeGeometry": {
@@ -8178,15 +8178,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-            "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+            "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-        "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+        "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
         "evidenceLevel": "engine-observed-structural"
       },
       "evidence": {
@@ -8197,8 +8197,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "anchorPartType": "input",
           "summary": {
             "partCount": 2,
@@ -8362,15 +8362,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "sourceAnchorPartId": "part-6",
           "evidenceLevel": "engine-observed-structural",
           "representativeGeometry": {
@@ -8501,15 +8501,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-            "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+            "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
         "evidenceLevel": "engine-observed-structural"
       },
       "evidence": {
@@ -8520,8 +8520,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "anchorPartType": "input",
           "summary": {
             "partCount": 3,
@@ -8723,15 +8723,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "sourceAnchorPartId": "part-7",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -8899,15 +8899,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-            "sourceSolutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+            "sourceSolutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-        "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+        "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -8918,8 +8918,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "anchorPartType": "out-std",
           "summary": {
             "partCount": 4,
@@ -9063,15 +9063,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
       },
       "solutionGeometryCount": 1,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "sourceAnchorPartId": "part-6",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -9182,15 +9182,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-            "sourceSolutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+            "sourceSolutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-        "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+        "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -9201,8 +9201,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "anchorPartType": "out-std",
           "summary": {
             "partCount": 3,
@@ -9266,15 +9266,15 @@
             "pipeHexes": []
           }
         ],
-        "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+        "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
       },
       "solutionGeometryCount": 4,
       "solutionGeometries": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "sourceAnchorPartId": "part-7",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -9307,14 +9307,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-            "sourceSolutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+            "sourceSolutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "sourceAnchorPartId": "part-7",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -9347,14 +9347,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-            "sourceSolutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+            "sourceSolutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "sourceAnchorPartId": "part-7",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -9387,14 +9387,14 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-            "sourceSolutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+            "sourceSolutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb"
           }
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "sourceAnchorPartId": "part-7",
           "evidenceLevel": "engine-confirmed",
           "representativeGeometry": {
@@ -9427,15 +9427,15 @@
                 "pipeHexes": []
               }
             ],
-            "sourceSolutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-            "sourceSolutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10"
+            "sourceSolutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+            "sourceSolutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3"
           }
         }
       ],
       "representativeSource": {
         "puzzleId": "weeklies2026_aqueous-dagger",
-        "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+        "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
         "evidenceLevel": "engine-confirmed"
       },
       "evidence": {
@@ -9446,8 +9446,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "anchorPartType": "out-std",
           "summary": {
             "partCount": 1,
@@ -9464,8 +9464,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "anchorPartType": "out-std",
           "summary": {
             "partCount": 1,
@@ -9482,8 +9482,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "anchorPartType": "out-std",
           "summary": {
             "partCount": 1,
@@ -9500,8 +9500,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "anchorPartType": "out-std",
           "summary": {
             "partCount": 1,
@@ -9549,14 +9549,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "targetAnchorPartId": "part-4",
           "inputs": [
             {
@@ -9658,8 +9658,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "targetAnchorPartId": "part-4",
           "inputs": [
             {
@@ -9788,14 +9788,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -9897,8 +9897,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10027,14 +10027,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10136,8 +10136,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10266,14 +10266,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10375,8 +10375,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10505,14 +10505,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10614,8 +10614,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -10744,14 +10744,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -10853,8 +10853,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -10983,14 +10983,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "targetAnchorPartId": "part-4",
           "inputs": [
             {
@@ -11117,8 +11117,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-06-base.solution",
-          "solutionSha256": "23ed2c7b8088ecfb42f2adbfe578267e9fa9cafc89ad91a32fe039499ea2610b",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-06-base.solution",
+          "solutionSha256": "bfb8b43b556c5102314b3fe593da1a05ffc4ea0bbfb980eae016198f33d2ee75",
           "targetAnchorPartId": "part-4",
           "inputs": [
             {
@@ -11272,14 +11272,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -11431,8 +11431,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-09-base.solution",
-          "solutionSha256": "f5447425f63343585a047090c3de90d3fd64db35e52a67dcb9b30b922fae2f9f",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-09-base.solution",
+          "solutionSha256": "f9059e1133024071f7208b7ec8a4f24182c32cc9dd509bdcb901a73db30e4f3d",
           "targetAnchorPartId": "part-0",
           "inputs": [
             {
@@ -11611,14 +11611,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -11745,8 +11745,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-02-base.solution",
-          "solutionSha256": "ff1ac343f6490c534b3b5039373eade52598fbb3f51f536faf59a6d768fdb123",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-02-base.solution",
+          "solutionSha256": "9624b622c046df20c4549727e21f247da636159d6b72e2c34738f62783f16819",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -11900,15 +11900,15 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -12033,8 +12033,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -12161,8 +12161,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-01-base.solution",
-          "solutionSha256": "cade9cdbe69b3b31c4339782e8bf0207106a211f318e7628d8d624430e5394a4",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-01-base.solution",
+          "solutionSha256": "f945250c7d72ba20766e2eefd61b853f2a887ca4d4f4af9f842d76469cccca5d",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -12287,8 +12287,8 @@
         },
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-05-base.solution",
-          "solutionSha256": "8f5e263c82d454b445c99db55608785f115834e153324bcc10dc5f3cf34e3b10",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-05-base.solution",
+          "solutionSha256": "ff57fd4259f6c282bf39dde610f74d868a570de44ec8e9ef8370a8591bbeaee3",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -12442,14 +12442,14 @@
         "weeklies2026_aqueous-dagger"
       ],
       "sourceSolutions": [
-        "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution"
+        "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution"
       ],
       "evidenceSource": "opus-engine-complete",
       "solutionSamples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
@@ -12576,8 +12576,8 @@
       "samples": [
         {
           "puzzleId": "weeklies2026_aqueous-dagger",
-          "solutionPath": "reports/critelli-aqueous-dagger-mini-corpus/rank-04-base.solution",
-          "solutionSha256": "10876eaec2cf10d1d79f2f680846851136a38b88c4efd5e9d7574d30f3dd034c",
+          "solutionPath": "fixtures/reference/critelli-aqueous-dagger/generated-novel/rank-04-base.solution",
+          "solutionSha256": "8ee9ee611e7425db2aee72831b4cc0fbe142deb9473aa2de35eeae27f263e0bb",
           "targetAnchorPartId": "part-1",
           "inputs": [
             {
