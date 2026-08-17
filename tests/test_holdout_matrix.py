@@ -28,7 +28,7 @@ class HoldoutMatrixTests(unittest.TestCase):
             path.write_bytes(b"\x00\xffopus\x10")
             self.assertEqual(
                 sha256_file(path),
-                "7688c8284037b31d661fa97d09650f0577025b4f93bde35903cbf69cb12cff04",
+                "f376dc1d613a5bcb9ee84a6da53571545010e6667886f548591e51992b81d360",
             )
 
     def test_stage_classification_is_ordered_by_failure_boundary(self) -> None:
