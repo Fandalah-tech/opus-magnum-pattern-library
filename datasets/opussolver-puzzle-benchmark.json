@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "0.1.0",
+  "id": "opussolver-puzzles-fdedd3f",
+  "repository": "https://github.com/gtw123/OpusSolver",
+  "pinnedCommit": "fdedd3f01a238b941ceba8bace7ea35cbd3b8c41",
+  "rootPath": "test/puzzles",
+  "policy": {
+    "targetSolutionFilesAllowed": false,
+    "trainingAllowedByDefault": false,
+    "directGeneratorAllowed": false,
+    "learnedArchitectureBankAllowed": false,
+    "fragmentKnowledgeAllowed": true,
+    "sealedHeldoutCollection": "24hour-1-puzzles",
+    "sealedRequiresExplicitOptIn": true,
+    "sealedTargetDetailsRedacted": true
+  },
+  "collections": [
+    {
+      "id": "24hour-1-sample",
+      "path": "test/puzzles/24hour-1-sample",
+      "role": "development",
+      "expectedPuzzleCount": 100,
+      "sourceTreeSha": "09c73768145d84c4a1dafcf6659296e4e1c0c21e"
+    },
+    {
+      "id": "24hour-1-test",
+      "path": "test/puzzles/24hour-1-test",
+      "role": "validation",
+      "expectedPuzzleCount": 1000,
+      "sourceTreeSha": "a337e2e93515e51279b110b41906a6ec21a405ab"
+    },
+    {
+      "id": "24hour-1-puzzles",
+      "path": "test/puzzles/24hour-1-puzzles",
+      "role": "sealed-heldout",
+      "expectedPuzzleCount": 1000,
+      "sourceTreeSha": "54188b14ead00250d3631307f78ef13f314450ab"
+    },
+    {
+      "id": "campaign",
+      "path": "test/puzzles/campaign",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "6ee86486a154552af0ef746ef1e7f36d65f17c41"
+    },
+    {
+      "id": "custom",
+      "path": "test/puzzles/custom",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "cdb6c4d571d8290d5acc680d02080a4a2c676817"
+    },
+    {
+      "id": "easy",
+      "path": "test/puzzles/easy",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "144fd1674facd068b5285b84e5aa03732f6c2e2d"
+    },
+    {
+      "id": "edge-cases",
+      "path": "test/puzzles/edge-cases",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "3aef34bafb0b5c04fe162f4e3393a17fbc17162d"
+    },
+    {
+      "id": "journal",
+      "path": "test/puzzles/journal",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "3ee25318694c4b9df62cc102c83c59976cce2b04"
+    },
+    {
+      "id": "tourney-2019",
+      "path": "test/puzzles/tourney-2019",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "bd646ce539a81dc660dbc007a4fc724ffddb9533"
+    },
+    {
+      "id": "tourney-2020",
+      "path": "test/puzzles/tourney-2020",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "c4fe94da94d067c12a908962e7cd1dae5f6c0a4d"
+    },
+    {
+      "id": "tourney-2021",
+      "path": "test/puzzles/tourney-2021",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "98f75da52b4e15b2ddd754718f66df81e4b897e2"
+    },
+    {
+      "id": "workshop-versions",
+      "path": "test/puzzles/workshop-versions",
+      "role": "coverage-reference",
+      "expectedPuzzleCount": null,
+      "sourceTreeSha": "288045642675fe40d0fd694f6fadddf1cdebd30f"
+    }
+  ]
+}

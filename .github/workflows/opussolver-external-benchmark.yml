@@ -1,0 +1,142 @@
+name: OpusSolver external puzzle benchmark
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/opussolver-external-benchmark.yml
+      - datasets/opussolver-puzzle-benchmark.json
+      - tools/benchmark_opussolver_puzzles.py
+      - tests/test_opussolver_puzzle_benchmark.py
+      - database/engine-fragment-flow-index.json
+      - packages/opus_solver/**
+      - packages/opus_parser/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+      - packages/opus_validator/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+  FLOW_INDEX: database/engine-fragment-flow-index.json
+  REPORT_ROOT: reports/opussolver-external-benchmark/sample-10
+
+jobs:
+  development-sample:
+    name: Blind solve first 10 sample puzzles
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test benchmark isolation contract
+        run: python -m unittest tests.test_opussolver_puzzle_benchmark -v
+
+      - name: Fetch pinned OpusSolver sample puzzles only
+        run: |
+          mkdir -p .tools
+          git clone \
+            --filter=blob:none \
+            --no-checkout \
+            https://github.com/gtw123/OpusSolver.git \
+            .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set "test/puzzles/24hour-1-sample"
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          test "$(git -C .tools/opussolver rev-parse HEAD)" = "$OPUSSOLVER_COMMIT"
+          test "$(find .tools/opussolver/test/puzzles/24hour-1-sample -name '*.puzzle' | wc -l)" -eq 100
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          test "$(git -C .tools/omsim rev-parse HEAD)" = "$OMSIM_COMMIT"
+
+      - name: Run strict external blind benchmark
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/benchmark_opussolver_puzzles.py \
+            --corpus-root .tools/opussolver \
+            --collection 24hour-1-sample \
+            --flow-index "$FLOW_INDEX" \
+            --objective balanced \
+            --composition-limit 30 \
+            --limit 10 \
+            --omsim "$OMSIM_BINARY" \
+            --output-dir "$REPORT_ROOT"
+          test -s "$REPORT_ROOT/report.json"
+
+      - name: Assert benchmark contract and publish summary
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          path = Path('reports/opussolver-external-benchmark/sample-10/report.json')
+          report = json.loads(path.read_text(encoding='utf-8'))
+          source = report['sourceVerification']
+          collection = report['collection']
+          protocol = report['protocol']
+          summary = report['summary']
+
+          assert report['pinnedCommit'] == 'fdedd3f01a238b941ceba8bace7ea35cbd3b8c41'
+          assert source['verified'] is True
+          assert source['actualCommit'] == report['pinnedCommit']
+          assert collection['id'] == '24hour-1-sample'
+          assert collection['role'] == 'development'
+          assert collection['sealed'] is False
+          assert collection['sealedDetailsRedacted'] is False
+          assert summary['collectionPuzzleCount'] == 100
+          assert summary['selectedPuzzleCount'] == 10
+          assert summary['targetSolutionBytesUsed'] == 0
+          assert summary['knowledgeLeakCount'] == 0
+          assert protocol['targetSolutionInputsAccepted'] is False
+          assert protocol['targetSolutionFilesScanned'] is False
+          assert protocol['directGeneratorAllowed'] is False
+          assert protocol['learnedArchitectureBankAllowed'] is False
+          assert protocol['fragmentKnowledgeAllowed'] is True
+
+          compact = {
+              'collection': collection['id'],
+              'role': collection['role'],
+              'puzzles': summary['selectedPuzzleCount'],
+              'parsed': summary['parseSuccessCount'],
+              'plannerSupported': summary['plannerSupportedCount'],
+              'candidateAvailable': summary['candidateAvailableCount'],
+              'localComplete': summary['localCompleteCount'],
+              'omsimTested': summary['omsimTestedCount'],
+              'omsimValid': summary['omsimValidCount'],
+              'failureStages': summary['failureStageCounts'],
+              'targetSolutionBytesUsed': summary['targetSolutionBytesUsed'],
+          }
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## OpusSolver external blind benchmark — development sample\n\n')
+              for key, value in compact.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(compact, ensure_ascii=False))
+          PY
+
+      - name: Upload external benchmark report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opussolver-external-benchmark-${{ github.run_id }}
+          path: reports/opussolver-external-benchmark/sample-10/
+          if-no-files-found: error
+          retention-days: 30
