@@ -16,6 +16,7 @@ on:
       - tools/solve_puzzle.py
       - tools/omsim_adapter/**
       - tools/import_critelli_event.py
+      - tests/test_bca.py
   workflow_dispatch:
 
 permissions:
@@ -42,6 +43,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Test BCA adapter
+        run: python -m unittest tests.test_bca -v
 
       - name: Build pinned OMSim
         run: |
@@ -88,6 +92,7 @@ jobs:
           from pathlib import Path
           from packages.opus_solver.bca import (
               BCA_OMSIM_METRICS,
+              bca_default_restrictions,
               bca_key,
               bca_metrics_from_omsim,
           )
@@ -182,6 +187,7 @@ jobs:
           assert bca_metrics['minimumHexagon'] == 3
           assert bca_metrics['cycles'] == 49
           assert bca_metrics['area'] == 18
+          assert bca_metrics['defaultRestrictions'] == 0
           assert bca_validation['objectiveKey'] == list(bca_key(bca_metrics))
 
           independent_bca = run_omsim_metrics(
@@ -193,9 +199,9 @@ jobs:
               output_intervals=True,
           )
           assert independent_bca['valid'] is True
+          assert bca_default_restrictions(independent_bca) == 0
           independent_bca_metrics = bca_metrics_from_omsim(independent_bca)
           assert independent_bca_metrics == bca_metrics
-          assert independent_bca['extraMetrics']['default restrictions'] == 0
 
           summary['bca'] = {
               'route': bca_validation['solverRoute'],
