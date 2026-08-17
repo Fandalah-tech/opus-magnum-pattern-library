@@ -25,13 +25,13 @@ env:
   OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
   OMSIM_BINARY: .tools/omsim/omsim
   FLOW_INDEX: database/engine-fragment-flow-index.json
-  REPORT_ROOT: reports/opussolver-external-benchmark/sample-10
+  REPORT_ROOT: reports/opussolver-external-benchmark/sample-100
 
 jobs:
   development-sample:
-    name: Blind solve first 10 sample puzzles
+    name: Blind solve all 100 sample puzzles
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -77,23 +77,25 @@ jobs:
             --flow-index "$FLOW_INDEX" \
             --objective balanced \
             --composition-limit 30 \
-            --limit 10 \
+            --limit 100 \
             --omsim "$OMSIM_BINARY" \
             --output-dir "$REPORT_ROOT"
           test -s "$REPORT_ROOT/report.json"
 
-      - name: Assert benchmark contract and publish summary
+      - name: Assert benchmark contract and publish failure map
         run: |
           python - <<'PY'
+          from collections import Counter
           import json, os
           from pathlib import Path
 
-          path = Path('reports/opussolver-external-benchmark/sample-10/report.json')
+          path = Path('reports/opussolver-external-benchmark/sample-100/report.json')
           report = json.loads(path.read_text(encoding='utf-8'))
           source = report['sourceVerification']
           collection = report['collection']
           protocol = report['protocol']
           summary = report['summary']
+          targets = report['targets']
 
           assert report['pinnedCommit'] == 'fdedd3f01a238b941ceba8bace7ea35cbd3b8c41'
           assert source['verified'] is True
@@ -103,7 +105,8 @@ jobs:
           assert collection['sealed'] is False
           assert collection['sealedDetailsRedacted'] is False
           assert summary['collectionPuzzleCount'] == 100
-          assert summary['selectedPuzzleCount'] == 10
+          assert summary['selectedPuzzleCount'] == 100
+          assert len(targets) == 100
           assert summary['targetSolutionBytesUsed'] == 0
           assert summary['knowledgeLeakCount'] == 0
           assert protocol['targetSolutionInputsAccepted'] is False
@@ -112,21 +115,38 @@ jobs:
           assert protocol['learnedArchitectureBankAllowed'] is False
           assert protocol['fragmentKnowledgeAllowed'] is True
 
+          planner_reasons = Counter()
+          planner_strategies = Counter()
+          solver_errors = Counter()
+          for target in targets:
+              if target.get('plannerStrategy'):
+                  planner_strategies[target['plannerStrategy']] += 1
+              if target.get('failureStage') == 'planner':
+                  planner_reasons[' '.join(str(target.get('error') or 'planner-unsupported').split())] += 1
+              if target.get('status') == 'solver-error':
+                  solver_errors[target.get('errorType') or 'unknown'] += 1
+
           compact = {
               'collection': collection['id'],
               'role': collection['role'],
               'puzzles': summary['selectedPuzzleCount'],
               'parsed': summary['parseSuccessCount'],
               'plannerSupported': summary['plannerSupportedCount'],
+              'plannerStrategies': dict(planner_strategies.most_common()),
+              'plannerReasons': dict(planner_reasons.most_common()),
               'candidateAvailable': summary['candidateAvailableCount'],
               'localComplete': summary['localCompleteCount'],
+              'solverErrors': dict(solver_errors.most_common()),
               'omsimTested': summary['omsimTestedCount'],
               'omsimValid': summary['omsimValidCount'],
               'failureStages': summary['failureStageCounts'],
               'targetSolutionBytesUsed': summary['targetSolutionBytesUsed'],
           }
+          Path('reports/opussolver-external-benchmark/sample-100/failure-map.json').write_text(
+              json.dumps(compact, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
+          )
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
-              out.write('## OpusSolver external blind benchmark — development sample\n\n')
+              out.write('## OpusSolver external blind benchmark — full development sample\n\n')
               for key, value in compact.items():
                   out.write(f'- {key}: {value}\n')
           print(json.dumps(compact, ensure_ascii=False))
@@ -137,6 +157,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: opussolver-external-benchmark-${{ github.run_id }}
-          path: reports/opussolver-external-benchmark/sample-10/
+          path: reports/opussolver-external-benchmark/sample-100/
           if-no-files-found: error
           retention-days: 30
