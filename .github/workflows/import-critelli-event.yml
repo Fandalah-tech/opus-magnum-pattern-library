@@ -10,6 +10,7 @@ on:
       - tools/audit_critelli_event.py
       - tools/learn_critelli_metric_portfolio.py
       - tools/validate_critelli_portfolio_materialization.py
+      - tools/assess_composed_novelty.py
       - tools/build_fragment_index.py
       - tools/build_fragment_flow_index.py
       - tools/build_engine_fragment_flow_index.py
@@ -161,6 +162,16 @@ jobs:
             --report reports/critelli-aqueous-dagger-composed.json \
             --write-complete-dir reports/critelli-aqueous-dagger-composed-solutions
 
+      - name: Compare composed candidates with source mechanisms
+        if: always()
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/assess_composed_novelty.py \
+            --analysis reports/critelli-aqueous-dagger-analysis.json \
+            --generated-dir reports/critelli-aqueous-dagger-composed-solutions \
+            --output reports/critelli-aqueous-dagger-composed-novelty.json
+
       - name: Learn compact CGA/BCA architecture portfolio
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -200,6 +211,7 @@ jobs:
           engine_audit = load('reports/critelli-aqueous-dagger-engine-audit.json', {'summary': {}})
           engine_flow = load('reports/critelli-aqueous-dagger-engine-flow.json', {'summary': {}})
           composed = load('reports/critelli-aqueous-dagger-composed.json', {'summary': {}})
+          novelty = load('reports/critelli-aqueous-dagger-composed-novelty.json', {'summary': {}})
           portfolio = load('reports/critelli-aqueous-dagger-portfolio.json', {'summary': {}, 'objectives': {}})
           materialization = load('reports/critelli-aqueous-dagger-materialization.json', {'summary': {}})
           a = analysis.get('summary', {})
@@ -208,6 +220,7 @@ jobs:
           ea = engine_audit.get('summary', {})
           ef = engine_flow.get('summary', {})
           c = composed.get('summary', {})
+          n = novelty.get('summary', {})
           payload = {
               'eventId': index.get('eventId'),
               'submissionRecords': index.get('submissionRecordCount', 0),
@@ -243,6 +256,10 @@ jobs:
               'composedSerializableCount': c.get('serializableCount', 0),
               'composedCompleteCount': c.get('engineCompleteCount', 0),
               'composedHasComplete': c.get('hasCompleteSolution', False),
+              'composedNovelStructureCount': n.get('novelStructureCount', 0),
+              'composedNovelMechanismCount': n.get('novelMechanismCount', 0),
+              'composedExactStructureReuseCount': n.get('exactStructureReuseCount', 0),
+              'composedExactMechanismReuseCount': n.get('exactMechanismReuseCount', 0),
               'portfolioMechanisms': portfolio.get('summary', {}).get('uniqueMechanismsInPortfolio', 0),
               'cgaWinner': portfolio.get('objectives', {}).get('cga', {}).get('winnerMetricVector'),
               'bcaWinner': portfolio.get('objectives', {}).get('bca', {}).get('winnerMetricVector'),
@@ -273,6 +290,7 @@ jobs:
             reports/critelli-aqueous-dagger-engine-audit.json
             reports/critelli-aqueous-dagger-engine-flow.json
             reports/critelli-aqueous-dagger-composed.json
+            reports/critelli-aqueous-dagger-composed-novelty.json
             reports/critelli-aqueous-dagger-composed-solutions/
             reports/critelli-aqueous-dagger-portfolio.json
             reports/critelli-aqueous-dagger-materialization.json
