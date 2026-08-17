@@ -11,8 +11,11 @@ on:
       - packages/opus_solver/portfolio_solver.py
       - packages/opus_solver/autonomous.py
       - tools/solve_puzzle.py
+      - tools/update_learned_solution_bank.py
+      - tools/validate_critelli_portfolio_materialization.py
       - tests/test_portfolio_solver.py
       - tests/test_autonomous_solver.py
+      - tests/test_learned_solution_bank.py
   workflow_dispatch:
 
 permissions:
@@ -38,6 +41,9 @@ jobs:
 
       - name: Test unified portfolio entry point
         run: python -m unittest tests.test_portfolio_solver -v
+
+      - name: Test learned architecture bank updates
+        run: python -m unittest tests.test_learned_solution_bank -v
 
       - name: Verify canonical package export
         run: |
