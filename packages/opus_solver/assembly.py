@@ -62,10 +62,6 @@ def _edge_for_solution(edge: dict[str, Any], solution_path: str) -> dict[str, An
         ],
     }
     result["coherentSourceSolution"] = solution_path
-    # This is replay evidence from one exact source mechanism.  It is safe to
-    # use as repeated relation capacity: the materialized mechanism already
-    # contains the repeating program that produced those observations.  Never
-    # infer capacity from the aggregate edge count across unrelated solutions.
     result["coherentObservationCount"] = max(1, int(selected.get("observationCount") or 0))
     return result
 
@@ -119,7 +115,6 @@ def _paths_from_source(transitions: list[dict[str, Any]], source: FragmentKey, *
 
 def _edge_relation_capacity(edge: dict[str, Any]) -> int:
     """Capacity proved by one coherent replay, otherwise one structural edge."""
-
     if edge.get("coherentSourceSolution"):
         return max(1, int(edge.get("coherentObservationCount") or 1))
     return 1
@@ -150,7 +145,6 @@ def _infer_prismatic_relations(
     observed: Counter[str],
     motif: dict[str, Any],
 ) -> Counter[str]:
-    """Generalize observed prism channels to the other physical channels."""
     inputs = list(motif.get("inputs", []))
     if str(motif.get("targetRole") or "") != "bonding" or len(inputs) < 3:
         return Counter()
@@ -249,10 +243,9 @@ def rank_fragment_assemblies(
             edge_scores.extend(_edge_confidence(edge) for edge in tail)
             motif_score = 1.0 - math.exp(-max(0, int(motif.get("observationCount") or 0)) / 2.0)
             empirical = (sum(edge_scores) + motif_score) / (len(edge_scores) + 1) if edge_scores else motif_score
-            coverage = 1.0
             coherence_bonus = 0.03 if solution_path else 0.0
             inference_penalty = min(0.12, 0.04 * sum(inferred.values()))
-            score = min(1.0, 0.65 * coverage + 0.25 * empirical + 0.10 * motif_score + coherence_bonus) - inference_penalty
+            score = min(1.0, 0.65 + 0.25 * empirical + 0.10 * motif_score + coherence_bonus) - inference_penalty
 
             capacities = [
                 {
@@ -263,6 +256,17 @@ def rank_fragment_assemblies(
                 for edge in [*(edge for branch in branch_options for edge in branch), *tail]
                 if edge.get("relation")
             ]
+            if inferred:
+                relation_evidence = (
+                    "engine-coherent-replay-capacity-plus-prism-physics"
+                    if solution_path
+                    else "engine-observed-plus-prism-physics"
+                )
+            elif solution_path:
+                relation_evidence = "engine-coherent-replay-capacity"
+            else:
+                relation_evidence = "engine-observed"
+
             candidates.append({
                 "score": round(score, 6),
                 "functionalCoverageScore": 1.0,
@@ -276,7 +280,7 @@ def rank_fragment_assemblies(
                 "observedRelations": dict(sorted(observed.items())),
                 "relationCapacities": capacities,
                 "inferredRelations": dict(sorted(inferred.items())),
-                "relationCoverageEvidence": "engine-coherent-replay-capacity" if solution_path else "engine-observed",
+                "relationCoverageEvidence": relation_evidence,
                 "requiredRelations": dict(sorted(required.items())),
                 "empiricalScore": round(empirical, 6),
                 "convergenceConfidence": round(motif_score, 6),
