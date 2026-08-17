@@ -115,6 +115,20 @@ def _alignment():
     }]
 
 
+def _expected_program():
+    return [
+        {"cycle": 0, "instruction": "grab"},
+        {"cycle": 1, "instruction": "rotate_cw"},
+        {"cycle": 2, "instruction": "drop"},
+        {"cycle": 3, "instruction": "rotate_ccw"},
+        {"cycle": 4, "instruction": "repeat"},
+        {"cycle": 8, "instruction": "repeat"},
+        {"cycle": 16, "instruction": "repeat"},
+        {"cycle": 32, "instruction": "repeat"},
+        {"cycle": 64, "instruction": "repeat"},
+    ]
+
+
 def test_p016_geometry_is_recognized_as_rotary_accumulator_arc():
     puzzle = _p016_shape()
     plan = build_manufacturing_plan(puzzle)
@@ -135,13 +149,9 @@ def test_p016_geometry_is_recognized_as_rotary_accumulator_arc():
     assert by_type["bonder"]["rotation"] == 1
     assert by_type["out-std"]["position"] == [3, 0]
     assert by_type["out-std"]["rotation"] == 3
-    assert by_type["arm1"]["program"] == [
-        {"cycle": 0, "instruction": "grab"},
-        {"cycle": 1, "instruction": "rotate_cw"},
-        {"cycle": 2, "instruction": "drop"},
-        {"cycle": 3, "instruction": "rotate_ccw"},
-    ]
+    assert by_type["arm1"]["program"] == _expected_program()
     assert result["metadata"]["arcCells"] == [[2, -1], [2, 0], [3, 0], [4, -1]]
+    assert result["metadata"]["expandedTapePeriod"] == 128
     assert result["metadata"]["targetSolutionBytesUsed"] == 0
 
 
@@ -178,6 +188,28 @@ def test_rotary_accumulator_delivers_the_four_atom_chain_in_engine():
     ]
     assert not errors
     assert delivered
+
+
+def test_compact_repeat_tape_expands_beyond_first_product_window():
+    puzzle = _p016_shape()
+    plan = build_manufacturing_plan(puzzle)
+    adapted = rotary_singleton_accumulator_adaptation(
+        _learned_parts(),
+        puzzle,
+        plan,
+        _alignment(),
+        {"source-arm": "part-3", "source-input": "part-2"},
+    )
+    assert adapted is not None
+    solution = {"parts": adapted["parts"], "metrics": {}}
+
+    timeline = build_program_timeline(solution)
+
+    assert timeline["summary"]["globalPeriod"] == 128
+    assert timeline["summary"]["horizon"] >= 128
+    arm = timeline["arms"][0]
+    assert arm["instructionCount"] == 9
+    assert arm["expandedInstructionCount"] >= 64
 
 
 def test_non_arc_product_does_not_trigger_rotary_adaptation():
