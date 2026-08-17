@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import pytest
+import unittest
 
 from packages.opus_solver.autonomous import solve_puzzle_auto
 from packages.opus_solver import UnsupportedPuzzleError
@@ -39,14 +39,18 @@ def _unsupported_shape() -> dict:
     return puzzle
 
 
-def test_auto_solver_preserves_direct_generator_as_first_route() -> None:
-    result = solve_puzzle_auto(_simple_bonded_pair())
+class AutonomousSolverTests(unittest.TestCase):
+    def test_preserves_direct_generator_as_first_route(self) -> None:
+        result = solve_puzzle_auto(_simple_bonded_pair())
 
-    assert result.validation["complete"] is True
-    assert result.validation["solverRoute"] == "direct-generator-v1"
-    assert result.strategy == "bonded-pair-v1"
+        self.assertTrue(result.validation["complete"])
+        self.assertEqual(result.validation["solverRoute"], "direct-generator-v1")
+        self.assertEqual(result.strategy, "bonded-pair-v1")
+
+    def test_requires_knowledge_before_composition_fallback(self) -> None:
+        with self.assertRaises(UnsupportedPuzzleError):
+            solve_puzzle_auto(_unsupported_shape())
 
 
-def test_auto_solver_requires_knowledge_before_composition_fallback() -> None:
-    with pytest.raises(UnsupportedPuzzleError):
-        solve_puzzle_auto(_unsupported_shape())
+if __name__ == "__main__":
+    unittest.main()

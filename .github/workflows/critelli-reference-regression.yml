@@ -44,7 +44,7 @@ jobs:
           python-version: "3.12"
 
       - name: Test autonomous solver routing
-        run: python -m pytest tests/test_autonomous_solver.py -q
+        run: python -m unittest tests.test_autonomous_solver -v
 
       - name: Fetch only the official event puzzle
         run: |
