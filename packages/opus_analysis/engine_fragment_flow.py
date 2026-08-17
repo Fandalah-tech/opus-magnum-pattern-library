@@ -133,6 +133,43 @@ def _engine_complete(solution: dict[str, Any], simulator: Simulator) -> bool:
     )
 
 
+def _engine_trace_horizon(solution: dict[str, Any]) -> tuple[int, str]:
+    """Choose a replay horizon that can prove completion without solved metrics.
+
+    Imported solved files normally declare their completion cycle. Generated and
+    learned candidates deliberately omit the metric block, so one decoded tape
+    period is not sufficient evidence for a six-product standard output. In that
+    case replay enough complete periods to satisfy the same output contract used
+    by the validator, plus one period of safety for reset expansion.
+    """
+
+    base = build_program_timeline(solution)
+    declared = base.get("summary", {}).get("declaredCycles")
+    if isinstance(declared, int) and declared > 0:
+        return int(declared), "declared-metrics"
+
+    period = max(1, int(base.get("summary", {}).get("globalPeriod") or 1))
+    last_program_cycle = max(
+        (
+            int(item.get("cycle") or 0)
+            for part in solution.get("parts", [])
+            for item in part.get("program", [])
+        ),
+        default=0,
+    )
+    has_standard_output = any(part.get("type") == "out-std" for part in solution.get("parts", []))
+    has_repeating_output = any(part.get("type") == "out-rep" for part in solution.get("parts", []))
+    target = 6 if has_standard_output else 3 if has_repeating_output else 0
+    if target <= 0:
+        return max(period, last_program_cycle + 1), "single-period-no-output-contract"
+
+    horizon = max(
+        period * (target + 1),
+        last_program_cycle + period * target + 1,
+    )
+    return horizon, "periodic-output-contract"
+
+
 def build_engine_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str, Any]) -> dict[str, Any]:
     """Learn fragment transitions only from the collision-aware engine trace."""
 
@@ -146,7 +183,8 @@ def build_engine_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str,
     feed_anchors = {
         anchor for anchor, fragment in by_anchor.items() if fragment.get("role") == "feed"
     }
-    timeline = build_program_timeline(solution)
+    trace_horizon, trace_horizon_source = _engine_trace_horizon(solution)
+    timeline = build_program_timeline(solution, max_cycles=trace_horizon)
     simulator = Simulator.from_models(puzzle, solution)
     replay = simulator.run_timeline(timeline)
 
@@ -237,7 +275,7 @@ def build_engine_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str,
     complete = _engine_complete(solution, simulator)
     terminated = bool(replay.get("summary", {}).get("terminatedWithError"))
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "analysis": "collision-aware-engine-fragment-flow",
         "source": {
             "puzzleFile": solution.get("puzzleFile"),
@@ -255,6 +293,8 @@ def build_engine_fragment_flow_graph(puzzle: dict[str, Any], solution: dict[str,
             "flowObservationCount": sum(edge_counts.values()),
             "engineConfirmedFragmentCount": sum(node["evidenceLevel"] == "engine-confirmed" for node in nodes),
             "traceFrameCount": len(replay.get("frames", [])),
+            "traceHorizon": trace_horizon,
+            "traceHorizonSource": trace_horizon_source,
         },
         "nodes": nodes,
         "edges": edges,
