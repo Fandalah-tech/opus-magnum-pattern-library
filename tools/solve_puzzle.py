@@ -7,6 +7,7 @@ from pathlib import Path
 
 from packages.opus_parser import parse_puzzle
 from packages.opus_solver import solve_puzzle_auto
+from packages.opus_solver.autonomous import KNOWLEDGE_OBJECTIVES
 
 
 _DEFAULT_FLOW_INDEX_CANDIDATES = (
@@ -60,6 +61,16 @@ def main() -> int:
         help="Maximum learned assemblies attempted by the autonomous composition fallback.",
     )
     parser.add_argument(
+        "--objective",
+        choices=KNOWLEDGE_OBJECTIVES,
+        default="balanced",
+        help=(
+            "Local autonomous ranking objective. 'cycles' minimizes the first local six-product "
+            "completion cycle; 'instructions' minimizes programmed instructions; 'balanced' "
+            "preserves evidence/assembly ranking. OMSim remains authoritative for official metrics."
+        ),
+    )
+    parser.add_argument(
         "--report",
         type=Path,
         help="Optional JSON report containing the manufacturing plan and validation",
@@ -95,6 +106,7 @@ def main() -> int:
         flow_index=flow_index,
         fragment_index=fragment_index,
         composition_limit=max(1, int(args.composition_limit)),
+        objective=args.objective,
     )
     result.write(args.output)
 
@@ -113,6 +125,8 @@ def main() -> int:
         "puzzle": result.puzzle_name,
         "strategy": result.strategy,
         "route": result.validation.get("solverRoute"),
+        "objective": result.validation.get("optimizationObjective"),
+        "localMetrics": result.validation.get("localCandidateMetrics"),
         "knowledge": report["knowledgeResolution"],
         "output": str(args.output),
         "validation": result.validation,
