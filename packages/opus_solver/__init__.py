@@ -39,7 +39,7 @@ from .component_timing import (
     search_component_timing_candidates,
     select_oracle_portfolio,
 )
-from .generation import generate_composed_candidates
+from .generation_extensions import generate_composed_candidates
 from .geometry_search import (
     enumerate_transform_variants,
     search_geometric_candidates,

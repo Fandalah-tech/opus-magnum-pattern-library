@@ -14,6 +14,7 @@ on:
       - tests/test_import_critelli_event.py
       - tests/test_learn_critelli_metric_portfolio.py
       - tests/test_paired_bonded_clusters.py
+      - tests/test_extended_generation_routing.py
       - tools/analyze_solution_archive.py
       - tools/import_campaign_corpus.py
       - packages/opus_analysis/**
@@ -45,11 +46,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test Critelli import, learning and chemistry helpers
+      - name: Test Critelli import, learning, chemistry and generation helpers
         run: |
           python -m unittest tests.test_import_critelli_event
           python -m unittest tests.test_learn_critelli_metric_portfolio
           python -m unittest tests.test_paired_bonded_clusters
+          python -m unittest tests.test_extended_generation_routing
 
       - name: Download Aqueous Dagger puzzle and every submission
         run: |
@@ -125,6 +127,19 @@ jobs:
             --puzzle-root "$CRITELLI_ROOT/puzzle" \
             --output reports/critelli-aqueous-dagger-fragment-flow.json
 
+      - name: Compose fresh candidates from learned fragments
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/generate_composed_candidates.py \
+            "$CRITELLI_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+            --flow-index reports/critelli-aqueous-dagger-fragment-flow.json \
+            --fragment-index reports/critelli-aqueous-dagger-fragments.json \
+            --limit 10 \
+            --report reports/critelli-aqueous-dagger-composed.json \
+            --write-complete-dir reports/critelli-aqueous-dagger-composed-solutions
+
       - name: Learn compact CGA/BCA architecture portfolio
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -161,11 +176,13 @@ jobs:
           puzzle = load('reports/critelli-aqueous-dagger-puzzle.json', {})
           fragments = load('reports/critelli-aqueous-dagger-fragments.json', {'summary': {}})
           flow = load('reports/critelli-aqueous-dagger-fragment-flow.json', {'summary': {}})
+          composed = load('reports/critelli-aqueous-dagger-composed.json', {'summary': {}})
           portfolio = load('reports/critelli-aqueous-dagger-portfolio.json', {'summary': {}, 'objectives': {}})
           materialization = load('reports/critelli-aqueous-dagger-materialization.json', {'summary': {}})
           a = analysis.get('summary', {})
           f = fragments.get('summary', {})
           g = flow.get('summary', {})
+          c = composed.get('summary', {})
           payload = {
               'eventId': index.get('eventId'),
               'submissionRecords': index.get('submissionRecordCount', 0),
@@ -189,6 +206,11 @@ jobs:
               'canonicalTransitions': g.get('canonicalTransitionCount', 0),
               'flowObservations': g.get('flowObservationCount', 0),
               'canonicalConvergences': g.get('canonicalConvergenceMotifCount', 0),
+              'composedSupported': c.get('supported', False),
+              'composedCandidateCount': c.get('assemblyCandidateCount', 0),
+              'composedSerializableCount': c.get('serializableCount', 0),
+              'composedCompleteCount': c.get('engineCompleteCount', 0),
+              'composedHasComplete': c.get('hasCompleteSolution', False),
               'portfolioMechanisms': portfolio.get('summary', {}).get('uniqueMechanismsInPortfolio', 0),
               'cgaWinner': portfolio.get('objectives', {}).get('cga', {}).get('winnerMetricVector'),
               'bcaWinner': portfolio.get('objectives', {}).get('bca', {}).get('winnerMetricVector'),
@@ -216,6 +238,8 @@ jobs:
             reports/critelli-aqueous-dagger-analysis.json
             reports/critelli-aqueous-dagger-fragments.json
             reports/critelli-aqueous-dagger-fragment-flow.json
+            reports/critelli-aqueous-dagger-composed.json
+            reports/critelli-aqueous-dagger-composed-solutions/
             reports/critelli-aqueous-dagger-portfolio.json
             reports/critelli-aqueous-dagger-materialization.json
             reports/critelli-aqueous-dagger-materialized/
