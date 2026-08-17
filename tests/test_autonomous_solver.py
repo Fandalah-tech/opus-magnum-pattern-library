@@ -41,15 +41,22 @@ def _unsupported_shape() -> dict:
 
 class AutonomousSolverTests(unittest.TestCase):
     def test_preserves_direct_generator_as_first_route(self) -> None:
-        result = solve_puzzle_auto(_simple_bonded_pair())
+        result = solve_puzzle_auto(_simple_bonded_pair(), objective="cycles")
 
         self.assertTrue(result.validation["complete"])
         self.assertEqual(result.validation["solverRoute"], "direct-generator-v1")
+        self.assertEqual(result.validation["optimizationObjective"], "cycles")
+        self.assertIsInstance(result.validation["localCandidateMetrics"]["cycles"], int)
+        self.assertGreater(result.validation["localCandidateMetrics"]["instructions"], 0)
         self.assertEqual(result.strategy, "bonded-pair-v1")
 
     def test_requires_knowledge_before_composition_fallback(self) -> None:
         with self.assertRaises(UnsupportedPuzzleError):
             solve_puzzle_auto(_unsupported_shape())
+
+    def test_rejects_unknown_local_optimization_objective(self) -> None:
+        with self.assertRaises(ValueError):
+            solve_puzzle_auto(_simple_bonded_pair(), objective="cost")
 
 
 if __name__ == "__main__":
