@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tools.import_critelli_event import parse_submission_page
+from tools.import_critelli_event import find_puzzle_download, parse_submission_page
 
 
 HTML = """
@@ -18,6 +18,12 @@ HTML = """
 <td><a href="/download/event123?submission=def456">solution file</a></td><td></td>
 </tr>
 </table></body></html>
+"""
+
+EVENT_HTML = """
+<html><body>
+<a href="/puzzles/token123" download="weeklies2026_aqueous-dagger.puzzle">weeklies2026_aqueous-dagger.puzzle</a>
+</body></html>
 """
 
 
@@ -40,6 +46,19 @@ class CritelliImportTests(unittest.TestCase):
         self.assertIsNone(showcase["cga"])
         self.assertIsNone(showcase["bca"])
         self.assertTrue(showcase["showcase"])
+
+    def test_finds_download_attribute_puzzle_link(self) -> None:
+        result = find_puzzle_download(
+            EVENT_HTML,
+            page_url="https://events.critelli.technology/OM2026Weeklies6_AqueousDagger",
+        )
+        self.assertEqual(
+            result,
+            (
+                "https://events.critelli.technology/puzzles/token123",
+                "weeklies2026_aqueous-dagger.puzzle",
+            ),
+        )
 
 
 if __name__ == "__main__":

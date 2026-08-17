@@ -12,6 +12,7 @@ on:
       - tools/import_campaign_corpus.py
       - packages/opus_analysis/**
       - packages/opus_parser/**
+      - packages/opus_solver/**
   workflow_dispatch:
 
 permissions:
@@ -19,6 +20,7 @@ permissions:
 
 env:
   EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
+  EVENT_PAGE: https://events.critelli.technology/OM2026Weeklies6_AqueousDagger
   CRITELLI_ROOT: .datasets/critelli-aqueous-dagger
   CAMPAIGN_ROOT: .datasets/critelli-campaign-reference
 
@@ -37,16 +39,50 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test Critelli table parser
+      - name: Test Critelli import parser
         run: python -m unittest tests.test_import_critelli_event
 
-      - name: Download every Aqueous Dagger submission
+      - name: Download Aqueous Dagger puzzle and every submission
         run: |
           python tools/import_critelli_event.py \
             --event-id "$EVENT_ID" \
+            --event-page-url "$EVENT_PAGE" \
             --root "$CRITELLI_ROOT" \
             --puzzle-name weeklies2026_aqueous-dagger \
+            --require-puzzle \
             --strict
+
+      - name: Parse imported puzzle and build solver plan
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from packages.opus_parser import parse_puzzle
+          from packages.opus_solver import build_manufacturing_plan
+          from packages.opus_analysis import puzzle_feature_payload
+
+          root = Path('.datasets/critelli-aqueous-dagger')
+          index = json.loads((root / 'index.json').read_text(encoding='utf-8'))
+          puzzle_path = root / index['puzzle']['file']
+          puzzle = parse_puzzle(puzzle_path)
+          plan = build_manufacturing_plan(puzzle)
+          payload = {
+              'puzzlePath': str(puzzle_path),
+              'puzzleName': puzzle.get('name'),
+              'puzzleFile': puzzle.get('fileId') or puzzle_path.stem,
+              'strategy': plan.strategy,
+              'supported': plan.supported,
+              'reason': plan.reason,
+              'features': puzzle_feature_payload(puzzle),
+          }
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/critelli-aqueous-dagger-puzzle.json').write_text(
+              json.dumps(payload, indent=2, ensure_ascii=False), encoding='utf-8'
+          )
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
 
       - name: Import campaign references for structural analyzer
         run: python tools/import_campaign_corpus.py --root "$CAMPAIGN_ROOT" --puzzles-only
@@ -69,8 +105,10 @@ jobs:
 
           index_path = Path('.datasets/critelli-aqueous-dagger/index.json')
           analysis_path = Path('reports/critelli-aqueous-dagger-analysis.json')
+          puzzle_path = Path('reports/critelli-aqueous-dagger-puzzle.json')
           index = json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {}
           analysis = json.loads(analysis_path.read_text(encoding='utf-8')) if analysis_path.exists() else {'summary': {}}
+          puzzle = json.loads(puzzle_path.read_text(encoding='utf-8')) if puzzle_path.exists() else {}
           a = analysis.get('summary', {})
           payload = {
               'eventId': index.get('eventId'),
@@ -80,6 +118,9 @@ jobs:
               'uniqueSubmitters': index.get('uniqueSubmitterCount', 0),
               'scoringSubmissions': index.get('scoringSubmissionCount', 0),
               'showcases': index.get('showcaseCount', 0),
+              'puzzleImported': bool(index.get('puzzle')),
+              'solverStrategy': puzzle.get('strategy'),
+              'solverSupported': puzzle.get('supported'),
               'parsed': a.get('parsed', 0),
               'parseErrors': a.get('parseErrors', 0),
               'uniqueStructures': a.get('uniqueCanonicalStructures', 0),
@@ -101,6 +142,7 @@ jobs:
           name: critelli-aqueous-dagger-${{ github.run_id }}
           path: |
             .datasets/critelli-aqueous-dagger/
+            reports/critelli-aqueous-dagger-puzzle.json
             reports/critelli-aqueous-dagger-analysis.json
             reports/critelli-aqueous-dagger-summary.json
           if-no-files-found: warn

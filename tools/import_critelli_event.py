@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
 import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
@@ -56,6 +55,38 @@ class SubmissionTableParser(HTMLParser):
                 self.rows.append(self._row)
             self._row = None
             self._cell = None
+
+
+class LinkParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.links: list[dict[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag != "a":
+            return
+        values = {key: value for key, value in attrs if value is not None}
+        href = values.get("href")
+        if href:
+            self.links.append({"href": href, "download": values.get("download", "")})
+
+
+def find_puzzle_download(html: str, *, page_url: str) -> tuple[str, str] | None:
+    parser = LinkParser()
+    parser.feed(html)
+    for link in parser.links:
+        href = link["href"]
+        download_name = link.get("download", "")
+        if ".puzzle" not in href.lower() and not download_name.lower().endswith(".puzzle"):
+            continue
+        url = urllib.parse.urljoin(page_url, href)
+        name = download_name.strip()
+        if not name:
+            name = Path(urllib.parse.urlparse(url).path).name
+        if not name.lower().endswith(".puzzle"):
+            name = "event.puzzle"
+        return url, name
+    return None
 
 
 def _metric(value: str, names: tuple[str, str, str]) -> dict[str, int] | None:
@@ -125,15 +156,24 @@ def fetch_bytes(url: str) -> bytes:
         return response.read()
 
 
-def write_index(root: Path, *, event_id: str, page_url: str, puzzle_name: str | None, records: list[dict[str, Any]]) -> Path:
+def write_index(
+    root: Path,
+    *,
+    event_id: str,
+    page_url: str,
+    puzzle_name: str | None,
+    puzzle_record: dict[str, Any] | None,
+    records: list[dict[str, Any]],
+) -> Path:
     index = {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "source": "critelli-events",
         "eventId": event_id,
         "sourcePage": page_url,
         "archiveUrl": f"{CRITELLI_BASE}/archive/{event_id}",
         "csvUrl": f"{CRITELLI_BASE}/csv/{event_id}",
         "puzzleName": puzzle_name,
+        "puzzle": puzzle_record,
         "submissionRecordCount": len(records),
         "solutionFileCount": sum(1 for item in records if item.get("file")),
         "downloadErrorCount": sum(1 for item in records if item.get("error")),
@@ -153,7 +193,9 @@ def main() -> int:
     parser.add_argument("--event-id", required=True)
     parser.add_argument("--root", type=Path, default=Path(".datasets/critelli-event"))
     parser.add_argument("--page-url")
+    parser.add_argument("--event-page-url")
     parser.add_argument("--puzzle-name")
+    parser.add_argument("--require-puzzle", action="store_true")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--strict", action="store_true")
@@ -161,6 +203,30 @@ def main() -> int:
 
     page_url = args.page_url or f"{CRITELLI_BASE}/submissions/{args.event_id}"
     args.root.mkdir(parents=True, exist_ok=True)
+
+    puzzle_record: dict[str, Any] | None = None
+    if args.event_page_url:
+        event_html_path = args.root / "event.html"
+        if args.force or not event_html_path.exists():
+            event_html_path.write_bytes(fetch_bytes(args.event_page_url))
+        event_html = event_html_path.read_text(encoding="utf-8")
+        puzzle_download = find_puzzle_download(event_html, page_url=args.event_page_url)
+        if puzzle_download:
+            puzzle_url, puzzle_filename = puzzle_download
+            puzzle_dir = args.root / "puzzle"
+            puzzle_dir.mkdir(parents=True, exist_ok=True)
+            puzzle_path = puzzle_dir / puzzle_filename
+            if args.force or not puzzle_path.exists():
+                puzzle_path.write_bytes(fetch_bytes(puzzle_url))
+            puzzle_record = {
+                "sourceUrl": puzzle_url,
+                "file": puzzle_path.relative_to(args.root).as_posix(),
+                "size": puzzle_path.stat().st_size,
+                "sha256": sha256(puzzle_path),
+            }
+        elif args.require_puzzle:
+            raise RuntimeError(f"No .puzzle download link found at {args.event_page_url}")
+
     raw_html_path = args.root / "submissions.html"
     if args.force or not raw_html_path.exists():
         raw_html_path.write_bytes(fetch_bytes(page_url))
@@ -193,16 +259,31 @@ def main() -> int:
             failures += 1
             record["error"] = f"{type(exc).__name__}: {exc}"
         if number % 50 == 0 or number == len(records):
-            write_index(args.root, event_id=args.event_id, page_url=page_url, puzzle_name=args.puzzle_name, records=records)
+            write_index(
+                args.root,
+                event_id=args.event_id,
+                page_url=page_url,
+                puzzle_name=args.puzzle_name,
+                puzzle_record=puzzle_record,
+                records=records,
+            )
             print(json.dumps({"processed": number, "total": len(records), "downloadErrors": failures}), flush=True)
 
-    index = write_index(args.root, event_id=args.event_id, page_url=page_url, puzzle_name=args.puzzle_name, records=records)
+    index = write_index(
+        args.root,
+        event_id=args.event_id,
+        page_url=page_url,
+        puzzle_name=args.puzzle_name,
+        puzzle_record=puzzle_record,
+        records=records,
+    )
     print(json.dumps({
         "eventId": args.event_id,
         "submissions": len(records),
         "solutions": sum(1 for item in records if item.get("file")),
         "downloadErrors": failures,
         "uniqueSubmitters": len({str(item.get("submitter")) for item in records if item.get("submitter")}),
+        "puzzleFile": (puzzle_record or {}).get("file"),
         "index": str(index),
     }, ensure_ascii=False), flush=True)
     return 1 if args.strict and failures else 0
