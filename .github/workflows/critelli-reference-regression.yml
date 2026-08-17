@@ -50,7 +50,7 @@ jobs:
       - name: Test autonomous solver and engine-flow routing
         run: |
           python -m unittest tests.test_autonomous_solver -v
-          python -m pytest tests/test_engine_fragment_flow.py -q
+          python -m unittest tests.test_engine_fragment_flow -v
 
       - name: Fetch official event puzzle only
         run: |
@@ -105,9 +105,6 @@ jobs:
           assert cv['optimizationObjective'] == 'cycles'
           assert iv['optimizationObjective'] == 'instructions'
 
-          # The multi-level portfolio must preserve the globally parallel learned
-          # CGA architecture for cycle-focused search while retaining compact
-          # fragment recomposition for low-instruction search.
           assert cv['solverRoute'] == 'knowledge-architecture-bank-v1'
           assert cv['selectedCandidateSource'] == 'learned-architecture-bank'
           assert cv['selectedCandidateId'] == 'aqueous-dagger-cga-15c-v1'
