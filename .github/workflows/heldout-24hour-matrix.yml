@@ -1,0 +1,175 @@
+name: Blind 24-hour heldout matrix
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-24hour-matrix.yml
+      - benchmarks/heldout-opussolver-24hour-seed.json
+      - database/engine-fragment-flow-index.json
+      - tools/evaluate_holdout_matrix.py
+      - tools/evaluate_holdout_transfer.py
+      - tests/test_holdout_matrix.py
+      - packages/opus_solver/**
+      - packages/opus_parser/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  MANIFEST: benchmarks/heldout-opussolver-24hour-seed.json
+  FLOW_INDEX: database/engine-fragment-flow-index.json
+  PUZZLE_ROOT: .datasets/heldout-24hour-seed
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+  REPORT_ROOT: reports/heldout-24hour-seed
+
+jobs:
+  matrix:
+    name: Five-puzzle strict blind transfer matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test matrix contracts
+        run: |
+          python -m unittest tests.test_holdout_matrix -v
+          python -m unittest tests.test_holdout_transfer -v
+
+      - name: Fetch puzzle bytes only from pinned OpusSolver corpus
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set \
+            test/puzzles/24hour-1-puzzles/GEN000.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN249.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN499.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN749.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN999.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          test "$(git -C .tools/opussolver rev-parse HEAD)" = "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/*.puzzle "$PUZZLE_ROOT"/
+          test "$(find "$PUZZLE_ROOT" -maxdepth 1 -name '*.puzzle' | wc -l)" -eq 5
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Prove heldout targets are absent from persistent knowledge
+        run: |
+          for target in GEN000 GEN249 GEN499 GEN749 GEN999; do
+            if git grep -n "$target" -- "$FLOW_INDEX" database/learned-solution-bank.json; then
+              echo "Heldout target $target leaked into persistent knowledge" >&2
+              exit 1
+            fi
+          done
+          echo "No heldout GEN target references in persistent learned knowledge."
+
+      - name: Run strict fragment-only transfer matrix
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          rm -rf "$REPORT_ROOT"
+          python tools/evaluate_holdout_matrix.py \
+            --manifest "$MANIFEST" \
+            --puzzle-root "$PUZZLE_ROOT" \
+            --flow-index "$FLOW_INDEX" \
+            --output-dir "$REPORT_ROOT" \
+            --objective balanced \
+            --composition-limit 30 \
+            --strict-isolation
+          test -s "$REPORT_ROOT/matrix.json"
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          test "$(git -C .tools/omsim rev-parse HEAD)" = "$OMSIM_COMMIT"
+
+      - name: Validate every locally complete candidate with OMSim
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/omsim"
+          shopt -s nullglob
+          for solution in "$REPORT_ROOT"/solutions/*.solution; do
+            target="$(basename "$solution" .solution)"
+            set +e
+            python tools/omsim_adapter/validate.py \
+              "$PUZZLE_ROOT/${target}.puzzle" \
+              "$solution" \
+              --omsim "$OMSIM_BINARY" \
+              --output "$REPORT_ROOT/omsim/${target}.json"
+            status=$?
+            set -e
+            echo "$status" > "$REPORT_ROOT/omsim/${target}.exit-code"
+          done
+
+      - name: Finalize benchmark matrix
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          root = Path(os.environ['REPORT_ROOT'])
+          matrix_path = root / 'matrix.json'
+          matrix = json.loads(matrix_path.read_text(encoding='utf-8'))
+          valid_count = 0
+          attempted = 0
+          for target in matrix['targets']:
+              target_id = target['id']
+              path = root / 'omsim' / f'{target_id}.json'
+              omsim = None
+              if path.is_file():
+                  attempted += 1
+                  try:
+                      omsim = json.loads(path.read_text(encoding='utf-8'))
+                  except json.JSONDecodeError:
+                      omsim = {'valid': False, 'issues': ['invalid OMSim adapter JSON']}
+                  if omsim.get('valid') is True:
+                      valid_count += 1
+              target['omsim'] = omsim
+              target['omsimValid'] = bool(omsim and omsim.get('valid') is True)
+
+          matrix['summary']['omsimAttemptedCount'] = attempted
+          matrix['summary']['omsimValidCount'] = valid_count
+          matrix['summary']['omsimValidRate'] = valid_count / matrix['summary']['targetCount'] if matrix['summary']['targetCount'] else 0.0
+          matrix_path.write_text(json.dumps(matrix, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          summary = matrix['summary']
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Strict blind 24-hour seed matrix\n\n')
+              out.write(f"- targets: {summary['targetCount']}\n")
+              out.write(f"- planner supported: {summary['plannerSupportedCount']}\n")
+              out.write(f"- fragment assembly reached: {summary['assemblyReachedCount']}\n")
+              out.write(f"- locally complete: {summary['localCompleteCount']}\n")
+              out.write(f"- OMSim valid: {summary['omsimValidCount']}\n")
+              out.write(f"- stages: {summary['stageCounts']}\n")
+              out.write(f"- planners: {summary['plannerStrategyCounts']}\n")
+          print(json.dumps(summary, ensure_ascii=False))
+          PY
+
+      - name: Upload blind matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-24hour-seed-${{ github.run_id }}
+          path: reports/heldout-24hour-seed/
+          if-no-files-found: error
+          retention-days: 30
