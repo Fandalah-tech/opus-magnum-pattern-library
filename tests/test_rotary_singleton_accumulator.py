@@ -85,10 +85,10 @@ class RotarySingletonAccumulatorTests(unittest.TestCase):
         adapted = _adapt()
         timeline = build_program_timeline({"parts": adapted["parts"], "metrics": {}})
         self.assertEqual(timeline["summary"]["globalPeriod"], 68)
+        self.assertEqual(timeline["summary"]["horizon"], 68)
         arm = timeline["arms"][0]
         self.assertEqual(arm["instructionCount"], 9)
         self.assertEqual(arm["expandedInstructionCount"], 24)
-        self.assertGreaterEqual(timeline["summary"]["horizon"], 68 * 6)
 
     def test_non_arc_product_is_rejected(self):
         puzzle = _puzzle()
