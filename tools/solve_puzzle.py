@@ -11,7 +11,14 @@ from tempfile import TemporaryDirectory
 from packages.opus_parser import parse_puzzle, parse_solution, write_solution
 from packages.opus_solver import solve_puzzle_auto
 from packages.opus_solver.autonomous import KNOWLEDGE_OBJECTIVES, LOCAL_OBJECTIVES
-from tools.omsim_adapter.validate import run_omsim
+from packages.opus_solver.bca import (
+    BCA_OBJECTIVE,
+    BCA_OMSIM_METRICS,
+    BCA_PROXY_OBJECTIVE,
+    bca_proxy_validation,
+    normalize_bca_selection,
+)
+from tools.omsim_adapter.validate import run_omsim, run_omsim_metrics
 
 
 _DEFAULT_FLOW_INDEX_CANDIDATES = (
@@ -21,6 +28,7 @@ _DEFAULT_FLOW_INDEX_CANDIDATES = (
 _DEFAULT_SOLUTION_BANK_CANDIDATES = (
     Path("database/learned-solution-bank.json"),
 )
+CLI_OBJECTIVES = tuple(dict.fromkeys((*KNOWLEDGE_OBJECTIVES, BCA_OBJECTIVE)))
 
 
 def _resolve_index_path(
@@ -121,12 +129,12 @@ def main() -> int:
     )
     parser.add_argument(
         "--objective",
-        choices=KNOWLEDGE_OBJECTIVES,
+        choices=CLI_OBJECTIVES,
         default="balanced",
         help=(
             "Optimization objective. Without --omsim only balanced, cycles and instructions are "
-            "available as local ranking signals. With --omsim, cost/area/cycles/rate/instructions/"
-            "costarea/costcycles/sum4 use authoritative OMSim metrics."
+            "available as local ranking signals. With --omsim, the standard objectives use "
+            "authoritative OMSim metrics and bca ranks minimum hexagon > cycles > area."
         ),
     )
     parser.add_argument(
@@ -193,24 +201,44 @@ def main() -> int:
         def omsim_validator(solution: dict) -> dict:
             candidate_path = Path(oracle_temp_name) / f"candidate-{next(oracle_counter):04d}.solution"
             write_solution(solution, candidate_path, version=7)
+            timeout = max(1, int(args.omsim_timeout))
+            if args.objective == BCA_OBJECTIVE:
+                authoritative = run_omsim_metrics(
+                    args.omsim,
+                    args.puzzle,
+                    candidate_path,
+                    timeout,
+                    metrics=BCA_OMSIM_METRICS,
+                    output_intervals=True,
+                )
+                return bca_proxy_validation(authoritative)
             return run_omsim(
                 args.omsim,
                 args.puzzle,
                 candidate_path,
-                max(1, int(args.omsim_timeout)),
+                timeout,
                 output_intervals=True,
             )
 
+        internal_objective = (
+            BCA_PROXY_OBJECTIVE if args.objective == BCA_OBJECTIVE else args.objective
+        )
         result = solve_puzzle_auto(
             puzzle,
             flow_index=flow_index,
             fragment_index=fragment_index,
             composition_limit=max(1, int(args.composition_limit)),
-            objective=args.objective,
+            objective=internal_objective,
             oracle_validator=omsim_validator if args.omsim is not None else None,
-            oracle_name="omsim" if args.omsim is not None else "oracle",
+            oracle_name=(
+                "omsim-bca-proxy"
+                if args.objective == BCA_OBJECTIVE
+                else "omsim" if args.omsim is not None else "oracle"
+            ),
             architecture_candidates=architecture_candidates,
         )
+        if args.objective == BCA_OBJECTIVE:
+            result.validation = normalize_bca_selection(result.validation)
 
     result.write(args.output)
 
@@ -225,9 +253,18 @@ def main() -> int:
     }
     report["oracleResolution"] = {
         "enabled": args.omsim is not None,
-        "name": "omsim" if args.omsim is not None else None,
+        "name": (
+            "omsim-minimum-hexagon"
+            if args.objective == BCA_OBJECTIVE and args.omsim is not None
+            else "omsim" if args.omsim is not None else None
+        ),
         "binary": str(args.omsim) if args.omsim is not None else None,
         "timeoutSeconds": max(1, int(args.omsim_timeout)) if args.omsim is not None else None,
+        "requestedMetrics": (
+            list(BCA_OMSIM_METRICS)
+            if args.objective == BCA_OBJECTIVE and args.omsim is not None
+            else None
+        ),
     }
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
@@ -245,6 +282,7 @@ def main() -> int:
         "metricSource": result.validation.get("optimizationMetricSource"),
         "localMetrics": result.validation.get("localCandidateMetrics"),
         "oracleMetrics": result.validation.get("oracleMetrics"),
+        "bcaMetrics": result.validation.get("bcaMetrics"),
         "knowledge": report["knowledgeResolution"],
         "oracle": report["oracleResolution"],
         "output": str(args.output),
