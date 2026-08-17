@@ -1,4 +1,5 @@
 from .assembly import rank_fragment_assemblies
+from .autonomous import solve_puzzle_auto, solve_puzzle_from_knowledge
 from .blind_transfer import (
     BlindTransferCandidate,
     BlindTransferContractError,
@@ -187,6 +188,8 @@ __all__ = [
     "select_objective_winners",
     "select_oracle_portfolio",
     "solve_puzzle",
+    "solve_puzzle_auto",
+    "solve_puzzle_from_knowledge",
     "solution_blueprint_parts",
     "synchronize_layout_programs",
     "transform_slots",

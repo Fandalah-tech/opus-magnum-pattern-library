@@ -120,15 +120,15 @@ jobs:
             --sample-limit 6 \
             --output reports/critelli-aqueous-dagger-mini-engine-flow.json
 
-      - name: Solve autonomously from learned knowledge
+      - name: Solve autonomously with discovered knowledge
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
+          mkdir -p database
+          cp reports/critelli-aqueous-dagger-mini-engine-flow.json database/engine-fragment-flow-index.json
           python tools/solve_puzzle.py \
             "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
             reports/critelli-aqueous-dagger-autonomous.solution \
-            --flow-index reports/critelli-aqueous-dagger-mini-engine-flow.json \
-            --fragment-index reports/critelli-aqueous-dagger-mini-engine-flow.json \
             --composition-limit 10 \
             --report reports/critelli-aqueous-dagger-autonomous.json
           python - <<'PY'
@@ -136,14 +136,18 @@ jobs:
           from pathlib import Path
           report = json.loads(Path('reports/critelli-aqueous-dagger-autonomous.json').read_text(encoding='utf-8'))
           validation = report['validation']
+          knowledge = report['knowledgeResolution']
           assert validation['complete'] is True
           assert validation['solverRoute'] == 'knowledge-fragment-composition-v1'
           assert report['strategy'].startswith('paired-bonded-clusters-v1')
+          assert knowledge['flowIndex'] == 'database/engine-fragment-flow-index.json'
+          assert knowledge['flowIndexExplicit'] is False
           print(json.dumps({
               'strategy': report['strategy'],
               'route': validation['solverRoute'],
               'candidateRank': validation['compositionCandidateRank'],
               'delivered': validation['totalDelivered'],
+              'knowledge': knowledge,
           }))
           PY
 
@@ -163,6 +167,7 @@ jobs:
               'autonomousRoute': autonomous.get('validation', {}).get('solverRoute'),
               'autonomousStrategy': autonomous.get('strategy'),
               'autonomousCandidateRank': autonomous.get('validation', {}).get('compositionCandidateRank'),
+              'autonomousKnowledgeIndex': autonomous.get('knowledgeResolution', {}).get('flowIndex'),
           }
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
               out.write('## Aqueous Dagger learned-reference regression\n\n')
