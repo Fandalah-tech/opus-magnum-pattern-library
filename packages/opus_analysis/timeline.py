@@ -75,11 +75,7 @@ def _expand_arm_tape(
     arm: dict[str, Any],
     tracks: list[tuple[tuple[int, int], ...]],
 ) -> dict[str, Any]:
-    """Decode one arm tape using the same reset rules as OMSim.
-
-    A reset is not an instantaneous teleport. It expands into physical drop,
-    piston, rotation and track instructions and can therefore lengthen the tape.
-    """
+    """Decode one arm tape with OMSim-compatible repeat/reset semantics."""
     ordered = sorted(arm.get("program", []), key=lambda item: int(item.get("cycle", 0)))
     ordered = [item for item in ordered if item.get("instruction") != PERIOD_OVERRIDE]
     if not ordered:
@@ -109,6 +105,8 @@ def _expand_arm_tape(
                 last_repeat = -min_tape
             while j < len(ordered) and ordered[j].get("instruction") == REPEAT:
                 repeat_n = int(ordered[j].get("cycle", 0)) - min_tape
+                if last_end > repeat_n:
+                    raise ValueError("repeat instruction overlaps an earlier reset expansion")
                 if last_end > last_repeat:
                     block = tape[last_repeat:last_end]
                     for offset, copied in enumerate(block):
@@ -117,7 +115,10 @@ def _expand_arm_tape(
                             clone["generatedBy"] = REPEAT
                             clone["sourceCycle"] = copied.get("sourceCycle", copied.get("cycle"))
                             _set_tape(tape, repeat_n + offset, clone)
-                    last_end = max(last_end, repeat_n + len(block))
+                # Deliberately do NOT advance last_end here. OMSim copies the
+                # same [last_repeat,last_end) source block for consecutive
+                # repeat cells; a repeat does not become part of the source for
+                # the next repeat.
                 j += 1
             if j < len(ordered):
                 last_repeat = int(ordered[j].get("cycle", 0)) - min_tape
@@ -181,9 +182,6 @@ def _expand_arm_tape(
                 rotation += 1
                 cursor += 1
 
-            # OMSim preserves the signed path accumulated since reset_from and
-            # only considers the opposite route around a loop within that search
-            # depth. This also reproduces its tie-breaking behavior.
             if track and track_steps != 0:
                 search_depth = abs(track_steps)
                 direction = 1 if track_steps > 0 else -1
@@ -210,18 +208,17 @@ def _expand_arm_tape(
                 piston += 1
                 cursor += 1
 
-            # A no-op reset still occupies one tape cell.
             if cursor == n:
                 cursor += 1
             reset_from = cursor
-            last_end = max(last_end, cursor)
+            last_end = cursor
             j += 1
             continue
 
         copied = dict(item)
         copied["cycle"] = int(item.get("cycle", 0))
         _set_tape(tape, n, copied)
-        last_end = max(last_end, n + 1)
+        last_end = n + 1
         j += 1
 
     while tape and tape[-1] is None:
@@ -230,14 +227,7 @@ def _expand_arm_tape(
 
 
 def _validation_cycle_hint(solution: dict[str, Any], global_period: int) -> int | None:
-    """Return an internal simulation horizon hint without changing file metrics.
-
-    Generated candidates are deliberately serialized without guessed metrics.
-    Some productive mechanisms nevertheless require several tape periods before
-    six complete products emerge.  Their non-serialized generator provenance
-    may therefore carry enough structural information to request a longer local
-    replay while leaving the resulting `.solution` unscored.
-    """
+    """Return a conservative internal replay horizon without asserting a score."""
     source = solution.get("source") or {}
     explicit = source.get("validationCycleHint")
     if isinstance(explicit, int) and explicit > 0:
@@ -245,13 +235,10 @@ def _validation_cycle_hint(solution: dict[str, Any], global_period: int) -> int 
 
     rotary = source.get("rotarySingletonAccumulator")
     if isinstance(rotary, dict):
-        atom_count = max(1, int(rotary.get("targetAtomCount") or 1))
-        period = max(1, int(rotary.get("period") or global_period or 1))
-        assembly_steps = max(1, atom_count - 1)
-        # Six standard products, each requiring the complete target assembly,
-        # plus one warm-up period.  This is intentionally a conservative local
-        # validation horizon, not an asserted cycle score.
-        return period * (STANDARD_PRODUCT_TARGET * assembly_steps + 1)
+        # The decoded physical tape is authoritative here. A conservative six
+        # periods is cheap for these tiny machines and guarantees enough replay
+        # for the six-output contract even when repeats create sparse blocks.
+        return max(1, int(global_period)) * STANDARD_PRODUCT_TARGET
     return None
 
 
@@ -306,7 +293,7 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
             "type": arm["type"],
             "armNumber": arm.get("armNumber"),
             "period": global_period,
-            "periodSource": "decoded_physical_tape",
+            "periodSource": "omsim_decoded_physical_tape",
             "instructionCount": decoded_arm["sourceCount"],
             "expandedInstructionCount": sum(1 for item in tape if item is not None),
             "actionCount": sum(len(expanded[cycle]) for cycle in active),
@@ -341,10 +328,10 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
     active_cycle_count = sum(1 for cycle in range(horizon) if active_counts[cycle] > 0)
 
     return {
-        "schemaVersion": "0.4.2",
-        "analysisType": "physical-decoded-global-program-timeline",
+        "schemaVersion": "0.4.3",
+        "analysisType": "omsim-compatible-physical-global-program-timeline",
         "limitations": [
-            "Reset instructions are expanded into physical motions.",
+            "Reset and repeat instructions are decoded into physical tape cells using OMSim semantics.",
             "An instruction is counted as scheduled even if physical execution later fails or is blocked.",
             "Internal validation-cycle hints extend diagnostic replay only; they are not authoritative cycle metrics.",
         ],
@@ -354,7 +341,7 @@ def build_program_timeline(solution: dict[str, Any], *, max_cycles: int | None =
             "metricDeclaredCycles": metric_declared_cycles,
             "validationCycleHint": validation_cycle_hint,
             "globalPeriod": global_period,
-            "periodSource": "decoded_physical_tape",
+            "periodSource": "omsim_decoded_physical_tape",
             "armCount": len(arms),
             "activeCycleCount": active_cycle_count,
             "globalIdleCycles": horizon - active_cycle_count,
