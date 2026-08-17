@@ -76,40 +76,26 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          from packages.opus_parser import parse_solution, write_solution
 
           fixture_root = Path('fixtures/reference/critelli-aqueous-dagger')
           puzzle_path = Path('.datasets/critelli-aqueous-dagger-reference/puzzle/weeklies2026_aqueous-dagger.puzzle')
-          mini_root = Path('reports/critelli-aqueous-dagger-mini-corpus')
-          mini_root.mkdir(parents=True, exist_ok=True)
           manifest = json.loads((fixture_root / 'manifest.json').read_text(encoding='utf-8'))
-          results = []
-          for item in manifest['novelFixtures']:
-              source = fixture_root / item['file']
-              solution = parse_solution(source)
-              # Generated regression fixtures deliberately omit solved metrics.
-              # The strict engine-flow builder needs the already-proven replay
-              # horizon, so attach it only to this temporary learning copy.
-              solution['metrics'] = {
-                  'cycles': int(item['engineRequestedCycles']),
-                  'cost': 0,
-                  'area': 0,
-                  'instructions': 0,
-              }
-              destination = mini_root / Path(item['file']).name
-              write_solution(solution, destination, version=7)
-              results.append({
+          results = [
+              {
                   'status': 'engine-complete',
                   'puzzleId': manifest['puzzleFileId'],
                   'puzzlePath': str(puzzle_path),
-                  'solutionPath': str(destination),
-              })
+                  'solutionPath': str(fixture_root / item['file']),
+              }
+              for item in manifest['novelFixtures']
+          ]
           audit = {
-              'schemaVersion': '0.1.0',
+              'schemaVersion': '0.2.0',
               'solutionRoot': '.',
               'summary': {'solutionCount': len(results)},
               'results': results,
           }
+          Path('reports').mkdir(exist_ok=True)
           Path('reports/critelli-aqueous-dagger-mini-audit.json').write_text(
               json.dumps(audit, indent=2), encoding='utf-8'
           )
@@ -119,6 +105,22 @@ jobs:
             --workers 6 \
             --sample-limit 6 \
             --output reports/critelli-aqueous-dagger-mini-engine-flow.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          index = json.loads(Path('reports/critelli-aqueous-dagger-mini-engine-flow.json').read_text(encoding='utf-8'))
+          summary = index['summary']
+          assert summary['eligibleEngineCompleteSolutionCount'] == 6
+          assert summary['replayValidatedSolutionCount'] == 6
+          assert summary['validationDriftCount'] == 0
+          assert summary['errorCount'] == 0
+          assert all(
+              str(path).startswith('fixtures/reference/critelli-aqueous-dagger/generated-novel/')
+              for transition in index['transitions']
+              for path in transition.get('sourceSolutions', [])
+          )
+          print(json.dumps(summary, sort_keys=True))
+          PY
 
       - name: Solve autonomously with discovered knowledge
         env:
