@@ -8,6 +8,14 @@ from .autonomous import solve_puzzle_from_knowledge
 from .solver import GeneratedSolutionError, SolveResult, UnsupportedPuzzleError, solve_puzzle
 
 
+_EMPTY_KNOWLEDGE_INDEX = {
+    "schemaVersion": "0.0.0",
+    "transitions": [],
+    "fragments": [],
+    "convergenceMotifs": [],
+}
+
+
 def _direct_seed(result: SolveResult) -> dict[str, Any]:
     """Represent a direct-generator solve as one complete portfolio architecture."""
 
@@ -36,12 +44,11 @@ def solve_puzzle_portfolio(
 ) -> SolveResult:
     """Optimize across direct, learned-complete and recomposed machine families.
 
-    Historically `solve_puzzle_auto` returned immediately when a handcrafted
-    direct generator succeeded.  That is correct for feasibility but wrong for
-    optimization: a learned architecture or a newly composed mechanism may be
-    better under the requested metric.  When reusable flow knowledge is
-    available, this adapter places the direct result into the same bounded
-    portfolio instead of giving it an implicit priority.
+    A successful direct generator is a feasibility proof, not an optimization
+    winner. Whenever either learned complete architectures or fragment-flow
+    knowledge exists, the direct solution is inserted into the same bounded
+    portfolio and must win under the requested objective like every other
+    machine family.
     """
 
     architecture_candidates = list(architecture_candidates)
@@ -52,9 +59,13 @@ def solve_puzzle_portfolio(
     except (UnsupportedPuzzleError, GeneratedSolutionError) as error:
         direct_error = error
 
-    # Without learned flow knowledge there is no second machine family to
-    # compare. Preserve the existing direct/legacy behavior exactly.
-    if flow_index is None:
+    has_learned_architectures = bool(architecture_candidates)
+    has_fragment_knowledge = flow_index is not None
+
+    # Preserve the historical direct-only path only when literally no learned
+    # alternative exists. This also avoids introducing an empty portfolio layer
+    # into the simplest supported puzzles.
+    if not has_fragment_knowledge and not has_learned_architectures:
         if direct is not None:
             return solve_puzzle_auto_legacy(
                 puzzle,
@@ -64,11 +75,14 @@ def solve_puzzle_portfolio(
                 objective=objective,
                 oracle_validator=oracle_validator,
                 oracle_name=oracle_name,
-                architecture_candidates=architecture_candidates,
+                architecture_candidates=(),
             )
         if direct_error is not None:
             raise direct_error
-        raise UnsupportedPuzzleError("No direct solution or learned flow knowledge is available")
+        raise UnsupportedPuzzleError("No direct solution or learned knowledge is available")
+
+    resolved_flow_index = flow_index or deepcopy(_EMPTY_KNOWLEDGE_INDEX)
+    resolved_fragment_index = fragment_index or resolved_flow_index
 
     seeds = list(architecture_candidates)
     if direct is not None:
@@ -76,8 +90,8 @@ def solve_puzzle_portfolio(
 
     result = solve_puzzle_from_knowledge(
         puzzle,
-        flow_index,
-        fragment_index,
+        resolved_flow_index,
+        resolved_fragment_index,
         limit=composition_limit,
         objective=objective,
         oracle_validator=oracle_validator,
@@ -88,6 +102,7 @@ def solve_puzzle_portfolio(
     validation = result.validation
     validation["directGeneratorAvailable"] = direct is not None
     validation["directGeneratorStrategy"] = direct.strategy if direct is not None else None
+    validation["fragmentKnowledgeAvailable"] = has_fragment_knowledge
     validation["portfolioArchitectureCandidateCount"] = len(seeds)
     validation["learnedArchitectureCandidateCount"] = len(architecture_candidates)
 
@@ -95,10 +110,11 @@ def solve_puzzle_portfolio(
         validation["solverRoute"] = "direct-generator-v1"
         validation["selectedCandidateSource"] = "direct-generator"
         validation["selectedCandidateKind"] = "direct-complete-architecture"
+        if direct is not None:
+            result.strategy = direct.strategy
 
     return result
 
 
-# New canonical entry point.  Keep the explicit portfolio name as well so
-# callers can opt into the semantics without relying on an alias.
+# Canonical optimization entry point.
 solve_puzzle_auto = solve_puzzle_portfolio
