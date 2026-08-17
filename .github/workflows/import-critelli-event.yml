@@ -7,7 +7,9 @@ on:
     paths:
       - .github/workflows/import-critelli-event.yml
       - tools/import_critelli_event.py
+      - tools/learn_critelli_metric_portfolio.py
       - tests/test_import_critelli_event.py
+      - tests/test_learn_critelli_metric_portfolio.py
       - tools/analyze_solution_archive.py
       - tools/import_campaign_corpus.py
       - packages/opus_analysis/**
@@ -39,8 +41,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test Critelli import parser
-        run: python -m unittest tests.test_import_critelli_event
+      - name: Test Critelli import and learning helpers
+        run: |
+          python -m unittest tests.test_import_critelli_event
+          python -m unittest tests.test_learn_critelli_metric_portfolio
 
       - name: Download Aqueous Dagger puzzle and every submission
         run: |
@@ -96,6 +100,15 @@ jobs:
             --campaign-root "$CAMPAIGN_ROOT" \
             --output reports/critelli-aqueous-dagger-analysis.json
 
+      - name: Learn compact CGA/BCA architecture portfolio
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/learn_critelli_metric_portfolio.py \
+            --root "$CRITELLI_ROOT" \
+            --representatives-per-objective 8 \
+            --output reports/critelli-aqueous-dagger-portfolio.json
+
       - name: Write event summary
         if: always()
         run: |
@@ -106,9 +119,11 @@ jobs:
           index_path = Path('.datasets/critelli-aqueous-dagger/index.json')
           analysis_path = Path('reports/critelli-aqueous-dagger-analysis.json')
           puzzle_path = Path('reports/critelli-aqueous-dagger-puzzle.json')
+          portfolio_path = Path('reports/critelli-aqueous-dagger-portfolio.json')
           index = json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {}
           analysis = json.loads(analysis_path.read_text(encoding='utf-8')) if analysis_path.exists() else {'summary': {}}
           puzzle = json.loads(puzzle_path.read_text(encoding='utf-8')) if puzzle_path.exists() else {}
+          portfolio = json.loads(portfolio_path.read_text(encoding='utf-8')) if portfolio_path.exists() else {'summary': {}, 'objectives': {}}
           a = analysis.get('summary', {})
           payload = {
               'eventId': index.get('eventId'),
@@ -125,6 +140,9 @@ jobs:
               'parseErrors': a.get('parseErrors', 0),
               'uniqueStructures': a.get('uniqueCanonicalStructures', 0),
               'uniqueMechanisms': a.get('uniqueCanonicalMechanisms', 0),
+              'portfolioMechanisms': portfolio.get('summary', {}).get('uniqueMechanismsInPortfolio', 0),
+              'cgaWinner': portfolio.get('objectives', {}).get('cga', {}).get('winnerMetricVector'),
+              'bcaWinner': portfolio.get('objectives', {}).get('bca', {}).get('winnerMetricVector'),
           }
           Path('reports').mkdir(exist_ok=True)
           Path('reports/critelli-aqueous-dagger-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
@@ -144,6 +162,7 @@ jobs:
             .datasets/critelli-aqueous-dagger/
             reports/critelli-aqueous-dagger-puzzle.json
             reports/critelli-aqueous-dagger-analysis.json
+            reports/critelli-aqueous-dagger-portfolio.json
             reports/critelli-aqueous-dagger-summary.json
           if-no-files-found: warn
           retention-days: 30
