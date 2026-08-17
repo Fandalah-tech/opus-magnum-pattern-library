@@ -10,12 +10,14 @@ on:
       - tools/audit_critelli_event.py
       - tools/learn_critelli_metric_portfolio.py
       - tools/validate_critelli_portfolio_materialization.py
+      - tools/update_learned_solution_bank.py
       - tools/assess_composed_novelty.py
       - tools/build_fragment_index.py
       - tools/build_fragment_flow_index.py
       - tools/build_engine_fragment_flow_index.py
       - tests/test_import_critelli_event.py
       - tests/test_learn_critelli_metric_portfolio.py
+      - tests/test_learned_solution_bank.py
       - tests/test_paired_bonded_clusters.py
       - tests/test_extended_generation_routing.py
       - tools/analyze_solution_archive.py
@@ -26,13 +28,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
   EVENT_PAGE: https://events.critelli.technology/OM2026Weeklies6_AqueousDagger
   CRITELLI_ROOT: .datasets/critelli-aqueous-dagger
   CAMPAIGN_ROOT: .datasets/critelli-campaign-reference
+  LEARNED_BANK: database/learned-solution-bank.json
+  LEARNED_SOLUTIONS_DIR: fixtures/reference/learned-solutions/critelli
 
 jobs:
   aqueous_dagger:
@@ -49,10 +53,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test Critelli import, learning, chemistry and generation helpers
+      - name: Test Critelli import, learning, promotion, chemistry and generation helpers
         run: |
           python -m unittest tests.test_import_critelli_event
           python -m unittest tests.test_learn_critelli_metric_portfolio
+          python -m unittest tests.test_learned_solution_bank
           python -m unittest tests.test_paired_bonded_clusters
           python -m unittest tests.test_extended_generation_routing
 
@@ -192,6 +197,56 @@ jobs:
             --solution-dir reports/critelli-aqueous-dagger-materialized \
             --output reports/critelli-aqueous-dagger-materialization.json
 
+      - name: Promote complete learned winners into persistent solver bank
+        if: always()
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          if [ ! -f reports/critelli-aqueous-dagger-materialization.json ]; then
+            echo "No materialization report was produced; skipping learned-bank promotion."
+            exit 0
+          fi
+          python tools/update_learned_solution_bank.py \
+            --materialization-report reports/critelli-aqueous-dagger-materialization.json \
+            --bank "$LEARNED_BANK" \
+            --persist-dir "$LEARNED_SOLUTIONS_DIR" \
+            --repository-root . \
+            --output reports/critelli-aqueous-dagger-bank-update.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('reports/critelli-aqueous-dagger-bank-update.json')
+          result = json.loads(path.read_text(encoding='utf-8'))
+          bank = json.loads(Path('database/learned-solution-bank.json').read_text(encoding='utf-8'))
+          assert result['addedOrUpdated'] >= 1
+          assert bank['schemaVersion'] == '0.2.0'
+          assert bank['summary']['entryCount'] >= 1
+          for entry in bank['entries']:
+              provenance = entry.get('provenance') or {}
+              if provenance.get('materializedFromLearnedBlueprint'):
+                  assert provenance.get('originalSolutionBytesCommitted') is False
+          print(json.dumps(result, sort_keys=True))
+          PY
+
+      - name: Persist promoted learned knowledge on the feature branch
+        if: github.ref_name == 'feature/critelli-2026-public-corpus' && github.actor == 'Fandalah-tech'
+        run: |
+          if [ ! -f reports/critelli-aqueous-dagger-bank-update.json ]; then
+            echo "No learned-bank update to persist."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LEARNED_BANK" "$LEARNED_SOLUTIONS_DIR"
+          if git diff --cached --quiet; then
+            echo "Learned solution bank already current."
+            exit 0
+          fi
+          git commit -m "Promote Critelli learned architectures [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
       - name: Write event summary
         if: always()
         run: |
@@ -214,6 +269,7 @@ jobs:
           novelty = load('reports/critelli-aqueous-dagger-composed-novelty.json', {'summary': {}})
           portfolio = load('reports/critelli-aqueous-dagger-portfolio.json', {'summary': {}, 'objectives': {}})
           materialization = load('reports/critelli-aqueous-dagger-materialization.json', {'summary': {}})
+          bank_update = load('reports/critelli-aqueous-dagger-bank-update.json', {'summary': {}})
           a = analysis.get('summary', {})
           f = fragments.get('summary', {})
           g = flow.get('summary', {})
@@ -266,6 +322,9 @@ jobs:
               'materializedWinnerCount': materialization.get('summary', {}).get('winnerCount', 0),
               'materializedCompleteCount': materialization.get('summary', {}).get('completeCount', 0),
               'materializedAllComplete': materialization.get('summary', {}).get('allComplete', False),
+              'promotedArchitectureCount': bank_update.get('addedOrUpdated', 0),
+              'learnedBankEntries': bank_update.get('summary', {}).get('entryCount', 0),
+              'learnedBankPuzzleCount': bank_update.get('summary', {}).get('puzzleCount', 0),
           }
           Path('reports').mkdir(exist_ok=True)
           Path('reports/critelli-aqueous-dagger-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
@@ -295,6 +354,7 @@ jobs:
             reports/critelli-aqueous-dagger-portfolio.json
             reports/critelli-aqueous-dagger-materialization.json
             reports/critelli-aqueous-dagger-materialized/
+            reports/critelli-aqueous-dagger-bank-update.json
             reports/critelli-aqueous-dagger-summary.json
           if-no-files-found: warn
           retention-days: 30
