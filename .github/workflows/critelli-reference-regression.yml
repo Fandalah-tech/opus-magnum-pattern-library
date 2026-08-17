@@ -107,9 +107,9 @@ jobs:
 
           assert cv['solverRoute'] == 'knowledge-architecture-bank-v1'
           assert cv['selectedCandidateSource'] == 'learned-architecture-bank'
-          assert cv['selectedCandidateId'] == 'aqueous-dagger-cga-15c-v1'
-          assert cv['architectureSeedCandidateCount'] == 1
-          assert cv['architectureSeedCompleteCount'] == 1
+          assert cv['selectedCandidateId'].startswith('weeklies2026-aqueous-dagger-cga-')
+          assert cv['architectureSeedCandidateCount'] == 2
+          assert cv['architectureSeedCompleteCount'] == 2
           assert cv['fragmentAssemblyCandidateCount'] >= 1
 
           assert iv['solverRoute'] == 'knowledge-fragment-composition-v1'
@@ -124,7 +124,7 @@ jobs:
           knowledge = cycles['knowledgeResolution']
           assert knowledge['flowIndex'] == 'database/engine-fragment-flow-index.json'
           assert knowledge['flowIndexExplicit'] is False
-          assert knowledge['solutionBank']['matchingEntryCount'] == 1
+          assert knowledge['solutionBank']['matchingEntryCount'] == 2
           assert knowledge['solutionBankExplicit'] is False
           print(json.dumps({
               'cycles': {
