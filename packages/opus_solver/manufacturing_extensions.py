@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+from .generic_chemistry import generic_singleton_chemistry_plan
 from .manufacturing import (
     CLASSICAL_ELEMENTS,
     ManufacturingOperation,
@@ -103,7 +104,7 @@ def _ordered_connected_bonds(
 def repeated_singleton_assembly_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | None:
     """Build one connected normal-bond product from renewable singleton inputs.
 
-    Reagent glyphs can spawn the same molecule repeatedly.  Each target atom is
+    Reagent glyphs can spawn the same molecule repeatedly. Each target atom is
     therefore assigned independently to a compatible singleton reagent; using
     one reagent index for several target atoms is intentional and generic.
     """
@@ -414,4 +415,8 @@ def build_manufacturing_plan(puzzle: dict[str, Any]) -> ManufacturingPlan:
     singleton_plan = repeated_singleton_assembly_plan(puzzle)
     if singleton_plan is not None:
         return singleton_plan
+
+    generic_plan = generic_singleton_chemistry_plan(puzzle)
+    if generic_plan is not None:
+        return generic_plan
     return base_plan
