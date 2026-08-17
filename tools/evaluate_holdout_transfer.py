@@ -7,7 +7,13 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from packages.opus_parser import parse_puzzle, write_solution
+from packages.opus_solver.assembly import rank_fragment_assemblies
 from packages.opus_solver.autonomous import solve_puzzle_from_knowledge
+from packages.opus_solver.chemistry_composition import (
+    manufacturing_requirements,
+    rank_chains_for_manufacturing_plan,
+    required_flow_relations,
+)
 from packages.opus_solver.manufacturing_extensions import build_manufacturing_plan
 
 
@@ -27,14 +33,6 @@ def target_knowledge_mentions(
     knowledge: dict[str, Any],
     target_puzzle_id: str,
 ) -> list[str]:
-    """Return strings in reusable knowledge that mention the held-out target.
-
-    A blind-transfer benchmark must not merely avoid opening target solution
-    files at runtime; the learned index itself must also have been built
-    without target-derived provenance.  This conservative check catches the
-    target puzzle identifier anywhere in the serialized knowledge payload.
-    """
-
     needle = target_puzzle_id.strip().lower()
     if not needle:
         raise ValueError("target_puzzle_id must not be empty")
@@ -97,6 +95,65 @@ def puzzle_transfer_profile(puzzle: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _composition_diagnostics(
+    puzzle: dict[str, Any],
+    knowledge: dict[str, Any],
+    *,
+    limit: int,
+) -> dict[str, Any]:
+    plan = build_manufacturing_plan(puzzle)
+    requirements = manufacturing_requirements(plan)
+    required = required_flow_relations(plan)
+    motifs = list(knowledge.get("convergenceMotifs") or [])
+    motif_input_counts = [len(item.get("inputs") or []) for item in motifs]
+    relation_counts = dict((knowledge.get("summary") or {}).get("relationCounts") or {})
+    assemblies = rank_fragment_assemblies(
+        plan,
+        knowledge,
+        limit=max(1, int(limit)),
+    ) if plan.supported else []
+    # Evaluate linear functional coverage as a diagnostic even when the planner
+    # correctly declares that a convergence is required.  This separates
+    # "chemistry absent" from "DAG assembly unavailable".
+    chains = rank_chains_for_manufacturing_plan(
+        plan,
+        knowledge,
+        fragment_index=knowledge,
+        limit=max(1, int(limit)),
+        min_engine_validated_solutions=1,
+    ) if plan.supported else []
+    return {
+        "manufacturingRequirements": requirements,
+        "requiredRelations": dict(sorted(required.items())),
+        "knowledgeRelationCounts": relation_counts,
+        "convergenceMotifCount": len(motifs),
+        "convergenceMotifInputCounts": dict(sorted(Counter(motif_input_counts).items())),
+        "maxConvergenceInputs": max(motif_input_counts, default=0),
+        "rankedAssemblyCount": len(assemblies),
+        "rankedChainCount": len(chains),
+        "bestAssemblies": [
+            {
+                "score": item.get("score"),
+                "sourceCount": item.get("sourceCount"),
+                "convergenceInputCount": item.get("convergenceInputCount"),
+                "observedRelations": item.get("observedRelations"),
+                "inferredRelations": item.get("inferredRelations"),
+                "requiredRelations": item.get("requiredRelations"),
+            }
+            for item in assemblies[:3]
+        ],
+        "bestChains": [
+            {
+                "score": item.get("score"),
+                "stepCount": item.get("stepCount"),
+                "coverage": (item.get("manufacturing") or {}).get("coverage"),
+                "assemblyComplete": (item.get("manufacturing") or {}).get("assemblyComplete"),
+            }
+            for item in chains[:3]
+        ],
+    }
+
+
 def evaluate_holdout_transfer(
     puzzle_path: Path,
     flow_index_path: Path,
@@ -110,6 +167,12 @@ def evaluate_holdout_transfer(
     knowledge = json.loads(flow_index_path.read_text(encoding="utf-8"))
     mentions = target_knowledge_mentions(knowledge, target_puzzle_id)
     sources = knowledge_source_solutions(knowledge)
+    profile = puzzle_transfer_profile(puzzle)
+    composition = _composition_diagnostics(
+        puzzle,
+        knowledge,
+        limit=composition_limit,
+    )
 
     protocol = {
         "targetPuzzleId": target_puzzle_id,
@@ -128,13 +191,13 @@ def evaluate_holdout_transfer(
     }
 
     report: dict[str, Any] = {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "kind": "strict-heldout-knowledge-transfer",
         "target": {
             "id": target_puzzle_id,
             "name": puzzle.get("name"),
             "source": puzzle.get("source"),
-            "profile": puzzle_transfer_profile(puzzle),
+            "profile": profile,
         },
         "protocol": protocol,
         "request": {
@@ -144,6 +207,7 @@ def evaluate_holdout_transfer(
             "learnedArchitectureBankAllowed": False,
             "fragmentKnowledgeAllowed": True,
         },
+        "compositionDiagnostics": composition,
         "result": {
             "complete": False,
             "route": None,
@@ -235,6 +299,7 @@ def main() -> int:
             "targetSolutionBytesUsed": report["protocol"]["targetSolutionBytesUsed"],
             "targetExcludedFromKnowledge": report["protocol"]["targetExcludedFromKnowledge"],
         },
+        "compositionDiagnostics": report["compositionDiagnostics"],
         "result": report["result"],
     }, ensure_ascii=False))
 
