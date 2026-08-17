@@ -1,0 +1,50 @@
+name: Unified solver portfolio regression
+
+on:
+  push:
+    branches:
+      - main
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/portfolio-solver-regression.yml
+      - packages/opus_solver/__init__.py
+      - packages/opus_solver/portfolio_solver.py
+      - packages/opus_solver/autonomous.py
+      - tools/solve_puzzle.py
+      - tests/test_portfolio_solver.py
+      - tests/test_autonomous_solver.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portfolio:
+    name: Compete direct and learned solver families
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test legacy autonomous primitives
+        run: python -m unittest tests.test_autonomous_solver -v
+
+      - name: Test unified portfolio entry point
+        run: python -m unittest tests.test_portfolio_solver -v
+
+      - name: Verify canonical package export
+        run: |
+          python - <<'PY'
+          import packages.opus_solver as solver
+          from packages.opus_solver.portfolio_solver import solve_puzzle_portfolio
+          assert solver.solve_puzzle_auto is solve_puzzle_portfolio
+          assert solver.solve_puzzle_portfolio is solve_puzzle_portfolio
+          print('canonical auto solver: unified portfolio')
+          PY
