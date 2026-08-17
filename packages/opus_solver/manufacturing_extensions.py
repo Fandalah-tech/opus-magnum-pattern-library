@@ -55,15 +55,6 @@ def _singleton_conversion(
 def _ordered_connected_bonds(
     product: dict[str, Any],
 ) -> list[tuple[tuple[int, int], tuple[int, int]]] | None:
-    """Order normal product bonds so one connected molecule can be assembled.
-
-    The manufacturing planner only needs a dependency DAG, not a mechanical
-    placement recipe.  Starting from one edge, prefer edges that attach one new
-    atom to the already assembled component; cycle-closing edges are appended
-    once all their endpoints are present.  Disconnected output graphs are left
-    for a future multi-molecule strategy.
-    """
-
     positions = {_position(atom) for atom in product.get("atoms") or ()}
     raw: list[tuple[tuple[int, int], tuple[int, int]]] = []
     for bond in product.get("bonds") or ():
@@ -81,7 +72,7 @@ def _ordered_connected_bonds(
     ordered = [pending.pop(0)]
     connected = set(ordered[0])
     while pending:
-        attaching_index = next(
+        attaching = next(
             (
                 index
                 for index, (first, second) in enumerate(pending)
@@ -89,13 +80,12 @@ def _ordered_connected_bonds(
             ),
             None,
         )
-        if attaching_index is not None:
-            first, second = pending.pop(attaching_index)
+        if attaching is not None:
+            first, second = pending.pop(attaching)
             ordered.append((first, second))
             connected.update((first, second))
             continue
-
-        closing_index = next(
+        closing = next(
             (
                 index
                 for index, (first, second) in enumerate(pending)
@@ -103,22 +93,19 @@ def _ordered_connected_bonds(
             ),
             None,
         )
-        if closing_index is not None:
-            ordered.append(pending.pop(closing_index))
+        if closing is not None:
+            ordered.append(pending.pop(closing))
             continue
         return None
-
     return ordered if connected == positions else None
 
 
 def repeated_singleton_assembly_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | None:
-    """Assemble a connected normal-bond product from reusable singleton inputs.
+    """Build one connected normal-bond product from renewable singleton inputs.
 
-    Opus Magnum reagent glyphs are renewable sources: one reagent definition is
-    not consumed after one spawn.  This strategy therefore assigns every target
-    atom independently to the cheapest compatible singleton reagent and permits
-    the same reagent index to feed any number of product atoms.  It is a generic
-    chemistry rule, not a puzzle-specific shortcut.
+    Reagent glyphs can spawn the same molecule repeatedly.  Each target atom is
+    therefore assigned independently to a compatible singleton reagent; using
+    one reagent index for several target atoms is intentional and generic.
     """
 
     products = list(puzzle.get("products") or ())
@@ -145,16 +132,15 @@ def repeated_singleton_assembly_plan(puzzle: dict[str, Any]) -> ManufacturingPla
         )
         for index, reagent in enumerate(reagents)
     ]
-
     assignments: dict[tuple[int, int], tuple[int, str, str, str | None]] = {}
     for product_atom in product_atoms:
         target = str(product_atom.get("element") or "")
         options: list[tuple[int, int, str, str, str | None]] = []
         for reagent_index, reagent_atom_id, source in singleton_sources:
-            converted = _singleton_conversion(source, target, available_glyphs)
-            if converted is None:
+            conversion = _singleton_conversion(source, target, available_glyphs)
+            if conversion is None:
                 continue
-            cost, transformation = converted
+            cost, transformation = conversion
             options.append((cost, reagent_index, reagent_atom_id, source, transformation))
         if not options:
             return None
@@ -245,7 +231,6 @@ def repeated_singleton_assembly_plan(puzzle: dict[str, Any]) -> ManufacturingPla
         inputs=(str(assembled_id),),
         outputs=("output-0",),
     ))
-
     required_glyphs = ["bonder"]
     if uses_calcification:
         required_glyphs.append("glyph-calcification")
@@ -261,15 +246,7 @@ def repeated_singleton_assembly_plan(puzzle: dict[str, Any]) -> ManufacturingPla
 
 
 def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | None:
-    """Recognize two homologous bonded clusters, one preserved and one calcified.
-
-    This is deliberately chemistry/topology driven rather than keyed to a
-    puzzle name or file hash. Two identical homogeneous classical-element
-    reagents may form a product containing one unchanged copy and one
-    bond-preserving salt copy, with one or more new normal bonds between the
-    two clusters. Because the reagent molecules are homologous, their source
-    indices are explicitly marked as interchangeable for later assembly reuse.
-    """
+    """Recognize two homologous bonded clusters, one preserved and one calcified."""
 
     products = list(puzzle.get("products") or ())
     reagents = list(puzzle.get("reagents") or ())
@@ -322,8 +299,16 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
             return None
         first = _position({"position": bond.get("from")})
         second = _position({"position": bond.get("to")})
-        first_side = source_element if first in by_element[source_element] else "salt" if first in by_element["salt"] else None
-        second_side = source_element if second in by_element[source_element] else "salt" if second in by_element["salt"] else None
+        first_side = (
+            source_element
+            if first in by_element[source_element]
+            else "salt" if first in by_element["salt"] else None
+        )
+        second_side = (
+            source_element
+            if second in by_element[source_element]
+            else "salt" if second in by_element["salt"] else None
+        )
         if first_side is None or second_side is None:
             return None
         if first_side != second_side:
@@ -404,7 +389,6 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
         (assembled,),
         ("output-0",),
     ))
-
     return ManufacturingPlan(
         strategy="paired-bonded-clusters-v1",
         supported=True,
@@ -417,12 +401,17 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
 
 
 def build_manufacturing_plan(puzzle: dict[str, Any]) -> ManufacturingPlan:
-    """Route generic chemistry extensions before the established planner."""
+    """Prefer established/specialized planning, then generic renewable feeds."""
 
     cluster_plan = paired_bonded_clusters_plan(puzzle)
     if cluster_plan is not None:
         return cluster_plan
+
+    base_plan = build_base_manufacturing_plan(puzzle)
+    if base_plan.supported:
+        return base_plan
+
     singleton_plan = repeated_singleton_assembly_plan(puzzle)
     if singleton_plan is not None:
         return singleton_plan
-    return build_base_manufacturing_plan(puzzle)
+    return base_plan
