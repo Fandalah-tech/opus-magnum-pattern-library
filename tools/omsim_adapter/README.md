@@ -30,6 +30,8 @@ python tools/omsim_adapter/validate.py \
 
 Les quatre métriques standards restent dans `metrics`; les métriques supplémentaires sont conservées dans `extraMetrics`. Cette voie est notamment utilisée par l'objectif Critelli BCA, qui classe `minimum hexagon > cycles > area` et reconstruit l'expression publique `default restrictions` à partir de ses métriques primitives.
 
+Le solveur autonome soumet au même oracle les générateurs directs, les architectures complètes apprises et les machines recomposées par fragments. Un générateur direct n'a donc aucune priorité implicite dès qu'une autre famille de candidats est disponible : le gagnant est choisi uniquement par l'objectif demandé.
+
 ## Tests
 
 ```bash
@@ -44,7 +46,7 @@ python -m unittest tests.test_bca -v
 - accepte une liste arbitraire de métriques libverify;
 - normalise les échecs;
 - conserve le cycle et les coordonnées lorsqu'ils apparaissent dans l'erreur;
-- permet le classement autoritaire des portfolios du solver, y compris Bounding Hexagon;
+- permet le classement autoritaire du portfolio unifié du solver, y compris Bounding Hexagon;
 - retourne un code de sortie nul seulement pour une solution valide avec toutes les métriques demandées.
 
 La prochaine version pourra remplacer progressivement le parsing textuel par l'API FFI de `libverify` sans changer ce contrat.
