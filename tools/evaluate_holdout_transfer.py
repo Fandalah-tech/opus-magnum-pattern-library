@@ -160,7 +160,13 @@ def _mechanical_candidate_diagnostics(
     return diagnostics
 
 
-def _composition_diagnostics(puzzle: dict[str, Any], knowledge: dict[str, Any], *, limit: int) -> dict[str, Any]:
+def _composition_diagnostics(
+    puzzle: dict[str, Any],
+    knowledge: dict[str, Any],
+    *,
+    limit: int,
+    detailed: bool = True,
+) -> dict[str, Any]:
     plan = build_manufacturing_plan(puzzle)
     requirements = manufacturing_requirements(plan)
     required = required_flow_relations(plan)
@@ -168,14 +174,16 @@ def _composition_diagnostics(puzzle: dict[str, Any], knowledge: dict[str, Any], 
     motif_input_counts = [len(item.get("inputs") or []) for item in motifs]
     relation_counts = dict((knowledge.get("summary") or {}).get("relationCounts") or {})
     assemblies = rank_fragment_assemblies(plan, knowledge, limit=max(1, int(limit))) if plan.supported else []
-    chains = rank_chains_for_manufacturing_plan(
-        plan,
-        knowledge,
-        fragment_index=knowledge,
-        limit=max(1, int(limit)),
-        min_engine_validated_solutions=1,
-    ) if plan.supported else []
-    return {
+    chains = []
+    if detailed and plan.supported:
+        chains = rank_chains_for_manufacturing_plan(
+            plan,
+            knowledge,
+            fragment_index=knowledge,
+            limit=max(1, int(limit)),
+            min_engine_validated_solutions=1,
+        )
+    result = {
         "manufacturingRequirements": requirements,
         "requiredRelations": dict(sorted(required.items())),
         "knowledgeRelationCounts": relation_counts,
@@ -183,7 +191,8 @@ def _composition_diagnostics(puzzle: dict[str, Any], knowledge: dict[str, Any], 
         "convergenceMotifInputCounts": dict(sorted(Counter(motif_input_counts).items())),
         "maxConvergenceInputs": max(motif_input_counts, default=0),
         "rankedAssemblyCount": len(assemblies),
-        "rankedChainCount": len(chains),
+        "rankedChainCount": len(chains) if detailed else None,
+        "diagnosticMode": "detailed" if detailed else "matrix-compact",
         "bestAssemblies": [
             {
                 "score": item.get("score"),
@@ -197,7 +206,7 @@ def _composition_diagnostics(puzzle: dict[str, Any], knowledge: dict[str, Any], 
             }
             for item in assemblies[:3]
         ],
-        "mechanicalCandidates": _mechanical_candidate_diagnostics(puzzle, knowledge, assemblies, limit=3),
+        "mechanicalCandidates": _mechanical_candidate_diagnostics(puzzle, knowledge, assemblies, limit=3) if detailed else [],
         "bestChains": [
             {
                 "score": item.get("score"),
@@ -208,6 +217,7 @@ def _composition_diagnostics(puzzle: dict[str, Any], knowledge: dict[str, Any], 
             for item in chains[:3]
         ],
     }
+    return result
 
 
 def evaluate_holdout_transfer(
