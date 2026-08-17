@@ -20,6 +20,25 @@ def _plan():
     )
 
 
+def _repeat_bond_plan():
+    return ManufacturingPlan(
+        strategy="repeat-bond-test",
+        supported=True,
+        reason=None,
+        product_index=0,
+        atom_flows=(),
+        operations=(
+            ManufacturingOperation(id="s1", kind="source", inputs=(), outputs=("a",)),
+            ManufacturingOperation(id="s2", kind="source", inputs=(), outputs=("b",)),
+            ManufacturingOperation(id="b1", kind="bond", inputs=("a", "b"), outputs=("m1",), glyph="bonder"),
+            ManufacturingOperation(id="b2", kind="bond", inputs=("m1",), outputs=("m2",), glyph="bonder"),
+            ManufacturingOperation(id="b3", kind="bond", inputs=("m2",), outputs=("m3",), glyph="bonder"),
+            ManufacturingOperation(id="d", kind="deliver", inputs=("m3",), outputs=("o",)),
+        ),
+        required_glyphs=("bonder",),
+    )
+
+
 def _edge(sr, sh, tr, th, relation):
     return {
         "sourceRole": sr,
@@ -117,7 +136,73 @@ def test_assembly_prefers_one_engine_coherent_source_solution():
     assert len(ranked) == 1
     assert ranked[0]["coherentSourceSolution"] == "coherent.solution"
     assert ranked[0]["branches"][0][0]["relativeTransform"] == transform
+    assert ranked[0]["branches"][0][0]["coherentObservationCount"] == 2
     assert ranked[0]["tail"][0]["relativeTiming"] == timing
+
+
+def test_repeated_relation_can_be_covered_by_one_coherent_replay_capacity():
+    transform = {"frame": "source-anchor-local", "delta": [1, 0], "rotationDelta": 0}
+    repeated = _edge("feed", "fa", "prebond", "p", "bond-created")
+    repeated["solutionVariants"] = [{
+        "solutionPath": "repeat.solution",
+        "relativeTransform": transform,
+        "relativeTiming": None,
+        "observationCount": 2,
+    }]
+    delivered = _edge("bonding", "bond", "output", "out", "delivered")
+    delivered["solutionVariants"] = [{
+        "solutionPath": "repeat.solution",
+        "relativeTransform": transform,
+        "relativeTiming": None,
+        "observationCount": 6,
+    }]
+    flow = {
+        "transitions": [repeated, delivered],
+        "convergenceMotifs": [{
+            "targetRole": "bonding",
+            "targetMechanismHash": "bond",
+            "inputCount": 2,
+            "inputs": [
+                {"sourceRole": "prebond", "sourceMechanismHash": "p", "relations": ["bond-created"]},
+                {"sourceRole": "feed", "sourceMechanismHash": "fb", "relations": ["bond-created"]},
+            ],
+            "observationCount": 1,
+            "solutionSamples": [{"solutionPath": "repeat.solution", "inputs": []}],
+        }],
+    }
+
+    ranked = rank_fragment_assemblies(_repeat_bond_plan(), flow)
+
+    assert len(ranked) == 1
+    assert ranked[0]["observedRelations"]["bond-created"] == 3
+    assert ranked[0]["relationCoverageEvidence"] == "engine-coherent-replay-capacity"
+    capacities = {
+        item["relation"]: item["capacity"]
+        for item in ranked[0]["relationCapacities"]
+    }
+    assert capacities["bond-created"] == 2
+    assert capacities["delivered"] == 6
+
+
+def test_aggregate_observations_across_solutions_do_not_create_repeat_capacity():
+    repeated = _edge("feed", "fa", "prebond", "p", "bond-created")
+    repeated["observationCount"] = 99
+    delivered = _edge("bonding", "bond", "output", "out", "delivered")
+    flow = {
+        "transitions": [repeated, delivered],
+        "convergenceMotifs": [{
+            "targetRole": "bonding",
+            "targetMechanismHash": "bond",
+            "inputCount": 2,
+            "inputs": [
+                {"sourceRole": "prebond", "sourceMechanismHash": "p", "relations": ["bond-created"]},
+                {"sourceRole": "feed", "sourceMechanismHash": "fb", "relations": ["bond-created"]},
+            ],
+            "observationCount": 50,
+        }],
+    }
+
+    assert rank_fragment_assemblies(_repeat_bond_plan(), flow) == []
 
 
 def test_three_input_prism_generalizes_an_unobserved_channel():
