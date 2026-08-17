@@ -36,6 +36,27 @@ def _focus_objectives(objective: str) -> list[str]:
     return [objective]
 
 
+def _entry_identity(item: dict[str, Any]) -> str:
+    """Stable semantic identity across legacy and promoted bank schemas.
+
+    Older bank entries predate ``sourceKey`` and use hand-written IDs.  A
+    promoted blueprint for the same puzzle/mechanism/objective should replace
+    that legacy entry instead of living beside it as an accidental duplicate.
+    Keep separate entries when the same mechanism intentionally serves a
+    different objective family.
+    """
+
+    puzzle = str(item.get("puzzleFile") or "")
+    mechanism = str(item.get("canonicalMechanismHash") or "")
+    focus = tuple(sorted(str(value) for value in (item.get("focusObjectives") or [])))
+    if puzzle and mechanism and focus:
+        return f"semantic:{puzzle}:{','.join(focus)}:{mechanism}"
+    source_key = str(item.get("sourceKey") or "")
+    if source_key:
+        return f"source:{source_key}"
+    return f"id:{item.get('id') or ''}"
+
+
 def entries_from_materialization(
     report: dict[str, Any],
     *,
@@ -103,11 +124,11 @@ def merge_bank(
     new_entries: list[dict[str, Any]],
 ) -> dict[str, Any]:
     retained = {
-        str(item.get("sourceKey") or item.get("id")): item
+        _entry_identity(item): item
         for item in current.get("entries", [])
     }
     for item in new_entries:
-        retained[str(item.get("sourceKey") or item.get("id"))] = item
+        retained[_entry_identity(item)] = item
     entries = sorted(
         retained.values(),
         key=lambda item: (
