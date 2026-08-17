@@ -5,9 +5,10 @@ from itertools import count
 import json
 import os
 from pathlib import Path
+import re
 from tempfile import TemporaryDirectory
 
-from packages.opus_parser import parse_puzzle, write_solution
+from packages.opus_parser import parse_puzzle, parse_solution, write_solution
 from packages.opus_solver import solve_puzzle_auto
 from packages.opus_solver.autonomous import KNOWLEDGE_OBJECTIVES, LOCAL_OBJECTIVES
 from tools.omsim_adapter.validate import run_omsim
@@ -16,6 +17,9 @@ from tools.omsim_adapter.validate import run_omsim
 _DEFAULT_FLOW_INDEX_CANDIDATES = (
     Path("database/engine-fragment-flow-index.json"),
     Path("database/fragment-flow-index.json"),
+)
+_DEFAULT_SOLUTION_BANK_CANDIDATES = (
+    Path("database/learned-solution-bank.json"),
 )
 
 
@@ -33,6 +37,50 @@ def _resolve_index_path(
         if candidate.exists():
             return candidate
     return next((candidate for candidate in defaults if candidate.exists()), None)
+
+
+def _puzzle_file_id(puzzle: dict) -> str:
+    source_name = str((puzzle.get("source") or {}).get("name") or "")
+    if source_name:
+        return re.sub(r" \(\d+\)$", "", Path(source_name).stem)
+    return str(puzzle.get("id") or puzzle.get("name") or "generated-puzzle")
+
+
+def _load_solution_bank(
+    path: Path | None,
+    *,
+    puzzle_file: str,
+) -> tuple[list[dict], dict]:
+    if path is None:
+        return [], {"path": None, "entryCount": 0, "matchingEntryCount": 0}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    entries = list(payload.get("entries") or ())
+    candidates = []
+    for entry in entries:
+        if str(entry.get("puzzleFile") or "") != puzzle_file:
+            continue
+        solution_path = Path(str(entry.get("solutionPath") or ""))
+        if not solution_path.exists():
+            raise FileNotFoundError(
+                f"Learned solution bank entry {entry.get('id')!r} points to missing {solution_path}"
+            )
+        candidates.append({
+            "id": str(entry.get("id") or solution_path.stem),
+            "solution": parse_solution(solution_path),
+            "focusObjectives": list(entry.get("focusObjectives") or ()),
+            "referenceMetrics": dict(entry.get("referenceMetrics") or {}),
+            "provenance": {
+                **dict(entry.get("provenance") or {}),
+                "bankPath": str(path),
+                "solutionPath": str(solution_path),
+                "canonicalMechanismHash": entry.get("canonicalMechanismHash"),
+            },
+        })
+    return candidates, {
+        "path": str(path),
+        "entryCount": len(entries),
+        "matchingEntryCount": len(candidates),
+    }
 
 
 def main() -> int:
@@ -58,10 +106,18 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--solution-bank",
+        type=Path,
+        help=(
+            "Optional learned complete-architecture bank. When omitted, OPUS_SOLUTION_BANK and "
+            "database/learned-solution-bank.json are discovered automatically."
+        ),
+    )
+    parser.add_argument(
         "--composition-limit",
         type=int,
         default=10,
-        help="Maximum learned assemblies attempted by the autonomous composition fallback.",
+        help="Maximum learned fragment assemblies attempted by the autonomous knowledge portfolio.",
     )
     parser.add_argument(
         "--objective",
@@ -97,6 +153,7 @@ def main() -> int:
         )
 
     puzzle = parse_puzzle(args.puzzle)
+    puzzle_file = _puzzle_file_id(puzzle)
     flow_path = _resolve_index_path(
         args.flow_index,
         environment_name="OPUS_FLOW_INDEX",
@@ -109,6 +166,11 @@ def main() -> int:
     )
     if fragment_path is None:
         fragment_path = flow_path
+    solution_bank_path = _resolve_index_path(
+        args.solution_bank,
+        environment_name="OPUS_SOLUTION_BANK",
+        defaults=_DEFAULT_SOLUTION_BANK_CANDIDATES,
+    )
 
     flow_index = (
         json.loads(flow_path.read_text(encoding="utf-8"))
@@ -119,6 +181,10 @@ def main() -> int:
         json.loads(fragment_path.read_text(encoding="utf-8"))
         if fragment_path is not None
         else None
+    )
+    architecture_candidates, solution_bank_resolution = _load_solution_bank(
+        solution_bank_path,
+        puzzle_file=puzzle_file,
     )
 
     with TemporaryDirectory(prefix="opus-autonomous-oracle-") as oracle_temp_name:
@@ -143,6 +209,7 @@ def main() -> int:
             objective=args.objective,
             oracle_validator=omsim_validator if args.omsim is not None else None,
             oracle_name="omsim" if args.omsim is not None else "oracle",
+            architecture_candidates=architecture_candidates,
         )
 
     result.write(args.output)
@@ -153,6 +220,8 @@ def main() -> int:
         "fragmentIndex": str(fragment_path) if fragment_path is not None else None,
         "flowIndexExplicit": args.flow_index is not None,
         "fragmentIndexExplicit": args.fragment_index is not None,
+        "solutionBank": solution_bank_resolution,
+        "solutionBankExplicit": args.solution_bank is not None,
     }
     report["oracleResolution"] = {
         "enabled": args.omsim is not None,
@@ -168,6 +237,10 @@ def main() -> int:
         "puzzle": result.puzzle_name,
         "strategy": result.strategy,
         "route": result.validation.get("solverRoute"),
+        "selectedCandidate": {
+            "id": result.validation.get("selectedCandidateId"),
+            "source": result.validation.get("selectedCandidateSource"),
+        },
         "objective": result.validation.get("optimizationObjective"),
         "metricSource": result.validation.get("optimizationMetricSource"),
         "localMetrics": result.validation.get("localCandidateMetrics"),
