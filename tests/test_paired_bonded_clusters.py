@@ -66,25 +66,25 @@ class PairedBondedClustersTests(unittest.TestCase):
             for operation in plan.operations
             if operation.kind == "transform"
         ))
-        source_roles = {
-            operation.metadata.get("branchRole"): operation.metadata.get("reagentIndex")
+        source_groups = {
+            operation.metadata.get("interchangeableSourceGroup")
             for operation in plan.operations
             if operation.kind == "source"
         }
-        self.assertEqual(source_roles, {"direct": 0, "calcifying": 1})
+        self.assertEqual(source_groups, {"homologous-bonded-clusters"})
 
-    def test_maps_calcifying_branch_to_calcified_cluster_source(self) -> None:
+    def test_maps_interchangeable_sources_deterministically(self) -> None:
         plan = build_manufacturing_plan(_aqueous_like_puzzle())
         candidate = {
             "branches": [
+                [{"relation": "calcify"}, {"relation": "calcify"}],
                 [{"relation": "calcify"}],
-                [{"relation": "bond-created"}],
             ],
-            "convergence": {"inputs": [{}, {}]},
+            "convergence": {"inputs": [{"relations": ["calcify"]}, {"relations": ["calcify"]}]},
         }
-        self.assertEqual(assign_branch_reagent_indices(candidate, plan), {0: 1, 1: 0})
+        self.assertEqual(assign_branch_reagent_indices(candidate, plan), {0: 0, 1: 1})
 
-    def test_maps_calcifying_branch_when_branch_order_is_reversed(self) -> None:
+    def test_interchangeable_mapping_does_not_depend_on_branch_chemistry(self) -> None:
         plan = build_manufacturing_plan(_aqueous_like_puzzle())
         candidate = {
             "branches": [
@@ -94,18 +94,6 @@ class PairedBondedClustersTests(unittest.TestCase):
             "convergence": {"inputs": [{}, {}]},
         }
         self.assertEqual(assign_branch_reagent_indices(candidate, plan), {0: 0, 1: 1})
-
-    def test_rejects_ambiguous_cluster_branch_routing(self) -> None:
-        plan = build_manufacturing_plan(_aqueous_like_puzzle())
-        candidate = {
-            "branches": [
-                [{"relation": "bond-created"}],
-                [{"relation": "bond-created"}],
-            ],
-            "convergence": {"inputs": [{}, {}]},
-        }
-        with self.assertRaisesRegex(ValueError, "exactly one calcifying source branch"):
-            assign_branch_reagent_indices(candidate, plan)
 
     def test_rejects_cluster_when_calcification_is_unavailable(self) -> None:
         puzzle = _aqueous_like_puzzle()

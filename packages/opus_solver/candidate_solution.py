@@ -64,9 +64,10 @@ def assign_branch_reagent_indices(candidate: dict[str, Any], plan: Manufacturing
     """Resolve each source branch to a target reagent without puzzle-specific IDs.
 
     Atom-flow plans keep their established chemistry mapping. Source-operation
-    plans may instead label source roles such as ``direct`` and ``calcifying``;
-    those roles are matched to replay-observed relations on each assembly
-    branch. Ambiguous mappings fail rather than silently reusing a donor input.
+    plans may mark chemically equivalent reagents as one interchangeable source
+    group; those sources are assigned deterministically to branches because any
+    bijection is chemically valid. Non-interchangeable role-labelled sources
+    may still be resolved from replay-observed branch relations.
     """
     branch_count = len(candidate.get("branches", []))
     if branch_count <= 0:
@@ -89,6 +90,20 @@ def assign_branch_reagent_indices(candidate: dict[str, Any], plan: Manufacturing
     source_indices = sorted({int(operation.metadata["reagentIndex"]) for operation in source_operations})
     if len(source_indices) == 1:
         return {branch_index: source_indices[0] for branch_index in range(branch_count)}
+
+    interchangeable_groups = {
+        str(operation.metadata.get("interchangeableSourceGroup") or "")
+        for operation in source_operations
+    } - {""}
+    if (
+        len(interchangeable_groups) == 1
+        and all(operation.metadata.get("interchangeableSourceGroup") for operation in source_operations)
+        and len(source_indices) == branch_count
+    ):
+        return {
+            branch_index: reagent_index
+            for branch_index, reagent_index in zip(range(branch_count), source_indices)
+        }
 
     role_to_reagent = {
         str(operation.metadata.get("branchRole") or ""): int(operation.metadata["reagentIndex"])

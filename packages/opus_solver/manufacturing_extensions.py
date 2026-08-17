@@ -47,7 +47,8 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
     puzzle name or file hash. Two identical homogeneous classical-element
     reagents may form a product containing one unchanged copy and one
     bond-preserving salt copy, with one or more new normal bonds between the
-    two clusters.
+    two clusters. Because the reagent molecules are homologous, their source
+    indices are explicitly marked as interchangeable for later assembly reuse.
     """
 
     products = list(puzzle.get("products") or ())
@@ -110,6 +111,7 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
     if not cross_bonds:
         return None
 
+    interchangeable_group = "homologous-bonded-clusters"
     operations: list[ManufacturingOperation] = [
         ManufacturingOperation(
             "source-direct-cluster",
@@ -121,6 +123,7 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
                 "element": source_element,
                 "atomCount": cluster_size,
                 "branchRole": "direct",
+                "interchangeableSourceGroup": interchangeable_group,
             },
         ),
         ManufacturingOperation(
@@ -133,6 +136,7 @@ def paired_bonded_clusters_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | N
                 "element": source_element,
                 "atomCount": cluster_size,
                 "branchRole": "calcifying",
+                "interchangeableSourceGroup": interchangeable_group,
             },
         ),
     ]
