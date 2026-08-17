@@ -1,0 +1,145 @@
+name: Build generic training flow knowledge
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/build-generic-training-flow.yml
+      - tools/normalize_campaign_flow_audit.py
+      - tools/build_engine_fragment_flow_index.py
+      - packages/opus_analysis/engine_fragment_flow.py
+      - packages/opus_engine/**
+      - packages/opus_parser/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  SOURCE_RUN_ID: "31314985141"
+  SOURCE_ARTIFACT: training-corpus-campaign-31314985141
+  CHECKPOINT_ROOT: .training-checkpoint
+  CAMPAIGN_ROOT: .training-checkpoint/.datasets/campaign-corpus
+  REPORT_ROOT: reports/generic-training-flow
+
+jobs:
+  campaign-flow:
+    name: Replay engine-complete campaign solutions
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run chemistry planner unit tests
+        run: python -m unittest tests.test_generic_singleton_chemistry -v
+
+      - name: Download authorized campaign training checkpoint
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.SOURCE_ARTIFACT }}
+          path: ${{ env.CHECKPOINT_ROOT }}
+          github-token: ${{ github.token }}
+          repository: Fandalah-tech/opus-magnum-pattern-library
+          run-id: ${{ env.SOURCE_RUN_ID }}
+
+      - name: Verify checkpoint inventory
+        run: |
+          test -s "$CAMPAIGN_ROOT/index.json"
+          test -s "$CHECKPOINT_ROOT/reports/campaign-corpus-audit.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          index = json.loads(Path('.training-checkpoint/.datasets/campaign-corpus/index.json').read_text())
+          audit = json.loads(Path('.training-checkpoint/reports/campaign-corpus-audit.json').read_text())
+          assert index['solutionFileCount'] == 1049
+          assert audit['summary']['engineComplete'] == 583
+          print({'solutions': index['solutionFileCount'], 'engineComplete': audit['summary']['engineComplete']})
+          PY
+
+      - name: Normalize campaign audit for generic flow learner
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          python tools/normalize_campaign_flow_audit.py \
+            --campaign-root "$CAMPAIGN_ROOT" \
+            --index "$CAMPAIGN_ROOT/index.json" \
+            --audit "$CHECKPOINT_ROOT/reports/campaign-corpus-audit.json" \
+            --output "$REPORT_ROOT/campaign-flow-audit.json"
+
+      - name: Relearn flow knowledge with P016 held out
+        id: learn
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/build_engine_fragment_flow_index.py \
+            --audit "$REPORT_ROOT/campaign-flow-audit.json" \
+            --output "$REPORT_ROOT/campaign-flow-index.json" \
+            --workers 8 \
+            --sample-limit 2 \
+            --exclude-puzzle-id P016
+
+      - name: Assert source isolation and summarize vocabulary
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('reports/generic-training-flow/campaign-flow-index.json')
+          assert path.exists() and path.stat().st_size > 0
+          index = json.loads(path.read_text(encoding='utf-8'))
+          summary = index['summary']
+          source_filter = index['sourceFilter']
+          assert source_filter['strictSourceFiltering'] is True
+          assert 'P016' in source_filter['requestedExcludedPuzzleIds']
+          assert 'p016' in source_filter['matchedExcludedPuzzleIds']
+          assert source_filter['excludedByPuzzleCount'] > 0
+          leaked = []
+          for transition in index.get('transitions', []):
+              if any(str(p).lower().removesuffix('.puzzle') == 'p016' for p in transition.get('sourcePuzzles', [])):
+                  leaked.append(('transition', transition.get('relation')))
+          for fragment in index.get('fragments', []):
+              if any(str(p).lower().removesuffix('.puzzle') == 'p016' for p in fragment.get('sourcePuzzles', [])):
+                  leaked.append(('fragment', fragment.get('role')))
+          for motif in index.get('convergenceMotifs', []):
+              if any(str(p).lower().removesuffix('.puzzle') == 'p016' for p in motif.get('sourcePuzzles', [])):
+                  leaked.append(('convergence', motif.get('targetRole')))
+          assert not leaked, leaked[:10]
+          payload = {
+              'sourceRunId': 31314985141,
+              'engineCompleteBeforeExclusion': source_filter['engineCompleteSolutionCountBeforeExclusion'],
+              'excludedP016Solutions': source_filter['excludedByPuzzleCount'],
+              'eligible': source_filter['eligibleEngineCompleteSolutionCount'],
+              'replayValidated': summary['replayValidatedSolutionCount'],
+              'validationDrift': summary['validationDriftCount'],
+              'errors': summary['errorCount'],
+              'fragments': summary['canonicalFragmentCount'],
+              'transitions': summary['canonicalTransitionCount'],
+              'convergences': summary['canonicalConvergenceMotifCount'],
+              'relations': summary['relationCounts'],
+          }
+          Path('reports/generic-training-flow/summary.json').write_text(
+              json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
+          )
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Generic campaign flow knowledge\n\n')
+              for key, value in payload.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
+
+      - name: Upload generic training flow checkpoint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generic-training-flow-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 30
