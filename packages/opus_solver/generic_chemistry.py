@@ -19,6 +19,8 @@ class ElementRecipe:
     cost: int
     depth: int
     reagent_index: int | None = None
+    reagent_atom_index: int | None = None
+    extraction_bond_count: int = 0
     inputs: tuple["ElementRecipe", ...] = ()
     glyph: str | None = None
     byproducts: tuple[str, ...] = ()
@@ -80,15 +82,38 @@ def _connected_normal_bonds(
     return ordered if connected == positions else None
 
 
+def _normal_atom_degrees(molecule: dict[str, Any]) -> dict[tuple[int, int], int] | None:
+    atoms = list(molecule.get("atoms") or ())
+    positions = {_position(atom) for atom in atoms}
+    if len(positions) != len(atoms):
+        return None
+    degrees = {position: 0 for position in positions}
+    for bond in molecule.get("bonds") or ():
+        if str(bond.get("type") or "normal") != "normal":
+            return None
+        first = _position({"position": bond.get("from")})
+        second = _position({"position": bond.get("to")})
+        if first == second or first not in positions or second not in positions:
+            return None
+        degrees[first] += 1
+        degrees[second] += 1
+    return degrees
+
+
 def _route_key(route: ElementRecipe) -> tuple[int, int, int, str]:
-    return route.cost, route.depth, 0 if route.kind == "source" else 1, route.kind
+    source_priority = 0 if route.kind == "source" else 1 if route.kind == "extract" else 2
+    return route.cost, route.depth, source_priority, route.kind
 
 
 def build_element_recipes(puzzle: dict[str, Any]) -> dict[str, ElementRecipe]:
-    """Find cheap element recipes using the standard OM reaction network.
+    """Find cheap element recipes using renewable reagent molecules and OM chemistry.
 
-    This is a chemistry feasibility layer only: physical placement and timing
-    remain the responsibility of the downstream composer/synthesizer.
+    Reagent glyphs are renewable molecule feeds, not merely singleton atom
+    feeds.  When an atom is embedded in a normal-bond reagent and an unbonder
+    is available, the planner may isolate a fresh copy of that atom by removing
+    each incident bond.  The physical composer still decides how to transport
+    the residual fragment; this layer only proves chemical reachability and
+    exposes the required bond-removal relations explicitly.
     """
 
     reagents = list(puzzle.get("reagents") or ())
@@ -99,13 +124,40 @@ def build_element_recipes(puzzle: dict[str, Any]) -> dict[str, ElementRecipe]:
     routes: dict[str, ElementRecipe] = {}
     for reagent_index, reagent in enumerate(reagents):
         atoms = list(reagent.get("atoms") or ())
-        if len(atoms) != 1 or reagent.get("bonds"):
+        if not atoms:
             continue
-        element = str(atoms[0].get("element") or "")
-        candidate = ElementRecipe(element, "source", 1, 0, reagent_index=reagent_index)
-        existing = routes.get(element)
-        if existing is None or _route_key(candidate) < _route_key(existing):
-            routes[element] = candidate
+        degrees = _normal_atom_degrees(reagent)
+        if degrees is None:
+            continue
+        bonded = bool(reagent.get("bonds"))
+        for atom_index, atom in enumerate(atoms):
+            element = str(atom.get("element") or "")
+            degree = int(degrees[_position(atom)])
+            if len(atoms) == 1 and not bonded:
+                candidate = ElementRecipe(
+                    element,
+                    "source",
+                    1,
+                    0,
+                    reagent_index=reagent_index,
+                    reagent_atom_index=atom_index,
+                )
+            else:
+                if degree > 0 and "unbonder" not in glyphs:
+                    continue
+                candidate = ElementRecipe(
+                    element,
+                    "extract",
+                    1 + degree,
+                    degree,
+                    reagent_index=reagent_index,
+                    reagent_atom_index=atom_index,
+                    extraction_bond_count=degree,
+                    glyph="unbonder" if degree else None,
+                )
+            existing = routes.get(element)
+            if existing is None or _route_key(candidate) < _route_key(existing):
+                routes[element] = candidate
 
     def propose(
         element: str,
@@ -201,7 +253,7 @@ def _materialize_recipe(
         serial[0] += 1
         return f"{prefix}-{value}"
 
-    if route.kind == "source":
+    if route.kind in {"source", "extract"}:
         output = next_id("feed")
         operations.append(ManufacturingOperation(
             id=next_id("source"),
@@ -210,13 +262,35 @@ def _materialize_recipe(
             outputs=(output,),
             metadata={
                 "reagentIndex": route.reagent_index,
+                "reagentAtomIndex": route.reagent_atom_index,
                 "element": route.element,
                 "reusableSource": True,
                 "productIndex": product_index,
                 "productAtomIndex": atom_index,
+                "extractFromReagentMolecule": route.kind == "extract",
+                "extractionBondCount": route.extraction_bond_count,
             },
         ))
-        return output
+        current = output
+        for extraction_step in range(route.extraction_bond_count):
+            extracted = next_id("extracted")
+            operations.append(ManufacturingOperation(
+                id=next_id("unbond"),
+                kind="unbond",
+                inputs=(current,),
+                outputs=(extracted,),
+                glyph="unbonder",
+                metadata={
+                    "reagentIndex": route.reagent_index,
+                    "reagentAtomIndex": route.reagent_atom_index,
+                    "element": route.element,
+                    "extractionStep": extraction_step,
+                    "extractionBondCount": route.extraction_bond_count,
+                    "chemistryOnlyRecipe": True,
+                },
+            ))
+            current = extracted
+        return current
 
     input_ids = tuple(
         _materialize_recipe(
@@ -249,14 +323,12 @@ def _materialize_recipe(
 
 
 def generic_singleton_chemistry_plan(puzzle: dict[str, Any]) -> ManufacturingPlan | None:
-    """Plan connected normal-bond products from renewable singleton reagents."""
+    """Plan normal-bond products from renewable singleton or bonded reagents."""
 
     reagents = list(puzzle.get("reagents") or ())
     products = list(puzzle.get("products") or ())
     glyphs = set((puzzle.get("availableParts") or {}).get("glyphs") or ())
     if not reagents or not products:
-        return None
-    if any(len(reagent.get("atoms") or ()) != 1 or reagent.get("bonds") for reagent in reagents):
         return None
 
     product_bonds: list[list[tuple[tuple[int, int], tuple[int, int]]]] = []
@@ -343,8 +415,12 @@ def generic_singleton_chemistry_plan(puzzle: dict[str, Any]) -> ManufacturingPla
             metadata={"productIndex": product_index},
         ))
 
+    extracted = any(
+        operation.kind == "source" and operation.metadata.get("extractFromReagentMolecule")
+        for operation in operations
+    )
     return ManufacturingPlan(
-        strategy="generic-singleton-chemistry-v1",
+        strategy="generic-reagent-chemistry-v1" if extracted else "generic-singleton-chemistry-v1",
         supported=True,
         reason=None,
         product_index=0,
