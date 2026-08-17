@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "0.2.0",
   "kind": "critelli-learned-regression-fixture",
   "eventId": "31a11c8c2b284d8f0664f3f069f9e11e",
   "sourcePage": "https://events.critelli.technology/submissions/31a11c8c2b284d8f0664f3f069f9e11e",
@@ -84,11 +84,32 @@
       "productsDelivered": 7
     }
   ],
+  "objectiveSpecializedFixtures": [
+    {
+      "file": "objective-specialized/cga-15c-230g-76a.solution",
+      "objective": "cga",
+      "architectureId": "critelli-cga-b24ab6d6a456",
+      "referenceMetrics": {"cycles": 15, "cost": 230, "area": 76, "instructions": 89},
+      "sha256": "7d35e0f58ab612f173a36f9900cf2c154f52eaad4bbeb1a2161406fc65814ed4",
+      "canonicalStructuralHash": "b24ab6d6a456b391f6aa03bf7e13668d0f2a2002e1cda7fd716ba2aa2794d4a6",
+      "canonicalMechanismHash": "b24ab6d6a456b391f6aa03bf7e13668d0f2a2002e1cda7fd716ba2aa2794d4a6",
+      "engineRequestedCycles": 119,
+      "productsDelivered": 42,
+      "provenance": {
+        "kind": "critelli-event-derived-blueprint",
+        "sourceSolutionSha256": "5019af3553475be4e1444fb7943b9b4c7089b91baee8a1b1a9072e5b2cf5c99f",
+        "submissionId": "cd64caf8dfe125b2347b60fbeb0b9a52116995c4ff7a8792f89c6af283cb33b9",
+        "materializedFromLearnedBlueprint": true,
+        "originalSolutionBytesCommitted": false
+      }
+    }
+  ],
   "regeneration": {
     "eventImporter": "tools/import_critelli_event.py",
     "engineFlowBuilder": "tools/build_engine_fragment_flow_index.py",
     "composer": "tools/generate_composed_candidates.py",
     "noveltyCheck": "tools/assess_composed_novelty.py",
-    "objectivePortfolioLearner": "tools/learn_critelli_metric_portfolio.py"
+    "objectivePortfolioLearner": "tools/learn_critelli_metric_portfolio.py",
+    "portfolioMaterializer": "tools/validate_critelli_portfolio_materialization.py"
   }
 }
