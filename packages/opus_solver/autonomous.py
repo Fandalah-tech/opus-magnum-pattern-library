@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 from copy import deepcopy
-from typing import Any, Callable
+from typing import Any, Callable, Iterable
 
 from packages.opus_analysis import build_program_timeline
 from packages.opus_engine import Simulator
@@ -68,13 +68,7 @@ def _local_completion_cycle(
     solution: dict[str, Any],
     validation: dict[str, Any],
 ) -> tuple[int | None, dict[str, int]]:
-    """Return the first local cycle where every standard product reaches six.
-
-    The local engine event carries a product index, so multiple outputs feeding
-    the same product are aggregated exactly like validate_generated_solution.
-    This is a local ranking signal; an external oracle such as OMSim remains
-    authoritative for official leaderboard cycle metrics.
-    """
+    """Return the first local cycle where every standard product reaches six."""
 
     required_products = {
         int(part.get("which") or 0)
@@ -166,7 +160,8 @@ def _candidate_objective_key(
     if objective == "instructions":
         return instructions, cycles, parts, -assembly_score, rank
     if objective == "balanced":
-        return -assembly_score, cycles, instructions, parts, rank
+        source_bias = 0 if record.get("candidateSource") == "fragment-composition" else 1
+        return source_bias, -assembly_score, cycles, instructions, parts, rank
     raise ValueError(
         f"Objective {objective!r} requires an authoritative oracle; local objectives are {LOCAL_OBJECTIVES}"
     )
@@ -214,6 +209,54 @@ def _score_complete_candidates_with_oracle(
     return valid, scored
 
 
+def _learned_architecture_records(
+    puzzle: dict[str, Any],
+    candidates: Iterable[dict[str, Any]],
+    *,
+    starting_rank: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    complete: list[dict[str, Any]] = []
+    diagnostics: list[dict[str, Any]] = []
+    for offset, candidate in enumerate(candidates):
+        rank = starting_rank + offset
+        candidate_id = str(candidate.get("id") or f"learned-architecture-{offset + 1}")
+        record: dict[str, Any] = {
+            "rank": rank,
+            "candidateId": candidate_id,
+            "candidateSource": "learned-architecture-bank",
+            "candidateKind": "learned-complete-architecture",
+            "assemblyScore": None,
+            "focusObjectives": list(candidate.get("focusObjectives") or ()),
+            "referenceMetrics": deepcopy(candidate.get("referenceMetrics") or {}),
+            "provenance": deepcopy(candidate.get("provenance") or {}),
+        }
+        try:
+            solution = deepcopy(candidate["solution"])
+            solution.setdefault("source", {})["generator"] = "opus_solver/learned-architecture-bank-v1"
+            solution["name"] = f"Opus Solver - learned architecture {candidate_id}"
+            roundtrip = serialize_candidate_roundtrip(solution)
+            record["serialization"] = deepcopy(roundtrip["diagnostics"])
+            validation = validate_generated_solution(puzzle, roundtrip["parsed"])
+            record["validation"] = deepcopy(validation)
+            if not validation.get("complete"):
+                diagnostics.append(record)
+                continue
+            record["solution"] = roundtrip["parsed"]
+            record["localMetrics"] = _local_candidate_metrics(
+                puzzle,
+                roundtrip["parsed"],
+                validation,
+            )
+            complete.append(record)
+        except Exception as error:
+            record["error"] = {
+                "type": type(error).__name__,
+                "message": str(error),
+            }
+            diagnostics.append(record)
+    return complete, diagnostics
+
+
 def solve_puzzle_from_knowledge(
     puzzle: dict[str, Any],
     flow_index: dict[str, Any],
@@ -223,15 +266,9 @@ def solve_puzzle_from_knowledge(
     objective: str = "balanced",
     oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
     oracle_name: str = "oracle",
+    architecture_candidates: Iterable[dict[str, Any]] = (),
 ) -> SolveResult:
-    """Compose, validate, and rank puzzle solutions from learned evidence.
-
-    This intentionally uses only the target puzzle plus a reusable fragment-flow
-    knowledge index. Source solution bytes are not read by this stage. When an
-    authoritative oracle is supplied, all complete local candidates are scored
-    by that oracle and the established multi-metric objective ordering is used.
-    Otherwise only local cycles/instructions/balanced ranking is available.
-    """
+    """Rank learned complete architectures and fresh fragment compositions together."""
 
     _validate_objective(objective, oracle_validator=oracle_validator)
 
@@ -240,18 +277,29 @@ def solve_puzzle_from_knowledge(
         raise UnsupportedPuzzleError(plan.reason or "Puzzle is not supported by the manufacturing planner")
 
     fragments = fragment_index or flow_index
+    architecture_candidates = list(architecture_candidates)
+    architecture_complete, architecture_diagnostics = _learned_architecture_records(
+        puzzle,
+        architecture_candidates,
+        starting_rank=1,
+    )
+
     assemblies = _composition_assemblies(
         plan,
         flow_index,
         fragments,
         limit=limit,
     )
-    diagnostics: list[dict[str, Any]] = []
-    complete: list[dict[str, Any]] = []
+    diagnostics: list[dict[str, Any]] = [*architecture_diagnostics]
+    complete: list[dict[str, Any]] = [*architecture_complete]
+    first_assembly_rank = len(architecture_candidates) + 1
 
-    for rank, assembly in enumerate(assemblies, start=1):
+    for offset, assembly in enumerate(assemblies):
+        rank = first_assembly_rank + offset
         record: dict[str, Any] = {
             "rank": rank,
+            "candidateId": f"fragment-composition-{offset + 1}",
+            "candidateSource": "fragment-composition",
             "candidateKind": assembly.get("candidateKind"),
             "assemblyScore": assembly.get("score"),
         }
@@ -294,8 +342,8 @@ def solve_puzzle_from_knowledge(
 
     if not complete:
         raise GeneratedSolutionError(
-            "Knowledge composition did not produce a complete solution: "
-            f"tested={len(assemblies)} diagnostics={diagnostics[:3]}"
+            "Knowledge portfolio did not produce a complete solution: "
+            f"tested={len(architecture_candidates) + len(assemblies)} diagnostics={diagnostics[:3]}"
         )
 
     oracle_scored_count = 0
@@ -322,16 +370,29 @@ def solve_puzzle_from_knowledge(
         ),
     )
     validation = selected["validation"]
+    selected_source = str(selected.get("candidateSource") or "fragment-composition")
+    solver_route = (
+        "knowledge-architecture-bank-v1"
+        if selected_source == "learned-architecture-bank"
+        else "knowledge-fragment-composition-v1"
+    )
     resolved_validation = {
         **validation,
-        "solverRoute": "knowledge-fragment-composition-v1",
+        "solverRoute": solver_route,
         "optimizationObjective": objective,
         "optimizationMetricSource": oracle_name if use_oracle else "opus-engine-local",
         "compositionCandidateRank": selected["rank"],
         "compositionAssemblyScore": selected.get("assemblyScore"),
         "compositionCandidateKind": selected.get("candidateKind"),
         "compositionCompleteCandidateCount": len(complete),
-        "compositionTestedCandidateCount": len(assemblies),
+        "compositionTestedCandidateCount": len(architecture_candidates) + len(assemblies),
+        "architectureSeedCandidateCount": len(architecture_candidates),
+        "architectureSeedCompleteCount": len(architecture_complete),
+        "fragmentAssemblyCandidateCount": len(assemblies),
+        "selectedCandidateId": selected.get("candidateId"),
+        "selectedCandidateSource": selected_source,
+        "selectedFocusObjectives": list(selected.get("focusObjectives") or ()),
+        "selectedReferenceMetrics": deepcopy(selected.get("referenceMetrics") or {}),
         "localCandidateMetrics": selected["localMetrics"],
         "oracleScoredCandidateCount": oracle_scored_count,
         "oracleValidCandidateCount": oracle_valid_count,
@@ -348,7 +409,7 @@ def solve_puzzle_from_knowledge(
 
     return SolveResult(
         puzzle_name=str(puzzle.get("name") or puzzle.get("id") or "generated-puzzle"),
-        strategy=f"{plan.strategy}+knowledge-composition-v1",
+        strategy=f"{plan.strategy}+knowledge-portfolio-v1",
         plan=plan,
         solution=selected["solution"],
         validation=resolved_validation,
@@ -364,8 +425,9 @@ def solve_puzzle_auto(
     objective: str = "balanced",
     oracle_validator: Callable[[dict[str, Any]], dict[str, Any]] | None = None,
     oracle_name: str = "oracle",
+    architecture_candidates: Iterable[dict[str, Any]] = (),
 ) -> SolveResult:
-    """Use the direct generator first, then learned composition when available."""
+    """Use the direct generator first, then the multi-level learned portfolio."""
 
     _validate_objective(objective, oracle_validator=oracle_validator)
 
@@ -413,4 +475,5 @@ def solve_puzzle_auto(
         objective=objective,
         oracle_validator=oracle_validator,
         oracle_name=oracle_name,
+        architecture_candidates=architecture_candidates,
     )
