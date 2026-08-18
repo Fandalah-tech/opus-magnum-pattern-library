@@ -5,6 +5,7 @@ from typing import Any
 
 from packages.opus_engine.builder import DIRECTIONS, rotate_hex
 
+from .initial_overlap_repair import search_initial_arm_base_repairs
 from .input_footprint_repair import replay_summary
 from .output_placement import add_standard_output, product_output_opportunities
 from .solver import validate_generated_solution
@@ -39,8 +40,6 @@ def _singleton_world_position(product: dict[str, Any], opportunity: dict[str, An
 
 
 def _dedupe_observed_products(opportunities: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Keep the earliest pose per physical molecule and target product."""
-
     selected: dict[tuple[int, tuple[str, ...]], dict[str, Any]] = {}
     anonymous: list[dict[str, Any]] = []
     for item in opportunities:
@@ -65,8 +64,6 @@ def _dedupe_observed_products(opportunities: list[dict[str, Any]]) -> list[dict[
 
 
 def _layout_extent(solution: dict[str, Any]) -> tuple[int, int]:
-    """Return a conservative positive edge including explicit track/pipe cells."""
-
     cells: list[tuple[int, int]] = []
     for part in solution.get("parts", []) or []:
         origin = _position(part.get("position"))
@@ -85,14 +82,7 @@ def ensure_all_standard_outputs(
     *,
     reserve_margin: int = 8,
 ) -> dict[str, Any]:
-    """Place one legal output part for every puzzle product contract.
-
-    OMSim refuses to evaluate product metrics until every puzzle product has at
-    least one corresponding output part. Missing outputs are therefore placed
-    in a conservative reserve area outside the inherited mechanism. These are
-    completeness placeholders, not target-solution geometry: the first-product
-    transport search still derives its active output from generated replay.
-    """
+    """Place exactly one or more output references covering every product index."""
 
     result = deepcopy(solution)
     products = list(puzzle.get("products", []) or [])
@@ -110,9 +100,11 @@ def ensure_all_standard_outputs(
     for product in products:
         positions = [_position(atom.get("position")) for atom in product.get("atoms", []) or []]
         if positions:
-            span_u = max(p[0] for p in positions) - min(p[0] for p in positions) + 1
-            span_v = max(p[1] for p in positions) - min(p[1] for p in positions) + 1
-            max_span = max(max_span, span_u, span_v)
+            max_span = max(
+                max_span,
+                max(p[0] for p in positions) - min(p[0] for p in positions) + 1,
+                max(p[1] for p in positions) - min(p[1] for p in positions) + 1,
+            )
     spacing = max(4, max_span + 3)
     start = (max_u + int(reserve_margin), max_v + int(reserve_margin))
 
@@ -141,6 +133,44 @@ def ensure_all_standard_outputs(
     return result
 
 
+def _place_or_reuse_output(
+    solution: dict[str, Any],
+    opportunity: dict[str, Any],
+) -> dict[str, Any]:
+    """Reuse an inherited output for the same product before appending a new one.
+
+    OMSim expects the total number of output parts to equal the puzzle's output
+    count. Reusing an existing same-product output prevents a temporary duplicate
+    from making an otherwise complete candidate undecodable.
+    """
+
+    result = deepcopy(solution)
+    product_index = int(opportunity.get("productIndex") or 0)
+    existing = next(
+        (
+            part for part in result.get("parts", []) or []
+            if str(part.get("type") or "") == "out-std"
+            and int(part.get("which") or 0) == product_index
+        ),
+        None,
+    )
+    if existing is None:
+        return add_standard_output(result, opportunity)
+    existing["position"] = [int(value) for value in opportunity.get("origin", (0, 0))]
+    existing["rotation"] = int(opportunity.get("rotation") or 0) % 6
+    source = result.setdefault("source", {})
+    source["generator"] = "opus_solver/trace-guided-output-reuse-v1"
+    source.setdefault("outputPlacementRepairs", []).append({
+        "mode": "reuse-existing-output",
+        "outputPartId": str(existing.get("id") or ""),
+        "productIndex": product_index,
+        "origin": deepcopy(existing["position"]),
+        "rotation": int(existing["rotation"]),
+        "targetSolutionBytesUsed": 0,
+    })
+    return result
+
+
 def add_singleton_product_extractor(
     puzzle: dict[str, Any],
     solution: dict[str, Any],
@@ -150,8 +180,6 @@ def add_singleton_product_extractor(
     motion_instruction: str,
     grab_cycle: int | None = None,
 ) -> dict[str, Any]:
-    """Move an observed singleton product one arm rotation into an output."""
-
     products = list(puzzle.get("products", []) or [])
     product_index = int(opportunity.get("productIndex") or 0)
     if not 0 <= product_index < len(products):
@@ -179,7 +207,7 @@ def add_singleton_product_extractor(
         "held": False,
         "evidence": "generated-replay-singleton-extraction-target",
     }
-    result = add_standard_output(solution, output_opportunity)
+    result = _place_or_reuse_output(solution, output_opportunity)
 
     existing_ids = {str(part.get("id") or "") for part in result.get("parts", []) or []}
     serial = 0
@@ -243,10 +271,18 @@ def search_singleton_product_delivery(
     opportunity_limit: int = 60,
     result_limit: int = 20,
 ) -> dict[str, Any]:
-    """Deliver a trace-produced singleton without target solution geometry."""
-
     horizon = max(1, int(max_cycles))
-    baseline_full = replay_summary(puzzle, solution, max_cycles=horizon)
+
+    overlap_search = search_initial_arm_base_repairs(
+        puzzle,
+        solution,
+        max_cycles=horizon,
+        beam_width=6,
+    )
+    repaired_state = overlap_search.get("best")
+    working_solution = deepcopy((repaired_state or {}).get("solution") or solution)
+
+    baseline_full = replay_summary(puzzle, working_solution, max_cycles=horizon)
     replay = baseline_full.pop("replay")
     baseline = baseline_full
     raw_opportunities = product_output_opportunities(puzzle, replay, require_unheld=True)
@@ -274,7 +310,7 @@ def search_singleton_product_delivery(
                     searched += 1
                     candidate = add_singleton_product_extractor(
                         puzzle,
-                        solution,
+                        working_solution,
                         opportunity,
                         base_rotation=base_rotation,
                         motion_instruction=instruction,
@@ -300,10 +336,13 @@ def search_singleton_product_delivery(
     records.sort(key=_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.3.0",
+        "schemaVersion": "0.4.0",
         "kind": "trace-guided-singleton-product-delivery-search",
         "summary": {
             "maxCycles": horizon,
+            "initialArmBaseOverlapCount": int((overlap_search.get("summary") or {}).get("baselineOverlapCount") or 0),
+            "repairedArmBaseOverlapCount": int((overlap_search.get("summary") or {}).get("bestRemainingOverlapCount") or 0),
+            "overlapRepairSucceeded": repaired_state is not None,
             "rawOpportunityCount": len(raw_opportunities),
             "opportunityCount": len(opportunities),
             "searchedVariantCount": searched,
@@ -312,15 +351,17 @@ def search_singleton_product_delivery(
             "baselineProductDeliveredCount": baseline_deliveries,
             "bestProductDeliveredCount": int((selected[0].get("summary") or {}).get("productDeliveredCount") or baseline_deliveries) if selected else baseline_deliveries,
             "hasDelivery": bool(selected),
-            "allProductOutputsPlaced": bool(selected) and all(
-                index in {
-                    int(part.get("which") or 0)
-                    for part in (selected[0].get("solution") or {}).get("parts", []) or []
-                    if str(part.get("type") or "").startswith("out-")
-                }
-                for index in range(len(puzzle.get("products", []) or []))
-            ),
+            "allProductOutputsPlaced": bool(selected) and sum(
+                str(part.get("type") or "").startswith("out-")
+                for part in (selected[0].get("solution") or {}).get("parts", []) or []
+            ) == len(puzzle.get("products", []) or []),
             "targetSolutionBytesUsed": 0,
+        },
+        "overlapRepair": {
+            "summary": overlap_search.get("summary"),
+            "baselineOverlaps": overlap_search.get("baselineOverlaps"),
+            "generations": overlap_search.get("generations"),
+            "bestRepairs": (repaired_state or {}).get("repairs", []),
         },
         "baseline": baseline,
         "opportunities": opportunities,
