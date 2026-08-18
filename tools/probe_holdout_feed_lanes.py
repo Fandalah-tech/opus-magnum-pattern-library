@@ -33,7 +33,24 @@ def _compact_validation(validation: dict[str, Any]) -> dict[str, Any]:
         "atomPurifiedCount": int(counts.get("atom-purified") or 0),
         "eventCounts": dict(counts),
         "manipulationEventCount": int(validation.get("manipulationEventCount") or 0),
+        "blockedInputsAtStart": list(validation.get("blockedInputsAtStart") or []),
         "initialInputStatus": list(validation.get("initialInputStatus") or []),
+    }
+
+
+def _compact_conversion(opportunity: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "skipped": bool(opportunity.get("skipped")),
+        "skipReason": opportunity.get("skipReason"),
+        "freeEqualPairObservationCount": int(opportunity.get("freeEqualPairObservationCount") or 0),
+        "adjacentFreeEqualPairObservationCount": int(opportunity.get("adjacentFreeEqualPairObservationCount") or 0),
+        "readyPurificationPoseObservationCount": int(opportunity.get("readyPurificationPoseObservationCount") or 0),
+        "framesWithReadyPurificationPose": int(opportunity.get("framesWithReadyPurificationPose") or 0),
+        "maxReadyPurificationPosesInFrame": int(opportunity.get("maxReadyPurificationPosesInFrame") or 0),
+        "minFreeEqualPairDistance": opportunity.get("minFreeEqualPairDistance"),
+        "readyPoseCountsByElement": dict(opportunity.get("readyPoseCountsByElement") or {}),
+        "nearestFreeEqualPairSamples": list(opportunity.get("nearestFreeEqualPairSamples") or [])[:8],
+        "readyPurificationSamples": list(opportunity.get("readyPurificationSamples") or [])[:8],
     }
 
 
@@ -95,6 +112,7 @@ def probe(
             "mechanicsPreserved": variant.get("mechanicsPreserved"),
             "serialization": variant.get("serialization"),
             "validation": _compact_validation(variant.get("validation") or {}),
+            "conversionOpportunity": _compact_conversion(variant.get("conversionOpportunity") or {}),
             "errorType": variant.get("errorType"),
             "error": variant.get("error"),
         })
@@ -108,7 +126,7 @@ def probe(
         output_solution = str(solution_output)
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-feed-lane-probe",
         "targetPuzzle": puzzle_path.name,
         "targetSolutionBytesUsed": 0,
