@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.2.0",
   "kind": "heldout-product-delivery-checkpoint",
-  "runId": "32192625686",
-  "sourceCommit": "e838539db83acef82d6e1056dc51565af442f454",
+  "runId": "32194960760",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
   "phase": "local-search",
   "goldRunId": "32190220141",
   "targetSolutionBytesUsed": 0,
