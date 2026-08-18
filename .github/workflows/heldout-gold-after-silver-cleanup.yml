@@ -1,0 +1,157 @@
+name: Blind GEN249 gold after silver cleanup
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-gold-after-silver-cleanup.yml
+      - reports/generated/heldout-24hour-seed/latest-silver-cleanup.json
+      - packages/opus_solver/additive_purification_search.py
+      - packages/opus_solver/reaction_station_synthesis.py
+      - tools/probe_holdout_additive_purification.py
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-gold-after-silver-cleanup-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  SILVER_CLEANUP_POINTER: reports/generated/heldout-24hour-seed/latest-silver-cleanup.json
+  PUZZLE_ROOT: .datasets/heldout-gold-after-silver-cleanup
+  BASELINE_ROOT: .baseline/heldout-gold-after-silver-cleanup
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  REPORT_ROOT: reports/heldout-gold-after-silver-cleanup
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-gold-after-silver-cleanup.json
+
+jobs:
+  synthesis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore target-free silver cleanup frontier
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['SILVER_CLEANUP_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'heldout-silver-cleanup-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert int(pointer['summary']['bestPurificationCount']) >= 3
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/cleanup-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'heldout-silver-cleanup-{sys.argv[2]}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1, (expected_name, [item.get('name') for item in data.get('artifacts', [])])
+          item = matches[0]
+          print(item['id'], str(item['digest']).split(':', 1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"
+          archive="$RUNNER_TEMP/silver-cleanup.zip"
+          curl --fail --location \
+            --retry 8 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          test -s "$BASELINE_ROOT/GEN249-best-silver-cleanup.solution"
+
+      - name: Search additive gold station before next collision
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          python tools/probe_holdout_additive_purification.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline-solution "$BASELINE_ROOT/GEN249-best-silver-cleanup.solution" \
+            --max-cycles 416 \
+            --opportunity-limit 200 \
+            --result-limit 24 \
+            --solution-output "$REPORT_ROOT/GEN249-best-gold.solution" \
+            --output "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist compact gold checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          cleanup = json.loads(Path(os.environ['SILVER_CLEANUP_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-gold-after-silver-cleanup-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'silverCleanupRunId': cleanup.get('runId'),
+              'silverCleanupSourceCommit': cleanup.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'request': report.get('request'),
+              'summary': report.get('summary'),
+              'baselinePurificationProfile': report.get('baselinePurificationProfile'),
+              'opportunities': report.get('opportunities'),
+              'variants': report.get('variants'),
+              'bestSolutionOutput': report.get('bestSolutionOutput'),
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update blind gold-after-cleanup checkpoint [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Upload gold artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-gold-after-silver-cleanup-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
