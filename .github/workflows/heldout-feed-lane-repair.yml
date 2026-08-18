@@ -11,8 +11,10 @@ on:
       - tools/probe_holdout_feed_lanes.py
       - packages/opus_solver/feed_lane_repair.py
       - packages/opus_solver/conversion_opportunities.py
+      - packages/opus_solver/product_contract.py
       - tests/test_feed_lane_repair.py
       - tests/test_conversion_opportunities.py
+      - tests/test_product_contract.py
       - packages/opus_solver/required_chemistry.py
       - packages/opus_solver/__init__.py
       - packages/opus_solver/candidate_solution.py
@@ -53,10 +55,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Test feed lane and conversion gradient
+      - name: Test feed lane, conversion gradient, and product contract
         run: |
           python -m unittest tests.test_feed_lane_repair -v
           python -m unittest tests.test_conversion_opportunities -v
+          python -m unittest tests.test_product_contract -v
 
       - name: Fetch GEN249 puzzle bytes only
         run: |
@@ -147,7 +150,7 @@ jobs:
           report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
           pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
           payload = {
-              'schemaVersion': '0.2.0',
+              'schemaVersion': '0.3.0',
               'kind': 'heldout-feed-lane-checkpoint',
               'runId': os.environ.get('GITHUB_RUN_ID'),
               'sourceCommit': os.environ.get('GITHUB_SHA'),
