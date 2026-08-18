@@ -27,6 +27,7 @@ CONVERSION_TYPES = {
 }
 DISPOSAL_TYPES = {"disposal", "glyph-disposal"}
 CONDUIT_TYPES = {"pipe"}
+ARM_ASSOCIATION_RELATIONS = {"within-arm-reach", "within-track-arm-reach", "shared-hex"}
 
 
 def functional_role(part_type: str) -> str | None:
@@ -88,10 +89,12 @@ def _geometry(payload: dict[str, Any], anchor_type: str, anchor_part_id: str) ->
 def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]:
     """Extract local functional fragments around non-transfer anchor parts.
 
-    Every fragment now retains a canonical relative geometry payload in addition
-    to its hashes. The payload is translation/rotation invariant and program
-    timing is normalized, making it a transplantable mechanism template rather
-    than only a database identity.
+    Every fragment retains a canonical relative geometry payload in addition to
+    its hashes. Arms that can serve an anchor from somewhere on an actively used
+    track are included just like statically reachable arms; their shared track is
+    then pulled into the same fragment. This keeps learned feed/process fragments
+    mechanically self-contained when the donor machine transports molecules over
+    long tracks.
     """
 
     parts = list(solution.get("parts", []))
@@ -118,7 +121,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
         arm_ids = set()
 
         for edge in incoming.get(anchor_id, []):
-            if edge.get("relation") not in {"within-arm-reach", "shared-hex"}:
+            if edge.get("relation") not in ARM_ASSOCIATION_RELATIONS:
                 continue
             source_id = str(edge["source"])
             source = parts_by_id.get(source_id)
@@ -137,7 +140,7 @@ def extract_solution_fragments(solution: dict[str, Any]) -> list[dict[str, Any]]
 
         for arm_id in arm_ids:
             for edge in outgoing.get(arm_id, []):
-                if edge.get("relation") not in {"within-arm-reach", "shared-hex"}:
+                if edge.get("relation") not in ARM_ASSOCIATION_RELATIONS:
                     continue
                 target_id = str(edge["target"])
                 target = parts_by_id.get(target_id)
