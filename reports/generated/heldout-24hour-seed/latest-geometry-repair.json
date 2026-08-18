@@ -1,0 +1,258 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-geometry-repair-checkpoint",
+  "runId": "32153798585",
+  "sourceCommit": "c3ae8fefbb57f5d5602fd874ee22d20772b4300c",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "planner": {
+    "strategy": "generic-reagent-chemistry-v1",
+    "supported": true,
+    "requiredGlyphs": [
+      "glyph-purification",
+      "unbonder"
+    ]
+  },
+  "request": {
+    "assemblyLimit": 2,
+    "perSlotLimit": 12,
+    "variantLimit": 324,
+    "resultLimit": 16,
+    "translationRadius": 1,
+    "rotationRadius": 1,
+    "preflightCycles": 128,
+    "promotionLimit": 0
+  },
+  "rankedAssemblyCount": 2,
+  "bestVariant": {
+    "assemblyRank": 1,
+    "variantIndex": 200,
+    "displacement": 2,
+    "supportScore": 34.96488,
+    "staticConflictPenalty": 703,
+    "validationScope": "preflight",
+    "transformOverrides": {
+      "branch-0:convergence-input": {
+        "frame": "source-anchor-local",
+        "delta": [
+          6,
+          -4
+        ],
+        "rotationDelta": 1
+      },
+      "branch-1:convergence-input": {
+        "frame": "source-anchor-local",
+        "delta": [
+          -1,
+          4
+        ],
+        "rotationDelta": 2
+      }
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "no-product-delivered",
+      "totalDelivered": 0,
+      "totalDeficit": 6,
+      "completedCycles": 128,
+      "terminatedWithError": false,
+      "firstError": null,
+      "distinctRequiredChemistryEventCount": 0,
+      "requiredChemistryEventCount": 0,
+      "distinctChemistryEventCount": 2,
+      "chemistryEventCount": 6,
+      "chemistryEventKinds": [
+        "bond-created",
+        "bond-removed"
+      ],
+      "chemistryEventTimeline": [
+        {
+          "cycle": 49,
+          "kind": "bond-removed"
+        },
+        {
+          "cycle": 73,
+          "kind": "bond-created"
+        },
+        {
+          "cycle": 79,
+          "kind": "bond-created"
+        },
+        {
+          "cycle": 88,
+          "kind": "bond-removed"
+        },
+        {
+          "cycle": 91,
+          "kind": "bond-removed"
+        },
+        {
+          "cycle": 127,
+          "kind": "bond-created"
+        }
+      ],
+      "manipulationEventCount": 243,
+      "eventCounts": {
+        "arm-instruction": 128,
+        "atom-grabbed": 198,
+        "atoms-dropped": 42,
+        "bond-created": 3,
+        "bond-removed": 3,
+        "input-spawned": 3
+      }
+    },
+    "solutionOutput": "reports/heldout-geometry-repair/GEN249-best-preflight.solution"
+  },
+  "searchSummaries": [
+    {
+      "assemblyRank": 1,
+      "assemblyScore": 0.892762,
+      "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+      "summary": {
+        "searchedVariantCount": 324,
+        "returnedVariantCount": 16,
+        "completeVariantCount": 0,
+        "hasCompleteSolution": false,
+        "perSlotLimit": 12,
+        "syntheticTranslationRadius": 1,
+        "syntheticRotationRadius": 1,
+        "preflightCycles": 128,
+        "promotedVariantCount": 0,
+        "promotionLimit": 0,
+        "selectionPolicy": "progress-survival-portfolio",
+        "promotedObjectiveCounts": {
+          "progress": 0,
+          "survival": 0
+        },
+        "returnedObjectiveCounts": {
+          "progress": 8,
+          "survival": 8
+        }
+      },
+      "bestReturnedValidation": {
+        "complete": false,
+        "failureMode": "no-product-delivered",
+        "totalDelivered": 0,
+        "totalDeficit": 6,
+        "completedCycles": 128,
+        "terminatedWithError": false,
+        "firstError": null,
+        "distinctRequiredChemistryEventCount": 0,
+        "requiredChemistryEventCount": 0,
+        "distinctChemistryEventCount": 2,
+        "chemistryEventCount": 6,
+        "chemistryEventKinds": [
+          "bond-created",
+          "bond-removed"
+        ],
+        "chemistryEventTimeline": [
+          {
+            "cycle": 49,
+            "kind": "bond-removed"
+          },
+          {
+            "cycle": 73,
+            "kind": "bond-created"
+          },
+          {
+            "cycle": 79,
+            "kind": "bond-created"
+          },
+          {
+            "cycle": 88,
+            "kind": "bond-removed"
+          },
+          {
+            "cycle": 91,
+            "kind": "bond-removed"
+          },
+          {
+            "cycle": 127,
+            "kind": "bond-created"
+          }
+        ],
+        "manipulationEventCount": 243,
+        "eventCounts": {
+          "arm-instruction": 128,
+          "atom-grabbed": 198,
+          "atoms-dropped": 42,
+          "bond-created": 3,
+          "bond-removed": 3,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "assemblyRank": 2,
+      "assemblyScore": 0.892007,
+      "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+      "summary": {
+        "searchedVariantCount": 324,
+        "returnedVariantCount": 16,
+        "completeVariantCount": 0,
+        "hasCompleteSolution": false,
+        "perSlotLimit": 12,
+        "syntheticTranslationRadius": 1,
+        "syntheticRotationRadius": 1,
+        "preflightCycles": 128,
+        "promotedVariantCount": 0,
+        "promotionLimit": 0,
+        "selectionPolicy": "progress-survival-portfolio",
+        "promotedObjectiveCounts": {
+          "progress": 0,
+          "survival": 0
+        },
+        "returnedObjectiveCounts": {
+          "progress": 8,
+          "survival": 8
+        }
+      },
+      "bestReturnedValidation": {
+        "complete": false,
+        "failureMode": "no-product-delivered",
+        "totalDelivered": 0,
+        "totalDeficit": 6,
+        "completedCycles": 128,
+        "terminatedWithError": false,
+        "firstError": null,
+        "distinctRequiredChemistryEventCount": 0,
+        "requiredChemistryEventCount": 0,
+        "distinctChemistryEventCount": 2,
+        "chemistryEventCount": 4,
+        "chemistryEventKinds": [
+          "bond-created",
+          "bond-removed"
+        ],
+        "chemistryEventTimeline": [
+          {
+            "cycle": 73,
+            "kind": "bond-created"
+          },
+          {
+            "cycle": 79,
+            "kind": "bond-created"
+          },
+          {
+            "cycle": 88,
+            "kind": "bond-removed"
+          },
+          {
+            "cycle": 91,
+            "kind": "bond-removed"
+          }
+        ],
+        "manipulationEventCount": 243,
+        "eventCounts": {
+          "arm-instruction": 128,
+          "atom-grabbed": 198,
+          "atoms-dropped": 42,
+          "bond-created": 2,
+          "bond-removed": 2,
+          "input-spawned": 3
+        }
+      }
+    }
+  ]
+}
