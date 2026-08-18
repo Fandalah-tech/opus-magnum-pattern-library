@@ -1,0 +1,165 @@
+name: Blind GEN249 post-cleanup purification
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-post-cleanup-purification.yml
+      - packages/opus_solver/purification_chain.py
+      - packages/opus_solver/reaction_placement.py
+      - tools/probe_holdout_purification_chain.py
+      - tests/test_purification_chain.py
+      - reports/generated/heldout-24hour-seed/latest-collision-cleanup.json
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-post-cleanup-purification-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  CLEANUP_POINTER: reports/generated/heldout-24hour-seed/latest-collision-cleanup.json
+  PUZZLE_ROOT: .datasets/heldout-post-cleanup-purification
+  BASELINE_ROOT: .baseline/heldout-post-cleanup-purification
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  REPORT_ROOT: reports/heldout-post-cleanup-purification
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-post-cleanup-purification.json
+
+jobs:
+  purification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test purification frontier logic
+        run: python -m unittest tests.test_purification_chain -v
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore target-free collision-cleaned baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          pointer_run="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['CLEANUP_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'heldout-collision-cleanup-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert pointer['summary']['bestTerminatedWithError'] is False
+          assert int(pointer['summary']['bestPurificationCount']) >= 1
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/cleanup-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${pointer_run}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$pointer_run" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'heldout-collision-cleanup-{sys.argv[2]}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1, (expected_name, [item.get('name') for item in data.get('artifacts', [])])
+          item = matches[0]
+          print(item['id'], str(item['digest']).split(':', 1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"
+          archive="$RUNNER_TEMP/cleanup.zip"
+          curl --fail --location \
+            --retry 8 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          test -s "$BASELINE_ROOT/GEN249-best-cleanup.solution"
+
+      - name: Search next purification from collision-free frontier
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          python tools/probe_holdout_purification_chain.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline-solution "$BASELINE_ROOT/GEN249-best-cleanup.solution" \
+            --max-cycles 400 \
+            --depth 2 \
+            --beam-width 3 \
+            --opportunity-limit 100 \
+            --variant-limit 240 \
+            --result-limit 16 \
+            --solution-output "$REPORT_ROOT/GEN249-best-post-cleanup-purification.solution" \
+            --output "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249-best-post-cleanup-purification.solution"
+
+      - name: Persist compact post-cleanup checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          cleanup = json.loads(Path(os.environ['CLEANUP_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-post-cleanup-purification-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'cleanupRunId': cleanup.get('runId'),
+              'cleanupSourceCommit': cleanup.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'request': report.get('request'),
+              'summary': report.get('summary'),
+              'initialPurificationProfile': report.get('initialPurificationProfile'),
+              'generations': report.get('generations'),
+              'best': report.get('best'),
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update post-cleanup purification checkpoint [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Upload post-cleanup purification artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-post-cleanup-purification-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
