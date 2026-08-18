@@ -1,8 +1,8 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "0.2.0",
   "kind": "heldout-feed-lane-checkpoint",
-  "runId": "32156950130",
-  "sourceCommit": "c57a0e57f67931e5a0787b44da2d3ee205c55369",
+  "runId": "32157114679",
+  "sourceCommit": "9f6edc9e88f5c560dae12dbf620acf5d843c95ff",
   "genericFlowRunId": "32087080619",
   "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
@@ -156,6 +156,7 @@
         "simulation-error": 1
       },
       "manipulationEventCount": 208,
+      "blockedInputsAtStart": [],
       "initialInputStatus": [
         {
           "inputId": "part-7",
@@ -204,6 +205,39 @@
           ]
         }
       ]
+    },
+    "conversionOpportunity": {
+      "skipped": false,
+      "skipReason": null,
+      "freeEqualPairObservationCount": 18,
+      "adjacentFreeEqualPairObservationCount": 0,
+      "readyPurificationPoseObservationCount": 0,
+      "framesWithReadyPurificationPose": 0,
+      "maxReadyPurificationPosesInFrame": 0,
+      "minFreeEqualPairDistance": 5,
+      "readyPoseCountsByElement": {},
+      "nearestFreeEqualPairSamples": [
+        {
+          "cycle": 135,
+          "element": "iron",
+          "distance": 5,
+          "atomIds": [
+            "part-10-spawn-0-atom-3",
+            "part-7-spawn-0-atom-2"
+          ],
+          "positions": [
+            [
+              2,
+              -1
+            ],
+            [
+              6,
+              0
+            ]
+          ]
+        }
+      ],
+      "readyPurificationSamples": []
     },
     "errorType": null,
     "error": null
