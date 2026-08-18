@@ -19,8 +19,12 @@ on:
       - packages/opus_analysis/**
   workflow_dispatch:
 
+concurrency:
+  group: heldout-24hour-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 env:
@@ -34,6 +38,7 @@ env:
   OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
   OMSIM_BINARY: .tools/omsim/omsim
   REPORT_ROOT: reports/heldout-24hour-seed
+  LATEST_SUMMARY: reports/generated/heldout-24hour-seed/latest-summary.json
 
 jobs:
   matrix:
@@ -214,6 +219,59 @@ jobs:
               out.write(f"- planners: {summary['plannerStrategyCounts']}\n")
           print(json.dumps(summary, ensure_ascii=False))
           PY
+
+      - name: Persist compact benchmark checkpoint
+        if: github.ref_name == 'feature/critelli-2026-public-corpus' && github.actor == 'Fandalah-tech'
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          matrix = json.loads((Path(os.environ['REPORT_ROOT']) / 'matrix.json').read_text(encoding='utf-8'))
+          compact = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-24hour-latest-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'targetSolutionBytesUsed': 0,
+              'summary': matrix['summary'],
+              'targets': [],
+          }
+          for item in matrix['targets']:
+              report = item.get('report') or {}
+              result = report.get('result') or {}
+              composition = report.get('compositionDiagnostics') or {}
+              compact['targets'].append({
+                  'id': item.get('id'),
+                  'stage': item.get('stage'),
+                  'plannerStrategy': item.get('plannerStrategy'),
+                  'plannerSupported': item.get('plannerSupported'),
+                  'rankedAssemblyCount': item.get('rankedAssemblyCount'),
+                  'complete': item.get('complete'),
+                  'omsimValid': item.get('omsimValid'),
+                  'candidate': result.get('candidate'),
+                  'route': result.get('route'),
+                  'localMetrics': result.get('localMetrics'),
+                  'errorType': result.get('errorType'),
+                  'error': result.get('error'),
+                  'requiredRelations': composition.get('requiredRelations'),
+                  'bestAssemblies': composition.get('bestAssemblies'),
+              })
+          output = Path(os.environ['LATEST_SUMMARY'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(compact, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_SUMMARY"
+          if git diff --cached --quiet; then
+            echo "Heldout checkpoint unchanged."
+            exit 0
+          fi
+          git commit -m "Update blind heldout checkpoint [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
 
       - name: Upload blind matrix
         if: always()
