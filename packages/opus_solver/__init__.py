@@ -22,6 +22,8 @@ from .candidate_solution import (
 from .source_assignment import assign_branch_reagent_indices
 from .feed_alignment import generic_input_alignment, preferred_reagent_anchor_atom
 from .required_chemistry import required_chemistry_events
+from .product_contract import enforce_puzzle_product_contract
+from . import autonomous as _autonomous
 from . import candidate_solution as _candidate_solution
 from . import solver as _solver
 
@@ -32,6 +34,27 @@ from . import solver as _solver
 _candidate_solution.assign_branch_reagent_indices = assign_branch_reagent_indices
 _candidate_solution.singleton_input_alignment = generic_input_alignment
 _solver._required_chemistry_events = required_chemistry_events
+
+_legacy_validate_generated_solution = _solver.validate_generated_solution
+
+
+def _contract_validate_generated_solution(puzzle, solution, *, target=6, max_cycles=None):
+    validation = _legacy_validate_generated_solution(
+        puzzle,
+        solution,
+        target=target,
+        max_cycles=max_cycles,
+    )
+    return enforce_puzzle_product_contract(
+        puzzle,
+        solution,
+        validation,
+        target=target,
+    )
+
+
+_solver.validate_generated_solution = _contract_validate_generated_solution
+_autonomous.validate_generated_solution = _contract_validate_generated_solution
 
 from .chemistry_composition import (
     manufacturing_requirements,
@@ -156,6 +179,7 @@ __all__ = [
     "build_outcome_index",
     "build_solver_index",
     "bounded_worker_count",
+    "enforce_puzzle_product_contract",
     "enumerate_schedule_variants",
     "enumerate_component_timing_variants",
     "enumerate_chemistry_transplants",
