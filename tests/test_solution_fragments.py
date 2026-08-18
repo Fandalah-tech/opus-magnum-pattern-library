@@ -52,6 +52,36 @@ def test_fragment_collects_reaching_arm():
     assert output["memberPartIds"] == ["far-output"]
 
 
+def test_fragment_collects_track_arm_that_can_reach_remote_feed():
+    track = _part("track", "track", (0, 0))
+    track["trackHexes"] = [[0, 0], [1, 0], [2, 0], [3, 0]]
+    solution = {
+        "puzzleFile": "P001",
+        "parts": [
+            track,
+            _part(
+                "arm",
+                "arm1",
+                (0, 0),
+                program=[
+                    {"cycle": 0, "instruction": "grab"},
+                    {"cycle": 1, "instruction": "track_plus"},
+                ],
+            ),
+            _part("feed", "input", (4, 0)),
+        ],
+    }
+
+    fragments = extract_solution_fragments(solution)
+    feed = next(fragment for fragment in fragments if fragment["role"] == "feed")
+
+    assert feed["memberPartIds"] == ["arm", "feed", "track"]
+    assert feed["summary"]["armCount"] == 1
+    assert feed["summary"]["trackCount"] == 1
+    assert feed["summary"]["instructionCount"] == 2
+    assert {part["sourcePartId"] for part in feed["geometry"]["parts"]} == {"arm", "feed", "track"}
+
+
 def test_fragment_mechanism_hash_is_translation_invariant_and_cross_puzzle():
     left = {
         "puzzleFile": "P001",
