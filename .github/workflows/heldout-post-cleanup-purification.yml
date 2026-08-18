@@ -34,7 +34,7 @@ env:
 jobs:
   purification:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,6 +72,7 @@ jobs:
           assert pointer['kind'] == 'heldout-collision-cleanup-checkpoint'
           assert pointer['targetSolutionBytesUsed'] == 0
           assert pointer['summary']['bestTerminatedWithError'] is False
+          assert int(pointer['summary']['bestCompletedCycles']) >= 400
           assert int(pointer['summary']['bestPurificationCount']) >= 1
           print(pointer['runId'])
           PY
@@ -113,7 +114,7 @@ jobs:
             --beam-width 3 \
             --opportunity-limit 100 \
             --variant-limit 240 \
-            --result-limit 16 \
+            --result-limit 20 \
             --solution-output "$REPORT_ROOT/GEN249-best-post-cleanup-purification.solution" \
             --output "$REPORT_ROOT/GEN249.json"
           test -s "$REPORT_ROOT/GEN249.json"
