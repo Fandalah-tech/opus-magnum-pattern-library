@@ -30,10 +30,17 @@ def _category(part_type: str) -> str:
 
 def _footprint(part: dict[str, Any]) -> set[tuple[int, int]]:
     x, y = part["position"]
-    cells = {(int(x), int(y))}
     if part["type"] == TRACK_TYPE:
-        cells.update((int(x) + int(dx), int(y) + int(dy)) for dx, dy in part.get("trackHexes", []))
-    return cells
+        offsets = list(part.get("trackHexes", []))
+        if offsets:
+            # Track coordinates are serialized as offsets from an anchor. The
+            # anchor itself is not an implicit rail cell unless [0, 0] appears
+            # explicitly in the offset list.
+            return {
+                (int(x) + int(dx), int(y) + int(dy))
+                for dx, dy in offsets
+            }
+    return {(int(x), int(y))}
 
 
 def _arm_reach(part: dict[str, Any]) -> int:
@@ -210,7 +217,7 @@ def build_solution_graph(solution: dict[str, Any]) -> dict[str, Any]:
     }
 
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.2.1",
         "analysis": "structural-solution-graph",
         "source": {
             "solutionName": solution.get("name"),
@@ -226,6 +233,7 @@ def build_solution_graph(solution: dict[str, Any]) -> dict[str, Any]:
             "Structural edges are candidates, not confirmed molecule transfers.",
             "Dynamic dependencies require cycle-accurate simulation traces.",
             "Track-mobile reach uses the full connected serialized track footprint, not a cycle-specific arm base.",
+            "Track part anchors are coordinate origins only; only serialized trackHexes are rail cells when present.",
         ],
     }
 
