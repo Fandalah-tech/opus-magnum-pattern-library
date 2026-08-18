@@ -90,13 +90,18 @@ def _add_evacuation_arm(
     solution: dict[str, Any],
     *,
     position: tuple[int, int],
+    arm_length: int,
     base_rotation: int,
     grab_cycle: int,
     motion_instruction: str,
 ) -> dict[str, Any]:
     result = deepcopy(solution)
+    resolved_length = max(1, min(3, int(arm_length)))
     direction = DIRECTIONS[int(base_rotation) % 6]
-    base = (position[0] - direction[0], position[1] - direction[1])
+    base = (
+        position[0] - direction[0] * resolved_length,
+        position[1] - direction[1] * resolved_length,
+    )
     existing = {str(part.get("id") or "") for part in result.get("parts", []) or []}
     serial = 0
     while f"reaction-evacuation-arm-{serial}" in existing:
@@ -107,7 +112,7 @@ def _add_evacuation_arm(
         "type": "arm1",
         "enabled": True,
         "position": [base[0], base[1]],
-        "length": 1,
+        "length": resolved_length,
         "rotation": int(base_rotation) % 6,
         "which": 0,
         "armNumber": _next_arm_number(result),
@@ -117,10 +122,11 @@ def _add_evacuation_arm(
             {"cycle": int(grab_cycle) + 2, "instruction": "drop"},
         ],
     })
-    result.setdefault("source", {})["generator"] = "opus_solver/reaction-output-evacuation-v1"
+    result.setdefault("source", {})["generator"] = "opus_solver/reaction-output-evacuation-v2"
     result["source"].setdefault("reactionOutputEvacuations", []).append({
         "armPartId": part_id,
         "reactionOutputPosition": [position[0], position[1]],
+        "armLength": resolved_length,
         "basePosition": [base[0], base[1]],
         "baseRotation": int(base_rotation) % 6,
         "grabCycle": int(grab_cycle),
@@ -147,7 +153,7 @@ def search(
     collision_location_raw = baseline_oracle.get("collisionLocation")
     if collision_cycle is None or not collision_location_raw:
         return {
-            "schemaVersion": "0.1.0",
+            "schemaVersion": "0.2.0",
             "kind": "strict-heldout-reaction-output-evacuation-search",
             "targetSolutionBytesUsed": 0,
             "baselineOMSim": baseline_oracle,
@@ -163,10 +169,6 @@ def search(
         collision_location=collision_location,
     )
 
-    # If the local engine places the conversion a few cycles differently from
-    # OMSim, still search around the authoritative collision cycle. The event
-    # supplies semantic evidence that this hex is a conversion output; OMSim
-    # remains the acceptance oracle for exact timing.
     anchor_cycles = {int(collision_cycle) - 1}
     for event in reaction_events:
         anchor_cycles.add(int(event.get("cycle") or 0))
@@ -178,25 +180,28 @@ def search(
 
     evaluated: list[dict[str, Any]] = []
     for grab_cycle in grab_cycles:
-        for rotation in range(6):
-            for instruction in ("rotate_cw", "rotate_ccw"):
-                candidate = _add_evacuation_arm(
-                    solution,
-                    position=collision_location,
-                    base_rotation=rotation,
-                    grab_cycle=grab_cycle,
-                    motion_instruction=instruction,
-                )
-                path = output_dir / f"candidate-{len(evaluated):03d}.solution"
-                write_solution(candidate, path)
-                oracle = _run_omsim(omsim, puzzle_path, path)
-                evaluated.append({
-                    "grabCycle": grab_cycle,
-                    "baseRotation": rotation,
-                    "motionInstruction": instruction,
-                    "solutionPath": str(path),
-                    "omsim": oracle,
-                })
+        for arm_length in (1, 2, 3):
+            for rotation in range(6):
+                for instruction in ("rotate_cw", "rotate_ccw"):
+                    candidate = _add_evacuation_arm(
+                        solution,
+                        position=collision_location,
+                        arm_length=arm_length,
+                        base_rotation=rotation,
+                        grab_cycle=grab_cycle,
+                        motion_instruction=instruction,
+                    )
+                    path = output_dir / f"candidate-{len(evaluated):03d}.solution"
+                    write_solution(candidate, path)
+                    oracle = _run_omsim(omsim, puzzle_path, path)
+                    evaluated.append({
+                        "grabCycle": grab_cycle,
+                        "armLength": arm_length,
+                        "baseRotation": rotation,
+                        "motionInstruction": instruction,
+                        "solutionPath": str(path),
+                        "omsim": oracle,
+                    })
 
     evaluated.sort(
         key=lambda item: (
@@ -215,13 +220,14 @@ def search(
         best["finalSolutionPath"] = str(final_path)
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-reaction-output-evacuation-search",
         "targetSolutionBytesUsed": 0,
         "baselineOMSim": baseline_oracle,
         "collisionLocation": list(collision_location),
         "reactionEvents": reaction_events,
         "grabCycles": grab_cycles,
+        "armLengths": [1, 2, 3],
         "variantCount": len(evaluated),
         "best": best,
         "bestLocalPurificationProfile": best_profile,
