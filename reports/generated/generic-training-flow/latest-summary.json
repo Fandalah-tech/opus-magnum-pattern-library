@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "generic-training-flow-latest-checkpoint",
-  "runId": "32085854586",
-  "sourceCommit": "2951c89967c0d3ba23d2cc78e9998ed6321cd5fa",
+  "runId": "32087080619",
+  "sourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
   "heldoutPuzzleIds": [
     "P016"
@@ -17,9 +17,9 @@
     "replayValidated": 866,
     "validationDrift": 1,
     "errors": 0,
-    "fragments": 6749,
-    "transitions": 7992,
-    "convergences": 2092,
+    "fragments": 6729,
+    "transitions": 7984,
+    "convergences": 2090,
     "relations": {
       "animate": 1078,
       "bond-created": 40044,
