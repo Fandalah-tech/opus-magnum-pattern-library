@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-post-cleanup-purification-checkpoint",
+  "runId": "32164987165",
+  "sourceCommit": "85d30abf13fc54d17b6cb2ef7e97eaa69a73a823",
+  "cleanupRunId": "32164890647",
+  "cleanupSourceCommit": "71a83ac13306f496c78897baebaaa993b407d888",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "request": {
+    "maxCycles": 400,
+    "depth": 2,
+    "beamWidth": 3,
+    "opportunityLimit": 100,
+    "variantLimit": 240,
+    "resultLimit": 16
+  },
+  "summary": {
+    "maxCycles": 400,
+    "requestedDepth": 2,
+    "beamWidth": 3,
+    "generationCount": 1,
+    "initialPurificationCount": 1,
+    "initialFrontierElement": "copper",
+    "bestPurificationCount": 1,
+    "bestFrontierElement": "copper",
+    "goldReached": false,
+    "stepCount": 0,
+    "targetSolutionBytesUsed": 0
+  },
+  "initialPurificationProfile": {
+    "count": 1,
+    "countsByElement": {
+      "copper": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        246
+      ]
+    },
+    "frontierIndex": 3,
+    "frontierElement": "copper",
+    "goldReached": false,
+    "completedCycles": 258,
+    "terminatedWithError": true
+  },
+  "generations": [
+    {
+      "generation": 1,
+      "candidateCount": 0,
+      "dedupedCandidateCount": 0,
+      "beamCount": 0,
+      "bestPurificationProfile": {
+        "count": 1,
+        "countsByElement": {
+          "copper": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            246
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 258,
+        "terminatedWithError": true
+      },
+      "bestStepCount": 0
+    }
+  ],
+  "best": {
+    "purificationProfile": {
+      "count": 1,
+      "countsByElement": {
+        "copper": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          246
+        ]
+      },
+      "frontierIndex": 3,
+      "frontierElement": "copper",
+      "goldReached": false,
+      "completedCycles": 258,
+      "terminatedWithError": true
+    },
+    "steps": [],
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 231,
+      "terminatedWithError": false,
+      "firstError": null,
+      "missingProductOutputIndices": [
+        1,
+        2
+      ],
+      "observedRequiredChemistryEventKinds": [],
+      "distinctRequiredChemistryEventCount": 0,
+      "requiredChemistryEventCount": 0,
+      "chemistryEventCount": 1,
+      "eventCounts": {
+        "arm-instruction": 195,
+        "atom-grabbed": 199,
+        "atoms-dropped": 53,
+        "bond-created": 1,
+        "input-spawned": 3
+      }
+    },
+    "solutionOutput": "reports/heldout-post-cleanup-purification/GEN249-best-post-cleanup-purification.solution"
+  }
+}
