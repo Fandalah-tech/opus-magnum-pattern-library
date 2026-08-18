@@ -18,7 +18,18 @@ from .patterns import detect_patterns
 from .portfolio import solution_architecture_signature, specialization_axes
 from .puzzle_features import canonical_molecule_hash, puzzle_feature_fingerprint, puzzle_feature_payload
 from .replay_glyphs import build_replay_trace, process_basic_glyphs
-from .timeline import build_program_timeline
+from .timeline import build_program_timeline as _raw_build_program_timeline
+from .validation_horizon import (
+    ensure_generated_track_validation_hint,
+    generated_track_validation_hint,
+)
+
+
+def build_program_timeline(solution, *, max_cycles=None):
+    """Build the physical tape timeline with bounded generated-track replay hints."""
+    ensure_generated_track_validation_hint(solution)
+    return _raw_build_program_timeline(solution, max_cycles=max_cycles)
+
 
 __all__ = [
     "analyze_solution",
@@ -35,9 +46,11 @@ __all__ = [
     "canonical_solution_payload",
     "classify_simulation_error",
     "detect_patterns",
+    "ensure_generated_track_validation_hint",
     "extract_convergence_motifs",
     "extract_solution_fragments",
     "functional_role",
+    "generated_track_validation_hint",
     "has_triplex_product",
     "process_basic_glyphs",
     "render_engine_audit_report",
