@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-silver2-track-detour-checkpoint",
+  "runId": "32195599671",
+  "sourceCommit": "daafdb6f984545b95319d7d4ff644d4fa21e5a7c",
+  "chemistryRunId": "32195163437",
+  "targetSolutionBytesUsed": 0,
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+    "progressCycle": 204,
+    "collisionCycle": 204,
+    "collisionLocation": [
+      9,
+      -2
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 4,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2
+    },
+    "cyclesByElement": {
+      "copper": [
+        185,
+        206
+      ],
+      "silver": [
+        203,
+        206
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 209,
+    "terminatedWithError": true
+  },
+  "collisionLocation": [
+    9,
+    -2
+  ],
+  "variantCount": 0,
+  "best": null,
+  "variants": [],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
