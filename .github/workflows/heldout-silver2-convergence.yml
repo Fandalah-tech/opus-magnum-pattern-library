@@ -5,7 +5,7 @@ on:
     branches: [feature/critelli-2026-public-corpus]
     paths:
       - .github/workflows/heldout-silver2-convergence.yml
-      - reports/generated/heldout-24hour-seed/latest-silver2-track-detour.json
+      - reports/generated/heldout-24hour-seed/latest-post-detour-chemistry.json
       - packages/opus_solver/intermediate_convergence.py
       - tools/probe_holdout_intermediate_convergence.py
       - packages/opus_engine/**
@@ -21,7 +21,7 @@ permissions:
   actions: read
 
 env:
-  DETOUR_POINTER: reports/generated/heldout-24hour-seed/latest-silver2-track-detour.json
+  CHEMISTRY_POINTER: reports/generated/heldout-24hour-seed/latest-post-detour-chemistry.json
   PUZZLE_ROOT: .datasets/heldout-silver2-convergence
   BASELINE_ROOT: .baseline/heldout-silver2-convergence
   REPORT_ROOT: reports/heldout-silver2-convergence
@@ -49,34 +49,40 @@ jobs:
           cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
           if find .tools/opussolver -type f -name '*.solution' | grep -q .; then exit 1; fi
 
-      - name: Restore target-free two-silver detoured seed
+      - name: Restore best target-free two-silver chemistry candidate
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          read -r run_id silver_count < <(python - <<'PY'
+          run_id="$(python - <<'PY'
           import json, os
           from pathlib import Path
-          p=json.loads(Path(os.environ['DETOUR_POINTER']).read_text())
-          assert p['targetSolutionBytesUsed']==0
-          best=p.get('best') or {}; c=(best.get('purificationProfile') or {}).get('countsByElement') or {}
-          print(p['runId'], int(c.get('silver',0)))
+          p=json.loads(Path(os.environ['CHEMISTRY_POINTER']).read_text()); assert p['targetSolutionBytesUsed']==0; print(p['runId'])
           PY
-          )
-          test "$silver_count" -ge 2
-          meta="$RUNNER_TEMP/detour.json"; gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$meta"
+          )"
+          meta="$RUNNER_TEMP/chemistry.json"; gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$meta"
           read -r aid digest < <(python - "$meta" "$run_id" <<'PY'
           import json,sys
           from pathlib import Path
-          d=json.loads(Path(sys.argv[1]).read_text()); name=f'heldout-silver2-track-detour-{sys.argv[2]}'; m=[x for x in d['artifacts'] if x['name']==name and not x['expired']]; assert len(m)==1; print(m[0]['id'],str(m[0]['digest']).split(':',1)[1])
+          d=json.loads(Path(sys.argv[1]).read_text()); name=f'heldout-post-detour-chemistry-{sys.argv[2]}'; m=[x for x in d['artifacts'] if x['name']==name and not x['expired']]; assert len(m)==1; print(m[0]['id'],str(m[0]['digest']).split(':',1)[1])
           PY
           )
-          mkdir -p "$BASELINE_ROOT"; archive="$RUNNER_TEMP/detour.zip"
+          mkdir -p "$BASELINE_ROOT"; archive="$RUNNER_TEMP/chemistry.zip"
           curl --fail --location -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${aid}/zip" -o "$archive"
           echo "$digest  $archive" | sha256sum --check
           unzip -q "$archive" -d "$BASELINE_ROOT"
-          seed="$(find "$BASELINE_ROOT" -type f -name 'GEN249-best-track-detour.solution' | head -1)"
-          test -s "$seed"; cp "$seed" "$BASELINE_ROOT/GEN249-silver2-detoured.solution"
+          candidate="$(python - "$BASELINE_ROOT/GEN249.json" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path(sys.argv[1]).read_text()); variants=d.get('topVariants') or []
+          def score(v):
+              p=v.get('purificationProfile') or {}; c=p.get('countsByElement') or {}; o=v.get('omsim') or {}
+              return (int(c.get('silver',0)),int(c.get('gold',0)),int(o.get('progressCycle',0)),int(p.get('count',0)))
+          best=max(variants,key=score); assert int((best.get('purificationProfile') or {}).get('countsByElement',{}).get('silver',0))>=2; print(best['solutionPath'])
+          PY
+          )"
+          seed="$(find "$BASELINE_ROOT" -type f -name "${candidate##*/}" | head -1)"
+          test -s "$seed"; cp "$seed" "$BASELINE_ROOT/GEN249-silver2.solution"
 
       - name: Synthesize gold convergence locally
         env:
@@ -85,10 +91,11 @@ jobs:
           mkdir -p "$REPORT_ROOT"
           python tools/probe_holdout_intermediate_convergence.py \
             --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
-            --baseline-solution "$BASELINE_ROOT/GEN249-silver2-detoured.solution" \
+            --baseline-solution "$BASELINE_ROOT/GEN249-silver2.solution" \
             --element silver --max-cycles 500 --observation-limit 160 --result-limit 24 \
             --solution-output "$REPORT_ROOT/GEN249-gold-convergence.solution" \
             --output "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249-gold-convergence.solution"
 
       - name: Build pinned OMSim
         run: |
@@ -113,10 +120,8 @@ jobs:
           python - <<'PY'
           import json,os
           from pathlib import Path
-          local=json.loads((Path(os.environ['REPORT_ROOT'])/'GEN249.json').read_text())
-          oracle=json.loads((Path(os.environ['REPORT_ROOT'])/'omsim.json').read_text())
-          detour=json.loads(Path(os.environ['DETOUR_POINTER']).read_text())
-          payload={'schemaVersion':'0.1.0','kind':'heldout-silver2-convergence-checkpoint','runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'detourRunId':detour['runId'],'targetSolutionBytesUsed':0,'summary':local['summary'],'baselinePurificationProfile':local['baselinePurificationProfile'],'observations':local['observations'],'variants':local['variants'],'omsim':oracle}
+          local=json.loads((Path(os.environ['REPORT_ROOT'])/'GEN249.json').read_text()); oracle=json.loads((Path(os.environ['REPORT_ROOT'])/'omsim.json').read_text()); source=json.loads(Path(os.environ['CHEMISTRY_POINTER']).read_text())
+          payload={'schemaVersion':'0.2.0','kind':'heldout-silver2-convergence-checkpoint','runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'chemistryRunId':source['runId'],'targetSolutionBytesUsed':0,'summary':local['summary'],'baselinePurificationProfile':local['baselinePurificationProfile'],'observations':local['observations'],'variants':local['variants'],'omsim':oracle}
           out=Path(os.environ['LATEST_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
           PY
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
