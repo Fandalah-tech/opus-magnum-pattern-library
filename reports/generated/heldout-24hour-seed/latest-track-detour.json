@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-track-detour-checkpoint",
+  "runId": "32195077760",
+  "sourceCommit": "b2774f724c936d5f6c3d53d8b2a00f12e5523161",
+  "oracleRunId": "32193589895",
+  "targetSolutionBytesUsed": 0,
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
+    "progressCycle": 195,
+    "collisionCycle": 195,
+    "collisionLocation": [
+      8,
+      -2
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 3,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        185,
+        203
+      ],
+      "silver": [
+        194
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 209,
+    "terminatedWithError": true
+  },
+  "collisionLocation": [
+    8,
+    -2
+  ],
+  "variantCount": 1,
+  "best": {
+    "trackPartId": "part-0",
+    "trackCellIndex": 7,
+    "previousCell": [
+      7,
+      -1
+    ],
+    "nextCell": [
+      8,
+      -3
+    ],
+    "replacementCell": [
+      7,
+      -2
+    ],
+    "solutionPath": "reports/heldout-track-detour/search/candidate-000.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 206 at 9 1",
+      "progressCycle": 206,
+      "collisionCycle": 206,
+      "collisionLocation": [
+        9,
+        1
+      ]
+    },
+    "purificationProfile": {
+      "count": 1,
+      "countsByElement": {
+        "copper": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185
+        ]
+      },
+      "frontierIndex": 3,
+      "frontierElement": "copper",
+      "goldReached": false,
+      "completedCycles": 206,
+      "terminatedWithError": true
+    },
+    "finalSolutionPath": "reports/heldout-track-detour/search/GEN249-best-track-detour.solution"
+  },
+  "variants": [
+    {
+      "trackPartId": "part-0",
+      "trackCellIndex": 7,
+      "previousCell": [
+        7,
+        -1
+      ],
+      "nextCell": [
+        8,
+        -3
+      ],
+      "replacementCell": [
+        7,
+        -2
+      ],
+      "solutionPath": "reports/heldout-track-detour/search/candidate-000.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 206 at 9 1",
+        "progressCycle": 206,
+        "collisionCycle": 206,
+        "collisionLocation": [
+          9,
+          1
+        ]
+      },
+      "purificationProfile": {
+        "count": 1,
+        "countsByElement": {
+          "copper": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 206,
+        "terminatedWithError": true
+      },
+      "finalSolutionPath": "reports/heldout-track-detour/search/GEN249-best-track-detour.solution"
+    }
+  ],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
