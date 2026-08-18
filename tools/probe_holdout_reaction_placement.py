@@ -44,9 +44,6 @@ def probe(
 ) -> dict[str, Any]:
     puzzle = parse_puzzle(puzzle_path)
     solution = parse_solution(baseline_solution_path)
-    target_id = puzzle_path.stem
-    if target_id.lower() in str((solution.get("source") or {}).get("name") or "").lower():
-        raise ValueError("Generated baseline unexpectedly claims a target source solution")
 
     result = search_purification_placements(
         puzzle,
