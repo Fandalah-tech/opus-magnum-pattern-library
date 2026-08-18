@@ -78,7 +78,7 @@ jobs:
           import json,sys
           from pathlib import Path
           d=json.loads(Path(sys.argv[1]).read_text())
-          variants=d.get('variants') or []
+          variants=d.get('topVariants') or []
           def score(v):
               p=v.get('purificationProfile') or {}; c=p.get('countsByElement') or {}; o=v.get('omsim') or {}
               return (int(c.get('silver',0)), int(c.get('gold',0)), int(o.get('progressCycle',0)), int(p.get('count',0)))
