@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-gold-after-silver-cleanup-checkpoint",
-  "runId": "32166575124",
-  "sourceCommit": "89e486dc0eed7ecc353fca620e1e639c544a79c7",
+  "runId": "32166681632",
+  "sourceCommit": "c879136e652b0caa1444eb4e2e3d807363a21da8",
   "silverCleanupRunId": "32166428185",
   "silverCleanupSourceCommit": "9e4432303686a0a1edca504762e5e2772fc30b7e",
   "targetSolutionBytesUsed": 0,
@@ -16,12 +16,18 @@
     "maxCycles": 416,
     "baselinePurificationCount": 3,
     "baselineFrontierElement": "silver",
+    "baselineFrontierCount": 1,
+    "frontierReplenishmentNeeded": true,
     "opportunityCount": 91,
-    "attemptedAdditiveStationCount": 0,
-    "skippedUnrepairableOpportunityCount": 0,
+    "attemptedAdditiveStationCount": 3,
+    "attemptedFrontierAdvanceCount": 0,
+    "attemptedFrontierReplenishmentCount": 3,
+    "skippedUnrepairableOpportunityCount": 4,
     "advancingVariantCount": 0,
-    "returnedVariantCount": 0,
+    "replenishingVariantCount": 1,
+    "returnedVariantCount": 1,
     "bestFrontierElement": "silver",
+    "bestFrontierCount": 2,
     "goldReached": false,
     "targetSolutionBytesUsed": 0
   },
@@ -5517,6 +5523,106 @@
       ]
     }
   ],
-  "variants": [],
-  "bestSolutionOutput": null
+  "variants": [
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 1,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 416,
+        "terminatedWithError": true
+      },
+      "opportunity": {
+        "element": "copper",
+        "producedElement": "silver",
+        "origin": [
+          7,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          7,
+          -1
+        ],
+        "output": [
+          8,
+          -1
+        ],
+        "firstCycle": 411,
+        "lastCycle": 415,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 1,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": false,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 415
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-1",
+            "neighborAtomId": "part-7-spawn-0-atom-3",
+            "origin": [
+              7,
+              -1
+            ],
+            "rotation": 4,
+            "second": [
+              7,
+              -2
+            ],
+            "cycle": 415
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 416,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 415,
+          "message": "Motion collision at (9, 1); activeArms={'part-15': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3']}, 'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-18-purified-1', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3', 'synth-purifier-0-purified-3']}}; atomHolders={'part-10-spawn-1-atom-1': ['part-15'], 'part-18-purified-1': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2'], 'synth-purifier-0-purified-3': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-16'), ((8, -1), (8, 0), 'part-17'), ((7, -1), (7, -2), 'synth-unbonder-0')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-15', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [8, 2], 'part-10-spawn-1-atom-2': [7, 3], 'part-10-spawn-1-atom-3': [9, 2]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0]}, 'arm': {'partId': 'part-15', 'partType': 'arm1', 'origin': [8, 1], 'rotation': 1, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 2]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-1'}], 'trackIndex': 14, 'trackCellCount': 58}}, {'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-18-purified-1': [9, 0], 'part-7-spawn-1-atom-1': [10, -2], 'part-7-spawn-1-atom-2': [11, -2], 'part-7-spawn-1-atom-3': [10, -3], 'synth-purifier-0-purified-3': [8, -1]}, 'destinations': {'part-18-purified-1': [9, 1], 'part-7-spawn-1-atom-1': [10, -1], 'part-7-spawn-1-atom-2': [11, -1], 'part-7-spawn-1-atom-3': [10, -2], 'synth-purifier-0-purified-3': [8, 0]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [9, -1], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [10, -1]}, {'branchIndex': 1, 'position': [9, 0]}, {'branchIndex': 2, 'position': [8, 0]}, {'branchIndex': 3, 'position': [8, -1]}, {'branchIndex': 4, 'position': [9, -2]}, {'branchIndex': 5, 'position': [10, -2]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 1, 'atomId': 'part-18-purified-1'}, {'branchIndex': 3, 'atomId': 'synth-purifier-0-purified-3'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-1'}], 'trackIndex': 11, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 328,
+          "atom-grabbed": 284,
+          "atom-purified": 4,
+          "atoms-dropped": 97,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      }
+    }
+  ],
+  "bestSolutionOutput": "reports/heldout-gold-after-silver-cleanup/GEN249-best-gold.solution"
 }
