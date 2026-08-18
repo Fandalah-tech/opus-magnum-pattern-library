@@ -11,9 +11,12 @@ on:
       - packages/opus_solver/geometry_search.py
       - packages/opus_solver/feed_alignment.py
       - packages/opus_solver/candidate_solution.py
+      - packages/opus_solver/required_chemistry.py
+      - packages/opus_solver/__init__.py
       - packages/opus_solver/layout.py
       - packages/opus_solver/scheduling.py
       - packages/opus_solver/solver.py
+      - tests/test_required_chemistry.py
       - packages/opus_analysis/**
       - packages/opus_engine/**
   workflow_dispatch:
@@ -46,6 +49,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Test generic required chemistry scoring
+        run: python -m unittest tests.test_required_chemistry -v
 
       - name: Fetch GEN249 puzzle bytes only
         run: |
