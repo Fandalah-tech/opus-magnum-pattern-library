@@ -1,0 +1,267 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-mechanical-chemistry-loop-checkpoint",
+  "runId": "32195302593",
+  "sourceCommit": "ab6da177c1b9492afaed0c134e204feb4347f149",
+  "seedRunId": "32195163437",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "maxCycles": 500,
+    "generations": 4,
+    "beamWidth": 3,
+    "additiveResultLimit": 16
+  },
+  "baseline": {
+    "solutionPath": "reports/heldout-mechanical-chemistry/search/GEN249-best-mechanical-chemistry-loop.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+      "progressCycle": 206,
+      "collisionCycle": 206,
+      "collisionLocation": [
+        10,
+        -1
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 3,
+        "silver": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185,
+          191,
+          206
+        ],
+        "silver": [
+          206
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 209,
+      "terminatedWithError": true
+    },
+    "actions": []
+  },
+  "generationCount": 4,
+  "history": [
+    {
+      "generation": 1,
+      "mechanicalCandidateCount": 1,
+      "expandedCandidateCount": 1,
+      "dedupedCandidateCount": 1,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-00-baseline.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": []
+        }
+      ]
+    },
+    {
+      "generation": 2,
+      "mechanicalCandidateCount": 1,
+      "expandedCandidateCount": 1,
+      "dedupedCandidateCount": 1,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-00-baseline.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": []
+        }
+      ]
+    },
+    {
+      "generation": 3,
+      "mechanicalCandidateCount": 1,
+      "expandedCandidateCount": 1,
+      "dedupedCandidateCount": 1,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-00-baseline.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": []
+        }
+      ]
+    },
+    {
+      "generation": 4,
+      "mechanicalCandidateCount": 1,
+      "expandedCandidateCount": 1,
+      "dedupedCandidateCount": 1,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-00-baseline.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": []
+        }
+      ]
+    }
+  ],
+  "best": {
+    "solutionPath": "reports/heldout-mechanical-chemistry/search/GEN249-best-mechanical-chemistry-loop.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+      "progressCycle": 206,
+      "collisionCycle": 206,
+      "collisionLocation": [
+        10,
+        -1
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 3,
+        "silver": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185,
+          191,
+          206
+        ],
+        "silver": [
+          206
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 209,
+      "terminatedWithError": true
+    },
+    "actions": []
+  },
+  "acceptedProductOne": false,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
