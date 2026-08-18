@@ -39,14 +39,7 @@ def _singleton_world_position(product: dict[str, Any], opportunity: dict[str, An
 
 
 def _dedupe_observed_products(opportunities: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Keep the earliest pose per physical molecule and target product.
-
-    A singleton product matches all six output rotations at the same world hex,
-    and a persistent molecule can be observed over several frames. Those are
-    not distinct transport problems. Deduplicating by product contract and
-    atom identity cuts the replay search by orders of magnitude while keeping
-    distinct produced molecules and identical product indices separate.
-    """
+    """Keep the earliest pose per physical molecule and target product."""
 
     selected: dict[tuple[int, tuple[str, ...]], dict[str, Any]] = {}
     anonymous: list[dict[str, Any]] = []
@@ -69,6 +62,83 @@ def _dedupe_observed_products(opportunities: list[dict[str, Any]]) -> list[dict[
             int(item.get("rotation") or 0),
         ),
     )
+
+
+def _layout_extent(solution: dict[str, Any]) -> tuple[int, int]:
+    """Return a conservative positive edge including explicit track/pipe cells."""
+
+    cells: list[tuple[int, int]] = []
+    for part in solution.get("parts", []) or []:
+        origin = _position(part.get("position"))
+        cells.append(origin)
+        for key in ("trackHexes", "pipeHexes"):
+            for local in part.get(key, []) or []:
+                cells.append((origin[0] + int(local[0]), origin[1] + int(local[1])))
+    if not cells:
+        return 0, 0
+    return max(cell[0] for cell in cells), max(cell[1] for cell in cells)
+
+
+def ensure_all_standard_outputs(
+    puzzle: dict[str, Any],
+    solution: dict[str, Any],
+    *,
+    reserve_margin: int = 8,
+) -> dict[str, Any]:
+    """Place one legal output part for every puzzle product contract.
+
+    OMSim refuses to evaluate product metrics until every puzzle product has at
+    least one corresponding output part. Missing outputs are therefore placed
+    in a conservative reserve area outside the inherited mechanism. These are
+    completeness placeholders, not target-solution geometry: the first-product
+    transport search still derives its active output from generated replay.
+    """
+
+    result = deepcopy(solution)
+    products = list(puzzle.get("products", []) or [])
+    present = {
+        int(part.get("which") or 0)
+        for part in result.get("parts", []) or []
+        if str(part.get("type") or "").startswith("out-")
+    }
+    missing = [index for index in range(len(products)) if index not in present]
+    if not missing:
+        return result
+
+    max_u, max_v = _layout_extent(result)
+    max_span = 1
+    for product in products:
+        positions = [_position(atom.get("position")) for atom in product.get("atoms", []) or []]
+        if positions:
+            span_u = max(p[0] for p in positions) - min(p[0] for p in positions) + 1
+            span_v = max(p[1] for p in positions) - min(p[1] for p in positions) + 1
+            max_span = max(max_span, span_u, span_v)
+    spacing = max(4, max_span + 3)
+    start = (max_u + int(reserve_margin), max_v + int(reserve_margin))
+
+    for ordinal, product_index in enumerate(missing):
+        origin = (start[0] + ordinal * spacing, start[1])
+        result = add_standard_output(
+            result,
+            {
+                "productIndex": product_index,
+                "origin": [origin[0], origin[1]],
+                "rotation": 0,
+                "firstCycle": None,
+                "lastCycle": None,
+                "observationCount": 0,
+                "atomIds": [],
+                "held": False,
+                "evidence": "solver-reserved-product-output",
+            },
+        )
+        result.setdefault("source", {}).setdefault("productDeliveryRepairs", []).append({
+            "mode": "reserved-output-completeness",
+            "productIndex": product_index,
+            "origin": [origin[0], origin[1]],
+            "targetSolutionBytesUsed": 0,
+        })
+    return result
 
 
 def add_singleton_product_extractor(
@@ -149,7 +219,7 @@ def add_singleton_product_extractor(
         "dropCycle": resolved_grab_cycle + 2,
         "targetSolutionBytesUsed": 0,
     })
-    return result
+    return ensure_all_standard_outputs(puzzle, result)
 
 
 def _rank(record: dict[str, Any]) -> tuple[Any, ...]:
@@ -230,7 +300,7 @@ def search_singleton_product_delivery(
     records.sort(key=_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "kind": "trace-guided-singleton-product-delivery-search",
         "summary": {
             "maxCycles": horizon,
@@ -242,6 +312,14 @@ def search_singleton_product_delivery(
             "baselineProductDeliveredCount": baseline_deliveries,
             "bestProductDeliveredCount": int((selected[0].get("summary") or {}).get("productDeliveredCount") or baseline_deliveries) if selected else baseline_deliveries,
             "hasDelivery": bool(selected),
+            "allProductOutputsPlaced": bool(selected) and all(
+                index in {
+                    int(part.get("which") or 0)
+                    for part in (selected[0].get("solution") or {}).get("parts", []) or []
+                    if str(part.get("type") or "").startswith("out-")
+                }
+                for index in range(len(puzzle.get("products", []) or []))
+            ),
             "targetSolutionBytesUsed": 0,
         },
         "baseline": baseline,
@@ -252,5 +330,6 @@ def search_singleton_product_delivery(
 
 __all__ = [
     "add_singleton_product_extractor",
+    "ensure_all_standard_outputs",
     "search_singleton_product_delivery",
 ]
