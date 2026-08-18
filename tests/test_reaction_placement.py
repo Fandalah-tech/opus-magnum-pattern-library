@@ -35,11 +35,13 @@ class ReactionPlacementTests(unittest.TestCase):
         self.assertEqual(item["output"], [0, 1])
         self.assertEqual(item["rotation"], 0)
         self.assertEqual(item["observationCount"], 2)
+        self.assertEqual(item["readyObservationCount"], 2)
+        self.assertEqual(item["minimumBlockerCount"], 0)
         self.assertEqual(item["firstCycle"], 4)
         self.assertEqual(item["lastCycle"], 5)
         self.assertIn("faithful-purification", item["geometryEvidence"])
 
-    def test_rejects_occupied_output_held_bonded_and_gold_inputs(self) -> None:
+    def test_strict_mode_rejects_occupied_output_held_bonded_and_gold_inputs(self) -> None:
         replay = {"frames": [
             frame(0, [
                 {"id": "a", "element": "lead", "position": [0, 0]},
@@ -61,6 +63,24 @@ class ReactionPlacementTests(unittest.TestCase):
         ]}
 
         self.assertEqual(purification_opportunities(replay), [])
+
+    def test_near_ready_mode_keeps_blocked_geometry_as_search_evidence(self) -> None:
+        replay = {"frames": [
+            frame(7, [
+                {"id": "a", "element": "iron", "position": [0, 0], "heldBy": ["arm"]},
+                {"id": "b", "element": "iron", "position": [1, 0]},
+            ]),
+        ]}
+
+        opportunities = purification_opportunities(replay, include_blocked=True)
+
+        self.assertEqual(len(opportunities), 1)
+        item = opportunities[0]
+        self.assertEqual(item["producedElement"], "copper")
+        self.assertEqual(item["readyObservationCount"], 0)
+        self.assertEqual(item["minimumBlockerCount"], 1)
+        self.assertTrue(item["blockersAtBestObservation"]["firstHeld"])
+        self.assertEqual(item["blockersAtBestObservation"]["cycle"], 7)
 
     def test_moves_only_selected_purification_glyph_and_restores_solver_provenance(self) -> None:
         solution = {
