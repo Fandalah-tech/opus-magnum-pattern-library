@@ -20,14 +20,15 @@ from .candidate_solution import (
     serialize_candidate_roundtrip,
 )
 from .source_assignment import assign_branch_reagent_indices
+from .feed_alignment import generic_input_alignment, preferred_reagent_anchor_atom
 from . import candidate_solution as _candidate_solution
 
 # Keep the large candidate materializer stable while the generic source mapper
-# graduates into its own module. build_candidate_solution resolves this module
-# global at call time, so the package-level binding upgrades every caller
-# without duplicating the materializer or introducing a circular top-level
-# dependency. A later cleanup can replace the legacy definition directly.
+# and feed aligner graduate into focused modules. build_candidate_solution
+# resolves these module globals at call time, so package-level bindings upgrade
+# every caller without duplicating the materializer or creating top-level cycles.
 _candidate_solution.assign_branch_reagent_indices = assign_branch_reagent_indices
+_candidate_solution.singleton_input_alignment = generic_input_alignment
 
 from .chemistry_composition import (
     manufacturing_requirements,
@@ -161,6 +162,7 @@ __all__ = [
     "generate_blind_transfer_candidates",
     "generate_objective_candidates",
     "generation_outcome_records",
+    "generic_input_alignment",
     "manufacturing_requirements",
     "mechanical_fingerprint",
     "materialize_assembly_layout",
@@ -180,6 +182,7 @@ __all__ = [
     "pareto_frontier",
     "part_occupied_cells",
     "plan_puzzle_fragment_chains",
+    "preferred_reagent_anchor_atom",
     "puzzle_similarity",
     "puzzle_file_id",
     "rank_chains_for_manufacturing_plan",
