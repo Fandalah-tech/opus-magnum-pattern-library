@@ -8,7 +8,7 @@ on:
       - .github/workflows/build-generic-training-flow.yml
       - tools/normalize_campaign_flow_audit.py
       - tools/build_engine_fragment_flow_index.py
-      - packages/opus_analysis/engine_fragment_flow.py
+      - packages/opus_analysis/**
       - packages/opus_solver/generic_chemistry.py
       - tests/test_generic_singleton_chemistry.py
       - tests/test_generic_reagent_chemistry.py
@@ -16,8 +16,12 @@ on:
       - packages/opus_parser/**
   workflow_dispatch:
 
+concurrency:
+  group: generic-training-flow-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 env:
@@ -28,6 +32,7 @@ env:
   CHECKPOINT_ROOT: .training-checkpoint
   CAMPAIGN_ROOT: .training-checkpoint/.datasets/campaign-corpus
   REPORT_ROOT: reports/generic-training-flow
+  LATEST_SUMMARY: reports/generated/generic-training-flow/latest-summary.json
 
 jobs:
   campaign-flow:
@@ -44,10 +49,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run chemistry planner unit tests
+      - name: Run planner and fragment representation tests
         run: |
           python -m unittest tests.test_generic_singleton_chemistry -v
           python -m unittest tests.test_generic_reagent_chemistry -v
+          python -m unittest packages.opus_analysis.tests.test_graph -v
+          python -m unittest packages.opus_analysis.tests.test_track_fragments -v
 
       - name: Restore authorized campaign corpus cache
         id: campaign_cache
@@ -174,6 +181,38 @@ jobs:
           PY
         env:
           CAMPAIGN_CACHE_KEY: ${{ steps.campaign_cache.outputs.cache-matched-key }}
+
+      - name: Persist generic flow checkpoint pointer
+        if: github.ref_name == 'feature/critelli-2026-public-corpus' && github.actor == 'Fandalah-tech'
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          summary = json.loads(Path('reports/generic-training-flow/summary.json').read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'generic-training-flow-latest-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'targetSolutionBytesUsed': 0,
+              'heldoutPuzzleIds': ['P016'],
+              'summary': summary,
+          }
+          output = Path(os.environ['LATEST_SUMMARY'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_SUMMARY"
+          if git diff --cached --quiet; then
+            echo "Generic flow checkpoint pointer unchanged."
+            exit 0
+          fi
+          git commit -m "Update generic flow checkpoint [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
 
       - name: Upload generic training flow checkpoint
         if: always()
