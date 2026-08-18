@@ -114,7 +114,7 @@ jobs:
             exit 1
           fi
 
-      - name: Search bounded target-free geometry repairs
+      - name: Search deeper target-free geometry repairs
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -122,13 +122,13 @@ jobs:
           python tools/probe_holdout_geometry_search.py \
             --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
             --flow-index "$FLOW_INDEX" \
-            --assembly-limit 2 \
-            --per-slot-limit 12 \
-            --variant-limit 324 \
-            --result-limit 16 \
+            --assembly-limit 1 \
+            --per-slot-limit 16 \
+            --variant-limit 648 \
+            --result-limit 24 \
             --translation-radius 1 \
             --rotation-radius 1 \
-            --preflight-cycles 128 \
+            --preflight-cycles 256 \
             --promotion-limit 0 \
             --solution-output "$REPORT_ROOT/GEN249-best-preflight.solution" \
             --output "$REPORT_ROOT/GEN249.json"
@@ -142,7 +142,7 @@ jobs:
           report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
           pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
           payload = {
-              'schemaVersion': '0.1.0',
+              'schemaVersion': '0.2.0',
               'kind': 'heldout-geometry-repair-checkpoint',
               'runId': os.environ.get('GITHUB_RUN_ID'),
               'sourceCommit': os.environ.get('GITHUB_SHA'),
@@ -165,12 +165,12 @@ jobs:
                               (variant.get('validation') or {} for variant in item.get('variants') or []),
                               key=lambda value: (
                                   int(value.get('totalDelivered') or 0),
+                                  int((value.get('eventCounts') or {}).get('atom-purified') or 0),
                                   int(value.get('distinctRequiredChemistryEventCount') or 0),
-                                  int(value.get('requiredChemistryEventCount') or 0),
-                                  int(value.get('distinctChemistryEventCount') or 0),
-                                  int(value.get('chemistryEventCount') or 0),
                                   int(not bool(value.get('terminatedWithError'))),
                                   int(value.get('completedCycles') or 0),
+                                  int(value.get('requiredChemistryEventCount') or 0),
+                                  int(value.get('chemistryEventCount') or 0),
                               ),
                               default=None,
                           )
@@ -198,6 +198,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: heldout-geometry-repair-${{ github.run_id }}
-          path: "$REPORT_ROOT/"
+          path: ${{ env.REPORT_ROOT }}/
           if-no-files-found: error
           retention-days: 14
