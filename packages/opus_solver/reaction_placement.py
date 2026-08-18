@@ -19,14 +19,24 @@ def _position(value: Any) -> tuple[int, int]:
     return int(raw[0]), int(raw[1])
 
 
-def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
-    """Find trace-observed faithful purification placements that could fire.
+def purification_opportunities(
+    replay: dict[str, Any],
+    *,
+    include_blocked: bool = False,
+) -> list[dict[str, Any]]:
+    """Find trace-observed faithful purification placements.
 
-    OMSim's purification glyph takes two equal, free metal atoms on local cells
+    OMSim's purification glyph takes two equal metal atoms on local cells
     ``(0, 0)`` and ``(1, 0)`` and creates the next metal on local ``(0, 1)``.
-    Both inputs must be unheld and unbonded.  Opportunities are inferred only
-    from a generated candidate's local engine trace, never from a target
-    solution.
+    A ready opportunity has unheld, unbonded inputs and an empty output cell.
+
+    With ``include_blocked=True`` we also retain geometrically correct pairs
+    that are blocked in the end-of-cycle snapshot by holding, bonding, or an
+    occupied output.  Those near-opportunities are useful because the faithful
+    engine executes purification in the first half-cycle, a transient state
+    that is not represented by end-of-cycle snapshots.  Every candidate is
+    still replay-validated after placing the glyph, so a blocked observation is
+    evidence for search only, never a claimed chemistry success.
     """
 
     observations: defaultdict[
@@ -49,13 +59,9 @@ def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
             by_position[_position(atom.get("position"))].append(atom)
         occupied = set(by_position)
 
-        def free_conversion_atom(atom: dict[str, Any]) -> bool:
-            atom_id = str(atom.get("id") or "")
-            return not (atom.get("heldBy") or []) and atom_id not in bonded_ids
-
         for first in atoms:
             element = str(first.get("element") or "")
-            if element not in METAL_ORDER[:-1] or not free_conversion_atom(first):
+            if element not in METAL_ORDER[:-1]:
                 continue
             first_pos = _position(first.get("position"))
             first_id = str(first.get("id") or "")
@@ -64,13 +70,10 @@ def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
                 output_delta = rotate_hex((0, 1), rotation)
                 second_pos = (first_pos[0] + input_delta[0], first_pos[1] + input_delta[1])
                 output_pos = (first_pos[0] + output_delta[0], first_pos[1] + output_delta[1])
-                if output_pos in occupied:
-                    continue
                 matches = [
                     atom
                     for atom in by_position.get(second_pos, [])
                     if str(atom.get("element") or "") == element
-                    and free_conversion_atom(atom)
                 ]
                 if not matches:
                     continue
@@ -79,6 +82,22 @@ def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
                 # Reverse orientations represent the same two physical inputs;
                 # retain one deterministic atom ordering.
                 if first_id and second_id and first_id > second_id:
+                    continue
+
+                first_held = bool(first.get("heldBy") or [])
+                second_held = bool(second.get("heldBy") or [])
+                first_bonded = first_id in bonded_ids
+                second_bonded = second_id in bonded_ids
+                output_occupied = output_pos in occupied
+                blocker_count = sum((
+                    first_held,
+                    second_held,
+                    first_bonded,
+                    second_bonded,
+                    output_occupied,
+                ))
+                ready = blocker_count == 0
+                if not ready and not include_blocked:
                     continue
 
                 key = (element, first_pos, rotation)
@@ -97,16 +116,32 @@ def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
                         "firstCycle": cycle,
                         "lastCycle": cycle,
                         "observationCount": 0,
+                        "readyObservationCount": 0,
+                        "minimumBlockerCount": blocker_count,
+                        "blockersAtBestObservation": {},
                         "geometryEvidence": "faithful-purification-local-cells-0,0-1,0-to-0,1",
                     }
                     observations[key] = payload
                 payload["observationCount"] = int(payload["observationCount"]) + 1
+                payload["readyObservationCount"] = int(payload["readyObservationCount"]) + int(ready)
                 payload["firstCycle"] = min(int(payload["firstCycle"]), cycle)
                 payload["lastCycle"] = max(int(payload["lastCycle"]), cycle)
+                if blocker_count <= int(payload.get("minimumBlockerCount") or blocker_count):
+                    payload["minimumBlockerCount"] = blocker_count
+                    payload["blockersAtBestObservation"] = {
+                        "firstHeld": first_held,
+                        "secondHeld": second_held,
+                        "firstBonded": first_bonded,
+                        "secondBonded": second_bonded,
+                        "outputOccupied": output_occupied,
+                        "cycle": cycle,
+                    }
 
     return sorted(
         observations.values(),
         key=lambda item: (
+            int(item.get("minimumBlockerCount") or 0),
+            -int(item.get("readyObservationCount") or 0),
             -int(item.get("observationCount") or 0),
             int(item.get("firstCycle") or 0),
             METAL_ORDER.index(str(item.get("element") or "lead")),
@@ -155,6 +190,7 @@ def _variant_rank(record: dict[str, Any]) -> tuple[Any, ...]:
     validation = record.get("validation") or {}
     events = validation.get("eventCounts") or {}
     purified = int(events.get("atom-purified") or 0)
+    opportunity = record.get("opportunity") or {}
     return (
         int(bool(validation.get("complete"))),
         int(validation.get("totalDelivered") or 0),
@@ -166,7 +202,9 @@ def _variant_rank(record: dict[str, Any]) -> tuple[Any, ...]:
         int(validation.get("distinctChemistryEventCount") or 0),
         int(validation.get("chemistryEventCount") or 0),
         int(validation.get("manipulationEventCount") or 0),
-        int(record.get("opportunity", {}).get("observationCount") or 0),
+        -int(opportunity.get("minimumBlockerCount") or 0),
+        int(opportunity.get("readyObservationCount") or 0),
+        int(opportunity.get("observationCount") or 0),
         -int(record.get("purifierIndex") or 0),
     )
 
@@ -180,12 +218,13 @@ def search_purification_placements(
     variant_limit: int = 240,
     result_limit: int = 20,
 ) -> dict[str, Any]:
-    """Search trace-derived purification poses on an inherited blind candidate."""
+    """Search ready and near-ready purification poses on a blind candidate."""
 
     horizon = max(1, int(max_cycles))
     simulator = Simulator.from_models(puzzle, solution)
     replay = simulator.run_timeline(build_program_timeline(solution, max_cycles=horizon))
-    opportunities = purification_opportunities(replay)[:max(0, int(opportunity_limit))]
+    all_opportunities = purification_opportunities(replay, include_blocked=True)
+    opportunities = all_opportunities[:max(0, int(opportunity_limit))]
     purifier_count = sum(
         str(part.get("type") or "") == "glyph-purification"
         for part in solution.get("parts", [])
@@ -219,12 +258,14 @@ def search_purification_placements(
     records.sort(key=_variant_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "kind": "trace-guided-purification-placement-search",
         "summary": {
             "maxCycles": horizon,
             "purifierCount": purifier_count,
             "opportunityCount": len(opportunities),
+            "readyOpportunityCount": sum(int(item.get("minimumBlockerCount") or 0) == 0 for item in opportunities),
+            "nearOpportunityCount": sum(int(item.get("minimumBlockerCount") or 0) > 0 for item in opportunities),
             "searchedVariantCount": len(records),
             "returnedVariantCount": len(selected),
             "purificationReachedCount": sum(
