@@ -1,0 +1,353 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-reaction-placement-checkpoint",
+  "runId": "32158888694",
+  "sourceCommit": "731cca86ac90d38fc62b238b823604d114cd3acc",
+  "geometryRunId": "32157526102",
+  "geometrySourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "baselinePurifierCount": 6,
+  "request": {
+    "maxCycles": 256,
+    "opportunityLimit": 100,
+    "variantLimit": 300,
+    "resultLimit": 24
+  },
+  "summary": {
+    "maxCycles": 256,
+    "purifierCount": 6,
+    "opportunityCount": 100,
+    "searchedVariantCount": 300,
+    "returnedVariantCount": 24,
+    "purificationReachedCount": 0,
+    "hasPurification": false,
+    "targetSolutionBytesUsed": 0
+  },
+  "baseline": {
+    "completedCycles": 206,
+    "terminatedWithError": true
+  },
+  "bestVariant": {
+    "purifierIndex": 0,
+    "opportunity": {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        8,
+        -1
+      ],
+      "rotation": 1,
+      "center": [
+        8,
+        0
+      ],
+      "second": [
+        8,
+        1
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-10-spawn-1-atom-0",
+      "firstCycle": 191,
+      "lastCycle": 205,
+      "observationCount": 10
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 21,
+      "terminatedWithError": false,
+      "firstError": null,
+      "missingProductOutputIndices": [
+        1,
+        2
+      ],
+      "requiredChemistryEventKinds": [
+        "atom-purified",
+        "bond-removed",
+        "product-delivered",
+        "repeating-product-completed"
+      ],
+      "observedRequiredChemistryEventKinds": [],
+      "distinctRequiredChemistryEventCount": 0,
+      "requiredChemistryEventCount": 0,
+      "distinctChemistryEventCount": 0,
+      "chemistryEventCount": 0,
+      "chemistryEventKinds": [],
+      "chemistryEventTimeline": [],
+      "manipulationEventCount": 0,
+      "eventCounts": {
+        "arm-instruction": 21
+      }
+    },
+    "solutionOutput": "reports/heldout-reaction-placement/GEN249-best-purification.solution"
+  },
+  "topOpportunities": [
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        8,
+        -1
+      ],
+      "rotation": 1,
+      "center": [
+        8,
+        0
+      ],
+      "second": [
+        8,
+        1
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-10-spawn-1-atom-0",
+      "firstCycle": 191,
+      "lastCycle": 205,
+      "observationCount": 10
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -4,
+        4
+      ],
+      "rotation": 5,
+      "center": [
+        -3,
+        3
+      ],
+      "second": [
+        -2,
+        2
+      ],
+      "firstAtomId": "part-7-spawn-0-atom-2",
+      "secondAtomId": "part-7-spawn-1-atom-2",
+      "firstCycle": 83,
+      "lastCycle": 109,
+      "observationCount": 9
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        8,
+        -1
+      ],
+      "rotation": 3,
+      "center": [
+        7,
+        -1
+      ],
+      "second": [
+        6,
+        -1
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-0-atom-2",
+      "firstCycle": 191,
+      "lastCycle": 205,
+      "observationCount": 7
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        8,
+        -1
+      ],
+      "rotation": 5,
+      "center": [
+        9,
+        -2
+      ],
+      "second": [
+        10,
+        -3
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-1-atom-2",
+      "firstCycle": 191,
+      "lastCycle": 205,
+      "observationCount": 7
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        6,
+        3
+      ],
+      "rotation": 5,
+      "center": [
+        7,
+        2
+      ],
+      "second": [
+        8,
+        1
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-2",
+      "secondAtomId": "part-10-spawn-1-atom-0",
+      "firstCycle": 47,
+      "lastCycle": 55,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -5,
+        3
+      ],
+      "rotation": 5,
+      "center": [
+        -4,
+        2
+      ],
+      "second": [
+        -3,
+        1
+      ],
+      "firstAtomId": "part-7-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-1-atom-3",
+      "firstCycle": 83,
+      "lastCycle": 115,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -4,
+        6
+      ],
+      "rotation": 3,
+      "center": [
+        -5,
+        6
+      ],
+      "second": [
+        -6,
+        6
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-0",
+      "secondAtomId": "part-7-spawn-0-atom-0",
+      "firstCycle": 86,
+      "lastCycle": 100,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -3,
+        6
+      ],
+      "rotation": 3,
+      "center": [
+        -4,
+        6
+      ],
+      "second": [
+        -5,
+        6
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-0",
+      "secondAtomId": "part-7-spawn-0-atom-0",
+      "firstCycle": 89,
+      "lastCycle": 97,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -6,
+        5
+      ],
+      "rotation": 5,
+      "center": [
+        -5,
+        4
+      ],
+      "second": [
+        -4,
+        3
+      ],
+      "firstAtomId": "part-7-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-1-atom-0",
+      "firstCycle": 95,
+      "lastCycle": 109,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -3,
+        2
+      ],
+      "rotation": 3,
+      "center": [
+        -4,
+        2
+      ],
+      "second": [
+        -5,
+        2
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-0-atom-2",
+      "firstCycle": 113,
+      "lastCycle": 121,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -3,
+        2
+      ],
+      "rotation": 5,
+      "center": [
+        -2,
+        1
+      ],
+      "second": [
+        -1,
+        0
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-1-atom-2",
+      "firstCycle": 113,
+      "lastCycle": 121,
+      "observationCount": 6
+    },
+    {
+      "element": "iron",
+      "producedElement": "copper",
+      "origin": [
+        -2,
+        1
+      ],
+      "rotation": 5,
+      "center": [
+        -1,
+        0
+      ],
+      "second": [
+        0,
+        -1
+      ],
+      "firstAtomId": "part-10-spawn-0-atom-3",
+      "secondAtomId": "part-7-spawn-1-atom-2",
+      "firstCycle": 116,
+      "lastCycle": 130,
+      "observationCount": 6
+    }
+  ]
+}
