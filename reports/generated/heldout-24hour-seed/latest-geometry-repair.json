@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-geometry-repair-checkpoint",
-  "runId": "32153798585",
-  "sourceCommit": "c3ae8fefbb57f5d5602fd874ee22d20772b4300c",
+  "runId": "32154325229",
+  "sourceCommit": "746f7f59146307a20bddb8c5d7335c8c474f8df7",
   "genericFlowRunId": "32087080619",
   "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
@@ -59,8 +59,8 @@
       "completedCycles": 128,
       "terminatedWithError": false,
       "firstError": null,
-      "distinctRequiredChemistryEventCount": 0,
-      "requiredChemistryEventCount": 0,
+      "distinctRequiredChemistryEventCount": 1,
+      "requiredChemistryEventCount": 3,
       "distinctChemistryEventCount": 2,
       "chemistryEventCount": 6,
       "chemistryEventKinds": [
@@ -139,8 +139,8 @@
         "completedCycles": 128,
         "terminatedWithError": false,
         "firstError": null,
-        "distinctRequiredChemistryEventCount": 0,
-        "requiredChemistryEventCount": 0,
+        "distinctRequiredChemistryEventCount": 1,
+        "requiredChemistryEventCount": 3,
         "distinctChemistryEventCount": 2,
         "chemistryEventCount": 6,
         "chemistryEventKinds": [
@@ -217,8 +217,8 @@
         "completedCycles": 128,
         "terminatedWithError": false,
         "firstError": null,
-        "distinctRequiredChemistryEventCount": 0,
-        "requiredChemistryEventCount": 0,
+        "distinctRequiredChemistryEventCount": 1,
+        "requiredChemistryEventCount": 2,
         "distinctChemistryEventCount": 2,
         "chemistryEventCount": 4,
         "chemistryEventKinds": [
