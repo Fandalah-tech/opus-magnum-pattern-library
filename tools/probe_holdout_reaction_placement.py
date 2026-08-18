@@ -32,6 +32,17 @@ def _compact_validation(validation: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _compact_variant(item: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "repairMode": item.get("repairMode"),
+        "purifierIndex": item.get("purifierIndex"),
+        "unbonderIndex": item.get("unbonderIndex"),
+        "opportunity": item.get("opportunity"),
+        "unbondCandidate": item.get("unbondCandidate"),
+        "validation": _compact_validation(item.get("validation") or {}),
+    }
+
+
 def probe(
     puzzle_path: Path,
     baseline_solution_path: Path,
@@ -53,14 +64,8 @@ def probe(
         variant_limit=variant_limit,
         result_limit=result_limit,
     )
-    compact_variants = []
+    compact_variants = [_compact_variant(item) for item in result.get("variants") or []]
     best_raw = (result.get("variants") or [None])[0]
-    for item in result.get("variants") or []:
-        compact_variants.append({
-            "purifierIndex": item.get("purifierIndex"),
-            "opportunity": item.get("opportunity"),
-            "validation": _compact_validation(item.get("validation") or {}),
-        })
 
     output_solution = None
     if best_raw is not None and solution_output is not None and best_raw.get("solution"):
@@ -70,15 +75,10 @@ def probe(
 
     best = None
     if best_raw is not None:
-        best = {
-            "purifierIndex": best_raw.get("purifierIndex"),
-            "opportunity": best_raw.get("opportunity"),
-            "validation": _compact_validation(best_raw.get("validation") or {}),
-            "solutionOutput": output_solution,
-        }
+        best = {**_compact_variant(best_raw), "solutionOutput": output_solution}
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-trace-guided-purification-probe",
         "targetPuzzle": puzzle_path.name,
         "baselineSolution": baseline_solution_path.name,
@@ -86,6 +86,10 @@ def probe(
         "baselinePartCount": len(solution.get("parts") or []),
         "baselinePurifierCount": sum(
             str(part.get("type") or "") == "glyph-purification"
+            for part in solution.get("parts") or []
+        ),
+        "baselineUnbonderCount": sum(
+            str(part.get("type") or "") == "unbonder"
             for part in solution.get("parts") or []
         ),
         "request": {
@@ -128,6 +132,7 @@ def main() -> int:
     print(json.dumps({
         "targetPuzzle": report["targetPuzzle"],
         "baselinePurifierCount": report["baselinePurifierCount"],
+        "baselineUnbonderCount": report["baselineUnbonderCount"],
         "summary": report["summary"],
         "bestVariant": report["bestVariant"],
     }, ensure_ascii=False))
