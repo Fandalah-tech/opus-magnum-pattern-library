@@ -122,7 +122,13 @@ def apply_purification_placement(
     purifier = purifiers[int(purifier_index)]
     purifier["position"] = [int(value) for value in opportunity.get("origin", (0, 0))]
     purifier["rotation"] = int(opportunity.get("rotation") or 0) % 6
-    result.setdefault("source", {})["reactionPlacementRepair"] = {
+    source = result.setdefault("source", {})
+    # Parsed artifact binaries do not retain non-serialized generator metadata.
+    # Re-establish solver provenance so the generic track validation-horizon
+    # estimator can replay sparse transport machines long enough to reach the
+    # trace-derived reaction pose.
+    source["generator"] = "opus_solver/trace-guided-purification-v1"
+    source["reactionPlacementRepair"] = {
         "kind": "trace-guided-purification-v1",
         "purifierIndex": int(purifier_index),
         "purifierPartId": str(purifier.get("id") or ""),
@@ -200,7 +206,7 @@ def search_purification_placements(
     records.sort(key=_variant_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.1.1",
         "kind": "trace-guided-purification-placement-search",
         "summary": {
             "maxCycles": horizon,
