@@ -31,7 +31,7 @@ def purification_poses_from_replay(replay: dict[str, Any]) -> list[dict[str, Any
     three-cell straight line and produces the next metal on the empty center.
     This function observes only the candidate replay: it records poses where
     two equal, purifiable metals actually coexist at the two endpoints while the
-    center is empty.  No target solution geometry participates.
+    center is empty. No target solution geometry participates.
     """
 
     observations: dict[tuple[tuple[int, int], int, str], dict[str, Any]] = {}
@@ -42,6 +42,7 @@ def purification_poses_from_replay(replay: dict[str, Any]) -> list[dict[str, Any
             tuple(int(value) for value in (atom.get("position") or (0, 0))): atom
             for atom in atoms
         }
+        seen_frame_keys: set[tuple[tuple[int, int], int, str]] = set()
         for origin, first in by_position.items():
             element = str(first.get("element") or "")
             if element not in METAL_ORDER or element == "gold":
@@ -55,13 +56,18 @@ def purification_poses_from_replay(replay: dict[str, Any]) -> list[dict[str, Any
                 if center in by_position:
                     continue
 
-                # Canonicalize the reversible endpoint ordering so the same
-                # physical three-cell line is counted once per frame.
+                # Canonicalize the reversible endpoint ordering. Iterating from
+                # the opposite endpoint sees the same physical line again, so
+                # count the canonical pose at most once in each replay frame.
                 reverse_origin = second_position
                 reverse_rotation = (rotation + 3) % 6
                 forward_key = (origin, rotation, element)
                 reverse_key = (reverse_origin, reverse_rotation, element)
                 key = min(forward_key, reverse_key)
+                if key in seen_frame_keys:
+                    continue
+                seen_frame_keys.add(key)
+
                 pose_origin, pose_rotation, _ = key
                 item = observations.setdefault(key, {
                     "position": list(pose_origin),
@@ -75,11 +81,12 @@ def purification_poses_from_replay(replay: dict[str, Any]) -> list[dict[str, Any
                 })
                 item["lastCycle"] = cycle
                 item["observationCount"] += 1
-                if len(item["sampleAtomPairs"]) < 4:
-                    item["sampleAtomPairs"].append(sorted((
-                        str(first.get("id") or ""),
-                        str(second.get("id") or ""),
-                    )))
+                pair = sorted((
+                    str(first.get("id") or ""),
+                    str(second.get("id") or ""),
+                ))
+                if pair not in item["sampleAtomPairs"] and len(item["sampleAtomPairs"]) < 4:
+                    item["sampleAtomPairs"].append(pair)
 
     return sorted(
         observations.values(),
@@ -130,7 +137,7 @@ def search_trajectory_guided_purification(
 ) -> dict[str, Any]:
     """Relocate learned purification glyphs onto target-observed metal pairs.
 
-    Arms, tracks, programs, feeds, and all other parts remain frozen.  Only the
+    Arms, tracks, programs, feeds, and all other parts remain frozen. Only the
     position/rotation of one existing purification glyph changes per candidate,
     so this is a bounded static-glyph repair rather than a puzzle-specific
     architecture generator.
