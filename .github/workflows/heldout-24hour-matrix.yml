@@ -12,6 +12,7 @@ on:
       - tools/evaluate_holdout_transfer.py
       - tests/test_holdout_matrix.py
       - tests/test_source_assignment.py
+      - tests/test_feed_alignment.py
       - packages/opus_solver/**
       - packages/opus_parser/**
       - packages/opus_engine/**
@@ -54,6 +55,7 @@ jobs:
           python -m unittest tests.test_holdout_matrix -v
           python -m unittest tests.test_holdout_transfer -v
           python -m unittest tests.test_source_assignment -v
+          python -m unittest tests.test_feed_alignment -v
 
       - name: Fetch puzzle bytes only from pinned OpusSolver corpus
         run: |
