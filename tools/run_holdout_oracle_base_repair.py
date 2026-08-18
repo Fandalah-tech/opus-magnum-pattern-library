@@ -83,6 +83,44 @@ def variants_for_collision(solution: dict[str, Any], location: tuple[int, int]) 
     return variants
 
 
+def _choose_variant(evaluated: list[dict[str, Any]], baseline_progress: int) -> tuple[dict[str, Any], str]:
+    accepted = [item for item in evaluated if int((item.get("omsim") or {}).get("exitCode") or 0) == 0]
+    if accepted:
+        accepted.sort(key=lambda item: int((item.get("omsim") or {}).get("progressCycle") or 0), reverse=True)
+        return accepted[0], "accepted-product"
+
+    relocations_that_advance = [
+        item for item in evaluated
+        if item.get("mode") == "relocate-collision-base-arm"
+        and int((item.get("omsim") or {}).get("progressCycle") or 0) > int(baseline_progress)
+    ]
+    if relocations_that_advance:
+        relocations_that_advance.sort(
+            key=lambda item: int((item.get("omsim") or {}).get("progressCycle") or 0),
+            reverse=True,
+        )
+        return relocations_that_advance[0], "relocation-advances-oracle"
+
+    # If every relocation merely moves the same collision to the new arm base,
+    # peel that generated arm away. This may temporarily expose an earlier
+    # blocker, but it monotonically removes the mechanically invalid dependency
+    # instead of oscillating between equal-cycle base locations. Chemistry can
+    # be rebuilt later from the surviving target-free mechanism.
+    removals = [item for item in evaluated if item.get("mode") == "remove-collision-base-arm"]
+    if removals:
+        removals.sort(
+            key=lambda item: int((item.get("omsim") or {}).get("progressCycle") or 0),
+            reverse=True,
+        )
+        return removals[0], "peel-nonadvancing-collision-base-arm"
+
+    evaluated.sort(
+        key=lambda item: int((item.get("omsim") or {}).get("progressCycle") or 0),
+        reverse=True,
+    )
+    return evaluated[0], "best-available"
+
+
 def search(
     omsim: Path,
     puzzle: Path,
@@ -144,9 +182,10 @@ def search(
             ),
             reverse=True,
         )
-        best = evaluated[0]
+        best, choice_reason = _choose_variant(evaluated, int(baseline.get("progressCycle") or 0))
         entry["variants"] = evaluated
         entry["chosen"] = best
+        entry["choiceReason"] = choice_reason
         entry["accepted"] = bool((best.get("omsim") or {}).get("exitCode") == 0)
         history.append(entry)
         current = parse_solution(best["solutionPath"])
@@ -161,7 +200,7 @@ def search(
         accepted_path = str(final_path)
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-omsim-collision-base-repair-search",
         "targetSolutionBytesUsed": 0,
         "requestedGenerations": max(1, int(generations)),
