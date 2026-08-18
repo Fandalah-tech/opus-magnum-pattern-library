@@ -1,10 +1,10 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-post-cleanup-purification-checkpoint",
-  "runId": "32164987165",
-  "sourceCommit": "85d30abf13fc54d17b6cb2ef7e97eaa69a73a823",
-  "cleanupRunId": "32164890647",
-  "cleanupSourceCommit": "71a83ac13306f496c78897baebaaa993b407d888",
+  "runId": "32165684667",
+  "sourceCommit": "cb0f80591cfe40317f5c06e24f64e328adc7b3fb",
+  "cleanupRunId": "32165581288",
+  "cleanupSourceCommit": "f296cb14c658a450accbca5f1e4699058e3677ca",
   "targetSolutionBytesUsed": 0,
   "target": "GEN249.puzzle",
   "request": {
@@ -13,7 +13,7 @@
     "beamWidth": 3,
     "opportunityLimit": 100,
     "variantLimit": 240,
-    "resultLimit": 16
+    "resultLimit": 20
   },
   "summary": {
     "maxCycles": 400,
@@ -35,14 +35,14 @@
     },
     "cyclesByElement": {
       "copper": [
-        246
+        368
       ]
     },
     "frontierIndex": 3,
     "frontierElement": "copper",
     "goldReached": false,
-    "completedCycles": 258,
-    "terminatedWithError": true
+    "completedCycles": 400,
+    "terminatedWithError": false
   },
   "generations": [
     {
@@ -57,14 +57,14 @@
         },
         "cyclesByElement": {
           "copper": [
-            246
+            368
           ]
         },
         "frontierIndex": 3,
         "frontierElement": "copper",
         "goldReached": false,
-        "completedCycles": 258,
-        "terminatedWithError": true
+        "completedCycles": 400,
+        "terminatedWithError": false
       },
       "bestStepCount": 0
     }
@@ -77,14 +77,14 @@
       },
       "cyclesByElement": {
         "copper": [
-          246
+          368
         ]
       },
       "frontierIndex": 3,
       "frontierElement": "copper",
       "goldReached": false,
-      "completedCycles": 258,
-      "terminatedWithError": true
+      "completedCycles": 400,
+      "terminatedWithError": false
     },
     "steps": [],
     "validation": {
@@ -92,7 +92,7 @@
       "failureMode": "missing-product-output",
       "totalDelivered": 0,
       "totalDeficit": 18,
-      "completedCycles": 231,
+      "completedCycles": 243,
       "terminatedWithError": false,
       "firstError": null,
       "missingProductOutputIndices": [
@@ -104,11 +104,11 @@
       "requiredChemistryEventCount": 0,
       "chemistryEventCount": 1,
       "eventCounts": {
-        "arm-instruction": 195,
-        "atom-grabbed": 199,
-        "atoms-dropped": 53,
+        "arm-instruction": 144,
+        "atom-grabbed": 114,
+        "atoms-dropped": 36,
         "bond-created": 1,
-        "input-spawned": 3
+        "input-spawned": 2
       }
     },
     "solutionOutput": "reports/heldout-post-cleanup-purification/GEN249-best-post-cleanup-purification.solution"
