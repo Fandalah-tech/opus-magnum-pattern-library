@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-trajectory-purification-checkpoint",
-  "runId": "32156538543",
-  "sourceCommit": "d5c33874abfdcb54ef5ad53f9080040311319767",
+  "runId": "32157526091",
+  "sourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
   "genericFlowRunId": "32087080619",
   "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
