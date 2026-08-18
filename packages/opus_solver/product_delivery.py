@@ -3,8 +3,6 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
-from packages.opus_analysis import build_program_timeline
-from packages.opus_engine import Simulator
 from packages.opus_engine.builder import DIRECTIONS, rotate_hex
 
 from .input_footprint_repair import replay_summary
@@ -38,6 +36,39 @@ def _singleton_world_position(product: dict[str, Any], opportunity: dict[str, An
     local = _position(atoms[0].get("position"))
     rotated = rotate_hex(local, rotation)
     return origin[0] + rotated[0], origin[1] + rotated[1]
+
+
+def _dedupe_observed_products(opportunities: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Keep the earliest pose per physical molecule and target product.
+
+    A singleton product matches all six output rotations at the same world hex,
+    and a persistent molecule can be observed over several frames. Those are
+    not distinct transport problems. Deduplicating by product contract and
+    atom identity cuts the replay search by orders of magnitude while keeping
+    distinct produced molecules and identical product indices separate.
+    """
+
+    selected: dict[tuple[int, tuple[str, ...]], dict[str, Any]] = {}
+    anonymous: list[dict[str, Any]] = []
+    for item in opportunities:
+        atom_ids = tuple(sorted(str(value) for value in item.get("atomIds", []) or []))
+        if not atom_ids:
+            anonymous.append(item)
+            continue
+        key = (int(item.get("productIndex") or 0), atom_ids)
+        previous = selected.get(key)
+        if previous is None or int(item.get("firstCycle") or 0) < int(previous.get("firstCycle") or 0):
+            selected[key] = item
+    result = [*selected.values(), *anonymous]
+    return sorted(
+        result,
+        key=lambda item: (
+            int(item.get("firstCycle") or 0),
+            int(item.get("productIndex") or 0),
+            tuple(item.get("origin") or (0, 0)),
+            int(item.get("rotation") or 0),
+        ),
+    )
 
 
 def add_singleton_product_extractor(
@@ -142,29 +173,23 @@ def search_singleton_product_delivery(
     opportunity_limit: int = 60,
     result_limit: int = 20,
 ) -> dict[str, Any]:
-    """Deliver a trace-produced singleton without target solution geometry.
-
-    Product shapes come only from the puzzle contract.  The generated replay
-    supplies the product molecule pose.  A synthesized arm moves the molecule
-    one 60-degree step before a standard output consumes it, avoiding the
-    common illegal direct overlap between a conversion glyph and its product
-    output cell.
-    """
+    """Deliver a trace-produced singleton without target solution geometry."""
 
     horizon = max(1, int(max_cycles))
     baseline_full = replay_summary(puzzle, solution, max_cycles=horizon)
     replay = baseline_full.pop("replay")
     baseline = baseline_full
-    opportunities = product_output_opportunities(puzzle, replay, require_unheld=True)
+    raw_opportunities = product_output_opportunities(puzzle, replay, require_unheld=True)
     singleton_indices = {
         index
         for index, product in enumerate(puzzle.get("products", []) or [])
         if len(product.get("atoms", []) or []) == 1 and not product.get("bonds")
     }
-    opportunities = [
-        item for item in opportunities
+    raw_opportunities = [
+        item for item in raw_opportunities
         if int(item.get("productIndex") or 0) in singleton_indices
-    ][:max(0, int(opportunity_limit))]
+    ]
+    opportunities = _dedupe_observed_products(raw_opportunities)[:max(0, int(opportunity_limit))]
 
     baseline_deliveries = int(baseline.get("productDeliveredCount") or 0)
     baseline_purification = int(baseline.get("purificationCount") or 0)
@@ -173,8 +198,6 @@ def search_singleton_product_delivery(
 
     for opportunity in opportunities:
         first_cycle = int(opportunity.get("firstCycle") or 0)
-        # The observation is a start-of-cycle frame.  Search the exact observed
-        # cycle and one cycle later; replay rejects stale pickup attempts.
         for delay in (0, 1):
             for base_rotation in range(6):
                 for instruction in ("rotate_cw", "rotate_ccw"):
@@ -207,10 +230,11 @@ def search_singleton_product_delivery(
     records.sort(key=_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "trace-guided-singleton-product-delivery-search",
         "summary": {
             "maxCycles": horizon,
+            "rawOpportunityCount": len(raw_opportunities),
             "opportunityCount": len(opportunities),
             "searchedVariantCount": searched,
             "deliveringVariantCount": len(records),
