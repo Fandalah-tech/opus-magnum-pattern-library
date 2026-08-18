@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-reaction-placement-checkpoint",
-  "runId": "32159808485",
-  "sourceCommit": "3fe0c2c53f75da4a618a0aa9b50b88c1bb9b5e56",
+  "runId": "32164068317",
+  "sourceCommit": "d1ab8d7be1b46c4a0051e2a737838c0e6c86df38",
   "geometryRunId": "32157526102",
   "geometrySourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
   "targetSolutionBytesUsed": 0,
@@ -34,7 +34,9 @@
     "terminatedWithError": true
   },
   "bestVariant": {
+    "repairMode": "unbond+purify",
     "purifierIndex": 0,
+    "unbonderIndex": 0,
     "opportunity": {
       "element": "iron",
       "producedElement": "copper",
@@ -83,6 +85,20 @@
         }
       ],
       "geometryEvidence": "faithful-purification-local-cells-0,0-1,0-to-0,1"
+    },
+    "unbondCandidate": {
+      "blockedAtomId": "part-7-spawn-1-atom-0",
+      "neighborAtomId": "part-7-spawn-1-atom-1",
+      "origin": [
+        6,
+        -1
+      ],
+      "rotation": 5,
+      "second": [
+        7,
+        -2
+      ],
+      "cycle": 186
     },
     "validation": {
       "complete": false,
