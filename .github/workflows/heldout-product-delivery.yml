@@ -1,0 +1,237 @@
+name: Blind GEN249 first product delivery
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-product-delivery.yml
+      - packages/opus_solver/product_delivery.py
+      - packages/opus_solver/output_placement.py
+      - tests/test_product_delivery.py
+      - tests/test_output_placement.py
+      - tools/probe_holdout_product_delivery.py
+      - reports/generated/heldout-24hour-seed/latest-intermediate-convergence.json
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-product-delivery-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  GOLD_POINTER: reports/generated/heldout-24hour-seed/latest-intermediate-convergence.json
+  PUZZLE_ROOT: .datasets/heldout-product-delivery
+  BASELINE_ROOT: .baseline/heldout-product-delivery
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  REPORT_ROOT: reports/heldout-product-delivery
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-product-delivery.json
+
+jobs:
+  delivery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test product delivery synthesis
+        run: python -m unittest tests.test_output_placement tests.test_product_delivery -v
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          test "$(find "$PUZZLE_ROOT" -maxdepth 1 -name '*.puzzle' | wc -l)" -eq 1
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore target-free first-gold frontier
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['GOLD_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'heldout-intermediate-convergence-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert pointer['summary']['goldReached'] is True
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/gold-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'heldout-intermediate-convergence-{sys.argv[2]}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1, (expected_name, [item.get('name') for item in data.get('artifacts', [])])
+          item = matches[0]
+          print(item['id'], str(item['digest']).split(':', 1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"
+          archive="$RUNNER_TEMP/gold.zip"
+          curl --fail --location \
+            --retry 8 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          test -s "$BASELINE_ROOT/GEN249-first-gold.solution"
+
+      - name: Synthesize local first-product deliveries
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/candidates"
+          python tools/probe_holdout_product_delivery.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline-solution "$BASELINE_ROOT/GEN249-first-gold.solution" \
+            --max-cycles 500 \
+            --opportunity-limit 80 \
+            --result-limit 24 \
+            --candidate-dir "$REPORT_ROOT/candidates" \
+            --solution-output "$REPORT_ROOT/GEN249-best-local-delivery.solution" \
+            --output "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          assert report['targetSolutionBytesUsed'] == 0
+          assert report['summary']['hasDelivery'] is True
+          assert report['summary']['bestProductDeliveredCount'] >= 1
+          assert report['candidateOutputs']
+          PY
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x .tools/omsim/omsim
+
+      - name: Prove one product with OMSim
+        run: |
+          set -euo pipefail
+          oracle="$REPORT_ROOT/omsim-product-1.json"
+          accepted=""
+          accepted_metric=""
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path(os.environ['REPORT_ROOT']).joinpath('omsim-attempts.json').write_text('[]\n', encoding='utf-8')
+          PY
+          for solution in "$REPORT_ROOT"/candidates/*.solution; do
+            set +e
+            output="$(.tools/omsim/omsim \
+              --puzzle-file "$PUZZLE_ROOT/GEN249.puzzle" \
+              --metric "product 1 cycles" \
+              "$solution" 2>&1)"
+            rc=$?
+            set -e
+            printf '%s\n' "$output"
+            python - "$REPORT_ROOT/omsim-attempts.json" "$solution" "$rc" "$output" <<'PY'
+          import json, sys
+          from pathlib import Path
+          path = Path(sys.argv[1])
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data.append({'solution': sys.argv[2], 'exitCode': int(sys.argv[3]), 'output': sys.argv[4]})
+          path.write_text(json.dumps(data, indent=2) + '\n', encoding='utf-8')
+          PY
+            if [ "$rc" -eq 0 ]; then
+              accepted="$solution"
+              accepted_metric="$output"
+              break
+            fi
+          done
+          if [ -z "$accepted" ]; then
+            echo "No locally delivering candidate passed OMSim product 1 cycles" >&2
+            exit 1
+          fi
+          cp "$accepted" "$REPORT_ROOT/GEN249-omsim-first-product.solution"
+          python - "$oracle" "$accepted" "$accepted_metric" <<'PY'
+          import json, os, re, sys
+          from pathlib import Path
+          output = sys.argv[3]
+          match = re.search(r'product 1 cycles:\s*([0-9.]+)', output)
+          payload = {
+              'accepted': True,
+              'solution': sys.argv[2],
+              'metric': 'product 1 cycles',
+              'metricValue': float(match.group(1)) if match else None,
+              'rawOutput': output,
+              'omsimCommit': os.environ['OMSIM_COMMIT'],
+              'targetSolutionBytesUsed': 0,
+          }
+          Path(sys.argv[1]).write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Persist compact product checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          oracle = json.loads((Path(os.environ['REPORT_ROOT']) / 'omsim-product-1.json').read_text(encoding='utf-8'))
+          gold = json.loads(Path(os.environ['GOLD_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-product-delivery-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'goldRunId': gold.get('runId'),
+              'goldSourceCommit': gold.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'request': report.get('request'),
+              'summary': report.get('summary'),
+              'baseline': report.get('baseline'),
+              'bestLocalVariant': (report.get('variants') or [None])[0],
+              'omsim': oracle,
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update blind first-product checkpoint [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Upload product delivery artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-product-delivery-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
