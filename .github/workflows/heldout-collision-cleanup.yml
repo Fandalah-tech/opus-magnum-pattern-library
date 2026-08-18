@@ -35,6 +35,7 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -107,7 +108,7 @@ jobs:
           python tools/probe_holdout_collision_cleanup.py \
             --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
             --baseline-solution "$BASELINE_ROOT/GEN249-best-purification.solution" \
-            --max-cycles 256 \
+            --max-cycles 400 \
             --result-limit 12 \
             --solution-output "$REPORT_ROOT/GEN249-best-cleanup.solution" \
             --output "$REPORT_ROOT/GEN249.json"
