@@ -51,12 +51,13 @@ def _arm_initial_tip(part: dict[str, Any]) -> tuple[int, int]:
 
 def _track_world_cells(track: dict[str, Any]) -> set[tuple[int, int]]:
     origin = tuple(int(value) for value in (track.get("position") or (0, 0)))
-    cells = {origin}
-    cells.update(
+    offsets = list(track.get("trackHexes") or [])
+    if not offsets:
+        return {origin}
+    return {
         (origin[0] + int(offset[0]), origin[1] + int(offset[1]))
-        for offset in (track.get("trackHexes") or [])
-    )
-    return cells
+        for offset in offsets
+    }
 
 
 def _grab_rotations(arm: dict[str, Any]) -> set[int]:
@@ -84,10 +85,10 @@ def _track_grab_candidates(
     """Approximate repeated grab cells for an arm that advances on a learned track.
 
     A tape such as ``grab -> track_plus -> drop`` grabs at a different base on
-    later repetitions even though its first grab is at the reset pose.  Using
-    every compatible track base with the orientations actually observed at grab
-    instructions preserves distinct donor feed lanes instead of collapsing all
-    remapped inputs onto the first reset-tip cell.
+    later repetitions even though its first grab is at the reset pose. Using
+    every compatible serialized track cell with the orientations actually
+    observed at grab instructions preserves distinct donor feed lanes without
+    inventing the track part's coordinate anchor as a physical rail cell.
     """
     if not any(
         str(item.get("instruction") or "") in TRACK_INSTRUCTIONS
@@ -164,11 +165,11 @@ def generic_input_alignment(
     """Translate a target reagent so a useful atom lands on a learned grab cell.
 
     For stationary mechanisms the target atom is aligned to the serving arm's
-    first grab, preserving the previous singleton/bonded-feed behavior.  For a
+    first grab, preserving the previous singleton/bonded-feed behavior. For a
     track-moving learned arm, the alignment instead chooses the reachable grab
     cell that requires the smallest translation from this input's inherited
-    donor pose.  Multiple target inputs can therefore reuse one renewable
-    reagent and one transport arm without being collapsed onto the same hexes.
+    donor pose. Multiple target inputs can therefore reuse one renewable reagent
+    and one transport arm without being collapsed onto the same hexes.
     """
 
     reagents = list(puzzle.get("reagents") or [])
