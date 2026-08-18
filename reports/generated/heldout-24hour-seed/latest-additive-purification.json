@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-additive-purification-checkpoint",
-  "runId": "32166223481",
-  "sourceCommit": "1eef7ca6134f0285876d58a85194f594462d8d68",
+  "runId": "32166681530",
+  "sourceCommit": "c879136e652b0caa1444eb4e2e3d807363a21da8",
   "cleanupRunId": "32165581288",
   "cleanupSourceCommit": "f296cb14c658a450accbca5f1e4699058e3677ca",
   "targetSolutionBytesUsed": 0,
@@ -16,12 +16,18 @@
     "maxCycles": 400,
     "baselinePurificationCount": 1,
     "baselineFrontierElement": "copper",
+    "baselineFrontierCount": 1,
+    "frontierReplenishmentNeeded": true,
     "opportunityCount": 85,
-    "attemptedAdditiveStationCount": 5,
-    "skippedUnrepairableOpportunityCount": 5,
+    "attemptedAdditiveStationCount": 74,
+    "attemptedFrontierAdvanceCount": 5,
+    "attemptedFrontierReplenishmentCount": 69,
+    "skippedUnrepairableOpportunityCount": 11,
     "advancingVariantCount": 2,
-    "returnedVariantCount": 2,
+    "replenishingVariantCount": 17,
+    "returnedVariantCount": 19,
     "bestFrontierElement": "silver",
+    "bestFrontierCount": 1,
     "goldReached": false,
     "targetSolutionBytesUsed": 0
   },
@@ -6153,6 +6159,2146 @@
           "atoms-dropped": 80,
           "bond-created": 1,
           "bond-removed": 4,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 2,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            266,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -2,
+          0
+        ],
+        "rotation": 2,
+        "second": [
+          -3,
+          1
+        ],
+        "output": [
+          -3,
+          0
+        ],
+        "firstCycle": 254,
+        "lastCycle": 271,
+        "observationCount": 12,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 271
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -2,
+              0
+            ],
+            "rotation": 5,
+            "second": [
+              -1,
+              -1
+            ],
+            "cycle": 271
+          },
+          {
+            "blockedAtomId": "part-7-spawn-2-atom-3",
+            "neighborAtomId": "part-7-spawn-2-atom-1",
+            "origin": [
+              -3,
+              1
+            ],
+            "rotation": 1,
+            "second": [
+              -3,
+              2
+            ],
+            "cycle": 271
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 263,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 2
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 2,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            254,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -4,
+          1
+        ],
+        "rotation": 0,
+        "second": [
+          -3,
+          1
+        ],
+        "output": [
+          -4,
+          2
+        ],
+        "firstCycle": 254,
+        "lastCycle": 259,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 259
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -4,
+              1
+            ],
+            "rotation": 5,
+            "second": [
+              -3,
+              0
+            ],
+            "cycle": 259
+          },
+          {
+            "blockedAtomId": "part-7-spawn-2-atom-3",
+            "neighborAtomId": "part-7-spawn-2-atom-1",
+            "origin": [
+              -3,
+              1
+            ],
+            "rotation": 1,
+            "second": [
+              -3,
+              2
+            ],
+            "cycle": 259
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 263,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 2
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 2,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            260,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -3,
+          0
+        ],
+        "rotation": 1,
+        "second": [
+          -3,
+          1
+        ],
+        "output": [
+          -4,
+          1
+        ],
+        "firstCycle": 260,
+        "lastCycle": 265,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 265
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -3,
+              0
+            ],
+            "rotation": 5,
+            "second": [
+              -2,
+              -1
+            ],
+            "cycle": 265
+          },
+          {
+            "blockedAtomId": "part-7-spawn-2-atom-3",
+            "neighborAtomId": "part-7-spawn-2-atom-1",
+            "origin": [
+              -3,
+              1
+            ],
+            "rotation": 1,
+            "second": [
+              -3,
+              2
+            ],
+            "cycle": 265
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 263,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 2
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            254,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -2,
+          1
+        ],
+        "rotation": 4,
+        "second": [
+          -2,
+          0
+        ],
+        "output": [
+          -1,
+          0
+        ],
+        "firstCycle": 230,
+        "lastCycle": 259,
+        "observationCount": 12,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 258
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              -2,
+              1
+            ],
+            "rotation": 0,
+            "second": [
+              -1,
+              1
+            ],
+            "cycle": 258
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              -2,
+              1
+            ],
+            "rotation": 4,
+            "second": [
+              -2,
+              0
+            ],
+            "cycle": 258
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              -2,
+              0
+            ],
+            "rotation": 1,
+            "second": [
+              -2,
+              1
+            ],
+            "cycle": 258
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -2,
+              0
+            ],
+            "rotation": 3,
+            "second": [
+              -3,
+              0
+            ],
+            "cycle": 258
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 244,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            314,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          5,
+          -4
+        ],
+        "rotation": 4,
+        "second": [
+          5,
+          -5
+        ],
+        "output": [
+          6,
+          -5
+        ],
+        "firstCycle": 302,
+        "lastCycle": 319,
+        "observationCount": 12,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 318
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              5,
+              -4
+            ],
+            "rotation": 0,
+            "second": [
+              6,
+              -4
+            ],
+            "cycle": 318
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              5,
+              -4
+            ],
+            "rotation": 4,
+            "second": [
+              5,
+              -5
+            ],
+            "cycle": 318
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              5,
+              -5
+            ],
+            "rotation": 1,
+            "second": [
+              5,
+              -4
+            ],
+            "cycle": 318
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              5,
+              -5
+            ],
+            "rotation": 3,
+            "second": [
+              4,
+              -5
+            ],
+            "cycle": 318
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 254,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 7,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            380
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          6,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          6,
+          -1
+        ],
+        "output": [
+          7,
+          -1
+        ],
+        "firstCycle": 368,
+        "lastCycle": 385,
+        "observationCount": 7,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 384
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              6,
+              0
+            ],
+            "rotation": 0,
+            "second": [
+              7,
+              0
+            ],
+            "cycle": 384
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              6,
+              0
+            ],
+            "rotation": 4,
+            "second": [
+              6,
+              -1
+            ],
+            "cycle": 384
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              6,
+              -1
+            ],
+            "rotation": 1,
+            "second": [
+              6,
+              0
+            ],
+            "cycle": 384
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              6,
+              -1
+            ],
+            "rotation": 3,
+            "second": [
+              5,
+              -1
+            ],
+            "cycle": 384
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 265,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            218,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -6,
+          4
+        ],
+        "rotation": 4,
+        "second": [
+          -6,
+          3
+        ],
+        "output": [
+          -5,
+          3
+        ],
+        "firstCycle": 218,
+        "lastCycle": 223,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 222
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              -6,
+              4
+            ],
+            "rotation": 0,
+            "second": [
+              -5,
+              4
+            ],
+            "cycle": 222
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              -6,
+              4
+            ],
+            "rotation": 4,
+            "second": [
+              -6,
+              3
+            ],
+            "cycle": 222
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              -6,
+              3
+            ],
+            "rotation": 1,
+            "second": [
+              -6,
+              4
+            ],
+            "cycle": 222
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -6,
+              3
+            ],
+            "rotation": 3,
+            "second": [
+              -7,
+              3
+            ],
+            "cycle": 222
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 264,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 6,
+          "input-spawned": 4
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            224,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -5,
+          3
+        ],
+        "rotation": 4,
+        "second": [
+          -5,
+          2
+        ],
+        "output": [
+          -4,
+          2
+        ],
+        "firstCycle": 224,
+        "lastCycle": 229,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 228
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              -5,
+              3
+            ],
+            "rotation": 0,
+            "second": [
+              -4,
+              3
+            ],
+            "cycle": 228
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              -5,
+              3
+            ],
+            "rotation": 4,
+            "second": [
+              -5,
+              2
+            ],
+            "cycle": 228
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              -5,
+              2
+            ],
+            "rotation": 1,
+            "second": [
+              -5,
+              3
+            ],
+            "cycle": 228
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -5,
+              2
+            ],
+            "rotation": 3,
+            "second": [
+              -6,
+              2
+            ],
+            "cycle": 228
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 265,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 6,
+          "input-spawned": 4
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            230,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -4,
+          2
+        ],
+        "rotation": 4,
+        "second": [
+          -4,
+          1
+        ],
+        "output": [
+          -3,
+          1
+        ],
+        "firstCycle": 230,
+        "lastCycle": 235,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 234
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              -4,
+              2
+            ],
+            "rotation": 0,
+            "second": [
+              -3,
+              2
+            ],
+            "cycle": 234
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              -4,
+              2
+            ],
+            "rotation": 4,
+            "second": [
+              -4,
+              1
+            ],
+            "cycle": 234
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              -4,
+              1
+            ],
+            "rotation": 1,
+            "second": [
+              -4,
+              2
+            ],
+            "cycle": 234
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -4,
+              1
+            ],
+            "rotation": 3,
+            "second": [
+              -5,
+              1
+            ],
+            "cycle": 234
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 265,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 2,
+          "bond-removed": 7,
+          "input-spawned": 4
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            260,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          -1,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          -1,
+          -1
+        ],
+        "output": [
+          0,
+          -1
+        ],
+        "firstCycle": 260,
+        "lastCycle": 265,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 264
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              -1,
+              0
+            ],
+            "rotation": 0,
+            "second": [
+              0,
+              0
+            ],
+            "cycle": 264
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              -1,
+              0
+            ],
+            "rotation": 4,
+            "second": [
+              -1,
+              -1
+            ],
+            "cycle": 264
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              -1,
+              -1
+            ],
+            "rotation": 1,
+            "second": [
+              -1,
+              0
+            ],
+            "cycle": 264
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              -1,
+              -1
+            ],
+            "rotation": 3,
+            "second": [
+              -2,
+              -1
+            ],
+            "cycle": 264
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 245,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            278,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          0,
+          -2
+        ],
+        "rotation": 4,
+        "second": [
+          0,
+          -3
+        ],
+        "output": [
+          1,
+          -3
+        ],
+        "firstCycle": 278,
+        "lastCycle": 283,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 282
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              0,
+              -2
+            ],
+            "rotation": 0,
+            "second": [
+              1,
+              -2
+            ],
+            "cycle": 282
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              0,
+              -2
+            ],
+            "rotation": 4,
+            "second": [
+              0,
+              -3
+            ],
+            "cycle": 282
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              0,
+              -3
+            ],
+            "rotation": 1,
+            "second": [
+              0,
+              -2
+            ],
+            "cycle": 282
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              0,
+              -3
+            ],
+            "rotation": 3,
+            "second": [
+              -1,
+              -3
+            ],
+            "cycle": 282
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 248,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            284,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          1,
+          -3
+        ],
+        "rotation": 4,
+        "second": [
+          1,
+          -4
+        ],
+        "output": [
+          2,
+          -4
+        ],
+        "firstCycle": 284,
+        "lastCycle": 289,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 288
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              1,
+              -3
+            ],
+            "rotation": 0,
+            "second": [
+              2,
+              -3
+            ],
+            "cycle": 288
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              1,
+              -3
+            ],
+            "rotation": 4,
+            "second": [
+              1,
+              -4
+            ],
+            "cycle": 288
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              1,
+              -4
+            ],
+            "rotation": 1,
+            "second": [
+              1,
+              -3
+            ],
+            "cycle": 288
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              1,
+              -4
+            ],
+            "rotation": 3,
+            "second": [
+              0,
+              -4
+            ],
+            "cycle": 288
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 249,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            290,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          2,
+          -4
+        ],
+        "rotation": 4,
+        "second": [
+          2,
+          -5
+        ],
+        "output": [
+          3,
+          -5
+        ],
+        "firstCycle": 290,
+        "lastCycle": 295,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 294
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              2,
+              -4
+            ],
+            "rotation": 0,
+            "second": [
+              3,
+              -4
+            ],
+            "cycle": 294
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              2,
+              -4
+            ],
+            "rotation": 4,
+            "second": [
+              2,
+              -5
+            ],
+            "cycle": 294
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              2,
+              -5
+            ],
+            "rotation": 1,
+            "second": [
+              2,
+              -4
+            ],
+            "cycle": 294
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              2,
+              -5
+            ],
+            "rotation": 3,
+            "second": [
+              1,
+              -5
+            ],
+            "cycle": 294
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 250,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            362,
+            368
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          4,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          4,
+          -1
+        ],
+        "output": [
+          5,
+          -1
+        ],
+        "firstCycle": 362,
+        "lastCycle": 367,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 366
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              4,
+              0
+            ],
+            "rotation": 0,
+            "second": [
+              5,
+              0
+            ],
+            "cycle": 366
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              4,
+              0
+            ],
+            "rotation": 4,
+            "second": [
+              4,
+              -1
+            ],
+            "cycle": 366
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              4,
+              -1
+            ],
+            "rotation": 1,
+            "second": [
+              4,
+              0
+            ],
+            "cycle": 366
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              4,
+              -1
+            ],
+            "rotation": 3,
+            "second": [
+              3,
+              -1
+            ],
+            "cycle": 366
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 262,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            374
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 400,
+        "terminatedWithError": false
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          5,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          5,
+          -1
+        ],
+        "output": [
+          6,
+          -1
+        ],
+        "firstCycle": 374,
+        "lastCycle": 379,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 378
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              5,
+              0
+            ],
+            "rotation": 0,
+            "second": [
+              6,
+              0
+            ],
+            "cycle": 378
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              5,
+              0
+            ],
+            "rotation": 4,
+            "second": [
+              5,
+              -1
+            ],
+            "cycle": 378
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              5,
+              -1
+            ],
+            "rotation": 1,
+            "second": [
+              5,
+              0
+            ],
+            "cycle": 378
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              5,
+              -1
+            ],
+            "rotation": 3,
+            "second": [
+              4,
+              -1
+            ],
+            "cycle": 378
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 264,
+          "atom-purified": 2,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 5,
+          "input-spawned": 3
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 2,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            386
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 398,
+        "terminatedWithError": true
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          8,
+          0
+        ],
+        "rotation": 1,
+        "second": [
+          8,
+          1
+        ],
+        "output": [
+          7,
+          1
+        ],
+        "firstCycle": 386,
+        "lastCycle": 391,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 391
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              8,
+              0
+            ],
+            "rotation": 4,
+            "second": [
+              8,
+              -1
+            ],
+            "cycle": 391
+          },
+          {
+            "blockedAtomId": "part-10-spawn-1-atom-0",
+            "neighborAtomId": "part-10-spawn-1-atom-1",
+            "origin": [
+              8,
+              1
+            ],
+            "rotation": 5,
+            "second": [
+              9,
+              0
+            ],
+            "cycle": 391
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 398,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 397,
+          "message": "Atom part-10-spawn-1-atom-1 collides with stationary atom synth-purifier-0-purified-1 at (7, 1); activeArms={'part-15': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3']}, 'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-1-purified-0', 'part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-2', 'part-7-spawn-0-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-1-purified-0': ['part-2'], 'part-10-spawn-0-atom-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-1-atom-1': ['part-15'], 'part-7-spawn-0-atom-2': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, 0), (8, -1), 'synth-unbonder-0'), ((8, 1), (9, 0), 'synth-unbonder-1')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-15', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-1-atom-1': [8, 0], 'part-10-spawn-1-atom-2': [9, -1], 'part-10-spawn-1-atom-3': [7, 0]}, 'destinations': {'part-10-spawn-1-atom-1': [7, 1], 'part-10-spawn-1-atom-2': [7, 0], 'part-10-spawn-1-atom-3': [6, 2]}, 'arm': {'partId': 'part-15', 'partType': 'arm1', 'origin': [8, 1], 'rotation': 4, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-1'}], 'trackIndex': 14, 'trackCellCount': 58}}, {'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-1-purified-0': [9, -3], 'part-10-spawn-0-atom-0': [7, -2], 'part-10-spawn-0-atom-1': [8, -2], 'part-7-spawn-0-atom-0': [5, -2], 'part-7-spawn-0-atom-1': [6, -3], 'part-7-spawn-0-atom-2': [7, -3], 'part-7-spawn-0-atom-3': [6, -4], 'part-7-spawn-1-atom-1': [9, -4], 'part-7-spawn-1-atom-2': [10, -4], 'part-7-spawn-1-atom-3': [9, -5]}, 'destinations': {'part-1-purified-0': [10, -3], 'part-10-spawn-0-atom-0': [8, -2], 'part-10-spawn-0-atom-1': [9, -2], 'part-7-spawn-0-atom-0': [6, -2], 'part-7-spawn-0-atom-1': [7, -3], 'part-7-spawn-0-atom-2': [8, -3], 'part-7-spawn-0-atom-3': [7, -4], 'part-7-spawn-1-atom-1': [10, -4], 'part-7-spawn-1-atom-2': [11, -4], 'part-7-spawn-1-atom-3': [10, -5]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [8, -3], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [9, -3]}, {'branchIndex': 1, 'position': [8, -2]}, {'branchIndex': 2, 'position': [7, -2]}, {'branchIndex': 3, 'position': [7, -3]}, {'branchIndex': 4, 'position': [8, -4]}, {'branchIndex': 5, 'position': [9, -4]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-1-purified-0'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-0-atom-0'}, {'branchIndex': 3, 'atomId': 'part-7-spawn-0-atom-2'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-1'}], 'trackIndex': 8, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 296,
+          "atom-grabbed": 268,
+          "atom-purified": 2,
+          "atoms-dropped": 86,
+          "bond-created": 1,
+          "bond-removed": 4,
+          "input-spawned": 4,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "repairMode": "additive-frontier-replenishment-multi-unbond+purify",
+      "addedUnbonderCount": 4,
+      "purificationDelta": 1,
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            386
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 392,
+        "terminatedWithError": true
+      },
+      "opportunity": {
+        "element": "iron",
+        "producedElement": "copper",
+        "origin": [
+          7,
+          -1
+        ],
+        "rotation": 4,
+        "second": [
+          7,
+          -2
+        ],
+        "output": [
+          8,
+          -2
+        ],
+        "firstCycle": 386,
+        "lastCycle": 391,
+        "observationCount": 6,
+        "readyObservationCount": 0,
+        "minimumBlockerCount": 2,
+        "blockersAtBestObservation": {
+          "firstHeld": false,
+          "secondHeld": false,
+          "firstBonded": true,
+          "secondBonded": true,
+          "outputOccupied": false,
+          "cycle": 390
+        },
+        "unbondCandidates": [
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-10-spawn-0-atom-1",
+            "origin": [
+              7,
+              -1
+            ],
+            "rotation": 0,
+            "second": [
+              8,
+              -1
+            ],
+            "cycle": 390
+          },
+          {
+            "blockedAtomId": "part-10-spawn-0-atom-0",
+            "neighborAtomId": "part-7-spawn-0-atom-2",
+            "origin": [
+              7,
+              -1
+            ],
+            "rotation": 4,
+            "second": [
+              7,
+              -2
+            ],
+            "cycle": 390
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-10-spawn-0-atom-0",
+            "origin": [
+              7,
+              -2
+            ],
+            "rotation": 1,
+            "second": [
+              7,
+              -1
+            ],
+            "cycle": 390
+          },
+          {
+            "blockedAtomId": "part-7-spawn-0-atom-2",
+            "neighborAtomId": "part-7-spawn-0-atom-1",
+            "origin": [
+              7,
+              -2
+            ],
+            "rotation": 3,
+            "second": [
+              6,
+              -2
+            ],
+            "cycle": 390
+          }
+        ]
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "completedCycles": 392,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 391,
+          "message": "Atom part-10-spawn-0-atom-1 collides with stationary atom synth-purifier-0-purified-1 at (8, -2); activeArms={'part-15': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3']}, 'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-1-purified-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-1-purified-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-1-atom-1': ['part-15'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((7, -1), (8, -1), 'synth-unbonder-0'), ((7, -1), (7, -2), 'synth-unbonder-1'), ((7, -2), (6, -2), 'synth-unbonder-2')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-15', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 0], 'part-10-spawn-1-atom-2': [10, 0], 'part-10-spawn-1-atom-3': [9, -1]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [8, 0], 'part-10-spawn-1-atom-2': [9, -1], 'part-10-spawn-1-atom-3': [7, 0]}, 'arm': {'partId': 'part-15', 'partType': 'arm1', 'origin': [8, 1], 'rotation': 5, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [9, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-1'}], 'trackIndex': 14, 'trackCellCount': 58}}, {'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-1-purified-0': [9, -2], 'part-10-spawn-0-atom-1': [8, -1], 'part-10-spawn-0-atom-2': [8, 0], 'part-7-spawn-1-atom-1': [9, -3], 'part-7-spawn-1-atom-2': [10, -3], 'part-7-spawn-1-atom-3': [9, -4]}, 'destinations': {'part-1-purified-0': [9, -3], 'part-10-spawn-0-atom-1': [8, -2], 'part-10-spawn-0-atom-2': [8, -1], 'part-7-spawn-1-atom-1': [9, -4], 'part-7-spawn-1-atom-2': [10, -4], 'part-7-spawn-1-atom-3': [9, -5]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [8, -2], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [9, -2]}, {'branchIndex': 1, 'position': [8, -1]}, {'branchIndex': 2, 'position': [7, -1]}, {'branchIndex': 3, 'position': [7, -2]}, {'branchIndex': 4, 'position': [8, -3]}, {'branchIndex': 5, 'position': [9, -3]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-1-purified-0'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-1'}], 'trackIndex': 7, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "observedRequiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed"
+        ],
+        "eventCounts": {
+          "arm-instruction": 290,
+          "atom-grabbed": 260,
+          "atom-purified": 2,
+          "atoms-dropped": 84,
+          "bond-created": 1,
+          "bond-removed": 5,
           "input-spawned": 3,
           "simulation-error": 1
         }
