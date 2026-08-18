@@ -20,28 +20,53 @@ def _compact_validation(validation: dict[str, Any]) -> dict[str, Any]:
         "completedCycles": int(validation.get("completedCycles") or 0),
         "terminatedWithError": bool(validation.get("terminatedWithError")),
         "firstError": validation.get("firstError"),
+        "requiredChemistryEventKinds": list(validation.get("requiredChemistryEventKinds") or []),
+        "observedRequiredChemistryEventKinds": list(validation.get("observedRequiredChemistryEventKinds") or []),
         "distinctRequiredChemistryEventCount": int(validation.get("distinctRequiredChemistryEventCount") or 0),
         "requiredChemistryEventCount": int(validation.get("requiredChemistryEventCount") or 0),
         "distinctChemistryEventCount": int(validation.get("distinctChemistryEventCount") or 0),
         "chemistryEventCount": int(validation.get("chemistryEventCount") or 0),
         "chemistryEventKinds": list(validation.get("chemistryEventKinds") or []),
-        "chemistryEventTimeline": list(validation.get("chemistryEventTimeline") or [])[:40],
+        "chemistryEventTimeline": list(validation.get("chemistryEventTimeline") or [])[:60],
         "manipulationEventCount": int(validation.get("manipulationEventCount") or 0),
         "eventCounts": dict(validation.get("eventCounts") or {}),
     }
 
 
 def _variant_rank(variant: dict[str, Any]) -> tuple[Any, ...]:
+    """Prefer actual target chemistry, then durable mechanical survival.
+
+    The first 128-cycle GEN249 probe showed that raw chemistry volume can favor
+    a candidate immediately before a collision.  For heldout repair we instead
+    give explicit target transform events (purification/projection/etc.) the
+    strongest partial-progress priority, and otherwise prefer a candidate that
+    survives farther after reaching the same required-chemistry frontier.
+    """
+
     validation = variant.get("validation") or {}
+    event_counts = validation.get("eventCounts") or {}
+    target_transform_count = sum(
+        int(event_counts.get(kind) or 0)
+        for kind in (
+            "atom-purified",
+            "atom-projected",
+            "atom-duplicated",
+            "atom-calcified",
+            "atoms-animated",
+            "atoms-unified",
+            "atom-divided",
+        )
+    )
     return (
         int(bool(validation.get("complete"))),
         int(validation.get("totalDelivered") or 0),
+        target_transform_count,
         int(validation.get("distinctRequiredChemistryEventCount") or 0),
+        int(not bool(validation.get("terminatedWithError"))),
+        int(validation.get("completedCycles") or 0),
         int(validation.get("requiredChemistryEventCount") or 0),
         int(validation.get("distinctChemistryEventCount") or 0),
         int(validation.get("chemistryEventCount") or 0),
-        int(not bool(validation.get("terminatedWithError"))),
-        int(validation.get("completedCycles") or 0),
         int(validation.get("manipulationEventCount") or 0),
         -int(variant.get("staticConflictPenalty") or 0),
         -int(variant.get("displacement") or 0),
@@ -138,7 +163,7 @@ def probe_geometry_search(
         }
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-geometry-repair-probe",
         "targetPuzzle": puzzle_path.name,
         "targetSolutionBytesUsed": 0,
