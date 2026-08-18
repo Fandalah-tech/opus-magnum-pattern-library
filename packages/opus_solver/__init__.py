@@ -21,14 +21,17 @@ from .candidate_solution import (
 )
 from .source_assignment import assign_branch_reagent_indices
 from .feed_alignment import generic_input_alignment, preferred_reagent_anchor_atom
+from .required_chemistry import required_chemistry_events
 from . import candidate_solution as _candidate_solution
+from . import solver as _solver
 
-# Keep the large candidate materializer stable while the generic source mapper
-# and feed aligner graduate into focused modules. build_candidate_solution
-# resolves these module globals at call time, so package-level bindings upgrade
-# every caller without duplicating the materializer or creating top-level cycles.
+# Keep the large candidate materializer and validator stable while focused
+# generic adapters graduate into their own modules. These call sites resolve
+# module globals at runtime, so package-level bindings upgrade every caller
+# without duplicating the core materializer/validator implementations.
 _candidate_solution.assign_branch_reagent_indices = assign_branch_reagent_indices
 _candidate_solution.singleton_input_alignment = generic_input_alignment
+_solver._required_chemistry_events = required_chemistry_events
 
 from .chemistry_composition import (
     manufacturing_requirements,
@@ -191,6 +194,7 @@ __all__ = [
     "rank_mechanisms",
     "recommend_repair_order",
     "reorder_instantaneous_bonders",
+    "required_chemistry_events",
     "required_flow_relations",
     "search_geometric_candidates",
     "search_component_timing_candidates",
