@@ -47,6 +47,49 @@ def learned_feed_parts() -> tuple[dict, list[dict]]:
     return input_part, [input_part, arm]
 
 
+def track_feed_parts() -> tuple[dict, dict, list[dict]]:
+    provenance = ["branch-0:feed", "branch-1:feed"]
+    first = {
+        "id": "input-a",
+        "type": "input",
+        "position": [1, 0],
+        "rotation": 0,
+        "sourceFragmentInstances": ["branch-0:feed"],
+        "program": [],
+    }
+    second = {
+        "id": "input-b",
+        "type": "input",
+        "position": [5, 0],
+        "rotation": 0,
+        "sourceFragmentInstances": ["branch-1:feed"],
+        "program": [],
+    }
+    arm = {
+        "id": "arm",
+        "type": "arm1",
+        "position": [0, 0],
+        "rotation": 0,
+        "length": 1,
+        "sourceFragmentInstances": provenance,
+        "program": [
+            {"cycle": 0, "instruction": "grab"},
+            {"cycle": 1, "instruction": "track_plus"},
+            {"cycle": 2, "instruction": "drop"},
+        ],
+    }
+    track = {
+        "id": "track",
+        "type": "track",
+        "position": [0, 0],
+        "rotation": 0,
+        "sourceFragmentInstances": provenance,
+        "trackHexes": [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0]],
+        "program": [],
+    }
+    return first, second, [first, second, arm, track]
+
+
 class FeedAlignmentTests(unittest.TestCase):
     def test_planner_recipe_selects_bonded_atom_needed_by_product(self) -> None:
         self.assertEqual(preferred_reagent_anchor_atom(bonded_feed_puzzle(), 0), 1)
@@ -61,6 +104,7 @@ class FeedAlignmentTests(unittest.TestCase):
         self.assertEqual(alignment["grabPosition"], [3, 0])
         self.assertEqual(alignment["position"], [2, 0])
         self.assertTrue(alignment["bondedTargetReagent"])
+        self.assertEqual(alignment["servingTrackIds"], [])
 
     def test_singleton_feed_keeps_direct_tip_alignment(self) -> None:
         puzzle = {
@@ -75,6 +119,27 @@ class FeedAlignmentTests(unittest.TestCase):
         self.assertEqual(alignment["targetAtomIndex"], 0)
         self.assertEqual(alignment["position"], [3, 0])
         self.assertFalse(alignment["bondedTargetReagent"])
+
+    def test_track_served_inputs_preserve_distinct_inherited_lanes(self) -> None:
+        first, second, all_parts = track_feed_parts()
+        left = generic_input_alignment(first, 0, bonded_feed_puzzle(), all_parts)
+        right = generic_input_alignment(second, 0, bonded_feed_puzzle(), all_parts)
+        self.assertIsNotNone(left)
+        self.assertIsNotNone(right)
+        assert left is not None and right is not None
+
+        self.assertEqual(left["position"], [1, 0])
+        self.assertEqual(right["position"], [5, 0])
+        self.assertNotEqual(left["position"], right["position"])
+        self.assertEqual(left["translationDistance"], 0)
+        self.assertEqual(right["translationDistance"], 0)
+        self.assertEqual(left["servingTrackIds"], ["track"])
+        self.assertEqual(right["servingTrackIds"], ["track"])
+        self.assertGreater(left["reachableGrabCandidateCount"], 1)
+        self.assertEqual(
+            left["alignmentEvidence"],
+            "target-chemistry-source-atom-to-nearest-learned-track-grab",
+        )
 
     def test_candidate_materializer_uses_generic_feed_alignment(self) -> None:
         self.assertIs(candidate_solution_module.singleton_input_alignment, generic_input_alignment)
