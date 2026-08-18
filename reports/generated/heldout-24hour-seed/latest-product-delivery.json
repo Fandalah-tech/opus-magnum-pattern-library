@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "heldout-product-delivery-checkpoint",
+  "runId": "32191827160",
+  "sourceCommit": "368a11555ebf42661f90cd66dae24031ce7d5e81",
+  "phase": "local-search",
+  "goldRunId": "32190220141",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "request": {
+    "maxCycles": 500,
+    "opportunityLimit": 80,
+    "resultLimit": 24
+  },
+  "summary": {
+    "maxCycles": 500,
+    "rawOpportunityCount": 66,
+    "opportunityCount": 4,
+    "searchedVariantCount": 96,
+    "deliveringVariantCount": 6,
+    "returnedVariantCount": 6,
+    "baselineProductDeliveredCount": 0,
+    "bestProductDeliveredCount": 1,
+    "hasDelivery": true,
+    "targetSolutionBytesUsed": 0
+  },
+  "baseline": {
+    "completedCycles": 422,
+    "requestedCycles": 500,
+    "terminatedWithError": true,
+    "firstError": {
+      "cycle": 421,
+      "message": "Conflicting motions for atom part-10-spawn-1-atom-2; activeArms={'part-15': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3']}, 'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-15', 'part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-16'), ((8, -1), (8, 0), 'part-17'), ((7, -1), (7, -2), 'part-20')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-15', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 0], 'part-10-spawn-1-atom-2': [10, 0], 'part-10-spawn-1-atom-3': [9, -1]}, 'arm': {'partId': 'part-15', 'partType': 'arm1', 'origin': [8, 1], 'rotation': 0, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [9, 1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-1'}], 'trackIndex': 14, 'trackCellCount': 58}}, {'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0], 'part-7-spawn-1-atom-1': [10, -1], 'part-7-spawn-1-atom-2': [11, -1], 'part-7-spawn-1-atom-3': [10, -2]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 2], 'part-10-spawn-1-atom-1': [9, 2], 'part-10-spawn-1-atom-2': [9, 3], 'part-10-spawn-1-atom-3': [10, 1], 'part-7-spawn-1-atom-1': [10, 0], 'part-7-spawn-1-atom-2': [11, 0], 'part-7-spawn-1-atom-3': [10, -1]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [9, 0], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [10, 0]}, {'branchIndex': 1, 'position': [9, 1]}, {'branchIndex': 2, 'position': [8, 1]}, {'branchIndex': 3, 'position': [8, 0]}, {'branchIndex': 4, 'position': [9, -1]}, {'branchIndex': 5, 'position': [10, -1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-1-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-1-atom-0'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-1'}], 'trackIndex': 12, 'trackCellCount': 58}}]; outputCandidates=[]"
+    },
+    "eventCounts": {
+      "arm-instruction": 343,
+      "atom-grabbed": 291,
+      "atom-purified": 5,
+      "atoms-dropped": 102,
+      "bond-created": 1,
+      "bond-removed": 8,
+      "input-spawned": 3,
+      "simulation-error": 1
+    },
+    "purificationCount": 5,
+    "productDeliveredCount": 0,
+    "chemistryEventCount": 14,
+    "manipulationEventCount": 396
+  },
+  "opportunities": [
+    {
+      "productIndex": 2,
+      "origin": [
+        8,
+        -2
+      ],
+      "rotation": 0,
+      "firstCycle": 387,
+      "lastCycle": 396,
+      "observationCount": 10,
+      "atomIds": [
+        "part-18-purified-1"
+      ],
+      "held": false,
+      "evidence": "generated-replay-rigid-product-match"
+    },
+    {
+      "productIndex": 2,
+      "origin": [
+        8,
+        -1
+      ],
+      "rotation": 0,
+      "firstCycle": 411,
+      "lastCycle": 413,
+      "observationCount": 3,
+      "atomIds": [
+        "part-21-purified-3"
+      ],
+      "held": false,
+      "evidence": "generated-replay-rigid-product-match"
+    },
+    {
+      "productIndex": 0,
+      "origin": [
+        9,
+        -2
+      ],
+      "rotation": 0,
+      "firstCycle": 414,
+      "lastCycle": 414,
+      "observationCount": 1,
+      "atomIds": [
+        "part-23-purified-4"
+      ],
+      "held": false,
+      "evidence": "generated-replay-rigid-product-match"
+    },
+    {
+      "productIndex": 1,
+      "origin": [
+        9,
+        -2
+      ],
+      "rotation": 0,
+      "firstCycle": 414,
+      "lastCycle": 414,
+      "observationCount": 1,
+      "atomIds": [
+        "part-23-purified-4"
+      ],
+      "held": false,
+      "evidence": "generated-replay-rigid-product-match"
+    }
+  ],
+  "bestLocalVariant": {
+    "candidateIndex": 0,
+    "candidateOutput": "reports/heldout-product-delivery/candidates/candidate-00.solution",
+    "opportunity": {
+      "productIndex": 0,
+      "origin": [
+        9,
+        -2
+      ],
+      "rotation": 0,
+      "firstCycle": 414,
+      "lastCycle": 414,
+      "observationCount": 1,
+      "atomIds": [
+        "part-23-purified-4"
+      ],
+      "held": false,
+      "evidence": "generated-replay-rigid-product-match"
+    },
+    "grabDelay": 1,
+    "baseRotation": 3,
+    "motionInstruction": "rotate_cw",
+    "summary": {
+      "completedCycles": 422,
+      "requestedCycles": 500,
+      "terminatedWithError": true,
+      "firstError": {
+        "cycle": 421,
+        "message": "Conflicting motions for atom part-10-spawn-1-atom-2; activeArms={'part-15': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3']}, 'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-15', 'part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'generated-output-0-0', 'productIndex': 0, 'atoms': [((9, -1), 'gold')], 'bonds': []}]; delivered={'generated-output-0-0': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-16'), ((8, -1), (8, 0), 'part-17'), ((7, -1), (7, -2), 'part-20')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-15', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 0], 'part-10-spawn-1-atom-2': [10, 0], 'part-10-spawn-1-atom-3': [9, -1]}, 'arm': {'partId': 'part-15', 'partType': 'arm1', 'origin': [8, 1], 'rotation': 0, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [9, 1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-1'}], 'trackIndex': 14, 'trackCellCount': 58}}, {'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0], 'part-7-spawn-1-atom-1': [10, -1], 'part-7-spawn-1-atom-2': [11, -1], 'part-7-spawn-1-atom-3': [10, -2]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 2], 'part-10-spawn-1-atom-1': [9, 2], 'part-10-spawn-1-atom-2': [9, 3], 'part-10-spawn-1-atom-3': [10, 1], 'part-7-spawn-1-atom-1': [10, 0], 'part-7-spawn-1-atom-2': [11, 0], 'part-7-spawn-1-atom-3': [10, -1]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [9, 0], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [10, 0]}, {'branchIndex': 1, 'position': [9, 1]}, {'branchIndex': 2, 'position': [8, 1]}, {'branchIndex': 3, 'position': [8, 0]}, {'branchIndex': 4, 'position': [9, -1]}, {'branchIndex': 5, 'position': [10, -1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-1-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-1-atom-0'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-1'}], 'trackIndex': 12, 'trackCellCount': 58}}]; outputCandidates=[]"
+      },
+      "eventCounts": {
+        "arm-instruction": 346,
+        "atom-grabbed": 291,
+        "atom-purified": 5,
+        "atoms-dropped": 101,
+        "bond-created": 1,
+        "bond-removed": 8,
+        "input-spawned": 3,
+        "product-delivered": 1,
+        "simulation-error": 1
+      },
+      "purificationCount": 5,
+      "productDeliveredCount": 1,
+      "chemistryEventCount": 14,
+      "manipulationEventCount": 395
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 1,
+      "totalDeficit": 17,
+      "completedCycles": 422,
+      "terminatedWithError": true,
+      "firstError": {
+        "cycle": 421,
+        "message": "Conflicting motions for atom part-10-spawn-1-atom-2; activeArms={'part-15': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3']}, 'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-15', 'part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'generated-output-0-0', 'productIndex': 0, 'atoms': [((9, -1), 'gold')], 'bonds': []}]; delivered={'generated-output-0-0': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-16'), ((8, -1), (8, 0), 'part-17'), ((7, -1), (7, -2), 'part-20')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-15', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 0], 'part-10-spawn-1-atom-2': [10, 0], 'part-10-spawn-1-atom-3': [9, -1]}, 'arm': {'partId': 'part-15', 'partType': 'arm1', 'origin': [8, 1], 'rotation': 0, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [9, 1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-1'}], 'trackIndex': 14, 'trackCellCount': 58}}, {'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-1-atom-0': [8, 1], 'part-10-spawn-1-atom-1': [9, 1], 'part-10-spawn-1-atom-2': [9, 2], 'part-10-spawn-1-atom-3': [10, 0], 'part-7-spawn-1-atom-1': [10, -1], 'part-7-spawn-1-atom-2': [11, -1], 'part-7-spawn-1-atom-3': [10, -2]}, 'destinations': {'part-10-spawn-1-atom-0': [8, 2], 'part-10-spawn-1-atom-1': [9, 2], 'part-10-spawn-1-atom-2': [9, 3], 'part-10-spawn-1-atom-3': [10, 1], 'part-7-spawn-1-atom-1': [10, 0], 'part-7-spawn-1-atom-2': [11, 0], 'part-7-spawn-1-atom-3': [10, -1]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [9, 0], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [10, 0]}, {'branchIndex': 1, 'position': [9, 1]}, {'branchIndex': 2, 'position': [8, 1]}, {'branchIndex': 3, 'position': [8, 0]}, {'branchIndex': 4, 'position': [9, -1]}, {'branchIndex': 5, 'position': [10, -1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-1-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-1-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-1-atom-0'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-1'}], 'trackIndex': 12, 'trackCellCount': 58}}]; outputCandidates=[]"
+      },
+      "missingProductOutputIndices": [
+        1,
+        2
+      ],
+      "eventCounts": {
+        "arm-instruction": 346,
+        "atom-grabbed": 291,
+        "atom-purified": 5,
+        "atoms-dropped": 101,
+        "bond-created": 1,
+        "bond-removed": 8,
+        "input-spawned": 3,
+        "product-delivered": 1,
+        "simulation-error": 1
+      }
+    }
+  },
+  "omsim": null
+}
