@@ -1,0 +1,55 @@
+name: Capture GEN249 product delivery run
+
+on:
+  workflow_run:
+    workflows:
+      - Blind GEN249 first product delivery
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    if: github.event.workflow_run.head_branch == 'feature/critelli-2026-public-corpus'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/critelli-2026-public-corpus
+
+      - name: Persist completed run pointer
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-product-delivery-run-pointer',
+              'runId': os.environ['RUN_ID'],
+              'runNumber': os.environ['RUN_NUMBER'],
+              'runAttempt': os.environ['RUN_ATTEMPT'],
+              'conclusion': os.environ['RUN_CONCLUSION'],
+              'headSha': os.environ['RUN_HEAD_SHA'],
+          }
+          path = Path('reports/generated/heldout-24hour-seed/latest-product-delivery-run.json')
+          path.parent.mkdir(parents=True, exist_ok=True)
+          path.write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/generated/heldout-24hour-seed/latest-product-delivery-run.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record blind product delivery workflow run [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
