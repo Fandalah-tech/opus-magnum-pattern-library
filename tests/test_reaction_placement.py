@@ -1,0 +1,83 @@
+from __future__ import annotations
+
+import unittest
+
+from packages.opus_solver.reaction_placement import (
+    apply_purification_placement,
+    purification_opportunities,
+)
+
+
+def frame(cycle: int, atoms: list[dict]) -> dict:
+    return {"cycle": cycle, "world": {"atoms": atoms}}
+
+
+class ReactionPlacementTests(unittest.TestCase):
+    def test_finds_and_aggregates_purification_opportunity(self) -> None:
+        atoms = [
+            {"id": "a", "element": "lead", "position": [0, 0]},
+            {"id": "b", "element": "lead", "position": [2, 0]},
+        ]
+        replay = {"frames": [frame(4, atoms), frame(5, atoms)]}
+
+        opportunities = purification_opportunities(replay)
+
+        self.assertEqual(len(opportunities), 1)
+        item = opportunities[0]
+        self.assertEqual(item["element"], "lead")
+        self.assertEqual(item["producedElement"], "tin")
+        self.assertEqual(item["origin"], [0, 0])
+        self.assertEqual(item["center"], [1, 0])
+        self.assertEqual(item["second"], [2, 0])
+        self.assertEqual(item["rotation"], 0)
+        self.assertEqual(item["observationCount"], 2)
+        self.assertEqual(item["firstCycle"], 4)
+        self.assertEqual(item["lastCycle"], 5)
+
+    def test_rejects_occupied_center_and_gold(self) -> None:
+        replay = {"frames": [
+            frame(0, [
+                {"id": "a", "element": "lead", "position": [0, 0]},
+                {"id": "middle", "element": "salt", "position": [1, 0]},
+                {"id": "b", "element": "lead", "position": [2, 0]},
+            ]),
+            frame(1, [
+                {"id": "g0", "element": "gold", "position": [0, 0]},
+                {"id": "g1", "element": "gold", "position": [2, 0]},
+            ]),
+        ]}
+
+        self.assertEqual(purification_opportunities(replay), [])
+
+    def test_moves_only_selected_purification_glyph(self) -> None:
+        solution = {
+            "source": {},
+            "parts": [
+                {"id": "p0", "type": "glyph-purification", "position": [9, 9], "rotation": 3},
+                {"id": "p1", "type": "glyph-purification", "position": [8, 8], "rotation": 2},
+                {"id": "arm", "type": "arm1", "position": [0, 0], "rotation": 0},
+            ],
+        }
+        opportunity = {
+            "element": "tin",
+            "producedElement": "iron",
+            "origin": [1, -2],
+            "rotation": 5,
+            "center": [2, -3],
+            "second": [3, -4],
+            "observationCount": 3,
+        }
+
+        moved = apply_purification_placement(solution, purifier_index=1, opportunity=opportunity)
+
+        self.assertEqual(moved["parts"][0]["position"], [9, 9])
+        self.assertEqual(moved["parts"][1]["position"], [1, -2])
+        self.assertEqual(moved["parts"][1]["rotation"], 5)
+        metadata = moved["source"]["reactionPlacementRepair"]
+        self.assertEqual(metadata["purifierIndex"], 1)
+        self.assertEqual(metadata["targetSolutionBytesUsed"], 0)
+        self.assertEqual(solution["parts"][1]["position"], [8, 8])
+
+
+if __name__ == "__main__":
+    unittest.main()
