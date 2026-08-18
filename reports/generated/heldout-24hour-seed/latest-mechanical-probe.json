@@ -1,0 +1,2257 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-mechanical-probe-checkpoint",
+  "runId": "32085477583",
+  "sourceCommit": "af36ca2177f403a0c10bb244365321cbd23cb0a9",
+  "targetSolutionBytesUsed": 0,
+  "targets": {
+    "GEN249": {
+      "planner": {
+        "strategy": "generic-reagent-chemistry-v1",
+        "supported": true,
+        "requiredGlyphs": [
+          "glyph-purification",
+          "unbonder"
+        ],
+        "requiredRelations": {
+          "bond-removed": 30,
+          "delivered": 3,
+          "purify": 7
+        }
+      },
+      "rankedAssemblyCount": 1,
+      "candidate": {
+        "rank": 1,
+        "score": 0.924703,
+        "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+        "observedRelations": {
+          "bond-created": 49,
+          "bond-removed": 72,
+          "delivered": 6,
+          "purify": 124
+        },
+        "relationCapacities": [
+          {
+            "relation": "purify",
+            "capacity": 50,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 50,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 12,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 12,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "delivered",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          }
+        ],
+        "layoutSummary": {
+          "instanceCount": 13,
+          "materializedPartCount": 12,
+          "sharedPartCount": 3,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 0,
+          "exactStaticConflictCount": 3,
+          "approximateStaticConflictCount": 2,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 12,
+          "sharedSourceIdentityCount": 3,
+          "resolvedSourcePoseCount": 3,
+          "rawPartProposalCount": 15,
+          "layoutComplete": true
+        },
+        "scheduleSummary": {
+          "instanceCount": 13,
+          "missingTimingCount": 0,
+          "defaultedTimingCount": 12,
+          "globalShift": 0,
+          "scheduleComplete": true
+        },
+        "synchronizedSummary": {
+          "instanceCount": 13,
+          "materializedPartCount": 12,
+          "sharedPartCount": 3,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 0,
+          "exactStaticConflictCount": 3,
+          "approximateStaticConflictCount": 2,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 12,
+          "sharedSourceIdentityCount": 3,
+          "resolvedSourcePoseCount": 3,
+          "rawPartProposalCount": 15,
+          "layoutComplete": true,
+          "programConflictCount": 0,
+          "scheduleComplete": true
+        },
+        "rawParts": [
+          {
+            "id": "convergence:part-0",
+            "type": "bonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-20",
+            "sourceFragmentInstance": "convergence",
+            "sourceFragmentInstances": [
+              "convergence"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:input:part-0",
+            "type": "unbonder",
+            "position": [
+              -2,
+              8
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-13",
+            "sourceFragmentInstance": "branch-0:input",
+            "sourceFragmentInstances": [
+              "branch-0:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-0:part-0",
+            "type": "bonder",
+            "position": [
+              1,
+              6
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-1",
+            "sourceFragmentInstance": "branch-0:upstream-0",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-0",
+              "branch-1:upstream-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-1:part-0",
+            "type": "glyph-purification",
+            "position": [
+              0,
+              8
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-0",
+            "sourceFragmentInstance": "branch-0:upstream-1",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-1",
+              "branch-1:upstream-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-2:part-0",
+            "type": "input",
+            "position": [
+              2,
+              6
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-9",
+            "sourceFragmentInstance": "branch-0:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-2",
+              "branch-1:upstream-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:input:part-0",
+            "type": "unbonder",
+            "position": [
+              -1,
+              -1
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-17",
+            "sourceFragmentInstance": "branch-1:input",
+            "sourceFragmentInstances": [
+              "branch-1:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-0:part-0",
+            "type": "unbonder",
+            "position": [
+              -3,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-2",
+            "sourceFragmentInstance": "tail-0",
+            "sourceFragmentInstances": [
+              "tail-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-1:part-0",
+            "type": "track",
+            "position": [
+              4,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-18",
+            "sourceFragmentInstance": "tail-1",
+            "sourceFragmentInstances": [
+              "tail-1"
+            ],
+            "program": [],
+            "trackHexes": [
+              [
+                -2,
+                -1
+              ],
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                1,
+                -1
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                -1
+              ],
+              [
+                3,
+                -1
+              ],
+              [
+                4,
+                -2
+              ],
+              [
+                4,
+                -3
+              ],
+              [
+                5,
+                -3
+              ],
+              [
+                5,
+                -2
+              ],
+              [
+                5,
+                -1
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                -1,
+                3
+              ],
+              [
+                -2,
+                3
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -3,
+                2
+              ],
+              [
+                -4,
+                3
+              ],
+              [
+                -4,
+                2
+              ],
+              [
+                -5,
+                2
+              ],
+              [
+                -6,
+                3
+              ],
+              [
+                -7,
+                4
+              ],
+              [
+                -7,
+                5
+              ],
+              [
+                -6,
+                5
+              ],
+              [
+                -7,
+                6
+              ],
+              [
+                -8,
+                6
+              ],
+              [
+                -9,
+                6
+              ],
+              [
+                -10,
+                6
+              ],
+              [
+                -10,
+                5
+              ],
+              [
+                -9,
+                4
+              ],
+              [
+                -9,
+                3
+              ],
+              [
+                -8,
+                2
+              ],
+              [
+                -7,
+                1
+              ],
+              [
+                -6,
+                1
+              ],
+              [
+                -6,
+                2
+              ],
+              [
+                -5,
+                1
+              ],
+              [
+                -5,
+                0
+              ],
+              [
+                -4,
+                -1
+              ],
+              [
+                -3,
+                -1
+              ],
+              [
+                -3,
+                -2
+              ],
+              [
+                -3,
+                -3
+              ],
+              [
+                -2,
+                -4
+              ],
+              [
+                -1,
+                -5
+              ],
+              [
+                0,
+                -5
+              ],
+              [
+                0,
+                -4
+              ],
+              [
+                1,
+                -5
+              ],
+              [
+                2,
+                -5
+              ],
+              [
+                2,
+                -4
+              ],
+              [
+                1,
+                -4
+              ],
+              [
+                0,
+                -3
+              ],
+              [
+                -1,
+                -2
+              ]
+            ]
+          },
+          {
+            "id": "tail-1:part-1",
+            "type": "arm6",
+            "position": [
+              2,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-14",
+            "sourceFragmentInstance": "tail-1",
+            "sourceFragmentInstances": [
+              "tail-1"
+            ],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              }
+            ],
+            "initialTipPosition": [
+              3,
+              1
+            ]
+          },
+          {
+            "id": "tail-1:part-2",
+            "type": "glyph-purification",
+            "position": [
+              2,
+              0
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-19",
+            "sourceFragmentInstance": "tail-1",
+            "sourceFragmentInstances": [
+              "tail-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-2:part-0",
+            "type": "glyph-purification",
+            "position": [
+              5,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-6",
+            "sourceFragmentInstance": "tail-2",
+            "sourceFragmentInstances": [
+              "tail-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-3:part-0",
+            "type": "out-std",
+            "position": [
+              1,
+              5
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-12",
+            "sourceFragmentInstance": "tail-3",
+            "sourceFragmentInstances": [
+              "tail-3"
+            ],
+            "program": []
+          }
+        ],
+        "solutionParts": [
+          {
+            "id": "part-0",
+            "type": "bonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-1",
+            "type": "unbonder",
+            "position": [
+              -2,
+              8
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-2",
+            "type": "bonder",
+            "position": [
+              1,
+              6
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-3",
+            "type": "glyph-purification",
+            "position": [
+              0,
+              8
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-4",
+            "type": "input",
+            "position": [
+              2,
+              6
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-5",
+            "type": "unbonder",
+            "position": [
+              -1,
+              -1
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-6",
+            "type": "unbonder",
+            "position": [
+              -3,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-7",
+            "type": "track",
+            "position": [
+              4,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [],
+            "trackHexes": [
+              [
+                -2,
+                -1
+              ],
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                1,
+                -1
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                -1
+              ],
+              [
+                3,
+                -1
+              ],
+              [
+                4,
+                -2
+              ],
+              [
+                4,
+                -3
+              ],
+              [
+                5,
+                -3
+              ],
+              [
+                5,
+                -2
+              ],
+              [
+                5,
+                -1
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                -1,
+                3
+              ],
+              [
+                -2,
+                3
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -3,
+                2
+              ],
+              [
+                -4,
+                3
+              ],
+              [
+                -4,
+                2
+              ],
+              [
+                -5,
+                2
+              ],
+              [
+                -6,
+                3
+              ],
+              [
+                -7,
+                4
+              ],
+              [
+                -7,
+                5
+              ],
+              [
+                -6,
+                5
+              ],
+              [
+                -7,
+                6
+              ],
+              [
+                -8,
+                6
+              ],
+              [
+                -9,
+                6
+              ],
+              [
+                -10,
+                6
+              ],
+              [
+                -10,
+                5
+              ],
+              [
+                -9,
+                4
+              ],
+              [
+                -9,
+                3
+              ],
+              [
+                -8,
+                2
+              ],
+              [
+                -7,
+                1
+              ],
+              [
+                -6,
+                1
+              ],
+              [
+                -6,
+                2
+              ],
+              [
+                -5,
+                1
+              ],
+              [
+                -5,
+                0
+              ],
+              [
+                -4,
+                -1
+              ],
+              [
+                -3,
+                -1
+              ],
+              [
+                -3,
+                -2
+              ],
+              [
+                -3,
+                -3
+              ],
+              [
+                -2,
+                -4
+              ],
+              [
+                -1,
+                -5
+              ],
+              [
+                0,
+                -5
+              ],
+              [
+                0,
+                -4
+              ],
+              [
+                1,
+                -5
+              ],
+              [
+                2,
+                -5
+              ],
+              [
+                2,
+                -4
+              ],
+              [
+                1,
+                -4
+              ],
+              [
+                0,
+                -3
+              ],
+              [
+                -1,
+                -2
+              ]
+            ]
+          },
+          {
+            "id": "part-8",
+            "type": "arm6",
+            "position": [
+              2,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              }
+            ],
+            "initialTipPosition": [
+              3,
+              1
+            ]
+          },
+          {
+            "id": "part-9",
+            "type": "glyph-purification",
+            "position": [
+              2,
+              0
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-10",
+            "type": "glyph-purification",
+            "position": [
+              5,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-11",
+            "type": "out-std",
+            "position": [
+              1,
+              5
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          }
+        ],
+        "inputPositions": [
+          [
+            2,
+            6
+          ]
+        ],
+        "armInitialTips": [
+          [
+            3,
+            1
+          ]
+        ]
+      }
+    },
+    "GEN499": {
+      "planner": {
+        "strategy": "generic-reagent-chemistry-v1",
+        "supported": true,
+        "requiredGlyphs": [
+          "bonder",
+          "unbonder"
+        ],
+        "requiredRelations": {
+          "bond-created": 5,
+          "bond-removed": 4,
+          "delivered": 1
+        }
+      },
+      "rankedAssemblyCount": 1,
+      "candidate": {
+        "rank": 1,
+        "score": 1.0,
+        "coherentSourceSolution": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution",
+        "observedRelations": {
+          "bond-created": 13,
+          "bond-removed": 12,
+          "delivered": 6,
+          "project": 6
+        },
+        "relationCapacities": [
+          {
+            "relation": "bond-removed",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "project",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "delivered",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/025-DOWNLOAD-770g-3i-1581c-250a-16h-16.5w-15b-270r-250a0-16h-16.5w-15b_STAMINA_POTION.solution"
+          }
+        ],
+        "layoutSummary": {
+          "instanceCount": 9,
+          "materializedPartCount": 11,
+          "sharedPartCount": 0,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 0,
+          "exactStaticConflictCount": 1,
+          "approximateStaticConflictCount": 0,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 11,
+          "sharedSourceIdentityCount": 0,
+          "resolvedSourcePoseCount": 0,
+          "rawPartProposalCount": 11,
+          "layoutComplete": true
+        },
+        "scheduleSummary": {
+          "instanceCount": 9,
+          "missingTimingCount": 0,
+          "defaultedTimingCount": 8,
+          "globalShift": 0,
+          "scheduleComplete": true
+        },
+        "synchronizedSummary": {
+          "instanceCount": 9,
+          "materializedPartCount": 11,
+          "sharedPartCount": 0,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 0,
+          "exactStaticConflictCount": 1,
+          "approximateStaticConflictCount": 0,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 11,
+          "sharedSourceIdentityCount": 0,
+          "resolvedSourcePoseCount": 0,
+          "rawPartProposalCount": 11,
+          "layoutComplete": true,
+          "programConflictCount": 0,
+          "scheduleComplete": true
+        },
+        "rawParts": [
+          {
+            "id": "convergence:part-0",
+            "type": "bonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-13",
+            "sourceFragmentInstance": "convergence",
+            "sourceFragmentInstances": [
+              "convergence"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:input:part-0",
+            "type": "bonder",
+            "position": [
+              2,
+              -1
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-11",
+            "sourceFragmentInstance": "branch-0:input",
+            "sourceFragmentInstances": [
+              "branch-0:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-0:part-0",
+            "type": "unbonder",
+            "position": [
+              1,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-10",
+            "sourceFragmentInstance": "branch-0:upstream-0",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-1:part-0",
+            "type": "input",
+            "position": [
+              0,
+              4
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-3",
+            "sourceFragmentInstance": "branch-0:upstream-1",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:input:part-0",
+            "type": "unbonder",
+            "position": [
+              0,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-14",
+            "sourceFragmentInstance": "branch-1:input",
+            "sourceFragmentInstances": [
+              "branch-1:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-0:part-0",
+            "type": "bonder",
+            "position": [
+              -2,
+              1
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-12",
+            "sourceFragmentInstance": "branch-1:upstream-0",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-1:part-0",
+            "type": "glyph-projection",
+            "position": [
+              -2,
+              3
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-22",
+            "sourceFragmentInstance": "branch-1:upstream-1",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-2:part-0",
+            "type": "track",
+            "position": [
+              -6,
+              4
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-21",
+            "sourceFragmentInstance": "branch-1:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-2"
+            ],
+            "program": [],
+            "trackHexes": [
+              [
+                -11,
+                -2
+              ],
+              [
+                -12,
+                -2
+              ],
+              [
+                -13,
+                -1
+              ],
+              [
+                -13,
+                0
+              ],
+              [
+                -13,
+                1
+              ],
+              [
+                -13,
+                2
+              ],
+              [
+                -12,
+                2
+              ],
+              [
+                -12,
+                3
+              ],
+              [
+                -11,
+                3
+              ],
+              [
+                -10,
+                2
+              ],
+              [
+                -10,
+                1
+              ],
+              [
+                -9,
+                1
+              ],
+              [
+                -8,
+                0
+              ],
+              [
+                -8,
+                1
+              ],
+              [
+                -7,
+                1
+              ],
+              [
+                -6,
+                0
+              ],
+              [
+                -6,
+                -1
+              ],
+              [
+                -6,
+                -2
+              ],
+              [
+                -5,
+                -2
+              ],
+              [
+                -5,
+                -1
+              ],
+              [
+                -4,
+                -1
+              ],
+              [
+                -4,
+                0
+              ],
+              [
+                -4,
+                1
+              ],
+              [
+                -4,
+                2
+              ],
+              [
+                -5,
+                3
+              ],
+              [
+                -6,
+                4
+              ],
+              [
+                -5,
+                4
+              ],
+              [
+                -4,
+                3
+              ],
+              [
+                -3,
+                2
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                0,
+                4
+              ],
+              [
+                -1,
+                4
+              ],
+              [
+                -1,
+                5
+              ],
+              [
+                -1,
+                6
+              ],
+              [
+                -2,
+                7
+              ],
+              [
+                -3,
+                7
+              ],
+              [
+                -4,
+                7
+              ],
+              [
+                -5,
+                7
+              ],
+              [
+                -5,
+                6
+              ],
+              [
+                -6,
+                7
+              ],
+              [
+                -6,
+                8
+              ],
+              [
+                -5,
+                8
+              ],
+              [
+                -4,
+                8
+              ],
+              [
+                -3,
+                8
+              ],
+              [
+                -2,
+                8
+              ],
+              [
+                -1,
+                7
+              ],
+              [
+                0,
+                6
+              ],
+              [
+                1,
+                5
+              ],
+              [
+                1,
+                6
+              ],
+              [
+                2,
+                6
+              ],
+              [
+                3,
+                6
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                3
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                7,
+                2
+              ],
+              [
+                8,
+                2
+              ],
+              [
+                9,
+                1
+              ],
+              [
+                9,
+                0
+              ],
+              [
+                9,
+                -1
+              ],
+              [
+                9,
+                -2
+              ],
+              [
+                8,
+                -2
+              ],
+              [
+                8,
+                -3
+              ],
+              [
+                7,
+                -2
+              ],
+              [
+                6,
+                -1
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                4,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                -1
+              ],
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                0,
+                -2
+              ],
+              [
+                -1,
+                -2
+              ],
+              [
+                -2,
+                -2
+              ],
+              [
+                -3,
+                -2
+              ],
+              [
+                -4,
+                -2
+              ],
+              [
+                -4,
+                -3
+              ],
+              [
+                -5,
+                -3
+              ],
+              [
+                -6,
+                -3
+              ],
+              [
+                -7,
+                -3
+              ],
+              [
+                -7,
+                -4
+              ],
+              [
+                -8,
+                -4
+              ],
+              [
+                -9,
+                -3
+              ],
+              [
+                -10,
+                -3
+              ]
+            ]
+          },
+          {
+            "id": "branch-1:upstream-2:part-1",
+            "type": "input",
+            "position": [
+              -3,
+              3
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 2,
+            "sourcePartId": "part-1",
+            "sourceFragmentInstance": "branch-1:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-2:part-2",
+            "type": "arm6",
+            "position": [
+              -4,
+              3
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-23",
+            "sourceFragmentInstance": "branch-1:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-2"
+            ],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_minus"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              }
+            ],
+            "initialTipPosition": [
+              -3,
+              2
+            ]
+          },
+          {
+            "id": "tail-0:part-0",
+            "type": "out-std",
+            "position": [
+              -3,
+              -3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-32",
+            "sourceFragmentInstance": "tail-0",
+            "sourceFragmentInstances": [
+              "tail-0"
+            ],
+            "program": []
+          }
+        ],
+        "solutionParts": [
+          {
+            "id": "part-0",
+            "type": "bonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-1",
+            "type": "bonder",
+            "position": [
+              2,
+              -1
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-2",
+            "type": "unbonder",
+            "position": [
+              1,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-3",
+            "type": "input",
+            "position": [
+              0,
+              4
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-4",
+            "type": "unbonder",
+            "position": [
+              0,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-5",
+            "type": "bonder",
+            "position": [
+              -2,
+              1
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-7",
+            "type": "track",
+            "position": [
+              -6,
+              4
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [],
+            "trackHexes": [
+              [
+                -11,
+                -2
+              ],
+              [
+                -12,
+                -2
+              ],
+              [
+                -13,
+                -1
+              ],
+              [
+                -13,
+                0
+              ],
+              [
+                -13,
+                1
+              ],
+              [
+                -13,
+                2
+              ],
+              [
+                -12,
+                2
+              ],
+              [
+                -12,
+                3
+              ],
+              [
+                -11,
+                3
+              ],
+              [
+                -10,
+                2
+              ],
+              [
+                -10,
+                1
+              ],
+              [
+                -9,
+                1
+              ],
+              [
+                -8,
+                0
+              ],
+              [
+                -8,
+                1
+              ],
+              [
+                -7,
+                1
+              ],
+              [
+                -6,
+                0
+              ],
+              [
+                -6,
+                -1
+              ],
+              [
+                -6,
+                -2
+              ],
+              [
+                -5,
+                -2
+              ],
+              [
+                -5,
+                -1
+              ],
+              [
+                -4,
+                -1
+              ],
+              [
+                -4,
+                0
+              ],
+              [
+                -4,
+                1
+              ],
+              [
+                -4,
+                2
+              ],
+              [
+                -5,
+                3
+              ],
+              [
+                -6,
+                4
+              ],
+              [
+                -5,
+                4
+              ],
+              [
+                -4,
+                3
+              ],
+              [
+                -3,
+                2
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                0,
+                4
+              ],
+              [
+                -1,
+                4
+              ],
+              [
+                -1,
+                5
+              ],
+              [
+                -1,
+                6
+              ],
+              [
+                -2,
+                7
+              ],
+              [
+                -3,
+                7
+              ],
+              [
+                -4,
+                7
+              ],
+              [
+                -5,
+                7
+              ],
+              [
+                -5,
+                6
+              ],
+              [
+                -6,
+                7
+              ],
+              [
+                -6,
+                8
+              ],
+              [
+                -5,
+                8
+              ],
+              [
+                -4,
+                8
+              ],
+              [
+                -3,
+                8
+              ],
+              [
+                -2,
+                8
+              ],
+              [
+                -1,
+                7
+              ],
+              [
+                0,
+                6
+              ],
+              [
+                1,
+                5
+              ],
+              [
+                1,
+                6
+              ],
+              [
+                2,
+                6
+              ],
+              [
+                3,
+                6
+              ],
+              [
+                4,
+                5
+              ],
+              [
+                4,
+                4
+              ],
+              [
+                5,
+                3
+              ],
+              [
+                6,
+                2
+              ],
+              [
+                7,
+                2
+              ],
+              [
+                8,
+                2
+              ],
+              [
+                9,
+                1
+              ],
+              [
+                9,
+                0
+              ],
+              [
+                9,
+                -1
+              ],
+              [
+                9,
+                -2
+              ],
+              [
+                8,
+                -2
+              ],
+              [
+                8,
+                -3
+              ],
+              [
+                7,
+                -2
+              ],
+              [
+                6,
+                -1
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                4,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                -1
+              ],
+              [
+                1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                0,
+                -2
+              ],
+              [
+                -1,
+                -2
+              ],
+              [
+                -2,
+                -2
+              ],
+              [
+                -3,
+                -2
+              ],
+              [
+                -4,
+                -2
+              ],
+              [
+                -4,
+                -3
+              ],
+              [
+                -5,
+                -3
+              ],
+              [
+                -6,
+                -3
+              ],
+              [
+                -7,
+                -3
+              ],
+              [
+                -7,
+                -4
+              ],
+              [
+                -8,
+                -4
+              ],
+              [
+                -9,
+                -3
+              ],
+              [
+                -10,
+                -3
+              ]
+            ]
+          },
+          {
+            "id": "part-8",
+            "type": "input",
+            "position": [
+              -2,
+              2
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 1,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-9",
+            "type": "arm6",
+            "position": [
+              -4,
+              3
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_minus"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              }
+            ],
+            "initialTipPosition": [
+              -3,
+              2
+            ]
+          },
+          {
+            "id": "part-10",
+            "type": "out-std",
+            "position": [
+              -3,
+              -3
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          }
+        ],
+        "inputPositions": [
+          [
+            0,
+            4
+          ],
+          [
+            -2,
+            2
+          ]
+        ],
+        "armInitialTips": [
+          [
+            -3,
+            2
+          ]
+        ]
+      }
+    }
+  }
+}
