@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.2.0",
   "kind": "heldout-feed-lane-checkpoint",
-  "runId": "32157114679",
-  "sourceCommit": "9f6edc9e88f5c560dae12dbf620acf5d843c95ff",
+  "runId": "32157526058",
+  "sourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
   "genericFlowRunId": "32087080619",
   "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
@@ -122,9 +122,9 @@
     },
     "validation": {
       "complete": false,
-      "failureMode": "simulation-error",
+      "failureMode": "missing-product-output",
       "totalDelivered": 0,
-      "totalDeficit": 6,
+      "totalDeficit": 18,
       "completedCycles": 146,
       "terminatedWithError": true,
       "firstError": {
