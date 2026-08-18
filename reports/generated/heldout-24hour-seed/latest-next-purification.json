@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-next-purification-checkpoint",
-  "runId": "32165828883",
-  "sourceCommit": "5ca53997f1cb26b53a821b6da9f67a8c1a539bf0",
+  "runId": "32194960671",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
   "cleanupRunId": "32165581288",
   "cleanupSourceCommit": "f296cb14c658a450accbca5f1e4699058e3677ca",
   "targetSolutionBytesUsed": 0,
