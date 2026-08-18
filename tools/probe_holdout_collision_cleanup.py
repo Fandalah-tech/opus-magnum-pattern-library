@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from packages.opus_parser import parse_puzzle, parse_solution, write_solution
-from packages.opus_solver.collision_cleanup import search_collision_cleanup_arms
+from packages.opus_solver.collision_cleanup_timing import search_phase_aware_cleanup_arms
 
 
 def compact_summary(value: dict[str, Any]) -> dict[str, Any]:
@@ -27,13 +27,13 @@ def probe(
     puzzle_path: Path,
     baseline_solution_path: Path,
     *,
-    max_cycles: int = 256,
-    result_limit: int = 12,
+    max_cycles: int = 400,
+    result_limit: int = 16,
     solution_output: Path | None = None,
 ) -> dict[str, Any]:
     puzzle = parse_puzzle(puzzle_path)
     solution = parse_solution(baseline_solution_path)
-    result = search_collision_cleanup_arms(
+    result = search_phase_aware_cleanup_arms(
         puzzle,
         solution,
         max_cycles=max_cycles,
@@ -46,8 +46,8 @@ def probe(
         write_solution(best_raw["solution"], solution_output)
         output_solution = str(solution_output)
     return {
-        "schemaVersion": "0.1.0",
-        "kind": "strict-heldout-collision-cleanup-probe",
+        "schemaVersion": "0.2.0",
+        "kind": "strict-heldout-phase-aware-collision-cleanup-probe",
         "targetPuzzle": puzzle_path.name,
         "baselineSolution": baseline_solution_path.name,
         "targetSolutionBytesUsed": 0,
@@ -58,6 +58,7 @@ def probe(
         "baseline": compact_summary(result.get("baseline") or {}),
         "variants": [
             {
+                "motionLead": item.get("motionLead"),
                 "grabLead": item.get("grabLead"),
                 "baseDirectionIndex": item.get("baseDirectionIndex"),
                 "motionInstruction": item.get("motionInstruction"),
@@ -66,6 +67,7 @@ def probe(
             for item in result.get("variants", []) or []
         ],
         "best": {
+            "motionLead": best_raw.get("motionLead"),
             "grabLead": best_raw.get("grabLead"),
             "baseDirectionIndex": best_raw.get("baseDirectionIndex"),
             "motionInstruction": best_raw.get("motionInstruction"),
@@ -77,13 +79,13 @@ def probe(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Synthesize one cleanup arm from a strict-blind stationary collision trace.")
+    parser = argparse.ArgumentParser(description="Synthesize and phase a cleanup arm from a strict-blind stationary collision trace.")
     parser.add_argument("--puzzle", type=Path, required=True)
     parser.add_argument("--baseline-solution", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--solution-output", type=Path)
-    parser.add_argument("--max-cycles", type=int, default=256)
-    parser.add_argument("--result-limit", type=int, default=12)
+    parser.add_argument("--max-cycles", type=int, default=400)
+    parser.add_argument("--result-limit", type=int, default=16)
     args = parser.parse_args()
 
     report = probe(
