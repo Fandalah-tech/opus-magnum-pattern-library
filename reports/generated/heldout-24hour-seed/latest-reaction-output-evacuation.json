@@ -1,0 +1,388 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-reaction-output-evacuation-checkpoint",
+  "runId": "32193820147",
+  "sourceCommit": "676727e0914f44a44ebdc5274da39c77929ff70d",
+  "oracleRunId": "32193589895",
+  "targetSolutionBytesUsed": 0,
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
+    "progressCycle": 195,
+    "collisionCycle": 195,
+    "collisionLocation": [
+      8,
+      -2
+    ]
+  },
+  "reactionEvents": [
+    {
+      "cycle": 194,
+      "position": [
+        8,
+        -2
+      ],
+      "element": "silver",
+      "producedAtomId": "part-17-purified-1",
+      "glyphPartId": "part-17"
+    }
+  ],
+  "variantCount": 60,
+  "best": {
+    "grabCycle": 192,
+    "baseRotation": 4,
+    "motionInstruction": "rotate_cw",
+    "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-008.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+      "progressCycle": 191,
+      "collisionCycle": 191,
+      "collisionLocation": [
+        8,
+        -1
+      ]
+    },
+    "finalSolutionPath": "reports/heldout-reaction-evacuation/search/GEN249-best-reaction-output-evacuation.solution"
+  },
+  "bestLocalPurificationProfile": {
+    "count": 1,
+    "countsByElement": {
+      "copper": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        185
+      ]
+    },
+    "frontierIndex": 3,
+    "frontierElement": "copper",
+    "goldReached": false,
+    "completedCycles": 194,
+    "terminatedWithError": true
+  },
+  "topVariants": [
+    {
+      "grabCycle": 192,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-008.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      },
+      "finalSolutionPath": "reports/heldout-reaction-evacuation/search/GEN249-best-reaction-output-evacuation.solution"
+    },
+    {
+      "grabCycle": 192,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-009.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 193,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-020.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 193,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-021.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 194,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-032.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 194,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-033.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 195,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-044.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 195,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-045.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 196,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-056.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 196,
+      "baseRotation": 4,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-057.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 191 at 8 -1",
+        "progressCycle": 191,
+        "collisionCycle": 191,
+        "collisionLocation": [
+          8,
+          -1
+        ]
+      }
+    },
+    {
+      "grabCycle": 192,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-000.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 192,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-001.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 193,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-012.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 193,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-013.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 194,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-024.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 194,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-025.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 195,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-036.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 195,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-037.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 196,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_cw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-048.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    },
+    {
+      "grabCycle": 196,
+      "baseRotation": 0,
+      "motionInstruction": "rotate_ccw",
+      "solutionPath": "reports/heldout-reaction-evacuation/search/candidate-049.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 185 at 7 -2",
+        "progressCycle": 185,
+        "collisionCycle": 185,
+        "collisionLocation": [
+          7,
+          -2
+        ]
+      }
+    }
+  ],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
