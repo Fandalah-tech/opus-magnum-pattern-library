@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-trajectory-purification-checkpoint",
+  "runId": "32155886894",
+  "sourceCommit": "52b46c401b3607e9e5a60274ee89b5ec563d4815",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "seedRunId": "32155009635",
+  "seedSourceCommit": "6adc4f70f44544700c6a7f77de7d800ce4208eb2",
+  "assemblyRank": 1,
+  "assemblyScore": 0.892762,
+  "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+  "transformOverrides": {
+    "branch-0:edge-0": {
+      "frame": "source-anchor-local",
+      "delta": [
+        -3,
+        1
+      ],
+      "rotationDelta": 1
+    }
+  },
+  "request": {
+    "discoveryCycles": 132,
+    "validationCycles": 320,
+    "poseLimit": 96,
+    "resultLimit": 16
+  },
+  "searchSummary": {
+    "purificationGlyphCount": 6,
+    "discoveryCycles": 132,
+    "validationCycles": 320,
+    "discoveryCompletedCycles": 132,
+    "discoveryTerminatedWithError": false,
+    "discoveryEventCounts": {
+      "arm-instruction": 132,
+      "atom-grabbed": 122,
+      "atoms-dropped": 32,
+      "bond-created": 1,
+      "bond-removed": 1,
+      "input-spawned": 3
+    },
+    "discoveredPoseCount": 55,
+    "testedVariantCount": 330,
+    "returnedVariantCount": 16,
+    "purificationReachedCount": 0,
+    "completeVariantCount": 0,
+    "hasCompleteSolution": false,
+    "mechanicsFingerprint": "2284e3e3e25c452a922e2716a86c9fb924260fc2a7ebe895d73d74b62bcb4d18"
+  },
+  "discoveredPoseCount": 55,
+  "bestVariant": {
+    "rank": 1,
+    "glyphId": "part-1",
+    "originalPosition": [
+      0,
+      0
+    ],
+    "originalRotation": 0,
+    "position": [
+      -4,
+      4
+    ],
+    "rotation": 5,
+    "trajectoryEvidence": {
+      "position": [
+        -4,
+        4
+      ],
+      "rotation": 5,
+      "element": "iron",
+      "producedElement": "copper",
+      "firstCycle": 83,
+      "lastCycle": 109,
+      "observationCount": 9,
+      "sampleAtomPairs": [
+        [
+          "part-7-spawn-0-atom-2",
+          "part-7-spawn-1-atom-2"
+        ],
+        [
+          "part-7-spawn-0-atom-3",
+          "part-7-spawn-1-atom-2"
+        ],
+        [
+          "part-10-spawn-0-atom-3",
+          "part-7-spawn-1-atom-2"
+        ]
+      ]
+    },
+    "mechanicsPreserved": true,
+    "serialization": {
+      "byteCount": 1147,
+      "partCount": 15,
+      "parserTrailingBytes": 0,
+      "puzzleFileMatches": true,
+      "roundTripClean": true,
+      "nonSerializedSourceMetadataReattached": true
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "simulation-error",
+      "totalDelivered": 0,
+      "totalDeficit": 6,
+      "completedCycles": 206,
+      "terminatedWithError": true,
+      "firstError": {
+        "cycle": 205,
+        "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-10-spawn-1-atom-1 at (9, 1); activeArms={'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-10-spawn-0-atom-3', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-2', 'part-7-spawn-0-atom-3', 'part-7-spawn-1-atom-0', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-0-atom-3': ['part-2'], 'part-7-spawn-0-atom-2': ['part-2'], 'part-7-spawn-1-atom-0': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((-3, 7), (-2, 6), 'part-3'), ((5, 1), (6, 0), 'part-12')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-0-atom-0': [8, -1], 'part-10-spawn-0-atom-1': [9, -1], 'part-10-spawn-0-atom-2': [9, 0], 'part-10-spawn-0-atom-3': [10, -2], 'part-7-spawn-0-atom-0': [6, -1], 'part-7-spawn-0-atom-1': [7, -2], 'part-7-spawn-0-atom-2': [8, -2], 'part-7-spawn-0-atom-3': [7, -3], 'part-7-spawn-1-atom-0': [10, -3], 'part-7-spawn-1-atom-1': [11, -4], 'part-7-spawn-1-atom-2': [12, -4], 'part-7-spawn-1-atom-3': [11, -5]}, 'destinations': {'part-10-spawn-0-atom-0': [8, 0], 'part-10-spawn-0-atom-1': [9, 0], 'part-10-spawn-0-atom-2': [9, 1], 'part-10-spawn-0-atom-3': [10, -1], 'part-7-spawn-0-atom-0': [6, 0], 'part-7-spawn-0-atom-1': [7, -1], 'part-7-spawn-0-atom-2': [8, -1], 'part-7-spawn-0-atom-3': [7, -2], 'part-7-spawn-1-atom-0': [10, -2], 'part-7-spawn-1-atom-1': [11, -3], 'part-7-spawn-1-atom-2': [12, -3], 'part-7-spawn-1-atom-3': [11, -4]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [9, -2], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [10, -2]}, {'branchIndex': 1, 'position': [9, -1]}, {'branchIndex': 2, 'position': [8, -1]}, {'branchIndex': 3, 'position': [8, -2]}, {'branchIndex': 4, 'position': [9, -3]}, {'branchIndex': 5, 'position': [10, -3]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-0-atom-0'}, {'branchIndex': 3, 'atomId': 'part-7-spawn-0-atom-2'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-0'}], 'trackIndex': 10, 'trackCellCount': 58}}]; outputCandidates=[]"
+      },
+      "requiredChemistryEventKinds": [
+        "atom-purified",
+        "bond-removed",
+        "product-delivered",
+        "repeating-product-completed"
+      ],
+      "observedRequiredChemistryEventKinds": [
+        "bond-removed"
+      ],
+      "distinctRequiredChemistryEventCount": 1,
+      "requiredChemistryEventCount": 1,
+      "chemistryEventCount": 2,
+      "chemistryEventKinds": [
+        "bond-created",
+        "bond-removed"
+      ],
+      "atomPurifiedCount": 0,
+      "eventCounts": {
+        "arm-instruction": 205,
+        "atom-grabbed": 247,
+        "atoms-dropped": 56,
+        "bond-created": 1,
+        "bond-removed": 1,
+        "input-spawned": 3,
+        "simulation-error": 1
+      },
+      "manipulationEventCount": 306
+    },
+    "errorType": null,
+    "error": null
+  }
+}
