@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import unittest
 
-from packages.opus_solver.product_delivery import add_singleton_product_extractor
+from packages.opus_solver.product_delivery import (
+    add_singleton_product_extractor,
+    ensure_all_standard_outputs,
+)
 
 
 class ProductDeliveryTests(unittest.TestCase):
@@ -87,6 +90,33 @@ class ProductDeliveryTests(unittest.TestCase):
         self.assertEqual(repair["sourcePosition"], [4, 2])
         self.assertEqual(solution["parts"], [])
         self.assertEqual(solution["source"], {})
+
+    def test_places_every_missing_product_in_reserved_layout(self) -> None:
+        puzzle = {
+            "products": [
+                {"atoms": [{"element": "gold", "position": [0, 0]}], "bonds": []},
+                {"atoms": [{"element": "gold", "position": [0, 0]}], "bonds": []},
+                {"atoms": [{"element": "silver", "position": [0, 0]}], "bonds": []},
+            ],
+        }
+        solution = {
+            "source": {},
+            "parts": [
+                {"id": "out0", "type": "out-std", "position": [2, 1], "rotation": 0, "which": 0},
+                {"id": "arm0", "type": "arm1", "position": [8, 4], "rotation": 0, "length": 1, "armNumber": 1},
+            ],
+        }
+
+        updated = ensure_all_standard_outputs(puzzle, solution)
+
+        outputs = [part for part in updated["parts"] if part["type"] == "out-std"]
+        self.assertEqual({part["which"] for part in outputs}, {0, 1, 2})
+        generated = [part for part in outputs if part["id"] != "out0"]
+        self.assertEqual(len(generated), 2)
+        self.assertTrue(all(part["position"][0] > 8 and part["position"][1] > 4 for part in generated))
+        repairs = [item for item in updated["source"]["productDeliveryRepairs"] if item["mode"] == "reserved-output-completeness"]
+        self.assertEqual({item["productIndex"] for item in repairs}, {1, 2})
+        self.assertEqual(solution["parts"][0]["position"], [2, 1])
 
 
 if __name__ == "__main__":
