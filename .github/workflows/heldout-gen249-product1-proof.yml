@@ -1,0 +1,196 @@
+name: Blind GEN249 authoritative first product
+
+on:
+  push:
+    branches: [feature/critelli-2026-public-corpus]
+    paths:
+      - .github/workflows/heldout-gen249-product1-proof.yml
+      - tools/select_heldout_frontier_candidate.py
+      - tools/run_holdout_iterative_track_detour.py
+      - tools/run_holdout_track_neighborhood_detour_search.py
+      - tools/run_holdout_collision_aware_purifier_relocation.py
+      - reports/generated/heldout-24hour-seed/latest-post-detour-chemistry.json
+      - packages/opus_solver/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-product1-proof-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  CHEMISTRY_POINTER: reports/generated/heldout-24hour-seed/latest-post-detour-chemistry.json
+  PUZZLE_ROOT: .datasets/heldout-gen249-product1
+  SOURCE_ROOT: .baseline/heldout-gen249-product1-source
+  REPORT_ROOT: reports/heldout-gen249-product1
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-gen249-product1.json
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+
+jobs:
+  product1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          test "$(find "$PUZZLE_ROOT" -maxdepth 1 -name '*.puzzle' | wc -l)" -eq 1
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore target-free post-detour candidate portfolio
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id="$(python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=json.loads(Path(os.environ['CHEMISTRY_POINTER']).read_text())
+          assert p['targetSolutionBytesUsed']==0
+          print(p['runId'])
+          PY
+          )"
+          meta="$RUNNER_TEMP/source.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$meta"
+          read -r aid digest < <(python - "$meta" "$run_id" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path(sys.argv[1]).read_text()); name=f'heldout-post-detour-chemistry-{sys.argv[2]}'; m=[x for x in d['artifacts'] if x['name']==name and not x['expired']]; assert len(m)==1; print(m[0]['id'],str(m[0]['digest']).split(':',1)[1])
+          PY
+          )
+          mkdir -p "$SOURCE_ROOT"
+          archive="$RUNNER_TEMP/source.zip"
+          curl --fail --location --retry 8 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${aid}/zip" -o "$archive"
+          echo "$digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$SOURCE_ROOT"
+          test -n "$(find "$SOURCE_ROOT" -type f -name '*.solution' -print -quit)"
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x .tools/omsim/omsim
+
+      - name: Requalify portfolio with current engine and OMSim
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/requalified"
+          python tools/select_heldout_frontier_candidate.py \
+            --omsim .tools/omsim/omsim \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --candidate-root "$SOURCE_ROOT/search" \
+            --candidate-glob 'candidate-*.solution' \
+            --max-cycles 500 \
+            --selected-output "$REPORT_ROOT/requalified/GEN249-current-frontier.solution" \
+            --output "$REPORT_ROOT/requalified.json"
+          test -s "$REPORT_ROOT/requalified/GEN249-current-frontier.solution"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ['REPORT_ROOT'])/'requalified.json').read_text())
+          assert d['targetSolutionBytesUsed']==0
+          assert d['best']
+          c=(d['best']['purificationProfile'].get('countsByElement') or {})
+          assert int(c.get('silver',0))>=1, d['best']
+          PY
+
+      - name: Iterate chemistry-preserving track detours
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/detours"
+          python tools/run_holdout_iterative_track_detour.py \
+            --omsim .tools/omsim/omsim \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline "$REPORT_ROOT/requalified/GEN249-current-frontier.solution" \
+            --max-cycles 500 --radius 3 --iterations 8 \
+            --output-dir "$REPORT_ROOT/detours" \
+            --output "$REPORT_ROOT/detours.json"
+          test -s "$REPORT_ROOT/detours/GEN249-best-iterative-track-detour.solution"
+
+      - name: Relocate the surviving reaction output away from official motion
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/purifier"
+          python tools/run_holdout_collision_aware_purifier_relocation.py \
+            --omsim .tools/omsim/omsim \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline "$REPORT_ROOT/detours/GEN249-best-iterative-track-detour.solution" \
+            --max-cycles 500 --opportunity-limit 200 \
+            --output-dir "$REPORT_ROOT/purifier" \
+            --output "$REPORT_ROOT/purifier.json"
+          python - <<'PY'
+          import json,os,shutil
+          from pathlib import Path
+          root=Path(os.environ['REPORT_ROOT']); d=json.loads((root/'purifier.json').read_text())
+          assert d['targetSolutionBytesUsed']==0
+          assert d['best'], d
+          oracle=d['best']['omsim']
+          assert int(oracle['exitCode'])==0, oracle
+          src=Path(d['best'].get('finalSolutionPath') or d['best']['solutionPath'])
+          assert src.is_file()
+          shutil.copyfile(src, root/'GEN249-strict-blind-product1.solution')
+          PY
+
+      - name: Reconfirm authoritative product contract
+        run: |
+          set -euo pipefail
+          output="$(.tools/omsim/omsim --puzzle-file "$PUZZLE_ROOT/GEN249.puzzle" --metric "product 1 cycles" "$REPORT_ROOT/GEN249-strict-blind-product1.solution" 2>&1)"
+          printf '%s\n' "$output"
+          python - "$output" <<'PY'
+          import json,os,re,sys,hashlib
+          from pathlib import Path
+          text=sys.argv[1]
+          m=re.search(r'product 1 cycles:\s*([0-9.]+)',text)
+          assert m, text
+          solution=Path(os.environ['REPORT_ROOT'])/'GEN249-strict-blind-product1.solution'
+          payload={'accepted':True,'metric':'product 1 cycles','metricValue':float(m.group(1)),'rawOutput':text,'omsimCommit':os.environ['OMSIM_COMMIT'],'solutionSha256':hashlib.sha256(solution.read_bytes()).hexdigest(),'targetSolutionBytesUsed':0}
+          (Path(os.environ['REPORT_ROOT'])/'omsim-product1.json').write_text(json.dumps(payload,indent=2)+'\n')
+          PY
+
+      - name: Persist authoritative first-product checkpoint
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          root=Path(os.environ['REPORT_ROOT']); source=json.loads(Path(os.environ['CHEMISTRY_POINTER']).read_text())
+          payload={'schemaVersion':'0.1.0','kind':'heldout-gen249-authoritative-product1-checkpoint','runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'sourceChemistryRunId':source['runId'],'targetSolutionBytesUsed':0,'target':'GEN249.puzzle','requalification':json.loads((root/'requalified.json').read_text()),'detours':json.loads((root/'detours.json').read_text()),'purifierRelocation':json.loads((root/'purifier.json').read_text()),'omsim':json.loads((root/'omsim-product1.json').read_text())}
+          out=Path(os.environ['LATEST_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
+          PY
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          git commit -m "Record authoritative blind GEN249 first product [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-gen249-product1-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          retention-days: 30
