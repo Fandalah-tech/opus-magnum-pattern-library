@@ -31,6 +31,7 @@ def probe(
     opportunity_limit: int = 60,
     result_limit: int = 20,
     solution_output: Path | None = None,
+    candidate_dir: Path | None = None,
 ) -> dict[str, Any]:
     puzzle = parse_puzzle(puzzle_path)
     solution = parse_solution(baseline_solution_path)
@@ -44,8 +45,20 @@ def probe(
 
     variants = []
     best_raw = (result.get("variants") or [None])[0]
-    for item in result.get("variants") or []:
+    candidate_outputs: list[str] = []
+    if candidate_dir is not None:
+        candidate_dir.mkdir(parents=True, exist_ok=True)
+
+    for index, item in enumerate(result.get("variants") or []):
+        candidate_output = None
+        if candidate_dir is not None and item.get("solution"):
+            path = candidate_dir / f"candidate-{index:02d}.solution"
+            write_solution(item["solution"], path)
+            candidate_output = str(path)
+            candidate_outputs.append(candidate_output)
         variants.append({
+            "candidateIndex": index,
+            "candidateOutput": candidate_output,
             "opportunity": item.get("opportunity"),
             "grabDelay": item.get("grabDelay"),
             "baseRotation": item.get("baseRotation"),
@@ -61,7 +74,7 @@ def probe(
         output_solution = str(solution_output)
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-product-delivery-probe",
         "targetPuzzle": puzzle_path.name,
         "baselineSolution": baseline_solution_path.name,
@@ -75,6 +88,7 @@ def probe(
         "baseline": result.get("baseline"),
         "opportunities": list(result.get("opportunities") or [])[:40],
         "variants": variants,
+        "candidateOutputs": candidate_outputs,
         "bestSolutionOutput": output_solution,
     }
 
@@ -85,6 +99,7 @@ def main() -> int:
     parser.add_argument("--baseline-solution", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--solution-output", type=Path)
+    parser.add_argument("--candidate-dir", type=Path)
     parser.add_argument("--max-cycles", type=int, default=500)
     parser.add_argument("--opportunity-limit", type=int, default=60)
     parser.add_argument("--result-limit", type=int, default=20)
@@ -97,12 +112,14 @@ def main() -> int:
         opportunity_limit=args.opportunity_limit,
         result_limit=args.result_limit,
         solution_output=args.solution_output,
+        candidate_dir=args.candidate_dir,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({
         "targetPuzzle": report["targetPuzzle"],
         "summary": report["summary"],
+        "candidateCount": len(report["candidateOutputs"]),
         "bestSolutionOutput": report["bestSolutionOutput"],
     }, ensure_ascii=False))
     return 0
