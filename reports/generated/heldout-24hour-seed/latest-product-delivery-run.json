@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "heldout-product-delivery-run-pointer",
+  "runId": "32191625647",
+  "runNumber": "4",
+  "runAttempt": "1",
+  "status": "in_progress",
+  "sourceCommit": "448a5802f0c10d50d11d4c533d42bec8c7da779b",
+  "targetSolutionBytesUsed": 0
+}
