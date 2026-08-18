@@ -47,6 +47,7 @@ class ProductDeliveryTests(unittest.TestCase):
         )
 
         self.assertEqual(len(solution["parts"]), 1)
+        self.assertEqual(solution["source"], {})
         outputs = [part for part in updated["parts"] if part["type"] == "out-std"]
         extractors = [part for part in updated["parts"] if part["id"].startswith("product-extractor-arm-")]
         self.assertEqual(len(outputs), 1)
@@ -84,6 +85,8 @@ class ProductDeliveryTests(unittest.TestCase):
 
         repair = updated["source"]["productDeliveryRepairs"][0]
         self.assertEqual(repair["sourcePosition"], [4, 2])
+        self.assertEqual(solution["parts"], [])
+        self.assertEqual(solution["source"], {})
 
 
 if __name__ == "__main__":
