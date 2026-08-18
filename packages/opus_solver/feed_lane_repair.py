@@ -7,6 +7,7 @@ from packages.opus_analysis.canonical import rotate_hex
 
 from .candidate_solution import serialize_candidate_roundtrip
 from .chemistry_transplant import arm_grab_sites, mechanical_fingerprint
+from .conversion_opportunities import replay_conversion_opportunities
 from .solver import validate_generated_solution
 
 
@@ -104,7 +105,12 @@ def _candidate_input_placements(
     return deduped[:limit]
 
 
-def _rank(validation: dict[str, Any], *, distance: int) -> tuple[Any, ...]:
+def _rank(
+    validation: dict[str, Any],
+    conversion: dict[str, Any],
+    *,
+    distance: int,
+) -> tuple[Any, ...]:
     counts = validation.get("eventCounts") or {}
     target_transform_count = sum(
         int(counts.get(kind) or 0)
@@ -118,10 +124,18 @@ def _rank(validation: dict[str, Any], *, distance: int) -> tuple[Any, ...]:
             "atom-divided",
         )
     )
+    blocked_count = len(validation.get("blockedInputsAtStart") or [])
+    minimum_pair_distance = conversion.get("minFreeEqualPairDistance")
+    distance_score = -int(minimum_pair_distance) if minimum_pair_distance is not None else -10**6
     return (
         int(bool(validation.get("complete"))),
         int(validation.get("totalDelivered") or 0),
+        int(blocked_count == 0),
         target_transform_count,
+        int(conversion.get("readyPurificationPoseObservationCount") or 0),
+        int(conversion.get("framesWithReadyPurificationPose") or 0),
+        distance_score,
+        int(conversion.get("freeEqualPairObservationCount") or 0),
         int(validation.get("distinctRequiredChemistryEventCount") or 0),
         int(not bool(validation.get("terminatedWithError"))),
         int(validation.get("completedCycles") or 0),
@@ -145,8 +159,9 @@ def search_input_feed_lanes(
 
     This keeps the entire arm/track program frozen. Candidate input poses are
     derived only from the target reagent's local atom coordinates and grab-tip
-    cells observed from the learned mechanism, which makes the repair useful for
-    molecules whose footprint differs from the donor feed.
+    cells observed from the learned mechanism. Valid initial spawning is a hard
+    ranking boundary; surviving candidates are then graded by how close their
+    replay gets to a conversion-ready equal-metal pair before actual chemistry.
     """
 
     inputs = [
@@ -186,6 +201,30 @@ def search_input_feed_lanes(
                     roundtrip["parsed"],
                     max_cycles=max(1, int(validation_cycles)),
                 )
+                # Do not spend a second replay on a candidate that is already
+                # invalid at frame zero. It remains in diagnostics, but cannot
+                # outrank a fully spawned target layout.
+                if validation.get("blockedInputsAtStart"):
+                    conversion = {
+                        "kind": "purification-opportunity-gradient",
+                        "skipped": True,
+                        "skipReason": "blocked-input-at-start",
+                        "freeEqualPairObservationCount": 0,
+                        "adjacentFreeEqualPairObservationCount": 0,
+                        "readyPurificationPoseObservationCount": 0,
+                        "framesWithReadyPurificationPose": 0,
+                        "maxReadyPurificationPosesInFrame": 0,
+                        "minFreeEqualPairDistance": None,
+                        "readyPoseCountsByElement": {},
+                        "nearestFreeEqualPairSamples": [],
+                        "readyPurificationSamples": [],
+                    }
+                else:
+                    conversion = replay_conversion_opportunities(
+                        puzzle,
+                        roundtrip["parsed"],
+                        max_cycles=max(1, int(validation_cycles)),
+                    )
                 record = {
                     "inputId": input_id,
                     "reagentIndex": int(input_part.get("which") or 0),
@@ -197,11 +236,13 @@ def search_input_feed_lanes(
                     "grabEvidence": deepcopy(placement["evidence"]),
                     "serialization": roundtrip["diagnostics"],
                     "validation": validation,
+                    "conversionOpportunity": conversion,
                     "solution": candidate,
                     "mechanicsPreserved": True,
                 }
                 record["rank"] = _rank(
                     validation,
+                    conversion,
                     distance=int(placement["translationDistance"]),
                 )
             except Exception as error:
@@ -213,7 +254,7 @@ def search_input_feed_lanes(
                     "grabEvidence": deepcopy(placement["evidence"]),
                     "errorType": type(error).__name__,
                     "error": str(error),
-                    "rank": (0, 0, 0, 0, 0, 0, 0, 0, 0, -int(placement["translationDistance"])),
+                    "rank": (0,) * 14 + (-int(placement["translationDistance"]),),
                 }
             variants.append(record)
 
@@ -223,6 +264,7 @@ def search_input_feed_lanes(
         item.pop("rank", None)
 
     complete_count = sum(bool((item.get("validation") or {}).get("complete")) for item in variants)
+    blocked_count = sum(bool((item.get("validation") or {}).get("blockedInputsAtStart")) for item in variants)
     target_transform_count = sum(
         any(
             int(((item.get("validation") or {}).get("eventCounts") or {}).get(kind) or 0) > 0
@@ -238,8 +280,21 @@ def search_input_feed_lanes(
         )
         for item in variants
     )
+    ready_count = sum(
+        int((item.get("conversionOpportunity") or {}).get("readyPurificationPoseObservationCount") or 0) > 0
+        for item in variants
+    )
+    free_pair_count = sum(
+        int((item.get("conversionOpportunity") or {}).get("freeEqualPairObservationCount") or 0) > 0
+        for item in variants
+    )
+    finite_distances = [
+        int(value)
+        for item in variants
+        if (value := (item.get("conversionOpportunity") or {}).get("minFreeEqualPairDistance")) is not None
+    ]
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "summary": {
             "inputCount": len(inputs),
             "maxGrabCycles": max(1, int(max_grab_cycles)),
@@ -248,9 +303,15 @@ def search_input_feed_lanes(
             "placementCounts": placement_counts,
             "testedVariantCount": len(variants),
             "returnedVariantCount": len(selected),
+            "blockedInputVariantCount": blocked_count,
+            "fullySpawnedVariantCount": len(variants) - blocked_count,
             "targetTransformReachedVariantCount": target_transform_count,
+            "freeEqualPairReachedVariantCount": free_pair_count,
+            "readyPurificationPoseReachedVariantCount": ready_count,
+            "bestMinFreeEqualPairDistance": min(finite_distances) if finite_distances else None,
             "completeVariantCount": complete_count,
             "hasCompleteSolution": complete_count > 0,
+            "rankingPolicy": "complete-delivery-valid-spawn-transform-conversion-opportunity-survival",
             "mechanicsFingerprint": before_mechanics,
         },
         "variants": selected,
