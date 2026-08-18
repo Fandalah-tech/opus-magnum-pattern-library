@@ -1,47 +1,39 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-geometry-followup-checkpoint",
-  "runId": "32154785043",
-  "sourceCommit": "547aacc76867fcf41aaec286b9de1e3d00b8d81a",
+  "runId": "32157526056",
+  "sourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
   "genericFlowRunId": "32087080619",
   "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
   "target": "GEN249.puzzle",
-  "seedRunId": "32154325229",
-  "seedSourceCommit": "746f7f59146307a20bddb8c5d7335c8c474f8df7",
+  "seedRunId": "32155009635",
+  "seedSourceCommit": "6adc4f70f44544700c6a7f77de7d800ce4208eb2",
   "assemblyRank": 1,
   "assemblyScore": 0.892762,
   "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
   "transformOverrides": {
-    "branch-0:convergence-input": {
+    "branch-0:edge-0": {
       "frame": "source-anchor-local",
       "delta": [
-        6,
-        -4
+        -3,
+        1
       ],
       "rotationDelta": 1
-    },
-    "branch-1:convergence-input": {
-      "frame": "source-anchor-local",
-      "delta": [
-        -1,
-        4
-      ],
-      "rotationDelta": 2
     }
   },
   "maxCycles": 4096,
   "validation": {
     "complete": false,
-    "failureMode": "simulation-error",
+    "failureMode": "missing-product-output",
     "totalDelivered": 0,
-    "totalDeficit": 6,
+    "totalDeficit": 18,
     "requestedCycles": 4096,
-    "completedCycles": 134,
+    "completedCycles": 206,
     "terminatedWithError": true,
     "firstError": {
-      "cycle": 133,
-      "message": "Atom part-7-spawn-0-atom-1 collides with stationary atom part-7-spawn-2-atom-0 at (3, -2); activeArms={'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-10-spawn-0-atom-3', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-2', 'part-7-spawn-0-atom-3', 'part-7-spawn-1-atom-0', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-3': ['part-2'], 'part-7-spawn-0-atom-1': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2'], 'part-7-spawn-1-atom-2': ['part-2'], 'part-7-spawn-1-atom-3': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-1, 3), (0, 2), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((-2, 6), (-1, 5), 'part-3'), ((5, 1), (6, 0), 'part-12')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-0-atom-0': [-1, 0], 'part-10-spawn-0-atom-1': [0, 0], 'part-10-spawn-0-atom-2': [0, 1], 'part-10-spawn-0-atom-3': [1, -1], 'part-7-spawn-0-atom-0': [1, -2], 'part-7-spawn-0-atom-1': [2, -2], 'part-7-spawn-0-atom-2': [2, -1], 'part-7-spawn-0-atom-3': [3, -3], 'part-7-spawn-1-atom-0': [-1, -2], 'part-7-spawn-1-atom-1': [0, -2], 'part-7-spawn-1-atom-2': [0, -1], 'part-7-spawn-1-atom-3': [1, -3]}, 'destinations': {'part-10-spawn-0-atom-0': [0, 0], 'part-10-spawn-0-atom-1': [1, 0], 'part-10-spawn-0-atom-2': [1, 1], 'part-10-spawn-0-atom-3': [2, -1], 'part-7-spawn-0-atom-0': [2, -2], 'part-7-spawn-0-atom-1': [3, -2], 'part-7-spawn-0-atom-2': [3, -1], 'part-7-spawn-0-atom-3': [4, -3], 'part-7-spawn-1-atom-0': [0, -2], 'part-7-spawn-1-atom-1': [1, -2], 'part-7-spawn-1-atom-2': [1, -1], 'part-7-spawn-1-atom-3': [2, -3]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [1, -2], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [2, -2]}, {'branchIndex': 1, 'position': [1, -1]}, {'branchIndex': 2, 'position': [0, -1]}, {'branchIndex': 3, 'position': [0, -2]}, {'branchIndex': 4, 'position': [1, -3]}, {'branchIndex': 5, 'position': [2, -3]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-7-spawn-0-atom-1'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-3'}, {'branchIndex': 2, 'atomId': 'part-7-spawn-1-atom-2'}, {'branchIndex': 3, 'atomId': 'part-7-spawn-1-atom-1'}, {'branchIndex': 4, 'atomId': 'part-7-spawn-1-atom-3'}], 'trackIndex': 44, 'trackCellCount': 58}}]; outputCandidates=[]"
+      "cycle": 205,
+      "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-10-spawn-1-atom-1 at (9, 1); activeArms={'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-10-spawn-0-atom-3', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-2', 'part-7-spawn-0-atom-3', 'part-7-spawn-1-atom-0', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-0-atom-3': ['part-2'], 'part-7-spawn-0-atom-2': ['part-2'], 'part-7-spawn-1-atom-0': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((-3, 7), (-2, 6), 'part-3'), ((5, 1), (6, 0), 'part-12')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-0-atom-0': [8, -1], 'part-10-spawn-0-atom-1': [9, -1], 'part-10-spawn-0-atom-2': [9, 0], 'part-10-spawn-0-atom-3': [10, -2], 'part-7-spawn-0-atom-0': [6, -1], 'part-7-spawn-0-atom-1': [7, -2], 'part-7-spawn-0-atom-2': [8, -2], 'part-7-spawn-0-atom-3': [7, -3], 'part-7-spawn-1-atom-0': [10, -3], 'part-7-spawn-1-atom-1': [11, -4], 'part-7-spawn-1-atom-2': [12, -4], 'part-7-spawn-1-atom-3': [11, -5]}, 'destinations': {'part-10-spawn-0-atom-0': [8, 0], 'part-10-spawn-0-atom-1': [9, 0], 'part-10-spawn-0-atom-2': [9, 1], 'part-10-spawn-0-atom-3': [10, -1], 'part-7-spawn-0-atom-0': [6, 0], 'part-7-spawn-0-atom-1': [7, -1], 'part-7-spawn-0-atom-2': [8, -1], 'part-7-spawn-0-atom-3': [7, -2], 'part-7-spawn-1-atom-0': [10, -2], 'part-7-spawn-1-atom-1': [11, -3], 'part-7-spawn-1-atom-2': [12, -3], 'part-7-spawn-1-atom-3': [11, -4]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [9, -2], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [10, -2]}, {'branchIndex': 1, 'position': [9, -1]}, {'branchIndex': 2, 'position': [8, -1]}, {'branchIndex': 3, 'position': [8, -2]}, {'branchIndex': 4, 'position': [9, -3]}, {'branchIndex': 5, 'position': [10, -3]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-0-atom-0'}, {'branchIndex': 3, 'atomId': 'part-7-spawn-0-atom-2'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-0'}], 'trackIndex': 10, 'trackCellCount': 58}}]; outputCandidates=[]"
     },
     "requiredChemistryEventKinds": [
       "atom-purified",
@@ -53,16 +45,8 @@
       "bond-removed"
     ],
     "distinctRequiredChemistryEventCount": 1,
-    "requiredChemistryEventCount": 3,
+    "requiredChemistryEventCount": 1,
     "requiredChemistryEventTimeline": [
-      {
-        "cycle": 49,
-        "kind": "bond-removed"
-      },
-      {
-        "cycle": 88,
-        "kind": "bond-removed"
-      },
       {
         "cycle": 91,
         "kind": "bond-removed"
@@ -72,40 +56,24 @@
       "bond-created",
       "bond-removed"
     ],
-    "chemistryEventCount": 6,
+    "chemistryEventCount": 2,
     "chemistryEventTimeline": [
       {
-        "cycle": 49,
-        "kind": "bond-removed"
-      },
-      {
-        "cycle": 73,
+        "cycle": 82,
         "kind": "bond-created"
-      },
-      {
-        "cycle": 79,
-        "kind": "bond-created"
-      },
-      {
-        "cycle": 88,
-        "kind": "bond-removed"
       },
       {
         "cycle": 91,
         "kind": "bond-removed"
-      },
-      {
-        "cycle": 127,
-        "kind": "bond-created"
       }
     ],
-    "manipulationEventCount": 255,
+    "manipulationEventCount": 306,
     "eventCounts": {
-      "arm-instruction": 133,
-      "atom-grabbed": 208,
-      "atoms-dropped": 44,
-      "bond-created": 3,
-      "bond-removed": 3,
+      "arm-instruction": 205,
+      "atom-grabbed": 247,
+      "atoms-dropped": 56,
+      "bond-created": 1,
+      "bond-removed": 1,
       "input-spawned": 3,
       "simulation-error": 1
     },
@@ -116,20 +84,20 @@
         "spawnedAtStart": true,
         "footprint": [
           [
-            3,
-            -2
+            -4,
+            3
           ],
           [
-            4,
-            -2
+            -3,
+            2
           ],
           [
-            4,
-            -1
+            -2,
+            2
           ],
           [
-            5,
-            -3
+            -3,
+            1
           ]
         ]
       },
@@ -140,19 +108,19 @@
         "footprint": [
           [
             8,
-            0
-          ],
-          [
-            9,
-            0
+            1
           ],
           [
             9,
             1
           ],
           [
+            9,
+            2
+          ],
+          [
             10,
-            -1
+            0
           ]
         ]
       }
