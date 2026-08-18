@@ -93,8 +93,7 @@ jobs:
           )
           mkdir -p "$BASELINE_ROOT"
           archive="$RUNNER_TEMP/gold.zip"
-          curl --fail --location \
-            --retry 8 --retry-delay 2 --retry-all-errors \
+          curl --fail --location --retry 8 --retry-delay 2 --retry-all-errors \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
@@ -102,7 +101,7 @@ jobs:
           unzip -q "$archive" -d "$BASELINE_ROOT"
           test -s "$BASELINE_ROOT/GEN249-first-gold.solution"
 
-      - name: Synthesize local first-product deliveries
+      - name: Search local first-product deliveries
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -117,13 +116,54 @@ jobs:
             --solution-output "$REPORT_ROOT/GEN249-best-local-delivery.solution" \
             --output "$REPORT_ROOT/GEN249.json"
           test -s "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist local delivery diagnostic
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          gold = json.loads(Path(os.environ['GOLD_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.2.0',
+              'kind': 'heldout-product-delivery-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'phase': 'local-search',
+              'goldRunId': gold.get('runId'),
+              'goldSourceCommit': gold.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'request': report.get('request'),
+              'summary': report.get('summary'),
+              'baseline': report.get('baseline'),
+              'opportunities': report.get('opportunities'),
+              'bestLocalVariant': (report.get('variants') or [None])[0],
+              'omsim': None,
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update blind local product delivery checkpoint [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Require a local product delivery
+        run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
           report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
           assert report['targetSolutionBytesUsed'] == 0
-          assert report['summary']['hasDelivery'] is True
-          assert report['summary']['bestProductDeliveredCount'] >= 1
+          assert report['summary']['hasDelivery'] is True, report['summary']
+          assert int(report['summary']['bestProductDeliveredCount']) >= 1
           assert report['candidateOutputs']
           PY
 
@@ -138,23 +178,17 @@ jobs:
         run: |
           set -euo pipefail
           oracle="$REPORT_ROOT/omsim-product-1.json"
+          attempts="$REPORT_ROOT/omsim-attempts.json"
+          printf '[]\n' > "$attempts"
           accepted=""
           accepted_metric=""
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          Path(os.environ['REPORT_ROOT']).joinpath('omsim-attempts.json').write_text('[]\n', encoding='utf-8')
-          PY
           for solution in "$REPORT_ROOT"/candidates/*.solution; do
             set +e
-            output="$(.tools/omsim/omsim \
-              --puzzle-file "$PUZZLE_ROOT/GEN249.puzzle" \
-              --metric "product 1 cycles" \
-              "$solution" 2>&1)"
+            output="$(.tools/omsim/omsim --puzzle-file "$PUZZLE_ROOT/GEN249.puzzle" --metric "product 1 cycles" "$solution" 2>&1)"
             rc=$?
             set -e
             printf '%s\n' "$output"
-            python - "$REPORT_ROOT/omsim-attempts.json" "$solution" "$rc" "$output" <<'PY'
+            python - "$attempts" "$solution" "$rc" "$output" <<'PY'
           import json, sys
           from pathlib import Path
           path = Path(sys.argv[1])
@@ -190,38 +224,26 @@ jobs:
           Path(sys.argv[1]).write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
           PY
 
-      - name: Persist compact product checkpoint
+      - name: Promote authoritative product checkpoint
         run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
           report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
           oracle = json.loads((Path(os.environ['REPORT_ROOT']) / 'omsim-product-1.json').read_text(encoding='utf-8'))
-          gold = json.loads(Path(os.environ['GOLD_POINTER']).read_text(encoding='utf-8'))
-          payload = {
-              'schemaVersion': '0.1.0',
-              'kind': 'heldout-product-delivery-checkpoint',
-              'runId': os.environ.get('GITHUB_RUN_ID'),
-              'sourceCommit': os.environ.get('GITHUB_SHA'),
-              'goldRunId': gold.get('runId'),
-              'goldSourceCommit': gold.get('sourceCommit'),
-              'targetSolutionBytesUsed': 0,
-              'target': report.get('targetPuzzle'),
-              'request': report.get('request'),
-              'summary': report.get('summary'),
-              'baseline': report.get('baseline'),
-              'bestLocalVariant': (report.get('variants') or [None])[0],
-              'omsim': oracle,
-          }
-          output = Path(os.environ['LATEST_REPORT'])
-          output.parent.mkdir(parents=True, exist_ok=True)
-          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          pointer = Path(os.environ['LATEST_REPORT'])
+          payload = json.loads(pointer.read_text(encoding='utf-8'))
+          payload['schemaVersion'] = '0.3.0'
+          payload['phase'] = 'omsim-product-1'
+          payload['omsim'] = oracle
+          payload['bestLocalVariant'] = (report.get('variants') or [None])[0]
+          pointer.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$LATEST_REPORT"
           if ! git diff --cached --quiet; then
-            git commit -m "Update blind first-product checkpoint [skip ci]"
+            git commit -m "Promote blind first-product checkpoint [skip ci]"
             git fetch origin feature/critelli-2026-public-corpus
             git rebase origin/feature/critelli-2026-public-corpus
             git push origin HEAD:feature/critelli-2026-public-corpus
