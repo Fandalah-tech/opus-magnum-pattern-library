@@ -19,6 +19,16 @@ from .candidate_solution import (
     build_candidate_solution,
     serialize_candidate_roundtrip,
 )
+from .source_assignment import assign_branch_reagent_indices
+from . import candidate_solution as _candidate_solution
+
+# Keep the large candidate materializer stable while the generic source mapper
+# graduates into its own module. build_candidate_solution resolves this module
+# global at call time, so the package-level binding upgrades every caller
+# without duplicating the materializer or introducing a circular top-level
+# dependency. A later cleanup can replace the legacy definition directly.
+_candidate_solution.assign_branch_reagent_indices = assign_branch_reagent_indices
+
 from .chemistry_composition import (
     manufacturing_requirements,
     plan_puzzle_fragment_chains,
@@ -135,6 +145,7 @@ __all__ = [
     "apply_schedule_group_offsets",
     "arm_workspace_cells",
     "assign_branch_atom_flows",
+    "assign_branch_reagent_indices",
     "build_candidate_solution",
     "build_composition_prior",
     "build_manufacturing_plan",
