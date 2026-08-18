@@ -1,0 +1,462 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-paired-feed-lane-checkpoint",
+  "runId": "32157887856",
+  "sourceCommit": "9675a00a966fb813f021bf77b211dab85b873f23",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "seedRunId": "32157526102",
+  "seedSourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
+  "assemblyRank": 1,
+  "assemblyScore": 0.892762,
+  "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+  "transformOverrides": {
+    "branch-0:edge-0": {
+      "frame": "source-anchor-local",
+      "delta": [
+        -3,
+        1
+      ],
+      "rotationDelta": 1
+    }
+  },
+  "request": {
+    "maxGrabCycles": 256,
+    "validationCycles": 256,
+    "firstStagePlacementLimit": 72,
+    "firstStageResultLimit": 6,
+    "secondStagePlacementLimit": 48,
+    "resultLimit": 20
+  },
+  "searchSummary": {
+    "inputCount": 2,
+    "firstStageSeedCount": 6,
+    "secondStagePlacementCounts": {
+      "seed-1:part-10": 48,
+      "seed-2:part-7": 48,
+      "seed-3:part-7": 48,
+      "seed-4:part-7": 48,
+      "seed-5:part-10": 48,
+      "seed-6:part-10": 48
+    },
+    "testedVariantCount": 287,
+    "returnedVariantCount": 20,
+    "blockedInputVariantCount": 7,
+    "fullySpawnedVariantCount": 280,
+    "freeEqualPairReachedVariantCount": 51,
+    "readyPurificationPoseReachedVariantCount": 0,
+    "purificationReachedVariantCount": 0,
+    "bestMinFreeEqualPairDistance": 1,
+    "completeVariantCount": 0,
+    "hasCompleteSolution": false,
+    "mechanicsFingerprint": "2284e3e3e25c452a922e2716a86c9fb924260fc2a7ebe895d73d74b62bcb4d18",
+    "rankingPolicy": "staged-single-then-other-input-conversion-gradient"
+  },
+  "firstStage": {
+    "summary": {
+      "inputCount": 2,
+      "maxGrabCycles": 256,
+      "validationCycles": 256,
+      "placementLimitPerInput": 72,
+      "placementCounts": {
+        "part-7": 72,
+        "part-10": 72
+      },
+      "testedVariantCount": 144,
+      "returnedVariantCount": 6,
+      "blockedInputVariantCount": 3,
+      "fullySpawnedVariantCount": 141,
+      "targetTransformReachedVariantCount": 0,
+      "freeEqualPairReachedVariantCount": 3,
+      "readyPurificationPoseReachedVariantCount": 0,
+      "bestMinFreeEqualPairDistance": 5,
+      "completeVariantCount": 0,
+      "hasCompleteSolution": false,
+      "rankingPolicy": "complete-delivery-valid-spawn-transform-conversion-opportunity-survival",
+      "mechanicsFingerprint": "2284e3e3e25c452a922e2716a86c9fb924260fc2a7ebe895d73d74b62bcb4d18"
+    },
+    "seedCount": 6,
+    "seedFrontier": [
+      {
+        "inputId": "part-7",
+        "position": [
+          4,
+          -2
+        ],
+        "rotation": 4,
+        "conversionOpportunity": {
+          "schemaVersion": "0.1.0",
+          "kind": "purification-opportunity-gradient",
+          "freeEqualPairObservationCount": 18,
+          "adjacentFreeEqualPairObservationCount": 0,
+          "readyPurificationPoseObservationCount": 0,
+          "framesWithReadyPurificationPose": 0,
+          "maxReadyPurificationPosesInFrame": 0,
+          "minFreeEqualPairDistance": 5,
+          "readyPoseCountsByElement": {},
+          "nearestFreeEqualPairSamples": [
+            {
+              "cycle": 135,
+              "element": "iron",
+              "distance": 5,
+              "atomIds": [
+                "part-10-spawn-0-atom-3",
+                "part-7-spawn-0-atom-2"
+              ],
+              "positions": [
+                [
+                  2,
+                  -1
+                ],
+                [
+                  6,
+                  0
+                ]
+              ]
+            }
+          ],
+          "readyPurificationSamples": [],
+          "requestedCycles": 256,
+          "completedCycles": 146,
+          "terminatedWithError": true
+        },
+        "validation": {
+          "completedCycles": 146,
+          "blockedInputsAtStart": []
+        }
+      },
+      {
+        "inputId": "part-10",
+        "position": [
+          8,
+          0
+        ],
+        "rotation": 0,
+        "conversionOpportunity": {
+          "schemaVersion": "0.1.0",
+          "kind": "purification-opportunity-gradient",
+          "freeEqualPairObservationCount": 5,
+          "adjacentFreeEqualPairObservationCount": 0,
+          "readyPurificationPoseObservationCount": 0,
+          "framesWithReadyPurificationPose": 0,
+          "maxReadyPurificationPosesInFrame": 0,
+          "minFreeEqualPairDistance": 8,
+          "readyPoseCountsByElement": {},
+          "nearestFreeEqualPairSamples": [
+            {
+              "cycle": 93,
+              "element": "iron",
+              "distance": 8,
+              "atomIds": [
+                "part-10-spawn-0-atom-3",
+                "part-10-spawn-1-atom-3"
+              ],
+              "positions": [
+                [
+                  -2,
+                  6
+                ],
+                [
+                  6,
+                  0
+                ]
+              ]
+            }
+          ],
+          "readyPurificationSamples": [],
+          "requestedCycles": 256,
+          "completedCycles": 107,
+          "terminatedWithError": true
+        },
+        "validation": {
+          "completedCycles": 107,
+          "blockedInputsAtStart": []
+        }
+      },
+      {
+        "inputId": "part-10",
+        "position": [
+          9,
+          1
+        ],
+        "rotation": 4,
+        "conversionOpportunity": {
+          "schemaVersion": "0.1.0",
+          "kind": "purification-opportunity-gradient",
+          "freeEqualPairObservationCount": 5,
+          "adjacentFreeEqualPairObservationCount": 0,
+          "readyPurificationPoseObservationCount": 0,
+          "framesWithReadyPurificationPose": 0,
+          "maxReadyPurificationPosesInFrame": 0,
+          "minFreeEqualPairDistance": 8,
+          "readyPoseCountsByElement": {},
+          "nearestFreeEqualPairSamples": [
+            {
+              "cycle": 93,
+              "element": "iron",
+              "distance": 8,
+              "atomIds": [
+                "part-10-spawn-0-atom-2",
+                "part-10-spawn-1-atom-2"
+              ],
+              "positions": [
+                [
+                  -2,
+                  6
+                ],
+                [
+                  6,
+                  0
+                ]
+              ]
+            }
+          ],
+          "readyPurificationSamples": [],
+          "requestedCycles": 256,
+          "completedCycles": 107,
+          "terminatedWithError": true
+        },
+        "validation": {
+          "completedCycles": 107,
+          "blockedInputsAtStart": []
+        }
+      },
+      {
+        "inputId": "part-10",
+        "position": [
+          8,
+          2
+        ],
+        "rotation": 0,
+        "conversionOpportunity": {
+          "schemaVersion": "0.1.0",
+          "kind": "purification-opportunity-gradient",
+          "freeEqualPairObservationCount": 0,
+          "adjacentFreeEqualPairObservationCount": 0,
+          "readyPurificationPoseObservationCount": 0,
+          "framesWithReadyPurificationPose": 0,
+          "maxReadyPurificationPosesInFrame": 0,
+          "minFreeEqualPairDistance": null,
+          "readyPoseCountsByElement": {},
+          "nearestFreeEqualPairSamples": [],
+          "readyPurificationSamples": [],
+          "requestedCycles": 256,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "validation": {
+          "completedCycles": 209,
+          "blockedInputsAtStart": []
+        }
+      },
+      {
+        "inputId": "part-7",
+        "position": [
+          2,
+          3
+        ],
+        "rotation": 0,
+        "conversionOpportunity": {
+          "schemaVersion": "0.1.0",
+          "kind": "purification-opportunity-gradient",
+          "freeEqualPairObservationCount": 0,
+          "adjacentFreeEqualPairObservationCount": 0,
+          "readyPurificationPoseObservationCount": 0,
+          "framesWithReadyPurificationPose": 0,
+          "maxReadyPurificationPosesInFrame": 0,
+          "minFreeEqualPairDistance": null,
+          "readyPoseCountsByElement": {},
+          "nearestFreeEqualPairSamples": [],
+          "readyPurificationSamples": [],
+          "requestedCycles": 256,
+          "completedCycles": 206,
+          "terminatedWithError": true
+        },
+        "validation": {
+          "completedCycles": 206,
+          "blockedInputsAtStart": []
+        }
+      },
+      {
+        "inputId": "part-7",
+        "position": [
+          -4,
+          3
+        ],
+        "rotation": 4,
+        "conversionOpportunity": {
+          "schemaVersion": "0.1.0",
+          "kind": "purification-opportunity-gradient",
+          "freeEqualPairObservationCount": 0,
+          "adjacentFreeEqualPairObservationCount": 0,
+          "readyPurificationPoseObservationCount": 0,
+          "framesWithReadyPurificationPose": 0,
+          "maxReadyPurificationPosesInFrame": 0,
+          "minFreeEqualPairDistance": null,
+          "readyPoseCountsByElement": {},
+          "nearestFreeEqualPairSamples": [],
+          "readyPurificationSamples": [],
+          "requestedCycles": 256,
+          "completedCycles": 206,
+          "terminatedWithError": true
+        },
+        "validation": {
+          "completedCycles": 206,
+          "blockedInputsAtStart": []
+        }
+      }
+    ]
+  },
+  "bestVariant": {
+    "rank": 1,
+    "seedRank": 2,
+    "firstChangedInputId": "part-10",
+    "firstPosition": [
+      8,
+      0
+    ],
+    "firstRotation": 0,
+    "secondChangedInputId": "part-7",
+    "secondPosition": [
+      -4,
+      4
+    ],
+    "secondRotation": 2,
+    "secondTranslationDistance": 1,
+    "secondGrabEvidence": [
+      {
+        "grabCycle": 84,
+        "armId": "part-2",
+        "branchIndex": 3,
+        "grabPosition": [
+          -4,
+          4
+        ],
+        "anchoredAtomIndex": 0,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 96,
+        "armId": "part-2",
+        "branchIndex": 3,
+        "grabPosition": [
+          -5,
+          6
+        ],
+        "anchoredAtomIndex": 3,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 99,
+        "armId": "part-2",
+        "branchIndex": 4,
+        "grabPosition": [
+          -5,
+          5
+        ],
+        "anchoredAtomIndex": 1,
+        "anchoredAtomElement": "copper"
+      },
+      {
+        "grabCycle": 102,
+        "armId": "part-2",
+        "branchIndex": 0,
+        "grabPosition": [
+          -5,
+          6
+        ],
+        "anchoredAtomIndex": 3,
+        "anchoredAtomElement": "iron"
+      }
+    ],
+    "mechanicsPreserved": true,
+    "serialization": {
+      "byteCount": 1147,
+      "partCount": 15,
+      "parserTrailingBytes": 0,
+      "puzzleFileMatches": true,
+      "roundTripClean": true,
+      "nonSerializedSourceMetadataReattached": true
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 185,
+      "terminatedWithError": true,
+      "firstError": {
+        "cycle": 184,
+        "message": "Atom part-10-spawn-0-atom-3 collides with stationary atom part-10-spawn-1-atom-3 at (6, 0); activeArms={'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-10-spawn-0-atom-3', 'part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-2-atom-0', 'part-10-spawn-2-atom-1', 'part-10-spawn-2-atom-2', 'part-10-spawn-2-atom-3', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-2', 'part-7-spawn-0-atom-3', 'part-7-spawn-1-atom-0', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3', 'part-7-spawn-2-atom-0', 'part-7-spawn-2-atom-1', 'part-7-spawn-2-atom-2', 'part-7-spawn-2-atom-3']}}; atomHolders={'part-10-spawn-0-atom-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-0-atom-3': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-2-atom-0': ['part-2'], 'part-7-spawn-0-atom-0': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((-3, 7), (-2, 6), 'part-3'), ((5, 1), (6, 0), 'part-12')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-0-atom-0': [4, 0], 'part-10-spawn-0-atom-1': [5, 0], 'part-10-spawn-0-atom-2': [5, 1], 'part-10-spawn-0-atom-3': [6, -1], 'part-10-spawn-1-atom-0': [4, -2], 'part-10-spawn-1-atom-1': [5, -2], 'part-10-spawn-1-atom-2': [5, -1], 'part-10-spawn-2-atom-0': [6, -2], 'part-10-spawn-2-atom-1': [7, -2], 'part-10-spawn-2-atom-2': [7, -1], 'part-10-spawn-2-atom-3': [8, -3], 'part-7-spawn-0-atom-0': [4, -1], 'part-7-spawn-0-atom-1': [3, 0], 'part-7-spawn-0-atom-2': [2, 0], 'part-7-spawn-0-atom-3': [3, 1], 'part-7-spawn-1-atom-0': [4, -3], 'part-7-spawn-1-atom-1': [3, -2], 'part-7-spawn-1-atom-2': [2, -2], 'part-7-spawn-1-atom-3': [3, -1], 'part-7-spawn-2-atom-0': [3, 2], 'part-7-spawn-2-atom-1': [2, 2], 'part-7-spawn-2-atom-2': [1, 2], 'part-7-spawn-2-atom-3': [2, 3]}, 'destinations': {'part-10-spawn-0-atom-0': [4, 1], 'part-10-spawn-0-atom-1': [5, 1], 'part-10-spawn-0-atom-2': [5, 2], 'part-10-spawn-0-atom-3': [6, 0], 'part-10-spawn-1-atom-0': [4, -1], 'part-10-spawn-1-atom-1': [5, -1], 'part-10-spawn-1-atom-2': [5, 0], 'part-10-spawn-2-atom-0': [6, -1], 'part-10-spawn-2-atom-1': [7, -1], 'part-10-spawn-2-atom-2': [7, 0], 'part-10-spawn-2-atom-3': [8, -2], 'part-7-spawn-0-atom-0': [4, 0], 'part-7-spawn-0-atom-1': [3, 1], 'part-7-spawn-0-atom-2': [2, 1], 'part-7-spawn-0-atom-3': [3, 2], 'part-7-spawn-1-atom-0': [4, -2], 'part-7-spawn-1-atom-1': [3, -1], 'part-7-spawn-1-atom-2': [2, -1], 'part-7-spawn-1-atom-3': [3, 0], 'part-7-spawn-2-atom-0': [3, 3], 'part-7-spawn-2-atom-1': [2, 3], 'part-7-spawn-2-atom-2': [1, 3], 'part-7-spawn-2-atom-3': [2, 4]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [5, -1], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [6, -1]}, {'branchIndex': 1, 'position': [5, 0]}, {'branchIndex': 2, 'position': [4, 0]}, {'branchIndex': 3, 'position': [4, -1]}, {'branchIndex': 4, 'position': [5, -2]}, {'branchIndex': 5, 'position': [6, -2]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-0-atom-0'}, {'branchIndex': 3, 'atomId': 'part-7-spawn-0-atom-0'}, {'branchIndex': 4, 'atomId': 'part-10-spawn-1-atom-1'}, {'branchIndex': 5, 'atomId': 'part-10-spawn-2-atom-0'}], 'trackIndex': 3, 'trackCellCount': 58}}]; outputCandidates=[]"
+      },
+      "blockedInputsAtStart": [],
+      "missingProductOutputIndices": [
+        1,
+        2
+      ],
+      "observedRequiredChemistryEventKinds": [
+        "bond-removed"
+      ],
+      "distinctRequiredChemistryEventCount": 1,
+      "requiredChemistryEventCount": 2,
+      "atomPurifiedCount": 0,
+      "chemistryEventCount": 13,
+      "chemistryEventKinds": [
+        "atom-bonder-displaced",
+        "bond-created",
+        "bond-removed",
+        "floating-bond-created",
+        "floating-bond-settled"
+      ],
+      "eventCounts": {
+        "arm-instruction": 184,
+        "atom-bonder-displaced": 1,
+        "atom-grabbed": 283,
+        "atoms-dropped": 50,
+        "bond-created": 8,
+        "bond-removed": 2,
+        "floating-bond-created": 1,
+        "floating-bond-settled": 1,
+        "input-spawned": 6,
+        "simulation-error": 1
+      },
+      "manipulationEventCount": 339
+    },
+    "conversionOpportunity": {
+      "skipped": false,
+      "skipReason": null,
+      "freeEqualPairObservationCount": 31,
+      "adjacentFreeEqualPairObservationCount": 1,
+      "readyPurificationPoseObservationCount": 0,
+      "framesWithReadyPurificationPose": 0,
+      "minFreeEqualPairDistance": 1,
+      "readyPoseCountsByElement": {},
+      "nearestFreeEqualPairSamples": [
+        {
+          "cycle": 183,
+          "element": "iron",
+          "distance": 1,
+          "atomIds": [
+            "part-10-spawn-0-atom-3",
+            "part-10-spawn-1-atom-3"
+          ],
+          "positions": [
+            [
+              6,
+              -1
+            ],
+            [
+              6,
+              0
+            ]
+          ]
+        }
+      ],
+      "readyPurificationSamples": []
+    },
+    "errorType": null,
+    "error": null
+  }
+}
