@@ -9,7 +9,9 @@ from pathlib import Path
 from typing import Any
 
 from packages.opus_engine.builder import DIRECTIONS
-from packages.opus_parser import parse_solution, write_solution
+from packages.opus_parser import parse_puzzle, parse_solution, write_solution
+from packages.opus_solver.input_footprint_repair import replay_summary
+from packages.opus_solver.purification_chain import purification_profile
 
 _COLLISION_RE = re.compile(r"collision during motion phase on cycle (\d+) at (-?\d+) (-?\d+)")
 
@@ -101,11 +103,6 @@ def _choose_variant(evaluated: list[dict[str, Any]], baseline_progress: int) -> 
         )
         return relocations_that_advance[0], "relocation-advances-oracle"
 
-    # If every relocation merely moves the same collision to the new arm base,
-    # peel that generated arm away. This may temporarily expose an earlier
-    # blocker, but it monotonically removes the mechanically invalid dependency
-    # instead of oscillating between equal-cycle base locations. Chemistry can
-    # be rebuilt later from the surviving target-free mechanism.
     removals = [item for item in evaluated if item.get("mode") == "remove-collision-base-arm"]
     if removals:
         removals.sort(
@@ -131,6 +128,7 @@ def search(
 ) -> dict[str, Any]:
     output_dir.mkdir(parents=True, exist_ok=True)
     current = parse_solution(baseline_path)
+    puzzle_model = parse_puzzle(puzzle)
     history: list[dict[str, Any]] = []
     accepted_path: str | None = None
 
@@ -199,8 +197,12 @@ def search(
     if final_oracle["exitCode"] == 0:
         accepted_path = str(final_path)
 
+    local_profile = purification_profile(puzzle_model, current, max_cycles=500)
+    local_full = replay_summary(puzzle_model, current, max_cycles=500)
+    local_full.pop("replay", None)
+
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "kind": "strict-heldout-omsim-collision-base-repair-search",
         "targetSolutionBytesUsed": 0,
         "requestedGenerations": max(1, int(generations)),
@@ -208,6 +210,8 @@ def search(
         "history": history,
         "finalSolution": str(final_path),
         "finalOMSim": final_oracle,
+        "localPurificationProfile": local_profile,
+        "localReplaySummary": local_full,
         "acceptedProductOne": final_oracle["exitCode"] == 0,
         "acceptedSolution": accepted_path,
     }
@@ -235,6 +239,7 @@ def main() -> int:
     print(json.dumps({
         "generationCount": report["generationCount"],
         "finalOMSim": report["finalOMSim"],
+        "localPurificationProfile": report["localPurificationProfile"],
         "acceptedProductOne": report["acceptedProductOne"],
         "targetSolutionBytesUsed": 0,
     }, ensure_ascii=False))
