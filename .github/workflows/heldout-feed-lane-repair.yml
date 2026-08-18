@@ -1,0 +1,185 @@
+name: Blind GEN249 feed lane repair
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-feed-lane-repair.yml
+      - reports/generated/heldout-24hour-seed/latest-geometry-repair.json
+      - reports/generated/generic-training-flow/latest-summary.json
+      - tools/probe_holdout_feed_lanes.py
+      - packages/opus_solver/feed_lane_repair.py
+      - tests/test_feed_lane_repair.py
+      - packages/opus_solver/required_chemistry.py
+      - packages/opus_solver/__init__.py
+      - packages/opus_solver/candidate_solution.py
+      - packages/opus_solver/layout.py
+      - packages/opus_solver/scheduling.py
+      - packages/opus_solver/solver.py
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-feed-lane-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  GENERIC_FLOW_POINTER: reports/generated/generic-training-flow/latest-summary.json
+  GEOMETRY_SEED: reports/generated/heldout-24hour-seed/latest-geometry-repair.json
+  FLOW_INDEX: .knowledge/generic-flow/campaign-flow-index.json
+  PUZZLE_ROOT: .datasets/heldout-feed-lane
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  REPORT_ROOT: reports/heldout-feed-lane
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-feed-lane.json
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test feed lane enumeration
+        run: python -m unittest tests.test_feed_lane_repair -v
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore latest generic campaign fragment knowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s "$GENERIC_FLOW_POINTER"
+          test -s "$GEOMETRY_SEED"
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          seed = json.loads(Path(os.environ['GEOMETRY_SEED']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'generic-training-flow-latest-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert seed['kind'] == 'heldout-geometry-repair-checkpoint'
+          assert seed['targetSolutionBytesUsed'] == 0
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/generic-flow-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'generic-training-flow-{sys.argv[2]}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1
+          item = matches[0]
+          digest = str(item.get('digest') or '')
+          assert digest.startswith('sha256:')
+          print(item['id'], digest.split(':', 1)[1])
+          PY
+          )
+          mkdir -p .knowledge/generic-flow
+          archive="$RUNNER_TEMP/generic-training-flow.zip"
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip"
+          curl --fail --location \
+            --retry 10 --retry-delay 3 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$api" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d .knowledge/generic-flow
+          test -s "$FLOW_INDEX"
+          if grep -Fq GEN249 "$FLOW_INDEX"; then
+            echo "Heldout target GEN249 leaked into generic knowledge" >&2
+            exit 1
+          fi
+
+      - name: Search alternate target-free feed lanes
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          python tools/probe_holdout_feed_lanes.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --flow-index "$FLOW_INDEX" \
+            --seed "$GEOMETRY_SEED" \
+            --max-grab-cycles 256 \
+            --validation-cycles 320 \
+            --placement-limit-per-input 72 \
+            --result-limit 20 \
+            --solution-output "$REPORT_ROOT/GEN249-best-feed-lane.solution" \
+            --output "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist compact feed lane checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-feed-lane-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'genericFlowRunId': pointer.get('runId'),
+              'genericFlowSourceCommit': pointer.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'seedRunId': report.get('seedRunId'),
+              'seedSourceCommit': report.get('seedSourceCommit'),
+              'assemblyRank': report.get('assemblyRank'),
+              'assemblyScore': report.get('assemblyScore'),
+              'coherentSourceSolution': report.get('coherentSourceSolution'),
+              'transformOverrides': report.get('transformOverrides'),
+              'request': report.get('request'),
+              'searchSummary': report.get('searchSummary'),
+              'bestVariant': (report.get('variants') or [None])[0],
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update blind feed lane repair [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Upload feed lane artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-feed-lane-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
