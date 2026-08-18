@@ -1,0 +1,1199 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-one-time-transport-delay-checkpoint",
+  "runId": "32194853507",
+  "sourceCommit": "7767af9858e0427cc0e25fe5e41116110313f73f",
+  "oracleRunId": "32193589895",
+  "targetSolutionBytesUsed": 0,
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
+    "progressCycle": 195,
+    "collisionCycle": 195,
+    "collisionLocation": [
+      8,
+      -2
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 3,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        185,
+        203
+      ],
+      "silver": [
+        194
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 209,
+    "terminatedWithError": true
+  },
+  "transportArmPartId": "part-2",
+  "collisionCycleEvidence": 195,
+  "delayWindow": [
+    180,
+    197
+  ],
+  "variantCount": 54,
+  "frontierPreservingVariantCount": 54,
+  "best": {
+    "armPartId": "part-2",
+    "delayCycle": 180,
+    "delayLength": 3,
+    "solutionPath": "reports/heldout-one-time-delay/search/candidate-002.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+      "progressCycle": 198,
+      "collisionCycle": 198,
+      "collisionLocation": [
+        8,
+        -2
+      ]
+    },
+    "purificationProfile": {
+      "count": 3,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          188,
+          206
+        ],
+        "silver": [
+          197
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 212,
+      "terminatedWithError": true
+    },
+    "finalSolutionPath": "reports/heldout-one-time-delay/search/GEN249-best-one-time-delay.solution"
+  },
+  "topVariants": [
+    {
+      "armPartId": "part-2",
+      "delayCycle": 180,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-002.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            188,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      },
+      "finalSolutionPath": "reports/heldout-one-time-delay/search/GEN249-best-one-time-delay.solution"
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 181,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-005.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            188,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 182,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-008.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            188,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 183,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-011.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            188,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 184,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-014.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            188,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 185,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-017.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            188,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 186,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-020.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 187,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-023.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 188,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-026.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 189,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-029.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 190,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-032.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 191,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-035.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 192,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-038.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 193,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-041.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 194,
+      "delayLength": 3,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-044.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 212,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 180,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-001.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            187,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 181,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-004.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            187,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 182,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-007.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            187,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 183,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-010.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            187,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 184,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-013.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            187,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 185,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-016.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            187,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 186,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-019.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 187,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-022.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 188,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-025.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 189,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-028.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 190,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-031.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 191,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-034.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 192,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-037.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 193,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-040.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    },
+    {
+      "armPartId": "part-2",
+      "delayCycle": 194,
+      "delayLength": 2,
+      "solutionPath": "reports/heldout-one-time-delay/search/candidate-043.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 197 at 8 -2",
+        "progressCycle": 197,
+        "collisionCycle": 197,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            205
+          ],
+          "silver": [
+            196
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 211,
+        "terminatedWithError": true
+      }
+    }
+  ],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
