@@ -169,6 +169,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: heldout-purification-chain-${{ github.run_id }}
-          path: "$REPORT_ROOT/"
+          path: ${{ env.REPORT_ROOT }}/
           if-no-files-found: error
           retention-days: 14
