@@ -1,0 +1,171 @@
+name: Blind GEN249 purification placement
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-reaction-placement.yml
+      - packages/opus_solver/reaction_placement.py
+      - tests/test_reaction_placement.py
+      - tools/probe_holdout_reaction_placement.py
+      - reports/generated/heldout-24hour-seed/latest-geometry-repair.json
+      - packages/opus_solver/required_chemistry.py
+      - packages/opus_solver/product_contract.py
+      - packages/opus_solver/__init__.py
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-reaction-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  GEOMETRY_POINTER: reports/generated/heldout-24hour-seed/latest-geometry-repair.json
+  PUZZLE_ROOT: .datasets/heldout-reaction-placement
+  BASELINE_ROOT: .baseline/heldout-geometry-repair
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  REPORT_ROOT: reports/heldout-reaction-placement
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-reaction-placement.json
+
+jobs:
+  purification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test trace-guided reaction placement
+        run: python -m unittest tests.test_reaction_placement -v
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          test "$(find "$PUZZLE_ROOT" -maxdepth 1 -name '*.puzzle' | wc -l)" -eq 1
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore latest target-free geometry candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s "$GEOMETRY_POINTER"
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['GEOMETRY_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'heldout-geometry-repair-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert pointer['target'] == 'GEN249.puzzle'
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/geometry-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'heldout-geometry-repair-{sys.argv[2]}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1, (expected_name, [item.get('name') for item in data.get('artifacts', [])])
+          item = matches[0]
+          digest = str(item.get('digest') or '')
+          assert digest.startswith('sha256:')
+          print(item['id'], digest.split(':', 1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"
+          archive="$RUNNER_TEMP/heldout-geometry-repair.zip"
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip"
+          curl --fail --location \
+            --retry 10 --retry-delay 3 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$api" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          test -s "$BASELINE_ROOT/GEN249-best-preflight.solution"
+
+      - name: Search trace-derived purification placements
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          python tools/probe_holdout_reaction_placement.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline-solution "$BASELINE_ROOT/GEN249-best-preflight.solution" \
+            --max-cycles 256 \
+            --opportunity-limit 100 \
+            --variant-limit 300 \
+            --result-limit 24 \
+            --solution-output "$REPORT_ROOT/GEN249-best-purification.solution" \
+            --output "$REPORT_ROOT/GEN249.json"
+          test -s "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist compact reaction checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          geometry = json.loads(Path(os.environ['GEOMETRY_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-reaction-placement-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'geometryRunId': geometry.get('runId'),
+              'geometrySourceCommit': geometry.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'baselinePurifierCount': report.get('baselinePurifierCount'),
+              'request': report.get('request'),
+              'summary': report.get('summary'),
+              'baseline': report.get('baseline'),
+              'bestVariant': report.get('bestVariant'),
+              'topOpportunities': (report.get('opportunities') or [])[:12],
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update blind reaction placement checkpoint [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Upload reaction placement artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-reaction-placement-${{ github.run_id }}
+          path: "$REPORT_ROOT/"
+          if-no-files-found: error
+          retention-days: 14
