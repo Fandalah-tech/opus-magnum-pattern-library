@@ -20,13 +20,13 @@ def _position(value: Any) -> tuple[int, int]:
 
 
 def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
-    """Find trace-observed placements where a purification glyph could fire.
+    """Find trace-observed faithful purification placements that could fire.
 
-    A purification glyph consumes two equal metal atoms on the two outer cells
-    of a three-cell line and creates the next metal on the empty center cell.
-    The opportunities are inferred exclusively from a generated candidate's
-    local engine trace.  They therefore provide a target-solution-free bridge
-    from inherited transport geometry to target chemistry.
+    OMSim's purification glyph takes two equal, free metal atoms on local cells
+    ``(0, 0)`` and ``(1, 0)`` and creates the next metal on local ``(0, 1)``.
+    Both inputs must be unheld and unbonded.  Opportunities are inferred only
+    from a generated candidate's local engine trace, never from a target
+    solution.
     """
 
     observations: defaultdict[
@@ -36,36 +36,48 @@ def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
 
     for frame in replay.get("frames", []) or []:
         cycle = int(frame.get("cycle") or 0)
-        atoms = list((frame.get("world") or {}).get("atoms") or [])
+        world = frame.get("world") or {}
+        atoms = list(world.get("atoms") or [])
+        bonded_ids = {
+            str(bond.get(key) or "")
+            for bond in (world.get("bonds") or [])
+            for key in ("fromAtomId", "toAtomId")
+            if bond.get(key)
+        }
         by_position: dict[tuple[int, int], list[dict[str, Any]]] = defaultdict(list)
         for atom in atoms:
             by_position[_position(atom.get("position"))].append(atom)
         occupied = set(by_position)
 
+        def free_conversion_atom(atom: dict[str, Any]) -> bool:
+            atom_id = str(atom.get("id") or "")
+            return not (atom.get("heldBy") or []) and atom_id not in bonded_ids
+
         for first in atoms:
             element = str(first.get("element") or "")
-            if element not in METAL_ORDER[:-1]:
+            if element not in METAL_ORDER[:-1] or not free_conversion_atom(first):
                 continue
             first_pos = _position(first.get("position"))
             first_id = str(first.get("id") or "")
             for rotation in range(6):
-                direction = rotate_hex((1, 0), rotation)
-                center = (first_pos[0] + direction[0], first_pos[1] + direction[1])
-                second_pos = (center[0] + direction[0], center[1] + direction[1])
-                if center in occupied:
+                input_delta = rotate_hex((1, 0), rotation)
+                output_delta = rotate_hex((0, 1), rotation)
+                second_pos = (first_pos[0] + input_delta[0], first_pos[1] + input_delta[1])
+                output_pos = (first_pos[0] + output_delta[0], first_pos[1] + output_delta[1])
+                if output_pos in occupied:
                     continue
                 matches = [
                     atom
                     for atom in by_position.get(second_pos, [])
                     if str(atom.get("element") or "") == element
+                    and free_conversion_atom(atom)
                 ]
                 if not matches:
                     continue
                 second = min(matches, key=lambda atom: str(atom.get("id") or ""))
                 second_id = str(second.get("id") or "")
-                # The reverse orientation sees the same physical glyph pose.
-                # Keep one canonical atom ordering while retaining the correct
-                # origin/rotation for the surviving direction.
+                # Reverse orientations represent the same two physical inputs;
+                # retain one deterministic atom ordering.
                 if first_id and second_id and first_id > second_id:
                     continue
 
@@ -78,13 +90,14 @@ def purification_opportunities(replay: dict[str, Any]) -> list[dict[str, Any]]:
                         "producedElement": produced,
                         "origin": [first_pos[0], first_pos[1]],
                         "rotation": rotation,
-                        "center": [center[0], center[1]],
                         "second": [second_pos[0], second_pos[1]],
+                        "output": [output_pos[0], output_pos[1]],
                         "firstAtomId": first_id,
                         "secondAtomId": second_id,
                         "firstCycle": cycle,
                         "lastCycle": cycle,
                         "observationCount": 0,
+                        "geometryEvidence": "faithful-purification-local-cells-0,0-1,0-to-0,1",
                     }
                     observations[key] = payload
                 payload["observationCount"] = int(payload["observationCount"]) + 1
@@ -206,7 +219,7 @@ def search_purification_placements(
     records.sort(key=_variant_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.1.1",
+        "schemaVersion": "0.2.0",
         "kind": "trace-guided-purification-placement-search",
         "summary": {
             "maxCycles": horizon,
