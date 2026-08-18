@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-feed-lane-checkpoint",
-  "runId": "32156177185",
-  "sourceCommit": "26b19a08e46779d80033753569bb07f01f64318f",
+  "runId": "32156950130",
+  "sourceCommit": "c57a0e57f67931e5a0787b44da2d3ee205c55369",
   "genericFlowRunId": "32087080619",
   "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
   "targetSolutionBytesUsed": 0,
@@ -39,70 +39,76 @@
     },
     "testedVariantCount": 144,
     "returnedVariantCount": 20,
+    "blockedInputVariantCount": 3,
+    "fullySpawnedVariantCount": 141,
     "targetTransformReachedVariantCount": 0,
+    "freeEqualPairReachedVariantCount": 3,
+    "readyPurificationPoseReachedVariantCount": 0,
+    "bestMinFreeEqualPairDistance": 5,
     "completeVariantCount": 0,
     "hasCompleteSolution": false,
+    "rankingPolicy": "complete-delivery-valid-spawn-transform-conversion-opportunity-survival",
     "mechanicsFingerprint": "2284e3e3e25c452a922e2716a86c9fb924260fc2a7ebe895d73d74b62bcb4d18"
   },
   "bestVariant": {
     "rank": 1,
-    "inputId": "part-10",
+    "inputId": "part-7",
     "reagentIndex": 0,
     "originalPosition": [
-      8,
-      1
+      -4,
+      3
     ],
-    "originalRotation": 0,
+    "originalRotation": 5,
     "position": [
-      -6,
-      4
+      4,
+      -2
     ],
-    "rotation": 0,
-    "translationDistance": 14,
+    "rotation": 4,
+    "translationDistance": 8,
     "grabEvidence": [
       {
-        "grabCycle": 99,
-        "armId": "part-2",
-        "branchIndex": 4,
-        "grabPosition": [
-          -5,
-          5
-        ],
-        "anchoredAtomIndex": 2,
-        "anchoredAtomElement": "iron"
-      },
-      {
-        "grabCycle": 102,
+        "grabCycle": 3,
         "armId": "part-2",
         "branchIndex": 5,
         "grabPosition": [
-          -5,
-          5
-        ],
-        "anchoredAtomIndex": 2,
-        "anchoredAtomElement": "iron"
-      },
-      {
-        "grabCycle": 105,
-        "armId": "part-2",
-        "branchIndex": 0,
-        "grabPosition": [
-          -5,
-          5
-        ],
-        "anchoredAtomIndex": 2,
-        "anchoredAtomElement": "iron"
-      },
-      {
-        "grabCycle": 105,
-        "armId": "part-2",
-        "branchIndex": 4,
-        "grabPosition": [
-          -6,
-          4
+          4,
+          -2
         ],
         "anchoredAtomIndex": 0,
         "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 6,
+        "armId": "part-2",
+        "branchIndex": 4,
+        "grabPosition": [
+          4,
+          -2
+        ],
+        "anchoredAtomIndex": 0,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 153,
+        "armId": "part-2",
+        "branchIndex": 0,
+        "grabPosition": [
+          5,
+          -4
+        ],
+        "anchoredAtomIndex": 2,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 153,
+        "armId": "part-2",
+        "branchIndex": 1,
+        "grabPosition": [
+          4,
+          -3
+        ],
+        "anchoredAtomIndex": 1,
+        "anchoredAtomElement": "copper"
       }
     ],
     "mechanicsPreserved": true,
@@ -119,11 +125,11 @@
       "failureMode": "simulation-error",
       "totalDelivered": 0,
       "totalDeficit": 6,
-      "completedCycles": 251,
+      "completedCycles": 146,
       "terminatedWithError": true,
       "firstError": {
-        "cycle": 250,
-        "message": "Atom part-7-spawn-0-atom-0 collides with stationary atom part-10-spawn-1-atom-3 at (-4, 3); activeArms={'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-10-spawn-0-atom-3', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-2', 'part-7-spawn-0-atom-3', 'part-7-spawn-1-atom-0', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-0-atom-3': ['part-2'], 'part-7-spawn-0-atom-2': ['part-2'], 'part-7-spawn-1-atom-0': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((-3, 7), (-2, 6), 'part-3'), ((5, 1), (6, 0), 'part-12')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-0-atom-0': [-1, 3], 'part-10-spawn-0-atom-1': [0, 3], 'part-10-spawn-0-atom-2': [0, 4], 'part-10-spawn-0-atom-3': [1, 2], 'part-7-spawn-0-atom-0': [-3, 3], 'part-7-spawn-0-atom-1': [-2, 2], 'part-7-spawn-0-atom-2': [-1, 2], 'part-7-spawn-0-atom-3': [-2, 1], 'part-7-spawn-1-atom-0': [1, 1], 'part-7-spawn-1-atom-1': [2, 0], 'part-7-spawn-1-atom-2': [3, 0], 'part-7-spawn-1-atom-3': [2, -1]}, 'destinations': {'part-10-spawn-0-atom-0': [-2, 3], 'part-10-spawn-0-atom-1': [-1, 3], 'part-10-spawn-0-atom-2': [-1, 4], 'part-10-spawn-0-atom-3': [0, 2], 'part-7-spawn-0-atom-0': [-4, 3], 'part-7-spawn-0-atom-1': [-3, 2], 'part-7-spawn-0-atom-2': [-2, 2], 'part-7-spawn-0-atom-3': [-3, 1], 'part-7-spawn-1-atom-0': [0, 1], 'part-7-spawn-1-atom-1': [1, 0], 'part-7-spawn-1-atom-2': [2, 0], 'part-7-spawn-1-atom-3': [1, -1]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [0, 2], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [1, 2]}, {'branchIndex': 1, 'position': [0, 3]}, {'branchIndex': 2, 'position': [-1, 3]}, {'branchIndex': 3, 'position': [-1, 2]}, {'branchIndex': 4, 'position': [0, 1]}, {'branchIndex': 5, 'position': [1, 1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-0-atom-0'}, {'branchIndex': 3, 'atomId': 'part-7-spawn-0-atom-2'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-1-atom-0'}], 'trackIndex': 25, 'trackCellCount': 58}}]; outputCandidates=[]"
+        "cycle": 145,
+        "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-3 at (3, -3); activeArms={'part-2': {'instruction': 'track_plus', 'heldAtoms': ['part-10-spawn-0-atom-0', 'part-10-spawn-0-atom-1', 'part-10-spawn-0-atom-2', 'part-10-spawn-0-atom-3', 'part-7-spawn-0-atom-0', 'part-7-spawn-0-atom-1', 'part-7-spawn-0-atom-3']}}; atomHolders={'part-10-spawn-0-atom-0': ['part-2'], 'part-10-spawn-0-atom-1': ['part-2'], 'part-10-spawn-0-atom-3': ['part-2'], 'part-7-spawn-0-atom-0': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((-3, 7), (-2, 6), 'part-3'), ((5, 1), (6, 0), 'part-12')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-2', 'instruction': 'track_plus', 'sources': {'part-10-spawn-0-atom-0': [1, -3], 'part-10-spawn-0-atom-1': [2, -3], 'part-10-spawn-0-atom-2': [2, -2], 'part-10-spawn-0-atom-3': [3, -4], 'part-7-spawn-0-atom-0': [3, -5], 'part-7-spawn-0-atom-1': [3, -6], 'part-7-spawn-0-atom-3': [2, -6]}, 'destinations': {'part-10-spawn-0-atom-0': [2, -4], 'part-10-spawn-0-atom-1': [3, -4], 'part-10-spawn-0-atom-2': [3, -3], 'part-10-spawn-0-atom-3': [4, -5], 'part-7-spawn-0-atom-0': [4, -6], 'part-7-spawn-0-atom-1': [4, -7], 'part-7-spawn-0-atom-3': [3, -7]}, 'arm': {'partId': 'part-2', 'partType': 'arm6', 'origin': [2, -4], 'rotation': 0, 'length': 1, 'branchCount': 6, 'tips': [{'branchIndex': 0, 'position': [3, -4]}, {'branchIndex': 1, 'position': [2, -3]}, {'branchIndex': 2, 'position': [1, -3]}, {'branchIndex': 3, 'position': [1, -4]}, {'branchIndex': 4, 'position': [2, -5]}, {'branchIndex': 5, 'position': [3, -5]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-3'}, {'branchIndex': 1, 'atomId': 'part-10-spawn-0-atom-1'}, {'branchIndex': 2, 'atomId': 'part-10-spawn-0-atom-0'}, {'branchIndex': 5, 'atomId': 'part-7-spawn-0-atom-0'}], 'trackIndex': 48, 'trackCellCount': 58}}]; outputCandidates=[]"
       },
       "requiredChemistryEventKinds": [
         "atom-purified",
@@ -135,21 +141,21 @@
         "bond-removed"
       ],
       "distinctRequiredChemistryEventCount": 1,
-      "requiredChemistryEventCount": 1,
-      "chemistryEventCount": 1,
+      "requiredChemistryEventCount": 2,
+      "chemistryEventCount": 2,
       "chemistryEventKinds": [
         "bond-removed"
       ],
       "atomPurifiedCount": 0,
       "eventCounts": {
-        "arm-instruction": 250,
-        "atom-grabbed": 247,
-        "atoms-dropped": 57,
-        "bond-removed": 1,
-        "input-spawned": 3,
+        "arm-instruction": 145,
+        "atom-grabbed": 159,
+        "atoms-dropped": 47,
+        "bond-removed": 2,
+        "input-spawned": 2,
         "simulation-error": 1
       },
-      "manipulationEventCount": 307,
+      "manipulationEventCount": 208,
       "initialInputStatus": [
         {
           "inputId": "part-7",
@@ -157,43 +163,43 @@
           "spawnedAtStart": true,
           "footprint": [
             [
-              -4,
-              3
+              4,
+              -2
             ],
             [
-              -3,
-              2
+              4,
+              -3
             ],
             [
-              -2,
-              2
+              5,
+              -4
             ],
             [
-              -3,
-              1
+              3,
+              -3
             ]
           ]
         },
         {
           "inputId": "part-10",
-          "spawnCountAtStart": 0,
-          "spawnedAtStart": false,
+          "spawnCountAtStart": 1,
+          "spawnedAtStart": true,
           "footprint": [
             [
-              -6,
-              4
+              8,
+              1
             ],
             [
-              -5,
-              4
+              9,
+              1
             ],
             [
-              -5,
-              5
+              9,
+              2
             ],
             [
-              -4,
-              3
+              10,
+              0
             ]
           ]
         }
