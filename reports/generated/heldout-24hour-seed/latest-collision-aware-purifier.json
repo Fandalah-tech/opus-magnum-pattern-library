@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-collision-aware-purifier-checkpoint",
+  "runId": "32194254269",
+  "sourceCommit": "2f582c66b57d6c9d8638745a73e6a0325ad7ed2a",
+  "oracleRunId": "32193589895",
+  "targetSolutionBytesUsed": 0,
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
+    "progressCycle": 195,
+    "collisionCycle": 195,
+    "collisionLocation": [
+      8,
+      -2
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 3,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        185,
+        203
+      ],
+      "silver": [
+        194
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 209,
+    "terminatedWithError": true
+  },
+  "collisionLocation": [
+    8,
+    -2
+  ],
+  "offendingPurifierCount": 1,
+  "requiredFrontierElement": "silver",
+  "requiredFrontierCount": 1,
+  "opportunityCount": 5,
+  "localPreservingVariantCount": 0,
+  "variantCount": 0,
+  "best": null,
+  "topVariants": [],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
