@@ -19,6 +19,13 @@ def _position(value: Any) -> tuple[int, int]:
     return int(raw[0]), int(raw[1])
 
 
+def _direction_rotation(delta: tuple[int, int]) -> int | None:
+    for rotation in range(6):
+        if rotate_hex((1, 0), rotation) == delta:
+            return rotation
+    return None
+
+
 def purification_opportunities(
     replay: dict[str, Any],
     *,
@@ -33,10 +40,10 @@ def purification_opportunities(
     With ``include_blocked=True`` we also retain geometrically correct pairs
     that are blocked in the end-of-cycle snapshot by holding, bonding, or an
     occupied output.  Those near-opportunities are useful because the faithful
-    engine executes purification in the first half-cycle, a transient state
-    that is not represented by end-of-cycle snapshots.  Every candidate is
-    still replay-validated after placing the glyph, so a blocked observation is
-    evidence for search only, never a claimed chemistry success.
+    engine executes basic unbonders before purification in the same first
+    half-cycle.  A one-bond blocker can therefore be repaired by relocating an
+    inherited unbonder and purifier together.  Every proposed repair is replay-
+    validated; a near-opportunity is search evidence, not a claimed success.
     """
 
     observations: defaultdict[
@@ -48,12 +55,15 @@ def purification_opportunities(
         cycle = int(frame.get("cycle") or 0)
         world = frame.get("world") or {}
         atoms = list(world.get("atoms") or [])
-        bonded_ids = {
-            str(bond.get(key) or "")
-            for bond in (world.get("bonds") or [])
-            for key in ("fromAtomId", "toAtomId")
-            if bond.get(key)
-        }
+        atoms_by_id = {str(atom.get("id") or ""): atom for atom in atoms}
+        bond_neighbors: defaultdict[str, set[str]] = defaultdict(set)
+        for bond in world.get("bonds") or []:
+            first_id = str(bond.get("fromAtomId") or "")
+            second_id = str(bond.get("toAtomId") or "")
+            if first_id and second_id:
+                bond_neighbors[first_id].add(second_id)
+                bond_neighbors[second_id].add(first_id)
+        bonded_ids = set(bond_neighbors)
         by_position: dict[tuple[int, int], list[dict[str, Any]]] = defaultdict(list)
         for atom in atoms:
             by_position[_position(atom.get("position"))].append(atom)
@@ -100,6 +110,33 @@ def purification_opportunities(
                 if not ready and not include_blocked:
                     continue
 
+                unbond_candidates = []
+                for blocked_id in (first_id, second_id):
+                    blocked_atom = atoms_by_id.get(blocked_id)
+                    if blocked_atom is None:
+                        continue
+                    blocked_pos = _position(blocked_atom.get("position"))
+                    for neighbor_id in sorted(bond_neighbors.get(blocked_id, ())):
+                        neighbor = atoms_by_id.get(neighbor_id)
+                        if neighbor is None:
+                            continue
+                        neighbor_pos = _position(neighbor.get("position"))
+                        direction = (
+                            neighbor_pos[0] - blocked_pos[0],
+                            neighbor_pos[1] - blocked_pos[1],
+                        )
+                        unbond_rotation = _direction_rotation(direction)
+                        if unbond_rotation is None:
+                            continue
+                        unbond_candidates.append({
+                            "blockedAtomId": blocked_id,
+                            "neighborAtomId": neighbor_id,
+                            "origin": [blocked_pos[0], blocked_pos[1]],
+                            "rotation": unbond_rotation,
+                            "second": [neighbor_pos[0], neighbor_pos[1]],
+                            "cycle": cycle,
+                        })
+
                 key = (element, first_pos, rotation)
                 payload = observations.get(key)
                 if not payload:
@@ -119,6 +156,7 @@ def purification_opportunities(
                         "readyObservationCount": 0,
                         "minimumBlockerCount": blocker_count,
                         "blockersAtBestObservation": {},
+                        "unbondCandidates": [],
                         "geometryEvidence": "faithful-purification-local-cells-0,0-1,0-to-0,1",
                     }
                     observations[key] = payload
@@ -136,11 +174,13 @@ def purification_opportunities(
                         "outputOccupied": output_occupied,
                         "cycle": cycle,
                     }
+                    payload["unbondCandidates"] = unbond_candidates
 
     return sorted(
         observations.values(),
         key=lambda item: (
             int(item.get("minimumBlockerCount") or 0),
+            -int(bool(item.get("unbondCandidates"))),
             -int(item.get("readyObservationCount") or 0),
             -int(item.get("observationCount") or 0),
             int(item.get("firstCycle") or 0),
@@ -171,16 +211,55 @@ def apply_purification_placement(
     purifier["position"] = [int(value) for value in opportunity.get("origin", (0, 0))]
     purifier["rotation"] = int(opportunity.get("rotation") or 0) % 6
     source = result.setdefault("source", {})
-    # Parsed artifact binaries do not retain non-serialized generator metadata.
-    # Re-establish solver provenance so the generic track validation-horizon
-    # estimator can replay sparse transport machines long enough to reach the
-    # trace-derived reaction pose.
     source["generator"] = "opus_solver/trace-guided-purification-v1"
     source["reactionPlacementRepair"] = {
         "kind": "trace-guided-purification-v1",
         "purifierIndex": int(purifier_index),
         "purifierPartId": str(purifier.get("id") or ""),
         "opportunity": deepcopy(opportunity),
+        "targetSolutionBytesUsed": 0,
+    }
+    return result
+
+
+def apply_purification_unbond_repair(
+    solution: dict[str, Any],
+    *,
+    purifier_index: int,
+    unbonder_index: int,
+    opportunity: dict[str, Any],
+    unbond_candidate: dict[str, Any],
+) -> dict[str, Any]:
+    """Place an unbonder immediately upstream of a blocked purification pose."""
+
+    result = apply_purification_placement(
+        solution,
+        purifier_index=purifier_index,
+        opportunity=opportunity,
+    )
+    unbonders = [
+        part
+        for part in result.get("parts", [])
+        if str(part.get("type") or "") == "unbonder"
+    ]
+    if not 0 <= int(unbonder_index) < len(unbonders):
+        raise IndexError(f"unbonder_index {unbonder_index} outside {len(unbonders)} unbonders")
+    unbonder = unbonders[int(unbonder_index)]
+    unbonder["position"] = [int(value) for value in unbond_candidate.get("origin", (0, 0))]
+    unbonder["rotation"] = int(unbond_candidate.get("rotation") or 0) % 6
+    source = result.setdefault("source", {})
+    source["generator"] = "opus_solver/trace-guided-unbond-purification-v1"
+    source["reactionPlacementRepair"] = {
+        "kind": "trace-guided-unbond-purification-v1",
+        "purifierIndex": int(purifier_index),
+        "unbonderIndex": int(unbonder_index),
+        "purifierPartId": str([
+            part for part in result.get("parts", [])
+            if str(part.get("type") or "") == "glyph-purification"
+        ][int(purifier_index)].get("id") or ""),
+        "unbonderPartId": str(unbonder.get("id") or ""),
+        "opportunity": deepcopy(opportunity),
+        "unbondCandidate": deepcopy(unbond_candidate),
         "targetSolutionBytesUsed": 0,
     }
     return result
@@ -205,7 +284,9 @@ def _variant_rank(record: dict[str, Any]) -> tuple[Any, ...]:
         -int(opportunity.get("minimumBlockerCount") or 0),
         int(opportunity.get("readyObservationCount") or 0),
         int(opportunity.get("observationCount") or 0),
+        int(record.get("repairMode") == "unbond+purify"),
         -int(record.get("purifierIndex") or 0),
+        -int(record.get("unbonderIndex") or 0),
     )
 
 
@@ -218,7 +299,7 @@ def search_purification_placements(
     variant_limit: int = 240,
     result_limit: int = 20,
 ) -> dict[str, Any]:
-    """Search ready and near-ready purification poses on a blind candidate."""
+    """Search ready and coupled unbond+purification poses on a blind candidate."""
 
     horizon = max(1, int(max_cycles))
     simulator = Simulator.from_models(puzzle, solution)
@@ -229,44 +310,89 @@ def search_purification_placements(
         str(part.get("type") or "") == "glyph-purification"
         for part in solution.get("parts", [])
     )
+    unbonder_count = sum(
+        str(part.get("type") or "") == "unbonder"
+        for part in solution.get("parts", [])
+    )
 
     records: list[dict[str, Any]] = []
+
+    def add_record(candidate, *, purifier_index, opportunity, repair_mode, unbonder_index=None, unbond_candidate=None):
+        validation = validate_generated_solution(puzzle, candidate, max_cycles=horizon)
+        records.append({
+            "repairMode": repair_mode,
+            "purifierIndex": purifier_index,
+            "unbonderIndex": unbonder_index,
+            "opportunity": deepcopy(opportunity),
+            "unbondCandidate": deepcopy(unbond_candidate) if unbond_candidate is not None else None,
+            "validation": validation,
+            "solution": candidate,
+        })
+
     if purifier_count > 0:
         for opportunity in opportunities:
-            for purifier_index in range(purifier_count):
-                if len(records) >= max(0, int(variant_limit)):
-                    break
-                candidate = apply_purification_placement(
-                    solution,
-                    purifier_index=purifier_index,
-                    opportunity=opportunity,
-                )
-                validation = validate_generated_solution(
-                    puzzle,
-                    candidate,
-                    max_cycles=horizon,
-                )
-                records.append({
-                    "purifierIndex": purifier_index,
-                    "opportunity": deepcopy(opportunity),
-                    "validation": validation,
-                    "solution": candidate,
-                })
             if len(records) >= max(0, int(variant_limit)):
                 break
+            unbond_candidates = list(opportunity.get("unbondCandidates") or [])
+            # For a bond-blocked pose, try the mechanistically relevant coupled
+            # repair first so the bounded budget is not consumed by purifier-
+            # only placements that cannot satisfy faithful conversion input.
+            if unbond_candidates and unbonder_count > 0:
+                for unbond_candidate in unbond_candidates:
+                    for unbonder_index in range(unbonder_count):
+                        for purifier_index in range(purifier_count):
+                            if len(records) >= max(0, int(variant_limit)):
+                                break
+                            candidate = apply_purification_unbond_repair(
+                                solution,
+                                purifier_index=purifier_index,
+                                unbonder_index=unbonder_index,
+                                opportunity=opportunity,
+                                unbond_candidate=unbond_candidate,
+                            )
+                            add_record(
+                                candidate,
+                                purifier_index=purifier_index,
+                                unbonder_index=unbonder_index,
+                                opportunity=opportunity,
+                                unbond_candidate=unbond_candidate,
+                                repair_mode="unbond+purify",
+                            )
+                        if len(records) >= max(0, int(variant_limit)):
+                            break
+                    if len(records) >= max(0, int(variant_limit)):
+                        break
+            else:
+                for purifier_index in range(purifier_count):
+                    if len(records) >= max(0, int(variant_limit)):
+                        break
+                    candidate = apply_purification_placement(
+                        solution,
+                        purifier_index=purifier_index,
+                        opportunity=opportunity,
+                    )
+                    add_record(
+                        candidate,
+                        purifier_index=purifier_index,
+                        opportunity=opportunity,
+                        repair_mode="purify-only",
+                    )
 
     records.sort(key=_variant_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.3.0",
+        "schemaVersion": "0.4.0",
         "kind": "trace-guided-purification-placement-search",
         "summary": {
             "maxCycles": horizon,
             "purifierCount": purifier_count,
+            "unbonderCount": unbonder_count,
             "opportunityCount": len(opportunities),
             "readyOpportunityCount": sum(int(item.get("minimumBlockerCount") or 0) == 0 for item in opportunities),
             "nearOpportunityCount": sum(int(item.get("minimumBlockerCount") or 0) > 0 for item in opportunities),
+            "unbondableOpportunityCount": sum(bool(item.get("unbondCandidates")) for item in opportunities),
             "searchedVariantCount": len(records),
+            "coupledVariantCount": sum(record.get("repairMode") == "unbond+purify" for record in records),
             "returnedVariantCount": len(selected),
             "purificationReachedCount": sum(
                 int((record.get("validation") or {}).get("eventCounts", {}).get("atom-purified") or 0) > 0
@@ -289,6 +415,7 @@ def search_purification_placements(
 
 __all__ = [
     "apply_purification_placement",
+    "apply_purification_unbond_repair",
     "purification_opportunities",
     "search_purification_placements",
 ]
