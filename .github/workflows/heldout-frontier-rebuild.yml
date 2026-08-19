@@ -24,6 +24,7 @@ permissions:
 
 env:
   ORACLE_POINTER: reports/generated/heldout-24hour-seed/latest-oracle-base-repair.json
+  RUN_POINTER: reports/generated/heldout-24hour-seed/latest-frontier-rebuild-run.json
   PUZZLE_ROOT: .datasets/heldout-frontier-rebuild
   ORACLE_ROOT: .baseline/heldout-frontier-rebuild
   REPORT_ROOT: reports/heldout-frontier-rebuild
@@ -37,6 +38,28 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+
+      - name: Publish running pointer
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path=Path(os.environ['RUN_POINTER']); path.parent.mkdir(parents=True,exist_ok=True)
+          path.write_text(json.dumps({
+            'schemaVersion':'0.1.0','kind':'heldout-frontier-rebuild-run-pointer',
+            'runId':os.environ['GITHUB_RUN_ID'],'runNumber':os.environ['GITHUB_RUN_NUMBER'],
+            'runAttempt':os.environ['GITHUB_RUN_ATTEMPT'],'status':'in_progress',
+            'sourceCommit':os.environ['GITHUB_SHA'],'targetSolutionBytesUsed':0,
+          },indent=2)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$RUN_POINTER"
+          git commit -m "Record running blind frontier rebuild [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -145,3 +168,23 @@ jobs:
           path: ${{ env.REPORT_ROOT }}/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Finalize run pointer
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUN_POINTER'])
+          if not p.exists(): raise SystemExit(0)
+          d=json.loads(p.read_text()); d['status']='completed'; d['conclusion']=os.environ.get('JOB_STATUS','unknown'); p.write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$RUN_POINTER"
+          git commit -m "Finalize blind frontier rebuild [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
