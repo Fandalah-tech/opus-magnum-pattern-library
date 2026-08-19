@@ -1,10 +1,9 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-frontier-rebuild-checkpoint",
-  "runId": "32269481120",
-  "sourceCommit": "9a9b721eed1a1bc9ffbb3fa65d57d88f01b8e2b3",
+  "runId": "32270730047",
+  "sourceCommit": "26865f239bdf8ec74c4528507b39e37a41a7331d",
   "targetSolutionBytesUsed": 0,
-  "oracleRepairRunId": "32268200880",
   "request": {
     "seedLimit": 6,
     "convergenceLimit": 12,
