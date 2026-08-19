@@ -31,6 +31,7 @@ def probe(
     observation_limit: int = 80,
     result_limit: int = 20,
     solution_output: Path | None = None,
+    candidate_dir: Path | None = None,
 ) -> dict[str, Any]:
     puzzle = parse_puzzle(puzzle_path)
     solution = parse_solution(baseline_solution_path)
@@ -43,8 +44,16 @@ def probe(
         result_limit=result_limit,
     )
     variants = []
-    best_raw = (result.get("variants") or [None])[0]
-    for item in result.get("variants") or []:
+    raw_variants = list(result.get("variants") or [])
+    best_raw = (raw_variants or [None])[0]
+    if candidate_dir is not None:
+        candidate_dir.mkdir(parents=True, exist_ok=True)
+    for index, item in enumerate(raw_variants):
+        candidate_output = None
+        if candidate_dir is not None and item.get("solution"):
+            path = candidate_dir / f"convergence-{index:02d}.solution"
+            write_solution(item["solution"], path)
+            candidate_output = str(path)
         variants.append({
             "observation": item.get("observation"),
             "movingAtomId": item.get("movingAtomId"),
@@ -53,6 +62,7 @@ def probe(
             "grabDelay": item.get("grabDelay"),
             "purificationProfile": item.get("purificationProfile"),
             "validation": _compact_validation(item.get("validation") or {}),
+            "solutionOutput": candidate_output,
         })
 
     output_solution = None
@@ -62,7 +72,7 @@ def probe(
         output_solution = str(solution_output)
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "strict-heldout-intermediate-convergence-probe",
         "targetPuzzle": puzzle_path.name,
         "baselineSolution": baseline_solution_path.name,
@@ -77,6 +87,7 @@ def probe(
         "baselinePurificationProfile": result.get("baselinePurificationProfile"),
         "observations": list(result.get("observations") or [])[:40],
         "variants": variants,
+        "candidateOutputs": [item["solutionOutput"] for item in variants if item.get("solutionOutput")],
         "bestSolutionOutput": output_solution,
     }
 
@@ -87,6 +98,7 @@ def main() -> int:
     parser.add_argument("--baseline-solution", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--solution-output", type=Path)
+    parser.add_argument("--candidate-dir", type=Path)
     parser.add_argument("--element")
     parser.add_argument("--max-cycles", type=int, default=500)
     parser.add_argument("--observation-limit", type=int, default=80)
@@ -101,12 +113,14 @@ def main() -> int:
         observation_limit=args.observation_limit,
         result_limit=args.result_limit,
         solution_output=args.solution_output,
+        candidate_dir=args.candidate_dir,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({
         "targetPuzzle": report["targetPuzzle"],
         "summary": report["summary"],
+        "candidateOutputCount": len(report["candidateOutputs"]),
         "bestSolutionOutput": report["bestSolutionOutput"],
     }, ensure_ascii=False))
     return 0
