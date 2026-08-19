@@ -1,11 +1,12 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "0.2.0",
   "kind": "heldout-oracle-base-repair-checkpoint",
-  "runId": "32267774269",
-  "sourceCommit": "4c1b3a381f7d1a49866b6b7ec9073039d96b3776",
+  "runId": "32267921288",
+  "sourceCommit": "8ad2659cfe396d110a91946cb160fd78b726e5bb",
   "mechanicalRunId": "32267063956",
   "targetSolutionBytesUsed": 0,
   "requestedGenerations": 5,
+  "maxArmLength": 3,
   "generationCount": 5,
   "history": [
     {
@@ -5059,6 +5060,57 @@
       2
     ]
   },
+  "localPurificationProfile": {
+    "count": 6,
+    "countsByElement": {
+      "copper": 3,
+      "silver": 2,
+      "gold": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        368,
+        410,
+        427
+      ],
+      "silver": [
+        386,
+        410
+      ],
+      "gold": [
+        413
+      ]
+    },
+    "frontierIndex": 5,
+    "frontierElement": "gold",
+    "goldReached": true,
+    "completedCycles": 455,
+    "terminatedWithError": true
+  },
+  "localReplaySummary": {
+    "completedCycles": 455,
+    "requestedCycles": 500,
+    "terminatedWithError": true,
+    "firstError": {
+      "cycle": 454,
+      "message": "Atom part-10-spawn-2-atom-1 collides with stationary atom part-1-purified-5 at (7, -1); activeArms={'part-21': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-2-atom-0', 'part-10-spawn-2-atom-1', 'part-10-spawn-2-atom-2', 'part-10-spawn-2-atom-3']}}; atomHolders={'part-10-spawn-2-atom-0': ['part-21']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 1, 'atoms': [((17, 14), 'gold')], 'bonds': []}, {'outputId': 'part-24', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-21', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-2-atom-0': [9, -1], 'part-10-spawn-2-atom-1': [9, -2], 'part-10-spawn-2-atom-2': [10, -3], 'part-10-spawn-2-atom-3': [8, -2]}, 'destinations': {'part-10-spawn-2-atom-0': [8, -1], 'part-10-spawn-2-atom-1': [7, -1], 'part-10-spawn-2-atom-2': [7, -2], 'part-10-spawn-2-atom-3': [6, 0]}, 'arm': {'partId': 'part-21', 'partType': 'arm1', 'origin': [8, 0], 'rotation': 5, 'length': 1, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [9, -1]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-2-atom-0'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+    },
+    "eventCounts": {
+      "arm-instruction": 284,
+      "atom-grabbed": 284,
+      "atom-purified": 6,
+      "atoms-dropped": 77,
+      "bond-created": 1,
+      "bond-removed": 9,
+      "input-spawned": 5,
+      "simulation-error": 1
+    },
+    "purificationCount": 6,
+    "productDeliveredCount": 0,
+    "chemistryEventCount": 16,
+    "manipulationEventCount": 366
+  },
   "acceptedProductOne": false,
+  "acceptedSolution": null,
   "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
 }
