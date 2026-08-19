@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.2.0",
   "kind": "heldout-omsim-mechanical-preflight-checkpoint",
-  "runId": "32192994244",
-  "sourceCommit": "0e7d91b0168538cc47d4e29d9d3cb0a30b9a0fea",
+  "runId": "32267063956",
+  "sourceCommit": "252f6932363dd9abde100a0e3c967dc3252b083c",
   "goldRunId": "32190220141",
   "targetSolutionBytesUsed": 0,
   "variantCount": 7,
@@ -83,11 +83,13 @@
           1
         ],
         "oldRotation": 0,
+        "oldLength": 1,
         "newBase": [
           10,
           1
         ],
         "newRotation": 3,
+        "newLength": 1,
         "preservedTip": [
           9,
           1
@@ -126,11 +128,13 @@
           1
         ],
         "oldRotation": 0,
+        "oldLength": 1,
         "newBase": [
           8,
           2
         ],
         "newRotation": 5,
+        "newLength": 1,
         "preservedTip": [
           9,
           1
@@ -169,11 +173,13 @@
           1
         ],
         "oldRotation": 0,
+        "oldLength": 1,
         "newBase": [
           9,
           0
         ],
         "newRotation": 1,
+        "newLength": 1,
         "preservedTip": [
           9,
           1
@@ -220,11 +226,13 @@
           1
         ],
         "oldRotation": 0,
+        "oldLength": 1,
         "newBase": [
           10,
           0
         ],
         "newRotation": 2,
+        "newLength": 1,
         "preservedTip": [
           9,
           1
@@ -263,11 +271,13 @@
           1
         ],
         "oldRotation": 0,
+        "oldLength": 1,
         "newBase": [
           9,
           2
         ],
         "newRotation": 4,
+        "newLength": 1,
         "preservedTip": [
           9,
           1
