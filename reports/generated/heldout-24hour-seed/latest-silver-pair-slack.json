@@ -1,0 +1,1897 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "strict-heldout-silver-pair-slack-search",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "maxCycles": 1600,
+    "window": 10,
+    "maxDelay": 12,
+    "finishLimit": 12
+  },
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+    "progressCycle": 1484,
+    "collisionCycle": 1484,
+    "collisionLocation": [
+      6,
+      -5
+    ]
+  },
+  "timingVariantCount": 102,
+  "officialSilverPairCount": 81,
+  "silverPairSlackAtLeastTwoCount": 0,
+  "topTimingCandidates": [
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 2,
+      "instruction": "drop",
+      "oldCycle": 27,
+      "newCycle": 29,
+      "physicalCollisionCycle": 1484,
+      "delta": 2,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-038.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1590 at 6 -5",
+        "progressCycle": 1590,
+        "collisionCycle": 1590,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1499,
+            1589
+          ],
+          "silver": [
+            1499,
+            1589
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1592,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1589,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 2,
+      "instruction": "drop",
+      "oldCycle": 27,
+      "newCycle": 28,
+      "physicalCollisionCycle": 1484,
+      "delta": 1,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-037.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1537 at 6 -5",
+        "progressCycle": 1537,
+        "collisionCycle": 1537,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1449,
+            1536
+          ],
+          "silver": [
+            1449,
+            1536
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1539,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1536,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 1,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-000.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 2,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-001.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 3,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-002.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 4,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-003.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 5,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-004.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 6,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-005.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 7,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-006.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 8,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-007.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 9,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-008.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 10,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-009.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 11,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-010.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-2",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 12,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-011.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 2,
+      "physicalCollisionCycle": 1484,
+      "delta": 1,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-023.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 3,
+      "physicalCollisionCycle": 1484,
+      "delta": 2,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-024.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 4,
+      "physicalCollisionCycle": 1484,
+      "delta": 3,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-025.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 5,
+      "physicalCollisionCycle": 1484,
+      "delta": 4,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-026.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 6,
+      "physicalCollisionCycle": 1484,
+      "delta": 5,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-027.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 7,
+      "physicalCollisionCycle": 1484,
+      "delta": 6,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-028.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 8,
+      "physicalCollisionCycle": 1484,
+      "delta": 7,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-029.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 9,
+      "physicalCollisionCycle": 1484,
+      "delta": 8,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-030.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 10,
+      "physicalCollisionCycle": 1484,
+      "delta": 9,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-031.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 11,
+      "physicalCollisionCycle": 1484,
+      "delta": 10,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-032.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 12,
+      "physicalCollisionCycle": 1484,
+      "delta": 11,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-033.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-single-instruction",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "instruction": "track_plus",
+      "oldCycle": 1,
+      "newCycle": 13,
+      "physicalCollisionCycle": 1484,
+      "delta": 12,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-034.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": -3,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-049.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": -2,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-050.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": -1,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-051.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 1,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-052.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 2,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-053.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 3,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-054.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 4,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-055.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 5,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-056.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 6,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-057.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 7,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-058.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 8,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-059.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 9,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-060.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 10,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-061.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    },
+    {
+      "mode": "shift-arm-program",
+      "armPartId": "part-18",
+      "physicalCollisionCycle": 1484,
+      "sourceInstructionIndices": [
+        0,
+        1,
+        2
+      ],
+      "delta": 11,
+      "solutionPath": "reports/heldout-silver-pair-slack/search/timing/candidate-062.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 1486,
+        "terminatedWithError": false
+      },
+      "secondSilverCycle": 1483,
+      "officialSilverPair": true,
+      "silverPairSlackCycles": 1
+    }
+  ],
+  "finishCandidateCount": 0,
+  "finishCandidates": [],
+  "acceptedProductOne": false,
+  "acceptedSolution": null,
+  "acceptedOMSim": null
+}
