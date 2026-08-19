@@ -1,8 +1,8 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-oracle-timing-repair-checkpoint",
-  "runId": "32271483827",
-  "sourceCommit": "8ca60d1b20ad2c6c9a944de7c56c19743f7706be",
+  "runId": "32271774444",
+  "sourceCommit": "cf69848419ff79edad338ae1351ccb3a10469e81",
   "targetSolutionBytesUsed": 0,
   "request": {
     "maxCycles": 500,
@@ -41,23 +41,24 @@
     "completedCycles": 416,
     "terminatedWithError": true
   },
-  "searchedVariantCount": 37,
-  "precursorPreservingCount": 12,
-  "oracleAdvancingCount": 2,
+  "searchedVariantCount": 66,
+  "precursorPreservingCount": 21,
+  "oracleAdvancingCount": 7,
   "best": {
     "mode": "shift-single-instruction",
-    "armPartId": "part-18",
-    "instructionIndex": 0,
-    "instruction": "grab",
-    "oldCycle": 386,
-    "newCycle": 385,
-    "delta": -1,
-    "solutionPath": "reports/heldout-oracle-timing/search/candidate-012.solution",
+    "armPartId": "part-2",
+    "instructionIndex": 2,
+    "instruction": "drop",
+    "oldCycle": 2,
+    "newCycle": 6,
+    "physicalCollisionCycle": 387,
+    "delta": 4,
+    "solutionPath": "reports/heldout-oracle-timing/search/candidate-024.solution",
     "omsim": {
       "exitCode": 255,
-      "output": "product 1 cycles: collision during motion phase on cycle 451 at 8 -2",
-      "progressCycle": 451,
-      "collisionCycle": 451,
+      "output": "product 1 cycles: collision during motion phase on cycle 455 at 8 -2",
+      "progressCycle": 455,
+      "collisionCycle": 455,
       "collisionLocation": [
         8,
         -2
@@ -71,12 +72,12 @@
       },
       "cyclesByElement": {
         "copper": [
-          429,
-          478
+          433,
+          482
         ],
         "silver": [
-          450,
-          478
+          454,
+          482
         ]
       },
       "frontierIndex": 4,
