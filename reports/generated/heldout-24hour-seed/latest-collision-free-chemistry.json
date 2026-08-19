@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "strict-heldout-mechanical-first-chemistry-rebuild",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "depth": 8,
+    "beamWidth": 4,
+    "variantsPerState": 12,
+    "maxCycles": 1600
+  },
+  "initial": {
+    "solutionPath": "reports/heldout-collision-free-chemistry/search/depth-00-seed.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: solution did not complete within cycle limit",
+      "progressCycle": 999999999,
+      "collisionCycle": null,
+      "collisionLocation": null
+    },
+    "purificationProfile": {
+      "count": 0,
+      "countsByElement": {},
+      "cyclesByElement": {},
+      "frontierIndex": -1,
+      "frontierElement": null,
+      "goldReached": false,
+      "completedCycles": 1600,
+      "terminatedWithError": false
+    },
+    "reachableCounts": {}
+  },
+  "generations": [
+    {
+      "depth": 1,
+      "parentCount": 1,
+      "candidateCount": 0,
+      "reachableAdvanceCount": 0,
+      "beamCount": 0,
+      "bestReachableCounts": {},
+      "bestOMSimProgressCycle": null,
+      "topCandidates": []
+    }
+  ],
+  "visitedStateCount": 1,
+  "bestChemistry": {
+    "solutionPath": "reports/heldout-collision-free-chemistry/search/depth-00-seed.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: solution did not complete within cycle limit",
+      "progressCycle": 999999999,
+      "collisionCycle": null,
+      "collisionLocation": null
+    },
+    "purificationProfile": {
+      "count": 0,
+      "countsByElement": {},
+      "cyclesByElement": {},
+      "frontierIndex": -1,
+      "frontierElement": null,
+      "goldReached": false,
+      "completedCycles": 1600,
+      "terminatedWithError": false
+    },
+    "reachableCounts": {},
+    "reachableTier": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "repairMode": null,
+    "frontierAdvance": null,
+    "frontierReplenishment": null,
+    "parentIndex": null
+  },
+  "goldReachedBeforeOracleFailure": false,
+  "deliveryCandidateCount": 0,
+  "topDeliveryCandidates": [],
+  "acceptedProductOne": false,
+  "acceptedSolution": null
+}
