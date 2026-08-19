@@ -1,0 +1,127 @@
+name: Blind GEN249 fast product timing
+
+on:
+  push:
+    branches: [feature/critelli-2026-public-corpus]
+    paths:
+      - .github/workflows/heldout-fast-product-timing.yml
+      - tools/run_holdout_fast_product_timing.py
+      - tools/run_holdout_oracle_timing_repair.py
+      - reports/generated/heldout-24hour-seed/latest-adjacent-pair-artifact.json
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-fast-product-timing-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  ADJACENT_POINTER: reports/generated/heldout-24hour-seed/latest-adjacent-pair-artifact.json
+  RUN_POINTER: reports/generated/heldout-24hour-seed/latest-fast-product-timing-run.json
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-fast-product-timing.json
+  PUZZLE_ROOT: .datasets/heldout-fast-product-timing
+  BASELINE_ROOT: .baseline/heldout-fast-product-timing
+  REPORT_ROOT: reports/heldout-fast-product-timing
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish running pointer
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUN_POINTER']); p.parent.mkdir(parents=True,exist_ok=True)
+          p.write_text(json.dumps({'schemaVersion':'0.1.0','kind':'heldout-fast-product-timing-run-pointer','runId':os.environ['GITHUB_RUN_ID'],'status':'in_progress','sourceCommit':os.environ['GITHUB_SHA'],'targetSolutionBytesUsed':0},indent=2)+'\n')
+          PY
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$RUN_POINTER"; git commit -m "Record running blind fast product timing [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus; git rebase origin/feature/critelli-2026-public-corpus; git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+
+      - name: Fetch puzzle and restore local product frontier
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT" "$BASELINE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then exit 1; fi
+          read -r artifact_id digest < <(python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=json.loads(Path(os.environ['ADJACENT_POINTER']).read_text()); assert p['targetSolutionBytesUsed']==0; print(p['artifactId'],p['artifactSha256'])
+          PY
+          )
+          archive="$RUNNER_TEMP/adjacent.zip"
+          curl --fail --location -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
+          echo "$digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          python - <<'PY'
+          import json,os,shutil
+          from pathlib import Path
+          root=Path(os.environ['BASELINE_ROOT']); r=json.loads((root/'GEN249.json').read_text())
+          candidates=[x for x in r.get('deliveryCandidates',[]) if int((x.get('localSummary') or {}).get('productDeliveredCount') or 0)>=1]
+          assert candidates
+          name=Path(candidates[0]['solutionPath']).name; matches=list(root.rglob(name)); assert len(matches)==1
+          shutil.copyfile(matches[0],root/'GEN249-local-product1.solution')
+          PY
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+
+      - name: Search official timing neighborhood only
+        env: {PYTHONPATH: "${{ github.workspace }}"}
+        run: |
+          mkdir -p "$REPORT_ROOT/search"
+          python tools/run_holdout_fast_product_timing.py \
+            --omsim .tools/omsim/omsim --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline "$BASELINE_ROOT/GEN249-local-product1.solution" \
+            --window 10 --max-delay 12 --output-dir "$REPORT_ROOT/search" --output "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist result
+        run: |
+          cp "$REPORT_ROOT/GEN249.json" "$LATEST_REPORT"
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"; git commit -m "Update blind fast product timing checkpoint [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus; git rebase origin/feature/critelli-2026-public-corpus; git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-fast-product-timing-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Finalize pointer
+        if: always()
+        env: {JOB_STATUS: "${{ job.status }}"}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUN_POINTER']);
+          if not p.exists(): raise SystemExit(0)
+          d=json.loads(p.read_text()); d['status']='completed'; d['conclusion']=os.environ.get('JOB_STATUS'); p.write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$RUN_POINTER"; git commit -m "Finalize blind fast product timing [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus; git rebase origin/feature/critelli-2026-public-corpus; git push origin HEAD:feature/critelli-2026-public-corpus
