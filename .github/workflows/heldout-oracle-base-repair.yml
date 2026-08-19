@@ -83,7 +83,7 @@ jobs:
           make -C .tools/omsim omsim
           test -x .tools/omsim/omsim
 
-      - name: Iterate collision-base repairs
+      - name: Iterate chemistry-preserving collision-base repairs
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -93,6 +93,7 @@ jobs:
             --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
             --baseline "$BASELINE_ROOT/GEN249-safe-seed.solution" \
             --generations 5 \
+            --max-arm-length 3 \
             --output-dir "$REPORT_ROOT/search" \
             --output "$REPORT_ROOT/GEN249.json"
 
@@ -104,12 +105,14 @@ jobs:
           report=json.loads((Path(os.environ['REPORT_ROOT'])/'GEN249.json').read_text())
           mechanical=json.loads(Path(os.environ['MECHANICAL_POINTER']).read_text())
           payload={
-            'schemaVersion':'0.1.0','kind':'heldout-oracle-base-repair-checkpoint',
+            'schemaVersion':'0.2.0','kind':'heldout-oracle-base-repair-checkpoint',
             'runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],
             'mechanicalRunId':mechanical['runId'],'targetSolutionBytesUsed':0,
-            'requestedGenerations':report['requestedGenerations'],'generationCount':report['generationCount'],
-            'history':report['history'],'finalOMSim':report['finalOMSim'],
-            'acceptedProductOne':report['acceptedProductOne'],'omsimCommit':os.environ['OMSIM_COMMIT'],
+            'requestedGenerations':report['requestedGenerations'],'maxArmLength':report.get('maxArmLength'),
+            'generationCount':report['generationCount'],'history':report['history'],
+            'finalOMSim':report['finalOMSim'],'localPurificationProfile':report.get('localPurificationProfile'),
+            'localReplaySummary':report.get('localReplaySummary'),'acceptedProductOne':report['acceptedProductOne'],
+            'acceptedSolution':report.get('acceptedSolution'),'omsimCommit':os.environ['OMSIM_COMMIT'],
           }
           out=Path(os.environ['LATEST_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
           PY
