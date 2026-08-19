@@ -1,12 +1,12 @@
 {
   "schemaVersion": "0.1.0",
   "kind": "heldout-oracle-base-repair-checkpoint",
-  "runId": "32193589895",
-  "sourceCommit": "7d2afb0132588a97e15973f39c33817e80f60b1d",
-  "mechanicalRunId": "32192994244",
+  "runId": "32267774269",
+  "sourceCommit": "4c1b3a381f7d1a49866b6b7ec9073039d96b3776",
+  "mechanicalRunId": "32267063956",
   "targetSolutionBytesUsed": 0,
   "requestedGenerations": 5,
-  "generationCount": 3,
+  "generationCount": 5,
   "history": [
     {
       "generation": 1,
@@ -21,12 +21,249 @@
           0
         ]
       },
+      "baselinePurificationProfile": {
+        "count": 6,
+        "countsByElement": {
+          "copper": 3,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410,
+            439
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 452,
+        "terminatedWithError": true
+      },
+      "requiredGoldCount": 1,
+      "requiredPurificationCount": 6,
       "targetSolutionBytesUsed": 0,
-      "matchingVariantCount": 6,
+      "matchingVariantCount": 18,
       "variants": [
         {
           "mode": "relocate-collision-base-arm",
           "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            2
+          ],
+          "newRotation": 5,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-11.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              6,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 6,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410,
+                427
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": true
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            -3
+          ],
+          "newRotation": 2,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-14.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 427,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-15.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 428,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            -2
+          ],
+          "newRotation": 2,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-08.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
           "preservedTip": [
             8,
             0
@@ -36,6 +273,7 @@
             -1
           ],
           "newRotation": 1,
+          "newLength": 1,
           "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-01.solution",
           "omsim": {
             "exitCode": 255,
@@ -46,11 +284,80 @@
               8,
               -1
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 398,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-06.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 368 at 6 0",
+            "progressCycle": 368,
+            "collisionCycle": 368,
+            "collisionLocation": [
+              6,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "remove-collision-base-arm",
           "armPartId": "part-18",
+          "oldLength": 1,
           "preservedTip": [
             8,
             0
@@ -65,11 +372,87 @@
               8,
               0
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 3,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                203
+              ],
+              "silver": [
+                194
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
           "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            3
+          ],
+          "newRotation": 5,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-17.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 98 at 5 3",
+            "progressCycle": 98,
+            "collisionCycle": 98,
+            "collisionLocation": [
+              5,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
           "preservedTip": [
             8,
             0
@@ -79,6 +462,7 @@
             1
           ],
           "newRotation": 5,
+          "newLength": 1,
           "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-05.solution",
           "omsim": {
             "exitCode": 255,
@@ -89,11 +473,145 @@
               7,
               1
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
           "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            3
+          ],
+          "newRotation": 4,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-16.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 80 at 8 3",
+            "progressCycle": 80,
+            "collisionCycle": 80,
+            "collisionLocation": [
+              8,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            2
+          ],
+          "newRotation": 4,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-10.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 74 at 8 2",
+            "progressCycle": 74,
+            "collisionCycle": 74,
+            "collisionLocation": [
+              8,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
           "preservedTip": [
             8,
             0
@@ -103,6 +621,7 @@
             0
           ],
           "newRotation": 3,
+          "newLength": 1,
           "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-03.solution",
           "omsim": {
             "exitCode": 255,
@@ -113,11 +632,33 @@
               9,
               0
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
           "armPartId": "part-18",
+          "oldLength": 1,
           "preservedTip": [
             8,
             0
@@ -127,6 +668,7 @@
             -1
           ],
           "newRotation": 2,
+          "newLength": 1,
           "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-02.solution",
           "omsim": {
             "exitCode": 255,
@@ -137,11 +679,241 @@
               9,
               -1
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 413,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
           "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -3
+          ],
+          "newRotation": 1,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-13.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 44 at 8 -3",
+            "progressCycle": 44,
+            "collisionCycle": 44,
+            "collisionLocation": [
+              8,
+              -3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -2
+          ],
+          "newRotation": 1,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-07.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 38 at 8 -2",
+            "progressCycle": 38,
+            "collisionCycle": 38,
+            "collisionLocation": [
+              8,
+              -2
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 397,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-12.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 20 at 5 0",
+            "progressCycle": 20,
+            "collisionCycle": 20,
+            "collisionLocation": [
+              5,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 451,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-09.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 10 0",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              10,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
           "preservedTip": [
             8,
             0
@@ -151,6 +923,7 @@
             1
           ],
           "newRotation": 4,
+          "newLength": 1,
           "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-04.solution",
           "omsim": {
             "exitCode": 255,
@@ -161,29 +934,86 @@
               8,
               1
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 409,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         }
       ],
+      "chemistryPreservingVariantCount": 1,
+      "choiceReason": "best-chemistry-preserving-relocation",
       "chosen": {
-        "mode": "remove-collision-base-arm",
+        "mode": "relocate-collision-base-arm",
         "armPartId": "part-18",
+        "oldLength": 1,
         "preservedTip": [
           8,
           0
         ],
-        "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-00.solution",
+        "newBase": [
+          6,
+          2
+        ],
+        "newRotation": 5,
+        "newLength": 2,
+        "solutionPath": "reports/heldout-oracle-base/search/generation-01-candidate-11.solution",
         "omsim": {
           "exitCode": 255,
-          "output": "product 1 cycles: collision during motion phase on cycle 194 at 8 0",
-          "progressCycle": 194,
-          "collisionCycle": 194,
+          "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+          "progressCycle": 86,
+          "collisionCycle": 86,
           "collisionLocation": [
-            8,
-            0
+            6,
+            2
           ]
-        }
+        },
+        "purificationProfile": {
+          "count": 6,
+          "countsByElement": {
+            "copper": 3,
+            "silver": 2,
+            "gold": 1
+          },
+          "cyclesByElement": {
+            "copper": [
+              368,
+              410,
+              427
+            ],
+            "silver": [
+              386,
+              410
+            ],
+            "gold": [
+              413
+            ]
+          },
+          "frontierIndex": 5,
+          "frontierElement": "gold",
+          "goldReached": true,
+          "completedCycles": 455,
+          "terminatedWithError": true
+        },
+        "chemistryPreserved": true
       },
-      "choiceReason": "peel-nonadvancing-collision-base-arm",
       "accepted": false
     },
     {
@@ -191,89 +1021,856 @@
       "baselineSolution": "reports/heldout-oracle-base/search/generation-02-baseline.solution",
       "baseline": {
         "exitCode": 255,
-        "output": "product 1 cycles: collision during motion phase on cycle 194 at 8 0",
-        "progressCycle": 194,
-        "collisionCycle": 194,
+        "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+        "progressCycle": 86,
+        "collisionCycle": 86,
         "collisionLocation": [
-          8,
-          0
+          6,
+          2
         ]
       },
+      "baselinePurificationProfile": {
+        "count": 6,
+        "countsByElement": {
+          "copper": 3,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410,
+            427
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 455,
+        "terminatedWithError": true
+      },
+      "requiredGoldCount": 1,
+      "requiredPurificationCount": 6,
       "targetSolutionBytesUsed": 0,
-      "matchingVariantCount": 6,
+      "matchingVariantCount": 18,
       "variants": [
         {
-          "mode": "remove-collision-base-arm",
-          "armPartId": "part-20",
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
           "preservedTip": [
-            9,
+            8,
+            0
+          ],
+          "newBase": [
+            7,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-01.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+            "progressCycle": 380,
+            "collisionCycle": 380,
+            "collisionLocation": [
+              7,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 6,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410,
+                439
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 452,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": true
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            -3
+          ],
+          "newRotation": 2,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-14.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 427,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-15.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 428,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            -2
+          ],
+          "newRotation": 2,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-09.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -1
+          ],
+          "newRotation": 1,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-02.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 380 at 8 -1",
+            "progressCycle": 380,
+            "collisionCycle": 380,
+            "collisionLocation": [
+              8,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 398,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-07.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 368 at 6 0",
+            "progressCycle": 368,
+            "collisionCycle": 368,
+            "collisionLocation": [
+              6,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "remove-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
             0
           ],
           "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-00.solution",
           "omsim": {
             "exitCode": 255,
-            "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
-            "progressCycle": 195,
-            "collisionCycle": 195,
+            "output": "product 1 cycles: collision during motion phase on cycle 194 at 8 0",
+            "progressCycle": 194,
+            "collisionCycle": 194,
             "collisionLocation": [
               8,
-              -2
+              0
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 3,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                203
+              ],
+              "silver": [
+                194
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
-          "armPartId": "part-20",
+          "armPartId": "part-18",
+          "oldLength": 2,
           "preservedTip": [
-            9,
+            8,
             0
           ],
           "newBase": [
-            10,
+            5,
+            3
+          ],
+          "newRotation": 5,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-17.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 98 at 5 3",
+            "progressCycle": 98,
+            "collisionCycle": 98,
+            "collisionLocation": [
+              5,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            7,
+            1
+          ],
+          "newRotation": 5,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-06.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 7 1",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              7,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            3
+          ],
+          "newRotation": 4,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-16.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 80 at 8 3",
+            "progressCycle": 80,
+            "collisionCycle": 80,
+            "collisionLocation": [
+              8,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            2
+          ],
+          "newRotation": 4,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-11.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 74 at 8 2",
+            "progressCycle": 74,
+            "collisionCycle": 74,
+            "collisionLocation": [
+              8,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-04.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 68 at 9 0",
+            "progressCycle": 68,
+            "collisionCycle": 68,
+            "collisionLocation": [
+              9,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
             -1
           ],
           "newRotation": 2,
-          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-02.solution",
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-03.solution",
           "omsim": {
             "exitCode": 255,
-            "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
-            "progressCycle": 195,
-            "collisionCycle": 195,
-            "collisionLocation": [
-              8,
-              -2
-            ]
-          }
-        },
-        {
-          "mode": "relocate-collision-base-arm",
-          "armPartId": "part-20",
-          "preservedTip": [
-            9,
-            0
-          ],
-          "newBase": [
-            9,
-            -1
-          ],
-          "newRotation": 1,
-          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-01.solution",
-          "omsim": {
-            "exitCode": 255,
-            "output": "product 1 cycles: collision during motion phase on cycle 32 at 9 -1",
-            "progressCycle": 32,
-            "collisionCycle": 32,
+            "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+            "progressCycle": 62,
+            "collisionCycle": 62,
             "collisionLocation": [
               9,
               -1
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 413,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
-          "armPartId": "part-20",
+          "armPartId": "part-18",
+          "oldLength": 2,
           "preservedTip": [
-            9,
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -3
+          ],
+          "newRotation": 1,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-13.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 44 at 8 -3",
+            "progressCycle": 44,
+            "collisionCycle": 44,
+            "collisionLocation": [
+              8,
+              -3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -2
+          ],
+          "newRotation": 1,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-08.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 38 at 8 -2",
+            "progressCycle": 38,
+            "collisionCycle": 38,
+            "collisionLocation": [
+              8,
+              -2
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 397,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-12.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 20 at 5 0",
+            "progressCycle": 20,
+            "collisionCycle": 20,
+            "collisionLocation": [
+              5,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 451,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
             0
           ],
           "newBase": [
@@ -281,7 +1878,8 @@
             0
           ],
           "newRotation": 3,
-          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-03.solution",
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-10.solution",
           "omsim": {
             "exitCode": 255,
             "output": "product 1 cycles: collision during motion phase on cycle 1 at 10 0",
@@ -291,44 +1889,49 @@
               10,
               0
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         },
         {
           "mode": "relocate-collision-base-arm",
-          "armPartId": "part-20",
+          "armPartId": "part-18",
+          "oldLength": 2,
           "preservedTip": [
-            9,
-            0
-          ],
-          "newBase": [
-            9,
-            1
-          ],
-          "newRotation": 4,
-          "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-04.solution",
-          "omsim": {
-            "exitCode": 255,
-            "output": "product 1 cycles: collision during motion phase on cycle 1 at 9 1",
-            "progressCycle": 1,
-            "collisionCycle": 1,
-            "collisionLocation": [
-              9,
-              1
-            ]
-          }
-        },
-        {
-          "mode": "relocate-collision-base-arm",
-          "armPartId": "part-20",
-          "preservedTip": [
-            9,
+            8,
             0
           ],
           "newBase": [
             8,
             1
           ],
-          "newRotation": 5,
+          "newRotation": 4,
+          "newLength": 1,
           "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-05.solution",
           "omsim": {
             "exitCode": 255,
@@ -339,34 +1942,86 @@
               8,
               1
             ]
-          }
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 409,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
         }
       ],
+      "chemistryPreservingVariantCount": 1,
+      "choiceReason": "chemistry-preserving-relocation-advances-oracle",
       "chosen": {
         "mode": "relocate-collision-base-arm",
-        "armPartId": "part-20",
+        "armPartId": "part-18",
+        "oldLength": 2,
         "preservedTip": [
-          9,
+          8,
           0
         ],
         "newBase": [
-          10,
-          -1
+          7,
+          0
         ],
-        "newRotation": 2,
-        "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-02.solution",
+        "newRotation": 0,
+        "newLength": 1,
+        "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-01.solution",
         "omsim": {
           "exitCode": 255,
-          "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
-          "progressCycle": 195,
-          "collisionCycle": 195,
+          "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+          "progressCycle": 380,
+          "collisionCycle": 380,
           "collisionLocation": [
-            8,
-            -2
+            7,
+            0
           ]
-        }
+        },
+        "purificationProfile": {
+          "count": 6,
+          "countsByElement": {
+            "copper": 3,
+            "silver": 2,
+            "gold": 1
+          },
+          "cyclesByElement": {
+            "copper": [
+              368,
+              410,
+              439
+            ],
+            "silver": [
+              386,
+              410
+            ],
+            "gold": [
+              413
+            ]
+          },
+          "frontierIndex": 5,
+          "frontierElement": "gold",
+          "goldReached": true,
+          "completedCycles": 452,
+          "terminatedWithError": true
+        },
+        "chemistryPreserved": true
       },
-      "choiceReason": "relocation-advances-oracle",
       "accepted": false
     },
     {
@@ -374,28 +2029,3034 @@
       "baselineSolution": "reports/heldout-oracle-base/search/generation-03-baseline.solution",
       "baseline": {
         "exitCode": 255,
-        "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
-        "progressCycle": 195,
-        "collisionCycle": 195,
+        "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+        "progressCycle": 380,
+        "collisionCycle": 380,
         "collisionLocation": [
-          8,
-          -2
+          7,
+          0
         ]
       },
+      "baselinePurificationProfile": {
+        "count": 6,
+        "countsByElement": {
+          "copper": 3,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410,
+            439
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 452,
+        "terminatedWithError": true
+      },
+      "requiredGoldCount": 1,
+      "requiredPurificationCount": 6,
       "targetSolutionBytesUsed": 0,
-      "matchingVariantCount": 0,
-      "accepted": false,
-      "stopReason": "no-arm-base-at-collision-location"
+      "matchingVariantCount": 18,
+      "variants": [
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            2
+          ],
+          "newRotation": 5,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-11.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              6,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 6,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410,
+                427
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": true
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            -3
+          ],
+          "newRotation": 2,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-14.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 427,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-15.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 428,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            -2
+          ],
+          "newRotation": 2,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-08.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -1
+          ],
+          "newRotation": 1,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-01.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 380 at 8 -1",
+            "progressCycle": 380,
+            "collisionCycle": 380,
+            "collisionLocation": [
+              8,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 398,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-06.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 368 at 6 0",
+            "progressCycle": 368,
+            "collisionCycle": 368,
+            "collisionLocation": [
+              6,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "remove-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-00.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 194 at 8 0",
+            "progressCycle": 194,
+            "collisionCycle": 194,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 3,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                203
+              ],
+              "silver": [
+                194
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            3
+          ],
+          "newRotation": 5,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-17.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 98 at 5 3",
+            "progressCycle": 98,
+            "collisionCycle": 98,
+            "collisionLocation": [
+              5,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            7,
+            1
+          ],
+          "newRotation": 5,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-05.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 7 1",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              7,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            3
+          ],
+          "newRotation": 4,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-16.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 80 at 8 3",
+            "progressCycle": 80,
+            "collisionCycle": 80,
+            "collisionLocation": [
+              8,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            2
+          ],
+          "newRotation": 4,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-10.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 74 at 8 2",
+            "progressCycle": 74,
+            "collisionCycle": 74,
+            "collisionLocation": [
+              8,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-03.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 68 at 9 0",
+            "progressCycle": 68,
+            "collisionCycle": 68,
+            "collisionLocation": [
+              9,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            -1
+          ],
+          "newRotation": 2,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-02.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+            "progressCycle": 62,
+            "collisionCycle": 62,
+            "collisionLocation": [
+              9,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 413,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -3
+          ],
+          "newRotation": 1,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-13.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 44 at 8 -3",
+            "progressCycle": 44,
+            "collisionCycle": 44,
+            "collisionLocation": [
+              8,
+              -3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -2
+          ],
+          "newRotation": 1,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-07.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 38 at 8 -2",
+            "progressCycle": 38,
+            "collisionCycle": 38,
+            "collisionLocation": [
+              8,
+              -2
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 397,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-12.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 20 at 5 0",
+            "progressCycle": 20,
+            "collisionCycle": 20,
+            "collisionLocation": [
+              5,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 451,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-09.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 10 0",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              10,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            1
+          ],
+          "newRotation": 4,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-04.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 8 1",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              8,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 409,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        }
+      ],
+      "chemistryPreservingVariantCount": 1,
+      "choiceReason": "best-chemistry-preserving-relocation",
+      "chosen": {
+        "mode": "relocate-collision-base-arm",
+        "armPartId": "part-18",
+        "oldLength": 1,
+        "preservedTip": [
+          8,
+          0
+        ],
+        "newBase": [
+          6,
+          2
+        ],
+        "newRotation": 5,
+        "newLength": 2,
+        "solutionPath": "reports/heldout-oracle-base/search/generation-03-candidate-11.solution",
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+          "progressCycle": 86,
+          "collisionCycle": 86,
+          "collisionLocation": [
+            6,
+            2
+          ]
+        },
+        "purificationProfile": {
+          "count": 6,
+          "countsByElement": {
+            "copper": 3,
+            "silver": 2,
+            "gold": 1
+          },
+          "cyclesByElement": {
+            "copper": [
+              368,
+              410,
+              427
+            ],
+            "silver": [
+              386,
+              410
+            ],
+            "gold": [
+              413
+            ]
+          },
+          "frontierIndex": 5,
+          "frontierElement": "gold",
+          "goldReached": true,
+          "completedCycles": 455,
+          "terminatedWithError": true
+        },
+        "chemistryPreserved": true
+      },
+      "accepted": false
+    },
+    {
+      "generation": 4,
+      "baselineSolution": "reports/heldout-oracle-base/search/generation-04-baseline.solution",
+      "baseline": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+        "progressCycle": 86,
+        "collisionCycle": 86,
+        "collisionLocation": [
+          6,
+          2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 6,
+        "countsByElement": {
+          "copper": 3,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410,
+            427
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 455,
+        "terminatedWithError": true
+      },
+      "requiredGoldCount": 1,
+      "requiredPurificationCount": 6,
+      "targetSolutionBytesUsed": 0,
+      "matchingVariantCount": 18,
+      "variants": [
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            7,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-01.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+            "progressCycle": 380,
+            "collisionCycle": 380,
+            "collisionLocation": [
+              7,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 6,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410,
+                439
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 452,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": true
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            -3
+          ],
+          "newRotation": 2,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-14.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 427,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-15.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 428,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            -2
+          ],
+          "newRotation": 2,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-09.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -1
+          ],
+          "newRotation": 1,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-02.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 380 at 8 -1",
+            "progressCycle": 380,
+            "collisionCycle": 380,
+            "collisionLocation": [
+              8,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 398,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-07.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 368 at 6 0",
+            "progressCycle": 368,
+            "collisionCycle": 368,
+            "collisionLocation": [
+              6,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "remove-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-00.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 194 at 8 0",
+            "progressCycle": 194,
+            "collisionCycle": 194,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 3,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                203
+              ],
+              "silver": [
+                194
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            3
+          ],
+          "newRotation": 5,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-17.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 98 at 5 3",
+            "progressCycle": 98,
+            "collisionCycle": 98,
+            "collisionLocation": [
+              5,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            7,
+            1
+          ],
+          "newRotation": 5,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-06.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 7 1",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              7,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            3
+          ],
+          "newRotation": 4,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-16.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 80 at 8 3",
+            "progressCycle": 80,
+            "collisionCycle": 80,
+            "collisionLocation": [
+              8,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            2
+          ],
+          "newRotation": 4,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-11.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 74 at 8 2",
+            "progressCycle": 74,
+            "collisionCycle": 74,
+            "collisionLocation": [
+              8,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-04.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 68 at 9 0",
+            "progressCycle": 68,
+            "collisionCycle": 68,
+            "collisionLocation": [
+              9,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            -1
+          ],
+          "newRotation": 2,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-03.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+            "progressCycle": 62,
+            "collisionCycle": 62,
+            "collisionLocation": [
+              9,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 413,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -3
+          ],
+          "newRotation": 1,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-13.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 44 at 8 -3",
+            "progressCycle": 44,
+            "collisionCycle": 44,
+            "collisionLocation": [
+              8,
+              -3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -2
+          ],
+          "newRotation": 1,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-08.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 38 at 8 -2",
+            "progressCycle": 38,
+            "collisionCycle": 38,
+            "collisionLocation": [
+              8,
+              -2
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 397,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-12.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 20 at 5 0",
+            "progressCycle": 20,
+            "collisionCycle": 20,
+            "collisionLocation": [
+              5,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 451,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-10.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 10 0",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              10,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 2,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            1
+          ],
+          "newRotation": 4,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-05.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 8 1",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              8,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 409,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        }
+      ],
+      "chemistryPreservingVariantCount": 1,
+      "choiceReason": "chemistry-preserving-relocation-advances-oracle",
+      "chosen": {
+        "mode": "relocate-collision-base-arm",
+        "armPartId": "part-18",
+        "oldLength": 2,
+        "preservedTip": [
+          8,
+          0
+        ],
+        "newBase": [
+          7,
+          0
+        ],
+        "newRotation": 0,
+        "newLength": 1,
+        "solutionPath": "reports/heldout-oracle-base/search/generation-04-candidate-01.solution",
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+          "progressCycle": 380,
+          "collisionCycle": 380,
+          "collisionLocation": [
+            7,
+            0
+          ]
+        },
+        "purificationProfile": {
+          "count": 6,
+          "countsByElement": {
+            "copper": 3,
+            "silver": 2,
+            "gold": 1
+          },
+          "cyclesByElement": {
+            "copper": [
+              368,
+              410,
+              439
+            ],
+            "silver": [
+              386,
+              410
+            ],
+            "gold": [
+              413
+            ]
+          },
+          "frontierIndex": 5,
+          "frontierElement": "gold",
+          "goldReached": true,
+          "completedCycles": 452,
+          "terminatedWithError": true
+        },
+        "chemistryPreserved": true
+      },
+      "accepted": false
+    },
+    {
+      "generation": 5,
+      "baselineSolution": "reports/heldout-oracle-base/search/generation-05-baseline.solution",
+      "baseline": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+        "progressCycle": 380,
+        "collisionCycle": 380,
+        "collisionLocation": [
+          7,
+          0
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 6,
+        "countsByElement": {
+          "copper": 3,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410,
+            439
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 452,
+        "terminatedWithError": true
+      },
+      "requiredGoldCount": 1,
+      "requiredPurificationCount": 6,
+      "targetSolutionBytesUsed": 0,
+      "matchingVariantCount": 18,
+      "variants": [
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            2
+          ],
+          "newRotation": 5,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-11.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              6,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 6,
+            "countsByElement": {
+              "copper": 3,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410,
+                427
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": true
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            -3
+          ],
+          "newRotation": 2,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-14.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 427,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            11,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-15.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 428,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            -2
+          ],
+          "newRotation": 2,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-08.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+            "progressCycle": 386,
+            "collisionCycle": 386,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -1
+          ],
+          "newRotation": 1,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-01.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 380 at 8 -1",
+            "progressCycle": 380,
+            "collisionCycle": 380,
+            "collisionLocation": [
+              8,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 398,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            6,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-06.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 368 at 6 0",
+            "progressCycle": 368,
+            "collisionCycle": 368,
+            "collisionLocation": [
+              6,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "remove-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-00.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 194 at 8 0",
+            "progressCycle": 194,
+            "collisionCycle": 194,
+            "collisionLocation": [
+              8,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 3,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                203
+              ],
+              "silver": [
+                194
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            3
+          ],
+          "newRotation": 5,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-17.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 98 at 5 3",
+            "progressCycle": 98,
+            "collisionCycle": 98,
+            "collisionLocation": [
+              5,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            7,
+            1
+          ],
+          "newRotation": 5,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-05.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 86 at 7 1",
+            "progressCycle": 86,
+            "collisionCycle": 86,
+            "collisionLocation": [
+              7,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            3
+          ],
+          "newRotation": 4,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-16.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 80 at 8 3",
+            "progressCycle": 80,
+            "collisionCycle": 80,
+            "collisionLocation": [
+              8,
+              3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            2
+          ],
+          "newRotation": 4,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-10.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 74 at 8 2",
+            "progressCycle": 74,
+            "collisionCycle": 74,
+            "collisionLocation": [
+              8,
+              2
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-03.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 68 at 9 0",
+            "progressCycle": 68,
+            "collisionCycle": 68,
+            "collisionLocation": [
+              9,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 391,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            9,
+            -1
+          ],
+          "newRotation": 2,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-02.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+            "progressCycle": 62,
+            "collisionCycle": 62,
+            "collisionLocation": [
+              9,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 413,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -3
+          ],
+          "newRotation": 1,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-13.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 44 at 8 -3",
+            "progressCycle": 44,
+            "collisionCycle": 44,
+            "collisionLocation": [
+              8,
+              -3
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 455,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            -2
+          ],
+          "newRotation": 1,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-07.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 38 at 8 -2",
+            "progressCycle": 38,
+            "collisionCycle": 38,
+            "collisionLocation": [
+              8,
+              -2
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 397,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            5,
+            0
+          ],
+          "newRotation": 0,
+          "newLength": 3,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-12.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 20 at 5 0",
+            "progressCycle": 20,
+            "collisionCycle": 20,
+            "collisionLocation": [
+              5,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 451,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            10,
+            0
+          ],
+          "newRotation": 3,
+          "newLength": 2,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-09.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 10 0",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              10,
+              0
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368,
+                410
+              ],
+              "silver": [
+                386,
+                410
+              ],
+              "gold": [
+                413
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 415,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        },
+        {
+          "mode": "relocate-collision-base-arm",
+          "armPartId": "part-18",
+          "oldLength": 1,
+          "preservedTip": [
+            8,
+            0
+          ],
+          "newBase": [
+            8,
+            1
+          ],
+          "newRotation": 4,
+          "newLength": 1,
+          "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-04.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1 at 8 1",
+            "progressCycle": 1,
+            "collisionCycle": 1,
+            "collisionLocation": [
+              8,
+              1
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                368
+              ],
+              "silver": [
+                386
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 409,
+            "terminatedWithError": true
+          },
+          "chemistryPreserved": false
+        }
+      ],
+      "chemistryPreservingVariantCount": 1,
+      "choiceReason": "best-chemistry-preserving-relocation",
+      "chosen": {
+        "mode": "relocate-collision-base-arm",
+        "armPartId": "part-18",
+        "oldLength": 1,
+        "preservedTip": [
+          8,
+          0
+        ],
+        "newBase": [
+          6,
+          2
+        ],
+        "newRotation": 5,
+        "newLength": 2,
+        "solutionPath": "reports/heldout-oracle-base/search/generation-05-candidate-11.solution",
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+          "progressCycle": 86,
+          "collisionCycle": 86,
+          "collisionLocation": [
+            6,
+            2
+          ]
+        },
+        "purificationProfile": {
+          "count": 6,
+          "countsByElement": {
+            "copper": 3,
+            "silver": 2,
+            "gold": 1
+          },
+          "cyclesByElement": {
+            "copper": [
+              368,
+              410,
+              427
+            ],
+            "silver": [
+              386,
+              410
+            ],
+            "gold": [
+              413
+            ]
+          },
+          "frontierIndex": 5,
+          "frontierElement": "gold",
+          "goldReached": true,
+          "completedCycles": 455,
+          "terminatedWithError": true
+        },
+        "chemistryPreserved": true
+      },
+      "accepted": false
     }
   ],
   "finalOMSim": {
     "exitCode": 255,
-    "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
-    "progressCycle": 195,
-    "collisionCycle": 195,
+    "output": "product 1 cycles: collision during motion phase on cycle 86 at 6 2",
+    "progressCycle": 86,
+    "collisionCycle": 86,
     "collisionLocation": [
-      8,
-      -2
+      6,
+      2
     ]
   },
   "acceptedProductOne": false,
