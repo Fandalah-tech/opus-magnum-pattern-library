@@ -5,5 +5,5 @@
   "status": "completed",
   "sourceCommit": "1628fda23fddc80d99edaf915733109d5a590950",
   "targetSolutionBytesUsed": 0,
-  "conclusion": "failure"
+  "conclusion": "success"
 }
