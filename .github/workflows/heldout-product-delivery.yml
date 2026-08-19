@@ -7,8 +7,10 @@ on:
       - .github/workflows/heldout-product-delivery.yml
       - packages/opus_solver/product_delivery.py
       - packages/opus_solver/output_placement.py
+      - packages/opus_solver/initial_overlap_repair.py
       - tests/test_product_delivery.py
       - tests/test_output_placement.py
+      - tests/test_initial_overlap_repair.py
       - tools/probe_holdout_product_delivery.py
       - reports/generated/heldout-24hour-seed/latest-intermediate-convergence.json
       - packages/opus_engine/**
@@ -71,7 +73,7 @@ jobs:
           python-version: "3.12"
 
       - name: Test product delivery synthesis
-        run: python -m unittest tests.test_output_placement tests.test_product_delivery -v
+        run: python -m unittest tests.test_initial_overlap_repair tests.test_output_placement tests.test_product_delivery -v
 
       - name: Fetch GEN249 puzzle bytes only
         run: |
@@ -224,3 +226,27 @@ jobs:
           path: ${{ env.REPORT_ROOT }}/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Finalize run pointer
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUN_POINTER'])
+          if not p.exists():
+              raise SystemExit(0)
+          d=json.loads(p.read_text())
+          d['status']='completed'
+          d['conclusion']=os.environ.get('JOB_STATUS','unknown')
+          p.write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$RUN_POINTER"
+          git commit -m "Finalize blind product delivery workflow [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
