@@ -17,18 +17,26 @@ def _opportunity_rank(
     frontier_index: int,
     *,
     replenish_frontier: bool = False,
+    precursor_index: int | None = None,
 ) -> tuple[Any, ...]:
     produced = str(item.get("producedElement") or "")
     produced_index = METAL_ORDER.index(produced) if produced in METAL_ORDER else -1
     advances = produced_index > frontier_index
     replenishes = bool(replenish_frontier and produced_index == frontier_index)
+    supports = bool(
+        replenish_frontier
+        and precursor_index is not None
+        and produced_index == precursor_index
+    )
     # A bonded conversion input can require several unbonders. Prefer a true
     # frontier advance, then a chemically necessary second copy of the current
-    # frontier metal, then the smallest exact bond-removal set.
+    # frontier metal, then replenishment of its immediate precursor, and only
+    # then the smallest exact bond-removal set.
     unbond_count = len(item.get("unbondCandidates") or [])
     return (
         -int(advances),
         -int(replenishes),
+        -int(supports),
         -produced_index,
         int(item.get("minimumBlockerCount") or 0),
         unbond_count,
@@ -68,12 +76,14 @@ def search_additive_purification_stations(
 ) -> dict[str, Any]:
     """Add new reaction stations instead of cannibalizing earlier chemistry.
 
-    Purification consumes two equal metals.  Reaching a new frontier once is
-    therefore not always enough to advance again: after the first silver, for
-    example, the machine needs a second silver before any silver->gold station
-    can ever fire.  The search consequently accepts either a higher frontier or
-    a replay-proven replenishment of the current non-gold frontier when fewer
-    than two copies have yet been produced.
+    Purification consumes two equal metals. Reaching a new frontier once is
+    therefore not always enough to advance again. If the current frontier has
+    fewer than two copies, the search first prefers producing another frontier
+    atom. When that reaction itself lacks enough immediate precursor material,
+    it may also replenish the preceding metal in the purification ladder. This
+    resource-support step is still replay-derived and target-solution-free; it
+    prevents a silver frontier from dead-ending merely because only one copper
+    remains available to manufacture the second silver.
     """
 
     horizon = max(1, int(max_cycles))
@@ -88,8 +98,9 @@ def search_additive_purification_stations(
         if 0 <= frontier_index < len(METAL_ORDER)
         else None
     )
+    counts_by_element = baseline_profile.get("countsByElement") or {}
     frontier_count = int(
-        (baseline_profile.get("countsByElement") or {}).get(frontier_element, 0)
+        counts_by_element.get(frontier_element, 0)
         if frontier_element is not None
         else 0
     )
@@ -97,6 +108,21 @@ def search_additive_purification_stations(
         frontier_element is not None
         and frontier_element != "gold"
         and frontier_count < 2
+    )
+    precursor_index = (
+        frontier_index - 1
+        if replenish_frontier and frontier_index > 0
+        else None
+    )
+    precursor_element = (
+        METAL_ORDER[precursor_index]
+        if precursor_index is not None and 0 <= precursor_index < len(METAL_ORDER)
+        else None
+    )
+    precursor_count = int(
+        counts_by_element.get(precursor_element, 0)
+        if precursor_element is not None
+        else 0
     )
 
     simulator = Simulator.from_models(puzzle, solution)
@@ -107,6 +133,7 @@ def search_additive_purification_stations(
             item,
             frontier_index,
             replenish_frontier=replenish_frontier,
+            precursor_index=precursor_index,
         )
     )
     opportunities = opportunities[:max(0, int(opportunity_limit))]
@@ -116,12 +143,18 @@ def search_additive_purification_stations(
     skipped_unrepairable = 0
     attempted_advance = 0
     attempted_replenishment = 0
+    attempted_precursor_support = 0
     for opportunity in opportunities:
         produced = str(opportunity.get("producedElement") or "")
         produced_index = METAL_ORDER.index(produced) if produced in METAL_ORDER else -1
         advances = produced_index > frontier_index
         replenishes = bool(replenish_frontier and produced_index == frontier_index)
-        if not (advances or replenishes):
+        supports_precursor = bool(
+            replenish_frontier
+            and precursor_index is not None
+            and produced_index == precursor_index
+        )
+        if not (advances or replenishes or supports_precursor):
             continue
         blockers = opportunity.get("blockersAtBestObservation") or {}
         # Additive static glyphs can solve bond blockers, but cannot force an
@@ -137,6 +170,7 @@ def search_additive_purification_stations(
         attempted += 1
         attempted_advance += int(advances)
         attempted_replenishment += int(replenishes)
+        attempted_precursor_support += int(supports_precursor)
         candidate = add_purification_station(
             solution,
             opportunity,
@@ -151,6 +185,12 @@ def search_additive_purification_stations(
             )
             if new_frontier_count <= frontier_count:
                 continue
+        if supports_precursor:
+            new_precursor_count = int(
+                (profile.get("countsByElement") or {}).get(precursor_element, 0)
+            )
+            if new_precursor_count <= precursor_count:
+                continue
         validation = validate_generated_solution(puzzle, candidate, max_cycles=horizon)
         records.append({
             "repairMode": (
@@ -158,12 +198,17 @@ def search_additive_purification_stations(
                 if replenishes and unbond_candidates
                 else "additive-frontier-replenishment-purify"
                 if replenishes
+                else "additive-precursor-support-multi-unbond+purify"
+                if supports_precursor and unbond_candidates
+                else "additive-precursor-support-purify"
+                if supports_precursor
                 else "additive-multi-unbond+purify"
                 if unbond_candidates
                 else "additive-purify"
             ),
             "frontierAdvance": bool(advances),
             "frontierReplenishment": bool(replenishes),
+            "precursorSupport": bool(supports_precursor),
             "opportunity": deepcopy(opportunity),
             "addedUnbonderCount": len(unbond_candidates),
             "purificationDelta": int(profile.get("count") or 0) - int(baseline_profile.get("count") or 0),
@@ -175,7 +220,7 @@ def search_additive_purification_stations(
     records.sort(key=_record_rank, reverse=True)
     selected = records[:max(0, int(result_limit))]
     return {
-        "schemaVersion": "0.2.0",
+        "schemaVersion": "0.3.0",
         "kind": "trace-guided-additive-purification-station-search",
         "summary": {
             "maxCycles": horizon,
@@ -183,13 +228,17 @@ def search_additive_purification_stations(
             "baselineFrontierElement": baseline_profile.get("frontierElement"),
             "baselineFrontierCount": frontier_count,
             "frontierReplenishmentNeeded": replenish_frontier,
+            "supportPrecursorElement": precursor_element,
+            "baselineSupportPrecursorCount": precursor_count,
             "opportunityCount": len(opportunities),
             "attemptedAdditiveStationCount": attempted,
             "attemptedFrontierAdvanceCount": attempted_advance,
             "attemptedFrontierReplenishmentCount": attempted_replenishment,
+            "attemptedPrecursorSupportCount": attempted_precursor_support,
             "skippedUnrepairableOpportunityCount": skipped_unrepairable,
             "advancingVariantCount": sum(bool(record.get("frontierAdvance")) for record in records),
             "replenishingVariantCount": sum(bool(record.get("frontierReplenishment")) for record in records),
+            "precursorSupportingVariantCount": sum(bool(record.get("precursorSupport")) for record in records),
             "returnedVariantCount": len(selected),
             "bestFrontierElement": (selected[0].get("purificationProfile") or {}).get("frontierElement") if selected else baseline_profile.get("frontierElement"),
             "bestFrontierCount": int(
