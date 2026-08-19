@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-oracle-timing-repair-checkpoint",
+  "runId": "32271098274",
+  "sourceCommit": "c6cc364f1446dbdf73ab5977213970ce88f36e7f",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "maxCycles": 500,
+    "window": 8,
+    "maxDelay": 8
+  },
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+    "progressCycle": 387,
+    "collisionCycle": 387,
+    "collisionLocation": [
+      8,
+      -2
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 4,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2
+    },
+    "cyclesByElement": {
+      "copper": [
+        368,
+        410
+      ],
+      "silver": [
+        386,
+        410
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 416,
+    "terminatedWithError": true
+  },
+  "searchedVariantCount": 37,
+  "precursorPreservingCount": 12,
+  "oracleAdvancingCount": 2,
+  "best": {
+    "mode": "shift-single-instruction",
+    "armPartId": "part-18",
+    "instructionIndex": 0,
+    "instruction": "grab",
+    "oldCycle": 386,
+    "newCycle": 385,
+    "delta": -1,
+    "solutionPath": "reports/heldout-oracle-timing/search/candidate-012.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 451 at 8 -2",
+      "progressCycle": 451,
+      "collisionCycle": 451,
+      "collisionLocation": [
+        8,
+        -2
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 2
+      },
+      "cyclesByElement": {
+        "copper": [
+          429,
+          478
+        ],
+        "silver": [
+          450,
+          478
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 485,
+      "terminatedWithError": true
+    },
+    "precursorPreserved": true,
+    "oracleAdvance": true
+  },
+  "bestSolution": "reports/heldout-oracle-timing/search/GEN249-best-oracle-timing.solution",
+  "acceptedProductOne": false,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
