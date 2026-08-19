@@ -1,0 +1,2255 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-frontier-rebuild-checkpoint",
+  "runId": "32269481120",
+  "sourceCommit": "9a9b721eed1a1bc9ffbb3fa65d57d88f01b8e2b3",
+  "targetSolutionBytesUsed": 0,
+  "oracleRepairRunId": "32268200880",
+  "request": {
+    "seedLimit": 6,
+    "convergenceLimit": 12,
+    "preflightLimit": 8,
+    "deliveryLimit": 8,
+    "maxCycles": 500
+  },
+  "seedCount": 6,
+  "seeds": [
+    {
+      "generation": 2,
+      "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-00.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 416,
+        "terminatedWithError": true
+      },
+      "oracleAdvance": true,
+      "advanceDelta": 1,
+      "searchSummary": {
+        "maxCycles": 500,
+        "element": "silver",
+        "observationCount": 1,
+        "freePairObservationCount": 1,
+        "searchedVariantCount": 32,
+        "advancingVariantCount": 14,
+        "returnedVariantCount": 12,
+        "goldReached": true,
+        "targetSolutionBytesUsed": 0
+      }
+    },
+    {
+      "generation": 2,
+      "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-02.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 413,
+        "terminatedWithError": true
+      },
+      "oracleAdvance": true,
+      "advanceDelta": 1,
+      "searchSummary": {
+        "maxCycles": 500,
+        "element": "silver",
+        "observationCount": 1,
+        "freePairObservationCount": 1,
+        "searchedVariantCount": 32,
+        "advancingVariantCount": 0,
+        "returnedVariantCount": 0,
+        "goldReached": false,
+        "targetSolutionBytesUsed": 0
+      }
+    },
+    {
+      "generation": 2,
+      "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-08.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 421,
+        "terminatedWithError": true
+      },
+      "oracleAdvance": true,
+      "advanceDelta": 1,
+      "searchSummary": {
+        "maxCycles": 500,
+        "element": "silver",
+        "observationCount": 4,
+        "freePairObservationCount": 1,
+        "searchedVariantCount": 32,
+        "advancingVariantCount": 0,
+        "returnedVariantCount": 0,
+        "goldReached": false,
+        "targetSolutionBytesUsed": 0
+      }
+    },
+    {
+      "generation": 2,
+      "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-09.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 413,
+        "terminatedWithError": true
+      },
+      "oracleAdvance": true,
+      "advanceDelta": 1,
+      "searchSummary": {
+        "maxCycles": 500,
+        "element": "silver",
+        "observationCount": 1,
+        "freePairObservationCount": 1,
+        "searchedVariantCount": 32,
+        "advancingVariantCount": 0,
+        "returnedVariantCount": 0,
+        "goldReached": false,
+        "targetSolutionBytesUsed": 0
+      }
+    },
+    {
+      "generation": 2,
+      "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-14.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 421,
+        "terminatedWithError": true
+      },
+      "oracleAdvance": true,
+      "advanceDelta": 1,
+      "searchSummary": {
+        "maxCycles": 500,
+        "element": "silver",
+        "observationCount": 4,
+        "freePairObservationCount": 1,
+        "searchedVariantCount": 32,
+        "advancingVariantCount": 0,
+        "returnedVariantCount": 0,
+        "goldReached": false,
+        "targetSolutionBytesUsed": 0
+      }
+    },
+    {
+      "generation": 2,
+      "solutionPath": "reports/heldout-oracle-base/search/generation-02-candidate-15.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 421,
+        "terminatedWithError": true
+      },
+      "oracleAdvance": true,
+      "advanceDelta": 1,
+      "searchSummary": {
+        "maxCycles": 500,
+        "element": "silver",
+        "observationCount": 4,
+        "freePairObservationCount": 1,
+        "searchedVariantCount": 32,
+        "advancingVariantCount": 0,
+        "returnedVariantCount": 0,
+        "goldReached": false,
+        "targetSolutionBytesUsed": 0
+      }
+    }
+  ],
+  "convergenceCandidateCount": 12,
+  "deliveryCandidateCount": 56,
+  "bestOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+    "progressCycle": 387,
+    "collisionCycle": 387,
+    "collisionLocation": [
+      8,
+      -2
+    ]
+  },
+  "acceptedProductOne": false,
+  "acceptedSolution": null,
+  "topConvergenceCandidates": [
+    {
+      "seedIndex": 0,
+      "candidateIndex": 8,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-08.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 419,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 419,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 230,
+          "atom-grabbed": 250,
+          "atom-purified": 5,
+          "atoms-dropped": 64,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          10,
+          -1
+        ],
+        "baseRotation": 2,
+        "instruction": "rotate_ccw",
+        "destination": [
+          9,
+          -1
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          8,
+          -1
+        ],
+        "rotation": 0,
+        "second": [
+          9,
+          -1
+        ],
+        "output": [
+          8,
+          0
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 9,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-09.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 419,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 419,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 230,
+          "atom-grabbed": 250,
+          "atom-purified": 5,
+          "atoms-dropped": 64,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          10,
+          -1
+        ],
+        "baseRotation": 2,
+        "instruction": "rotate_ccw",
+        "destination": [
+          9,
+          -1
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          9,
+          -1
+        ],
+        "rotation": 3,
+        "second": [
+          8,
+          -1
+        ],
+        "output": [
+          9,
+          -2
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 0,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-00.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          8,
+          0
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 260,
+          "atom-purified": 5,
+          "atoms-dropped": 68,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          8,
+          0
+        ],
+        "baseRotation": 0,
+        "instruction": "rotate_cw",
+        "destination": [
+          9,
+          -1
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          8,
+          -1
+        ],
+        "rotation": 0,
+        "second": [
+          9,
+          -1
+        ],
+        "output": [
+          8,
+          0
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 1,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-01.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          8,
+          0
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 260,
+          "atom-purified": 5,
+          "atoms-dropped": 68,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          8,
+          0
+        ],
+        "baseRotation": 0,
+        "instruction": "rotate_cw",
+        "destination": [
+          9,
+          -1
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          9,
+          -1
+        ],
+        "rotation": 3,
+        "second": [
+          8,
+          -1
+        ],
+        "output": [
+          9,
+          -2
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 6,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-06.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+        "progressCycle": 380,
+        "collisionCycle": 380,
+        "collisionLocation": [
+          7,
+          0
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          7,
+          0
+        ],
+        "baseRotation": 5,
+        "instruction": "rotate_ccw",
+        "destination": [
+          8,
+          0
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          9,
+          0
+        ],
+        "rotation": 3,
+        "second": [
+          8,
+          0
+        ],
+        "output": [
+          9,
+          -1
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 2,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-02.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+        "progressCycle": 62,
+        "collisionCycle": 62,
+        "collisionLocation": [
+          9,
+          -1
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 257,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          9,
+          -1
+        ],
+        "baseRotation": 1,
+        "instruction": "rotate_ccw",
+        "destination": [
+          8,
+          0
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          8,
+          -1
+        ],
+        "rotation": 1,
+        "second": [
+          8,
+          0
+        ],
+        "output": [
+          7,
+          0
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 3,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-03.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+        "progressCycle": 62,
+        "collisionCycle": 62,
+        "collisionLocation": [
+          9,
+          -1
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 257,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          9,
+          -1
+        ],
+        "baseRotation": 1,
+        "instruction": "rotate_ccw",
+        "destination": [
+          8,
+          0
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          8,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          8,
+          -1
+        ],
+        "output": [
+          9,
+          -1
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 7,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-07.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 62 at 9 -1",
+        "progressCycle": 62,
+        "collisionCycle": 62,
+        "collisionLocation": [
+          9,
+          -1
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 425,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 425,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 239,
+          "atom-grabbed": 255,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          9,
+          -1
+        ],
+        "baseRotation": 3,
+        "instruction": "rotate_cw",
+        "destination": [
+          8,
+          0
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          9,
+          0
+        ],
+        "rotation": 3,
+        "second": [
+          8,
+          0
+        ],
+        "output": [
+          9,
+          -1
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 10,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-10.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 56 at 9 -2",
+        "progressCycle": 56,
+        "collisionCycle": 56,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 416,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 416,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 225,
+          "atom-grabbed": 248,
+          "atom-purified": 5,
+          "atoms-dropped": 63,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          9,
+          -2
+        ],
+        "baseRotation": 2,
+        "instruction": "rotate_cw",
+        "destination": [
+          9,
+          -1
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          9,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          9,
+          -1
+        ],
+        "output": [
+          10,
+          -1
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 11,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-11.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 56 at 9 -2",
+        "progressCycle": 56,
+        "collisionCycle": 56,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 416,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 416,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 225,
+          "atom-grabbed": 248,
+          "atom-purified": 5,
+          "atoms-dropped": 63,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          9,
+          -2
+        ],
+        "baseRotation": 2,
+        "instruction": "rotate_cw",
+        "destination": [
+          9,
+          -1
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          9,
+          -1
+        ],
+        "rotation": 1,
+        "second": [
+          9,
+          0
+        ],
+        "output": [
+          8,
+          0
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 4,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-04.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1 at 8 1",
+        "progressCycle": 1,
+        "collisionCycle": 1,
+        "collisionLocation": [
+          8,
+          1
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 257,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          8,
+          1
+        ],
+        "baseRotation": 5,
+        "instruction": "rotate_cw",
+        "destination": [
+          8,
+          0
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          8,
+          -1
+        ],
+        "rotation": 1,
+        "second": [
+          8,
+          0
+        ],
+        "output": [
+          7,
+          0
+        ]
+      }
+    },
+    {
+      "seedIndex": 0,
+      "candidateIndex": 5,
+      "solution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-05.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1 at 8 1",
+        "progressCycle": 1,
+        "collisionCycle": 1,
+        "collisionLocation": [
+          8,
+          1
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            368,
+            410
+          ],
+          "silver": [
+            386,
+            410
+          ],
+          "gold": [
+            413
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 427,
+        "terminatedWithError": true
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 0,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 241,
+          "atom-grabbed": 257,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      },
+      "observation": {
+        "cycle": 411,
+        "element": "silver",
+        "firstAtomId": "part-17-purified-1",
+        "secondAtomId": "part-20-purified-3",
+        "firstPosition": [
+          9,
+          0
+        ],
+        "secondPosition": [
+          8,
+          -1
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": false
+      },
+      "move": {
+        "basePosition": [
+          8,
+          1
+        ],
+        "baseRotation": 5,
+        "instruction": "rotate_cw",
+        "destination": [
+          8,
+          0
+        ]
+      },
+      "purifierPose": {
+        "origin": [
+          8,
+          0
+        ],
+        "rotation": 4,
+        "second": [
+          8,
+          -1
+        ],
+        "output": [
+          9,
+          -1
+        ]
+      }
+    }
+  ],
+  "topDeliveryCandidates": [
+    {
+      "preflightIndex": 0,
+      "deliveryIndex": 2,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-08.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-00-candidate-02.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((17, 14), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-14': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 0,
+      "deliveryIndex": 4,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-08.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-00-candidate-04.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-22': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 1,
+      "deliveryIndex": 2,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-09.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-01-candidate-02.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((17, 14), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-14': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 1,
+      "deliveryIndex": 4,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-09.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-01-candidate-04.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 387 at 8 -2",
+        "progressCycle": 387,
+        "collisionCycle": 387,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-22': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 0,
+      "deliveryIndex": 0,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-08.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-00-candidate-00.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 10 -3",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          10,
+          -3
+        ]
+      },
+      "summary": {
+        "completedCycles": 500,
+        "requestedCycles": 500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        },
+        "purificationCount": 6,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 16,
+        "manipulationEventCount": 423
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "insufficient-product-delivery",
+        "totalDelivered": 1,
+        "completedCycles": 500,
+        "terminatedWithError": false,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 0,
+      "deliveryIndex": 1,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-08.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-00-candidate-01.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 10 -3",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          10,
+          -3
+        ]
+      },
+      "summary": {
+        "completedCycles": 500,
+        "requestedCycles": 500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        },
+        "purificationCount": 6,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 16,
+        "manipulationEventCount": 423
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "insufficient-product-delivery",
+        "totalDelivered": 1,
+        "completedCycles": 500,
+        "terminatedWithError": false,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 1,
+      "deliveryIndex": 0,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-09.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-01-candidate-00.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 10 -3",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          10,
+          -3
+        ]
+      },
+      "summary": {
+        "completedCycles": 500,
+        "requestedCycles": 500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        },
+        "purificationCount": 6,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 16,
+        "manipulationEventCount": 423
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "insufficient-product-delivery",
+        "totalDelivered": 1,
+        "completedCycles": 500,
+        "terminatedWithError": false,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 1,
+      "deliveryIndex": 1,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-09.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-01-candidate-01.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 10 -3",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          10,
+          -3
+        ]
+      },
+      "summary": {
+        "completedCycles": 500,
+        "requestedCycles": 500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        },
+        "purificationCount": 6,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 16,
+        "manipulationEventCount": 423
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "insufficient-product-delivery",
+        "totalDelivered": 1,
+        "completedCycles": 500,
+        "terminatedWithError": false,
+        "eventCounts": {
+          "arm-instruction": 396,
+          "atom-grabbed": 317,
+          "atom-purified": 6,
+          "atoms-dropped": 101,
+          "bond-created": 1,
+          "bond-removed": 9,
+          "input-spawned": 5,
+          "product-delivered": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 2,
+      "deliveryIndex": 0,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-00.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-02-candidate-00.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          8,
+          0
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((17, 14), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-14': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 2,
+      "deliveryIndex": 3,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-00.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-02-candidate-03.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          8,
+          0
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-22': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 3,
+      "deliveryIndex": 0,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-01.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-03-candidate-00.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          8,
+          0
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((17, 14), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-14': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    },
+    {
+      "preflightIndex": 3,
+      "deliveryIndex": 3,
+      "parentConvergenceSolution": "reports/heldout-frontier-rebuild/search/convergence/seed-00-candidate-01.solution",
+      "solution": "reports/heldout-frontier-rebuild/search/delivery/preflight-03-candidate-03.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+        "progressCycle": 386,
+        "collisionCycle": 386,
+        "collisionLocation": [
+          8,
+          0
+        ]
+      },
+      "summary": {
+        "completedCycles": 427,
+        "requestedCycles": 500,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 426,
+          "message": "Atom part-10-spawn-0-atom-2 collides with stationary atom part-7-spawn-1-atom-2 at (11, 0); activeArms={'part-18': {'instruction': 'rotate_cw', 'heldAtoms': ['part-10-spawn-0-atom-2']}, 'part-2': {'instruction': 'grab', 'heldAtoms': ['part-10-spawn-1-atom-0', 'part-10-spawn-1-atom-1', 'part-10-spawn-1-atom-2', 'part-10-spawn-1-atom-3', 'part-7-spawn-1-atom-1', 'part-7-spawn-1-atom-2', 'part-7-spawn-1-atom-3']}}; atomHolders={'part-10-spawn-0-atom-2': ['part-18'], 'part-10-spawn-1-atom-0': ['part-2'], 'part-10-spawn-1-atom-1': ['part-2'], 'part-10-spawn-1-atom-3': ['part-2'], 'part-7-spawn-1-atom-1': ['part-2']}; outputs=[{'outputId': 'part-14', 'productIndex': 0, 'atoms': [((2, 1), 'gold')], 'bonds': []}, {'outputId': 'part-22', 'productIndex': 1, 'atoms': [((9, -1), 'gold')], 'bonds': []}, {'outputId': 'part-23', 'productIndex': 2, 'atoms': [((21, 14), 'silver')], 'bonds': []}]; delivered={'part-22': 1}; bonders=[((-4, 5), (-4, 4), 'part-4'), ((-1, -1), (0, -2), 'part-11')]; unbonders=[((6, -1), (7, -2), 'part-3'), ((5, 1), (6, 0), 'part-12'), ((8, -1), (7, -1), 'part-15'), ((8, -1), (8, 0), 'part-16'), ((7, -1), (7, -2), 'part-19')]; calcification=[]; purification=[]; projection=[]; motionState=[{'armId': 'part-18', 'instruction': 'rotate_cw', 'sources': {'part-10-spawn-0-atom-2': [8, 0]}, 'destinations': {'part-10-spawn-0-atom-2': [11, 0]}, 'arm': {'partId': 'part-18', 'partType': 'arm1', 'origin': [11, -3], 'rotation': 2, 'length': 3, 'branchCount': 1, 'tips': [{'branchIndex': 0, 'position': [8, 0]}], 'grabbing': True, 'heldAtoms': [{'branchIndex': 0, 'atomId': 'part-10-spawn-0-atom-2'}], 'trackIndex': 0, 'trackCellCount': 58}}]; outputCandidates=[]"
+        },
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 328
+      },
+      "validation": {
+        "complete": false,
+        "failureMode": "simulation-error",
+        "totalDelivered": 1,
+        "completedCycles": 427,
+        "terminatedWithError": true,
+        "eventCounts": {
+          "arm-instruction": 247,
+          "atom-grabbed": 259,
+          "atom-purified": 5,
+          "atoms-dropped": 66,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1,
+          "simulation-error": 1
+        }
+      }
+    }
+  ],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
