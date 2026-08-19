@@ -2,7 +2,8 @@
   "schemaVersion": "0.1.0",
   "kind": "heldout-silver-pair-slack-run-pointer",
   "runId": "32275502956",
-  "status": "in_progress",
+  "status": "completed",
   "sourceCommit": "63859e54226f39589c8ff77f49af402dc455ed7c",
-  "targetSolutionBytesUsed": 0
+  "targetSolutionBytesUsed": 0,
+  "conclusion": "success"
 }
