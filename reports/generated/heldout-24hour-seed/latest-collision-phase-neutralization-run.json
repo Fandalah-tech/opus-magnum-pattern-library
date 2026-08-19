@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-collision-phase-neutralization-run-pointer",
+  "runId": "32275128535",
+  "status": "in_progress",
+  "sourceCommit": "5a1f5dddc895a17c8e57717f114a1458a15e4bfa",
+  "targetSolutionBytesUsed": 0
+}
