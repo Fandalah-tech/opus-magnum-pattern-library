@@ -4,7 +4,8 @@
   "runId": "32267192956",
   "runNumber": "10",
   "runAttempt": "1",
-  "status": "in_progress",
+  "status": "completed",
   "sourceCommit": "f415de0204ae503eb488499f9606033e2292ab32",
-  "targetSolutionBytesUsed": 0
+  "targetSolutionBytesUsed": 0,
+  "conclusion": "failure"
 }
