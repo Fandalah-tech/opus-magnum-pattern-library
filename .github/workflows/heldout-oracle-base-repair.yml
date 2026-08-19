@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/heldout-oracle-base-repair.yml
       - tools/run_holdout_oracle_base_repair.py
+      - tools/run_holdout_oracle_beam_repair.py
       - tools/run_holdout_frontier_rebuild.py
       - packages/opus_solver/intermediate_convergence.py
       - packages/opus_solver/product_delivery.py
@@ -27,6 +28,7 @@ env:
   REPORT_ROOT: reports/heldout-oracle-base
   LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-oracle-base-repair.json
   FRONTIER_REPORT: reports/generated/heldout-24hour-seed/latest-frontier-rebuild.json
+  BEAM_REPORT: reports/generated/heldout-24hour-seed/latest-oracle-beam-repair.json
   OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
   OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
 
@@ -133,6 +135,79 @@ jobs:
         with:
           name: heldout-oracle-base-repair-${{ github.run_id }}
           path: ${{ env.REPORT_ROOT }}/
+          retention-days: 14
+
+  beam-repair:
+    needs: repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: heldout-oracle-base-repair-${{ github.run_id }}
+          path: .baseline/oracle-beam
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools .datasets/oracle-beam
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle .datasets/oracle-beam/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then exit 1; fi
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+
+      - name: Explore alternate mechanical branches
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p reports/heldout-oracle-beam/search
+          python tools/run_holdout_oracle_beam_repair.py \
+            --omsim .tools/omsim/omsim \
+            --puzzle .datasets/oracle-beam/GEN249.puzzle \
+            --baseline .baseline/oracle-beam/search/generation-01-baseline.solution \
+            --depth 3 --beam-width 3 --max-arm-length 3 --max-cycles 500 \
+            --output-dir reports/heldout-oracle-beam/search \
+            --output reports/heldout-oracle-beam/GEN249.json
+
+      - name: Persist beam checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          r=json.loads(Path('reports/heldout-oracle-beam/GEN249.json').read_text())
+          payload={
+            'schemaVersion':'0.1.0','kind':'heldout-oracle-beam-repair-checkpoint',
+            'runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'targetSolutionBytesUsed':0,
+            'request':r.get('request'),'initial':r.get('initial'),'generations':r.get('generations'),
+            'visitedStateCount':r.get('visitedStateCount'),'best':r.get('best'),
+            'acceptedProductOne':r.get('acceptedProductOne'),'omsimCommit':os.environ['OMSIM_COMMIT'],
+          }
+          out=Path(os.environ['BEAM_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$BEAM_REPORT"
+          git commit -m "Update blind oracle beam repair [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-oracle-beam-repair-${{ github.run_id }}
+          path: reports/heldout-oracle-beam/
           retention-days: 14
 
   frontier-rebuild:
