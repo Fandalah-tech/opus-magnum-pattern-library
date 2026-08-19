@@ -1,0 +1,145 @@
+name: Blind GEN249 adjacent-pair finish
+
+on:
+  push:
+    branches: [feature/critelli-2026-public-corpus]
+    paths:
+      - .github/workflows/heldout-adjacent-pair-finish.yml
+      - tools/run_holdout_adjacent_pair_finish.py
+      - packages/opus_solver/adjacent_intermediate_purification.py
+      - packages/opus_solver/product_delivery.py
+      - reports/generated/heldout-24hour-seed/latest-silver-pair-finish.json
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-adjacent-pair-finish-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  SILVER_POINTER: reports/generated/heldout-24hour-seed/latest-silver-pair-finish.json
+  PUZZLE_ROOT: .datasets/heldout-adjacent-pair-finish
+  BASELINE_ROOT: .baseline/heldout-adjacent-pair-finish
+  REPORT_ROOT: reports/heldout-adjacent-pair-finish
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-adjacent-pair-finish.json
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore target-free timed silver-pair frontier
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          read -r run_id recorded_path < <(python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=json.loads(Path(os.environ['SILVER_POINTER']).read_text())
+          assert p['targetSolutionBytesUsed']==0
+          best=p['timingBest']
+          assert int((best.get('reachableCounts') or {}).get('silver',0))>=2, best
+          print(p['runId'], best['solutionPath'])
+          PY
+          )
+          meta="$RUNNER_TEMP/silver.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$meta"
+          read -r artifact_id digest < <(python - "$meta" "$run_id" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path(sys.argv[1]).read_text()); name=f'heldout-silver-pair-finish-{sys.argv[2]}'; m=[x for x in d['artifacts'] if x['name']==name and not x['expired']]; assert len(m)==1; print(m[0]['id'],str(m[0]['digest']).split(':',1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"
+          archive="$RUNNER_TEMP/silver.zip"
+          curl --fail --location --retry 8 --retry-delay 2 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
+          echo "$digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          name="$(basename "$recorded_path")"
+          source="$(find "$BASELINE_ROOT" -type f -name "$name" | head -1)"
+          test -s "$source"
+          cp "$source" "$BASELINE_ROOT/GEN249-timed-silver-pair.solution"
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x .tools/omsim/omsim
+
+      - name: Try same-cycle adjacent silver purification and delivery
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/search"
+          python tools/run_holdout_adjacent_pair_finish.py \
+            --omsim .tools/omsim/omsim \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline "$BASELINE_ROOT/GEN249-timed-silver-pair.solution" \
+            --max-cycles 1500 --adjacent-limit 24 --delivery-limit 24 \
+            --output-dir "$REPORT_ROOT/search" \
+            --output "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist compact adjacent-pair checkpoint
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ['REPORT_ROOT'])/'GEN249.json').read_text())
+          payload={
+            'schemaVersion':'0.1.0','kind':'heldout-adjacent-pair-finish-checkpoint',
+            'runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'targetSolutionBytesUsed':0,
+            'silverRunId':json.loads(Path(os.environ['SILVER_POINTER']).read_text()).get('runId'),
+            'request':r.get('request'),'adjacentSummary':r.get('adjacentSummary'),
+            'baselinePurificationProfile':r.get('baselinePurificationProfile'),
+            'observations':r.get('observations'),'adjacentCandidateCount':r.get('adjacentCandidateCount'),
+            'goldBeforeOfficialCollisionCount':r.get('goldBeforeOfficialCollisionCount'),
+            'adjacentCandidates':r.get('adjacentCandidates'),'deliveryCandidateCount':r.get('deliveryCandidateCount'),
+            'deliveryCandidates':r.get('deliveryCandidates'),'acceptedProductOne':r.get('acceptedProductOne'),
+            'acceptedSolution':r.get('acceptedSolution'),'acceptedOMSim':r.get('acceptedOMSim'),'omsimCommit':os.environ['OMSIM_COMMIT'],
+          }
+          out=Path(os.environ['LATEST_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          git commit -m "Update blind adjacent-pair finish checkpoint [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-adjacent-pair-finish-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
