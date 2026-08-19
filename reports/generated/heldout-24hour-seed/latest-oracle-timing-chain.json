@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-oracle-timing-chain-checkpoint",
+  "runId": "32271483827",
+  "sourceCommit": "8ca60d1b20ad2c6c9a944de7c56c19743f7706be",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "depth": 4,
+    "beamWidth": 3,
+    "window": 10,
+    "maxDelay": 12,
+    "maxCycles": 600
+  },
+  "initial": {
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 451 at 8 -2",
+      "progressCycle": 451,
+      "collisionCycle": 451,
+      "collisionLocation": [
+        8,
+        -2
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 2
+      },
+      "cyclesByElement": {
+        "copper": [
+          429,
+          478
+        ],
+        "silver": [
+          450,
+          478
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 485,
+      "terminatedWithError": true
+    },
+    "reachableCounts": {
+      "copper": 1,
+      "silver": 1
+    }
+  },
+  "generations": [
+    {
+      "depth": 1,
+      "parentCount": 1,
+      "evaluatedAdvancingVariantCount": 0,
+      "frontierPreservingCount": 0,
+      "beamCount": 0,
+      "bestProgressCycle": null,
+      "bestReachableCounts": {},
+      "variants": []
+    }
+  ],
+  "visitedStateCount": 1,
+  "best": {
+    "solutionPath": "reports/heldout-oracle-timing-chain/search/GEN249-best-oracle-timing-chain.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 451 at 8 -2",
+      "progressCycle": 451,
+      "collisionCycle": 451,
+      "collisionLocation": [
+        8,
+        -2
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 2
+      },
+      "cyclesByElement": {
+        "copper": [
+          429,
+          478
+        ],
+        "silver": [
+          450,
+          478
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 485,
+      "terminatedWithError": true
+    },
+    "reachableCounts": {
+      "copper": 1,
+      "silver": 1
+    },
+    "reachableTier": [
+      2,
+      0,
+      1,
+      1,
+      2
+    ],
+    "steps": []
+  },
+  "reachableSilverPair": false,
+  "acceptedProductOne": false,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}
