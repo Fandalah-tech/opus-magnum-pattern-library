@@ -1,0 +1,22 @@
+BLIND TRANSFER REGRESSION MATRIX
+================================
+
+Donor puzzle: infinite-throughput
+Puzzle files scanned: 174
+Puzzle parse failures: 0
+Chemistry-compatible targets: 3
+Targets solved by OMSim: 3
+Targets rejected by OMSim: 0
+Target solutions read: 0
+
+Compatible targets
+------------------
+VALID    area-test-1776837428738      candidates=3 valid=2 mapping={'reagentIndex': 1, 'productIndex': 0} metrics={'cost': 40, 'cycles': 23, 'area': 3, 'instructions': 4}
+VALID    c394042722190770             candidates=3 valid=2 mapping={'reagentIndex': 1, 'productIndex': 0} metrics={'cost': 40, 'cycles': 23, 'area': 3, 'instructions': 4}
+VALID    c544897394273089             candidates=6 valid=4 mapping={'reagentIndex': 1, 'productIndex': 0} metrics={'cost': 40, 'cycles': 23, 'area': 51, 'instructions': 4}
+
+Protocol
+--------
+Only .puzzle files are scanned for targets. The command accepts one
+explicit donor .solution and has no target solution directory input.
+Incompatible puzzles are rejected before OMSim candidate validation.

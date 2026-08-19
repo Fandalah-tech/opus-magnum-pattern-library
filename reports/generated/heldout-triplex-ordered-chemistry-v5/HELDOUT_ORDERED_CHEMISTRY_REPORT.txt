@@ -1,0 +1,146 @@
+STRICT HELD-OUT ORDERED CHEMISTRY - OM2021_W1
+================================================
+
+Status
+------
+OM2021_W1 is still not solved without examples from that puzzle. No product is
+delivered and the strict held-out completion count remains zero.
+
+The solver now crosses the next major manufacturing frontier: it constructs a
+durable three-atom product core with the correct elements and both required
+full triplex edges, and 22 such candidates survive the authoritative OMSim
+cycle limit.
+
+The best generated intermediate is:
+
+    fire === fire === salt
+
+where each === is the complete red + black + yellow triplex bond. This matches
+three of the target product's four atoms and two of its three complete triplex
+edges. The remaining chemical task is to attach one additional fire atom with
+the third complete triplex edge, then deliver the four-atom molecule.
+
+Strict held-out protocol
+------------------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Audited triplex solutions: 479
+Engine-complete solutions before exclusion: 396
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Target solution bytes used by the learned index: 0
+Validation drift while rebuilding the index: 0
+
+The historical corpus was reconstructed from the public OMSim test puzzle and
+solution trees. Its counts and donor paths exactly reproduce the preceding
+strict benchmark, including the Kailaria and GI mechanism families.
+
+Why the old score was insufficient
+----------------------------------
+The previous stage ranked chemistry by event families. A stationary unbonder
+and prism could remove and recreate a bond hundreds of times, so a high event
+count did not prove that any useful molecule survived.
+
+The new ordered-chemistry analyzer reads the molecular world after every
+cycle. A state only counts after it exists in at least two consecutive
+snapshots. It tracks the same atom IDs through:
+
+- removal of the original normal bond;
+- salt-to-fire duplication;
+- accumulation of red, black and yellow on the same atom pair;
+- restoration of the transformed fire atom to salt; and
+- product delivery, when present.
+
+This converts the ranking target from "an operation fired" to "the intended
+chemical result still exists later".
+
+Trajectory-derived second prism
+-------------------------------
+The eight OMSim-stable active transplants from the preceding milestone remain
+the hard parents. Their piston programs and track are frozen and fingerprinted.
+
+For each duplicated atom pair, the solver replays its actual trajectory and
+enumerates only prism poses that expose a real observed adjacent pair to one of
+the three channels. It adds one second prism without editing any arm, track or
+program.
+
+Stable source parents: 8
+Observed second-prism variants: 157
+Locally persistent complete-triplex variants: 14
+Variants promoted to OMSim: 14
+
+OMSim outcomes:
+
+- no completion within cycle limit: 12
+- collision: 2
+- other mechanical failures: 0
+
+The best family begins with transplant variant 511. Its original red-channel
+prism also acquires yellow when the molecule changes orientation. A second
+black-channel prism at (-1, -2), rotation 1 completes the same atom pair on
+cycle 50. The three channels remain attached while the piston continues moving
+the molecule.
+
+Post-triplex calcification
+--------------------------
+Only OMSim-stable complete-triplex children advance. The solver observes where
+the transformed atom travels after all three channels persist, then moves the
+existing calcification glyph onto those observed cells.
+
+Observed calcification variants: 38
+Locally persistent calcified-complete-triplex variants: 22
+Variants promoted to OMSim: 22
+
+OMSim outcomes:
+
+- no completion within cycle limit: 22
+- collision: 0
+- other mechanical failures: 0
+
+In the best retained candidate, calcification position (-2, 0) restores the
+transformed atom to salt on cycle 51. The complete triplex bond remains intact.
+The original reagent triplex bond is also intact, yielding the durable
+fire-fire-salt core.
+
+What the solver can now do
+--------------------------
+The solver can now:
+
+- distinguish reversible event noise from persistent molecular progress;
+- follow atom identity, element and bond channels through a trajectory;
+- discover a missing prism channel from real pair positions rather than a
+  board-wide coordinate scan;
+- add chemistry parts without changing the frozen mechanical program;
+- require red, black and yellow to coexist on the same atom pair;
+- delay calcification until the complete triplex state exists;
+- promote each stage independently to OMSim with at most ten workers;
+- reject locally attractive children that lose authoritative survival; and
+- persist the ordered-chemistry stage outcome in the learning index.
+
+It cannot yet:
+
+- extract and attach the fourth fire atom;
+- build the third complete triplex edge;
+- place the finished four-atom molecule on an output footprint; or
+- repeat delivery six times.
+
+Next decisive milestone
+-----------------------
+Add a second material-handling component that supplies one isolated fire atom
+to the stable three-atom core. Its route must expose the new edge to all three
+prism channels without disturbing either completed core edge. Once a four-atom
+molecule exists, output placement can be derived directly from its observed
+resting frame.
+
+Verification
+------------
+Python test suite: 212 passed, plus 10 passing subtests
+Targeted ordered-chemistry, transplant and outcome-learning tests: passed
+Compile check: passed
+Diff whitespace check: passed
+Full standard-pipeline reproduction: passed
+Concurrent OMSim workers: 10
+Persistent-state threshold: 2 consecutive snapshots
+OMSim-stable complete-triplex variants: 12
+OMSim-stable calcified complete-triplex variants: 22
+Delivered products: 0
+Strict held-out completion count: 0

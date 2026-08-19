@@ -4,16 +4,29 @@ from collections import Counter
 from typing import Any
 
 from .composition import rank_fragment_chains
-from .manufacturing import ManufacturingPlan, build_manufacturing_plan
+from .manufacturing import ManufacturingPlan
+from .manufacturing_extensions import build_manufacturing_plan
 
 
 _OPERATION_RELATIONS = {
     "transform": {
         "glyph-calcification": "calcify",
+        "glyph-purification": "purify",
+        "glyph-projection": "project",
+        "glyph-animismus": "animate",
+        "glyph-dispersion": "disperse",
+        "glyph-unification": "unify",
+        "glyph-duplication": "duplicate",
     },
     "bond": {
         "bonder": "bond-created",
         "unbonder": "bond-removed",
+    },
+    "unbond": {
+        "unbonder": "bond-removed",
+    },
+    "duplicate": {
+        "glyph-duplication": "duplicate",
     },
     "deliver": {None: "delivered"},
 }
@@ -29,6 +42,11 @@ def required_flow_relations(plan: ManufacturingPlan) -> Counter[str]:
     """
     relations: Counter[str] = Counter()
     for operation in plan.operations:
+        if operation.kind == "bond" and operation.glyph == "bonder-prisma":
+            channels = operation.metadata.get("triplexChannels") or ("red", "black", "yellow")
+            for channel in channels:
+                relations[f"triplex-bond-created:{channel}"] += 1
+            continue
         mapping = _OPERATION_RELATIONS.get(operation.kind)
         if not mapping:
             continue
@@ -43,6 +61,10 @@ def required_flow_relations(plan: ManufacturingPlan) -> Counter[str]:
 def manufacturing_requirements(plan: ManufacturingPlan) -> dict[str, Any]:
     sources = [operation for operation in plan.operations if operation.kind == "source"]
     placements = [operation for operation in plan.operations if operation.kind == "place"]
+    convergence_input_count = max(
+        [len(operation.inputs) for operation in plan.operations if len(operation.inputs) > 1]
+        or [len(sources)]
+    )
     return {
         "supported": plan.supported,
         "strategy": plan.strategy,
@@ -51,7 +73,8 @@ def manufacturing_requirements(plan: ManufacturingPlan) -> dict[str, Any]:
         "requiredGlyphs": list(plan.required_glyphs),
         "sourceCount": len(sources),
         "placementCount": len(placements),
-        "requiresConvergence": len(sources) > 1,
+        "convergenceInputCount": convergence_input_count,
+        "requiresConvergence": convergence_input_count > 1,
     }
 
 
@@ -78,9 +101,10 @@ def rank_chains_for_manufacturing_plan(
     fragment_index: dict[str, Any] | None = None,
     max_depth: int = 6,
     limit: int = 25,
-    candidate_pool: int = 250,
+    candidate_pool: int = 5000,
     min_observations: int = 1,
     require_full_functional_coverage: bool = True,
+    min_engine_validated_solutions: int = 0,
 ) -> list[dict[str, Any]]:
     """Rank empirical fragment chains against a manufacturing plan.
 
@@ -100,6 +124,8 @@ def rank_chains_for_manufacturing_plan(
         max_depth=max_depth,
         limit=max(limit, candidate_pool),
         min_observations=min_observations,
+        min_engine_validated_solutions=min_engine_validated_solutions,
+        allowed_relations=required.keys() if required else None,
     )
 
     ranked = []
@@ -146,6 +172,7 @@ def plan_puzzle_fragment_chains(
     max_depth: int = 6,
     limit: int = 25,
     min_observations: int = 1,
+    min_engine_validated_solutions: int = 0,
 ) -> dict[str, Any]:
     plan = build_manufacturing_plan(puzzle)
     requirements = manufacturing_requirements(plan)
@@ -156,9 +183,10 @@ def plan_puzzle_fragment_chains(
         max_depth=max_depth,
         limit=limit,
         min_observations=min_observations,
+        min_engine_validated_solutions=min_engine_validated_solutions,
     ) if plan.supported else []
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "manufacturingPlan": plan.to_dict(),
         "requirements": requirements,
         "summary": {
@@ -167,6 +195,10 @@ def plan_puzzle_fragment_chains(
             "functionallyCompleteCandidateCount": sum(not item["manufacturing"]["coverage"]["missing"] for item in chains),
             "assemblyCompleteCandidateCount": sum(bool(item["manufacturing"]["assemblyComplete"]) for item in chains),
             "bestScore": chains[0]["score"] if chains else None,
+            "engineValidatedCandidateCount": sum(
+                all(int(step.get("engineValidatedSolutionCount") or 0) > 0 for step in item.get("steps", []))
+                for item in chains
+            ),
         },
         "chains": chains,
     }

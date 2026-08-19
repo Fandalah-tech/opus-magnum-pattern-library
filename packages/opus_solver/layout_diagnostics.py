@@ -42,10 +42,20 @@ def part_occupied_cells(part: dict[str, Any]) -> dict[str, Any]:
     origin = tuple(int(value) for value in (part.get("position") or (0, 0)))
 
     if part_type == "track":
-        cells = {tuple(int(value) for value in cell) for cell in part.get("trackHexes", [])}
+        cells = {
+            (origin[0] + int(cell[0]), origin[1] + int(cell[1]))
+            for cell in part.get("trackHexes", [])
+        }
         return {"cells": cells, "precision": "exact", "source": "serialized-track-cells"}
     if part_type == "pipe":
-        cells = {tuple(int(value) for value in cell) for cell in part.get("pipeHexes", [])}
+        rotation = int(part.get("rotation") or 0) % 6
+        cells = {
+            (
+                origin[0] + rotate_hex(tuple(int(value) for value in cell), rotation)[0],
+                origin[1] + rotate_hex(tuple(int(value) for value in cell), rotation)[1],
+            )
+            for cell in part.get("pipeHexes", [])
+        }
         if not cells:
             cells = {origin}
         return {"cells": cells, "precision": "exact", "source": "serialized-pipe-cells"}

@@ -1,0 +1,746 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-iterative-track-detour-checkpoint",
+  "runId": "32196313579",
+  "sourceCommit": "0be7f94f6ddc6bcc0a061b8b24b038190a612a52",
+  "chemistryRunId": "32195163437",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "maxCycles": 500,
+    "radius": 3,
+    "iterations": 8
+  },
+  "iterationCount": 8,
+  "history": [
+    {
+      "iteration": 1,
+      "baselineSolution": ".baseline/heldout-iterative-detour/GEN249-seed.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 7,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          7,
+          -1
+        ],
+        "replacementTrackCell": [
+          6,
+          -2
+        ],
+        "distanceFromCollision": 2,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-01/candidate-001.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-01/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 2,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-01/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 6,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          6,
+          -2
+        ],
+        "replacementTrackCell": [
+          7,
+          -1
+        ],
+        "distanceFromCollision": 3,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-02/candidate-000.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-02/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 3,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-02/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 7,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          7,
+          -1
+        ],
+        "replacementTrackCell": [
+          6,
+          -2
+        ],
+        "distanceFromCollision": 2,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-03/candidate-001.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-03/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 4,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-03/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 6,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          6,
+          -2
+        ],
+        "replacementTrackCell": [
+          7,
+          -1
+        ],
+        "distanceFromCollision": 3,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-04/candidate-000.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-04/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 5,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-04/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 7,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          7,
+          -1
+        ],
+        "replacementTrackCell": [
+          6,
+          -2
+        ],
+        "distanceFromCollision": 2,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-05/candidate-001.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-05/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 6,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-05/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 6,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          6,
+          -2
+        ],
+        "replacementTrackCell": [
+          7,
+          -1
+        ],
+        "distanceFromCollision": 3,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-06/candidate-000.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-06/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 7,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-06/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 7,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          7,
+          -1
+        ],
+        "replacementTrackCell": [
+          6,
+          -2
+        ],
+        "distanceFromCollision": 2,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-07/candidate-001.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-07/GEN249-best-track-neighborhood-detour.solution"
+      }
+    },
+    {
+      "iteration": 8,
+      "baselineSolution": "reports/heldout-iterative-detour/search/iteration-07/GEN249-best-track-neighborhood-detour.solution",
+      "baselineOMSim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "baselinePurificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "rawCandidateCount": 6,
+      "chemistryPreservingNonregressingCount": 3,
+      "best": {
+        "trackPartId": "part-0",
+        "trackCellIndex": 6,
+        "oldTrackCell": [
+          6,
+          -2
+        ],
+        "replacementTrackCell": [
+          7,
+          -1
+        ],
+        "distanceFromCollision": 3,
+        "solutionPath": "reports/heldout-iterative-detour/search/iteration-08/candidate-000.solution",
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              185,
+              206
+            ],
+            "silver": [
+              203,
+              206
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 209,
+          "terminatedWithError": true
+        },
+        "preservesSilver": true,
+        "preservesGold": true,
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+          "progressCycle": 204,
+          "collisionCycle": 204,
+          "collisionLocation": [
+            9,
+            -2
+          ]
+        },
+        "finalSolutionPath": "reports/heldout-iterative-detour/search/iteration-08/GEN249-best-track-neighborhood-detour.solution"
+      }
+    }
+  ],
+  "finalOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+    "progressCycle": 204,
+    "collisionCycle": 204,
+    "collisionLocation": [
+      9,
+      -2
+    ]
+  },
+  "finalPurificationProfile": {
+    "count": 4,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2
+    },
+    "cyclesByElement": {
+      "copper": [
+        185,
+        206
+      ],
+      "silver": [
+        203,
+        206
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 209,
+    "terminatedWithError": true
+  },
+  "acceptedProductOne": false,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

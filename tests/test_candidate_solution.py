@@ -111,3 +111,34 @@ def test_metric_free_candidate_serializes_and_parses_cleanly():
     assert roundtrip["diagnostics"]["parserTrailingBytes"] == 0
     assert roundtrip["parsed"]["puzzleFile"] == "P007"
     assert len(roundtrip["parsed"]["parts"]) == 4
+
+
+def test_candidate_prunes_optional_parts_disabled_by_target():
+    puzzle = {
+        "name": "Target",
+        "source": {"name": "P007.puzzle"},
+        "availableParts": {
+            "arms": ["arm1"],
+            "glyphs": ["bonder", "calcification"],
+        },
+    }
+    layout = _layout()
+    layout["parts"].append({
+        "id": "foreign-glyph",
+        "type": "glyph-unification",
+        "position": [4, 0],
+        "rotation": 0,
+        "length": 1,
+        "which": 0,
+        "program": [],
+    })
+
+    solution = build_candidate_solution(puzzle, _plan(), _candidate(), layout)
+
+    assert "glyph-unification" not in {part["type"] for part in solution["parts"]}
+    assert solution["source"]["prunedUnavailableParts"] == [{
+        "sourcePartId": "foreign-glyph",
+        "partType": "glyph-unification",
+        "requiredCapability": "unification",
+        "category": "glyph",
+    }]

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "generic-training-flow-latest-checkpoint",
+  "runId": "32194960676",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
+  "targetSolutionBytesUsed": 0,
+  "heldoutPuzzleIds": [
+    "P016"
+  ],
+  "summary": {
+    "sourceRunId": 31314985141,
+    "sourceArtifactId": 9039107400,
+    "cacheKey": "",
+    "engineCompleteBeforeExclusion": 889,
+    "excludedP016Solutions": 23,
+    "eligible": 866,
+    "replayValidated": 865,
+    "validationDrift": 1,
+    "errors": 0,
+    "fragments": 6703,
+    "transitions": 7948,
+    "convergences": 2079,
+    "relations": {
+      "animate": 1064,
+      "bond-created": 39763,
+      "bond-removed": 5272,
+      "calcify": 9002,
+      "delivered": 6302,
+      "duplicate": 1578,
+      "project": 4561,
+      "purify": 8021,
+      "triplex-bond-created:black": 579,
+      "triplex-bond-created:red": 533,
+      "triplex-bond-created:red+black+yellow": 28,
+      "triplex-bond-created:yellow": 576
+    }
+  }
+}

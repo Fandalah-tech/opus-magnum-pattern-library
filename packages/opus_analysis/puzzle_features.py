@@ -5,6 +5,8 @@ import json
 from collections import Counter
 from typing import Any
 
+from packages.opus_parser import canonical_bond_identity
+
 
 def _rotate(position: tuple[int, int], steps: int) -> tuple[int, int]:
     q, r = position
@@ -20,7 +22,7 @@ def _canonical_molecule_payload(molecule: dict[str, Any]) -> dict[str, Any]:
     ]
     bonds = [
         (
-            str(bond.get("type") or "normal"),
+            canonical_bond_identity(bond),
             (int(bond["from"][0]), int(bond["from"][1])),
             (int(bond["to"][0]), int(bond["to"][1])),
         )
@@ -61,6 +63,7 @@ def canonical_molecule_hash(molecule: dict[str, Any]) -> str:
 def _molecule_summary(molecules: list[dict[str, Any]]) -> dict[str, Any]:
     elements: Counter[str] = Counter()
     bonds: Counter[str] = Counter()
+    bond_variants: Counter[str] = Counter()
     atom_counts = []
     bond_counts = []
     signatures = []
@@ -73,6 +76,7 @@ def _molecule_summary(molecules: list[dict[str, Any]]) -> dict[str, Any]:
             elements[str(atom.get("element") or "unknown")] += 1
         for bond in molecule.get("bonds", []):
             bonds[str(bond.get("type") or "normal")] += 1
+            bond_variants[canonical_bond_identity(bond)] += 1
 
     return {
         "count": len(molecules),
@@ -80,6 +84,7 @@ def _molecule_summary(molecules: list[dict[str, Any]]) -> dict[str, Any]:
         "bondCounts": sorted(bond_counts),
         "elements": dict(sorted(elements.items())),
         "bonds": dict(sorted(bonds.items())),
+        "bondVariants": dict(sorted(bond_variants.items())),
         "moleculeSignatures": sorted(signatures),
     }
 

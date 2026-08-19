@@ -1,0 +1,181 @@
+STRICT HELD-OUT TRIPLEX COMPONENT GRAPH - OM2021_W1
+====================================================
+
+Status
+------
+The solver still does not solve OM2021_W1 without examples from that puzzle.
+This milestone fixes the physical representation error identified by the
+previous benchmark: fragment repairs now move one shared donor component
+instead of creating duplicate copies of the same part.
+
+It also adds target-aware replay progress. The local engine can now distinguish
+an idle survivor from a candidate that actually removes a bond, duplicates an
+atom, or creates a prism bond. A two-front search portfolio retains both
+mechanically stable and chemically active candidates for the next hybrid
+geometry-and-timing stage.
+
+Held-out protocol
+-----------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Engine-complete corpus before exclusion: 396 solutions
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Excluded share of the usable corpus: 58.1 percent
+Target solution bytes replayed into the learned index: 0
+Target strings found in learned geometry records: 0
+Validation drift: 0
+Index build errors: 0
+
+Component-aware index
+---------------------
+Schema: 0.10.0
+Canonical fragments: 1,182
+Canonical transitions: 1,635
+Canonical convergence motifs: 392
+Triplex transitions: 597
+Triplex observations: 4,645
+
+The index now retains every physical occurrence of a canonical fragment rather
+than one representative per solution. It contains:
+
+- 1,913 source-specific geometry occurrences;
+- 1,913 occurrences with an exact source anchor identity;
+- 5,765 geometry part records with a source part identity;
+- 57 solution/mechanism groups containing repeated occurrences;
+- up to 29 occurrences of one mechanism inside one donor solution.
+
+Source IDs are attached after identity-free canonicalization. They do not alter
+the structural or mechanism hashes used for retrieval. Physical identities are
+namespaced by source solution hash/path, so equal local part IDs from different
+donors can never be merged accidentally.
+
+Shared-component materialization
+--------------------------------
+The three held-out baseline assemblies contain 122 fragment-local part
+proposals: 51, 34, and 37 respectively. The component graph resolves them to
+exactly nine physical parts per assembly. Twenty of the 27 resulting parts are
+shared by two or more functional fragments.
+
+At the unmodified donor transforms:
+
+- all 27 physical parts have a source identity;
+- all three layouts remain complete;
+- no source pose conflict needs resolution;
+- the serialized machines and their baseline OMSim outcomes remain unchanged.
+
+When a join is perturbed, every proposal carrying the same source part identity
+is resolved to one physical pose. All 90 retained repair variants in every
+experiment below remain nine-part layouts. The previous 11-16 part inflation
+is eliminated.
+
+Mechanical survival comparison
+------------------------------
+The search budget is unchanged: three assemblies, 729 geometric variants per
+assembly, 2,187 total preflight replays, 96 preflight cycles, and eight full
+promotions per assembly.
+
+OMSim outcomes for the 90 retained variants before the component graph:
+
+- completed: 0
+- no completion within the OMSim cycle limit: 21
+- collision: 62
+- other mechanical error: 7
+
+OMSim outcomes when the same search is ranked only for survival after the
+component graph:
+
+- completed: 0
+- no completion within the OMSim cycle limit: 45
+- collision: 44
+- other mechanical error: 1
+
+This is a gain of 24 collision-free retained variants at the same budget. The
+strongest first donor changes from a cycle-3 collision to no collision within
+the OMSim limit. These machines remain inactive and deliver no product.
+
+Target-aware chemical progress
+------------------------------
+Every local replay now records event counts, manipulation counts, chemistry
+event kinds, and the subset required by the target manufacturing plan. For
+OM2021_W1 the required event families are bond removal, duplication, prism bond
+creation/settling, and product delivery. Off-plan calcification no longer
+outranks target-relevant activity.
+
+At the same 2,187-variant budget, the local engine found distinct useful
+partial chains:
+
+- one donor family reaches bond removal;
+- seven retained variants reach atom duplication plus bond creation, with five
+  required chemistry events before failure;
+- two retained variants reach bond removal, bond creation, and floating prism
+  bond creation in one replay, with four required chemistry events before
+  failure.
+
+No single variant yet covers bond removal, duplication, prism bonding, and
+delivery together. OMSim rejects the active-only retained set mechanically,
+so these event chains are search guidance, not valid solutions.
+
+Two-front repair portfolio
+--------------------------
+A linear score discarded either stable inactive machines or active colliding
+machines. Geometric repair now reserves half of its promotion and result budget
+for target-relevant progress and half for mechanical survival.
+
+For each assembly the final experiment retained:
+
+- 15 progress-front variants;
+- 15 survival-front variants;
+- four long validations selected from each objective;
+- 30 nine-part layouts, with no component duplication.
+
+Authoritative OMSim outcomes for the 90-result balanced portfolio:
+
+- completed: 0
+- no completion within the OMSim cycle limit: 23
+- collision: 64
+- other mechanical error: 3
+
+The survival-only run remains the mechanically strongest result. The balanced
+portfolio deliberately spends half its capacity preserving the chemically
+active parents needed by the next stage.
+
+What the solver can now do
+--------------------------
+The solver can now:
+
+- retain original part and anchor identities without changing canonical hashes;
+- preserve repeated occurrences of the same mechanism inside one solution;
+- select the exact occurrence referenced by a coherent edge or convergence;
+- merge shared input, arm, glyph, track, and output proposals by physical ID;
+- move a shared component without increasing the machine's part count;
+- report shared identities, raw proposals, and resolved pose conflicts;
+- count replay activity and separate chemistry from mere elapsed cycles;
+- score chemistry against the target manufacturing plan;
+- preserve complementary survival and chemical-progress search fronts.
+
+It cannot yet:
+
+- combine the useful geometry from one variant with the timing from another;
+- reconcile all shared-component pose constraints as a globally optimized
+  rigid subgraph;
+- trust local replay alone where OMSim exposes track or collision differences;
+- deliver any product on the strict OM2021_W1 held-out benchmark.
+
+Next decisive milestone
+-----------------------
+Run bounded timing repair on the progress-front geometries while preserving a
+nearby survival-front pose. Rank hybrid variants by ordered target milestones:
+bond removal, duplication, prism bonding, then delivery. Validate every promoted
+hybrid with OMSim so local-engine progress cannot hide a mechanical regression.
+
+Verification
+------------
+Python test suite: 195 passed, plus 10 passing subtests
+Compile check: passed
+Diff whitespace check: passed
+Index source identities: 5,765 of 5,765 part records
+Index anchor identities: 1,913 of 1,913 geometry occurrences
+Index source namespaces: 1,913 of 1,913 geometry occurrences
+Index target leak scan: zero target geometry records
+Index replay drift: zero
+Index build errors: zero

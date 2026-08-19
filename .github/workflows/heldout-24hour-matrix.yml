@@ -1,0 +1,316 @@
+name: Blind 24-hour heldout matrix
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-24hour-matrix.yml
+      - benchmarks/heldout-opussolver-24hour-seed.json
+      - database/engine-fragment-flow-index.json
+      - reports/generated/generic-training-flow/latest-summary.json
+      - tools/evaluate_holdout_matrix.py
+      - tools/evaluate_holdout_transfer.py
+      - tests/test_holdout_matrix.py
+      - tests/test_source_assignment.py
+      - tests/test_feed_alignment.py
+      - packages/opus_solver/**
+      - packages/opus_parser/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-24hour-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  MANIFEST: benchmarks/heldout-opussolver-24hour-seed.json
+  PERSISTENT_FLOW_INDEX: database/engine-fragment-flow-index.json
+  GENERIC_FLOW_POINTER: reports/generated/generic-training-flow/latest-summary.json
+  FLOW_INDEX: .knowledge/generic-flow/campaign-flow-index.json
+  PUZZLE_ROOT: .datasets/heldout-24hour-seed
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+  REPORT_ROOT: reports/heldout-24hour-seed
+  LATEST_SUMMARY: reports/generated/heldout-24hour-seed/latest-summary.json
+
+jobs:
+  matrix:
+    name: Five-puzzle strict blind transfer matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test matrix contracts
+        run: |
+          python -m unittest tests.test_holdout_matrix -v
+          python -m unittest tests.test_holdout_transfer -v
+          python -m unittest tests.test_source_assignment -v
+          python -m unittest tests.test_feed_alignment -v
+
+      - name: Fetch puzzle bytes only from pinned OpusSolver corpus
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set \
+            test/puzzles/24hour-1-puzzles/GEN000.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN249.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN499.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN749.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN999.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          test "$(git -C .tools/opussolver rev-parse HEAD)" = "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/*.puzzle "$PUZZLE_ROOT"/
+          test "$(find "$PUZZLE_ROOT" -maxdepth 1 -name '*.puzzle' | wc -l)" -eq 5
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore latest generic campaign fragment knowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s "$GENERIC_FLOW_POINTER"
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'generic-training-flow-latest-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert 'P016' in pointer['heldoutPuzzleIds']
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/generic-flow-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          run_id = sys.argv[2]
+          expected_name = f'generic-training-flow-{run_id}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1, (expected_name, [item.get('name') for item in data.get('artifacts', [])])
+          item = matches[0]
+          digest = str(item.get('digest') or '')
+          assert digest.startswith('sha256:')
+          print(item['id'], digest.split(':', 1)[1])
+          PY
+          )
+          mkdir -p .knowledge/generic-flow
+          archive="$RUNNER_TEMP/generic-training-flow.zip"
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip"
+          curl --fail --location \
+            --retry 10 --retry-delay 3 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$api" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d .knowledge/generic-flow
+          test -s "$FLOW_INDEX"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          expected = pointer['summary']
+          index = json.loads(Path(os.environ['FLOW_INDEX']).read_text(encoding='utf-8'))
+          summary = index['summary']
+          source_filter = index['sourceFilter']
+          assert source_filter['strictSourceFiltering'] is True
+          assert 'P016' in source_filter['requestedExcludedPuzzleIds']
+          assert summary['replayValidatedSolutionCount'] == expected['replayValidated']
+          assert summary['canonicalFragmentCount'] == expected['fragments']
+          assert summary['canonicalTransitionCount'] == expected['transitions']
+          assert summary['canonicalConvergenceMotifCount'] == expected['convergences']
+          print({
+              'genericFlowRunId': pointer['runId'],
+              'replayValidated': summary['replayValidatedSolutionCount'],
+              'fragments': summary['canonicalFragmentCount'],
+              'transitions': summary['canonicalTransitionCount'],
+              'convergences': summary['canonicalConvergenceMotifCount'],
+              'relations': summary['relationCounts'],
+          })
+          PY
+
+      - name: Prove heldout targets are absent from all learned knowledge
+        run: |
+          for target in GEN000 GEN249 GEN499 GEN749 GEN999; do
+            if git grep -n "$target" -- "$PERSISTENT_FLOW_INDEX" database/learned-solution-bank.json; then
+              echo "Heldout target $target leaked into persistent knowledge" >&2
+              exit 1
+            fi
+            if grep -Fq "$target" "$FLOW_INDEX"; then
+              echo "Heldout target $target leaked into generic campaign flow knowledge" >&2
+              exit 1
+            fi
+          done
+          echo "No heldout GEN target references in persistent or generic learned knowledge."
+
+      - name: Run strict fragment-only transfer matrix
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          rm -rf "$REPORT_ROOT"
+          python tools/evaluate_holdout_matrix.py \
+            --manifest "$MANIFEST" \
+            --puzzle-root "$PUZZLE_ROOT" \
+            --flow-index "$FLOW_INDEX" \
+            --output-dir "$REPORT_ROOT" \
+            --objective balanced \
+            --composition-limit 30 \
+            --strict-isolation
+          test -s "$REPORT_ROOT/matrix.json"
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          test "$(git -C .tools/omsim rev-parse HEAD)" = "$OMSIM_COMMIT"
+
+      - name: Validate every locally complete candidate with OMSim
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/omsim"
+          shopt -s nullglob
+          for solution in "$REPORT_ROOT"/solutions/*.solution; do
+            target="$(basename "$solution" .solution)"
+            set +e
+            python tools/omsim_adapter/validate.py \
+              "$PUZZLE_ROOT/${target}.puzzle" \
+              "$solution" \
+              --omsim "$OMSIM_BINARY" \
+              --output "$REPORT_ROOT/omsim/${target}.json"
+            status=$?
+            set -e
+            echo "$status" > "$REPORT_ROOT/omsim/${target}.exit-code"
+          done
+
+      - name: Finalize benchmark matrix
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          root = Path(os.environ['REPORT_ROOT'])
+          matrix_path = root / 'matrix.json'
+          matrix = json.loads(matrix_path.read_text(encoding='utf-8'))
+          valid_count = 0
+          attempted = 0
+          for target in matrix['targets']:
+              target_id = target['id']
+              path = root / 'omsim' / f'{target_id}.json'
+              omsim = None
+              if path.is_file():
+                  attempted += 1
+                  try:
+                      omsim = json.loads(path.read_text(encoding='utf-8'))
+                  except json.JSONDecodeError:
+                      omsim = {'valid': False, 'issues': ['invalid OMSim adapter JSON']}
+                  if omsim.get('valid') is True:
+                      valid_count += 1
+              target['omsim'] = omsim
+              target['omsimValid'] = bool(omsim and omsim.get('valid') is True)
+
+          matrix['summary']['omsimAttemptedCount'] = attempted
+          matrix['summary']['omsimValidCount'] = valid_count
+          matrix['summary']['omsimValidRate'] = valid_count / matrix['summary']['targetCount'] if matrix['summary']['targetCount'] else 0.0
+          matrix_path.write_text(json.dumps(matrix, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          summary = matrix['summary']
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Strict blind 24-hour seed matrix\n\n')
+              out.write(f"- targets: {summary['targetCount']}\n")
+              out.write(f"- planner supported: {summary['plannerSupportedCount']}\n")
+              out.write(f"- fragment assembly reached: {summary['assemblyReachedCount']}\n")
+              out.write(f"- locally complete: {summary['localCompleteCount']}\n")
+              out.write(f"- OMSim valid: {summary['omsimValidCount']}\n")
+              out.write(f"- stages: {summary['stageCounts']}\n")
+              out.write(f"- planners: {summary['plannerStrategyCounts']}\n")
+          print(json.dumps(summary, ensure_ascii=False))
+          PY
+
+      - name: Persist compact benchmark checkpoint
+        if: github.ref_name == 'feature/critelli-2026-public-corpus' && github.actor == 'Fandalah-tech'
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          matrix = json.loads((Path(os.environ['REPORT_ROOT']) / 'matrix.json').read_text(encoding='utf-8'))
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          compact = {
+              'schemaVersion': '0.2.0',
+              'kind': 'heldout-24hour-latest-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'genericFlowRunId': pointer.get('runId'),
+              'genericFlowSourceCommit': pointer.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'summary': matrix['summary'],
+              'targets': [],
+          }
+          for item in matrix['targets']:
+              report = item.get('report') or {}
+              result = report.get('result') or {}
+              composition = report.get('compositionDiagnostics') or {}
+              compact['targets'].append({
+                  'id': item.get('id'),
+                  'stage': item.get('stage'),
+                  'plannerStrategy': item.get('plannerStrategy'),
+                  'plannerSupported': item.get('plannerSupported'),
+                  'rankedAssemblyCount': item.get('rankedAssemblyCount'),
+                  'complete': item.get('complete'),
+                  'omsimValid': item.get('omsimValid'),
+                  'candidate': result.get('candidate'),
+                  'route': result.get('route'),
+                  'localMetrics': result.get('localMetrics'),
+                  'errorType': result.get('errorType'),
+                  'error': result.get('error'),
+                  'requiredRelations': composition.get('requiredRelations'),
+                  'bestAssemblies': composition.get('bestAssemblies'),
+              })
+          output = Path(os.environ['LATEST_SUMMARY'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(compact, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_SUMMARY"
+          if git diff --cached --quiet; then
+            echo "Heldout checkpoint unchanged."
+            exit 0
+          fi
+          git commit -m "Update blind heldout checkpoint [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - name: Upload blind matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-24hour-seed-${{ github.run_id }}
+          path: reports/heldout-24hour-seed/
+          if-no-files-found: error
+          retention-days: 30

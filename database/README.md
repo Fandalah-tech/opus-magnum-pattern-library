@@ -13,6 +13,9 @@ The Codex database is metadata-first. Binary `.puzzle` and `.solution` files are
 7. `tools/build_puzzle_feature_index.py` creates comparable puzzle-side fingerprints.
 8. `tools/retrieve_mechanisms.py` ranks full mechanisms for a target puzzle.
 9. `tools/build_fragment_index.py` decomposes historical solutions into reusable local functional fragments.
+10. `tools/audit_triplex_corpus.py` classifies collision-aware engine outcomes and exposes durable failure categories.
+11. `tools/build_engine_fragment_flow_index.py` promotes only engine-complete traces into reusable, channel-aware fragment transitions.
+12. `tools/generate_composed_candidates.py` materializes coherent transition subgraphs, replays `.solution` candidates and records repair outcomes.
 
 ## Solver-oriented identities
 
@@ -20,7 +23,7 @@ The Codex database is metadata-first. Binary `.puzzle` and `.solution` files are
 - `canonicalMechanismHash` also normalizes program timing.
 - `puzzleFeatureFingerprint` hashes solver-relevant reagent/product chemistry, canonical molecule topology, available parts, output scale and Production constraints.
 
-Molecule fingerprints are invariant to translation and 60-degree rotations; reflection is intentionally preserved.
+Molecule fingerprints are invariant to translation and 60-degree rotations; reflection is intentionally preserved. Triplex red, black and yellow channels are part of the molecule identity, so feature indexes created before schema `0.2.0` should be rebuilt.
 
 ## Cross-puzzle retrieval
 
@@ -40,7 +43,9 @@ Whole historical solutions are useful references but are too coarse for composit
 
 Each anchor is bundled with arms structurally capable of reaching it and the local rails used by those arms. The resulting fragment is canonicalized independently of its source puzzle and grouped by `(role, canonicalMechanismHash)`. The index tracks occurrence frequency, source-puzzle diversity, structural variants and source samples.
 
-This first fragment layer is intentionally structural. It identifies plausible reusable neighborhoods without claiming that a molecule actually traverses every structural edge. Cycle-accurate simulation traces will later promote structural candidates into confirmed flow fragments.
+The structural fragment layer identifies plausible reusable neighborhoods without claiming that a molecule traverses every structural edge. The engine fragment-flow layer now promotes only collision-aware, output-complete traces. Its transitions retain geometry, timing, source-solution coherence and exact red/black/yellow triplex events. The same index embeds engine-validated representative fragment geometry and convergence motifs, so a selected graph can be materialized without a second structural index. The composition planner can require a minimum number of engine-validated source solutions, so unvalidated structural frequency cannot outrank proven evidence by accident.
+
+Serialized track cells are relative offsets from the track origin. Canonicalization rotates those offsets without translating them, and layout transplantation preserves that representation. This is required for generated mechanisms to remain physically equivalent to their learned source geometry.
 
 ## Building the database layers
 
@@ -49,11 +54,16 @@ python tools/build_puzzle_feature_index.py
 python tools/analyze_solution_archive.py
 python tools/build_solver_index.py
 python tools/build_fragment_index.py
+python tools/audit_triplex_corpus.py --puzzle-root <puzzles> --solution-root <solutions> --output <audit.json> --report <audit.txt>
+python tools/build_engine_fragment_flow_index.py --audit <audit.json> --output <engine-flow.json>
+python tools/generate_composed_candidates.py <target.puzzle> --flow-index <engine-flow.json> --fragment-index <engine-flow.json> --min-engine-validated-solutions 1 --write-best <candidate.solution>
 python tools/retrieve_mechanisms.py path\to\target.puzzle --limit 25
 ```
 
 Default generated outputs are `database/puzzle-feature-index.json`, `database/solver-index.json` and `database/fragment-index.json`. Large indexes may remain outside Git and be rebuilt from source corpora.
 
-## Next database step
+## Current materialization status
 
-The next major milestone is **trace-confirmed fragment learning**: feed real simulator/replay traces into the fragment layer to identify actual molecule transfers between input, conversion, bonding, transfer and output stages. Once those dynamic edges exist, the solver can begin composing candidate solution graphs from independently reusable fragments rather than cloning historical layouts.
+Closed-loop fragment assembly is operational for the in-corpus triplex target `OM2021_W1`. The planner recognized that its one reagent still branches and reconverges, selected source-solution-coherent subgraphs, materialized ten binary candidates, and passed all ten through both `opus_engine` and OMSim. Compact outcome records can be persisted with `--outcome-index`.
+
+The next major milestone is **held-out composition**: rebuild evidence with every target-puzzle solution excluded, compose only from cross-puzzle mechanisms, then use the same replay and repair loop to measure genuinely unseen transfer rather than in-corpus reconstruction.

@@ -53,6 +53,7 @@ def test_required_relations_ignore_transport_operations():
 def test_requirements_report_multi_source_convergence():
     requirements = manufacturing_requirements(_plan())
     assert requirements["sourceCount"] == 2
+    assert requirements["convergenceInputCount"] == 2
     assert requirements["requiresConvergence"] is True
 
 
@@ -78,3 +79,33 @@ def test_partial_coverage_can_be_kept_for_diagnostics():
     assert len(ranked) == 1
     assert ranked[0]["manufacturing"]["coverage"]["missing"] == {"calcify": 1}
     assert ranked[0]["functionalCoverageScore"] < 1.0
+
+
+def test_triplex_plan_requires_exact_engine_observable_capabilities():
+    plan = ManufacturingPlan(
+        strategy="triplex-extension-v1",
+        supported=True,
+        reason=None,
+        product_index=0,
+        atom_flows=(),
+        operations=(
+            ManufacturingOperation("u", "unbond", ("chain",), ("a", "b"), glyph="unbonder"),
+            ManufacturingOperation("d", "duplicate", ("a",), ("a", "fire"), glyph="glyph-duplication"),
+            ManufacturingOperation("b", "bond", ("a", "fire", "b"), ("product",), glyph="bonder-prisma"),
+            ManufacturingOperation("o", "deliver", ("product",), ("output",)),
+        ),
+        required_glyphs=("unbonder", "triplex-bonder", "duplication"),
+    )
+
+    assert required_flow_relations(plan) == {
+        "bond-removed": 1,
+        "duplicate": 1,
+        "triplex-bond-created:red": 1,
+        "triplex-bond-created:black": 1,
+        "triplex-bond-created:yellow": 1,
+        "delivered": 1,
+    }
+    requirements = manufacturing_requirements(plan)
+    assert requirements["sourceCount"] == 0
+    assert requirements["convergenceInputCount"] == 3
+    assert requirements["requiresConvergence"] is True

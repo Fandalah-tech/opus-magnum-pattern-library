@@ -10,7 +10,12 @@ ELEMENTS = {
     7: "gold", 8: "silver", 9: "copper", 10: "iron", 11: "tin", 12: "lead",
     13: "vitae", 14: "mors", 15: "repeat", 16: "quintessence",
 }
-BONDS = {1: "normal", 14: "triplex"}
+TRIPLEX_BOND_CHANNELS = (
+    (0x02, "red"),
+    (0x04, "black"),
+    (0x08, "yellow"),
+)
+KNOWN_BOND_MASK = 0x0F
 GLYPH_FLAGS = {
     0x0001: ["bonder"], 0x0002: ["unbonder"], 0x0004: ["multibonder"],
     0x0008: ["triplex-bonder"], 0x0010: ["calcification"],
@@ -18,6 +23,70 @@ GLYPH_FLAGS = {
     0x0100: ["animismus"], 0x0200: ["disposal"],
     0x0400: ["unification", "dispersion"],
 }
+
+
+def triplex_channels_from_code(bond_code: int) -> tuple[str, ...]:
+    return tuple(
+        name for mask, name in TRIPLEX_BOND_CHANNELS if int(bond_code) & mask
+    )
+
+
+def triplex_bond_channels(bond: dict) -> tuple[str, ...]:
+    """Return triplex channels in canonical red/black/yellow order."""
+
+    if str(bond.get("type") or "normal") != "triplex":
+        return ()
+    explicit = set(str(value) for value in bond.get("triplexChannels") or ())
+    channels = tuple(
+        name for _, name in TRIPLEX_BOND_CHANNELS if name in explicit
+    )
+    if channels:
+        return channels
+    raw_code = bond.get("rawCode")
+    if isinstance(raw_code, int):
+        return triplex_channels_from_code(raw_code)
+    return ()
+
+
+def canonical_bond_identity(bond: dict) -> str:
+    """Preserve exact triplex chemistry while accepting legacy models."""
+
+    bond_type = str(bond.get("type") or "normal")
+    channels = triplex_bond_channels(bond)
+    if bond_type == "triplex" and channels:
+        return f"triplex:{'+'.join(channels)}"
+    return bond_type
+
+
+def expanded_bond_types(bond: dict) -> tuple[str, ...]:
+    """Expand a parsed bond into the bond kinds stored by opus_engine."""
+
+    bond_type = str(bond.get("type") or "normal")
+    channels = triplex_bond_channels(bond)
+    if bond_type == "triplex" and channels:
+        return tuple(f"triplex-{channel}" for channel in channels)
+    return (bond_type,)
+
+
+def _bond_descriptor(bond_code: int, kind: str, index: int) -> dict:
+    unknown_bits = bond_code & ~KNOWN_BOND_MASK
+    if bond_code == 0 or unknown_bits:
+        raise ParseError(f"Unknown bond code {bond_code} in {kind} {index}")
+
+    has_normal_bond = bool(bond_code & 0x01)
+    triplex_channels = triplex_channels_from_code(bond_code)
+    if has_normal_bond and triplex_channels:
+        raise ParseError(
+            f"Unsupported mixed normal/triplex bond code {bond_code} in {kind} {index}"
+        )
+
+    descriptor = {
+        "type": "normal" if has_normal_bond else "triplex",
+        "rawCode": bond_code,
+    }
+    if triplex_channels:
+        descriptor["triplexChannels"] = list(triplex_channels)
+    return descriptor
 
 
 def _molecule(reader: BinaryReader, kind: str, index: int) -> dict:
@@ -42,13 +111,12 @@ def _molecule(reader: BinaryReader, kind: str, index: int) -> dict:
         raise ParseError(f"Invalid bond count {bond_count} for {kind} {index}")
     for bond_index in range(bond_count):
         bond_code = reader.byte()
-        if bond_code not in BONDS:
-            raise ParseError(f"Unknown bond code {bond_code} in {kind} {index}")
+        descriptor = _bond_descriptor(bond_code, kind, index)
         start = (reader.sbyte(), reader.sbyte())
         end = (reader.sbyte(), reader.sbyte())
         if start not in positions or end not in positions:
             raise ParseError(f"Bond {bond_index} references a missing atom in {kind} {index}")
-        bonds.append({"type": BONDS[bond_code], "from": list(start), "to": list(end)})
+        bonds.append({**descriptor, "from": list(start), "to": list(end)})
 
     return {"id": f"{kind}-{index}", "atoms": atoms, "bonds": bonds}
 
@@ -87,7 +155,7 @@ def parse_puzzle_bytes(data: bytes, *, source_name: str | None = None) -> dict:
     production = reader.boolean()
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.1.1",
         "format": {"kind": "puzzle", "version": version},
         "source": {
             "name": source_name,

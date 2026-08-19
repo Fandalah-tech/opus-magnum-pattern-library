@@ -148,3 +148,190 @@ def test_build_outcome_index_merges_existing_records():
     assert updated["summary"]["outcomeCount"] == 1
     assert updated["summary"]["solvedOutcomeCount"] == 1
     assert updated["outcomes"][0]["solved"] is True
+
+
+def test_component_timing_oracle_outcomes_are_learned_compactly():
+    generation = _generation(timing_complete=False)
+    generation["candidates"][0]["componentTimingSearch"] = {
+        "summary": {
+            "searchedVariantCount": 12,
+            "completeVariantCount": 0,
+            "hasCompleteSolution": False,
+            "oracleValidatedVariantCount": 12,
+            "oracleCompleteVariantCount": 0,
+            "oracleOutcomeCounts": {"collision": 7, "cycle-limit": 5},
+        },
+        "variants": [],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    component_attempt = next(
+        item for item in record["attempts"] if item["repair"] == "component-timing"
+    )
+
+    assert component_attempt["oracleValidatedVariantCount"] == 12
+    assert component_attempt["oracleCompleteVariantCount"] == 0
+    assert component_attempt["oracleOutcomeCounts"] == {
+        "collision": 7,
+        "cycle-limit": 5,
+    }
+
+
+def test_global_chemistry_transplant_stage_is_learned_by_source_assembly():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [
+                {"sourceCandidateRank": 1, "sourceVariantIndex": 20},
+            ],
+            "searchedVariantCount": 1500,
+            "oraclePromotedVariantCount": 120,
+            "oracleStableActiveFullOperationVariantCount": 8,
+            "hasOracleStableActiveTransplant": True,
+            "oracleOutcomeCounts": {"collision": 112, "cycle-limit": 8},
+        },
+        "variants": [
+            {
+                "variantIndex": 511,
+                "sourceCandidateRank": 1,
+                "validation": {
+                    "complete": False,
+                    "totalDeficit": 6,
+                    "completedCycles": 160,
+                    "terminatedWithError": False,
+                },
+            },
+        ],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item for item in record["attempts"] if item["repair"] == "chemistry-transplant"
+    )
+
+    assert attempt["succeeded"] is False
+    assert attempt["stageSucceeded"] is True
+    assert attempt["oracleStableActiveVariantCount"] == 8
+    assert attempt["oracleOutcomeCounts"] == {"collision": 112, "cycle-limit": 8}
+    assert record["bestProgressSource"] == "chemistry-transplant"
+
+
+def test_ordered_chemistry_frontier_is_learned_as_a_distinct_stage():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [{"sourceCandidateRank": 1}],
+            "searchedVariantCount": 1500,
+            "oraclePromotedVariantCount": 120,
+            "oracleStableActiveFullOperationVariantCount": 8,
+            "hasOracleStableActiveTransplant": True,
+        },
+        "variants": [],
+    }
+    generation["orderedChemistrySearch"] = {
+        "summary": {
+            "searchedPrismVariantCount": 157,
+            "searchedCalcificationVariantCount": 38,
+            "oracleStableCompleteTriplexCount": 12,
+            "oracleStableCalcifiedCompleteTriplexCount": 22,
+            "hasPersistentCalcifiedCompleteTriplex": True,
+            "oracleCompleteVariantCount": 0,
+            "oraclePrismOutcomeCounts": {"collision": 2, "cycle-limit": 12},
+            "oracleCalcificationOutcomeCounts": {"cycle-limit": 22},
+        },
+        "variants": [],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item for item in record["attempts"] if item["repair"] == "ordered-chemistry"
+    )
+
+    assert attempt["searchedVariantCount"] == 195
+    assert attempt["succeeded"] is False
+    assert attempt["stageSucceeded"] is True
+    assert attempt["oracleStableCompleteTriplexCount"] == 12
+    assert attempt["oracleStableCalcifiedCompleteTriplexCount"] == 22
+
+
+def test_single_product_frontier_is_learned_without_claiming_full_completion():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [{"sourceCandidateRank": 1}],
+            "hasOracleStableActiveTransplant": True,
+        },
+        "variants": [],
+    }
+    generation["orderedChemistrySearch"] = {
+        "summary": {"hasPersistentCalcifiedCompleteTriplex": True},
+        "variants": [],
+    }
+    generation["productCompletionSearch"] = {
+        "summary": {
+            "generatedCompletionCount": 3,
+            "localSingleProductCompleteCount": 3,
+            "oraclePromotedCount": 3,
+            "oracleSingleProductCompleteCount": 3,
+            "hasOracleSingleProduct": True,
+            "bestSingleProductCycle": 61,
+            "oracleOutcomeCounts": {"product-complete": 3},
+        },
+        "variants": [],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item
+        for item in record["attempts"]
+        if item["repair"] == "single-product-completion"
+    )
+
+    assert attempt["succeeded"] is False
+    assert attempt["stageSucceeded"] is True
+    assert attempt["oracleSingleProductCompleteCount"] == 3
+    assert attempt["bestSingleProductCycle"] == 61
+    assert record["solved"] is False
+
+
+def test_repeating_product_frontier_counts_as_a_full_solve():
+    generation = _generation(timing_complete=False)
+    generation["chemistryTransplantSearch"] = {
+        "summary": {
+            "selectedMechanicalParents": [{"sourceCandidateRank": 1}],
+            "hasOracleStableActiveTransplant": True,
+        },
+        "variants": [],
+    }
+    generation["orderedChemistrySearch"] = {
+        "summary": {"hasPersistentCalcifiedCompleteTriplex": True},
+        "variants": [],
+    }
+    generation["repeatingProductSearch"] = {
+        "summary": {
+            "generatedRepeatingCompletionCount": 3,
+            "localFullProductCompleteCount": 3,
+            "oraclePromotedCount": 3,
+            "oracleFullProductCompleteCount": 3,
+            "hasOracleFullPuzzle": True,
+            "bestFullProductCycle": 356,
+            "oracleOutcomeCounts": {"product-complete": 3},
+        },
+        "variants": [{
+            "sourceCandidateRank": 1,
+            "fullProductOracleOutcome": "product-complete",
+        }],
+    }
+
+    record = generation_outcome_records(_puzzle(), generation)[0]
+    attempt = next(
+        item
+        for item in record["attempts"]
+        if item["repair"] == "repeating-product-completion"
+    )
+
+    assert attempt["succeeded"] is True
+    assert attempt["oracleFullProductCompleteCount"] == 3
+    assert record["bestProgressSource"] == "repeating-product-completion"
+    assert record["bestProgress"]["totalDelivered"] == 6
+    assert record["solved"] is True

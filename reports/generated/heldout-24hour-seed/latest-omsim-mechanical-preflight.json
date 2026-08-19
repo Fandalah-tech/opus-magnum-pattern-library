@@ -1,0 +1,293 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "heldout-omsim-mechanical-preflight-checkpoint",
+  "runId": "32267063956",
+  "sourceCommit": "252f6932363dd9abde100a0e3c967dc3252b083c",
+  "goldRunId": "32190220141",
+  "targetSolutionBytesUsed": 0,
+  "variantCount": 7,
+  "best": {
+    "name": "overlap-00-removed",
+    "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-removed.solution",
+    "mode": "remove-overlap-arm",
+    "overlap": {
+      "armPartId": "part-15",
+      "armBase": [
+        8,
+        1
+      ],
+      "armRotation": 0,
+      "armLength": 1,
+      "preservedTip": [
+        9,
+        1
+      ],
+      "overlappingAtomId": "part-10-spawn-0-atom-0",
+      "overlappingElement": "iron",
+      "evidence": "generated-initial-reagent-arm-base-overlap"
+    },
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+    "failureCycle": 380
+  },
+  "results": [
+    {
+      "name": "overlap-00-removed",
+      "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-removed.solution",
+      "mode": "remove-overlap-arm",
+      "overlap": {
+        "armPartId": "part-15",
+        "armBase": [
+          8,
+          1
+        ],
+        "armRotation": 0,
+        "armLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "overlappingAtomId": "part-10-spawn-0-atom-0",
+        "overlappingElement": "iron",
+        "evidence": "generated-initial-reagent-arm-base-overlap"
+      },
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 380 at 7 0",
+      "failureCycle": 380
+    },
+    {
+      "name": "overlap-00-rotation-3",
+      "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-rotation-3.solution",
+      "mode": "relocate-overlap-arm",
+      "overlap": {
+        "armPartId": "part-15",
+        "armBase": [
+          8,
+          1
+        ],
+        "armRotation": 0,
+        "armLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "overlappingAtomId": "part-10-spawn-0-atom-0",
+        "overlappingElement": "iron",
+        "evidence": "generated-initial-reagent-arm-base-overlap"
+      },
+      "newRotation": 3,
+      "repair": {
+        "armPartId": "part-15",
+        "oldBase": [
+          8,
+          1
+        ],
+        "oldRotation": 0,
+        "oldLength": 1,
+        "newBase": [
+          10,
+          1
+        ],
+        "newRotation": 3,
+        "newLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "targetSolutionBytesUsed": 0
+      },
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 74 at 10 1",
+      "failureCycle": 74
+    },
+    {
+      "name": "overlap-00-rotation-5",
+      "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-rotation-5.solution",
+      "mode": "relocate-overlap-arm",
+      "overlap": {
+        "armPartId": "part-15",
+        "armBase": [
+          8,
+          1
+        ],
+        "armRotation": 0,
+        "armLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "overlappingAtomId": "part-10-spawn-0-atom-0",
+        "overlappingElement": "iron",
+        "evidence": "generated-initial-reagent-arm-base-overlap"
+      },
+      "newRotation": 5,
+      "repair": {
+        "armPartId": "part-15",
+        "oldBase": [
+          8,
+          1
+        ],
+        "oldRotation": 0,
+        "oldLength": 1,
+        "newBase": [
+          8,
+          2
+        ],
+        "newRotation": 5,
+        "newLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "targetSolutionBytesUsed": 0
+      },
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 74 at 8 2",
+      "failureCycle": 74
+    },
+    {
+      "name": "overlap-00-rotation-1",
+      "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-rotation-1.solution",
+      "mode": "relocate-overlap-arm",
+      "overlap": {
+        "armPartId": "part-15",
+        "armBase": [
+          8,
+          1
+        ],
+        "armRotation": 0,
+        "armLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "overlappingAtomId": "part-10-spawn-0-atom-0",
+        "overlappingElement": "iron",
+        "evidence": "generated-initial-reagent-arm-base-overlap"
+      },
+      "newRotation": 1,
+      "repair": {
+        "armPartId": "part-15",
+        "oldBase": [
+          8,
+          1
+        ],
+        "oldRotation": 0,
+        "oldLength": 1,
+        "newBase": [
+          9,
+          0
+        ],
+        "newRotation": 1,
+        "newLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "targetSolutionBytesUsed": 0
+      },
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 68 at 9 0",
+      "failureCycle": 68
+    },
+    {
+      "name": "baseline-complete-outputs",
+      "solution": "reports/heldout-omsim-mechanical/variants/baseline-complete-outputs.solution",
+      "mode": "baseline",
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 1 at 8 1",
+      "failureCycle": 1
+    },
+    {
+      "name": "overlap-00-rotation-2",
+      "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-rotation-2.solution",
+      "mode": "relocate-overlap-arm",
+      "overlap": {
+        "armPartId": "part-15",
+        "armBase": [
+          8,
+          1
+        ],
+        "armRotation": 0,
+        "armLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "overlappingAtomId": "part-10-spawn-0-atom-0",
+        "overlappingElement": "iron",
+        "evidence": "generated-initial-reagent-arm-base-overlap"
+      },
+      "newRotation": 2,
+      "repair": {
+        "armPartId": "part-15",
+        "oldBase": [
+          8,
+          1
+        ],
+        "oldRotation": 0,
+        "oldLength": 1,
+        "newBase": [
+          10,
+          0
+        ],
+        "newRotation": 2,
+        "newLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "targetSolutionBytesUsed": 0
+      },
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 1 at 10 0",
+      "failureCycle": 1
+    },
+    {
+      "name": "overlap-00-rotation-4",
+      "solution": "reports/heldout-omsim-mechanical/variants/overlap-00-rotation-4.solution",
+      "mode": "relocate-overlap-arm",
+      "overlap": {
+        "armPartId": "part-15",
+        "armBase": [
+          8,
+          1
+        ],
+        "armRotation": 0,
+        "armLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "overlappingAtomId": "part-10-spawn-0-atom-0",
+        "overlappingElement": "iron",
+        "evidence": "generated-initial-reagent-arm-base-overlap"
+      },
+      "newRotation": 4,
+      "repair": {
+        "armPartId": "part-15",
+        "oldBase": [
+          8,
+          1
+        ],
+        "oldRotation": 0,
+        "oldLength": 1,
+        "newBase": [
+          9,
+          2
+        ],
+        "newRotation": 4,
+        "newLength": 1,
+        "preservedTip": [
+          9,
+          1
+        ],
+        "targetSolutionBytesUsed": 0
+      },
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 1 at 9 2",
+      "failureCycle": 1
+    }
+  ],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "0.1.0",
+  "targetPuzzle": "OM2021_W1",
+  "strictHeldout": true,
+  "targetSolutionBytesUsed": 0,
+  "baseline": {
+    "oracleStableParentCount": 90,
+    "oracleStableActiveParentCount": 0
+  },
+  "search": {
+    "selectedMechanicalParentCount": 4,
+    "observedGrabCellRange": [8, 12],
+    "searchedVariantCount": 1500,
+    "localCycles": 160,
+    "localErrorFreeVariantCount": 480,
+    "localActiveFullOperationVariantCount": 1416,
+    "oraclePromotedVariantCount": 120,
+    "oracleWorkers": 10,
+    "selectionPolicy": "oracle-stability-then-active-operation-coverage"
+  },
+  "oracle": {
+    "outcomes": {
+      "collision": 112,
+      "cycle-limit": 8
+    },
+    "stableActiveFullOperationVariantCount": 8,
+    "completeVariantCount": 0
+  },
+  "frozenMechanism": {
+    "sourceCandidateRank": 1,
+    "sourceVariantIndex": 20,
+    "mechanicalFingerprint": "20d3bae1ce26c4c685196ee45680992b86476a95b387aa74f4cd4c4036ce4970",
+    "programEdit": {
+      "partId": "part-2",
+      "partType": "piston",
+      "cutCycle": 1,
+      "delta": 1,
+      "shiftedInstructionCount": 976
+    }
+  },
+  "stableVariants": [
+    {
+      "variantIndex": 511,
+      "inputPosition": [0, -2],
+      "inputRotation": 2,
+      "anchoredAtomIndex": 2,
+      "grabCycle": 48,
+      "grabPosition": [-1, -1],
+      "prismChannel": "red",
+      "atomGrabbed": 3,
+      "atomsDropped": 3,
+      "inputRespawned": 3,
+      "atomDuplicated": 4,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 512,
+      "inputPosition": [0, -2],
+      "inputRotation": 2,
+      "anchoredAtomIndex": 2,
+      "grabCycle": 48,
+      "grabPosition": [-1, -1],
+      "prismChannel": "yellow",
+      "atomGrabbed": 3,
+      "atomsDropped": 3,
+      "inputRespawned": 3,
+      "atomDuplicated": 4,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 519,
+      "inputPosition": [0, -2],
+      "inputRotation": 5,
+      "anchoredAtomIndex": 0,
+      "grabCycle": 48,
+      "grabPosition": [-1, -1],
+      "prismChannel": "black",
+      "atomGrabbed": 3,
+      "atomsDropped": 3,
+      "inputRespawned": 3,
+      "atomDuplicated": 4,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 520,
+      "inputPosition": [0, -2],
+      "inputRotation": 5,
+      "anchoredAtomIndex": 0,
+      "grabCycle": 48,
+      "grabPosition": [-1, -1],
+      "prismChannel": "red",
+      "atomGrabbed": 3,
+      "atomsDropped": 3,
+      "inputRespawned": 3,
+      "atomDuplicated": 4,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 521,
+      "inputPosition": [0, -2],
+      "inputRotation": 5,
+      "anchoredAtomIndex": 0,
+      "grabCycle": 48,
+      "grabPosition": [-1, -1],
+      "prismChannel": "yellow",
+      "atomGrabbed": 3,
+      "atomsDropped": 3,
+      "inputRespawned": 3,
+      "atomDuplicated": 4,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 483,
+      "inputPosition": [-2, -2],
+      "inputRotation": 3,
+      "anchoredAtomIndex": 0,
+      "grabCycle": 17,
+      "grabPosition": [-1, -2],
+      "prismChannel": "black",
+      "atomGrabbed": 4,
+      "atomsDropped": 4,
+      "inputRespawned": 1,
+      "atomDuplicated": 2,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 484,
+      "inputPosition": [-2, -2],
+      "inputRotation": 3,
+      "anchoredAtomIndex": 0,
+      "grabCycle": 17,
+      "grabPosition": [-1, -2],
+      "prismChannel": "red",
+      "atomGrabbed": 4,
+      "atomsDropped": 4,
+      "inputRespawned": 1,
+      "atomDuplicated": 2,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    },
+    {
+      "variantIndex": 485,
+      "inputPosition": [-2, -2],
+      "inputRotation": 3,
+      "anchoredAtomIndex": 0,
+      "grabCycle": 17,
+      "grabPosition": [-1, -2],
+      "prismChannel": "yellow",
+      "atomGrabbed": 4,
+      "atomsDropped": 4,
+      "inputRespawned": 1,
+      "atomDuplicated": 2,
+      "operationCoverage": ["unbond", "duplicate", "bond"],
+      "omsimOutcome": "cycle-limit"
+    }
+  ],
+  "strictCompletionCount": 0
+}

@@ -1,0 +1,1929 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-adjacent-pair-finish-checkpoint",
+  "runId": "32273921532",
+  "sourceCommit": "a1a5f44e1af5de7c805c22d847051531069bb7d4",
+  "targetSolutionBytesUsed": 0,
+  "silverRunId": "32273529838",
+  "request": {
+    "maxCycles": 1500,
+    "adjacentLimit": 24,
+    "deliveryLimit": 24
+  },
+  "adjacentSummary": {
+    "maxCycles": 1500,
+    "element": "silver",
+    "observationCount": 2,
+    "freeAdjacentObservationCount": 1,
+    "searchedVariantCount": 2,
+    "advancingVariantCount": 2,
+    "returnedVariantCount": 2,
+    "goldReached": true,
+    "targetSolutionBytesUsed": 0
+  },
+  "baselinePurificationProfile": {
+    "count": 4,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2
+    },
+    "cyclesByElement": {
+      "copper": [
+        1399,
+        1483
+      ],
+      "silver": [
+        1399,
+        1483
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 1500,
+    "terminatedWithError": false
+  },
+  "observations": [
+    {
+      "cycle": 1484,
+      "element": "silver",
+      "firstAtomId": "part-29-purified-1",
+      "secondAtomId": "part-35-purified-3",
+      "firstPosition": [
+        7,
+        -6
+      ],
+      "secondPosition": [
+        7,
+        -5
+      ],
+      "firstHeld": false,
+      "secondHeld": false,
+      "firstBonded": false,
+      "secondBonded": false,
+      "alreadyAdjacent": true
+    },
+    {
+      "cycle": 1486,
+      "element": "silver",
+      "firstAtomId": "part-29-purified-1",
+      "secondAtomId": "part-35-purified-3",
+      "firstPosition": [
+        7,
+        -5
+      ],
+      "secondPosition": [
+        7,
+        -4
+      ],
+      "firstHeld": true,
+      "secondHeld": true,
+      "firstBonded": false,
+      "secondBonded": false,
+      "alreadyAdjacent": true
+    }
+  ],
+  "adjacentCandidateCount": 2,
+  "goldBeforeOfficialCollisionCount": 2,
+  "adjacentCandidates": [
+    {
+      "candidateIndex": 0,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/adjacent/candidate-00.solution",
+      "observation": {
+        "cycle": 1484,
+        "element": "silver",
+        "firstAtomId": "part-29-purified-1",
+        "secondAtomId": "part-35-purified-3",
+        "firstPosition": [
+          7,
+          -6
+        ],
+        "secondPosition": [
+          7,
+          -5
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": true
+      },
+      "purifierPose": {
+        "origin": [
+          7,
+          -6
+        ],
+        "rotation": 1,
+        "second": [
+          7,
+          -5
+        ],
+        "output": [
+          6,
+          -5
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ],
+          "gold": [
+            1483
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 1500,
+        "terminatedWithError": false
+      },
+      "goldCycle": 1483,
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      },
+      "goldBeforeOfficialCollision": true
+    },
+    {
+      "candidateIndex": 1,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/adjacent/candidate-01.solution",
+      "observation": {
+        "cycle": 1484,
+        "element": "silver",
+        "firstAtomId": "part-29-purified-1",
+        "secondAtomId": "part-35-purified-3",
+        "firstPosition": [
+          7,
+          -6
+        ],
+        "secondPosition": [
+          7,
+          -5
+        ],
+        "firstHeld": false,
+        "secondHeld": false,
+        "firstBonded": false,
+        "secondBonded": false,
+        "alreadyAdjacent": true
+      },
+      "purifierPose": {
+        "origin": [
+          7,
+          -5
+        ],
+        "rotation": 4,
+        "second": [
+          7,
+          -6
+        ],
+        "output": [
+          8,
+          -6
+        ]
+      },
+      "purificationProfile": {
+        "count": 5,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2,
+          "gold": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            1399,
+            1483
+          ],
+          "silver": [
+            1399,
+            1483
+          ],
+          "gold": [
+            1483
+          ]
+        },
+        "frontierIndex": 5,
+        "frontierElement": "gold",
+        "goldReached": true,
+        "completedCycles": 1500,
+        "terminatedWithError": false
+      },
+      "goldCycle": 1483,
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      },
+      "goldBeforeOfficialCollision": true
+    }
+  ],
+  "deliveryCandidateCount": 48,
+  "deliveryCandidates": [
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 4,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-04.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 5,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-05.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 6,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-06.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 7,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-07.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 16,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-16.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 17,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-17.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 18,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-18.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 19,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-19.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 0,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-00.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 1,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-01.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 2,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-02.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 3,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-03.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 4,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-04.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 5,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-05.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 6,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-06.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 7,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-07.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 8,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-08.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 9,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-09.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 10,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-10.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 11,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-11.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 12,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-12.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 13,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-13.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 14,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-14.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 15,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-15.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 16,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-16.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 17,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-17.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 18,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-18.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 19,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-19.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 20,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-20.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 21,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-21.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 22,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-22.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 1,
+      "deliveryIndex": 23,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-01-candidate-23.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 8,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-08.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 6 -4",
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          6,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 9,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-09.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 6 -4",
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          6,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 20,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-20.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 6 -4",
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          6,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 21,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-21.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 6 -4",
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          6,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 10,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-10.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1430 at 5 -4",
+        "collisionCycle": 1430,
+        "collisionLocation": [
+          5,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 11,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-11.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1430 at 5 -4",
+        "collisionCycle": 1430,
+        "collisionLocation": [
+          5,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 22,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-22.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1430 at 5 -4",
+        "collisionCycle": 1430,
+        "collisionLocation": [
+          5,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 23,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-23.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1430 at 5 -4",
+        "collisionCycle": 1430,
+        "collisionLocation": [
+          5,
+          -4
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 2,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-02.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1400 at 6 -6",
+        "collisionCycle": 1400,
+        "collisionLocation": [
+          6,
+          -6
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 3,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-03.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1400 at 6 -6",
+        "collisionCycle": 1400,
+        "collisionLocation": [
+          6,
+          -6
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 14,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-14.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1400 at 6 -6",
+        "collisionCycle": 1400,
+        "collisionLocation": [
+          6,
+          -6
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 15,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-15.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1400 at 6 -6",
+        "collisionCycle": 1400,
+        "collisionLocation": [
+          6,
+          -6
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 0,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-00.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1374 at 5 -5",
+        "collisionCycle": 1374,
+        "collisionLocation": [
+          5,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 1,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-01.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1374 at 5 -5",
+        "collisionCycle": 1374,
+        "collisionLocation": [
+          5,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 12,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-12.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1374 at 5 -5",
+        "collisionCycle": 1374,
+        "collisionLocation": [
+          5,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    },
+    {
+      "parentAdjacentIndex": 0,
+      "deliveryIndex": 13,
+      "solutionPath": "reports/heldout-adjacent-pair-finish/search/delivery/adjacent-00-candidate-13.solution",
+      "localSummary": {
+        "completedCycles": 1500,
+        "requestedCycles": 1500,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 284,
+          "atom-grabbed": 165,
+          "atom-purified": 5,
+          "atoms-dropped": 41,
+          "bond-created": 1,
+          "bond-removed": 8,
+          "input-spawned": 3,
+          "product-delivered": 1
+        },
+        "purificationCount": 5,
+        "productDeliveredCount": 1,
+        "chemistryEventCount": 14,
+        "manipulationEventCount": 209
+      },
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1374 at 5 -5",
+        "collisionCycle": 1374,
+        "collisionLocation": [
+          5,
+          -5
+        ],
+        "product1Cycles": null
+      }
+    }
+  ],
+  "acceptedProductOne": false,
+  "acceptedSolution": null,
+  "acceptedOMSim": null,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

@@ -1,0 +1,145 @@
+name: Blind GEN249 OMSim mechanical preflight
+
+on:
+  push:
+    branches: [feature/critelli-2026-public-corpus]
+    paths:
+      - .github/workflows/heldout-omsim-mechanical-preflight.yml
+      - tools/probe_holdout_omsim_mechanical_preflight.py
+      - packages/opus_solver/initial_overlap_repair.py
+      - packages/opus_solver/product_delivery.py
+      - reports/generated/heldout-24hour-seed/latest-intermediate-convergence.json
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-omsim-mechanical-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  GOLD_POINTER: reports/generated/heldout-24hour-seed/latest-intermediate-convergence.json
+  PUZZLE_ROOT: .datasets/heldout-omsim-mechanical
+  BASELINE_ROOT: .baseline/heldout-omsim-mechanical
+  REPORT_ROOT: reports/heldout-omsim-mechanical
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-omsim-mechanical-preflight.json
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then exit 1; fi
+
+      - name: Restore target-free first-gold solution
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id="$(python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=json.loads(Path(os.environ['GOLD_POINTER']).read_text()); assert p['targetSolutionBytesUsed']==0 and p['summary']['goldReached']; print(p['runId'])
+          PY
+          )"
+          meta="$RUNNER_TEMP/gold.json"; gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$meta"
+          read -r aid digest < <(python - "$meta" "$run_id" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path(sys.argv[1]).read_text()); name=f'heldout-intermediate-convergence-{sys.argv[2]}'; m=[x for x in d['artifacts'] if x['name']==name and not x['expired']]; assert len(m)==1; print(m[0]['id'],str(m[0]['digest']).split(':',1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"; archive="$RUNNER_TEMP/gold.zip"
+          curl --fail --location -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${aid}/zip" -o "$archive"
+          echo "$digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          test -s "$BASELINE_ROOT/GEN249-first-gold.solution"
+
+      - name: Generate overlap variants
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/variants"
+          python tools/probe_holdout_omsim_mechanical_preflight.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --solution "$BASELINE_ROOT/GEN249-first-gold.solution" \
+            --output-dir "$REPORT_ROOT/variants" \
+            --report "$REPORT_ROOT/variants.json"
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+
+      - name: Evaluate mechanical variants with OMSim
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          src=Path(os.environ['REPORT_ROOT'])/'variants.json'; d=json.loads(src.read_text()); Path(os.environ['REPORT_ROOT']).joinpath('omsim-results.json').write_text(json.dumps({'variants':d['variants'],'results':[]},indent=2)+'\n')
+          PY
+          for solution in "$REPORT_ROOT"/variants/*.solution; do
+            set +e
+            output="$(.tools/omsim/omsim --puzzle-file "$PUZZLE_ROOT/GEN249.puzzle" --metric "product 1 cycles" "$solution" 2>&1)"; rc=$?
+            set -e
+            python - "$REPORT_ROOT/omsim-results.json" "$solution" "$rc" "$output" <<'PY'
+          import json,sys,re
+          from pathlib import Path
+          p=Path(sys.argv[1]); d=json.loads(p.read_text()); text=sys.argv[4]
+          cycle=None
+          m=re.search(r'on cycle (\d+)',text)
+          if m: cycle=int(m.group(1))
+          d['results'].append({'solution':sys.argv[2],'exitCode':int(sys.argv[3]),'output':text,'failureCycle':cycle})
+          p.write_text(json.dumps(d,indent=2)+'\n')
+          PY
+          done
+
+      - name: Persist compact authoritative diagnostic
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          root=Path(os.environ['REPORT_ROOT']); data=json.loads((root/'omsim-results.json').read_text()); variants={v['solution']:v for v in data['variants']}
+          results=[]
+          for item in data['results']:
+              meta=variants.get(item['solution'],{})
+              results.append({**meta, **{k:item[k] for k in ('exitCode','output','failureCycle')}})
+          def score(x):
+              return (int(x.get('exitCode')==0), int(x.get('failureCycle') or 0), int('cycle limit' in str(x.get('output','')).lower()))
+          ordered=sorted(results,key=score,reverse=True)
+          gold=json.loads(Path(os.environ['GOLD_POINTER']).read_text())
+          payload={'schemaVersion':'0.2.0','kind':'heldout-omsim-mechanical-preflight-checkpoint','runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'goldRunId':gold['runId'],'targetSolutionBytesUsed':0,'variantCount':len(results),'best':ordered[0] if ordered else None,'results':ordered,'omsimCommit':os.environ['OMSIM_COMMIT']}
+          out=Path(os.environ['LATEST_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          git commit -m "Update blind OMSim mechanical preflight [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-omsim-mechanical-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          retention-days: 14

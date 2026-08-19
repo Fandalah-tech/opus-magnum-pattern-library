@@ -78,3 +78,51 @@ def test_validation_rank_always_prefers_complete_solution():
         "completedCycles": 1000,
     }
     assert validation_rank(complete, displacement=10) > validation_rank(incomplete, displacement=0)
+
+
+def test_validation_rank_prefers_chemical_progress_over_idle_survival():
+    chemically_active = {
+        "complete": False,
+        "terminatedWithError": True,
+        "totalDelivered": 0,
+        "totalDeficit": 6,
+        "distinctChemistryEventCount": 1,
+        "chemistryEventCount": 1,
+        "manipulationEventCount": 2,
+        "completedCycles": 12,
+    }
+    idle_survivor = {
+        "complete": False,
+        "terminatedWithError": False,
+        "totalDelivered": 0,
+        "totalDeficit": 6,
+        "distinctChemistryEventCount": 0,
+        "chemistryEventCount": 0,
+        "manipulationEventCount": 0,
+        "completedCycles": 1000,
+    }
+
+    assert validation_rank(chemically_active) > validation_rank(idle_survivor)
+
+
+def test_validation_rank_prefers_required_chemistry_over_off_plan_activity():
+    required_progress = {
+        "complete": False,
+        "totalDelivered": 0,
+        "totalDeficit": 6,
+        "distinctRequiredChemistryEventCount": 1,
+        "requiredChemistryEventCount": 1,
+        "distinctChemistryEventCount": 1,
+        "chemistryEventCount": 1,
+    }
+    off_plan_activity = {
+        "complete": False,
+        "totalDelivered": 0,
+        "totalDeficit": 6,
+        "distinctRequiredChemistryEventCount": 0,
+        "requiredChemistryEventCount": 0,
+        "distinctChemistryEventCount": 3,
+        "chemistryEventCount": 20,
+    }
+
+    assert validation_rank(required_progress) > validation_rank(off_plan_activity)

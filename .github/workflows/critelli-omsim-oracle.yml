@@ -1,0 +1,252 @@
+name: Critelli OMSim oracle regression
+
+on:
+  push:
+    branches:
+      - main
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/critelli-omsim-oracle.yml
+      - database/engine-fragment-flow-index.json
+      - database/learned-solution-bank.json
+      - fixtures/reference/critelli-aqueous-dagger/objective-specialized/**
+      - packages/opus_solver/autonomous.py
+      - packages/opus_solver/bca.py
+      - packages/opus_solver/objective_portfolio.py
+      - tools/solve_puzzle.py
+      - tools/omsim_adapter/**
+      - tools/import_critelli_event.py
+      - tests/test_bca.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
+  EVENT_PAGE: https://events.critelli.technology/OM2026Weeklies6_AqueousDagger
+  REFERENCE_ROOT: .datasets/critelli-aqueous-dagger-omsim
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+
+jobs:
+  oracle:
+    name: Score autonomous Aqueous candidates with OMSim
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test BCA adapter
+        run: python -m unittest tests.test_bca -v
+
+      - name: Build pinned OMSim
+        run: |
+          mkdir -p .tools
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          echo "OMSim commit: $(git -C .tools/omsim rev-parse HEAD)"
+
+      - name: Fetch official Aqueous Dagger puzzle only
+        run: |
+          python tools/import_critelli_event.py \
+            --event-id "$EVENT_ID" \
+            --event-page-url "$EVENT_PAGE" \
+            --root "$REFERENCE_ROOT" \
+            --puzzle-name weeklies2026_aqueous-dagger \
+            --require-puzzle \
+            --puzzle-only \
+            --force
+
+      - name: Optimize complete portfolio with OMSim
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p reports/critelli-omsim-oracle
+          for objective in cost area cycles instructions sum4 bca; do
+            python tools/solve_puzzle.py \
+              "$REFERENCE_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+              "reports/critelli-omsim-oracle/${objective}.solution" \
+              --objective "$objective" \
+              --omsim "$OMSIM_BINARY" \
+              --omsim-timeout 30 \
+              --composition-limit 10 \
+              --report "reports/critelli-omsim-oracle/${objective}.json"
+          done
+
+      - name: Verify objective-family split and BCA
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from packages.opus_solver.bca import (
+              BCA_OMSIM_METRICS,
+              bca_default_restrictions,
+              bca_key,
+              bca_metrics_from_omsim,
+          )
+          from packages.opus_solver.objective_portfolio import objective_key
+          from tools.omsim_adapter.validate import run_omsim, run_omsim_metrics
+
+          root = Path('reports/critelli-omsim-oracle')
+          puzzle = Path('.datasets/critelli-aqueous-dagger-omsim/puzzle/weeklies2026_aqueous-dagger.puzzle')
+          omsim = Path('.tools/omsim/omsim')
+          expected = {
+              'cycles': {
+                  'route': 'knowledge-architecture-bank-v1',
+                  'source': 'learned-architecture-bank',
+                  'candidate': 'aqueous-dagger-cga-15c-v1',
+                  'metrics': {'cost': 230, 'cycles': 15, 'area': 76, 'instructions': 89, 'rate': 2},
+              },
+              'cost': {
+                  'route': 'knowledge-fragment-composition-v1',
+                  'source': 'fragment-composition',
+                  'metrics': {'cost': 80, 'cycles': 49, 'area': 18, 'instructions': 14, 'rate': 8},
+              },
+              'area': {
+                  'route': 'knowledge-fragment-composition-v1',
+                  'source': 'fragment-composition',
+                  'metrics': {'cost': 80, 'cycles': 49, 'area': 18, 'instructions': 14, 'rate': 8},
+              },
+              'instructions': {
+                  'route': 'knowledge-fragment-composition-v1',
+                  'source': 'fragment-composition',
+                  'metrics': {'cost': 80, 'cycles': 49, 'area': 18, 'instructions': 14, 'rate': 8},
+              },
+              'sum4': {
+                  'route': 'knowledge-fragment-composition-v1',
+                  'source': 'fragment-composition',
+                  'metrics': {'cost': 80, 'cycles': 49, 'area': 18, 'instructions': 14, 'rate': 8},
+              },
+          }
+
+          summary = {}
+          for objective in ('cost', 'area', 'cycles', 'instructions', 'sum4'):
+              report = json.loads((root / f'{objective}.json').read_text(encoding='utf-8'))
+              validation = report['validation']
+              metrics = validation['oracleMetrics']
+              exp = expected[objective]
+
+              assert validation['complete'] is True
+              assert validation['optimizationObjective'] == objective
+              assert validation['optimizationMetricSource'] == 'omsim'
+              assert validation['solverRoute'] == exp['route']
+              assert validation['selectedCandidateSource'] == exp['source']
+              if exp.get('candidate'):
+                  assert validation['selectedCandidateId'] == exp['candidate']
+              assert metrics == exp['metrics']
+              assert validation['oracleScoredCandidateCount'] == validation['compositionCompleteCandidateCount']
+              assert validation['oracleScoredCandidateCount'] == 6
+              assert validation['oracleValidCandidateCount'] == 6
+              assert validation['objectiveKey'] == list(objective_key(objective, metrics))
+
+              independent = run_omsim(
+                  omsim,
+                  puzzle,
+                  root / f'{objective}.solution',
+                  30,
+                  output_intervals=True,
+              )
+              assert independent['valid'] is True
+              assert independent['metrics'] == {
+                  key: metrics[key]
+                  for key in ('cost', 'cycles', 'area', 'instructions')
+              }
+              assert independent['rate'] == metrics['rate']
+
+              summary[objective] = {
+                  'route': validation['solverRoute'],
+                  'candidate': validation['selectedCandidateId'],
+                  'rank': validation['compositionCandidateRank'],
+                  'metrics': metrics,
+                  'local': validation['localCandidateMetrics'],
+                  'validCandidates': validation['oracleValidCandidateCount'],
+              }
+
+          bca_report = json.loads((root / 'bca.json').read_text(encoding='utf-8'))
+          bca_validation = bca_report['validation']
+          bca_metrics = bca_validation['bcaMetrics']
+          assert bca_validation['complete'] is True
+          assert bca_validation['optimizationObjective'] == 'bca'
+          assert bca_validation['optimizationMetricSource'] == 'omsim-minimum-hexagon'
+          assert bca_validation['solverRoute'] == 'knowledge-fragment-composition-v1'
+          assert bca_validation['selectedCandidateSource'] == 'fragment-composition'
+          assert bca_validation['oracleScoredCandidateCount'] == 6
+          assert bca_validation['oracleValidCandidateCount'] == 6
+          assert bca_metrics['minimumHexagon'] == 3
+          assert bca_metrics['cycles'] == 49
+          assert bca_metrics['area'] == 18
+          assert bca_metrics['defaultRestrictions'] == 0
+          assert bca_validation['objectiveKey'] == list(bca_key(bca_metrics))
+
+          independent_bca = run_omsim_metrics(
+              omsim,
+              puzzle,
+              root / 'bca.solution',
+              30,
+              metrics=BCA_OMSIM_METRICS,
+              output_intervals=True,
+          )
+          assert independent_bca['valid'] is True
+          assert bca_default_restrictions(independent_bca) == 0
+          independent_bca_metrics = bca_metrics_from_omsim(independent_bca)
+          assert independent_bca_metrics == bca_metrics
+
+          summary['bca'] = {
+              'route': bca_validation['solverRoute'],
+              'candidate': bca_validation['selectedCandidateId'],
+              'rank': bca_validation['compositionCandidateRank'],
+              'metrics': bca_metrics,
+              'local': bca_validation['localCandidateMetrics'],
+              'validCandidates': bca_validation['oracleValidCandidateCount'],
+          }
+
+          assert summary['cycles']['metrics']['cycles'] < summary['cost']['metrics']['cycles']
+          assert summary['cost']['metrics']['cost'] < summary['cycles']['metrics']['cost']
+          assert summary['area']['metrics']['area'] < summary['cycles']['metrics']['area']
+          assert summary['instructions']['metrics']['instructions'] < summary['cycles']['metrics']['instructions']
+          assert summary['bca']['metrics']['minimumHexagon'] == 3
+
+          (root / 'summary.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True), encoding='utf-8'
+          )
+          print(json.dumps(summary, sort_keys=True))
+          PY
+
+      - name: Write OMSim summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path('reports/critelli-omsim-oracle/summary.json')
+          summary = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Autonomous OMSim multi-level portfolio\n\n')
+              out.write(f'- OMSim commit: `{os.environ["OMSIM_COMMIT"]}`\n')
+              for objective, item in summary.items():
+                  out.write(
+                      f'- {objective}: {item["route"]}, {item["candidate"]}, '
+                      f'metrics {item["metrics"]}\n'
+                  )
+          PY
+
+      - name: Upload authoritative oracle reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critelli-omsim-oracle-${{ github.run_id }}
+          path: reports/critelli-omsim-oracle/
+          if-no-files-found: warn
+          retention-days: 30

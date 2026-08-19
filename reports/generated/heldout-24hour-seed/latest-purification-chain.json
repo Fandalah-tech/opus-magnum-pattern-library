@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-purification-chain-checkpoint",
+  "runId": "32164260689",
+  "sourceCommit": "23d1df8a138b3726d26309bcadbb7927c75eb8a7",
+  "reactionRunId": "32164068317",
+  "reactionSourceCommit": "d1ab8d7be1b46c4a0051e2a737838c0e6c86df38",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "request": {
+    "maxCycles": 256,
+    "depth": 4,
+    "beamWidth": 3,
+    "opportunityLimit": 60,
+    "variantLimit": 120,
+    "resultLimit": 10
+  },
+  "summary": {
+    "maxCycles": 256,
+    "requestedDepth": 4,
+    "beamWidth": 3,
+    "generationCount": 1,
+    "initialPurificationCount": 1,
+    "initialFrontierElement": "copper",
+    "bestPurificationCount": 1,
+    "bestFrontierElement": "copper",
+    "goldReached": false,
+    "stepCount": 0,
+    "targetSolutionBytesUsed": 0
+  },
+  "initialPurificationProfile": {
+    "count": 1,
+    "countsByElement": {
+      "copper": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        185
+      ]
+    },
+    "frontierIndex": 3,
+    "frontierElement": "copper",
+    "goldReached": false,
+    "completedCycles": 206,
+    "terminatedWithError": true
+  },
+  "generations": [
+    {
+      "generation": 1,
+      "candidateCount": 0,
+      "dedupedCandidateCount": 0,
+      "beamCount": 0,
+      "bestPurificationProfile": {
+        "count": 1,
+        "countsByElement": {
+          "copper": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 206,
+        "terminatedWithError": true
+      },
+      "bestStepCount": 0
+    }
+  ],
+  "best": {
+    "purificationProfile": {
+      "count": 1,
+      "countsByElement": {
+        "copper": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185
+        ]
+      },
+      "frontierIndex": 3,
+      "frontierElement": "copper",
+      "goldReached": false,
+      "completedCycles": 206,
+      "terminatedWithError": true
+    },
+    "steps": [],
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 21,
+      "terminatedWithError": false,
+      "firstError": null,
+      "missingProductOutputIndices": [
+        1,
+        2
+      ],
+      "observedRequiredChemistryEventKinds": [],
+      "distinctRequiredChemistryEventCount": 0,
+      "requiredChemistryEventCount": 0,
+      "chemistryEventCount": 0,
+      "eventCounts": {
+        "arm-instruction": 21
+      }
+    },
+    "solutionOutput": "reports/heldout-purification-chain/GEN249-best-chain.solution"
+  }
+}

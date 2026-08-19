@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-collision-aware-rebuild-checkpoint",
+  "runId": "32272643563",
+  "sourceCommit": "ed81ac218b4dc940a5decb40062193e1feea05c3",
+  "oracleRunId": "32270730047",
+  "targetSolutionBytesUsed": 0,
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 386 at 8 0",
+    "progressCycle": 386,
+    "collisionCycle": 386,
+    "collisionLocation": [
+      8,
+      0
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 5,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2,
+      "gold": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        368,
+        410
+      ],
+      "silver": [
+        386,
+        410
+      ],
+      "gold": [
+        413
+      ]
+    },
+    "frontierIndex": 5,
+    "frontierElement": "gold",
+    "goldReached": true,
+    "completedCycles": 427,
+    "terminatedWithError": true
+  },
+  "collisionLocation": [
+    8,
+    0
+  ],
+  "removedPurifierPartIds": [],
+  "strippedPurificationProfile": {
+    "count": 5,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2,
+      "gold": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        368,
+        410
+      ],
+      "silver": [
+        386,
+        410
+      ],
+      "gold": [
+        413
+      ]
+    },
+    "frontierIndex": 5,
+    "frontierElement": "gold",
+    "goldReached": true,
+    "completedCycles": 427,
+    "terminatedWithError": true
+  },
+  "additiveSummary": {
+    "maxCycles": 500,
+    "baselinePurificationCount": 5,
+    "baselineFrontierElement": "gold",
+    "baselineFrontierCount": 1,
+    "frontierReplenishmentNeeded": false,
+    "supportPrecursorElement": null,
+    "baselineSupportPrecursorCount": 0,
+    "opportunityCount": 85,
+    "attemptedAdditiveStationCount": 0,
+    "attemptedFrontierAdvanceCount": 0,
+    "attemptedFrontierReplenishmentCount": 0,
+    "attemptedPrecursorSupportCount": 0,
+    "skippedUnrepairableOpportunityCount": 0,
+    "advancingVariantCount": 0,
+    "replenishingVariantCount": 0,
+    "precursorSupportingVariantCount": 0,
+    "returnedVariantCount": 0,
+    "bestFrontierElement": "gold",
+    "bestFrontierCount": 1,
+    "goldReached": true,
+    "targetSolutionBytesUsed": 0
+  },
+  "additiveOpportunityCount": 85,
+  "additiveVariantCount": 0,
+  "skippedSameOutputCount": 0,
+  "variantCount": 0,
+  "best": null,
+  "topVariants": [],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

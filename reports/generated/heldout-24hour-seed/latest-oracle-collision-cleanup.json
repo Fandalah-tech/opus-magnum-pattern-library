@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-oracle-collision-cleanup-checkpoint",
+  "runId": "32276122749",
+  "sourceCommit": "ffb2212a609a667850fabffec87d1fb59a5bbd56",
+  "targetSolutionBytesUsed": 0,
+  "adjacentRunId": "32274075642",
+  "selectedLocalDelivery": {
+    "parentAdjacentIndex": 0,
+    "deliveryIndex": 4,
+    "solutionPath": "reports/heldout-adjacent-pair-probe/search/delivery/adjacent-00-candidate-04.solution",
+    "localSummary": {
+      "completedCycles": 1500,
+      "requestedCycles": 1500,
+      "terminatedWithError": false,
+      "firstError": null,
+      "eventCounts": {
+        "arm-instruction": 284,
+        "atom-grabbed": 165,
+        "atom-purified": 5,
+        "atoms-dropped": 41,
+        "bond-created": 1,
+        "bond-removed": 8,
+        "input-spawned": 3,
+        "product-delivered": 1
+      },
+      "purificationCount": 5,
+      "productDeliveredCount": 1,
+      "chemistryEventCount": 14,
+      "manipulationEventCount": 209
+    },
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+      "collisionCycle": 1484,
+      "collisionLocation": [
+        6,
+        -5
+      ],
+      "product1Cycles": null
+    }
+  },
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+    "progressCycle": 1484,
+    "collisionCycle": 1484,
+    "collisionLocation": [
+      6,
+      -5
+    ]
+  },
+  "diagnosis": {
+    "frameCycle": 1483,
+    "collisionCycle": 1484,
+    "collisionLocation": [
+      6,
+      -5
+    ],
+    "atomsAtCollisionLocation": [],
+    "unheldAtomCount": 0,
+    "initialAtomCellsBlockCleanup": false
+  },
+  "generatedVariantCount": 0,
+  "searchedVariantCount": 0,
+  "acceptedProductOne": false,
+  "acceptedSolution": null,
+  "acceptedOMSim": null,
+  "topVariants": [],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-collision-chain-checkpoint",
+  "runId": "32194960812",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
+  "cleanupRunId": "32165581288",
+  "cleanupSourceCommit": "f296cb14c658a450accbca5f1e4699058e3677ca",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "request": {
+    "maxCycles": 400,
+    "depth": 4,
+    "beamWidth": 2,
+    "variantsPerState": 8
+  },
+  "summary": {
+    "maxCycles": 400,
+    "requestedDepth": 4,
+    "beamWidth": 2,
+    "generationCount": 1,
+    "baselineCompletedCycles": 400,
+    "bestCompletedCycles": 400,
+    "baselinePurificationCount": 1,
+    "bestPurificationCount": 1,
+    "bestTerminatedWithError": false,
+    "stepCount": 0,
+    "targetSolutionBytesUsed": 0
+  },
+  "baseline": {
+    "completedCycles": 400,
+    "requestedCycles": 400,
+    "terminatedWithError": false,
+    "firstError": null,
+    "purificationCount": 1,
+    "productDeliveredCount": 0,
+    "chemistryEventCount": 4,
+    "manipulationEventCount": 360,
+    "eventCounts": {
+      "arm-instruction": 301,
+      "atom-grabbed": 269,
+      "atom-purified": 1,
+      "atoms-dropped": 88,
+      "bond-created": 1,
+      "bond-removed": 2,
+      "input-spawned": 3
+    }
+  },
+  "generations": [
+    {
+      "generation": 1,
+      "candidateCount": 1,
+      "dedupedCandidateCount": 1,
+      "beamCount": 1,
+      "bestSummary": {
+        "completedCycles": 400,
+        "requestedCycles": 400,
+        "terminatedWithError": false,
+        "firstError": null,
+        "eventCounts": {
+          "arm-instruction": 301,
+          "atom-grabbed": 269,
+          "atom-purified": 1,
+          "atoms-dropped": 88,
+          "bond-created": 1,
+          "bond-removed": 2,
+          "input-spawned": 3
+        },
+        "purificationCount": 1,
+        "productDeliveredCount": 0,
+        "chemistryEventCount": 4,
+        "manipulationEventCount": 360
+      },
+      "bestStepCount": 0
+    }
+  ],
+  "best": {
+    "summary": {
+      "completedCycles": 400,
+      "requestedCycles": 400,
+      "terminatedWithError": false,
+      "firstError": null,
+      "purificationCount": 1,
+      "productDeliveredCount": 0,
+      "chemistryEventCount": 4,
+      "manipulationEventCount": 360,
+      "eventCounts": {
+        "arm-instruction": 301,
+        "atom-grabbed": 269,
+        "atom-purified": 1,
+        "atoms-dropped": 88,
+        "bond-created": 1,
+        "bond-removed": 2,
+        "input-spawned": 3
+      }
+    },
+    "steps": [],
+    "solutionOutput": "reports/heldout-collision-chain/GEN249-best-collision-chain.solution"
+  }
+}

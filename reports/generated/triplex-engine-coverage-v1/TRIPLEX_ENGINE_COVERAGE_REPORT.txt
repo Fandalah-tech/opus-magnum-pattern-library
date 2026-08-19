@@ -1,0 +1,107 @@
+TRIPLEX ENGINE AND LEARNING MILESTONE
+=====================================
+
+Status: VALIDATED
+
+Coverage
+--------
+Triplex product puzzles: 17
+Associated solutions: 479
+Audit workers: 10 (hard maximum 10)
+
+Engine correction
+-----------------
+The piston placement length was incorrectly used as its minimum extension.
+OMSim permits every piston to retract to one hex, even when it was placed at
+length two or three; reset still restores the placement length.
+
+Before correction:
+  Complete:   283 (59.1%)
+  Error:      191
+  Incomplete:   5
+
+After correction:
+  Complete:   396 (82.7%)
+  Error:       81
+  Incomplete:   2
+
+Net gain: 113 additional engine-complete solutions, or +23.6 percentage
+points of corpus coverage. Exact status changes: 112 error-to-complete,
+1 incomplete-to-complete and 2 incomplete-to-error. No complete solution
+regressed. Audit exceptions: 0.
+
+Fourteen solutions reached every output target before a later trace error;
+they are correctly classified complete and flagged separately because OMSim
+also stops once the target is reached.
+
+Remaining failure categories
+----------------------------
+  32  atom-collision/same-input-different-spawn
+  22  conduit/output-collision
+  13  motion/conflicting
+   4  atom-collision/different-sources
+   4  motion/incompatible-shared
+   3  atom-collision/same-molecule
+   3  atom-collision/simultaneous-motion
+
+Engine-validated fragment learning
+----------------------------------
+Only the 396 engine-complete solutions were admitted as learning evidence.
+
+Eligible engine-complete solutions:       396
+Replayed and admitted solutions:           396
+Validation drift:                            0
+Indexing errors:                              0
+Canonical fragment transitions:           3261
+Functional flow observations:            30981
+Channel-specific triplex transitions:      1263
+Channel-specific triplex observations:    10085
+
+The flow index records exact red, black and yellow prismatic bonding events,
+relative geometry, relative timing and the number of engine-complete source
+solutions behind each transition. The planner can now reject transitions with
+no engine-validated source evidence.
+
+Solver composition proof
+------------------------
+Target: OM2021_W1 / IMPROVED EXPLOSIVE PHIAL
+Strategy: triplex-extension-v1
+
+Required capabilities:
+  - normal bond removal
+  - fire duplication
+  - red triplex bonding
+  - black triplex bonding
+  - yellow triplex bonding
+  - product delivery
+
+Functionally complete fragment-chain plans: 25 of 25
+Plans using engine-validated evidence on every step: 25 of 25
+Best composition score: 0.851676
+Best candidate functional coverage: 100%
+Best candidate assembly coverage: 100%
+
+This is the first path where newly accepted engine traces directly change
+what the solver can require and rank. It no longer relies only on structural
+similarity for this triplex manufacturing plan.
+
+These are ranked composition plans, not newly materialized .solution layouts.
+The next milestone is to instantiate their geometry and timing, then replay the
+generated candidates in the same validation loop.
+
+Reference validation
+--------------------
+OMSim accepted 10 of 10 sampled solutions newly promoted by the piston fix,
+covering OM2020_W4, OM2021_W1, P017, P040 and P100.
+
+Automated suite: 174 passed, 10 parameterized subtests passed.
+Maximum concurrent workers used by audits/indexing: 10.
+
+Method
+------
+Every solution whose puzzle has a triplex product is parsed and replayed
+by opus_engine. Standard outputs require six deliveries; repeating outputs
+require three repetitions. A solution that reaches its output target before
+a later trace error remains classified complete and is flagged separately.
+The learned flow index then replays only complete records and refuses any
+record whose validation result drifts between audit and indexing.

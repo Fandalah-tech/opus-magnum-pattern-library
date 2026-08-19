@@ -1,0 +1,186 @@
+name: OpusSolver external puzzle benchmark
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/opussolver-external-benchmark.yml
+      - datasets/opussolver-puzzle-benchmark.json
+      - tools/benchmark_opussolver_puzzles.py
+      - tools/profile_external_puzzle_chemistry.py
+      - tests/test_opussolver_puzzle_benchmark.py
+      - database/engine-fragment-flow-index.json
+      - packages/opus_solver/**
+      - packages/opus_parser/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+      - packages/opus_validator/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+  FLOW_INDEX: database/engine-fragment-flow-index.json
+  REPORT_ROOT: reports/opussolver-external-benchmark/sample-100
+
+jobs:
+  development-sample:
+    name: Blind solve all 100 sample puzzles
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test benchmark isolation contract
+        run: python -m unittest tests.test_opussolver_puzzle_benchmark -v
+
+      - name: Fetch pinned OpusSolver sample puzzles only
+        run: |
+          mkdir -p .tools
+          git clone \
+            --filter=blob:none \
+            --no-checkout \
+            https://github.com/gtw123/OpusSolver.git \
+            .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set "test/puzzles/24hour-1-sample"
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          test "$(git -C .tools/opussolver rev-parse HEAD)" = "$OPUSSOLVER_COMMIT"
+          test "$(find .tools/opussolver/test/puzzles/24hour-1-sample -name '*.puzzle' | wc -l)" -eq 100
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          test "$(git -C .tools/omsim rev-parse HEAD)" = "$OMSIM_COMMIT"
+
+      - name: Run strict external blind benchmark
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/benchmark_opussolver_puzzles.py \
+            --corpus-root .tools/opussolver \
+            --collection 24hour-1-sample \
+            --flow-index "$FLOW_INDEX" \
+            --objective balanced \
+            --composition-limit 30 \
+            --limit 100 \
+            --omsim "$OMSIM_BINARY" \
+            --output-dir "$REPORT_ROOT"
+          test -s "$REPORT_ROOT/report.json"
+
+      - name: Profile development-set chemistry
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/profile_external_puzzle_chemistry.py \
+            --collection-root .tools/opussolver/test/puzzles/24hour-1-sample \
+            --output "$REPORT_ROOT/chemistry-map.json"
+          test -s "$REPORT_ROOT/chemistry-map.json"
+
+      - name: Assert benchmark contract and publish failure map
+        run: |
+          python - <<'PY'
+          from collections import Counter
+          import json, os
+          from pathlib import Path
+
+          root = Path('reports/opussolver-external-benchmark/sample-100')
+          report = json.loads((root / 'report.json').read_text(encoding='utf-8'))
+          chemistry = json.loads((root / 'chemistry-map.json').read_text(encoding='utf-8'))
+          source = report['sourceVerification']
+          collection = report['collection']
+          protocol = report['protocol']
+          summary = report['summary']
+          targets = report['targets']
+          chemistry_summary = chemistry['summary']
+
+          assert report['pinnedCommit'] == 'fdedd3f01a238b941ceba8bace7ea35cbd3b8c41'
+          assert source['verified'] is True
+          assert source['actualCommit'] == report['pinnedCommit']
+          assert collection['id'] == '24hour-1-sample'
+          assert collection['role'] == 'development'
+          assert collection['sealed'] is False
+          assert collection['sealedDetailsRedacted'] is False
+          assert summary['collectionPuzzleCount'] == 100
+          assert summary['selectedPuzzleCount'] == 100
+          assert len(targets) == 100
+          assert chemistry_summary['puzzleCount'] == 100
+          assert chemistry['targetSolutionBytesUsed'] == 0
+          assert summary['targetSolutionBytesUsed'] == 0
+          assert summary['knowledgeLeakCount'] == 0
+          assert protocol['targetSolutionInputsAccepted'] is False
+          assert protocol['targetSolutionFilesScanned'] is False
+          assert protocol['directGeneratorAllowed'] is False
+          assert protocol['learnedArchitectureBankAllowed'] is False
+          assert protocol['fragmentKnowledgeAllowed'] is True
+
+          planner_reasons = Counter()
+          planner_strategies = Counter()
+          solver_errors = Counter()
+          solver_error_messages = Counter()
+          for target in targets:
+              if target.get('plannerStrategy'):
+                  planner_strategies[target['plannerStrategy']] += 1
+              if target.get('failureStage') == 'planner':
+                  planner_reasons[' '.join(str(target.get('error') or 'planner-unsupported').split())] += 1
+              if target.get('status') == 'solver-error':
+                  solver_errors[target.get('errorType') or 'unknown'] += 1
+                  solver_error_messages[' '.join(str(target.get('error') or 'solver-error').split())] += 1
+
+          compact = {
+              'collection': collection['id'],
+              'role': collection['role'],
+              'puzzles': summary['selectedPuzzleCount'],
+              'parsed': summary['parseSuccessCount'],
+              'plannerSupported': summary['plannerSupportedCount'],
+              'plannerStrategies': dict(planner_strategies.most_common()),
+              'plannerReasons': dict(planner_reasons.most_common()),
+              'candidateAvailable': summary['candidateAvailableCount'],
+              'localComplete': summary['localCompleteCount'],
+              'solverErrors': dict(solver_errors.most_common()),
+              'solverErrorMessages': dict(solver_error_messages.most_common()),
+              'omsimTested': summary['omsimTestedCount'],
+              'omsimValid': summary['omsimValidCount'],
+              'failureStages': summary['failureStageCounts'],
+              'chemistry': {
+                  'reagentCounts': chemistry_summary['reagentCountCounts'],
+                  'productCounts': chemistry_summary['productCountCounts'],
+                  'reagentAtomVectors': chemistry_summary['reagentAtomVectorCounts'],
+                  'productAtomVectors': chemistry_summary['productAtomVectorCounts'],
+                  'production': chemistry_summary['productionCounts'],
+              },
+              'targetSolutionBytesUsed': summary['targetSolutionBytesUsed'],
+          }
+          (root / 'failure-map.json').write_text(
+              json.dumps(compact, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
+          )
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## OpusSolver external blind benchmark — full development sample\n\n')
+              for key, value in compact.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(compact, ensure_ascii=False))
+          PY
+
+      - name: Upload external benchmark report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opussolver-external-benchmark-${{ github.run_id }}
+          path: reports/opussolver-external-benchmark/sample-100/
+          if-no-files-found: error
+          retention-days: 30

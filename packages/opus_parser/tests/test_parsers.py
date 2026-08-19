@@ -21,23 +21,52 @@ def net_string(value: str) -> bytes:
     return bytes([len(data)]) + data
 
 
+def puzzle_with_reagent_bond(bond_code: int) -> bytes:
+    return b"".join([
+        i32(3), net_string("Bond Test"), u64(42), u64(0x0000010F),
+        i32(1),
+        i32(2), bytes([4, 0, 0, 2, 1, 0]),
+        i32(1), bytes([bond_code, 0, 0, 1, 0]),
+        i32(1),
+        i32(1), bytes([1, 0, 0]), i32(0),
+        i32(1), bytes([0]),
+    ])
+
+
 class PuzzleParserTests(unittest.TestCase):
     def test_minimal_puzzle(self):
-        data = b"".join([
-            i32(3), net_string("Test Puzzle"), u64(42), u64(0x0000010F),
-            i32(1),
-            i32(2), bytes([4, 0, 0, 2, 1, 0]),
-            i32(1), bytes([1, 0, 0, 1, 0]),
-            i32(1),
-            i32(1), bytes([1, 0, 0]), i32(0),
-            i32(1), bytes([0]),
-        ])
+        data = puzzle_with_reagent_bond(1)
         result = parse_puzzle_bytes(data, source_name="test.puzzle")
-        self.assertEqual(result["name"], "Test Puzzle")
+        self.assertEqual(result["name"], "Bond Test")
+        self.assertEqual(result["schemaVersion"], "0.1.1")
         self.assertEqual(result["reagents"][0]["atoms"][0]["element"], "fire")
         self.assertEqual(result["reagents"][0]["bonds"][0]["type"], "normal")
+        self.assertEqual(result["reagents"][0]["bonds"][0]["rawCode"], 1)
         self.assertFalse(result["production"])
         self.assertEqual(result["trailingBytes"], 0)
+
+    def test_decodes_triplex_bond_channel_bitmask(self):
+        cases = {
+            2: ["red"],
+            4: ["black"],
+            8: ["yellow"],
+            14: ["red", "black", "yellow"],
+        }
+        for bond_code, expected_channels in cases.items():
+            with self.subTest(bond_code=bond_code):
+                result = parse_puzzle_bytes(puzzle_with_reagent_bond(bond_code))
+                bond = result["reagents"][0]["bonds"][0]
+                self.assertEqual(bond["type"], "triplex")
+                self.assertEqual(bond["rawCode"], bond_code)
+                self.assertEqual(bond["triplexChannels"], expected_channels)
+
+    def test_rejects_mixed_normal_and_triplex_bond_bits(self):
+        with self.assertRaisesRegex(ParseError, "mixed normal/triplex"):
+            parse_puzzle_bytes(puzzle_with_reagent_bond(3))
+
+    def test_rejects_unknown_bond_bits(self):
+        with self.assertRaisesRegex(ParseError, "Unknown bond code 16"):
+            parse_puzzle_bytes(puzzle_with_reagent_bond(16))
 
     def test_rejects_wrong_version(self):
         with self.assertRaises(ParseError):

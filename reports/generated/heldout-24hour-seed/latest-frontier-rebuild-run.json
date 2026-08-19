@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-frontier-rebuild-run-pointer",
+  "runId": "32269481120",
+  "runNumber": "3",
+  "runAttempt": "1",
+  "status": "completed",
+  "sourceCommit": "9a9b721eed1a1bc9ffbb3fa65d57d88f01b8e2b3",
+  "targetSolutionBytesUsed": 0,
+  "conclusion": "success"
+}

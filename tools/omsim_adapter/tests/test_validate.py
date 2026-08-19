@@ -28,6 +28,23 @@ class ParseOmsimOutputTests(unittest.TestCase):
             result["issues"][0]["code"], "OMSIM_VALIDATION_FAILED"
         )
 
+    def test_parses_multiline_metrics_and_output_rate(self):
+        result = parse_omsim_output(
+            "cost: 310\ninstructions: 100\ncycles: 53\narea: 145\n"
+            "output intervals: 23 [9 3 6]\n",
+            0,
+        )
+        self.assertTrue(result["valid"])
+        self.assertEqual(
+            result["metrics"],
+            {"cost": 310, "instructions": 100, "cycles": 53, "area": 145},
+        )
+        self.assertEqual(result["rate"], 9)
+        self.assertEqual(
+            result["outputIntervals"],
+            {"warmup": [23], "steadyState": [9, 3, 6]},
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,291 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-silver2-neighborhood-detour-checkpoint",
+  "runId": "32195815297",
+  "sourceCommit": "79adbc29b5020af42d30635111c35150e4e76a15",
+  "chemistryRunId": "32195163437",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "maxCycles": 500,
+    "radius": 2
+  },
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+    "progressCycle": 204,
+    "collisionCycle": 204,
+    "collisionLocation": [
+      9,
+      -2
+    ]
+  },
+  "baselinePurificationProfile": {
+    "count": 4,
+    "countsByElement": {
+      "copper": 2,
+      "silver": 2
+    },
+    "cyclesByElement": {
+      "copper": [
+        185,
+        206
+      ],
+      "silver": [
+        203,
+        206
+      ]
+    },
+    "frontierIndex": 4,
+    "frontierElement": "silver",
+    "goldReached": false,
+    "completedCycles": 209,
+    "terminatedWithError": true
+  },
+  "collisionLocation": [
+    9,
+    -2
+  ],
+  "rawCandidateCount": 4,
+  "variantCount": 4,
+  "chemistryPreservingNonregressingCount": 1,
+  "best": {
+    "trackPartId": "part-0",
+    "trackCellIndex": 6,
+    "oldTrackCell": [
+      7,
+      -1
+    ],
+    "replacementTrackCell": [
+      6,
+      -2
+    ],
+    "distanceFromCollision": 2,
+    "solutionPath": "reports/heldout-silver2-neighborhood/search/candidate-000.solution",
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 2
+      },
+      "cyclesByElement": {
+        "copper": [
+          185,
+          206
+        ],
+        "silver": [
+          203,
+          206
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 209,
+      "terminatedWithError": true
+    },
+    "preservesSilver": true,
+    "preservesGold": true,
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+      "progressCycle": 204,
+      "collisionCycle": 204,
+      "collisionLocation": [
+        9,
+        -2
+      ]
+    },
+    "finalSolutionPath": "reports/heldout-silver2-neighborhood/search/GEN249-best-track-neighborhood-detour.solution"
+  },
+  "topVariants": [
+    {
+      "trackPartId": "part-0",
+      "trackCellIndex": 6,
+      "oldTrackCell": [
+        7,
+        -1
+      ],
+      "replacementTrackCell": [
+        6,
+        -2
+      ],
+      "distanceFromCollision": 2,
+      "solutionPath": "reports/heldout-silver2-neighborhood/search/candidate-000.solution",
+      "purificationProfile": {
+        "count": 4,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 2
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            206
+          ],
+          "silver": [
+            203,
+            206
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "preservesSilver": true,
+      "preservesGold": true,
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 204 at 9 -2",
+        "progressCycle": 204,
+        "collisionCycle": 204,
+        "collisionLocation": [
+          9,
+          -2
+        ]
+      },
+      "finalSolutionPath": "reports/heldout-silver2-neighborhood/search/GEN249-best-track-neighborhood-detour.solution"
+    },
+    {
+      "trackPartId": "part-0",
+      "trackCellIndex": 9,
+      "oldTrackCell": [
+        9,
+        -3
+      ],
+      "replacementTrackCell": [
+        8,
+        -2
+      ],
+      "distanceFromCollision": 1,
+      "solutionPath": "reports/heldout-silver2-neighborhood/search/candidate-003.solution",
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 1,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185
+          ],
+          "silver": [
+            200
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 203,
+        "terminatedWithError": true
+      },
+      "preservesSilver": false,
+      "preservesGold": true,
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 201 at 8 -2",
+        "progressCycle": 201,
+        "collisionCycle": 201,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      }
+    },
+    {
+      "trackPartId": "part-0",
+      "trackCellIndex": 8,
+      "oldTrackCell": [
+        8,
+        -3
+      ],
+      "replacementTrackCell": [
+        8,
+        -2
+      ],
+      "distanceFromCollision": 2,
+      "solutionPath": "reports/heldout-silver2-neighborhood/search/candidate-002.solution",
+      "purificationProfile": {
+        "count": 2,
+        "countsByElement": {
+          "copper": 1,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185
+          ],
+          "silver": [
+            197
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 200,
+        "terminatedWithError": true
+      },
+      "preservesSilver": false,
+      "preservesGold": true,
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 198 at 8 -2",
+        "progressCycle": 198,
+        "collisionCycle": 198,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      }
+    },
+    {
+      "trackPartId": "part-0",
+      "trackCellIndex": 7,
+      "oldTrackCell": [
+        7,
+        -2
+      ],
+      "replacementTrackCell": [
+        8,
+        -2
+      ],
+      "distanceFromCollision": 2,
+      "solutionPath": "reports/heldout-silver2-neighborhood/search/candidate-001.solution",
+      "purificationProfile": {
+        "count": 3,
+        "countsByElement": {
+          "copper": 2,
+          "silver": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185,
+            203
+          ],
+          "silver": [
+            194
+          ]
+        },
+        "frontierIndex": 4,
+        "frontierElement": "silver",
+        "goldReached": false,
+        "completedCycles": 209,
+        "terminatedWithError": true
+      },
+      "preservesSilver": false,
+      "preservesGold": true,
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 195 at 8 -2",
+        "progressCycle": 195,
+        "collisionCycle": 195,
+        "collisionLocation": [
+          8,
+          -2
+        ]
+      }
+    }
+  ],
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

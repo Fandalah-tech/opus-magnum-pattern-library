@@ -1,0 +1,2106 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "heldout-mechanical-probe-checkpoint",
+  "runId": "32154227309",
+  "sourceCommit": "6caf89511f19d7d895fbbf347293fd79ae234c05",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "targets": {
+    "GEN249": {
+      "planner": {
+        "strategy": "generic-reagent-chemistry-v1",
+        "supported": true,
+        "requiredGlyphs": [
+          "glyph-purification",
+          "unbonder"
+        ],
+        "requiredRelations": {
+          "bond-removed": 30,
+          "delivered": 3,
+          "purify": 7
+        }
+      },
+      "rankedAssemblyCount": 1,
+      "candidate": {
+        "rank": 1,
+        "score": 0.892762,
+        "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+        "observedRelations": {
+          "bond-created": 54,
+          "bond-removed": 60,
+          "delivered": 6,
+          "purify": 144
+        },
+        "relationCapacities": [
+          {
+            "relation": "purify",
+            "capacity": 50,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 25,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 50,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 24,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 12,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 12,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "purify",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          },
+          {
+            "relation": "delivered",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution"
+          }
+        ],
+        "layoutSummary": {
+          "instanceCount": 15,
+          "materializedPartCount": 15,
+          "sharedPartCount": 4,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 0,
+          "exactStaticConflictCount": 4,
+          "approximateStaticConflictCount": 2,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 15,
+          "sharedSourceIdentityCount": 4,
+          "resolvedSourcePoseCount": 0,
+          "rawPartProposalCount": 45,
+          "layoutComplete": true
+        },
+        "scheduleSummary": {
+          "instanceCount": 15,
+          "missingTimingCount": 0,
+          "defaultedTimingCount": 0,
+          "globalShift": 0,
+          "scheduleComplete": true
+        },
+        "synchronizedSummary": {
+          "instanceCount": 15,
+          "materializedPartCount": 15,
+          "sharedPartCount": 4,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 0,
+          "exactStaticConflictCount": 4,
+          "approximateStaticConflictCount": 2,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 15,
+          "sharedSourceIdentityCount": 4,
+          "resolvedSourcePoseCount": 0,
+          "rawPartProposalCount": 45,
+          "layoutComplete": true,
+          "programConflictCount": 0,
+          "scheduleComplete": true
+        },
+        "rawParts": [
+          {
+            "id": "branch-0:input:part-1",
+            "type": "track",
+            "position": [
+              4,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-18",
+            "sourceFragmentInstance": "branch-0:input",
+            "sourceFragmentInstances": [
+              "branch-0:input",
+              "branch-0:upstream-0",
+              "branch-0:upstream-1",
+              "branch-0:upstream-2",
+              "branch-0:upstream-3",
+              "branch-1:input",
+              "branch-1:upstream-0",
+              "branch-1:upstream-1",
+              "branch-1:upstream-2",
+              "branch-1:upstream-3",
+              "convergence",
+              "tail-0",
+              "tail-1",
+              "tail-2",
+              "tail-3"
+            ],
+            "program": [],
+            "trackHexes": [
+              [
+                -2,
+                -1
+              ],
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                1,
+                -1
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                -1
+              ],
+              [
+                3,
+                -1
+              ],
+              [
+                4,
+                -2
+              ],
+              [
+                4,
+                -3
+              ],
+              [
+                5,
+                -3
+              ],
+              [
+                5,
+                -2
+              ],
+              [
+                5,
+                -1
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                -1,
+                3
+              ],
+              [
+                -2,
+                3
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -3,
+                2
+              ],
+              [
+                -4,
+                3
+              ],
+              [
+                -4,
+                2
+              ],
+              [
+                -5,
+                2
+              ],
+              [
+                -6,
+                3
+              ],
+              [
+                -7,
+                4
+              ],
+              [
+                -7,
+                5
+              ],
+              [
+                -6,
+                5
+              ],
+              [
+                -7,
+                6
+              ],
+              [
+                -8,
+                6
+              ],
+              [
+                -9,
+                6
+              ],
+              [
+                -10,
+                6
+              ],
+              [
+                -10,
+                5
+              ],
+              [
+                -9,
+                4
+              ],
+              [
+                -9,
+                3
+              ],
+              [
+                -8,
+                2
+              ],
+              [
+                -7,
+                1
+              ],
+              [
+                -6,
+                1
+              ],
+              [
+                -6,
+                2
+              ],
+              [
+                -5,
+                1
+              ],
+              [
+                -5,
+                0
+              ],
+              [
+                -4,
+                -1
+              ],
+              [
+                -3,
+                -1
+              ],
+              [
+                -3,
+                -2
+              ],
+              [
+                -3,
+                -3
+              ],
+              [
+                -2,
+                -4
+              ],
+              [
+                -1,
+                -5
+              ],
+              [
+                0,
+                -5
+              ],
+              [
+                0,
+                -4
+              ],
+              [
+                1,
+                -5
+              ],
+              [
+                2,
+                -5
+              ],
+              [
+                2,
+                -4
+              ],
+              [
+                1,
+                -4
+              ],
+              [
+                0,
+                -3
+              ],
+              [
+                -1,
+                -2
+              ]
+            ]
+          },
+          {
+            "id": "convergence:part-1",
+            "type": "glyph-purification",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-15",
+            "sourceFragmentInstance": "convergence",
+            "sourceFragmentInstances": [
+              "convergence"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:input:part-2",
+            "type": "arm6",
+            "position": [
+              2,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-14",
+            "sourceFragmentInstance": "branch-0:input",
+            "sourceFragmentInstances": [
+              "branch-0:input",
+              "branch-0:upstream-0",
+              "branch-0:upstream-1",
+              "branch-0:upstream-2",
+              "branch-0:upstream-3",
+              "branch-1:input",
+              "branch-1:upstream-0",
+              "branch-1:upstream-1",
+              "branch-1:upstream-2",
+              "branch-1:upstream-3",
+              "convergence",
+              "tail-0",
+              "tail-1",
+              "tail-2",
+              "tail-3"
+            ],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              }
+            ],
+            "initialTipPosition": [
+              3,
+              -1
+            ]
+          },
+          {
+            "id": "branch-0:input:part-0",
+            "type": "unbonder",
+            "position": [
+              -3,
+              7
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-2",
+            "sourceFragmentInstance": "branch-0:input",
+            "sourceFragmentInstances": [
+              "branch-0:input",
+              "branch-1:upstream-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-0:part-1",
+            "type": "bonder",
+            "position": [
+              -2,
+              4
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-1",
+            "sourceFragmentInstance": "branch-0:upstream-0",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-0",
+              "branch-1:upstream-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-1:part-0",
+            "type": "glyph-purification",
+            "position": [
+              -1,
+              5
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-0",
+            "sourceFragmentInstance": "branch-0:upstream-1",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-2:part-2",
+            "type": "glyph-purification",
+            "position": [
+              3,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-4",
+            "sourceFragmentInstance": "branch-0:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-3:part-1",
+            "type": "input",
+            "position": [
+              2,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 2,
+            "sourcePartId": "part-5",
+            "sourceFragmentInstance": "branch-0:upstream-3",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-3"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:input:part-0",
+            "type": "glyph-purification",
+            "position": [
+              -4,
+              4
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-16",
+            "sourceFragmentInstance": "branch-1:input",
+            "sourceFragmentInstances": [
+              "branch-1:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-2:part-0",
+            "type": "glyph-purification",
+            "position": [
+              6,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-10",
+            "sourceFragmentInstance": "branch-1:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-3:part-0",
+            "type": "input",
+            "position": [
+              8,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-9",
+            "sourceFragmentInstance": "branch-1:upstream-3",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-3"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-0:part-0",
+            "type": "bonder",
+            "position": [
+              -1,
+              -1
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-20",
+            "sourceFragmentInstance": "tail-0",
+            "sourceFragmentInstances": [
+              "tail-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-1:part-1",
+            "type": "unbonder",
+            "position": [
+              5,
+              1
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-13",
+            "sourceFragmentInstance": "tail-1",
+            "sourceFragmentInstances": [
+              "tail-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-2:part-0",
+            "type": "glyph-purification",
+            "position": [
+              8,
+              -1
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-11",
+            "sourceFragmentInstance": "tail-2",
+            "sourceFragmentInstances": [
+              "tail-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-3:part-1",
+            "type": "out-std",
+            "position": [
+              2,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-12",
+            "sourceFragmentInstance": "tail-3",
+            "sourceFragmentInstances": [
+              "tail-3"
+            ],
+            "program": []
+          }
+        ],
+        "solutionParts": [
+          {
+            "id": "part-0",
+            "type": "track",
+            "position": [
+              4,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [],
+            "trackHexes": [
+              [
+                -2,
+                -1
+              ],
+              [
+                -1,
+                -1
+              ],
+              [
+                0,
+                -1
+              ],
+              [
+                1,
+                -1
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                -1
+              ],
+              [
+                3,
+                -1
+              ],
+              [
+                4,
+                -2
+              ],
+              [
+                4,
+                -3
+              ],
+              [
+                5,
+                -3
+              ],
+              [
+                5,
+                -2
+              ],
+              [
+                5,
+                -1
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                4,
+                1
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                -1,
+                3
+              ],
+              [
+                -2,
+                3
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -3,
+                2
+              ],
+              [
+                -4,
+                3
+              ],
+              [
+                -4,
+                2
+              ],
+              [
+                -5,
+                2
+              ],
+              [
+                -6,
+                3
+              ],
+              [
+                -7,
+                4
+              ],
+              [
+                -7,
+                5
+              ],
+              [
+                -6,
+                5
+              ],
+              [
+                -7,
+                6
+              ],
+              [
+                -8,
+                6
+              ],
+              [
+                -9,
+                6
+              ],
+              [
+                -10,
+                6
+              ],
+              [
+                -10,
+                5
+              ],
+              [
+                -9,
+                4
+              ],
+              [
+                -9,
+                3
+              ],
+              [
+                -8,
+                2
+              ],
+              [
+                -7,
+                1
+              ],
+              [
+                -6,
+                1
+              ],
+              [
+                -6,
+                2
+              ],
+              [
+                -5,
+                1
+              ],
+              [
+                -5,
+                0
+              ],
+              [
+                -4,
+                -1
+              ],
+              [
+                -3,
+                -1
+              ],
+              [
+                -3,
+                -2
+              ],
+              [
+                -3,
+                -3
+              ],
+              [
+                -2,
+                -4
+              ],
+              [
+                -1,
+                -5
+              ],
+              [
+                0,
+                -5
+              ],
+              [
+                0,
+                -4
+              ],
+              [
+                1,
+                -5
+              ],
+              [
+                2,
+                -5
+              ],
+              [
+                2,
+                -4
+              ],
+              [
+                1,
+                -4
+              ],
+              [
+                0,
+                -3
+              ],
+              [
+                -1,
+                -2
+              ]
+            ]
+          },
+          {
+            "id": "part-1",
+            "type": "glyph-purification",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-2",
+            "type": "arm6",
+            "position": [
+              2,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_plus"
+              },
+              {
+                "cycle": 2,
+                "instruction": "drop"
+              }
+            ],
+            "initialTipPosition": [
+              3,
+              -1
+            ]
+          },
+          {
+            "id": "part-3",
+            "type": "unbonder",
+            "position": [
+              -3,
+              7
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-4",
+            "type": "bonder",
+            "position": [
+              -2,
+              4
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-5",
+            "type": "glyph-purification",
+            "position": [
+              -1,
+              5
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-6",
+            "type": "glyph-purification",
+            "position": [
+              3,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-7",
+            "type": "input",
+            "position": [
+              2,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-8",
+            "type": "glyph-purification",
+            "position": [
+              -4,
+              4
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-9",
+            "type": "glyph-purification",
+            "position": [
+              6,
+              2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-10",
+            "type": "input",
+            "position": [
+              8,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-11",
+            "type": "bonder",
+            "position": [
+              -1,
+              -1
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-12",
+            "type": "unbonder",
+            "position": [
+              5,
+              1
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-13",
+            "type": "glyph-purification",
+            "position": [
+              8,
+              -1
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-14",
+            "type": "out-std",
+            "position": [
+              2,
+              1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          }
+        ],
+        "inputPositions": [
+          [
+            2,
+            -1
+          ],
+          [
+            8,
+            1
+          ]
+        ],
+        "armInitialTips": [
+          [
+            3,
+            -1
+          ]
+        ]
+      }
+    },
+    "GEN499": {
+      "planner": {
+        "strategy": "generic-reagent-chemistry-v1",
+        "supported": true,
+        "requiredGlyphs": [
+          "bonder",
+          "unbonder"
+        ],
+        "requiredRelations": {
+          "bond-created": 5,
+          "bond-removed": 4,
+          "delivered": 1
+        }
+      },
+      "rankedAssemblyCount": 1,
+      "candidate": {
+        "rank": 1,
+        "score": 0.975585,
+        "coherentSourceSolution": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution",
+        "observedRelations": {
+          "bond-created": 14,
+          "bond-removed": 4,
+          "delivered": 6,
+          "project": 17
+        },
+        "relationCapacities": [
+          {
+            "relation": "bond-created",
+            "capacity": 1,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 2,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "project",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "project",
+            "capacity": 5,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-created",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 1,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "bond-removed",
+            "capacity": 1,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "project",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          },
+          {
+            "relation": "delivered",
+            "capacity": 6,
+            "solutionPath": "solutions/zlbb/P015/031-DOWNLOAD-790g-2i-87c-253a-12h-17.5w-18b-O_STAMINA_POTION.solution"
+          }
+        ],
+        "layoutSummary": {
+          "instanceCount": 13,
+          "materializedPartCount": 13,
+          "sharedPartCount": 1,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 3,
+          "exactStaticConflictCount": 3,
+          "approximateStaticConflictCount": 1,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 13,
+          "sharedSourceIdentityCount": 1,
+          "resolvedSourcePoseCount": 1,
+          "rawPartProposalCount": 15,
+          "layoutComplete": true
+        },
+        "scheduleSummary": {
+          "instanceCount": 13,
+          "missingTimingCount": 0,
+          "defaultedTimingCount": 12,
+          "globalShift": 0,
+          "scheduleComplete": true
+        },
+        "synchronizedSummary": {
+          "instanceCount": 13,
+          "materializedPartCount": 13,
+          "sharedPartCount": 1,
+          "missingGeometryCount": 0,
+          "missingTransformCount": 0,
+          "originConflictCount": 3,
+          "exactStaticConflictCount": 3,
+          "approximateStaticConflictCount": 1,
+          "armWorkspaceOverlapCount": 0,
+          "transformOverrideCount": 0,
+          "sourceSpecificGeometry": true,
+          "sourceIdentityPartCount": 13,
+          "sharedSourceIdentityCount": 1,
+          "resolvedSourcePoseCount": 1,
+          "rawPartProposalCount": 15,
+          "layoutComplete": true,
+          "programConflictCount": 0,
+          "scheduleComplete": true
+        },
+        "rawParts": [
+          {
+            "id": "convergence:part-0",
+            "type": "bonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-1",
+            "sourceFragmentInstance": "convergence",
+            "sourceFragmentInstances": [
+              "convergence"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:input:part-0",
+            "type": "bonder",
+            "position": [
+              5,
+              -5
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-57",
+            "sourceFragmentInstance": "branch-0:input",
+            "sourceFragmentInstances": [
+              "branch-0:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-0:part-0",
+            "type": "glyph-projection",
+            "position": [
+              6,
+              -6
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-53",
+            "sourceFragmentInstance": "branch-0:upstream-0",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-0",
+              "branch-1:upstream-1",
+              "tail-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-1:part-0",
+            "type": "unbonder",
+            "position": [
+              7,
+              -5
+            ],
+            "rotation": 2,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-58",
+            "sourceFragmentInstance": "branch-0:upstream-1",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-1"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-2:part-0",
+            "type": "bonder",
+            "position": [
+              19,
+              -4
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-22",
+            "sourceFragmentInstance": "branch-0:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-0:upstream-2:part-1",
+            "type": "track",
+            "position": [
+              16,
+              -1
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-40",
+            "sourceFragmentInstance": "branch-0:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-2"
+            ],
+            "program": [],
+            "trackHexes": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                4,
+                0
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                6,
+                0
+              ],
+              [
+                7,
+                0
+              ],
+              [
+                8,
+                0
+              ],
+              [
+                9,
+                0
+              ],
+              [
+                10,
+                0
+              ],
+              [
+                11,
+                0
+              ],
+              [
+                12,
+                0
+              ],
+              [
+                13,
+                0
+              ],
+              [
+                13,
+                1
+              ],
+              [
+                13,
+                2
+              ],
+              [
+                12,
+                3
+              ],
+              [
+                11,
+                3
+              ],
+              [
+                10,
+                3
+              ],
+              [
+                9,
+                3
+              ],
+              [
+                8,
+                3
+              ],
+              [
+                7,
+                3
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                5,
+                3
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                -1,
+                3
+              ],
+              [
+                -2,
+                3
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                0
+              ],
+              [
+                -2,
+                0
+              ],
+              [
+                -3,
+                0
+              ],
+              [
+                -4,
+                0
+              ],
+              [
+                -5,
+                0
+              ],
+              [
+                -6,
+                0
+              ],
+              [
+                -7,
+                0
+              ],
+              [
+                -8,
+                0
+              ],
+              [
+                -9,
+                0
+              ],
+              [
+                -10,
+                0
+              ],
+              [
+                -11,
+                0
+              ]
+            ]
+          },
+          {
+            "id": "branch-0:upstream-2:part-2",
+            "type": "arm1",
+            "position": [
+              16,
+              -1
+            ],
+            "rotation": 5,
+            "length": 3,
+            "which": 0,
+            "sourcePartId": "part-41",
+            "sourceFragmentInstance": "branch-0:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-2"
+            ],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_plus"
+              }
+            ],
+            "initialTipPosition": [
+              19,
+              -4
+            ]
+          },
+          {
+            "id": "branch-0:upstream-3:part-0",
+            "type": "input",
+            "position": [
+              19,
+              -5
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-19",
+            "sourceFragmentInstance": "branch-0:upstream-3",
+            "sourceFragmentInstances": [
+              "branch-0:upstream-3"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:input:part-0",
+            "type": "unbonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-2",
+            "sourceFragmentInstance": "branch-1:input",
+            "sourceFragmentInstances": [
+              "branch-1:input"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-0:part-0",
+            "type": "bonder",
+            "position": [
+              1,
+              -2
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-23",
+            "sourceFragmentInstance": "branch-1:upstream-0",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "branch-1:upstream-2:part-0",
+            "type": "input",
+            "position": [
+              0,
+              -2
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 2,
+            "sourcePartId": "part-48",
+            "sourceFragmentInstance": "branch-1:upstream-2",
+            "sourceFragmentInstances": [
+              "branch-1:upstream-2"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-0:part-0",
+            "type": "unbonder",
+            "position": [
+              1,
+              -2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-42",
+            "sourceFragmentInstance": "tail-0",
+            "sourceFragmentInstances": [
+              "tail-0"
+            ],
+            "program": []
+          },
+          {
+            "id": "tail-2:part-0",
+            "type": "out-std",
+            "position": [
+              0,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": "part-59",
+            "sourceFragmentInstance": "tail-2",
+            "sourceFragmentInstances": [
+              "tail-2"
+            ],
+            "program": []
+          }
+        ],
+        "solutionParts": [
+          {
+            "id": "part-0",
+            "type": "bonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-1",
+            "type": "bonder",
+            "position": [
+              5,
+              -5
+            ],
+            "rotation": 5,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-3",
+            "type": "unbonder",
+            "position": [
+              7,
+              -5
+            ],
+            "rotation": 2,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-4",
+            "type": "bonder",
+            "position": [
+              19,
+              -4
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-5",
+            "type": "track",
+            "position": [
+              16,
+              -1
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [],
+            "trackHexes": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                4,
+                0
+              ],
+              [
+                5,
+                0
+              ],
+              [
+                6,
+                0
+              ],
+              [
+                7,
+                0
+              ],
+              [
+                8,
+                0
+              ],
+              [
+                9,
+                0
+              ],
+              [
+                10,
+                0
+              ],
+              [
+                11,
+                0
+              ],
+              [
+                12,
+                0
+              ],
+              [
+                13,
+                0
+              ],
+              [
+                13,
+                1
+              ],
+              [
+                13,
+                2
+              ],
+              [
+                12,
+                3
+              ],
+              [
+                11,
+                3
+              ],
+              [
+                10,
+                3
+              ],
+              [
+                9,
+                3
+              ],
+              [
+                8,
+                3
+              ],
+              [
+                7,
+                3
+              ],
+              [
+                6,
+                3
+              ],
+              [
+                5,
+                3
+              ],
+              [
+                4,
+                3
+              ],
+              [
+                3,
+                3
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                0,
+                3
+              ],
+              [
+                -1,
+                3
+              ],
+              [
+                -2,
+                3
+              ],
+              [
+                -2,
+                2
+              ],
+              [
+                -1,
+                1
+              ],
+              [
+                -1,
+                0
+              ],
+              [
+                -2,
+                0
+              ],
+              [
+                -3,
+                0
+              ],
+              [
+                -4,
+                0
+              ],
+              [
+                -5,
+                0
+              ],
+              [
+                -6,
+                0
+              ],
+              [
+                -7,
+                0
+              ],
+              [
+                -8,
+                0
+              ],
+              [
+                -9,
+                0
+              ],
+              [
+                -10,
+                0
+              ],
+              [
+                -11,
+                0
+              ]
+            ]
+          },
+          {
+            "id": "part-6",
+            "type": "arm1",
+            "position": [
+              16,
+              -1
+            ],
+            "rotation": 5,
+            "length": 3,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": [
+              {
+                "cycle": 0,
+                "instruction": "grab"
+              },
+              {
+                "cycle": 1,
+                "instruction": "track_plus"
+              }
+            ],
+            "initialTipPosition": [
+              19,
+              -4
+            ]
+          },
+          {
+            "id": "part-7",
+            "type": "input",
+            "position": [
+              19,
+              -5
+            ],
+            "rotation": 4,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-8",
+            "type": "unbonder",
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-9",
+            "type": "bonder",
+            "position": [
+              1,
+              -2
+            ],
+            "rotation": 3,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-10",
+            "type": "input",
+            "position": [
+              0,
+              -2
+            ],
+            "rotation": 1,
+            "length": 1,
+            "which": 1,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-11",
+            "type": "unbonder",
+            "position": [
+              1,
+              -2
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          },
+          {
+            "id": "part-12",
+            "type": "out-std",
+            "position": [
+              0,
+              -1
+            ],
+            "rotation": 0,
+            "length": 1,
+            "which": 0,
+            "sourcePartId": null,
+            "sourceFragmentInstance": null,
+            "sourceFragmentInstances": [],
+            "program": []
+          }
+        ],
+        "inputPositions": [
+          [
+            19,
+            -5
+          ],
+          [
+            0,
+            -2
+          ]
+        ],
+        "armInitialTips": [
+          [
+            19,
+            -4
+          ]
+        ]
+      }
+    }
+  }
+}

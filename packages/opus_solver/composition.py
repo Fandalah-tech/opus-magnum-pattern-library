@@ -19,13 +19,27 @@ def _edge_score(edge: dict[str, Any]) -> dict[str, float]:
     observation_confidence = 1.0 - math.exp(-observations / 3.0)
     puzzle_breadth = 1.0 - math.exp(-puzzles / 2.0)
     solution_breadth = 1.0 - math.exp(-solutions / 3.0)
-    score = 0.60 * observation_confidence + 0.25 * puzzle_breadth + 0.15 * solution_breadth
-    return {
+    validated_raw = edge.get("engineValidatedSolutionCount")
+    validated = max(0, int(validated_raw or 0))
+    validation_confidence = 1.0 - math.exp(-validated / 3.0)
+    if validated_raw is None:
+        score = 0.60 * observation_confidence + 0.25 * puzzle_breadth + 0.15 * solution_breadth
+    else:
+        score = (
+            0.45 * observation_confidence
+            + 0.20 * puzzle_breadth
+            + 0.10 * solution_breadth
+            + 0.25 * validation_confidence
+        )
+    result = {
         "score": round(score, 6),
         "observationConfidence": round(observation_confidence, 6),
         "puzzleBreadth": round(puzzle_breadth, 6),
         "solutionBreadth": round(solution_breadth, 6),
     }
+    if validated_raw is not None:
+        result["engineValidationConfidence"] = round(validation_confidence, 6)
+    return result
 
 
 def _fragment_metadata(fragment_index: dict[str, Any] | None) -> dict[FragmentKey, dict[str, Any]]:
@@ -53,6 +67,8 @@ def rank_fragment_chains(
     max_depth: int = 6,
     limit: int = 25,
     min_observations: int = 1,
+    min_engine_validated_solutions: int = 0,
+    allowed_relations: Iterable[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Rank observed canonical fragment chains from source roles to target roles.
 
@@ -65,12 +81,18 @@ def rank_fragment_chains(
     max_depth = max(1, int(max_depth))
     limit = max(0, int(limit))
     min_observations = max(1, int(min_observations))
+    min_engine_validated_solutions = max(0, int(min_engine_validated_solutions))
+    allowed_relation_set = {str(value) for value in allowed_relations} if allowed_relations is not None else None
     metadata = _fragment_metadata(fragment_index)
 
     adjacency: defaultdict[FragmentKey, list[dict[str, Any]]] = defaultdict(list)
     start_nodes: set[FragmentKey] = set()
     for transition in flow_index.get("transitions", []):
         if int(transition.get("observationCount") or 0) < min_observations:
+            continue
+        if int(transition.get("engineValidatedSolutionCount") or 0) < min_engine_validated_solutions:
+            continue
+        if allowed_relation_set is not None and str(transition.get("relation") or "") not in allowed_relation_set:
             continue
         source = _fragment_key(transition.get("sourceRole"), transition.get("sourceMechanismHash"))
         target = _fragment_key(transition.get("targetRole"), transition.get("targetMechanismHash"))
@@ -134,6 +156,13 @@ def rank_fragment_chains(
                 "observationCount": edge.get("observationCount"),
                 "sourcePuzzleCount": edge.get("sourcePuzzleCount"),
                 "sourceSolutionCount": edge.get("sourceSolutionCount"),
+                "engineValidatedSolutionCount": edge.get("engineValidatedSolutionCount"),
+                "engineValidationRate": edge.get("engineValidationRate"),
+                "evidenceSource": edge.get("evidenceSource"),
+                "sourcePuzzles": list(edge.get("sourcePuzzles", [])),
+                "relativeTransforms": edge.get("relativeTransforms"),
+                "relativeTimings": edge.get("relativeTimings"),
+                "samples": list(edge.get("samples", [])),
                 "empirical": edge["empirical"],
             }
             walk(target, nodes + [target], steps + [step], visited | {target})

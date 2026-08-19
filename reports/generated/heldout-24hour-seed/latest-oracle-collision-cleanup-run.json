@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-oracle-collision-cleanup-run-pointer",
+  "runId": "32276122749",
+  "runNumber": "1",
+  "runAttempt": "1",
+  "status": "completed",
+  "sourceCommit": "ffb2212a609a667850fabffec87d1fb59a5bbd56",
+  "targetSolutionBytesUsed": 0,
+  "conclusion": "success"
+}

@@ -1,0 +1,161 @@
+STRICT HELD-OUT SINGLE-PRODUCT MILESTONE - OM2021_W1
+====================================================
+
+Status
+------
+The solver has produced its first authoritative product on the strict held-out
+OM2021_W1 benchmark. Unmodified OMSim accepts the exact four-atom target at
+cycle 61:
+
+    product 1 cycles: 61
+
+The command exits with status 0. This is materially stronger than surviving a
+cycle limit: OMSim only prints this metric after the molecule on the output
+matches the target's atoms and bonds.
+
+The accepted molecule contains four atoms and three full triplex edges. Each
+edge carries black, red and yellow, for nine required triplex channels in all.
+
+The complete six-output puzzle is not solved yet. The machine delivers one
+correct product, later collides on cycle 212, and therefore cannot currently
+repeat the process six times. The strict full-puzzle completion count remains
+zero; the strict single-product proof count is now one.
+
+Strict held-out protocol
+------------------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Audited triplex solutions: 479
+Engine-complete solutions before exclusion: 396
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Target solution bytes used by the learned index: 0
+
+The target puzzle definition and OMSim were available as the specification and
+oracle. No target-puzzle solution example was admitted to the donor corpus.
+
+Important correction to milestone v5
+-------------------------------------
+The preceding report called 22 intermediate candidates "OMSim-stable
+calcified complete-triplex" candidates. That wording was too strong.
+
+OMSim's ordinary cycle-limit validation proved mechanical survival, but did not
+inspect the intermediate molecule's chemistry. A new product-metric test then
+exposed a simulator fidelity error: the local engine processed unbonders and
+prisms in separate type buckets, while OMSim processes instantaneous glyphs in
+solution-file order. When both touch the same pair during one half-cycle, that
+ordering changes the resulting bond.
+
+Those 22 historical results are therefore reclassified as cycle-limit
+survivors, not authoritative chemistry proofs. The current milestone does not
+depend on that claim.
+
+Engine fidelity repair
+----------------------
+The runtime and faithful simulators now retain the solution-file order of the
+entire bonder family:
+
+- normal bonder;
+- unbonder;
+- prismatic bonder; and
+- multi-bonder.
+
+A regression test covers the critical case. Prism-then-unbonder leaves no
+bond; unbonder-then-prism leaves the expected triplex channel. After the fix,
+the local atom positions and bonds matched the instrumented OMSim trace across
+the decisive cycles. The temporary trace instrumentation was removed before
+verification.
+
+Automatic product-completion stage
+----------------------------------
+The new solver stage performs the following operations without target solution
+examples:
+
+1. Stably orders unbonders before prisms when that chemistry order is needed.
+2. Detects a persistent fire-fire-salt core with two complete triplex edges.
+3. Identifies the fire endpoint that must receive the fourth atom.
+4. Rotates and translates a bounded supply/finisher template around that
+   observed endpoint.
+5. Adds an isolated fire supply, an unbonder, two prisms and two short arm
+   programs.
+6. Derives the output pose from the finished molecule.
+7. Replays locally, then promotes only delivered products to OMSim's explicit
+   product metric.
+
+The template is invariant under all six hex rotations. It schedules the supply
+arm relative to the observed core-ready cycle rather than using a fixed global
+timestamp.
+
+Reproduction from the ordered-chemistry parent
+----------------------------------------------
+A clean reconstruction beginning before the missing prism produced:
+
+Observed prism placements searched: 14
+Persistent full-triplex cores: 3
+Automatic product finishers generated: 3
+Local single-product deliveries: 3
+Candidates promoted to the product oracle: 3
+Official OMSim single-product completions: 3
+Best official cycle: 61
+
+An earlier bounded feeder-geometry exploration tested 18 legal placements; 10
+of them also completed one exact product under the same official metric. This
+shows the result is not restricted to a single accidental feeder pose.
+
+Authoritative evidence
+----------------------
+Product command result:
+
+    product 1 cycles: 61
+    exit status: 0
+
+Ordinary full-puzzle run:
+
+    235g/983i@0
+    collision during motion phase on cycle 212 at 2 -1
+    exit status: 255
+
+Output-interval probe before that collision:
+
+    output intervals: 61
+
+Accepted solution artifact:
+
+    OM2021_W1-single-product-cycle-61.solution
+    SHA-256: 955d06e655ac63f782d4738478dd94d7d52ecb8e334bb0132085fd5777113b6b
+
+OMSim binary used:
+
+    SHA-256: f0edd34b6d6a3a1b2c3df4f48fe17b818deaae242efb749759d6c64647fbedb4
+
+What the solver can now do
+--------------------------
+The solver can now automatically turn a persistent three-atom triplex core
+into one exact held-out product, place it on the output, and distinguish an
+official product proof from mere collision-free survival. This entire stage is
+available through the composed-candidate pipeline and its CLI.
+
+It still cannot reset and repeat the mechanism safely. The remaining failure is
+now a repeatability/cleanup problem rather than an unknown-product-chemistry
+problem: stale atoms and the original mechanism eventually collide on cycle
+212 after the first accepted output.
+
+Next decisive milestone
+-----------------------
+Convert the one-shot arm programs into a repeatable period, evacuate or reuse
+the atoms left by each reagent spawn, and keep the core mechanism clear through
+six accepted deliveries. OMSim's product metric can then be raised from one to
+six, giving an unambiguous full-puzzle proof.
+
+Verification
+------------
+Python test suite: 222 passed, plus 10 passing subtests
+Targeted engine/order/product tests: passed
+Product-stage reconstruction: 3/3 official completions
+Official single-product metric: passed at cycle 61
+Normal-run output interval: 61
+Known later collision: cycle 212 at (2, -1)
+Diff whitespace check: passed
+Temporary OMSim source instrumentation remaining: none
+Concurrent oracle worker cap: 10
+Strict single-product proof count: 1
+Strict full-puzzle completion count: 0

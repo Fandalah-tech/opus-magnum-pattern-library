@@ -1,78 +1,149 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://opus-codex.local/schemas/solution.schema.json",
-  "title": "Opus Codex Solution",
+  "title": "Opus Codex Parsed Solution",
   "type": "object",
-  "required": ["schemaVersion", "id", "puzzleId", "parts"],
+  "required": [
+    "schemaVersion",
+    "format",
+    "source",
+    "puzzleFile",
+    "name",
+    "metrics",
+    "unknownMetrics",
+    "parts",
+    "trailingBytes"
+  ],
   "properties": {
-    "schemaVersion": { "const": "0.1.0" },
-    "id": { "type": "string", "minLength": 1 },
-    "puzzleId": { "type": "string", "minLength": 1 },
-    "name": { "type": "string" },
-    "source": {
+    "schemaVersion": { "const": "0.1.1" },
+    "format": {
       "type": "object",
+      "required": ["kind", "version"],
       "properties": {
-        "fileName": { "type": "string" },
-        "sha256": { "type": "string" },
-        "formatVersion": { "type": ["integer", "null"] }
+        "kind": { "const": "solution" },
+        "version": { "enum": [6, 7] }
       },
       "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["name", "sha256", "size"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "puzzleFile": { "type": "string" },
+    "name": { "type": "string" },
+    "metrics": { "$ref": "#/$defs/metrics" },
+    "unknownMetrics": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unknownMetric" }
     },
     "parts": {
       "type": "array",
       "items": { "$ref": "#/$defs/part" }
     },
-    "claimedMetrics": { "$ref": "#/$defs/metrics" },
-    "metadata": { "type": "object", "additionalProperties": true }
+    "trailingBytes": { "type": "integer", "minimum": 0 }
   },
   "additionalProperties": false,
   "$defs": {
-    "hex": {
+    "coordinate": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "metrics": {
       "type": "object",
-      "required": ["q", "r"],
+      "required": ["cycles", "cost", "area", "instructions"],
       "properties": {
-        "q": { "type": "integer" },
-        "r": { "type": "integer" }
+        "cycles": { "type": ["integer", "null"] },
+        "cost": { "type": ["integer", "null"] },
+        "area": { "type": ["integer", "null"] },
+        "instructions": { "type": ["integer", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "unknownMetric": {
+      "type": "object",
+      "required": ["id", "value"],
+      "properties": {
+        "id": { "type": "integer" },
+        "value": { "type": "integer" }
       },
       "additionalProperties": false
     },
     "instruction": {
       "type": "object",
-      "required": ["cycle", "opcode"],
+      "required": ["cycle", "instruction", "rawCode"],
       "properties": {
-        "cycle": { "type": "integer", "minimum": 0 },
-        "opcode": { "type": "string", "minLength": 1 }
+        "cycle": { "type": "integer" },
+        "instruction": {
+          "enum": [
+            "pivot_ccw",
+            "extend",
+            "pivot_cw",
+            "drop",
+            "track_minus",
+            "rotate_ccw",
+            "retract",
+            "rotate_cw",
+            "grab",
+            "track_plus",
+            "period_override",
+            "reset",
+            "repeat",
+            "unknown"
+          ]
+        },
+        "rawCode": {
+          "type": ["string", "integer"],
+          "minLength": 1,
+          "maxLength": 1,
+          "minimum": 0,
+          "maximum": 255
+        }
       },
       "additionalProperties": false
     },
     "part": {
       "type": "object",
-      "required": ["id", "type", "position", "rotation"],
+      "required": [
+        "id",
+        "type",
+        "enabled",
+        "position",
+        "length",
+        "rotation",
+        "which",
+        "armNumber",
+        "program"
+      ],
       "properties": {
-        "id": { "type": "string" },
+        "id": { "type": "string", "pattern": "^part-[0-9]+$" },
         "type": { "type": "string" },
-        "position": { "$ref": "#/$defs/hex" },
-        "rotation": { "type": "integer", "minimum": 0, "maximum": 5 },
-        "length": { "type": ["integer", "null"], "minimum": 1 },
-        "track": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/hex" }
-        },
+        "enabled": { "type": "boolean" },
+        "position": { "$ref": "#/$defs/coordinate" },
+        "length": { "type": "integer" },
+        "rotation": { "type": "integer" },
+        "which": { "type": "integer" },
+        "armNumber": { "type": "integer" },
         "program": {
           "type": "array",
           "items": { "$ref": "#/$defs/instruction" }
         },
-        "metadata": { "type": "object", "additionalProperties": true }
-      },
-      "additionalProperties": false
-    },
-    "metrics": {
-      "type": "object",
-      "properties": {
-        "cost": { "type": "integer", "minimum": 0 },
-        "cycles": { "type": "integer", "minimum": 0 },
-        "area": { "type": "integer", "minimum": 0 },
-        "instructions": { "type": "integer", "minimum": 0 }
+        "trackHexes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/coordinate" }
+        },
+        "pipeId": { "type": "integer" },
+        "pipeHexes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/coordinate" }
+        }
       },
       "additionalProperties": false
     }

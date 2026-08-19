@@ -13,11 +13,18 @@ solution = parse_solution("example.solution")
 
 Both functions return JSON-serializable canonical dictionaries and include the source SHA-256, file size, binary format version and number of unconsumed trailing bytes.
 
+The canonical parsed-binary contracts are defined in
+[`schemas/puzzle.schema.json`](../../schemas/puzzle.schema.json) and
+[`schemas/solution.schema.json`](../../schemas/solution.schema.json).
+
 ## Supported formats
 
 - Puzzle format version 3.
 - Solution format versions 6 and 7.
-- Standard molecules, normal and triplex bonds.
+- Standard molecules, normal bonds, and the red/black/yellow channel bitmask
+  used by triplex bonds. Parsed bonds retain their exact binary `rawCode`.
+- Canonical helpers preserve the combined channel identity for retrieval and
+  expand the mask into channel-specific engine bonds for exact simulation.
 - Standard arms, Van Berlo wheel, tracks, glyphs, inputs and outputs represented as solution parts.
 - Sparse arm instruction tapes.
 

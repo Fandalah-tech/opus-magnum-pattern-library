@@ -6,6 +6,7 @@ from typing import Any
 GEOMETRY_FAILURE_MODES = {"blocked-input-at-start", "missing-standard-output"}
 TIMING_FAILURE_MODES = {"no-product-delivered", "insufficient-product-delivery"}
 COLLISION_WORDS = ("collision", "collides", "conflicting motion", "occupied")
+TERMINAL_FAILURE_MODES = {"unavailable-parts"}
 
 
 def recommend_repair_order(
@@ -28,6 +29,16 @@ def recommend_repair_order(
     error_message = str(first_error.get("message") or "").lower()
     exact_conflicts = int(layout_summary.get("exactStaticConflictCount") or 0)
     blocked_inputs = list(validation.get("blockedInputsAtStart") or [])
+
+    if failure_mode in TERMINAL_FAILURE_MODES:
+        return {
+            "preferred": "assembly",
+            "order": [],
+            "reason": f"failure-mode:{failure_mode}",
+            "geometrySignals": [],
+            "timingSignals": [],
+            "failureMode": failure_mode,
+        }
 
     geometry_signals = []
     timing_signals = []

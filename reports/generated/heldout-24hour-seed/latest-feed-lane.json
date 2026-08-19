@@ -1,0 +1,245 @@
+{
+  "schemaVersion": "0.3.0",
+  "kind": "heldout-feed-lane-checkpoint",
+  "runId": "32194960827",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "seedRunId": "32157526102",
+  "seedSourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
+  "assemblyRank": 1,
+  "assemblyScore": 0.892762,
+  "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+  "transformOverrides": {
+    "branch-0:edge-0": {
+      "frame": "source-anchor-local",
+      "delta": [
+        -3,
+        1
+      ],
+      "rotationDelta": 1
+    }
+  },
+  "request": {
+    "maxGrabCycles": 256,
+    "validationCycles": 320,
+    "placementLimitPerInput": 72,
+    "resultLimit": 20
+  },
+  "searchSummary": {
+    "inputCount": 2,
+    "maxGrabCycles": 256,
+    "validationCycles": 320,
+    "placementLimitPerInput": 72,
+    "placementCounts": {
+      "part-7": 72,
+      "part-10": 72
+    },
+    "testedVariantCount": 144,
+    "returnedVariantCount": 20,
+    "blockedInputVariantCount": 3,
+    "fullySpawnedVariantCount": 141,
+    "targetTransformReachedVariantCount": 0,
+    "freeEqualPairReachedVariantCount": 3,
+    "readyPurificationPoseReachedVariantCount": 0,
+    "bestMinFreeEqualPairDistance": 5,
+    "completeVariantCount": 0,
+    "hasCompleteSolution": false,
+    "rankingPolicy": "complete-delivery-valid-spawn-transform-conversion-opportunity-survival",
+    "mechanicsFingerprint": "2284e3e3e25c452a922e2716a86c9fb924260fc2a7ebe895d73d74b62bcb4d18"
+  },
+  "bestVariant": {
+    "rank": 1,
+    "inputId": "part-7",
+    "reagentIndex": 0,
+    "originalPosition": [
+      -4,
+      3
+    ],
+    "originalRotation": 5,
+    "position": [
+      4,
+      -2
+    ],
+    "rotation": 4,
+    "translationDistance": 8,
+    "grabEvidence": [
+      {
+        "grabCycle": 3,
+        "armId": "part-2",
+        "branchIndex": 5,
+        "grabPosition": [
+          4,
+          -2
+        ],
+        "anchoredAtomIndex": 0,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 6,
+        "armId": "part-2",
+        "branchIndex": 4,
+        "grabPosition": [
+          4,
+          -2
+        ],
+        "anchoredAtomIndex": 0,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 153,
+        "armId": "part-2",
+        "branchIndex": 0,
+        "grabPosition": [
+          5,
+          -4
+        ],
+        "anchoredAtomIndex": 2,
+        "anchoredAtomElement": "iron"
+      },
+      {
+        "grabCycle": 153,
+        "armId": "part-2",
+        "branchIndex": 1,
+        "grabPosition": [
+          4,
+          -3
+        ],
+        "anchoredAtomIndex": 1,
+        "anchoredAtomElement": "copper"
+      }
+    ],
+    "mechanicsPreserved": true,
+    "serialization": {
+      "byteCount": 1147,
+      "partCount": 15,
+      "parserTrailingBytes": 0,
+      "puzzleFileMatches": true,
+      "roundTripClean": true,
+      "nonSerializedSourceMetadataReattached": true
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 146,
+      "terminatedWithError": true,
+      "firstError": {
+        "cycle": 145,
+        "message": "Atom part-10-spawn-0-atom-2 sweeps into stationary atom part-7-spawn-1-atom-3 at (3, -3); instruction=track_plus; distance=0.000; threshold=58.000"
+      },
+      "requiredChemistryEventKinds": [
+        "atom-purified",
+        "bond-removed",
+        "product-delivered",
+        "repeating-product-completed"
+      ],
+      "observedRequiredChemistryEventKinds": [
+        "bond-removed"
+      ],
+      "distinctRequiredChemistryEventCount": 1,
+      "requiredChemistryEventCount": 2,
+      "chemistryEventCount": 2,
+      "chemistryEventKinds": [
+        "bond-removed"
+      ],
+      "atomPurifiedCount": 0,
+      "eventCounts": {
+        "arm-instruction": 145,
+        "atom-grabbed": 159,
+        "atoms-dropped": 47,
+        "bond-removed": 2,
+        "input-spawned": 2,
+        "simulation-error": 1
+      },
+      "manipulationEventCount": 208,
+      "blockedInputsAtStart": [],
+      "initialInputStatus": [
+        {
+          "inputId": "part-7",
+          "spawnCountAtStart": 1,
+          "spawnedAtStart": true,
+          "footprint": [
+            [
+              4,
+              -2
+            ],
+            [
+              4,
+              -3
+            ],
+            [
+              5,
+              -4
+            ],
+            [
+              3,
+              -3
+            ]
+          ]
+        },
+        {
+          "inputId": "part-10",
+          "spawnCountAtStart": 1,
+          "spawnedAtStart": true,
+          "footprint": [
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              10,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "conversionOpportunity": {
+      "skipped": false,
+      "skipReason": null,
+      "freeEqualPairObservationCount": 18,
+      "adjacentFreeEqualPairObservationCount": 0,
+      "readyPurificationPoseObservationCount": 0,
+      "framesWithReadyPurificationPose": 0,
+      "maxReadyPurificationPosesInFrame": 0,
+      "minFreeEqualPairDistance": 5,
+      "readyPoseCountsByElement": {},
+      "nearestFreeEqualPairSamples": [
+        {
+          "cycle": 135,
+          "element": "iron",
+          "distance": 5,
+          "atomIds": [
+            "part-10-spawn-0-atom-3",
+            "part-7-spawn-0-atom-2"
+          ],
+          "positions": [
+            [
+              2,
+              -1
+            ],
+            [
+              6,
+              0
+            ]
+          ]
+        }
+      ],
+      "readyPurificationSamples": []
+    },
+    "errorType": null,
+    "error": null
+  }
+}

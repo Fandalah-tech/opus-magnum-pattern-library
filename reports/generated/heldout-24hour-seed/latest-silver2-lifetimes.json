@@ -1,0 +1,275 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-silver2-lifetime-checkpoint",
+  "runId": "32195939955",
+  "sourceCommit": "81dc96e96a3cd9504841dec3ad737129282a1cff",
+  "chemistryRunId": "32195163437",
+  "targetSolutionBytesUsed": 0,
+  "summary": {
+    "element": "silver",
+    "atomCount": 2,
+    "observedCycleCount": 6,
+    "maxSimultaneousCount": 2,
+    "maxSimultaneousUnheldCount": 2,
+    "firstTwoAtomCycle": 207,
+    "firstTwoUnheldCycle": 207,
+    "completedCycles": 209,
+    "terminatedWithError": true,
+    "targetSolutionBytesUsed": 0
+  },
+  "atoms": [
+    {
+      "atomId": "part-19-purified-3",
+      "firstCycle": 207,
+      "lastCycle": 208,
+      "observationCount": 3,
+      "positions": [
+        [
+          8,
+          -1
+        ]
+      ],
+      "heldCycleCount": 2,
+      "unheldCycleCount": 1,
+      "firstHeldCycle": 208,
+      "lastHeldCycle": 208,
+      "firstUnheldCycle": 207,
+      "lastUnheldCycle": 207,
+      "observations": [
+        {
+          "cycle": 207,
+          "position": [
+            8,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "cycle": 208,
+          "position": [
+            8,
+            -1
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        },
+        {
+          "cycle": 208,
+          "position": [
+            8,
+            -1
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        }
+      ]
+    },
+    {
+      "atomId": "part-26-purified-1",
+      "firstCycle": 204,
+      "lastCycle": 208,
+      "observationCount": 6,
+      "positions": [
+        [
+          9,
+          -2
+        ]
+      ],
+      "heldCycleCount": 2,
+      "unheldCycleCount": 4,
+      "firstHeldCycle": 208,
+      "lastHeldCycle": 208,
+      "firstUnheldCycle": 204,
+      "lastUnheldCycle": 207,
+      "observations": [
+        {
+          "cycle": 204,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "cycle": 205,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "cycle": 206,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "cycle": 207,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        },
+        {
+          "cycle": 208,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        },
+        {
+          "cycle": 208,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        }
+      ]
+    }
+  ],
+  "cycleCounts": [
+    {
+      "cycle": 204,
+      "count": 1,
+      "unheldCount": 1,
+      "atoms": [
+        {
+          "atomId": "part-26-purified-1",
+          "cycle": 204,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        }
+      ]
+    },
+    {
+      "cycle": 205,
+      "count": 1,
+      "unheldCount": 1,
+      "atoms": [
+        {
+          "atomId": "part-26-purified-1",
+          "cycle": 205,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        }
+      ]
+    },
+    {
+      "cycle": 206,
+      "count": 1,
+      "unheldCount": 1,
+      "atoms": [
+        {
+          "atomId": "part-26-purified-1",
+          "cycle": 206,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        }
+      ]
+    },
+    {
+      "cycle": 207,
+      "count": 2,
+      "unheldCount": 2,
+      "atoms": [
+        {
+          "atomId": "part-19-purified-3",
+          "cycle": 207,
+          "position": [
+            8,
+            -1
+          ],
+          "heldBy": []
+        },
+        {
+          "atomId": "part-26-purified-1",
+          "cycle": 207,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": []
+        }
+      ]
+    },
+    {
+      "cycle": 208,
+      "count": 2,
+      "unheldCount": 0,
+      "atoms": [
+        {
+          "atomId": "part-19-purified-3",
+          "cycle": 208,
+          "position": [
+            8,
+            -1
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        },
+        {
+          "atomId": "part-26-purified-1",
+          "cycle": 208,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        }
+      ]
+    },
+    {
+      "cycle": 208,
+      "count": 2,
+      "unheldCount": 0,
+      "atoms": [
+        {
+          "atomId": "part-19-purified-3",
+          "cycle": 208,
+          "position": [
+            8,
+            -1
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        },
+        {
+          "atomId": "part-26-purified-1",
+          "cycle": 208,
+          "position": [
+            9,
+            -2
+          ],
+          "heldBy": [
+            "part-2"
+          ]
+        }
+      ]
+    }
+  ]
+}

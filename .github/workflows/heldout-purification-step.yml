@@ -1,0 +1,152 @@
+name: Blind GEN249 next purification step
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-purification-step.yml
+      - packages/opus_solver/purification_chain.py
+      - tools/probe_holdout_purification_chain.py
+      - tests/test_purification_chain.py
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-purification-step-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  REACTION_POINTER: reports/generated/heldout-24hour-seed/latest-reaction-placement.json
+  PUZZLE_ROOT: .datasets/heldout-purification-step
+  BASELINE_ROOT: .baseline/heldout-reaction-placement-step
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  REPORT_ROOT: reports/heldout-purification-step
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-purification-step.json
+
+jobs:
+  step:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test purification frontier ranking
+        run: python -m unittest tests.test_purification_chain -v
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore latest target-free purification baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['REACTION_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['targetSolutionBytesUsed'] == 0
+          assert pointer['summary']['hasPurification'] is True
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/reaction-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'heldout-reaction-placement-{sys.argv[2]}'
+          item = next(item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired'))
+          print(item['id'], str(item['digest']).split(':', 1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"
+          archive="$RUNNER_TEMP/reaction.zip"
+          curl --fail --location \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          test -s "$BASELINE_ROOT/GEN249-best-purification.solution"
+
+      - name: Search exactly one additional purification generation
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          python tools/probe_holdout_purification_chain.py \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline-solution "$BASELINE_ROOT/GEN249-best-purification.solution" \
+            --max-cycles 256 \
+            --depth 1 \
+            --beam-width 1 \
+            --opportunity-limit 60 \
+            --variant-limit 120 \
+            --result-limit 10 \
+            --solution-output "$REPORT_ROOT/GEN249-best-next-step.solution" \
+            --output "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist compact step checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['REPORT_ROOT']) / 'GEN249.json').read_text(encoding='utf-8'))
+          reaction = json.loads(Path(os.environ['REACTION_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.1.0',
+              'kind': 'heldout-purification-step-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'reactionRunId': reaction.get('runId'),
+              'targetSolutionBytesUsed': 0,
+              'target': report.get('targetPuzzle'),
+              'summary': report.get('summary'),
+              'initialPurificationProfile': report.get('initialPurificationProfile'),
+              'generations': report.get('generations'),
+              'best': report.get('best'),
+          }
+          output = Path(os.environ['LATEST_REPORT'])
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"
+          if ! git diff --cached --quiet; then
+            git commit -m "Update blind purification step checkpoint [skip ci]"
+            git fetch origin feature/critelli-2026-public-corpus
+            git rebase origin/feature/critelli-2026-public-corpus
+            git push origin HEAD:feature/critelli-2026-public-corpus
+          fi
+
+      - name: Upload purification step artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-purification-step-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14

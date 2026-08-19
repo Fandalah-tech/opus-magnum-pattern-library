@@ -21,6 +21,7 @@ class SolutionGraphTests(unittest.TestCase):
         self.assertEqual(graph["summary"]["nodeCount"], 3)
         self.assertEqual(graph["summary"]["armCount"], 1)
         self.assertEqual(graph["summary"]["trackCount"], 1)
+        self.assertEqual(graph["summary"]["trackMobileArmCount"], 0)
         self.assertEqual(graph["summary"]["componentCount"], 2)
         relations = {(edge["source"], edge["target"], edge["relation"]) for edge in graph["edges"]}
         self.assertIn(("part-0", "part-1", "within-arm-reach"), relations)
@@ -40,6 +41,42 @@ class SolutionGraphTests(unittest.TestCase):
         shared = [edge for edge in graph["edges"] if edge["relation"] == "shared-hex"]
         self.assertEqual(len(shared), 2)
         self.assertEqual(shared[0]["confidence"], "high")
+
+    def test_track_motion_extends_arm_reach_to_remote_feed(self):
+        solution = {
+            "parts": [
+                {
+                    "id": "track",
+                    "type": "track",
+                    "position": [0, 0],
+                    "trackHexes": [[0, 0], [1, 0], [2, 0], [3, 0]],
+                    "program": [],
+                },
+                {
+                    "id": "arm",
+                    "type": "arm1",
+                    "position": [0, 0],
+                    "length": 1,
+                    "rotation": 0,
+                    "program": [
+                        {"cycle": 0, "instruction": "grab"},
+                        {"cycle": 1, "instruction": "track_plus"},
+                    ],
+                },
+                {"id": "feed", "type": "input", "position": [4, 0], "program": []},
+            ]
+        }
+        graph = build_solution_graph(solution)
+        relations = {(edge["source"], edge["target"], edge["relation"]) for edge in graph["edges"]}
+        self.assertNotIn(("arm", "feed", "within-arm-reach"), relations)
+        self.assertIn(("arm", "feed", "within-track-arm-reach"), relations)
+        self.assertEqual(graph["summary"]["trackMobileArmCount"], 1)
+        edge = next(
+            edge for edge in graph["edges"]
+            if edge["source"] == "arm" and edge["target"] == "feed" and edge["relation"] == "within-track-arm-reach"
+        )
+        self.assertEqual(edge["evidence"]["minDistance"], 1)
+        self.assertEqual(edge["evidence"]["trackIds"], ["track"])
 
 
 if __name__ == "__main__":

@@ -16,6 +16,8 @@ def _instance_group(instance_id: str) -> str | None:
         return value.split(":", 1)[0]
     if value.startswith("tail-"):
         return value.split(":", 1)[0]
+    if value.startswith("chain-") and value != "chain-0":
+        return value
     return None
 
 
@@ -94,12 +96,22 @@ def validation_rank(validation: dict[str, Any], *, displacement: int = 0) -> tup
     """Return a sortable progress key; larger values are better."""
     return (
         int(bool(validation.get("complete"))),
-        int(not bool(validation.get("terminatedWithError"))),
         int(validation.get("totalDelivered") or 0),
         -int(validation.get("totalDeficit") or 0),
+        int(validation.get("distinctRequiredChemistryEventCount") or 0),
+        int(validation.get("requiredChemistryEventCount") or 0),
+        int(validation.get("distinctChemistryEventCount") or 0),
+        int(validation.get("chemistryEventCount") or 0),
+        int(validation.get("manipulationEventCount") or 0),
+        int(not bool(validation.get("terminatedWithError"))),
         int(validation.get("completedCycles") or 0),
         -int(displacement),
     )
+
+
+def invalid_candidate_rank(*, displacement: int = 0) -> tuple[Any, ...]:
+    """Return a rank below every replayed candidate."""
+    return (0, -10**9, -10**9, 0, 0, 0, 0, 0, 0, 0, -int(displacement))
 
 
 def search_temporal_candidates(
@@ -129,7 +141,7 @@ def search_temporal_candidates(
             if not synchronized.get("summary", {}).get("scheduleComplete"):
                 record["failureMode"] = "program-conflict"
                 record["programConflicts"] = synchronized.get("programConflicts", [])
-                record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
+                record["rank"] = invalid_candidate_rank(displacement=displacement)
                 results.append(record)
                 continue
 
@@ -144,7 +156,7 @@ def search_temporal_candidates(
         except Exception as exc:
             record["failureMode"] = "generation-error"
             record["generationError"] = {"errorType": type(exc).__name__, "message": str(exc)}
-            record["rank"] = (0, 0, 0, -10**9, 0, -displacement)
+            record["rank"] = invalid_candidate_rank(displacement=displacement)
         results.append(record)
 
     results.sort(key=lambda item: tuple(item.get("rank", ())), reverse=True)

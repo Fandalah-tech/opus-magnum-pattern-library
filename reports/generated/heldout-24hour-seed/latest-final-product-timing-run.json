@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-final-product-timing-run-pointer",
+  "runId": "32274625728",
+  "runNumber": "1",
+  "runAttempt": "1",
+  "status": "completed",
+  "sourceCommit": "5251e8a2ba75707c4a87b4fc6456ccb60f41acb7",
+  "targetSolutionBytesUsed": 0,
+  "conclusion": "success"
+}

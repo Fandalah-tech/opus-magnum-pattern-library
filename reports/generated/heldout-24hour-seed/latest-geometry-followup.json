@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-geometry-followup-checkpoint",
+  "runId": "32194960665",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "seedRunId": "32157526102",
+  "seedSourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
+  "assemblyRank": 1,
+  "assemblyScore": 0.892762,
+  "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+  "transformOverrides": {
+    "branch-0:edge-0": {
+      "frame": "source-anchor-local",
+      "delta": [
+        -3,
+        1
+      ],
+      "rotationDelta": 1
+    }
+  },
+  "maxCycles": 4096,
+  "validation": {
+    "complete": false,
+    "failureMode": "missing-product-output",
+    "totalDelivered": 0,
+    "totalDeficit": 18,
+    "requestedCycles": 4096,
+    "completedCycles": 206,
+    "terminatedWithError": true,
+    "firstError": {
+      "cycle": 205,
+      "message": "Atom part-10-spawn-0-atom-2 sweeps into stationary atom part-10-spawn-1-atom-1 at (9, 1); instruction=track_plus; distance=0.000; threshold=58.000"
+    },
+    "requiredChemistryEventKinds": [
+      "atom-purified",
+      "bond-removed",
+      "product-delivered",
+      "repeating-product-completed"
+    ],
+    "observedRequiredChemistryEventKinds": [
+      "bond-removed"
+    ],
+    "distinctRequiredChemistryEventCount": 1,
+    "requiredChemistryEventCount": 1,
+    "requiredChemistryEventTimeline": [
+      {
+        "cycle": 91,
+        "kind": "bond-removed"
+      }
+    ],
+    "chemistryEventKinds": [
+      "bond-created",
+      "bond-removed"
+    ],
+    "chemistryEventCount": 2,
+    "chemistryEventTimeline": [
+      {
+        "cycle": 82,
+        "kind": "bond-created"
+      },
+      {
+        "cycle": 91,
+        "kind": "bond-removed"
+      }
+    ],
+    "manipulationEventCount": 306,
+    "eventCounts": {
+      "arm-instruction": 205,
+      "atom-grabbed": 247,
+      "atoms-dropped": 56,
+      "bond-created": 1,
+      "bond-removed": 1,
+      "input-spawned": 3,
+      "simulation-error": 1
+    },
+    "initialInputStatus": [
+      {
+        "inputId": "part-7",
+        "spawnCountAtStart": 1,
+        "spawnedAtStart": true,
+        "footprint": [
+          [
+            -4,
+            3
+          ],
+          [
+            -3,
+            2
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -3,
+            1
+          ]
+        ]
+      },
+      {
+        "inputId": "part-10",
+        "spawnCountAtStart": 1,
+        "spawnedAtStart": true,
+        "footprint": [
+          [
+            8,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            0
+          ]
+        ]
+      }
+    ]
+  }
+}

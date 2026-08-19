@@ -1,0 +1,123 @@
+name: Blind GEN249 silver2 neighborhood detour
+
+on:
+  push:
+    branches: [feature/critelli-2026-public-corpus]
+    paths:
+      - .github/workflows/heldout-silver2-neighborhood-detour.yml
+      - tools/run_holdout_track_neighborhood_detour_search.py
+      - reports/generated/heldout-24hour-seed/latest-post-detour-chemistry.json
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-gen249-silver2-neighborhood-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  CHEMISTRY_POINTER: reports/generated/heldout-24hour-seed/latest-post-detour-chemistry.json
+  PUZZLE_ROOT: .datasets/heldout-silver2-neighborhood
+  BASELINE_ROOT: .baseline/heldout-silver2-neighborhood
+  REPORT_ROOT: reports/heldout-silver2-neighborhood
+  LATEST_REPORT: reports/generated/heldout-24hour-seed/latest-silver2-neighborhood-detour.json
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+
+jobs:
+  detour:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch GEN249 puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set test/puzzles/24hour-1-puzzles/GEN249.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/GEN249.puzzle "$PUZZLE_ROOT"/
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then exit 1; fi
+
+      - name: Restore best target-free two-silver candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=json.loads(Path(os.environ['CHEMISTRY_POINTER']).read_text()); assert p['targetSolutionBytesUsed']==0; print(p['runId'])
+          PY
+          )"
+          meta="$RUNNER_TEMP/chemistry.json"; gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$meta"
+          read -r aid digest < <(python - "$meta" "$run_id" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path(sys.argv[1]).read_text()); name=f'heldout-post-detour-chemistry-{sys.argv[2]}'; m=[x for x in d['artifacts'] if x['name']==name and not x['expired']]; assert len(m)==1; print(m[0]['id'],str(m[0]['digest']).split(':',1)[1])
+          PY
+          )
+          mkdir -p "$BASELINE_ROOT"; archive="$RUNNER_TEMP/chemistry.zip"
+          curl --fail --location -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${aid}/zip" -o "$archive"
+          echo "$digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d "$BASELINE_ROOT"
+          candidate="$(python - "$BASELINE_ROOT/GEN249.json" <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path(sys.argv[1]).read_text()); variants=d.get('topVariants') or []
+          def score(v):
+              p=v.get('purificationProfile') or {}; c=p.get('countsByElement') or {}; o=v.get('omsim') or {}
+              return (int(c.get('silver',0)),int(c.get('gold',0)),int(o.get('progressCycle',0)),int(p.get('count',0)))
+          best=max(variants,key=score); assert int((best.get('purificationProfile') or {}).get('countsByElement',{}).get('silver',0))>=2; print(best['solutionPath'])
+          PY
+          )"
+          seed="$(find "$BASELINE_ROOT" -type f -name "${candidate##*/}" | head -1)"
+          test -s "$seed"; cp "$seed" "$BASELINE_ROOT/GEN249-silver2.solution"
+
+      - name: Build pinned OMSim
+        run: |
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+
+      - name: Search nearby track detours
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT/search"
+          python tools/run_holdout_track_neighborhood_detour_search.py \
+            --omsim .tools/omsim/omsim \
+            --puzzle "$PUZZLE_ROOT/GEN249.puzzle" \
+            --baseline "$BASELINE_ROOT/GEN249-silver2.solution" \
+            --max-cycles 500 --radius 2 \
+            --output-dir "$REPORT_ROOT/search" \
+            --output "$REPORT_ROOT/GEN249.json"
+
+      - name: Persist compact neighborhood checkpoint
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          report=json.loads((Path(os.environ['REPORT_ROOT'])/'GEN249.json').read_text()); source=json.loads(Path(os.environ['CHEMISTRY_POINTER']).read_text())
+          payload={'schemaVersion':'0.1.0','kind':'heldout-silver2-neighborhood-detour-checkpoint','runId':os.environ['GITHUB_RUN_ID'],'sourceCommit':os.environ['GITHUB_SHA'],'chemistryRunId':source['runId'],'targetSolutionBytesUsed':0,'request':report['request'],'baselineOMSim':report['baselineOMSim'],'baselinePurificationProfile':report['baselinePurificationProfile'],'collisionLocation':report.get('collisionLocation'),'rawCandidateCount':report.get('rawCandidateCount',0),'variantCount':report['variantCount'],'chemistryPreservingNonregressingCount':report.get('chemistryPreservingNonregressingCount',0),'best':report['best'],'topVariants':report['topVariants'],'omsimCommit':os.environ['OMSIM_COMMIT']}
+          out=Path(os.environ['LATEST_REPORT']); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
+          PY
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_REPORT"; git commit -m "Update blind silver2 neighborhood detour [skip ci]" || true
+          git fetch origin feature/critelli-2026-public-corpus; git rebase origin/feature/critelli-2026-public-corpus; git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-silver2-neighborhood-detour-${{ github.run_id }}
+          path: ${{ env.REPORT_ROOT }}/
+          retention-days: 14

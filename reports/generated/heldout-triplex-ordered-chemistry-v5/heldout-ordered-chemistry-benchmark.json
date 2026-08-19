@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "0.1.0",
+  "targetPuzzle": "OM2021_W1",
+  "strictHeldout": true,
+  "targetSolutionBytesUsed": 0,
+  "sourceHoldout": {
+    "auditedSolutionCount": 479,
+    "engineCompleteSolutionCountBeforeExclusion": 396,
+    "excludedTargetSolutionCount": 230,
+    "remainingEngineCompleteSolutionCount": 166,
+    "remainingPuzzleIdCount": 7,
+    "validationDriftCount": 0
+  },
+  "baseline": {
+    "omsimStableActiveTransplantCount": 8,
+    "persistentCompleteTriplexCount": 0,
+    "persistentCalcifiedCompleteTriplexCount": 0
+  },
+  "persistentStatePolicy": {
+    "minimumConsecutiveSnapshots": 2,
+    "sameAtomPairRequiredForAllChannels": true,
+    "orderedStages": [
+      "unbond",
+      "duplicate",
+      "triplex-black",
+      "triplex-red",
+      "triplex-yellow",
+      "calcify"
+    ]
+  },
+  "secondPrismSearch": {
+    "selectedStableSourceCount": 8,
+    "searchedVariantCount": 157,
+    "localPersistentCompleteTriplexCount": 14,
+    "oraclePromotedVariantCount": 14,
+    "oracleOutcomes": {
+      "collision": 2,
+      "cycle-limit": 12
+    },
+    "oracleStableCompleteTriplexCount": 12
+  },
+  "calcificationSearch": {
+    "searchedVariantCount": 38,
+    "localPersistentCalcifiedCompleteTriplexCount": 22,
+    "oraclePromotedVariantCount": 22,
+    "oracleOutcomes": {
+      "cycle-limit": 22
+    },
+    "oracleStableCalcifiedCompleteTriplexCount": 22
+  },
+  "bestFrontier": {
+    "sourceVariantIndex": 511,
+    "secondPrism": {
+      "position": [-1, -2],
+      "rotation": 1,
+      "channel": "black",
+      "observedCycle": 50
+    },
+    "calcification": {
+      "position": [-2, 0],
+      "observedCycle": 51
+    },
+    "persistentUnbondCycle": 1,
+    "persistentDuplicationCycle": 1,
+    "persistentCompleteTriplexCycle": 50,
+    "persistentCalcifiedCompleteTriplexCycle": 51,
+    "orderedStageCount": 6,
+    "moleculeAtomCount": 3,
+    "matchedTargetAtomCount": 3,
+    "matchedTargetCompleteTriplexEdgeCount": 2,
+    "omsimOutcome": "cycle-limit"
+  },
+  "remaining": {
+    "requiredProductAtomCount": 4,
+    "missingFireAtomCount": 1,
+    "missingCompleteTriplexEdgeCount": 1,
+    "deliveredProductCount": 0,
+    "strictCompletionCount": 0
+  },
+  "verification": {
+    "pytestPassed": 212,
+    "pytestSubtestsPassed": 10,
+    "fullPipelineReproduction": "passed",
+    "compileCheck": "passed",
+    "diffWhitespaceCheck": "passed",
+    "omsimWorkerCount": 10
+  }
+}

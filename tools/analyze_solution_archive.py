@@ -6,7 +6,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-from packages.opus_analysis import build_program_timeline, canonical_solution_hash
+from packages.opus_analysis import build_program_timeline, canonical_solution_hash, solution_architecture_signature
 from packages.opus_parser import parse_solution
 
 
@@ -87,6 +87,7 @@ def main() -> int:
                 "armCount": len(arm_parts),
                 "cycleSlots": len(cycles),
                 "instructionCount": instruction_count,
+                "architectureSignature": solution_architecture_signature(solution),
                 "canonicalStructuralHash": structural_hash,
                 "canonicalMechanismHash": mechanism_hash,
             })

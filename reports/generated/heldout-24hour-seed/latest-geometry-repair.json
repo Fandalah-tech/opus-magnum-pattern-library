@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "0.2.0",
+  "kind": "heldout-geometry-repair-checkpoint",
+  "runId": "32194960690",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "planner": {
+    "strategy": "generic-reagent-chemistry-v1",
+    "supported": true,
+    "requiredGlyphs": [
+      "glyph-purification",
+      "unbonder"
+    ]
+  },
+  "request": {
+    "assemblyLimit": 1,
+    "perSlotLimit": 16,
+    "variantLimit": 648,
+    "resultLimit": 24,
+    "translationRadius": 1,
+    "rotationRadius": 1,
+    "preflightCycles": 256,
+    "promotionLimit": 0
+  },
+  "rankedAssemblyCount": 1,
+  "bestVariant": {
+    "assemblyRank": 1,
+    "variantIndex": 138,
+    "displacement": 1,
+    "supportScore": 33.943229,
+    "staticConflictPenalty": 601,
+    "validationScope": "preflight",
+    "transformOverrides": {
+      "branch-0:edge-0": {
+        "frame": "source-anchor-local",
+        "delta": [
+          -3,
+          1
+        ],
+        "rotationDelta": 1
+      }
+    },
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 206,
+      "terminatedWithError": true,
+      "firstError": {
+        "cycle": 205,
+        "message": "Atom part-10-spawn-0-atom-2 sweeps into stationary atom part-10-spawn-1-atom-1 at (9, 1); instruction=track_plus; distance=0.000; threshold=58.000"
+      },
+      "requiredChemistryEventKinds": [
+        "atom-purified",
+        "bond-removed",
+        "product-delivered",
+        "repeating-product-completed"
+      ],
+      "observedRequiredChemistryEventKinds": [
+        "bond-removed"
+      ],
+      "distinctRequiredChemistryEventCount": 1,
+      "requiredChemistryEventCount": 1,
+      "distinctChemistryEventCount": 2,
+      "chemistryEventCount": 2,
+      "chemistryEventKinds": [
+        "bond-created",
+        "bond-removed"
+      ],
+      "chemistryEventTimeline": [
+        {
+          "cycle": 82,
+          "kind": "bond-created"
+        },
+        {
+          "cycle": 91,
+          "kind": "bond-removed"
+        }
+      ],
+      "manipulationEventCount": 306,
+      "eventCounts": {
+        "arm-instruction": 205,
+        "atom-grabbed": 247,
+        "atoms-dropped": 56,
+        "bond-created": 1,
+        "bond-removed": 1,
+        "input-spawned": 3,
+        "simulation-error": 1
+      }
+    },
+    "solutionOutput": "reports/heldout-geometry-repair/GEN249-best-preflight.solution"
+  },
+  "searchSummaries": [
+    {
+      "assemblyRank": 1,
+      "assemblyScore": 0.892762,
+      "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+      "summary": {
+        "searchedVariantCount": 648,
+        "returnedVariantCount": 24,
+        "completeVariantCount": 0,
+        "hasCompleteSolution": false,
+        "perSlotLimit": 16,
+        "syntheticTranslationRadius": 1,
+        "syntheticRotationRadius": 1,
+        "preflightCycles": 256,
+        "promotedVariantCount": 0,
+        "promotionLimit": 0,
+        "selectionPolicy": "progress-survival-portfolio",
+        "promotedObjectiveCounts": {
+          "progress": 0,
+          "survival": 0
+        },
+        "returnedObjectiveCounts": {
+          "progress": 12,
+          "survival": 12
+        }
+      },
+      "bestReturnedValidation": {
+        "complete": false,
+        "failureMode": "missing-product-output",
+        "totalDelivered": 0,
+        "totalDeficit": 18,
+        "completedCycles": 206,
+        "terminatedWithError": true,
+        "firstError": {
+          "cycle": 205,
+          "message": "Atom part-10-spawn-0-atom-2 sweeps into stationary atom part-10-spawn-1-atom-1 at (9, 1); instruction=track_plus; distance=0.000; threshold=58.000"
+        },
+        "requiredChemistryEventKinds": [
+          "atom-purified",
+          "bond-removed",
+          "product-delivered",
+          "repeating-product-completed"
+        ],
+        "observedRequiredChemistryEventKinds": [
+          "bond-removed"
+        ],
+        "distinctRequiredChemistryEventCount": 1,
+        "requiredChemistryEventCount": 1,
+        "distinctChemistryEventCount": 2,
+        "chemistryEventCount": 2,
+        "chemistryEventKinds": [
+          "bond-created",
+          "bond-removed"
+        ],
+        "chemistryEventTimeline": [
+          {
+            "cycle": 82,
+            "kind": "bond-created"
+          },
+          {
+            "cycle": 91,
+            "kind": "bond-removed"
+          }
+        ],
+        "manipulationEventCount": 306,
+        "eventCounts": {
+          "arm-instruction": 205,
+          "atom-grabbed": 247,
+          "atoms-dropped": 56,
+          "bond-created": 1,
+          "bond-removed": 1,
+          "input-spawned": 3,
+          "simulation-error": 1
+        }
+      }
+    }
+  ]
+}

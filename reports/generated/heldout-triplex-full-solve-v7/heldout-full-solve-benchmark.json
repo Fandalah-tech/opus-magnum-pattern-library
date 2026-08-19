@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "0.1.0",
+  "benchmarkId": "heldout-triplex-full-solve-v7",
+  "targetPuzzleId": "OM2021_W1",
+  "targetPuzzleName": "Improved Explosive Phial",
+  "protocol": {
+    "auditedTriplexSolutionCount": 479,
+    "engineCompleteBeforeExclusion": 396,
+    "excludedTargetSolutionCount": 230,
+    "remainingEngineCompleteDonorCount": 166,
+    "remainingDonorPuzzleCount": 7,
+    "targetSolutionBytesUsed": 0
+  },
+  "periodicCompletion": {
+    "coreBlockPeriod": 59,
+    "auxiliaryAtomsReusedPerSuperPeriod": 3,
+    "superPeriod": 177,
+    "localReplayCycles": 400,
+    "localDeliveredProductCount": 6,
+    "localTerminatedWithError": false,
+    "productCycles": [61, 120, 179, 238, 297, 356],
+    "initialOutputCycle": 61,
+    "steadyStateInterval": 59
+  },
+  "oracle": {
+    "normalValidationExitCode": 0,
+    "normalValidationOutput": "280g/201i@0 356c/38a@V",
+    "productMetric": "product 6 cycles",
+    "productMetricValue": 356,
+    "productMetricExitCode": 0,
+    "outputIntervals": {
+      "warmup": [61],
+      "steadyState": [59]
+    }
+  },
+  "solution": {
+    "artifact": "OM2021_W1-strict-heldout-full-solve.solution",
+    "sha256": "e5efdcc769e81894b916032872c6c6db772eae9101bdad368c9a72f072dd82cf",
+    "byteCount": 1782,
+    "partCount": 18,
+    "programEntryCount": 189,
+    "metrics": {
+      "cost": 280,
+      "instructions": 201,
+      "cycles": 356,
+      "area": 38
+    }
+  },
+  "targetProduct": {
+    "atomCount": 4,
+    "fullTriplexEdgeCount": 3,
+    "triplexChannelCount": 9,
+    "requiredDeliveryCount": 6
+  },
+  "verification": {
+    "pythonTestsPassed": 226,
+    "pythonSubtestsPassed": 10,
+    "compileCheck": true,
+    "cliCheck": true,
+    "jsonCheck": true,
+    "diffWhitespaceCheck": true,
+    "omsimBinarySha256": "f0edd34b6d6a3a1b2c3df4f48fe17b818deaae242efb749759d6c64647fbedb4",
+    "targetPuzzleSha256": "f4bdc881b7d73a668b068b79beed4a688411ea3bf401240067fe43c94b9d78e5",
+    "oracleWorkerCap": 10
+  },
+  "milestone": {
+    "hasAuthoritativeSingleProduct": true,
+    "hasAuthoritativeFullPuzzle": true,
+    "strictFullPuzzleCompletionCount": 1,
+    "nextFrontier": "general periodic planning and objective optimization"
+  }
+}

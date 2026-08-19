@@ -34,7 +34,7 @@ def test_feed_fragment_is_confirmed_from_replay_spawn():
 
     assert feed["evidence"]["level"] == "dynamic-confirmed"
     assert feed["evidence"]["sourceMoleculeCount"] == 1
-    assert feed["evidence"]["glyphSimulationAvailable"] is False
+    assert feed["evidence"]["glyphSimulationAvailable"] is True
 
 
 def test_bonding_fragment_with_active_arm_is_marked_arm_observed_not_confirmed():
@@ -72,4 +72,4 @@ def test_bonding_fragment_with_active_arm_is_marked_arm_observed_not_confirmed()
 
     assert bonding["evidence"]["level"] == "dynamic-arm-observed"
     assert bonding["evidence"]["grabCount"] == 1
-    assert bonding["evidence"]["glyphSimulationAvailable"] is False
+    assert bonding["evidence"]["glyphSimulationAvailable"] is True

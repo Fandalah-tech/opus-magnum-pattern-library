@@ -1,0 +1,209 @@
+name: Blind heldout transfer regression
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-transfer-regression.yml
+      - database/engine-fragment-flow-index.json
+      - tools/evaluate_holdout_transfer.py
+      - tests/test_holdout_transfer.py
+      - tests/test_repeated_singleton_assembly.py
+      - tests/test_singleton_feed_alignment.py
+      - tests/test_rotary_singleton_accumulator.py
+      - packages/opus_solver/**
+      - packages/opus_parser/**
+      - packages/opus_engine/**
+      - packages/opus_analysis/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TARGET_PUZZLE_ID: P016
+  CAMPAIGN_ROOT: .datasets/heldout-campaign-p016
+  FLOW_INDEX: database/engine-fragment-flow-index.json
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  TARGET_PUZZLE_SHA256: 58daac9ad1d3353623e5f604fffbdcd96eb4ea7364440f6556dc328a14305402
+  OMSIM_COMMIT: 758f4a4b4c9e24f50294801da774a0960c922bab
+  OMSIM_BINARY: .tools/omsim/omsim
+
+jobs:
+  heldout:
+    name: Transfer learned fragments to unseen P016
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test blind-transfer primitives
+        run: |
+          python -m unittest tests.test_holdout_transfer -v
+          python -m unittest tests.test_repeated_singleton_assembly -v
+          python -m unittest tests.test_singleton_feed_alignment -v
+          python -m unittest tests.test_rotary_singleton_accumulator -v
+
+      - name: Fetch only the pinned heldout puzzle
+        run: |
+          mkdir -p .tools "$CAMPAIGN_ROOT"
+          git clone \
+            --filter=blob:none \
+            --no-checkout \
+            https://github.com/gtw123/OpusSolver.git \
+            .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set "test/puzzles/campaign/ch2/${TARGET_PUZZLE_ID}.puzzle"
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          TARGET_PATH="$CAMPAIGN_ROOT/${TARGET_PUZZLE_ID}.puzzle"
+          cp ".tools/opussolver/test/puzzles/campaign/ch2/${TARGET_PUZZLE_ID}.puzzle" "$TARGET_PATH"
+          test -s "$TARGET_PATH"
+          echo "$TARGET_PUZZLE_SHA256  $TARGET_PATH" | sha256sum --check --strict
+          echo "TARGET_PUZZLE=$TARGET_PATH" >> "$GITHUB_ENV"
+          echo "Heldout puzzle: $TARGET_PATH"
+
+      - name: Prove target-specific knowledge is absent
+        run: |
+          test -f "$FLOW_INDEX"
+          if git grep -n "$TARGET_PUZZLE_ID" -- "$FLOW_INDEX" database/learned-solution-bank.json; then
+            echo "Heldout target leaked into persistent solver knowledge" >&2
+            exit 1
+          fi
+          echo "No ${TARGET_PUZZLE_ID} references in persistent learned knowledge."
+
+      - name: Require strict knowledge-only transfer to complete
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p reports/heldout-transfer-p016
+          python tools/evaluate_holdout_transfer.py \
+            --puzzle "$TARGET_PUZZLE" \
+            --flow-index "$FLOW_INDEX" \
+            --target-puzzle-id "$TARGET_PUZZLE_ID" \
+            --objective balanced \
+            --composition-limit 30 \
+            --solution-output reports/heldout-transfer-p016/P016-blind-transfer.solution \
+            --output reports/heldout-transfer-p016/report.json \
+            --strict-isolation \
+            --require-complete
+          test -s reports/heldout-transfer-p016/P016-blind-transfer.solution
+
+      - name: Build pinned OMSim
+        run: |
+          mkdir -p .tools
+          git clone https://github.com/ianh/omsim.git .tools/omsim
+          git -C .tools/omsim checkout "$OMSIM_COMMIT"
+          make -C .tools/omsim omsim
+          test -x "$OMSIM_BINARY"
+          test "$(git -C .tools/omsim rev-parse HEAD)" = "$OMSIM_COMMIT"
+
+      - name: Require authoritative OMSim validation
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/omsim_adapter/validate.py \
+            "$TARGET_PUZZLE" \
+            reports/heldout-transfer-p016/P016-blind-transfer.solution \
+            --omsim "$OMSIM_BINARY" \
+            --output reports/heldout-transfer-p016/omsim.json
+          test -s reports/heldout-transfer-p016/omsim.json
+
+      - name: Assert blind benchmark contract
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          report = json.loads(Path('reports/heldout-transfer-p016/report.json').read_text(encoding='utf-8'))
+          omsim = json.loads(Path('reports/heldout-transfer-p016/omsim.json').read_text(encoding='utf-8'))
+          protocol = report['protocol']
+          request = report['request']
+          result = report['result']
+          profile = report['target']['profile']
+
+          assert report['target']['id'] == 'P016'
+          assert report['target']['name'] == 'HAIR PRODUCT'
+          assert protocol['targetSolutionBytesUsed'] == 0
+          assert protocol['targetSolutionInputsAccepted'] is False
+          assert protocol['targetExcludedFromKnowledge'] is True
+          assert protocol['targetKnowledgeMentionCount'] == 0
+          assert request['directGeneratorAllowed'] is False
+          assert request['learnedArchitectureBankAllowed'] is False
+          assert request['fragmentKnowledgeAllowed'] is True
+          assert protocol['knowledgeFragmentCount'] == 26
+          assert protocol['knowledgeTransitionCount'] == 34
+          assert protocol['knowledgeConvergenceCount'] == 13
+          assert protocol['knowledgeSourceSolutionCount'] == 7
+
+          assert profile['planner']['strategy'] == 'repeated-singleton-assembly-v1'
+          assert result['complete'] is True
+          assert result['route'] == 'knowledge-fragment-composition-v1'
+          assert result['strategy'] == 'repeated-singleton-assembly-v1+knowledge-portfolio-v1'
+          assert result['compositionTestedCandidateCount'] >= 1
+          assert result['compositionCompleteCandidateCount'] >= 1
+          assert result['solutionOutput']
+
+          assert omsim['valid'] is True
+          assert omsim['issues'] == []
+          for metric in ('cost', 'instructions', 'cycles', 'area'):
+              assert isinstance(omsim['metrics'].get(metric), int)
+          # Structural regression guard only: optimization may improve these.
+          assert omsim['metrics']['cost'] <= 30
+          assert omsim['metrics']['area'] <= 5
+
+          local = result['localMetrics']
+          # P016 now locks the two local conventions that previously drifted:
+          # cycle metrics are one-based counts while completionCycle is a
+          # zero-based replay frame, and instruction metrics count the decoded
+          # physical tape after repeat/reset expansion.
+          assert local['cycles'] == omsim['metrics']['cycles']
+          assert local['completionCycle'] + 1 == omsim['metrics']['cycles']
+          assert local['instructions'] == omsim['metrics']['instructions']
+
+          summary = {
+              'targetPuzzleId': report['target']['id'],
+              'targetPuzzleName': report['target']['name'],
+              'targetSolutionBytesUsed': protocol['targetSolutionBytesUsed'],
+              'targetExcludedFromKnowledge': protocol['targetExcludedFromKnowledge'],
+              'planner': profile['planner']['strategy'],
+              'donorSourceSolutionCount': protocol['knowledgeSourceSolutionCount'],
+              'knowledgeFragments': protocol['knowledgeFragmentCount'],
+              'knowledgeTransitions': protocol['knowledgeTransitionCount'],
+              'knowledgeConvergences': protocol['knowledgeConvergenceCount'],
+              'testedCandidates': result['compositionTestedCandidateCount'],
+              'completeCandidates': result['compositionCompleteCandidateCount'],
+              'route': result['route'],
+              'candidate': result.get('candidate'),
+              'localMetrics': local,
+              'omsimValid': omsim['valid'],
+              'omsimMetrics': omsim['metrics'],
+              'localCyclesMatchOMSim': local['cycles'] == omsim['metrics']['cycles'],
+              'localInstructionsMatchOMSim': local['instructions'] == omsim['metrics']['instructions'],
+          }
+          Path('reports/heldout-transfer-p016/summary.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Strict blind transfer — P016\n\n')
+              for key, value in summary.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(summary, ensure_ascii=False))
+          PY
+
+      - name: Upload heldout benchmark
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-transfer-p016-${{ github.run_id }}
+          path: reports/heldout-transfer-p016/
+          if-no-files-found: error
+          retention-days: 30

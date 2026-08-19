@@ -1,0 +1,530 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "strict-heldout-collision-phase-neutralization-search",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "window": 10
+  },
+  "baselineOMSim": {
+    "exitCode": 255,
+    "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+    "progressCycle": 1484,
+    "collisionCycle": 1484,
+    "collisionLocation": [
+      6,
+      -5
+    ]
+  },
+  "physicalPhaseProgramIndices": {
+    "part-2": [
+      0,
+      1,
+      2
+    ],
+    "part-18": [
+      0,
+      1,
+      2
+    ],
+    "part-37": [
+      0,
+      1,
+      2
+    ]
+  },
+  "generatedVariantCount": 25,
+  "searchedVariantCount": 25,
+  "acceptedProductOne": false,
+  "acceptedSolution": null,
+  "acceptedOMSim": null,
+  "topVariants": [
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "oldCycle": 1,
+      "oldInstruction": "track_plus",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-003.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: solution did not complete within cycle limit",
+        "progressCycle": 999999999,
+        "collisionCycle": null,
+        "collisionLocation": null
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-18",
+      "instructionIndex": 0,
+      "oldCycle": 386,
+      "oldInstruction": "grab",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-011.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-18",
+      "instructionIndex": 1,
+      "oldCycle": 390,
+      "oldInstruction": "rotate_cw",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-015.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-18",
+      "instructionIndex": 2,
+      "oldCycle": 391,
+      "oldInstruction": "drop",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-019.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-37",
+      "instructionIndex": 0,
+      "oldCycle": 1484,
+      "oldInstruction": "grab",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-022.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-37",
+      "instructionIndex": 1,
+      "oldCycle": 1485,
+      "oldInstruction": "rotate_cw",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-023.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-37",
+      "instructionIndex": 2,
+      "oldCycle": 1486,
+      "oldInstruction": "drop",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-024.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "oldCycle": 1,
+      "newCycle": 2,
+      "delta": 1,
+      "instruction": "track_plus",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-004.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "oldCycle": 1,
+      "newCycle": 3,
+      "delta": 2,
+      "instruction": "track_plus",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-005.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 1,
+      "oldCycle": 1,
+      "newCycle": 4,
+      "delta": 3,
+      "instruction": "track_plus",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-006.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 0,
+      "oldCycle": 386,
+      "newCycle": 387,
+      "delta": 1,
+      "instruction": "grab",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-012.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 0,
+      "oldCycle": 386,
+      "newCycle": 388,
+      "delta": 2,
+      "instruction": "grab",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-013.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 0,
+      "oldCycle": 386,
+      "newCycle": 389,
+      "delta": 3,
+      "instruction": "grab",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-014.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 1,
+      "oldCycle": 390,
+      "newCycle": 387,
+      "delta": -3,
+      "instruction": "rotate_cw",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-016.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 1,
+      "oldCycle": 390,
+      "newCycle": 388,
+      "delta": -2,
+      "instruction": "rotate_cw",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-017.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 1,
+      "oldCycle": 390,
+      "newCycle": 389,
+      "delta": -1,
+      "instruction": "rotate_cw",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-018.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 2,
+      "oldCycle": 391,
+      "newCycle": 388,
+      "delta": -3,
+      "instruction": "drop",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-020.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-18",
+      "instructionIndex": 2,
+      "oldCycle": 391,
+      "newCycle": 389,
+      "delta": -2,
+      "instruction": "drop",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-021.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+        "progressCycle": 1484,
+        "collisionCycle": 1484,
+        "collisionLocation": [
+          6,
+          -5
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 2,
+      "oldCycle": 27,
+      "newCycle": 24,
+      "delta": -3,
+      "instruction": "drop",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-008.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 7 -6",
+        "progressCycle": 1458,
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          7,
+          -6
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 2,
+      "oldCycle": 27,
+      "newCycle": 25,
+      "delta": -2,
+      "instruction": "drop",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-009.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 7 -6",
+        "progressCycle": 1458,
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          7,
+          -6
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 2,
+      "oldCycle": 27,
+      "newCycle": 26,
+      "delta": -1,
+      "instruction": "drop",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-010.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 1458 at 7 -6",
+        "progressCycle": 1458,
+        "collisionCycle": 1458,
+        "collisionLocation": [
+          7,
+          -6
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-2",
+      "instructionIndex": 0,
+      "oldCycle": 0,
+      "oldInstruction": "grab",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-000.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 338 at 9 1",
+        "progressCycle": 338,
+        "collisionCycle": 338,
+        "collisionLocation": [
+          9,
+          1
+        ]
+      }
+    },
+    {
+      "mode": "neutralize-source-cell",
+      "armPartId": "part-2",
+      "instructionIndex": 2,
+      "oldCycle": 27,
+      "oldInstruction": "drop",
+      "newInstruction": "period_override",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-007.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 338 at 9 1",
+        "progressCycle": 338,
+        "collisionCycle": 338,
+        "collisionLocation": [
+          9,
+          1
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 0,
+      "oldCycle": 0,
+      "newCycle": 2,
+      "delta": 2,
+      "instruction": "grab",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-001.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 338 at 9 1",
+        "progressCycle": 338,
+        "collisionCycle": 338,
+        "collisionLocation": [
+          9,
+          1
+        ]
+      }
+    },
+    {
+      "mode": "move-source-cell-with-period-preserved",
+      "armPartId": "part-2",
+      "instructionIndex": 0,
+      "oldCycle": 0,
+      "newCycle": 3,
+      "delta": 3,
+      "instruction": "grab",
+      "solutionPath": "reports/heldout-collision-phase-neutralization/search/candidate-002.solution",
+      "omsim": {
+        "exitCode": 255,
+        "output": "product 1 cycles: collision during motion phase on cycle 338 at 9 1",
+        "progressCycle": 338,
+        "collisionCycle": 338,
+        "collisionLocation": [
+          9,
+          1
+        ]
+      }
+    }
+  ]
+}

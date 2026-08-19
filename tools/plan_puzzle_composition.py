@@ -3,6 +3,11 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from packages.opus_parser import parse_puzzle
 from packages.opus_solver import plan_puzzle_fragment_chains
@@ -16,6 +21,7 @@ def main() -> int:
     parser.add_argument("--max-depth", type=int, default=6)
     parser.add_argument("--limit", type=int, default=25)
     parser.add_argument("--min-observations", type=int, default=1)
+    parser.add_argument("--min-engine-validated-solutions", type=int, default=0)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -29,6 +35,7 @@ def main() -> int:
         max_depth=args.max_depth,
         limit=args.limit,
         min_observations=args.min_observations,
+        min_engine_validated_solutions=args.min_engine_validated_solutions,
     )
     encoded = json.dumps(result, indent=2, ensure_ascii=False) + "\n"
     if args.output:

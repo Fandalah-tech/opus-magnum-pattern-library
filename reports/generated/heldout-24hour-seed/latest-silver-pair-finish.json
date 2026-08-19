@@ -1,0 +1,2720 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-silver-pair-finish-checkpoint",
+  "runId": "32273529838",
+  "sourceCommit": "e2165fd8048fdebc74dc9cb64d46d09b2a46d8a0",
+  "targetSolutionBytesUsed": 0,
+  "chemistryRunId": "32272643386",
+  "timingRequest": {
+    "depth": 4,
+    "beamWidth": 4,
+    "window": 10,
+    "maxDelay": 12,
+    "maxCycles": 1500
+  },
+  "timingInitial": {
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 1113 at 6 -5",
+      "progressCycle": 1113,
+      "collisionCycle": 1113,
+      "collisionLocation": [
+        6,
+        -5
+      ]
+    },
+    "purificationProfile": {
+      "count": 5,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 2,
+        "gold": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          1049,
+          1112
+        ],
+        "silver": [
+          1049,
+          1112
+        ],
+        "gold": [
+          1154
+        ]
+      },
+      "frontierIndex": 5,
+      "frontierElement": "gold",
+      "goldReached": true,
+      "completedCycles": 1451,
+      "terminatedWithError": true
+    },
+    "reachableCounts": {
+      "copper": 2,
+      "silver": 2
+    }
+  },
+  "timingGenerations": [
+    {
+      "depth": 1,
+      "parentCount": 1,
+      "evaluatedAdvancingVariantCount": 12,
+      "frontierPreservingCount": 7,
+      "beamCount": 4,
+      "bestProgressCycle": 1484,
+      "bestReachableCounts": {
+        "copper": 2,
+        "silver": 2
+      },
+      "variants": [
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 48,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 32,
+          "physicalCollisionCycle": 1113,
+          "delta": 12,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-048.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1749 at 6 -5",
+            "progressCycle": 1749,
+            "collisionCycle": 1749,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 47,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 31,
+          "physicalCollisionCycle": 1113,
+          "delta": 11,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-047.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1696 at 6 -5",
+            "progressCycle": 1696,
+            "collisionCycle": 1696,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 46,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 30,
+          "physicalCollisionCycle": 1113,
+          "delta": 10,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-046.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1643 at 6 -5",
+            "progressCycle": 1643,
+            "collisionCycle": 1643,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 45,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 29,
+          "physicalCollisionCycle": 1113,
+          "delta": 9,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-045.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1590 at 6 -5",
+            "progressCycle": 1590,
+            "collisionCycle": 1590,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1499
+              ],
+              "silver": [
+                1499
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 44,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 28,
+          "physicalCollisionCycle": 1113,
+          "delta": 8,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-044.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1537 at 6 -5",
+            "progressCycle": 1537,
+            "collisionCycle": 1537,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1449
+              ],
+              "silver": [
+                1449
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 43,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 27,
+          "physicalCollisionCycle": 1113,
+          "delta": 7,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-043.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+            "progressCycle": 1484,
+            "collisionCycle": 1484,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 4,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2
+            },
+            "cyclesByElement": {
+              "copper": [
+                1399,
+                1483
+              ],
+              "silver": [
+                1399,
+                1483
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 42,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 26,
+          "physicalCollisionCycle": 1113,
+          "delta": 6,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-042.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1431 at 6 -5",
+            "progressCycle": 1431,
+            "collisionCycle": 1431,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1349,
+                1430
+              ],
+              "silver": [
+                1349,
+                1430
+              ],
+              "gold": [
+                1484
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 41,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 25,
+          "physicalCollisionCycle": 1113,
+          "delta": 5,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-041.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1378 at 6 -5",
+            "progressCycle": 1378,
+            "collisionCycle": 1378,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1299,
+                1377
+              ],
+              "silver": [
+                1299,
+                1377
+              ],
+              "gold": [
+                1429
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 40,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 24,
+          "physicalCollisionCycle": 1113,
+          "delta": 4,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-040.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1325 at 6 -5",
+            "progressCycle": 1325,
+            "collisionCycle": 1325,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1249,
+                1324
+              ],
+              "silver": [
+                1249,
+                1324
+              ],
+              "gold": [
+                1374
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 39,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 23,
+          "physicalCollisionCycle": 1113,
+          "delta": 3,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-039.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1272 at 6 -5",
+            "progressCycle": 1272,
+            "collisionCycle": 1272,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1199,
+                1271
+              ],
+              "silver": [
+                1199,
+                1271
+              ],
+              "gold": [
+                1319
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 38,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 22,
+          "physicalCollisionCycle": 1113,
+          "delta": 2,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-038.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1219 at 6 -5",
+            "progressCycle": 1219,
+            "collisionCycle": 1219,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1149,
+                1218
+              ],
+              "silver": [
+                1149,
+                1218
+              ],
+              "gold": [
+                1264
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 1,
+          "parentIndex": 0,
+          "variantIndex": 37,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 20,
+          "newCycle": 21,
+          "physicalCollisionCycle": 1113,
+          "delta": 1,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-037.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1166 at 6 -5",
+            "progressCycle": 1166,
+            "collisionCycle": 1166,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 2,
+              "silver": 2,
+              "gold": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1099,
+                1165
+              ],
+              "silver": [
+                1099,
+                1165
+              ],
+              "gold": [
+                1209
+              ]
+            },
+            "frontierIndex": 5,
+            "frontierElement": "gold",
+            "goldReached": true,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 2,
+            "silver": 2
+          },
+          "reachableTier": [
+            3,
+            0,
+            2,
+            2,
+            4
+          ],
+          "preservesReachableFrontier": true,
+          "oracleAdvance": true
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "parentCount": 4,
+      "evaluatedAdvancingVariantCount": 42,
+      "frontierPreservingCount": 0,
+      "beamCount": 0,
+      "bestProgressCycle": null,
+      "bestReachableCounts": {},
+      "variants": [
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 48,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 39,
+          "physicalCollisionCycle": 1484,
+          "delta": 12,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-048.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 2120 at 6 -5",
+            "progressCycle": 2120,
+            "collisionCycle": 2120,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 47,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 38,
+          "physicalCollisionCycle": 1484,
+          "delta": 11,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-047.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 2067 at 6 -5",
+            "progressCycle": 2067,
+            "collisionCycle": 2067,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 48,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 38,
+          "physicalCollisionCycle": 1431,
+          "delta": 12,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-048.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 2067 at 6 -5",
+            "progressCycle": 2067,
+            "collisionCycle": 2067,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 46,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 37,
+          "physicalCollisionCycle": 1484,
+          "delta": 10,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-046.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 2014 at 6 -5",
+            "progressCycle": 2014,
+            "collisionCycle": 2014,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 47,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 37,
+          "physicalCollisionCycle": 1431,
+          "delta": 11,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-047.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 2014 at 6 -5",
+            "progressCycle": 2014,
+            "collisionCycle": 2014,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 48,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 37,
+          "physicalCollisionCycle": 1378,
+          "delta": 12,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-048.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 2014 at 6 -5",
+            "progressCycle": 2014,
+            "collisionCycle": 2014,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 45,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 36,
+          "physicalCollisionCycle": 1484,
+          "delta": 9,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-045.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1961 at 6 -5",
+            "progressCycle": 1961,
+            "collisionCycle": 1961,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 46,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 36,
+          "physicalCollisionCycle": 1431,
+          "delta": 10,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-046.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1961 at 6 -5",
+            "progressCycle": 1961,
+            "collisionCycle": 1961,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 47,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 36,
+          "physicalCollisionCycle": 1378,
+          "delta": 11,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-047.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1961 at 6 -5",
+            "progressCycle": 1961,
+            "collisionCycle": 1961,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 48,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 36,
+          "physicalCollisionCycle": 1325,
+          "delta": 12,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-048.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1961 at 6 -5",
+            "progressCycle": 1961,
+            "collisionCycle": 1961,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 44,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 35,
+          "physicalCollisionCycle": 1484,
+          "delta": 8,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-044.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1908 at 6 -5",
+            "progressCycle": 1908,
+            "collisionCycle": 1908,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 45,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 35,
+          "physicalCollisionCycle": 1431,
+          "delta": 9,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-045.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1908 at 6 -5",
+            "progressCycle": 1908,
+            "collisionCycle": 1908,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 46,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 35,
+          "physicalCollisionCycle": 1378,
+          "delta": 10,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-046.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1908 at 6 -5",
+            "progressCycle": 1908,
+            "collisionCycle": 1908,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 47,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 35,
+          "physicalCollisionCycle": 1325,
+          "delta": 11,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-047.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1908 at 6 -5",
+            "progressCycle": 1908,
+            "collisionCycle": 1908,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 43,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 34,
+          "physicalCollisionCycle": 1484,
+          "delta": 7,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-043.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1855 at 6 -5",
+            "progressCycle": 1855,
+            "collisionCycle": 1855,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 44,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 34,
+          "physicalCollisionCycle": 1431,
+          "delta": 8,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-044.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1855 at 6 -5",
+            "progressCycle": 1855,
+            "collisionCycle": 1855,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 45,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 34,
+          "physicalCollisionCycle": 1378,
+          "delta": 9,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-045.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1855 at 6 -5",
+            "progressCycle": 1855,
+            "collisionCycle": 1855,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 46,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 34,
+          "physicalCollisionCycle": 1325,
+          "delta": 10,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-046.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1855 at 6 -5",
+            "progressCycle": 1855,
+            "collisionCycle": 1855,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 42,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 33,
+          "physicalCollisionCycle": 1484,
+          "delta": 6,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-042.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1802 at 6 -5",
+            "progressCycle": 1802,
+            "collisionCycle": 1802,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 43,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 33,
+          "physicalCollisionCycle": 1431,
+          "delta": 7,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-043.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1802 at 6 -5",
+            "progressCycle": 1802,
+            "collisionCycle": 1802,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 44,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 33,
+          "physicalCollisionCycle": 1378,
+          "delta": 8,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-044.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1802 at 6 -5",
+            "progressCycle": 1802,
+            "collisionCycle": 1802,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 45,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 33,
+          "physicalCollisionCycle": 1325,
+          "delta": 9,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-045.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1802 at 6 -5",
+            "progressCycle": 1802,
+            "collisionCycle": 1802,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 41,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 32,
+          "physicalCollisionCycle": 1484,
+          "delta": 5,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-041.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1749 at 6 -5",
+            "progressCycle": 1749,
+            "collisionCycle": 1749,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 42,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 32,
+          "physicalCollisionCycle": 1431,
+          "delta": 6,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-042.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1749 at 6 -5",
+            "progressCycle": 1749,
+            "collisionCycle": 1749,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 43,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 32,
+          "physicalCollisionCycle": 1378,
+          "delta": 7,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-043.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1749 at 6 -5",
+            "progressCycle": 1749,
+            "collisionCycle": 1749,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 44,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 32,
+          "physicalCollisionCycle": 1325,
+          "delta": 8,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-044.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1749 at 6 -5",
+            "progressCycle": 1749,
+            "collisionCycle": 1749,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 40,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 31,
+          "physicalCollisionCycle": 1484,
+          "delta": 4,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-040.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1696 at 6 -5",
+            "progressCycle": 1696,
+            "collisionCycle": 1696,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 41,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 31,
+          "physicalCollisionCycle": 1431,
+          "delta": 5,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-041.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1696 at 6 -5",
+            "progressCycle": 1696,
+            "collisionCycle": 1696,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 42,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 31,
+          "physicalCollisionCycle": 1378,
+          "delta": 6,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-042.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1696 at 6 -5",
+            "progressCycle": 1696,
+            "collisionCycle": 1696,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 43,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 31,
+          "physicalCollisionCycle": 1325,
+          "delta": 7,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-043.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1696 at 6 -5",
+            "progressCycle": 1696,
+            "collisionCycle": 1696,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 39,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 30,
+          "physicalCollisionCycle": 1484,
+          "delta": 3,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-039.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1643 at 6 -5",
+            "progressCycle": 1643,
+            "collisionCycle": 1643,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 40,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 30,
+          "physicalCollisionCycle": 1431,
+          "delta": 4,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-040.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1643 at 6 -5",
+            "progressCycle": 1643,
+            "collisionCycle": 1643,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 41,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 30,
+          "physicalCollisionCycle": 1378,
+          "delta": 5,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-041.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1643 at 6 -5",
+            "progressCycle": 1643,
+            "collisionCycle": 1643,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 42,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 30,
+          "physicalCollisionCycle": 1325,
+          "delta": 6,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-042.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1643 at 6 -5",
+            "progressCycle": 1643,
+            "collisionCycle": 1643,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 0,
+            "countsByElement": {},
+            "cyclesByElement": {},
+            "frontierIndex": -1,
+            "frontierElement": null,
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {},
+          "reachableTier": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 38,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 29,
+          "physicalCollisionCycle": 1484,
+          "delta": 2,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-038.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1590 at 6 -5",
+            "progressCycle": 1590,
+            "collisionCycle": 1590,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1499
+              ],
+              "silver": [
+                1499
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 39,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 29,
+          "physicalCollisionCycle": 1431,
+          "delta": 3,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-039.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1590 at 6 -5",
+            "progressCycle": 1590,
+            "collisionCycle": 1590,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1499
+              ],
+              "silver": [
+                1499
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 2,
+          "variantIndex": 40,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 25,
+          "newCycle": 29,
+          "physicalCollisionCycle": 1378,
+          "delta": 4,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-02-candidate-040.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1590 at 6 -5",
+            "progressCycle": 1590,
+            "collisionCycle": 1590,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1499
+              ],
+              "silver": [
+                1499
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 3,
+          "variantIndex": 41,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 24,
+          "newCycle": 29,
+          "physicalCollisionCycle": 1325,
+          "delta": 5,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-03-candidate-041.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1590 at 6 -5",
+            "progressCycle": 1590,
+            "collisionCycle": 1590,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1499
+              ],
+              "silver": [
+                1499
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 0,
+          "variantIndex": 37,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 27,
+          "newCycle": 28,
+          "physicalCollisionCycle": 1484,
+          "delta": 1,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-00-candidate-037.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1537 at 6 -5",
+            "progressCycle": 1537,
+            "collisionCycle": 1537,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1449
+              ],
+              "silver": [
+                1449
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        },
+        {
+          "depth": 2,
+          "parentIndex": 1,
+          "variantIndex": 38,
+          "mode": "shift-single-instruction",
+          "armPartId": "part-2",
+          "instructionIndex": 2,
+          "instruction": "drop",
+          "oldCycle": 26,
+          "newCycle": 28,
+          "physicalCollisionCycle": 1431,
+          "delta": 2,
+          "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-02-parent-01-candidate-038.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 1537 at 6 -5",
+            "progressCycle": 1537,
+            "collisionCycle": 1537,
+            "collisionLocation": [
+              6,
+              -5
+            ]
+          },
+          "purificationProfile": {
+            "count": 2,
+            "countsByElement": {
+              "copper": 1,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                1449
+              ],
+              "silver": [
+                1449
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 1500,
+            "terminatedWithError": false
+          },
+          "reachableCounts": {
+            "copper": 1,
+            "silver": 1
+          },
+          "reachableTier": [
+            2,
+            0,
+            1,
+            1,
+            2
+          ],
+          "preservesReachableFrontier": false,
+          "oracleAdvance": true
+        }
+      ]
+    }
+  ],
+  "timingBest": {
+    "solutionPath": "reports/heldout-silver-pair-finish/timing/GEN249-best-oracle-timing-chain.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+      "progressCycle": 1484,
+      "collisionCycle": 1484,
+      "collisionLocation": [
+        6,
+        -5
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 2,
+        "silver": 2
+      },
+      "cyclesByElement": {
+        "copper": [
+          1399,
+          1483
+        ],
+        "silver": [
+          1399,
+          1483
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 1500,
+      "terminatedWithError": false
+    },
+    "reachableCounts": {
+      "copper": 2,
+      "silver": 2
+    },
+    "reachableTier": [
+      3,
+      0,
+      2,
+      2,
+      4
+    ],
+    "steps": [
+      {
+        "depth": 1,
+        "parentIndex": 0,
+        "variantIndex": 43,
+        "mode": "shift-single-instruction",
+        "armPartId": "part-2",
+        "instructionIndex": 2,
+        "instruction": "drop",
+        "oldCycle": 20,
+        "newCycle": 27,
+        "physicalCollisionCycle": 1113,
+        "delta": 7,
+        "solutionPath": "reports/heldout-silver-pair-finish/timing/depth-01-parent-00-candidate-043.solution",
+        "omsim": {
+          "exitCode": 255,
+          "output": "product 1 cycles: collision during motion phase on cycle 1484 at 6 -5",
+          "progressCycle": 1484,
+          "collisionCycle": 1484,
+          "collisionLocation": [
+            6,
+            -5
+          ]
+        },
+        "purificationProfile": {
+          "count": 4,
+          "countsByElement": {
+            "copper": 2,
+            "silver": 2
+          },
+          "cyclesByElement": {
+            "copper": [
+              1399,
+              1483
+            ],
+            "silver": [
+              1399,
+              1483
+            ]
+          },
+          "frontierIndex": 4,
+          "frontierElement": "silver",
+          "goldReached": false,
+          "completedCycles": 1500,
+          "terminatedWithError": false
+        },
+        "reachableCounts": {
+          "copper": 2,
+          "silver": 2
+        },
+        "reachableTier": [
+          3,
+          0,
+          2,
+          2,
+          4
+        ],
+        "preservesReachableFrontier": true,
+        "oracleAdvance": true
+      }
+    ]
+  },
+  "reachableSilverPair": true,
+  "goldOfficiallyReachable": false,
+  "deliverySummary": null,
+  "acceptedProductOne": false,
+  "acceptedSolution": null,
+  "omsimProduct1Cycles": null,
+  "omsimRawOutput": null,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

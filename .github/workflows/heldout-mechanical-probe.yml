@@ -1,0 +1,181 @@
+name: Blind heldout mechanical probe
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/heldout-mechanical-probe.yml
+      - reports/generated/generic-training-flow/latest-summary.json
+      - packages/opus_solver/source_assignment.py
+      - packages/opus_solver/feed_alignment.py
+      - packages/opus_solver/candidate_solution.py
+      - packages/opus_solver/__init__.py
+      - tools/probe_holdout_mechanics.py
+      - tools/evaluate_holdout_transfer.py
+      - tests/test_source_assignment.py
+      - tests/test_feed_alignment.py
+  workflow_dispatch:
+
+concurrency:
+  group: heldout-mechanical-probe-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  GENERIC_FLOW_POINTER: reports/generated/generic-training-flow/latest-summary.json
+  FLOW_INDEX: .knowledge/generic-flow/campaign-flow-index.json
+  PUZZLE_ROOT: .datasets/heldout-mechanical-probe
+  OPUSSOLVER_COMMIT: fdedd3f01a238b941ceba8bace7ea35cbd3b8c41
+  REPORT_ROOT: reports/heldout-mechanical-probe
+  LATEST_PROBE: reports/generated/heldout-24hour-seed/latest-mechanical-probe.json
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test generic target adaptation
+        run: |
+          python -m unittest tests.test_source_assignment -v
+          python -m unittest tests.test_feed_alignment -v
+
+      - name: Fetch heldout puzzle bytes only
+        run: |
+          mkdir -p .tools "$PUZZLE_ROOT"
+          git clone --filter=blob:none --no-checkout https://github.com/gtw123/OpusSolver.git .tools/opussolver
+          git -C .tools/opussolver sparse-checkout init --no-cone
+          git -C .tools/opussolver sparse-checkout set \
+            test/puzzles/24hour-1-puzzles/GEN249.puzzle \
+            test/puzzles/24hour-1-puzzles/GEN499.puzzle
+          git -C .tools/opussolver checkout "$OPUSSOLVER_COMMIT"
+          cp .tools/opussolver/test/puzzles/24hour-1-puzzles/*.puzzle "$PUZZLE_ROOT"/
+          test "$(find "$PUZZLE_ROOT" -maxdepth 1 -name '*.puzzle' | wc -l)" -eq 2
+          if find .tools/opussolver -type f -name '*.solution' | grep -q .; then
+            echo "Target solution bytes were unexpectedly materialized" >&2
+            exit 1
+          fi
+
+      - name: Restore latest generic campaign fragment knowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s "$GENERIC_FLOW_POINTER"
+          run_id="$(python - <<'PY'
+          import json, os
+          from pathlib import Path
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          assert pointer['kind'] == 'generic-training-flow-latest-checkpoint'
+          assert pointer['targetSolutionBytesUsed'] == 0
+          print(pointer['runId'])
+          PY
+          )"
+          metadata="$RUNNER_TEMP/generic-flow-artifacts.json"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts" > "$metadata"
+          read -r artifact_id expected_digest < <(python - "$metadata" "$run_id" <<'PY'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+          expected_name = f'generic-training-flow-{sys.argv[2]}'
+          matches = [item for item in data.get('artifacts', []) if item.get('name') == expected_name and not item.get('expired')]
+          assert len(matches) == 1, (expected_name, [item.get('name') for item in data.get('artifacts', [])])
+          item = matches[0]
+          digest = str(item.get('digest') or '')
+          assert digest.startswith('sha256:')
+          print(item['id'], digest.split(':', 1)[1])
+          PY
+          )
+          mkdir -p .knowledge/generic-flow
+          archive="$RUNNER_TEMP/generic-training-flow.zip"
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip"
+          curl --fail --location \
+            --retry 10 --retry-delay 3 --retry-all-errors \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$api" -o "$archive"
+          echo "$expected_digest  $archive" | sha256sum --check
+          unzip -q "$archive" -d .knowledge/generic-flow
+          test -s "$FLOW_INDEX"
+          for target in GEN249 GEN499; do
+            if grep -Fq "$target" "$FLOW_INDEX"; then
+              echo "Heldout target $target leaked into generic knowledge" >&2
+              exit 1
+            fi
+          done
+
+      - name: Probe top learned mechanics
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          mkdir -p "$REPORT_ROOT"
+          for target in GEN249 GEN499; do
+            python tools/probe_holdout_mechanics.py \
+              --puzzle "$PUZZLE_ROOT/${target}.puzzle" \
+              --flow-index "$FLOW_INDEX" \
+              --limit 1 \
+              --output "$REPORT_ROOT/${target}.json"
+          done
+
+      - name: Persist compact mechanical checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          root = Path(os.environ['REPORT_ROOT'])
+          pointer = json.loads(Path(os.environ['GENERIC_FLOW_POINTER']).read_text(encoding='utf-8'))
+          payload = {
+              'schemaVersion': '0.2.0',
+              'kind': 'heldout-mechanical-probe-checkpoint',
+              'runId': os.environ.get('GITHUB_RUN_ID'),
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'genericFlowRunId': pointer.get('runId'),
+              'genericFlowSourceCommit': pointer.get('sourceCommit'),
+              'targetSolutionBytesUsed': 0,
+              'targets': {},
+          }
+          for target in ('GEN249', 'GEN499'):
+              report = json.loads((root / f'{target}.json').read_text(encoding='utf-8'))
+              candidate = (report.get('candidates') or [{}])[0]
+              payload['targets'][target] = {
+                  'planner': report.get('planner'),
+                  'rankedAssemblyCount': report.get('rankedAssemblyCount'),
+                  'candidate': candidate,
+              }
+          out = Path(os.environ['LATEST_PROBE'])
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LATEST_PROBE"
+          if git diff --cached --quiet; then
+            echo "Mechanical checkpoint unchanged."
+            exit 0
+          fi
+          git commit -m "Update blind mechanical probe [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - name: Upload probe artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-mechanical-probe-${{ github.run_id }}
+          path: "$REPORT_ROOT/"
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-trajectory-purification-checkpoint",
+  "runId": "32194960805",
+  "sourceCommit": "903d37a2b1feedb593cfea6f5a8814c917ec766e",
+  "genericFlowRunId": "32087080619",
+  "genericFlowSourceCommit": "e6430f392d2bf931453b724b36eacfad1483ba57",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "seedRunId": "32157526102",
+  "seedSourceCommit": "cf1cd71ac2413917ae20c4d6a20185dcd517fb43",
+  "assemblyRank": 1,
+  "assemblyScore": 0.892762,
+  "coherentSourceSolution": "solutions/zlbb/P036/024-DOWNLOAD-580g-3i-8592c-142a-14h-12w-10b-1392r-142a0-14h-12w-10b_PURIFIED_GOLD.solution",
+  "transformOverrides": {
+    "branch-0:edge-0": {
+      "frame": "source-anchor-local",
+      "delta": [
+        -3,
+        1
+      ],
+      "rotationDelta": 1
+    }
+  },
+  "request": {
+    "discoveryCycles": 132,
+    "validationCycles": 320,
+    "poseLimit": 96,
+    "resultLimit": 16
+  },
+  "searchSummary": {
+    "purificationGeometry": "faithful-triangle-(0,0)-(1,0)-to-(0,1)",
+    "requiresFreeInputAtoms": true,
+    "purificationGlyphCount": 6,
+    "discoveryCycles": 132,
+    "validationCycles": 320,
+    "discoveryCompletedCycles": 132,
+    "discoveryTerminatedWithError": false,
+    "discoveryEventCounts": {
+      "arm-instruction": 132,
+      "atom-grabbed": 122,
+      "atoms-dropped": 32,
+      "bond-created": 1,
+      "bond-removed": 1,
+      "input-spawned": 3
+    },
+    "discoveredPoseCount": 0,
+    "testedVariantCount": 0,
+    "returnedVariantCount": 0,
+    "purificationReachedCount": 0,
+    "completeVariantCount": 0,
+    "hasCompleteSolution": false,
+    "mechanicsFingerprint": "2284e3e3e25c452a922e2716a86c9fb924260fc2a7ebe895d73d74b62bcb4d18"
+  },
+  "discoveredPoseCount": 0,
+  "bestVariant": null
+}

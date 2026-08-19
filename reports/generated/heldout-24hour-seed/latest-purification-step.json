@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-purification-step-checkpoint",
+  "runId": "32164215329",
+  "sourceCommit": "7b9765cd008dea07ecf97f29d8d545a7b967c191",
+  "reactionRunId": "32164068317",
+  "targetSolutionBytesUsed": 0,
+  "target": "GEN249.puzzle",
+  "summary": {
+    "maxCycles": 256,
+    "requestedDepth": 1,
+    "beamWidth": 1,
+    "generationCount": 1,
+    "initialPurificationCount": 1,
+    "initialFrontierElement": "copper",
+    "bestPurificationCount": 1,
+    "bestFrontierElement": "copper",
+    "goldReached": false,
+    "stepCount": 0,
+    "targetSolutionBytesUsed": 0
+  },
+  "initialPurificationProfile": {
+    "count": 1,
+    "countsByElement": {
+      "copper": 1
+    },
+    "cyclesByElement": {
+      "copper": [
+        185
+      ]
+    },
+    "frontierIndex": 3,
+    "frontierElement": "copper",
+    "goldReached": false,
+    "completedCycles": 206,
+    "terminatedWithError": true
+  },
+  "generations": [
+    {
+      "generation": 1,
+      "candidateCount": 0,
+      "dedupedCandidateCount": 0,
+      "beamCount": 0,
+      "bestPurificationProfile": {
+        "count": 1,
+        "countsByElement": {
+          "copper": 1
+        },
+        "cyclesByElement": {
+          "copper": [
+            185
+          ]
+        },
+        "frontierIndex": 3,
+        "frontierElement": "copper",
+        "goldReached": false,
+        "completedCycles": 206,
+        "terminatedWithError": true
+      },
+      "bestStepCount": 0
+    }
+  ],
+  "best": {
+    "purificationProfile": {
+      "count": 1,
+      "countsByElement": {
+        "copper": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185
+        ]
+      },
+      "frontierIndex": 3,
+      "frontierElement": "copper",
+      "goldReached": false,
+      "completedCycles": 206,
+      "terminatedWithError": true
+    },
+    "steps": [],
+    "validation": {
+      "complete": false,
+      "failureMode": "missing-product-output",
+      "totalDelivered": 0,
+      "totalDeficit": 18,
+      "completedCycles": 21,
+      "terminatedWithError": false,
+      "firstError": null,
+      "missingProductOutputIndices": [
+        1,
+        2
+      ],
+      "observedRequiredChemistryEventKinds": [],
+      "distinctRequiredChemistryEventCount": 0,
+      "requiredChemistryEventCount": 0,
+      "chemistryEventCount": 0,
+      "eventCounts": {
+        "arm-instruction": 21
+      }
+    },
+    "solutionOutput": "reports/heldout-purification-step/GEN249-best-next-step.solution"
+  }
+}

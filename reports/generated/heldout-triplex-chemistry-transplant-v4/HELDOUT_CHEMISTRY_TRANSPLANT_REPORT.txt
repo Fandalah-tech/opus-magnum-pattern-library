@@ -1,0 +1,153 @@
+STRICT HELD-OUT CHEMISTRY TRANSPLANT - OM2021_W1
+================================================
+
+Status
+------
+The solver still does not solve OM2021_W1 without examples from that puzzle.
+No product reaches the output and the strict held-out completion count remains
+zero.
+
+This milestone nevertheless closes the separation that blocked the preceding
+stage. The previous global portfolio contained 90 OMSim-stable machines, but
+none performed target-relevant chemistry. The new search finds eight candidates
+that simultaneously:
+
+- preserve an OMSim-stable arm, complete program, piston timing and track;
+- grab and drop actual reagent atoms;
+- clear the input and respawn additional reagent molecules;
+- remove the target normal bond;
+- duplicate a classical atom through the duplication glyph;
+- create a prism bond; and
+- run to the authoritative OMSim cycle limit without collision, track error or
+  instruction conflict.
+
+This is the first strict held-out candidate front where real material handling,
+all three required operation families and authoritative mechanical survival
+coexist in the same generated solution.
+
+Held-out protocol
+-----------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Engine-complete corpus before exclusion: 396 solutions
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Target solution bytes replayed into the learned index: 0
+Target strings found in learned geometry records: 0
+
+The parents are the globally selected component-timing variants from the prior
+strict benchmark. OMSim had already established that all 90 returned parents
+survive to its cycle limit. The transplant stage selected four distinct source
+mechanism families and kept their mechanical subgraphs immutable.
+
+Chemistry transplant search
+---------------------------
+The new search does not scan arbitrary board coordinates. For every retained
+mechanism it first replays the arm and track without molecules, records the
+distinct cells where a grab instruction actually occurs, then anchors each
+target reagent atom to those observed cells under all six rotations.
+
+For each input placement it derives the target fire-salt normal bond and places:
+
+- the unbonder on that pair;
+- the duplication glyph with fire as its classical source and salt as its
+  destination; and
+- the prism glyph in one deterministic pose for each black, red and yellow
+  channel.
+
+An SHA-256 fingerprint covers every arm, its complete program and every track.
+The fingerprint is asserted equal before and after each transplant. Only the
+input, unbonder, duplication glyph and prism glyph may move.
+
+Search budget and local evidence
+--------------------------------
+Distinct mechanical parents: 4
+Observed grab cells per parent family: 8 to 12
+Targeted transplant variants: 1,500
+Local replay horizon: 160 cycles
+Locally error-free variants: 480
+Variants reaching grab + unbond + duplicate + bond: 1,416
+Variants promoted to OMSim: 120
+Concurrent OMSim workers: 10 (configured maximum)
+
+The local operation evidence is deliberately classified by operation family,
+not by raw event volume. A stationary unbonder/prism pair can repeatedly remove
+and recreate a bond on successive half-cycles, so hundreds of raw bond events
+do not represent hundreds of useful manufacturing steps.
+
+Authoritative OMSim outcomes
+----------------------------
+OMSim outcomes across the 120 promoted variants:
+
+- completed: 0
+- no completion within the OMSim cycle limit: 8
+- collision: 112
+- track error: 0
+- instruction conflict: 0
+- other error: 0
+
+All eight stable active variants descend from assembly rank 1, source geometry
+variant 20. Their frozen piston program contains the prior successful timing
+edit: one idle cycle inserted at cut cycle 1 while preserving the order of 976
+shifted instructions.
+
+Five survivors use input position (0, -2). They perform three grabs, three
+drops, three input respawns and four duplications during the 160-cycle local
+replay. Three survivors use input position (-2, -2). They perform four grabs,
+four drops, one input respawn and two duplications. The survivor set covers all
+three prism-channel placements.
+
+What the solver can now do
+--------------------------
+The solver can now:
+
+- treat OMSim-stable mechanisms as immutable crossover parents;
+- discover material-placement candidates from observed arm interactions;
+- transplant target-specific input and glyph geometry without changing the
+  mechanical program;
+- verify mechanical immutability with a deterministic fingerprint;
+- rank candidates by error-free replay, real atom grabs, distinct required
+  operation coverage, input reuse and survival;
+- promote a bounded local front to OMSim with at most ten workers;
+- retain authoritative stable-active candidates ahead of locally attractive
+  collisions;
+- run this stage directly after the global component-timing portfolio through
+  the standard generation command; and
+- persist the compact stage outcome in the solver's outcome-learning index.
+
+It cannot yet:
+
+- assemble the required four-atom triplex product;
+- sequence the three prism channels into one persistent triplex bond instead of
+  repeatedly toggling one bond;
+- route a completed molecule to the output; or
+- repeat delivery six times.
+
+Interpretation
+--------------
+OMSim is authoritative for mechanical survival and completion, but its adapter
+does not expose a chemistry event trace. The chemistry evidence comes from the
+local diagnostic replay of the exact serialized candidate, while OMSim proves
+that the same candidate has no authoritative mechanical failure before the
+cycle limit. The result is therefore a strong crossover milestone, not a claim
+of puzzle completion.
+
+Next decisive milestone
+-----------------------
+Convert the stable active interaction into an ordered manufacturing sequence.
+The next search should time-separate unbonding, duplication and the three prism
+channels so bonds persist, then route the resulting four-atom molecule through
+an output footprint. The eight stable active variants are the hard parents; any
+child that loses OMSim cycle-limit survival is rejected immediately.
+
+Verification
+------------
+Python test suite: 208 passed, plus 10 passing subtests
+Targeted chemistry-transplant/outcome tests: passed
+Compile check: passed
+CLI option check: passed
+Full standard-pipeline reproduction: passed with identical 8 stable-active results
+Diff whitespace check: passed
+Locally evaluated transplant variants: 1,500
+OMSim-validated promoted variants: 120
+OMSim-stable active variants: 8
+Strict held-out completion count: 0

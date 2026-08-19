@@ -1,0 +1,139 @@
+STRICT HELD-OUT TRIPLEX GENERALIZATION - OM2021_W1
+==================================================
+
+Status
+------
+The solver does not yet solve OM2021_W1 without examples from that puzzle.
+It now performs a strict, auditable held-out experiment and can construct
+three legal cross-puzzle machines instead of returning no candidate.
+
+Held-out protocol
+-----------------
+Target puzzle: OM2021_W1 (Improved Explosive Phial)
+Engine-complete corpus before exclusion: 396 solutions
+Excluded OM2021_W1 solutions: 230
+Remaining engine-complete solutions: 166 from seven other puzzle IDs
+Excluded share of the usable corpus: 58.1 percent
+Target solution bytes replayed into the learned index: 0
+Target strings found in learned transitions/fragments/motifs: 0
+
+The builder filters audit records before parsing solution files. It normalizes
+puzzle IDs, puzzle filenames, path separators, case, and the .puzzle suffix.
+It also aborts aggregation if an excluded source reaches the graph stage.
+
+Held-out index
+--------------
+Schema: 0.8.0
+Replay-validated source solutions: 166
+Canonical fragments: 1,182
+Canonical transitions: 1,635
+Canonical convergence motifs: 392
+Triplex transitions: 597
+Triplex observations: 4,645
+Validation drift: 0
+Build errors: 0
+Workers: 10
+
+Why exact reconstruction initially returned zero candidates
+------------------------------------------------------------
+No remaining solution contains all six required relations together:
+
+- bond removal
+- duplication
+- red triplex bond
+- black triplex bond
+- yellow triplex bond
+- delivery
+
+The closest non-target solutions cover five of six relations. Every solution
+with observed duplication lacks at least one triplex colour for this target.
+
+New generalization and legality controls
+----------------------------------------
+The solver now understands that one bonder-prisma is physically capable of
+all three triplex channels. It may infer an unobserved channel only when a
+replay-backed bonding convergence has at least three inputs. Inferred evidence
+is recorded separately and receives a ranking penalty.
+
+Fragment geometry is now stored per source solution. A coherent assembly uses
+the geometry, transforms, and timing from the same donor instead of creating a
+chimera from unrelated representatives.
+
+Target part availability is checked before local simulation. Optional donor
+parts disabled by the target are removed and reported. For this benchmark the
+removed parts were one unification glyph or one Van Berlo arm, depending on
+the donor. The required unbonder, duplication glyph, prism, input, output, and
+remaining legal arm/track parts were retained.
+
+Cross-puzzle candidates
+-----------------------
+Three candidates were built, serialized, parsed back cleanly, and locally
+replayed. Their coherent donors were:
+
+1. OM2020_W4 Volatility and Tranquility, Kailaria solution 11
+2. 2019 week5, GI-jinyou
+3. 2019 week5, GI-S.G.S
+
+Authoritative OMSim results for the legal baselines:
+
+1. 125g/977i@0 - collision on cycle 3 at (-2, -2)
+2. 90g/129i@0 - did not complete within the cycle limit
+3. 90g/111i@0 - collision on cycle 1 at (2, -1)
+
+OMSim-valid held-out candidates: 0 of 3
+
+Bounded repair experiment
+-------------------------
+The geometric search can now add unobserved local hex translations and small
+rotations around engine-observed joins. A two-stage evaluator replays every
+variant for 96 cycles, then promotes only eight survivors per assembly to a
+full replay. This prevents thousands of fruitless 6,000-cycle simulations.
+
+Assemblies searched: 3
+Geometric variants evaluated: 2,187 (729 per assembly)
+Variants promoted to full replay: 24
+Products delivered: 0
+Complete variants: 0
+
+The repair data exposed the current structural bottleneck. Several canonical
+fragments share the same physical donor parts. Perturbing one fragment join
+therefore duplicates overlapping parts, growing a nine-part baseline to
+11-15 parts, instead of moving only the intended input, arm, or glyph. More
+search budget cannot fix that representation error.
+
+Current capability level
+------------------------
+The solver can now:
+
+- enforce a strict leave-one-puzzle-out learning boundary;
+- prove that learned evidence contains no target source;
+- combine cross-puzzle chemistry using a guarded physical inference;
+- retain source-specific geometry and timing provenance;
+- remove and report target-disabled optional components;
+- generate legal, round-trip-clean candidate solution files;
+- route collision and inactivity failures to bounded repair;
+- preflight thousands of variants before expensive full replay;
+- preserve every rejection as structured learning evidence.
+
+It cannot yet:
+
+- decompose shared donor machinery into independently movable components;
+- graft the missing triplex behaviour without duplicating shared parts;
+- deliver a product on the strict OM2021_W1 held-out benchmark.
+
+Next decisive milestone
+-----------------------
+Replace fragment-level placement with a shared-component graph. Each physical
+part will have one identity even when several functional fragments reference
+it. Repairs will then move or replace the responsible component and propagate
+that change through every dependent fragment. The same 2,187-outcome corpus
+can be reused to prioritize the input/arm subgraph instead of expanding the
+global search blindly.
+
+Verification
+------------
+Python test suite: 190 passed, plus 10 passing subtests
+Compile check: passed
+Index leak scan: zero target evidence strings
+Index replay drift: zero
+Index build errors: zero

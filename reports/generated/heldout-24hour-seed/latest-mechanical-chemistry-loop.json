@@ -1,0 +1,711 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-mechanical-chemistry-loop-checkpoint",
+  "runId": "32273784861",
+  "sourceCommit": "6d10fbf249dd1671d84aa68367b244e86b369a45",
+  "seedRunId": "32272643475",
+  "targetSolutionBytesUsed": 0,
+  "request": {
+    "maxCycles": 500,
+    "generations": 4,
+    "beamWidth": 3,
+    "additiveResultLimit": 16
+  },
+  "baseline": {
+    "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-00-baseline.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+      "progressCycle": 206,
+      "collisionCycle": 206,
+      "collisionLocation": [
+        10,
+        -1
+      ]
+    },
+    "purificationProfile": {
+      "count": 4,
+      "countsByElement": {
+        "copper": 3,
+        "silver": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185,
+          191,
+          206
+        ],
+        "silver": [
+          206
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 209,
+      "terminatedWithError": true
+    },
+    "actions": []
+  },
+  "generationCount": 4,
+  "history": [
+    {
+      "generation": 1,
+      "mechanicalCandidateCount": 1,
+      "expandedCandidateCount": 5,
+      "dedupedCandidateCount": 5,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0001.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-purify",
+              "producedElement": "copper",
+              "output": [
+                7,
+                -1
+              ],
+              "addedUnbonderCount": 0
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0002.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                134,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -3,
+                0
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0003.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                128,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -4,
+                2
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "generation": 2,
+      "mechanicalCandidateCount": 3,
+      "expandedCandidateCount": 3,
+      "dedupedCandidateCount": 3,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0001.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-purify",
+              "producedElement": "copper",
+              "output": [
+                7,
+                -1
+              ],
+              "addedUnbonderCount": 0
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0002.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                134,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -3,
+                0
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0003.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                128,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -4,
+                2
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "generation": 3,
+      "mechanicalCandidateCount": 3,
+      "expandedCandidateCount": 3,
+      "dedupedCandidateCount": 3,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0001.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-purify",
+              "producedElement": "copper",
+              "output": [
+                7,
+                -1
+              ],
+              "addedUnbonderCount": 0
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0002.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                134,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -3,
+                0
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0003.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                128,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -4,
+                2
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "generation": 4,
+      "mechanicalCandidateCount": 3,
+      "expandedCandidateCount": 3,
+      "dedupedCandidateCount": 3,
+      "beam": [
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0001.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                185,
+                191,
+                206,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-purify",
+              "producedElement": "copper",
+              "output": [
+                7,
+                -1
+              ],
+              "addedUnbonderCount": 0
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0002.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                134,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -3,
+                0
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        },
+        {
+          "solutionPath": "reports/heldout-mechanical-chemistry/search/generation-01-chemistry-0003.solution",
+          "omsim": {
+            "exitCode": 255,
+            "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+            "progressCycle": 206,
+            "collisionCycle": 206,
+            "collisionLocation": [
+              10,
+              -1
+            ]
+          },
+          "purificationProfile": {
+            "count": 5,
+            "countsByElement": {
+              "copper": 4,
+              "silver": 1
+            },
+            "cyclesByElement": {
+              "copper": [
+                128,
+                185,
+                191,
+                206
+              ],
+              "silver": [
+                206
+              ]
+            },
+            "frontierIndex": 4,
+            "frontierElement": "silver",
+            "goldReached": false,
+            "completedCycles": 209,
+            "terminatedWithError": true
+          },
+          "actions": [
+            {
+              "kind": "additive-purification",
+              "repairMode": "additive-precursor-support-multi-unbond+purify",
+              "producedElement": "copper",
+              "output": [
+                -4,
+                2
+              ],
+              "addedUnbonderCount": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "best": {
+    "solutionPath": "reports/heldout-mechanical-chemistry/search/GEN249-best-mechanical-chemistry-loop.solution",
+    "omsim": {
+      "exitCode": 255,
+      "output": "product 1 cycles: collision during motion phase on cycle 206 at 10 -1",
+      "progressCycle": 206,
+      "collisionCycle": 206,
+      "collisionLocation": [
+        10,
+        -1
+      ]
+    },
+    "purificationProfile": {
+      "count": 5,
+      "countsByElement": {
+        "copper": 4,
+        "silver": 1
+      },
+      "cyclesByElement": {
+        "copper": [
+          185,
+          191,
+          206,
+          206
+        ],
+        "silver": [
+          206
+        ]
+      },
+      "frontierIndex": 4,
+      "frontierElement": "silver",
+      "goldReached": false,
+      "completedCycles": 209,
+      "terminatedWithError": true
+    },
+    "actions": [
+      {
+        "kind": "additive-purification",
+        "repairMode": "additive-precursor-support-purify",
+        "producedElement": "copper",
+        "output": [
+          7,
+          -1
+        ],
+        "addedUnbonderCount": 0
+      }
+    ]
+  },
+  "acceptedProductOne": false,
+  "omsimCommit": "758f4a4b4c9e24f50294801da774a0960c922bab"
+}

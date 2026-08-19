@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "targetPuzzleId": "OM2021_W1",
+  "status": {
+    "solved": false,
+    "omSimCompleteCandidateCount": 0,
+    "milestone": "shared-component-graph-and-target-aware-progress"
+  },
+  "sourceHoldout": {
+    "engineCompleteBeforeExclusion": 396,
+    "excludedTargetSolutions": 230,
+    "eligibleOtherPuzzleSolutions": 166,
+    "excludedShare": 0.581,
+    "targetGeometryLeakCount": 0,
+    "validationDriftCount": 0,
+    "buildErrorCount": 0
+  },
+  "index": {
+    "schemaVersion": "0.10.0",
+    "canonicalFragmentCount": 1182,
+    "canonicalTransitionCount": 1635,
+    "canonicalConvergenceMotifCount": 392,
+    "triplexTransitionCount": 597,
+    "triplexObservationCount": 4645,
+    "solutionGeometryOccurrenceCount": 1913,
+    "geometryWithSourceAnchorCount": 1913,
+    "geometryPartRecordCount": 5765,
+    "partsWithSourceIdentityCount": 5765,
+    "sameMechanismMultiOccurrenceGroupCount": 57,
+    "maximumOccurrencesInOneGroup": 29
+  },
+  "componentMaterialization": {
+    "assemblyCount": 3,
+    "rawPartProposalCounts": [51, 34, 37],
+    "materializedPartCounts": [9, 9, 9],
+    "sharedSourceIdentityCounts": [7, 6, 7],
+    "baselineResolvedSourcePoseCounts": [0, 0, 0],
+    "retainedVariantPartCounts": {"9": 90}
+  },
+  "searchProtocol": {
+    "assemblyCount": 3,
+    "variantsPerAssembly": 729,
+    "totalVariantCount": 2187,
+    "preflightCycles": 96,
+    "promotionsPerAssembly": 8,
+    "returnedVariantsPerAssembly": 30
+  },
+  "omSimComparisons": {
+    "legacyFragmentDuplication": {
+      "retainedVariantCount": 90,
+      "complete": 0,
+      "cycleLimitWithoutCompletion": 21,
+      "collision": 62,
+      "otherMechanicalError": 7
+    },
+    "componentGraphSurvivalFront": {
+      "retainedVariantCount": 90,
+      "complete": 0,
+      "cycleLimitWithoutCompletion": 45,
+      "collision": 44,
+      "otherMechanicalError": 1
+    },
+    "balancedProgressSurvivalPortfolio": {
+      "retainedVariantCount": 90,
+      "complete": 0,
+      "cycleLimitWithoutCompletion": 23,
+      "collision": 64,
+      "otherMechanicalError": 3
+    }
+  },
+  "localProgressFront": {
+    "requiredEventFamilies": [
+      "atom-duplicated",
+      "bond-created",
+      "bond-removed",
+      "floating-bond-created",
+      "floating-bond-settled",
+      "product-delivered",
+      "repeating-product-completed"
+    ],
+    "maximumDistinctRequiredEventKindsInOneReplay": 3,
+    "maximumRequiredEventCountInOneReplay": 5,
+    "observedUsefulChains": [
+      ["bond-removed"],
+      ["atom-duplicated", "bond-created"],
+      ["bond-created", "bond-removed", "floating-bond-created"]
+    ],
+    "completeTargetChainObserved": false,
+    "authoritativeValidity": "none-complete-in-OMSim"
+  },
+  "portfolio": {
+    "selectionPolicy": "progress-survival-portfolio",
+    "progressResultsPerAssembly": 15,
+    "survivalResultsPerAssembly": 15,
+    "progressPromotionsPerAssembly": 4,
+    "survivalPromotionsPerAssembly": 4
+  },
+  "verification": {
+    "pytestPassed": 195,
+    "pytestSubtestsPassed": 10,
+    "compilePassed": true,
+    "diffCheckPassed": true
+  },
+  "nextMilestone": "hybrid-geometry-timing-repair-with-omsim-promotion"
+}

@@ -1,0 +1,360 @@
+name: Import Critelli event corpus
+
+on:
+  push:
+    branches:
+      - feature/critelli-2026-public-corpus
+    paths:
+      - .github/workflows/import-critelli-event.yml
+      - tools/import_critelli_event.py
+      - tools/audit_critelli_event.py
+      - tools/learn_critelli_metric_portfolio.py
+      - tools/validate_critelli_portfolio_materialization.py
+      - tools/update_learned_solution_bank.py
+      - tools/assess_composed_novelty.py
+      - tools/build_fragment_index.py
+      - tools/build_fragment_flow_index.py
+      - tools/build_engine_fragment_flow_index.py
+      - tests/test_import_critelli_event.py
+      - tests/test_learn_critelli_metric_portfolio.py
+      - tests/test_learned_solution_bank.py
+      - tests/test_paired_bonded_clusters.py
+      - tests/test_extended_generation_routing.py
+      - tools/analyze_solution_archive.py
+      - tools/import_campaign_corpus.py
+      - packages/opus_analysis/**
+      - packages/opus_parser/**
+      - packages/opus_solver/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  EVENT_ID: 31a11c8c2b284d8f0664f3f069f9e11e
+  EVENT_PAGE: https://events.critelli.technology/OM2026Weeklies6_AqueousDagger
+  CRITELLI_ROOT: .datasets/critelli-aqueous-dagger
+  CAMPAIGN_ROOT: .datasets/critelli-campaign-reference
+  LEARNED_BANK: database/learned-solution-bank.json
+  LEARNED_SOLUTIONS_DIR: fixtures/reference/learned-solutions/critelli
+
+jobs:
+  aqueous_dagger:
+    name: Aqueous Dagger final corpus
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Test Critelli import, learning, promotion, chemistry and generation helpers
+        run: |
+          python -m unittest tests.test_import_critelli_event
+          python -m unittest tests.test_learn_critelli_metric_portfolio
+          python -m unittest tests.test_learned_solution_bank
+          python -m unittest tests.test_paired_bonded_clusters
+          python -m unittest tests.test_extended_generation_routing
+
+      - name: Download Aqueous Dagger puzzle and every submission
+        run: |
+          python tools/import_critelli_event.py \
+            --event-id "$EVENT_ID" \
+            --event-page-url "$EVENT_PAGE" \
+            --root "$CRITELLI_ROOT" \
+            --puzzle-name weeklies2026_aqueous-dagger \
+            --require-puzzle \
+            --strict
+
+      - name: Parse imported puzzle and build manufacturing plan
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from packages.opus_parser import parse_puzzle
+          from packages.opus_solver import build_manufacturing_plan
+          from packages.opus_analysis import puzzle_feature_payload
+
+          root = Path('.datasets/critelli-aqueous-dagger')
+          index = json.loads((root / 'index.json').read_text(encoding='utf-8'))
+          puzzle_path = root / index['puzzle']['file']
+          puzzle = parse_puzzle(puzzle_path)
+          plan = build_manufacturing_plan(puzzle)
+          payload = {
+              'puzzlePath': str(puzzle_path),
+              'puzzleName': puzzle.get('name'),
+              'puzzleFile': puzzle.get('fileId') or puzzle_path.stem,
+              'strategy': plan.strategy,
+              'supported': plan.supported,
+              'reason': plan.reason,
+              'operationKinds': [operation.kind for operation in plan.operations],
+              'requiredGlyphs': list(plan.required_glyphs),
+              'features': puzzle_feature_payload(puzzle),
+          }
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/critelli-aqueous-dagger-puzzle.json').write_text(
+              json.dumps(payload, indent=2, ensure_ascii=False), encoding='utf-8'
+          )
+          print(json.dumps(payload, ensure_ascii=False))
+          PY
+
+      - name: Import campaign references for structural analyzer
+        run: python tools/import_campaign_corpus.py --root "$CAMPAIGN_ROOT" --puzzles-only
+
+      - name: Parse and structurally analyze Critelli solutions
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/analyze_solution_archive.py \
+            --archive-root "$CRITELLI_ROOT" \
+            --campaign-root "$CAMPAIGN_ROOT" \
+            --output reports/critelli-aqueous-dagger-analysis.json
+
+      - name: Extract replay-backed functional fragments
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/build_fragment_index.py \
+            --archive-root "$CRITELLI_ROOT" \
+            --puzzle-root "$CRITELLI_ROOT/puzzle" \
+            --output reports/critelli-aqueous-dagger-fragments.json
+
+      - name: Extract generic fragment flow and convergence motifs
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/build_fragment_flow_index.py \
+            --archive-root "$CRITELLI_ROOT" \
+            --puzzle-root "$CRITELLI_ROOT/puzzle" \
+            --output reports/critelli-aqueous-dagger-fragment-flow.json
+
+      - name: Audit all Critelli solutions against opus_engine
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/audit_critelli_event.py \
+            --root "$CRITELLI_ROOT" \
+            --workers 10 \
+            --output reports/critelli-aqueous-dagger-engine-audit.json
+
+      - name: Build engine-coherent fragment flow index
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/build_engine_fragment_flow_index.py \
+            --audit reports/critelli-aqueous-dagger-engine-audit.json \
+            --workers 10 \
+            --sample-limit 5 \
+            --output reports/critelli-aqueous-dagger-engine-flow.json
+
+      - name: Compose fresh candidates from engine-coherent learning
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/generate_composed_candidates.py \
+            "$CRITELLI_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+            --flow-index reports/critelli-aqueous-dagger-engine-flow.json \
+            --fragment-index reports/critelli-aqueous-dagger-engine-flow.json \
+            --limit 10 \
+            --report reports/critelli-aqueous-dagger-composed.json \
+            --write-complete-dir reports/critelli-aqueous-dagger-composed-solutions
+
+      - name: Compare composed candidates with source mechanisms
+        if: always()
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/assess_composed_novelty.py \
+            --analysis reports/critelli-aqueous-dagger-analysis.json \
+            --generated-dir reports/critelli-aqueous-dagger-composed-solutions \
+            --output reports/critelli-aqueous-dagger-composed-novelty.json
+
+      - name: Learn compact CGA/BCA architecture portfolio
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/learn_critelli_metric_portfolio.py \
+            --root "$CRITELLI_ROOT" \
+            --representatives-per-objective 8 \
+            --output reports/critelli-aqueous-dagger-portfolio.json
+
+      - name: Rebuild learned winners without original solution bytes
+        continue-on-error: true
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python tools/validate_critelli_portfolio_materialization.py \
+            --puzzle "$CRITELLI_ROOT/puzzle/weeklies2026_aqueous-dagger.puzzle" \
+            --portfolio reports/critelli-aqueous-dagger-portfolio.json \
+            --solution-dir reports/critelli-aqueous-dagger-materialized \
+            --output reports/critelli-aqueous-dagger-materialization.json
+
+      - name: Promote complete learned winners into persistent solver bank
+        if: always()
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          if [ ! -f reports/critelli-aqueous-dagger-materialization.json ]; then
+            echo "No materialization report was produced; skipping learned-bank promotion."
+            exit 0
+          fi
+          python tools/update_learned_solution_bank.py \
+            --materialization-report reports/critelli-aqueous-dagger-materialization.json \
+            --bank "$LEARNED_BANK" \
+            --persist-dir "$LEARNED_SOLUTIONS_DIR" \
+            --repository-root . \
+            --output reports/critelli-aqueous-dagger-bank-update.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('reports/critelli-aqueous-dagger-bank-update.json')
+          result = json.loads(path.read_text(encoding='utf-8'))
+          bank = json.loads(Path('database/learned-solution-bank.json').read_text(encoding='utf-8'))
+          assert result['addedOrUpdated'] >= 1
+          assert bank['schemaVersion'] == '0.2.0'
+          assert bank['summary']['entryCount'] >= 1
+          for entry in bank['entries']:
+              provenance = entry.get('provenance') or {}
+              if provenance.get('materializedFromLearnedBlueprint'):
+                  assert provenance.get('originalSolutionBytesCommitted') is False
+          print(json.dumps(result, sort_keys=True))
+          PY
+
+      - name: Persist promoted learned knowledge on the feature branch
+        if: github.ref_name == 'feature/critelli-2026-public-corpus' && github.actor == 'Fandalah-tech'
+        run: |
+          if [ ! -f reports/critelli-aqueous-dagger-bank-update.json ]; then
+            echo "No learned-bank update to persist."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$LEARNED_BANK" "$LEARNED_SOLUTIONS_DIR"
+          if git diff --cached --quiet; then
+            echo "Learned solution bank already current."
+            exit 0
+          fi
+          git commit -m "Promote Critelli learned architectures [skip ci]"
+          git fetch origin feature/critelli-2026-public-corpus
+          git rebase origin/feature/critelli-2026-public-corpus
+          git push origin HEAD:feature/critelli-2026-public-corpus
+
+      - name: Write event summary
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          def load(path, fallback):
+              path = Path(path)
+              return json.loads(path.read_text(encoding='utf-8')) if path.exists() else fallback
+
+          index = load('.datasets/critelli-aqueous-dagger/index.json', {})
+          analysis = load('reports/critelli-aqueous-dagger-analysis.json', {'summary': {}})
+          puzzle = load('reports/critelli-aqueous-dagger-puzzle.json', {})
+          fragments = load('reports/critelli-aqueous-dagger-fragments.json', {'summary': {}})
+          flow = load('reports/critelli-aqueous-dagger-fragment-flow.json', {'summary': {}})
+          engine_audit = load('reports/critelli-aqueous-dagger-engine-audit.json', {'summary': {}})
+          engine_flow = load('reports/critelli-aqueous-dagger-engine-flow.json', {'summary': {}})
+          composed = load('reports/critelli-aqueous-dagger-composed.json', {'summary': {}})
+          novelty = load('reports/critelli-aqueous-dagger-composed-novelty.json', {'summary': {}})
+          portfolio = load('reports/critelli-aqueous-dagger-portfolio.json', {'summary': {}, 'objectives': {}})
+          materialization = load('reports/critelli-aqueous-dagger-materialization.json', {'summary': {}})
+          bank_update = load('reports/critelli-aqueous-dagger-bank-update.json', {'summary': {}})
+          a = analysis.get('summary', {})
+          f = fragments.get('summary', {})
+          g = flow.get('summary', {})
+          ea = engine_audit.get('summary', {})
+          ef = engine_flow.get('summary', {})
+          c = composed.get('summary', {})
+          n = novelty.get('summary', {})
+          payload = {
+              'eventId': index.get('eventId'),
+              'submissionRecords': index.get('submissionRecordCount', 0),
+              'solutionFiles': index.get('solutionFileCount', 0),
+              'downloadErrors': index.get('downloadErrorCount', 0),
+              'uniqueSubmitters': index.get('uniqueSubmitterCount', 0),
+              'scoringSubmissions': index.get('scoringSubmissionCount', 0),
+              'showcases': index.get('showcaseCount', 0),
+              'puzzleImported': bool(index.get('puzzle')),
+              'plannerStrategy': puzzle.get('strategy'),
+              'plannerSupported': puzzle.get('supported'),
+              'parsed': a.get('parsed', 0),
+              'parseErrors': a.get('parseErrors', 0),
+              'uniqueStructures': a.get('uniqueCanonicalStructures', 0),
+              'uniqueMechanisms': a.get('uniqueCanonicalMechanisms', 0),
+              'replaySolutions': f.get('replaySolutionCount', 0),
+              'canonicalFragments': f.get('canonicalFragmentCount', 0),
+              'genericTransitions': g.get('canonicalTransitionCount', 0),
+              'genericFlowObservations': g.get('flowObservationCount', 0),
+              'genericConvergences': g.get('canonicalConvergenceMotifCount', 0),
+              'engineAuditComplete': ea.get('engineComplete', 0),
+              'engineAuditIncomplete': ea.get('engineIncomplete', 0),
+              'engineAuditErrors': ea.get('engineErrors', 0),
+              'engineFlowEligible': ef.get('eligibleEngineCompleteSolutionCount', 0),
+              'engineFlowReplayValidated': ef.get('replayValidatedSolutionCount', 0),
+              'engineFlowFragments': ef.get('canonicalFragmentCount', 0),
+              'engineFlowTransitions': ef.get('canonicalTransitionCount', 0),
+              'engineFlowObservations': ef.get('flowObservationCount', 0),
+              'engineFlowConvergences': ef.get('canonicalConvergenceMotifCount', 0),
+              'engineFlowDrift': ef.get('validationDriftCount', 0),
+              'composedSupported': c.get('supported', False),
+              'composedCandidateCount': c.get('assemblyCandidateCount', 0),
+              'composedSerializableCount': c.get('serializableCount', 0),
+              'composedCompleteCount': c.get('engineCompleteCount', 0),
+              'composedHasComplete': c.get('hasCompleteSolution', False),
+              'composedNovelStructureCount': n.get('novelStructureCount', 0),
+              'composedNovelMechanismCount': n.get('novelMechanismCount', 0),
+              'composedExactStructureReuseCount': n.get('exactStructureReuseCount', 0),
+              'composedExactMechanismReuseCount': n.get('exactMechanismReuseCount', 0),
+              'portfolioMechanisms': portfolio.get('summary', {}).get('uniqueMechanismsInPortfolio', 0),
+              'cgaWinner': portfolio.get('objectives', {}).get('cga', {}).get('winnerMetricVector'),
+              'bcaWinner': portfolio.get('objectives', {}).get('bca', {}).get('winnerMetricVector'),
+              'materializedWinnerCount': materialization.get('summary', {}).get('winnerCount', 0),
+              'materializedCompleteCount': materialization.get('summary', {}).get('completeCount', 0),
+              'materializedAllComplete': materialization.get('summary', {}).get('allComplete', False),
+              'promotedArchitectureCount': bank_update.get('addedOrUpdated', 0),
+              'learnedBankEntries': bank_update.get('summary', {}).get('entryCount', 0),
+              'learnedBankPuzzleCount': bank_update.get('summary', {}).get('puzzleCount', 0),
+          }
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/critelli-aqueous-dagger-summary.json').write_text(json.dumps(payload, indent=2), encoding='utf-8')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('## Critelli — Aqueous Dagger final corpus\n\n')
+              for key, value in payload.items():
+                  out.write(f'- {key}: {value}\n')
+          print(json.dumps(payload))
+          PY
+
+      - name: Upload Critelli corpus and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critelli-aqueous-dagger-${{ github.run_id }}
+          path: |
+            .datasets/critelli-aqueous-dagger/
+            reports/critelli-aqueous-dagger-puzzle.json
+            reports/critelli-aqueous-dagger-analysis.json
+            reports/critelli-aqueous-dagger-fragments.json
+            reports/critelli-aqueous-dagger-fragment-flow.json
+            reports/critelli-aqueous-dagger-engine-audit.json
+            reports/critelli-aqueous-dagger-engine-flow.json
+            reports/critelli-aqueous-dagger-composed.json
+            reports/critelli-aqueous-dagger-composed-novelty.json
+            reports/critelli-aqueous-dagger-composed-solutions/
+            reports/critelli-aqueous-dagger-portfolio.json
+            reports/critelli-aqueous-dagger-materialization.json
+            reports/critelli-aqueous-dagger-materialized/
+            reports/critelli-aqueous-dagger-bank-update.json
+            reports/critelli-aqueous-dagger-summary.json
+          if-no-files-found: warn
+          retention-days: 30

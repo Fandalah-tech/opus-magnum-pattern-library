@@ -36,6 +36,7 @@ class Simulator(RuntimeSimulator):
 
     def __post_init__(self) -> None:
         self.prismatic_bonders = []
+        self.multi_bonders = []
         super().__post_init__()
 
     @classmethod
@@ -58,18 +59,21 @@ class Simulator(RuntimeSimulator):
             arm.base_track_index = arm.track_index
 
         for part in solution.get("parts", []):
-            if part.get("type") != "bonder-prisma":
-                continue
             origin = tuple(part.get("position") or (0, 0))
             rotation = int(part.get("rotation") or 0)
-            simulator.prismatic_bonders.append((
-                (
+            if part.get("type") == "bonder-prisma":
+                simulator.prismatic_bonders.append(((
                     _transform((0, 0), origin, rotation),
                     _transform((1, 0), origin, rotation),
                     _transform((0, 1), origin, rotation),
-                ),
-                str(part.get("id") or "bonder-prisma"),
-            ))
+                ), str(part.get("id") or "bonder-prisma")))
+            elif part.get("type") == "bonder-speed":
+                simulator.multi_bonders.append(((
+                    _transform((0, 0), origin, rotation),
+                    _transform((1, 0), origin, rotation),
+                    _transform((0, -1), origin, rotation),
+                    _transform((-1, 1), origin, rotation),
+                ), str(part.get("id") or "bonder-speed")))
         return simulator
 
     def _plan_motion(self, arm, instruction):
@@ -147,11 +151,36 @@ class Simulator(RuntimeSimulator):
                 "position": list(metal.position),
             }))
 
-    def _process_basic_glyphs(self) -> None:
-        super()._process_basic_glyphs()
-        for positions, part_id in self.prismatic_bonders:
+    def _apply_basic_glyph_operation(self, operation) -> None:
+        part_type, positions, part_id = operation
+        if part_type == "bonder-speed":
+            center = self.world.atom_at(positions[0])
+            if center is None:
+                return
+            for position in positions[1:]:
+                neighbor = self.world.atom_at(position)
+                if neighbor is None or neighbor.id == center.id:
+                    continue
+                bond = Bond(center.id, neighbor.id, "normal")
+                if bond.key in self.world.bonds:
+                    continue
+                self.world.add_bond(bond)
+                self.world.events.append(WorldEvent("bond-created", self.world.cycle, {
+                    "glyphPartId": part_id,
+                    "fromAtomId": center.id,
+                    "toAtomId": neighbor.id,
+                    "type": "normal",
+                    "multiBonder": True,
+                }))
+            return
+
+        if part_type == "bonder-prisma":
             atoms = [self.world.atom_at(position) for position in positions]
-            for first_index, second_index in ((0, 1), (1, 2), (2, 0)):
+            for first_index, second_index, channel in (
+                (0, 1, "black"),
+                (1, 2, "red"),
+                (2, 0, "yellow"),
+            ):
                 first = atoms[first_index]
                 second = atoms[second_index]
                 if (
@@ -163,7 +192,7 @@ class Simulator(RuntimeSimulator):
                 ):
                     continue
                 normal = Bond(first.id, second.id, "normal")
-                triplex = Bond(first.id, second.id, "triplex")
+                triplex = Bond(first.id, second.id, f"triplex-{channel}")
                 if normal.key in self.world.bonds or triplex.key in self.world.bonds:
                     continue
                 self.world.add_bond(triplex)
@@ -172,5 +201,9 @@ class Simulator(RuntimeSimulator):
                     "fromAtomId": first.id,
                     "toAtomId": second.id,
                     "type": "triplex",
+                    "triplexChannel": channel,
                     "prismatic": True,
                 }))
+            return
+
+        super()._apply_basic_glyph_operation(operation)

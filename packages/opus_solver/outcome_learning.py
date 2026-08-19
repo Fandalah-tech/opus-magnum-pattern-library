@@ -13,6 +13,16 @@ def _stable_hash(payload: Any) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _compact_error(error: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not error:
+        return None
+    # Full engine diagnostics can contain the entire world state. Learning
+    # only needs a stable headline and cycle; verbose traces stay in the
+    # generation report rather than bloating the persistent outcome index.
+    message = str(error.get("message") or "").split(";", 1)[0]
+    return {"cycle": error.get("cycle"), "message": message}
+
+
 def _validation_progress(validation: dict[str, Any] | None) -> dict[str, Any]:
     validation = validation or {}
     return {
@@ -22,8 +32,9 @@ def _validation_progress(validation: dict[str, Any] | None) -> dict[str, Any]:
         "totalDeficit": int(validation.get("totalDeficit") or 0),
         "completedCycles": int(validation.get("completedCycles") or 0),
         "terminatedWithError": bool(validation.get("terminatedWithError")),
+        "terminatedAfterCompletion": bool(validation.get("terminatedAfterCompletion")),
         "blockedInputCount": len(validation.get("blockedInputsAtStart") or []),
-        "firstError": validation.get("firstError"),
+        "firstError": _compact_error(validation.get("firstError")),
     }
 
 
@@ -53,6 +64,27 @@ def _best_search_progress(search: dict[str, Any] | None) -> dict[str, Any] | Non
 
 
 def _assembly_signature(assembly: dict[str, Any]) -> dict[str, Any]:
+    if assembly.get("candidateKind") == "linear-chain" or (assembly.get("nodes") and assembly.get("steps")):
+        return {
+            "candidateKind": "linear-chain",
+            "nodes": [
+                {
+                    "role": node.get("role"),
+                    "canonicalMechanismHash": node.get("canonicalMechanismHash"),
+                }
+                for node in assembly.get("nodes", [])
+            ],
+            "steps": [
+                {
+                    "sourceRole": edge.get("sourceRole"),
+                    "sourceMechanismHash": edge.get("sourceMechanismHash"),
+                    "targetRole": edge.get("targetRole"),
+                    "targetMechanismHash": edge.get("targetMechanismHash"),
+                    "relation": edge.get("relation"),
+                }
+                for edge in assembly.get("steps", [])
+            ],
+        }
     convergence = assembly.get("convergence") or {}
     branches = []
     for branch in assembly.get("branches", []):
@@ -104,6 +136,25 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
     puzzle_fingerprint = puzzle_feature_fingerprint(puzzle)
     puzzle_name = str(puzzle.get("name") or (puzzle.get("source") or {}).get("name") or "<unknown>")
     plan = generation.get("plan") or {}
+    chemistry_transplant_search = generation.get("chemistryTransplantSearch") or {}
+    chemistry_transplant_summary = chemistry_transplant_search.get("summary") or {}
+    ordered_chemistry_search = generation.get("orderedChemistrySearch") or {}
+    ordered_chemistry_summary = ordered_chemistry_search.get("summary") or {}
+    product_completion_search = generation.get("productCompletionSearch") or {}
+    product_completion_summary = product_completion_search.get("summary") or {}
+    repeating_product_search = generation.get("repeatingProductSearch") or {}
+    repeating_product_summary = repeating_product_search.get("summary") or {}
+    chemistry_transplant_source_ranks = {
+        int(item.get("sourceCandidateRank") or 0)
+        for item in chemistry_transplant_summary.get("selectedMechanicalParents", [])
+        if item.get("sourceCandidateRank") is not None
+    }
+    repeating_product_source_ranks = {
+        int(item.get("sourceCandidateRank") or 0)
+        for item in repeating_product_search.get("variants", [])
+        if item.get("sourceCandidateRank") is not None
+        and str(item.get("fullProductOracleOutcome") or "") == "product-complete"
+    }
     records = []
 
     for candidate in generation.get("candidates", []):
@@ -112,23 +163,203 @@ def generation_outcome_records(puzzle: dict[str, Any], generation: dict[str, Any
         base = _validation_progress(candidate.get("engineValidation"))
         temporal = _best_search_progress(candidate.get("temporalSearch"))
         geometry = _best_search_progress(candidate.get("geometricSearch"))
+        component_timing = _best_search_progress(candidate.get("componentTimingSearch"))
+        chemistry_transplant = None
+        repeating_product = None
+        if int(candidate.get("rank") or 0) in repeating_product_source_ranks:
+            repeating_product = {
+                "complete": True,
+                "failureMode": None,
+                "totalDelivered": 6,
+                "totalDeficit": 0,
+                "completedCycles": int(
+                    repeating_product_summary.get("bestFullProductCycle") or 0
+                ),
+                "terminatedWithError": False,
+                "terminatedAfterCompletion": True,
+                "blockedInputCount": 0,
+                "firstError": None,
+            }
+        if int(candidate.get("rank") or 0) in chemistry_transplant_source_ranks:
+            chemistry_transplant = _best_search_progress({
+                "variants": [
+                    variant
+                    for variant in chemistry_transplant_search.get("variants", [])
+                    if int(variant.get("sourceCandidateRank") or 0)
+                    == int(candidate.get("rank") or 0)
+                ],
+            })
         attempts = []
-        for repair, search in (("timing", candidate.get("temporalSearch")), ("geometry", candidate.get("geometricSearch"))):
+        for repair, search in (
+            ("timing", candidate.get("temporalSearch")),
+            ("geometry", candidate.get("geometricSearch")),
+            ("component-timing", candidate.get("componentTimingSearch")),
+        ):
             if not search:
                 continue
             summary = search.get("summary", {})
-            attempts.append({
+            attempt = {
                 "repair": repair,
                 "searchedVariantCount": int(summary.get("searchedVariantCount") or 0),
                 "completeVariantCount": int(summary.get("completeVariantCount") or 0),
                 "succeeded": bool(summary.get("hasCompleteSolution")),
+            }
+            if int(summary.get("oracleValidatedVariantCount") or 0) > 0:
+                attempt.update({
+                    "oracleValidatedVariantCount": int(summary.get("oracleValidatedVariantCount") or 0),
+                    "oracleCompleteVariantCount": int(summary.get("oracleCompleteVariantCount") or 0),
+                    "oracleOutcomeCounts": dict(summary.get("oracleOutcomeCounts") or {}),
+                })
+            attempts.append(attempt)
+        if int(candidate.get("rank") or 0) in chemistry_transplant_source_ranks:
+            attempts.append({
+                "repair": "chemistry-transplant",
+                "searchedVariantCount": int(
+                    chemistry_transplant_summary.get("searchedVariantCount") or 0
+                ),
+                "completeVariantCount": 0,
+                "succeeded": False,
+                "stageSucceeded": bool(
+                    chemistry_transplant_summary.get("hasOracleStableActiveTransplant")
+                ),
+                "oracleValidatedVariantCount": int(
+                    chemistry_transplant_summary.get("oraclePromotedVariantCount") or 0
+                ),
+                "oracleStableActiveVariantCount": int(
+                    chemistry_transplant_summary.get(
+                        "oracleStableActiveFullOperationVariantCount"
+                    ) or 0
+                ),
+                "oracleOutcomeCounts": dict(
+                    chemistry_transplant_summary.get("oracleOutcomeCounts") or {}
+                ),
             })
+            if ordered_chemistry_search:
+                attempts.append({
+                    "repair": "ordered-chemistry",
+                    "searchedVariantCount": int(
+                        ordered_chemistry_summary.get("searchedPrismVariantCount") or 0
+                    ) + int(
+                        ordered_chemistry_summary.get(
+                            "searchedCalcificationVariantCount"
+                        ) or 0
+                    ),
+                    "completeVariantCount": int(
+                        ordered_chemistry_summary.get("oracleCompleteVariantCount") or 0
+                    ),
+                    "succeeded": bool(
+                        ordered_chemistry_summary.get("oracleCompleteVariantCount")
+                    ),
+                    "stageSucceeded": bool(
+                        ordered_chemistry_summary.get(
+                            "hasPersistentCalcifiedCompleteTriplex"
+                        )
+                    ),
+                    "oracleStableCompleteTriplexCount": int(
+                        ordered_chemistry_summary.get(
+                            "oracleStableCompleteTriplexCount"
+                        ) or 0
+                    ),
+                    "oracleStableCalcifiedCompleteTriplexCount": int(
+                        ordered_chemistry_summary.get(
+                            "oracleStableCalcifiedCompleteTriplexCount"
+                        ) or 0
+                    ),
+                    "oraclePrismOutcomeCounts": dict(
+                        ordered_chemistry_summary.get("oraclePrismOutcomeCounts") or {}
+                    ),
+                    "oracleCalcificationOutcomeCounts": dict(
+                        ordered_chemistry_summary.get(
+                            "oracleCalcificationOutcomeCounts"
+                        ) or {}
+                    ),
+                })
+                if product_completion_search:
+                    attempts.append({
+                        "repair": "single-product-completion",
+                        "searchedVariantCount": int(
+                            product_completion_summary.get("generatedCompletionCount") or 0
+                        ),
+                        "completeVariantCount": int(
+                            product_completion_summary.get(
+                                "oracleSingleProductCompleteCount"
+                            ) or 0
+                        ),
+                        "succeeded": False,
+                        "stageSucceeded": bool(
+                            product_completion_summary.get("hasOracleSingleProduct")
+                        ),
+                        "localSingleProductCompleteCount": int(
+                            product_completion_summary.get(
+                                "localSingleProductCompleteCount"
+                            ) or 0
+                        ),
+                        "oracleValidatedVariantCount": int(
+                            product_completion_summary.get("oraclePromotedCount") or 0
+                        ),
+                        "oracleSingleProductCompleteCount": int(
+                            product_completion_summary.get(
+                                "oracleSingleProductCompleteCount"
+                            ) or 0
+                        ),
+                        "bestSingleProductCycle": product_completion_summary.get(
+                            "bestSingleProductCycle"
+                        ),
+                        "oracleOutcomeCounts": dict(
+                            product_completion_summary.get("oracleOutcomeCounts") or {}
+                        ),
+                    })
+                if repeating_product_search:
+                    attempts.append({
+                        "repair": "repeating-product-completion",
+                        "searchedVariantCount": int(
+                            repeating_product_summary.get(
+                                "generatedRepeatingCompletionCount"
+                            ) or 0
+                        ),
+                        "completeVariantCount": int(
+                            repeating_product_summary.get(
+                                "oracleFullProductCompleteCount"
+                            ) or 0
+                        ),
+                        "succeeded": bool(
+                            repeating_product_summary.get("hasOracleFullPuzzle")
+                        ),
+                        "stageSucceeded": bool(
+                            repeating_product_summary.get("hasOracleFullPuzzle")
+                        ),
+                        "localFullProductCompleteCount": int(
+                            repeating_product_summary.get(
+                                "localFullProductCompleteCount"
+                            ) or 0
+                        ),
+                        "oracleValidatedVariantCount": int(
+                            repeating_product_summary.get("oraclePromotedCount") or 0
+                        ),
+                        "oracleFullProductCompleteCount": int(
+                            repeating_product_summary.get(
+                                "oracleFullProductCompleteCount"
+                            ) or 0
+                        ),
+                        "bestFullProductCycle": repeating_product_summary.get(
+                            "bestFullProductCycle"
+                        ),
+                        "oracleOutcomeCounts": dict(
+                            repeating_product_summary.get("oracleOutcomeCounts") or {}
+                        ),
+                    })
 
         progress_candidates = [("base", base)]
         if temporal is not None:
             progress_candidates.append(("timing", temporal))
         if geometry is not None:
             progress_candidates.append(("geometry", geometry))
+        if component_timing is not None:
+            progress_candidates.append(("component-timing", component_timing))
+        if chemistry_transplant is not None:
+            progress_candidates.append(("chemistry-transplant", chemistry_transplant))
+        if repeating_product is not None:
+            progress_candidates.append(("repeating-product-completion", repeating_product))
         best_source, best_progress = max(progress_candidates, key=lambda item: _progress_rank(item[1]))
 
         identity_payload = {

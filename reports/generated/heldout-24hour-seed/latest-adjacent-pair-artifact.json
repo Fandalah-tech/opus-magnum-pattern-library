@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "heldout-adjacent-pair-artifact-pointer",
+  "runId": "32274075642",
+  "artifactId": "9373408579",
+  "artifactName": "heldout-adjacent-pair-probe-32274075642",
+  "artifactSha256": "e028287f0ea271df82cf0e9240d9c6ebad07c6ab38d3612d26df502d100b38b3",
+  "targetSolutionBytesUsed": 0,
+  "summary": {
+    "adjacentCandidateCount": 2,
+    "goldBeforeOfficialCollisionCount": 2,
+    "deliveryCandidateCount": 48,
+    "acceptedProductOne": false,
+    "officialCollisionCycle": 1484,
+    "localGoldCycle": 1483,
+    "localProductDeliveredCount": 1
+  }
+}
