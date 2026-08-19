@@ -48,6 +48,9 @@ def probe(
     best_raw = (raw_variants or [None])[0]
     if candidate_dir is not None:
         candidate_dir.mkdir(parents=True, exist_ok=True)
+
+    # Preserve every generated binary separately so the official oracle can
+    # rank mechanical survivability independently of the local chemistry rank.
     for index, item in enumerate(raw_variants):
         candidate_output = None
         if candidate_dir is not None and item.get("solution"):
