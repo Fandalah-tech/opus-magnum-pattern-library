@@ -55,13 +55,24 @@ def relocate_arm_base_preserving_tip(
     arm_part_id: str,
     preserved_tip: tuple[int, int],
     new_rotation: int,
+    new_length: int | None = None,
 ) -> dict[str, Any]:
+    """Move an arm base while keeping its initial tip on the intended grab cell.
+
+    Length is allowed to change because a one-hex arm can be geometrically
+    impossible when its base lies inside the reagent footprint.  Longer regular
+    arms are mechanically equivalent at the grab instant but rotate around a
+    different legal pivot; replay decides whether the downstream chemistry is
+    still useful.
+    """
+
     result = deepcopy(solution)
     arm = next(
         part for part in result.get("parts", []) or []
         if str(part.get("id") or "") == str(arm_part_id)
     )
-    length = max(1, int(arm.get("length") or 1))
+    old_length = max(1, int(arm.get("length") or 1))
+    length = old_length if new_length is None else max(1, min(3, int(new_length)))
     rotation = int(new_rotation) % 6
     direction = DIRECTIONS[rotation]
     base = (
@@ -72,14 +83,17 @@ def relocate_arm_base_preserving_tip(
     old_rotation = int(arm.get("rotation") or 0) % 6
     arm["position"] = [base[0], base[1]]
     arm["rotation"] = rotation
+    arm["length"] = length
     source = result.setdefault("source", {})
-    source["generator"] = "opus_solver/initial-arm-base-overlap-repair-v1"
+    source["generator"] = "opus_solver/initial-arm-base-overlap-repair-v2"
     source.setdefault("initialArmBaseRepairs", []).append({
         "armPartId": str(arm_part_id),
         "oldBase": old_base,
         "oldRotation": old_rotation,
+        "oldLength": old_length,
         "newBase": [base[0], base[1]],
         "newRotation": rotation,
+        "newLength": length,
         "preservedTip": [int(preserved_tip[0]), int(preserved_tip[1])],
         "targetSolutionBytesUsed": 0,
     })
@@ -105,17 +119,21 @@ def search_initial_arm_base_repairs(
     *,
     max_cycles: int = 500,
     beam_width: int = 6,
+    max_arm_length: int = 3,
 ) -> dict[str, Any]:
     """Repair initial arm/reagent overlap while preserving each arm's grab tip.
 
     The generated mechanism's own reagent spawn and replay are the only search
-    evidence. For each overlapping arm1 we keep the original intended tip and
-    move the base to alternative adjacent cells, rejecting cells occupied by
-    initial reagent atoms or another static part base. Candidates must preserve
-    the baseline gold frontier before they can enter the beam.
+    evidence.  For each overlapping arm1 we keep the original intended tip and
+    enumerate legal pivots at regular-arm lengths 1..3.  This strictly
+    generalizes the old same-length relocation: when every adjacent base lies
+    inside a bulky reagent, a longer arm can keep the same grab cell while
+    placing its base outside the reagent.  Candidates must preserve the
+    baseline gold/purification frontier before entering the beam.
     """
 
     horizon = max(1, int(max_cycles))
+    arm_length_limit = max(1, min(3, int(max_arm_length)))
     baseline_profile = purification_profile(puzzle, solution, max_cycles=horizon)
     baseline_summary_full = replay_summary(puzzle, solution, max_cycles=horizon)
     baseline_summary_full.pop("replay", None)
@@ -155,40 +173,44 @@ def search_initial_arm_base_repairs(
                 and str(part.get("type") or "") != "track"
             }
 
-            for rotation in range(6):
-                if rotation == int(target.get("armRotation") or 0):
-                    continue
-                direction = DIRECTIONS[rotation]
-                length = int(target.get("armLength") or 1)
-                base = (tip[0] - direction[0] * length, tip[1] - direction[1] * length)
-                if base in initial_atom_cells or base in other_part_bases:
-                    continue
-                candidate = relocate_arm_base_preserving_tip(
-                    state["solution"],
-                    arm_part_id=str(target.get("armPartId") or ""),
-                    preserved_tip=tip,
-                    new_rotation=rotation,
-                )
-                profile = purification_profile(puzzle, candidate, max_cycles=horizon)
-                if int((profile.get("countsByElement") or {}).get("gold", 0)) < required_gold:
-                    continue
-                if int(profile.get("count") or 0) < required_purification:
-                    continue
-                summary = replay_summary(puzzle, candidate, max_cycles=horizon)
-                summary.pop("replay", None)
-                expanded.append({
-                    "solution": candidate,
-                    "purificationProfile": profile,
-                    "summary": summary,
-                    "repairs": [
-                        *state.get("repairs", []),
-                        {
-                            **target,
-                            "newBase": [base[0], base[1]],
-                            "newRotation": rotation,
-                        },
-                    ],
-                })
+            old_rotation = int(target.get("armRotation") or 0) % 6
+            old_length = max(1, int(target.get("armLength") or 1))
+            for length in range(1, arm_length_limit + 1):
+                for rotation in range(6):
+                    if rotation == old_rotation and length == old_length:
+                        continue
+                    direction = DIRECTIONS[rotation]
+                    base = (tip[0] - direction[0] * length, tip[1] - direction[1] * length)
+                    if base in initial_atom_cells or base in other_part_bases:
+                        continue
+                    candidate = relocate_arm_base_preserving_tip(
+                        state["solution"],
+                        arm_part_id=str(target.get("armPartId") or ""),
+                        preserved_tip=tip,
+                        new_rotation=rotation,
+                        new_length=length,
+                    )
+                    profile = purification_profile(puzzle, candidate, max_cycles=horizon)
+                    if int((profile.get("countsByElement") or {}).get("gold", 0)) < required_gold:
+                        continue
+                    if int(profile.get("count") or 0) < required_purification:
+                        continue
+                    summary = replay_summary(puzzle, candidate, max_cycles=horizon)
+                    summary.pop("replay", None)
+                    expanded.append({
+                        "solution": candidate,
+                        "purificationProfile": profile,
+                        "summary": summary,
+                        "repairs": [
+                            *state.get("repairs", []),
+                            {
+                                **target,
+                                "newBase": [base[0], base[1]],
+                                "newRotation": rotation,
+                                "newLength": length,
+                            },
+                        ],
+                    })
 
         deduped: dict[tuple[Any, ...], dict[str, Any]] = {}
         for state in expanded:
@@ -197,6 +219,7 @@ def search_initial_arm_base_repairs(
                     str(part.get("id") or ""),
                     tuple(part.get("position") or (0, 0)),
                     int(part.get("rotation") or 0),
+                    int(part.get("length") or 1),
                 )
                 for part in state["solution"].get("parts", []) or []
                 if str(part.get("type") or "") == "arm1"
@@ -223,10 +246,11 @@ def search_initial_arm_base_repairs(
     clean.sort(key=_rank, reverse=True)
     best = clean[0] if clean else None
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": "0.2.0",
         "kind": "initial-arm-base-overlap-repair-search",
         "summary": {
             "maxCycles": horizon,
+            "maxArmLength": arm_length_limit,
             "baselineOverlapCount": len(initial_arm_base_overlaps(puzzle, solution)),
             "cleanCandidateCount": len(clean),
             "bestRemainingOverlapCount": len(initial_arm_base_overlaps(puzzle, best["solution"])) if best else len(initial_arm_base_overlaps(puzzle, solution)),
