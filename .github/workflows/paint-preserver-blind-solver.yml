@@ -24,6 +24,7 @@ jobs:
         run: |
           mkdir -p .blind reports
           python - <<'PY'
+          import base64
           from html.parser import HTMLParser
           from pathlib import Path
           from urllib.parse import urljoin
@@ -46,14 +47,22 @@ jobs:
           req = Request(page, headers={'User-Agent': 'opus-magnum-pattern-library blind solver probe'})
           html = urlopen(req, timeout=30).read().decode('utf-8', errors='replace')
           parser = Links(); parser.feed(html)
-          matches = [h for h in parser.hrefs if filename in h]
-          if not matches:
-              raise SystemExit(f'Puzzle download link not found on official page; links={parser.hrefs!r}')
-          puzzle_url = urljoin(page, matches[0])
-          data = urlopen(Request(puzzle_url, headers={'User-Agent': 'opus-magnum-pattern-library blind solver probe'}), timeout=30).read()
+
+          data_uri = next((h for h in parser.hrefs if h.startswith('data:application/octet-stream;base64,')), None)
+          if data_uri:
+              data = base64.b64decode(data_uri.split(',', 1)[1], validate=True)
+              source = 'embedded data URI on official event page'
+          else:
+              matches = [h for h in parser.hrefs if filename in h]
+              if not matches:
+                  raise SystemExit(f'Puzzle payload not found on official page; links={parser.hrefs!r}')
+              puzzle_url = urljoin(page, matches[0])
+              data = urlopen(Request(puzzle_url, headers={'User-Agent': 'opus-magnum-pattern-library blind solver probe'}), timeout=30).read()
+              source = puzzle_url
+
           out = Path('.blind') / filename
           out.write_bytes(data)
-          print(f'Downloaded official puzzle only: {puzzle_url} -> {out} ({len(data)} bytes)')
+          print(f'Downloaded official puzzle only: {source} -> {out} ({len(data)} bytes)')
           PY
 
       - name: Run current generic solver blind
