@@ -75,7 +75,55 @@ jobs:
           print(f'Downloaded official puzzle only: {source} -> {out} ({len(data)} bytes)')
           PY
 
+      - name: Preflight current solver support
+        id: preflight
+        shell: bash
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from packages.opus_parser import parse_puzzle
+          from packages.opus_solver.manufacturing import build_manufacturing_plan
+
+          puzzle = parse_puzzle(Path('.blind/weeklies2026_paint-preserver.puzzle'))
+          plan = build_manufacturing_plan(puzzle)
+          payload = {
+              'puzzleName': puzzle.get('name'),
+              'reagentCount': len(puzzle.get('reagents') or []),
+              'productCount': len(puzzle.get('products') or []),
+              'productAtomCounts': [len(x.get('atoms') or []) for x in (puzzle.get('products') or [])],
+              'strategy': plan.strategy,
+              'supported': plan.supported,
+              'reason': plan.reason,
+              'operationCount': len(plan.operations),
+          }
+          Path('reports/paint-preserver-blind-preflight.json').write_text(json.dumps(payload, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+          print(json.dumps(payload, sort_keys=True))
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+              out.write(f"supported={'true' if plan.supported else 'false'}\n")
+          if not plan.supported:
+              report = {
+                  'schemaVersion': 'blind-preflight-v1',
+                  'plan': plan.to_dict(),
+                  'summary': {
+                      'supported': False,
+                      'hasCompleteSolution': False,
+                      'assemblyCandidateCount': 0,
+                      'engineCompleteCount': 0,
+                      'temporalVariantCount': 0,
+                      'temporalCompleteCount': 0,
+                      'geometricVariantCount': 0,
+                      'geometricCompleteCount': 0,
+                      'failureModes': {'unsupported-manufacturing-plan': 1},
+                      'repairRoutes': {},
+                  },
+                  'candidates': [],
+              }
+              Path('reports/paint-preserver-blind.json').write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+          PY
+
       - name: Rebuild historical general corpus
+        if: steps.preflight.outputs.supported == 'true'
         shell: bash
         run: |
           python tools/import_om_solution_archive.py --root .datasets/solution-archive
@@ -95,6 +143,7 @@ jobs:
           PY
 
       - name: Build generic solver indexes from historical corpus
+        if: steps.preflight.outputs.supported == 'true'
         shell: bash
         run: |
           if [[ ! -s .blind/fragment-index.json ]]; then
@@ -109,17 +158,10 @@ jobs:
               --puzzle-root .datasets/archive-campaign-reference \
               --output .blind/fragment-flow-index.json
           fi
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          fi = json.loads(Path('.blind/fragment-index.json').read_text(encoding='utf-8'))
-          ff = json.loads(Path('.blind/fragment-flow-index.json').read_text(encoding='utf-8'))
-          print('fragment-index summary:', json.dumps(fi.get('summary', {}), sort_keys=True))
-          print('fragment-flow-index summary:', json.dumps(ff.get('summary', {}), sort_keys=True))
-          PY
 
       - name: Run current generic solver blind
         id: solver
+        if: steps.preflight.outputs.supported == 'true'
         shell: bash
         run: |
           set +e
@@ -169,23 +211,7 @@ jobs:
                   f"geometricVariantCount={s.get('geometricVariantCount')}",
                   f"geometricCompleteCount={s.get('geometricCompleteCount')}",
                   f"failureModes={json.dumps(s.get('failureModes', {}), sort_keys=True)}",
-                  f"repairRoutes={json.dumps(s.get('repairRoutes', {}), sort_keys=True)}",
               ])
-              complete = []
-              for item in data.get('candidates', []):
-                  if item.get('engineValidation', {}).get('complete'):
-                      complete.append(('base', item))
-                  for key in ('temporalSearch','geometricSearch'):
-                      for v in item.get(key, {}).get('variants', []):
-                          if v.get('validation', {}).get('complete'):
-                              complete.append((key, v))
-              lines.append(f'completeCandidateRecords={len(complete)}')
-              if complete:
-                  kind, best = complete[0]
-                  sol = best.get('solution', {})
-                  lines.append(f'firstCompleteKind={kind}')
-                  lines.append(f"firstCompleteName={sol.get('name')}")
-                  lines.append(f"firstCompleteMetrics={json.dumps(sol.get('metrics', {}), sort_keys=True)}")
           Path('reports/paint-preserver-blind-summary.txt').write_text('\n'.join(lines)+'\n', encoding='utf-8')
           print('\n'.join(lines))
           PY
@@ -200,7 +226,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Preserve solver exit status
-        if: steps.solver.outputs.exit_code != '0'
+        if: steps.preflight.outputs.supported == 'true' && steps.solver.outputs.exit_code != '0'
         shell: bash
         run: |
           echo "Solver CLI exited with code ${{ steps.solver.outputs.exit_code }}"
