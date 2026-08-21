@@ -1,0 +1,142 @@
+name: Blind Paint Preserver solver probe
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  blind-solve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download official puzzle only
+        shell: bash
+        run: |
+          mkdir -p .blind reports
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urljoin
+          from urllib.request import Request, urlopen
+
+          page = 'https://events.critelli.technology/OM2026Weeklies7_PaintPreserver'
+          filename = 'weeklies2026_paint-preserver.puzzle'
+
+          class Links(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.hrefs = []
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() != 'a':
+                      return
+                  attrs = dict(attrs)
+                  if attrs.get('href'):
+                      self.hrefs.append(attrs['href'])
+
+          req = Request(page, headers={'User-Agent': 'opus-magnum-pattern-library blind solver probe'})
+          html = urlopen(req, timeout=30).read().decode('utf-8', errors='replace')
+          parser = Links(); parser.feed(html)
+          matches = [h for h in parser.hrefs if filename in h]
+          if not matches:
+              raise SystemExit(f'Puzzle download link not found on official page; links={parser.hrefs!r}')
+          puzzle_url = urljoin(page, matches[0])
+          data = urlopen(Request(puzzle_url, headers={'User-Agent': 'opus-magnum-pattern-library blind solver probe'}), timeout=30).read()
+          out = Path('.blind') / filename
+          out.write_bytes(data)
+          print(f'Downloaded official puzzle only: {puzzle_url} -> {out} ({len(data)} bytes)')
+          PY
+
+      - name: Run current generic solver blind
+        id: solver
+        shell: bash
+        run: |
+          set +e
+          python tools/generate_composed_candidates.py \
+            .blind/weeklies2026_paint-preserver.puzzle \
+            --limit 250 \
+            --temporal-radius 3 \
+            --temporal-variants 500 \
+            --temporal-results 25 \
+            --transform-variants 5000 \
+            --transform-per-slot 5 \
+            --transform-results 25 \
+            --report reports/paint-preserver-blind.json \
+            --write-best reports/paint-preserver-blind.solution \
+            --outcome-index reports/paint-preserver-blind-outcomes.json \
+            > reports/paint-preserver-blind-stdout.txt 2> reports/paint-preserver-blind-stderr.txt
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Summarize blind result
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = Path('reports/paint-preserver-blind.json')
+          lines = []
+          if not report.exists():
+              lines.append('report_missing=true')
+          else:
+              data = json.loads(report.read_text(encoding='utf-8'))
+              s = data.get('summary', {})
+              plan = data.get('plan', {})
+              lines.extend([
+                  f"supported={s.get('supported')}",
+                  f"hasCompleteSolution={s.get('hasCompleteSolution')}",
+                  f"strategy={plan.get('strategy')}",
+                  f"assemblyCandidateCount={s.get('assemblyCandidateCount')}",
+                  f"engineCompleteCount={s.get('engineCompleteCount')}",
+                  f"temporalVariantCount={s.get('temporalVariantCount')}",
+                  f"temporalCompleteCount={s.get('temporalCompleteCount')}",
+                  f"geometricVariantCount={s.get('geometricVariantCount')}",
+                  f"geometricCompleteCount={s.get('geometricCompleteCount')}",
+                  f"failureModes={json.dumps(s.get('failureModes', {}), sort_keys=True)}",
+                  f"repairRoutes={json.dumps(s.get('repairRoutes', {}), sort_keys=True)}",
+              ])
+              complete = []
+              for item in data.get('candidates', []):
+                  if item.get('engineValidation', {}).get('complete'):
+                      complete.append(('base', item))
+                  for key in ('temporalSearch','geometricSearch'):
+                      for v in item.get(key, {}).get('variants', []):
+                          if v.get('validation', {}).get('complete'):
+                              complete.append((key, v))
+              lines.append(f'completeCandidateRecords={len(complete)}')
+              if complete:
+                  kind, best = complete[0]
+                  sol = best.get('solution', {})
+                  lines.append(f'firstCompleteKind={kind}')
+                  lines.append(f"firstCompleteName={sol.get('name')}")
+                  lines.append(f"firstCompleteMetrics={json.dumps(sol.get('metrics', {}), sort_keys=True)}")
+          Path('reports/paint-preserver-blind-summary.txt').write_text('\n'.join(lines)+'\n', encoding='utf-8')
+          print('\n'.join(lines))
+          PY
+
+      - name: Upload blind solver artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paint-preserver-blind-solver
+          path: |
+            reports/paint-preserver-blind*
+          if-no-files-found: warn
+
+      - name: Preserve solver exit status
+        if: steps.solver.outputs.exit_code != '0'
+        shell: bash
+        run: |
+          echo "Solver CLI exited with code ${{ steps.solver.outputs.exit_code }}"
+          exit 1
