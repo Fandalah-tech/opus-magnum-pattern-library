@@ -11,13 +11,23 @@ permissions:
 jobs:
   blind-solve:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Restore historical solver corpus cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .datasets/solution-archive
+            .datasets/archive-campaign-reference
+            .blind/fragment-index.json
+            .blind/fragment-flow-index.json
+          key: paint-preserver-blind-historical-corpus-v1
 
       - name: Download official puzzle only
         shell: bash
@@ -65,6 +75,49 @@ jobs:
           print(f'Downloaded official puzzle only: {source} -> {out} ({len(data)} bytes)')
           PY
 
+      - name: Rebuild historical general corpus
+        shell: bash
+        run: |
+          python tools/import_om_solution_archive.py --root .datasets/solution-archive
+          python tools/import_campaign_corpus.py --root .datasets/archive-campaign-reference --puzzles-only
+          PYTHONPATH=. python - <<'PY'
+          import json
+          from pathlib import Path
+          index = json.loads(Path('.datasets/solution-archive/index.json').read_text(encoding='utf-8'))
+          suspicious = []
+          for item in index.get('solutions', []):
+              haystack = ' '.join(str(v) for v in item.values()).lower().replace('_','-')
+              if 'paint-preserver' in haystack or 'paint preserver' in haystack:
+                  suspicious.append(item)
+          if suspicious:
+              raise SystemExit(f'Blindness guard failed: Paint Preserver records found in historical corpus: {suspicious[:3]!r}')
+          print(f"Blindness guard: historical archive contains {len(index.get('solutions', []))} solutions and zero Paint Preserver records")
+          PY
+
+      - name: Build generic solver indexes from historical corpus
+        shell: bash
+        run: |
+          if [[ ! -s .blind/fragment-index.json ]]; then
+            PYTHONPATH=. python tools/build_fragment_index.py \
+              --archive-root .datasets/solution-archive \
+              --puzzle-root .datasets/archive-campaign-reference \
+              --output .blind/fragment-index.json
+          fi
+          if [[ ! -s .blind/fragment-flow-index.json ]]; then
+            PYTHONPATH=. python tools/build_fragment_flow_index.py \
+              --archive-root .datasets/solution-archive \
+              --puzzle-root .datasets/archive-campaign-reference \
+              --output .blind/fragment-flow-index.json
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          fi = json.loads(Path('.blind/fragment-index.json').read_text(encoding='utf-8'))
+          ff = json.loads(Path('.blind/fragment-flow-index.json').read_text(encoding='utf-8'))
+          print('fragment-index summary:', json.dumps(fi.get('summary', {}), sort_keys=True))
+          print('fragment-flow-index summary:', json.dumps(ff.get('summary', {}), sort_keys=True))
+          PY
+
       - name: Run current generic solver blind
         id: solver
         shell: bash
@@ -72,6 +125,8 @@ jobs:
           set +e
           PYTHONPATH=. python tools/generate_composed_candidates.py \
             .blind/weeklies2026_paint-preserver.puzzle \
+            --flow-index .blind/fragment-flow-index.json \
+            --fragment-index .blind/fragment-index.json \
             --limit 250 \
             --temporal-radius 3 \
             --temporal-variants 500 \
@@ -106,6 +161,7 @@ jobs:
                   f"supported={s.get('supported')}",
                   f"hasCompleteSolution={s.get('hasCompleteSolution')}",
                   f"strategy={plan.get('strategy')}",
+                  f"reason={plan.get('reason')}",
                   f"assemblyCandidateCount={s.get('assemblyCandidateCount')}",
                   f"engineCompleteCount={s.get('engineCompleteCount')}",
                   f"temporalVariantCount={s.get('temporalVariantCount')}",
