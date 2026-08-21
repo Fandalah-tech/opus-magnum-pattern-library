@@ -70,7 +70,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          python tools/generate_composed_candidates.py \
+          PYTHONPATH=. python tools/generate_composed_candidates.py \
             .blind/weeklies2026_paint-preserver.puzzle \
             --limit 250 \
             --temporal-radius 3 \
